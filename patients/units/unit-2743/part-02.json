@@ -1,0 +1,398 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002743",
+      "events": [
+        {
+          "id": "2023-03-21a",
+          "kind": "annual_physical",
+          "start": "2023-03-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2023-03-21T09:05", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-21T09:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-03-21T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-03-21T09:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-03-21T09:20",
+              "body": "Yearly visit.\n\nShe and her husband started trying for a pregnancy last October. Cycles still like clockwork, every 28 days, normal flow. Wanted to be sure her thyroid is where it should be for conceiving. No other concerns.\nMeds: levothyroxine 88 mcg. NKDA. PHQ-2 0.\n\nExam: Comfortable. Vitals ok. HEENT clear. Thyroid smooth, not enlarged. Heart RRR without murmur. Lungs clear to auscultation. Abdomen soft. No edema, no rash.\n\nPlan:\n- Hypothyroid: TSH today. If she does become pregnant she should message right away, the dose usually needs to go up early.\n- Preconception: discussed that at 36 it's reasonable to get a fertility evaluation if no pregnancy by 6 months of trying; that point is about now. She'd like to give it a couple more months first, will reach out.\n- Pap due next year. Flu/COVID in the fall.\n\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-10T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Trying to conceive",
+          "orders": [
+            {"id": "gyn-referral", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "Not conceiving after about 7 months of trying, age 36"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-05-10T12:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2023-05-10T12:30",
+              "body": "Video visit on her lunch break, she is in her car, consented to video.\n\nAbout 7 months trying to conceive without a pregnancy. Regular 28-day cycles, no spotting between, no pelvic pain. Husband is getting a semen analysis through his own doctor. TSH in March was normal.\n\nAssessment: subfertility workup reasonable now given her age.\nPlan: referral to outside gynecology for evaluation; they can do the hormone testing and decide on anything further. Continue levothyroxine. She'll let me know when she hears from them."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "specialist_visit",
+          "start": "2023-06-14T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Infertility evaluation",
+          "conditions": [
+            {"label": "Primary ovarian insufficiency", "action": "diagnosed", "onset": "2023-06-14", "note": "Hypergonadotropic picture with very low AMH; cycles still regular."}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-06-14T14:40", "resulted": "2023-06-16T10:00", "results": [
+              {"test": "Follicle Stimulating Hormone", "value": 15},
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 45},
+              {"test": "Anti-Mullerian hormone", "loinc": "38476-8", "unit": "ng/mL", "value": 0.4},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Prolactin", "value": 14}
+            ]}
+          ],
+          "orders": [
+            {"id": "gyn-referral", "action": "done", "date": "2023-06-14T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "author": "gynecology",
+              "date": "2023-06-21T09:30",
+              "body": "OUTSIDE GYNECOLOGY - CONSULTATION LETTER\nVisit date: June 14, 2023\nReferred by: primary care physician\n\nThank you for sending Ms. Cote, 36, for evaluation of difficulty conceiving.\n\nShe and her husband have had unprotected intercourse for about 8 months without a pregnancy. Her menses come every 28 days and she has noticed no change in length of cycle or in flow. Her husband's semen analysis was normal. She has autoimmune hypothyroidism on levothyroxine and is otherwise well. Family history is notable for a maternal aunt with hypothyroidism who reached menopause at 34. Never smoker, rare alcohol. No known drug allergies.\n\nMedications: levothyroxine 88 mcg daily.\n\nExam: Vital signs normal. Pelvic examination is normal, with a normal-size mobile uterus and no adnexal masses or tenderness.\n\nLaboratory (drawn at this visit, resulted 6/16):\nFSH 15 IU/L (3.5-12.5)\nEstradiol 45 pg/mL (25-75)\nAnti-Mullerian hormone 0.4 ng/mL (age reference 1-3)\nTSH 2.5 uIU/mL (0.4-4.0)\nProlactin 14 ng/mL (4-23)\n\nImpression: Elevated FSH with a markedly low AMH indicates a significantly reduced ovarian reserve. Taken together with the family history, this is consistent with primary ovarian insufficiency (hypergonadotropic hypogonadism), presenting before cycles have become irregular. Thyroid and prolactin are not contributing.\n\nPlan: We reviewed what these numbers mean for her chances over time at 36 and that reserve is unlikely to improve. I offered referral to reproductive endocrinology for discussion of treatment options, which are time sensitive. She would like to talk it over with her husband before deciding and will call our office. Continue levothyroxine per primary care.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "portal_message",
+          "start": "2023-06-23T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about gyn letter",
+              "author": "patient",
+              "date": "2023-06-23T20:14",
+              "body": "I saw the gynecologist's letter posted. She explained it but I'm still kind of in shock. Does 'ovarian insufficiency' mean I'm going into menopause? My periods are totally normal. Not sure what to do about the fertility doctor yet."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about gyn letter",
+              "author": "PCP",
+              "date": "2023-06-24T08:50",
+              "body": "Hi Dawn, I'm sorry, that's a lot to take in. It means your ovaries have fewer eggs left than expected for your age, which is why the gynecologist brought up the fertility specialist sooner rather than later. It doesn't mean your periods will stop right away; you're still cycling normally now. There is no wrong answer about the referral. If it would help to talk it through, book a visit or call me."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hand numbness",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-09-12T15:55", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [
+            {"id": "ortho-referral", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "Right hand numbness and tingling, suspected median nerve entrapment"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-09-12T15:20"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T15:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-09-12T15:50",
+              "body": "CC: right hand numbness.\n\nSince around April she's had numbness, tingling and a burning feeling in the right hand on and off. Worst at night, wakes her up most nights; shaking the hand out makes it go away for a while. No fall or injury. Left hand fine. No neck pain. Types all day at work.\nAlso updated me: she and her husband talked it over and decided not to go ahead with fertility treatment for now. She seems settled about it.\nMeds: levothyroxine 88 mcg. NKDA.\n\nExam: Right hand: Tinel sign positive at the wrist, Phalen positive. Radial pulse normal. Neck full range without pain. Left hand normal.\n\nAssessment and plan:\n1. Right hand paresthesias, likely carpal tunnel. Hypothyroid is a known risk factor; recheck TSH. Neutral night splint, sized here. Referral to orthopedics for evaluation and nerve testing.\n2. Primary ovarian insufficiency per gynecology - no fertility treatment for now, her choice. Cycles still regular.\n\nRTC after ortho visit or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T11:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "TSH result",
+              "author": "RN",
+              "date": "2023-09-14T11:02",
+              "body": "Hi Dawn, the doctor reviewed your thyroid test from Tuesday and it is normal, so no dose change. Orthopedics has your referral; their scheduler should call within a week or two."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "specialist_visit",
+          "start": "2023-10-19T10:30",
+          "service": "Orthopedics",
+          "reason": "Right hand numbness",
+          "conditions": [
+            {"label": "Carpal tunnel syndrome", "action": "diagnosed", "onset": "2023-04-15", "note": "Right, median nerve distribution; thenar atrophy; prolonged median latency on NCS."}
+          ],
+          "reports": [
+            {"study": "Nerve conduction study and EMG", "performed": "2023-10-19T09:45", "issued": "2023-10-19T13:00", "text": "Nerve conduction studies of the right upper limb, ordered by orthopedics for right hand numbness. Skin temperature maintained above 32 C. Right median nerve: prolonged latency across the wrist. Right ulnar nerve sensory and motor responses normal in latency, amplitude and conduction velocity. Needle examination was not performed.", "conclusion": "Prolonged right median nerve latency at the wrist, consistent with median neuropathy at the wrist (carpal tunnel syndrome). Normal right ulnar study."}
+          ],
+          "orders": [
+            {"id": "ortho-referral", "action": "done", "date": "2023-10-19T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic hand consultation",
+              "author": "orthopedics",
+              "date": "2023-10-24T08:40",
+              "body": "ORTHOPAEDIC SURGERY - HAND CLINIC\nConsultation, October 19, 2023\nRe: Dawn Cote, age 37\nReferring: primary care\n\nHistory: Six months of intermittent numbness, tingling and burning through the right hand, worse at night and frequently waking her. Relieved for a time by shaking the hand. No trauma. Background of autoimmune hypothyroidism and a recent gynecology diagnosis of primary ovarian insufficiency. Keyboard work full time.\nMedications: levothyroxine. Allergies: none known.\n\nExamination, right upper extremity: Visible thenar muscle atrophy. Tinel sign positive over the median nerve at the wrist. Phalen test reproduces symptoms at 60 seconds. Cervical spine range of motion full and painless. Left hand normal.\n\nStudies: Nerve conduction testing today shows prolonged right median nerve latency (report attached).\n\nImpression: Right carpal tunnel syndrome.\n\nPlan: Given the thenar wasting, I recommended carpal tunnel release, and we went over the procedure and recovery time from keyboard work. She would prefer to keep using a night splint for now because of work and will call our office when she is ready to schedule. Advised her not to wait long if numbness becomes constant or weakness progresses.\n\nThank you for the referral.\nOrthopaedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-24T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-24T16:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-24T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "author": "RN",
+              "date": "2023-10-24T16:50",
+              "body": "Flu (quadrivalent) given L deltoid and 2023-24 COVID (Pfizer) given R deltoid; avoided the right wrist side for comfort, she's wearing her splint. No complaints, no prior reactions. Monitored 15 minutes, fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "portal_message",
+          "start": "2023-11-14T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand update",
+              "author": "patient",
+              "date": "2023-11-14T21:05",
+              "body": "Hand surgeon wants to do the release. The splint does help, I'm waking up maybe twice a week instead of every night. Work is slammed until after the new year and I don't want to be out. Is it ok to wait?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hand update",
+              "author": "PCP",
+              "date": "2023-11-15T07:40",
+              "body": "Glad the splint is helping. Waiting a bit is your call, but the surgeon recommended surgery because of the muscle thinning at the base of your thumb, and that part doesn't always come back if it goes on too long. Please don't put it off indefinitely, and call them sooner if the numbness becomes constant or you're dropping things."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": null, "collected": "2024-03-19T09:10", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-19T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-19T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-03-19T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2024-03-19T08:55", "issued": "2024-03-25T15:00", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, high-risk HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-03-19T08:30"},
+            {"procedure": "Venipuncture", "performed": "2024-03-19T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-03-19T09:25",
+              "body": "Annual physical.\n\nInterval: saw gyn in June (ovarian insufficiency, not pursuing fertility treatment) and ortho in October (right carpal tunnel, surgery recommended). Hasn't scheduled the release yet; splint most nights, hand wakes her now and then. Says she's been more tired than usual the last month or so, chalks it up to work and the winter. Periods still regular.\nMeds: levothyroxine 88 mcg daily. NKDA.\nPHQ-2 1.\n\nExam: Well appearing. Vitals as charted. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs without wheeze or crackles. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal; Pap/HPV collected. Right thenar eminence slightly flatter than left. No edema.\n\nPlan:\n- Hypothyroid: TSH. Refills.\n- Tired: check CBC, CMP with the TSH; lipids while drawing.\n- Carpal tunnel: encouraged her to follow through with ortho.\n- POI: no treatment per gyn.\n- Pap/HPV today.\n- Up to date on Tdap; flu/COVID next fall.\n\nRTC 1 year or sooner."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and lab results",
+              "author": "PCP",
+              "date": "2024-03-26T13:30",
+              "body": "Good news, Dawn: your Pap was normal and HPV was negative, so the next one isn't due for five years (2029). Thyroid, blood count, chemistries and cholesterol from last week were all normal too. If the tiredness doesn't lift with spring, let me know."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T13:40",
+          "end": "2024-08-13T14:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, headaches, muscle aches",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, moderate", "action": "diagnosed", "onset": "2024-02-15"}
+          ],
+          "state": {"weight_kg": 79.5},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 17}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-13T14:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-13T14:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2024-08-13T14:20", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [
+            {"id": "therapy-referral", "action": "placed", "order": "Behavioral health referral", "category": "referral", "to": "Behavioral Health", "reason": "Major depressive disorder, psychotherapy"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2024-08-13T13:40"},
+            {"procedure": "Venipuncture", "performed": "2024-08-13T14:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-08-13T14:30",
+              "body": "Chief complaint: tired, headaches, aching all over.\n\nHPI: 38F with autoimmune hypothyroidism, POI, right CTS. Six months of fatigue, headaches and diffuse muscle aches that are now affecting her work (falling behind on entry quotas) and keeping up at home. When I asked more, she said she has felt down most days for months and isn't sleeping well. Feels hopeless about where things are going. Every so often thinks her family would be better off without her. Denies any plan or intent, has never acted on it, no firearms in the home. No prior depression treatment. Mother has had major depression.\nNo fever, weight change, rash, joint swelling, or new neuro symptoms. Headaches are dull, bilateral, no red flags.\nMeds: levothyroxine 88 mcg. NKDA. Alcohol rare.\n\nExam: Vitals normal. Flat but cooperative, tearful at times. Thyroid normal. Heart and lungs normal. No joint synovitis, no focal muscle tenderness. Neuro nonfocal.\nPHQ-9 17, item 9 scored 1 (passive thoughts only).\n\nAssessment and plan:\n1. Major depressive disorder, single episode, moderate. Likely explains much of the fatigue, aches and headaches; labs to be sure. Safety: passive SI, no plan or intent, protective factors husband and work. Made a safety plan together, gave her 988 and the practice number. Discussed treatment: therapy and/or an SSRI. She would rather not start medication right now and wants to try therapy first; referral to behavioral health placed. She knows she can change her mind about medication at any time.\n2. Hypothyroidism - TSH, though it has been steady.\n3. Labs: CBC, CMP, TSH.\n\nRTC 4 weeks, sooner if worse. Asked her to text me in a week either way."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "portal_message",
+          "start": "2024-08-15T10:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-08-15T10:12",
+              "body": "Hi Dawn, your blood count, chemistries and thyroid level all came back normal. That fits with what we talked about, that the tiredness and aches are part of the depression. Have you heard from the counseling office? How are you doing this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2024-08-15T18:47",
+              "body": "Ok thanks. Not great but I'm ok, nothing like what we talked about. They left a voicemail, I need to call them back."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 15}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-10T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-09-10T16:30",
+              "body": "Depression f/u.\n\nA little better than last month, she thinks. Has been going to bed on a schedule and walking at lunch. Still low most days and tired. Never called the counseling office back, says it felt like too much. Passive thoughts less often; no plan or intent. Still prefers no medication.\nPHQ-9 15.\n\nExam: Vitals fine. Affect constricted, makes eye contact, thought process linear.\n\nPlan: Gave her the direct intake number again and offered to have our RN help schedule; she declined for now. Revisited sertraline, she wants to wait. Safety plan reviewed. Telehealth check in about 2 months. Flu shot next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T08:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T08:07"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T08:05"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines given",
+              "author": "MA",
+              "date": "2024-10-08T08:20",
+              "body": "Trivalent flu IM left arm, 2024-25 Moderna COVID IM right arm. Screening questions negative. Waited 15 min, no issues. Pt left for work."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression check-in",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 11}],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-11-19T12:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2024-11-19T12:40",
+              "body": "Video, she's at home on lunch. Identity confirmed with name and date of birth.\n\nMood somewhat better. Headaches less frequent. Sleeping 6-7 hours most nights. Still tired in the afternoons and not enjoying much, but getting through work. No thoughts that others would be better off without her in the past few weeks. Has not started therapy.\nPHQ-9 11.\n\nPlan: Moving in the right direction without medication. Left the door open on sertraline and therapy. Safety plan still in place. See her at the annual in March, sooner if it dips."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "pharmacy",
+          "start": "2024-12-17T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "author": "MA",
+              "date": "2024-12-17T09:40",
+              "body": "Refill request levothyroxine 88 mcg #90 from patient's pharmacy. TSH 8/2024 normal. Sent with 3 refills per protocol."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

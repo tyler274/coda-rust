@@ -1,0 +1,287 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001896",
+      "events": [
+        {
+          "id": "2026-01-12a",
+          "kind": "ed_visit",
+          "start": "2026-01-12T05:50",
+          "end": "2026-01-13T10:30",
+          "service": "Emergency Medicine",
+          "reason": "severe right flank pain",
+          "conditions": [
+            {"label": "Urinary tract infection", "action": "diagnosed", "onset": "2026-01-12", "note": "with obstructing right ureteral stone"}
+          ],
+          "vitals": [
+            {"time": "2026-01-12T05:58", "temp_c": 37.8, "bp": [130, 85], "hr": 98, "rr": 18, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2026-01-12T06:20", "results": [
+              {"test": "Urine Clarity", "text": "Cloudy"},
+              {"test": "Urine pH", "value": 8.0},
+              {"test": "Urine Leukocyte Esterase", "text": "Positive"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine White Blood Cells", "text": ">100"},
+              {"test": "Urine Blood", "text": "Large"},
+              {"test": "Urine Red Blood Cells", "value": 75}
+            ]},
+            {"panel": "CBC with Differential", "collected": "2026-01-12T06:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Neutrophils %"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-12T06:20", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2026-01-12T06:20", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": null, "collected": "2026-01-12T06:20", "resulted": "2026-01-14T08:00", "results": [
+              {"test": "Urine Culture", "text": "Proteus mirabilis >100,000 CFU/mL. Susceptible: ceftriaxone, cephalexin, trimethoprim-sulfamethoxazole. Resistant: nitrofurantoin."}
+            ]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis without contrast", "loinc": "36952-0", "performed": "2026-01-12T07:05", "text": "Technique: helical CT of the abdomen and pelvis without IV or oral contrast, renal stone protocol.\n\nFindings: A 7 mm calculus is present in the proximal right ureter, about 3 cm below the ureteropelvic junction. Mild right hydronephrosis and hydroureter proximal to it, with perinephric fat stranding. No calculus remains in the right kidney. Left kidney normal in size without calculus or hydronephrosis. Bladder decompressed, otherwise unremarkable. Liver, spleen, pancreas, adrenals and gallbladder unremarkable on this noncontrast exam. Appendix normal. No free fluid or free air. Uterus and adnexa unremarkable. Visualized lung bases clear. Bones unremarkable.", "conclusion": "7 mm obstructing proximal right ureteral calculus with mild right hydronephrosis and perinephric stranding."}
+          ],
+          "medications": [
+            {"drug_text": "ceftriaxone 1000 MG Injection", "action": "historical", "sig": "1 g IV once in ED", "route": "Intravenous", "course": "short", "reason": "UTI with obstructing stone"},
+            {"drug_text": "ketorolac tromethamine 30 MG/ML Injectable Solution", "action": "historical", "sig": "15 mg IV once in ED", "route": "Intravenous", "course": "short", "reason": "renal colic"},
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily for 10 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "UTI, Proteus"},
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain (#8)", "route": "Oral", "course": "short", "reason": "ureteral stone and stent pain"},
+            {"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "historical", "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea", "dose": {"value": 4, "unit": "mg"}, "route": "Oral", "course": "short", "reason": "nausea"}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-01-12T05:50"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-01-14T11:00",
+              "body": "REGIONAL HOSPITAL - EMERGENCY DEPARTMENT\nArrival 01/12/2026 05:50. Disposition: observation under urology.\n\nCC: right flank pain.\n\nHPI: 35F woke around 4 am with abrupt, severe right flank pain running down into the groin. Nauseated, has not vomited. Noticed red urine on the way in. She was evaluated by urology in July for recurrent infections and has a known right kidney stone.\n\nPMH: recurrent UTIs, right renal stone. Meds: none. Allergies: NKDA. FH: mother with stones, father with HTN. SH: teacher; never smoker; rare alcohol.\n\nTriage: T 37.8 C (100.0 F), BP 130/85, HR 98, RR 18, SpO2 99% RA.\nExam: uncomfortable, shifting on the stretcher. Right CVA tenderness. Abdomen soft, no guarding, no rebound.\n\nUA: alkaline, pH 8.0, cloudy, LE and nitrite positive, WBC >100/hpf, large blood, RBC 75/hpf.\nCBC, BMP: within normal limits. Urine hCG negative.\nCT A/P without contrast (stone protocol): 7 mm proximal right ureteral stone, mild right hydronephrosis, perinephric stranding; no remaining right renal stone.\n\nED course: ketorolac 15 mg IV and ondansetron 4 mg IV with good relief. Low-grade temp with infected-appearing urine above an obstructing stone, so ceftriaxone 1 g IV after culture. Discussed with on-call urology, who will decompress tonight.\n\nImpression: obstructing right proximal ureteral stone with urinary tract infection.\nDisposition: urology."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Urology Observation Discharge",
+              "author": "urology",
+              "date": "2026-01-14T11:05",
+              "body": "Admitted to observation 01/12/2026, discharged 01/13/2026.\n\nProcedure 01/12/2026, evening: cystoscopy and right ureteral stent placement (6 Fr x 24 cm). Cloudy urine drained from the right side on stent passage. No complications.\n\nCourse: afebrile overnight, pain controlled, tolerating diet. Ceftriaxone continued until discharge. Urine culture pending at discharge, final 01/14: Proteus mirabilis, sensitive to cephalexin.\n\nDischarge meds: cephalexin 500 mg four times a day for 10 days; oxycodone/acetaminophen 5/325 one every 6 hours as needed, #8; ondansetron 4 mg ODT as needed.\n\nPlan: definitive ureteroscopy in about 3 weeks once the infection is treated. PCP follow-up next week. Return for fever over 101, inability to keep fluids down, or uncontrolled pain. The stent may cause urgency and some blood in the urine; this is expected."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "telephone",
+          "start": "2026-01-15T10:10",
+          "reason": "post-ED call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED check-in",
+              "author": "RN",
+              "date": "2026-01-15T10:10",
+              "body": "ED and urology records came in yesterday. Called pt: home since Tuesday, out of work this week. No fever. Pain mostly controlled, using about one pain pill a day, mostly at night. Stent makes her feel like she has to pee all the time, some pink urine, which they told her to expect. Taking cephalexin, no missed doses. Office follow-up booked 1/20."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for kidney stone",
+          "conditions": [
+            {"label": "Urinary tract infection", "action": "resolved", "onset": "2026-01-12"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-20T16:10", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-20T15:45"},
+            {"procedure": "Venipuncture", "performed": "2026-01-20T16:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2026-01-20T16:30",
+              "body": "Seen 1/12 in the ER with an obstructing 7 mm R proximal ureteral stone (the renal stone urology saw in July has moved), infected urine, Proteus again. Stented that night, home 1/13. Records reviewed.\n\nNow: back at school today. No fevers since discharge. Flank pain gone. Stent irritation - urgency, frequency, mild discomfort at the end of voiding, occasional pink tinge. Down to Tylenol only, has 5 oxycodone tablets left and will hold onto them until after the procedure. Cephalexin day 8 of 10.\n\nExam: afebrile, vitals normal. Mild R CVA tenderness, much less than described in ED. Abdomen soft.\n\nA/P:\n1. Right ureteral stone, stented, with Proteus UTI - responding. Finish cephalexin. BMP today to make sure kidney function recovered. Ureteroscopy scheduled 2/3.\n2. Infections and stone are almost certainly linked; hopefully clearing the stone clears the infections. Will want stone analysis.\n3. Return precautions reviewed."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "author": "PCP",
+              "date": "2026-01-21T08:20",
+              "body": "Creatinine normal. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "procedure_visit",
+          "start": "2026-02-03T07:30",
+          "end": "2026-02-03T12:00",
+          "service": "Urology",
+          "reason": "right ureteroscopy with laser lithotripsy",
+          "labs": [
+            {"panel": null, "collected": "2026-01-29T09:00", "resulted": "2026-01-31T10:00", "results": [{"test": "Urine Culture", "text": "No growth"}]}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Right Ureteroscopy",
+              "author": "urology",
+              "date": "2026-02-05T09:30",
+              "body": "Ambulatory surgery center, outside urology group\nDate of procedure: 02/03/2026\n\nPreoperative diagnosis: right proximal ureteral calculus, stented.\nPostoperative diagnosis: same.\nProcedure: cystoscopy, right stent removal, right rigid and flexible ureteroscopy, holmium laser lithotripsy, basket extraction of fragments, right ureteral stent placement on extraction string.\nAnesthesia: general. Antibiotic: cefazolin 2 g IV. Preop urine culture 1/29: no growth.\n\nFindings: stone in the proximal right ureter, unchanged in position, fragmented with the laser. Fragments extracted with a basket and sent for analysis. Inspection of the right collecting system showed no residual fragments. Mild ureteral edema at the stone bed. No ureteral injury.\nEBL minimal. No complications.\n\nPlan: stent on string, patient will remove at home on 2/10 (instructions given). Tamsulosin not prescribed. Stone analysis pending. Follow-up in clinic in 6 weeks with renal ultrasound and urine culture."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "outside_records",
+          "start": "2026-02-12T14:00",
+          "reason": "stone analysis result",
+          "labs": [
+            {"panel": null, "collected": "2026-02-03T10:15", "resulted": "2026-02-12T11:00", "results": [
+              {"test": "Stone analysis", "loinc": "40787-4", "text": "Magnesium ammonium phosphate (struvite) 80%, carbonate apatite 20%."}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Calculus analysis report",
+              "author": "outside laboratory",
+              "date": "2026-02-12T14:00",
+              "body": "Reference laboratory, infrared spectroscopy calculus analysis. Specimen: right ureteral stone fragments, collected 02/03/2026.\nComposition: magnesium ammonium phosphate (struvite) 80%; carbonate apatite 20%.\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "portal_message",
+          "start": "2026-02-17T17:25",
+          "reason": "stone analysis question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stone results?",
+              "author": "patient",
+              "date": "2026-02-17T17:25",
+              "body": "Got the stent out last week on my own, which was weird but fine. I saw a stone result posted. What does struvite mean?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stone results?",
+              "author": "PCP",
+              "date": "2026-02-17T20:05",
+              "body": "Good work on the stent. Struvite is the type of stone that forms from infection: the Proteus bacteria make the urine alkaline and the stone builds up from that, and then the stone keeps seeding infections. So the fact that it is now out is the real fix. Urology will check an ultrasound and a urine culture in March to make sure nothing is left. If you get infection symptoms in between, send a urine sample before starting antibiotics."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "specialist_visit",
+          "start": "2026-03-16T10:00",
+          "service": "Urology",
+          "reason": "follow-up after ureteroscopy",
+          "measure": ["bp", "hr"],
+          "labs": [
+            {"panel": null, "collected": "2026-03-16T10:05", "resulted": "2026-03-18T09:00", "results": [{"test": "Urine Culture", "text": "No growth"}]}
+          ],
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2026-03-16T09:15", "text": "Right kidney 10.8 cm, left kidney 11.0 cm. Normal cortical thickness and echogenicity bilaterally. No hydronephrosis. No shadowing echogenic focus to suggest a stone in either kidney. Bladder partially distended, normal wall, no intraluminal stone; ureteral jets seen bilaterally.", "conclusion": "No renal calculi. No hydronephrosis."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "author": "urology",
+              "date": "2026-03-19T15:40",
+              "body": "Urology follow-up letter, visit 03/16/2026\n\nKelly returns six weeks after right ureteroscopy and laser lithotripsy for a 7 mm proximal ureteral stone, which analyzed as 80% struvite and 20% carbonate apatite. She removed her stent herself as planned. No flank pain, fevers or urinary infection symptoms since. No medications.\n\nVitals normal. Abdomen benign, no CVA tenderness.\nRenal ultrasound today: no stones, no hydronephrosis on either side.\nUrine culture: no growth.\n\nAssessment: stone-free after treatment of an infection stone.\nPlan: continue high fluid intake. Obtain a culture with any urinary symptoms and treat per sensitivity. Renal ultrasound in 6 months, sooner with symptoms. Return here after that study.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "annual_physical",
+          "start": "2026-06-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2026-06-08T12:30",
+              "body": "Pt called to cancel tomorrow's physical, last week of school and she has a field trip that runs late. Rebooked 6/30 at 9:00 am. Lab orders left in place."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "annual_physical",
+          "start": "2026-06-30T09:00",
+          "end": "2026-06-30T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Kidney stone", "action": "resolved", "onset": "2025-07-21", "note": "stone-free on renal ultrasound March 2026"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-30T09:40", "resulted": "2026-07-01T07:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-30T09:40", "resulted": "2026-07-01T07:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2026-06-30T09:40", "resulted": "2026-07-01T07:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2026-06-30T09:35", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2026-06-30T09:30", "issued": "2026-07-06T10:00", "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-06-30T09:00"},
+            {"procedure": "Venipuncture", "performed": "2026-06-30T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-06-30T10:05",
+              "body": "Annual exam. 35, teacher, first week of summer break.\n\nInterval: right ureteral stone in January (ER, stent, then ureteroscopy 2/3). Stone was struvite. Urology follow-up in March: ultrasound clear, culture negative. She has not had a single urinary infection since January, the longest stretch in two years. Drinking a big water bottle twice a day. No flank pain, dysuria or hematuria.\n\nMeds: none. Allergies: NKDA.\nFH: unchanged (mother stones, father HTN).\nSH: never smoker, alcohol a drink or so a month.\nGyn: regular cycles. Pap due (last 2023).\n\nROS negative.\n\nExam: vitals reviewed, BP normal, weight steady. Well appearing. HEENT normal. Neck supple, no thyroid enlargement or adenopathy. Heart RRR, no murmur. Lungs clear. Breasts without masses. Abdomen soft, nontender, no CVA tenderness. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Extremities without edema. Skin normal. Mood good. PHQ-2 0.\nUrine dip in office: LE, nitrite and blood negative.\n\nA/P:\n1. Kidney stone - treated, stone-free on March US. Moved to resolved on the problem list. Urology plans repeat ultrasound around September.\n2. Recurrent UTI - none in 5+ months since the stone came out. Keep on list for now. Culture before antibiotics with any future episode.\n3. Health maintenance - CBC, CMP, lipids today. Pap today. Vaccines up to date; flu and COVID in the fall.\n4. Follow-up visit in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "portal_message",
+          "start": "2026-07-06T14:15",
+          "reason": "physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2026-07-06T14:15",
+              "body": "Hi Kelly, your blood work from the physical was all normal, and the Pap came back negative. Next Pap would be in three years. Enjoy the rest of the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical results",
+              "author": "patient",
+              "date": "2026-07-06T18:02",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-10-06a",
+          "kind": "office_visit",
+          "start": "2026-10-06T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, recurrent UTI and kidney stone history",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

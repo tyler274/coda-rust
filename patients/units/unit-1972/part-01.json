@@ -1,0 +1,331 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001972",
+      "given": "Keith",
+      "family": "Dupuis",
+      "birth_date": "1973-08-27",
+      "address_line": "112 Cahillane Terrace",
+      "phone": "+1-617-555-0151",
+      "email": "keith.dupuis@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker on disability Medicare with COPD and hypertension who joined the practice in October 2024 and was last seen in October 2025. In July 2026 he was admitted elsewhere with a staphylococcal complicated parapneumonic effusion that progressed to ARDS and sepsis; the practice has his records but has not seen him since.",
+      "events": [
+        {
+          "id": "2024-10-22a",
+          "kind": "telephone",
+          "start": "2024-10-22T10:14",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-10-22T10:14",
+              "body": "Caller wants to establish here, says his old doctor's office is too far a drive. Has COPD and blood pressure, takes 3 meds. Insurance verified. New patient slot given for 10/29 at 8:40. Told him to bring his inhalers and pill bottle, and that we'll send a records release by portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "establish_care",
+          "start": "2024-10-29T08:40",
+          "end": "2024-10-29T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care, COPD and hypertension",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2019-05-01",
+              "note": "diagnosed by prior practice"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2017-06-01",
+              "note": "diagnosed by prior practice"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Capsule",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath or wheeze",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 84.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.0,
+              "Low Density Lipoprotein": 96
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-29T09:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-29T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-29T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-29T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-10-29T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-29T09:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-29T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-29T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-10-29T09:40",
+              "body": "51 y/o man establishing care. Prior PCP office is a long drive for him. Carries two diagnoses from there.\n\nCOPD: told about 5 years ago after a breathing test at the old office. Uses tiotropium every morning, rarely needs the albuterol, maybe once a week if he's carrying lumber up stairs. No ED trips or prednisone bursts he can remember in recent years. Chronic morning cough, clear phlegm, nothing new.\n\nHTN: on amlodipine 5 for years, doesn't check at home, no side effects.\n\nPSH: appendix out a long time ago, can't give me a year.\nMeds: tiotropium 18 mcg inhaled daily, albuterol HFA prn, amlodipine 5 mg daily.\nAllergies: none to medications.\nFamily: dad had COPD; mom has high blood pressure.\nSocial: works construction, framing and roofing mostly. Smokes, roughly 35 pack-years by his count. Drinks now and then, a beer at a cookout.\n\nROS: no chest pain, no ankle swelling, no weight change, no blood in sputum.\n\nExam: well appearing, talking in full sentences. HEENT unremarkable. Neck supple, no nodes. Heart RRR, no murmur. Lungs: air movement a bit diminished throughout, no wheezes or crackles, no prolonged phase at rest. Abd soft, old RLQ scar. Legs without edema. Mood and affect normal.\n\nPHQ-2 negative.\n\nAssessment/plan:\n1. COPD on LAMA alone, symptoms modest. Will get office spirometry next visit for our own baseline. Inhaler technique reviewed with the HandiHaler, he does it right.\n2. HTN, at goal today on amlodipine 5. Continue.\n3. Tobacco: talked about quitting, the lung and the money. He's not interested in a patch or pills right now. Door left open.\n4. Health maintenance: CMP, CBC, lipids, A1c, one-time hep C and HIV. FIT kit sent home, no prior colon screening he knows of. Flu shot today. Pneumococcal at next visit. Will look at lung cancer screening CT after spirometry, he qualifies by age and pack-years.\n5. Records release signed for the prior office.\n\nRTC about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "portal_message",
+          "start": "2024-10-31T16:22",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-10-31T16:22",
+              "body": "Hi Keith, your blood work from Tuesday came back fine. Kidney and liver tests are normal, blood counts normal, cholesterol is in a good range and the sugar test shows no diabetes. Hep C and HIV screens were negative. Don't forget the stool kit when you get a chance. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent labs",
+              "author": "patient",
+              "date": "2024-11-01T06:05",
+              "body": "thanks doc. kit is on the counter, will get to it"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "outside_records",
+          "start": "2024-11-12T13:30",
+          "reason": "prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "MA",
+              "date": "2024-11-12T13:30",
+              "body": "Records from previous primary care office, 38 pages, scanned to media.\n\nSummary for PCP:\n- Hypertension listed since 2017, amlodipine 5 mg throughout.\n- COPD listed since 2019. Spirometry report from 2019 is referenced in a note but the tracing itself is not in the packet.\n- Med list matches ours: tiotropium, albuterol, amlodipine.\n- Tdap documented 2019.\n- No colonoscopy or stool test on file. No lung screening CT.\n- Allergies: NKDA.\n- Smoking documented as current at every visit."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "author": "PCP",
+              "date": "2024-11-13T07:50",
+              "body": "Reviewed prior office records. Nothing that changes the plan. Tdap 2019 noted in immunization history. Spirometry still worth doing here since the old tracing never came."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "lab_only",
+          "start": "2024-12-03T11:10",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-02T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-12-03T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "RN",
+              "date": "2024-12-04T09:15",
+              "body": "FIT negative. Portal note sent to patient. Due again in a year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

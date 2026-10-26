@@ -1,0 +1,623 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002766",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "pharmacy",
+          "start": "2026-01-06T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Tamsulosin refill",
+              "author": "MA",
+              "date": "2026-01-06T08:50",
+              "body": "Pharmacy request tamsulosin 0.4 mg daily #90; originally from ED, continued by urology. PCP approved 90 days with 1 refill. Also reminded pt by portal that her FIT kit is due this month."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "imaging",
+          "start": "2026-01-20T07:45",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-01-20T07:45",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2025, 2024 and 2023. Scattered fibroglandular densities. No suspicious mass, calcification or distortion.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2026-01-21T12:10",
+              "body": "Mammogram negative. Moved up from March at her request to get it out of the way before any stone procedure."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-14a",
+          "kind": "hospital_admission",
+          "start": "2026-02-14T10:50",
+          "end": "2026-02-18T13:30",
+          "service": "Urology",
+          "reason": "right flank pain and intermittent fevers",
+          "vitals": [
+            {
+              "time": "2026-02-14T10:55",
+              "temp_c": 38.3,
+              "hr": 98,
+              "bp": [
+                122,
+                74
+              ],
+              "rr": 18,
+              "spo2": 98
+            },
+            {
+              "time": "2026-02-18T08:00",
+              "temp_c": 36.8,
+              "hr": 76,
+              "bp": [
+                118,
+                72
+              ],
+              "rr": 16,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-14T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0,
+                  "unit": "10*3/uL"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-14T11:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18,
+                  "unit": "mg/dL"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-14T11:25",
+              "results": [
+                {
+                  "test": "Urine pH",
+                  "value": 8.0
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Numerous"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-14T11:25",
+              "resulted": "2026-02-16T10:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": ">100,000 CFU/mL Proteus mirabilis. Susceptible: ciprofloxacin, ceftriaxone. Resistant: nitrofurantoin."
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-18T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0,
+                  "unit": "mg/dL"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis without contrast",
+              "loinc": "36952-0",
+              "performed": "2026-02-14T13:10",
+              "text": "Non-contrast CT of the abdomen and pelvis. A large staghorn calculus occupies the right renal pelvis. No hydronephrosis. No perinephric fluid collection. Left kidney without calculus. Ureters without calculus. Bladder decompressed around a urethral catheter. Liver, spleen, pancreas and adrenals unremarkable on this non-contrast study. Surgically absent appendix. No free fluid.",
+              "conclusion": "Large right staghorn calculus in the renal pelvis."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "historical",
+              "sig": "1 g IV every 24 hours while inpatient",
+              "dose": {
+                "value": 1,
+                "unit": "g"
+              },
+              "frequency": "Q24H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "urinary tract infection"
+            },
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily to complete 14 days of antibiotics",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "urinary tract infection"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Urology discharge summary",
+              "author": "urology",
+              "date": "2026-02-19T09:45",
+              "body": "Regional hospital, urology service. Admitted 02/14/2026, discharged 02/18/2026.\n\nReason for admission: 46-year-old woman with neurogenic bladder after T12 spinal cord injury on an indwelling catheter, recurrent UTIs with Proteus mirabilis, seen in the ED in June and October 2025, admitted with two weeks of right flank pain and fevers on and off, with burning and urgency.\n\nAllergies: trimethoprim-sulfamethoxazole (Stevens-Johnson syndrome); latex — latex-free precautions.\nHome medications: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, tamsulosin 0.4 mg daily, docusate 100 mg BID.\n\nOn admission: T 38.3 C. Right CVA tenderness. WBC 12,000. UA pH 8.0, leukocyte esterase and nitrite positive, numerous WBCs. Creatinine 1.2 (baseline 0.9), BUN 18. Non-contrast CT: large staghorn calculus in the right renal pelvis.\n\nHospital course: started on IV ceftriaxone 1 g daily. Urine culture grew Proteus mirabilis sensitive to ceftriaxone and ciprofloxacin. Fevers resolved by day 2. Catheter exchanged. Creatinine 1.0 at discharge. Discussed definitive management of the staghorn stone: right percutaneous nephrolithotomy once the infection is treated.\n\nDischarge diagnoses: right staghorn calculus; complicated UTI with Proteus mirabilis; neurogenic bladder.\nDischarge medications: ciprofloxacin 500 mg BID to finish a 14-day course; home medications unchanged.\nFollow-up: PCP in 1 week; urology will call with a surgery date."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "portal_message",
+          "start": "2026-02-16T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "In the hospital",
+              "author": "patient",
+              "date": "2026-02-16T19:05",
+              "body": "Writing from a hospital bed — admitted Saturday with fever and the right side again. The CT shows a big stone filling the kidney. They're talking surgery through the back. Fever is gone today. Just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: In the hospital",
+              "author": "PCP",
+              "date": "2026-02-16T20:10",
+              "body": "Thanks for telling me, and glad the fever's down. That surgery (PCNL) is the standard way to clear a large stone like this. I'll watch for the discharge summary — let's see you about a week after you get home."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital discharge",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-24T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-02-24T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge Visit",
+              "author": "PCP",
+              "date": "2026-02-24T11:15",
+              "body": "Admitted 2/14-2/18 to urology: febrile Proteus UTI with a large right staghorn calculus on CT. WBC 12K, Cr 1.2 on admission, 1.0 at discharge. IV ceftriaxone then cipro to complete 14 days. PCNL planned.\n\nToday: day 10 of antibiotics. Afebrile since the 15th. Mild right-sided ache, no rigors. Catheter draining. Eating normally.\nMeds reconciled: oxybutynin 5 TID, methenamine 1 g BID, tamsulosin 0.4 daily, docusate 100 BID, cipro 500 BID through 2/27.\nExam: afebrile, well. Faint R CVA tenderness. Abdomen soft.\n\nA/P:\n1. Right staghorn calculus with Proteus infection — finishing cipro. Urology to schedule PCNL. Will do preop eval here when the date is set.\n2. Creatinine 1.0 today, near baseline.\n3. Neurogenic bladder on indwelling catheter — unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preoperative evaluation before right PCNL",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-03-10T09:40",
+              "text": "Sinus rhythm, rate 72. Normal axis. Normal intervals. No ST or T wave abnormality.",
+              "conclusion": "Normal sinus rhythm, normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T09:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-03-10T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preoperative Evaluation",
+              "author": "PCP",
+              "date": "2026-03-10T10:05",
+              "body": "Preop for right percutaneous nephrolithotomy, scheduled 3/24 with urology.\n\nFinished cipro 2/27. No fever since. Ache in the right flank comes and goes. No chest pain, no dyspnea, good functional capacity for her baseline. No prior anesthesia problems (appendectomy 2005). Former smoker, quit 2015.\nMeds: oxybutynin, methenamine, tamsulosin, docusate. No anticoagulants or antiplatelets.\nAllergies: TMP-SMX — SJS. LATEX — needs latex-free OR.\n\nExam: afebrile, vitals normal. Airway unremarkable. Heart RRR, no murmur. Lungs clear. Mild R CVA tenderness. Skin intact over pressure points.\nECG: normal sinus rhythm. CBC, BMP drawn.\n\nAssessment: low-risk patient for an intermediate-risk procedure. No further cardiac or pulmonary testing needed. Medically acceptable to proceed.\nRecommendations to surgical team: latex-free environment; no TMP-SMX; recent culture Proteus mirabilis sensitive to ceftriaxone and cipro for perioperative prophylaxis planning; usual bowel program. Letter faxed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "telephone",
+          "start": "2026-03-11T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Preop paperwork",
+              "author": "MA",
+              "date": "2026-03-11T14:15",
+              "body": "Preop letter, ECG, CBC and BMP (all normal, Cr 0.9) faxed to the urology surgical scheduler. Confirmation received. Pt told by phone."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "procedure_visit",
+          "start": "2026-03-24T07:30",
+          "end": "2026-03-25T11:00",
+          "service": "Urology",
+          "reason": "right staghorn calculus",
+          "procedures": [
+            {
+              "procedure": "Percutaneous nephrolithotomy, right",
+              "performed": "2026-03-24T08:15"
+            },
+            {
+              "procedure": "Antegrade ureteral stent placement, right",
+              "performed": "2026-03-24T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Right percutaneous nephrolithotomy",
+              "author": "urology",
+              "date": "2026-03-26T10:20",
+              "body": "Regional hospital, urology. Date of surgery 03/24/2026. Received 03/26.\n\nPreoperative and postoperative diagnosis: right staghorn calculus.\nProcedure: right percutaneous nephrolithotomy; antegrade right ureteral stent placement.\nAnesthesia: general. Latex-free room. Prophylaxis per culture (ceftriaxone).\nFindings: large branched calculus filling the right renal pelvis, removed with ultrasonic lithotripsy and graspers; fragments sent for analysis. No visible residual stone on final nephroscopy and fluoroscopy. A double-J ureteral stent placed antegrade. No nephrostomy tube left.\nEBL minimal. No complications. Urethral catheter exchanged.\nDisposition: observed overnight, discharged 03/25 afebrile. Stent removal in about 2 weeks; CT to confirm stone clearance in 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-26a",
+          "kind": "telephone",
+          "start": "2026-03-26T15:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-op check-in",
+              "author": "RN",
+              "date": "2026-03-26T15:10",
+              "body": "Called two days after right PCNL. Home since yesterday. Sore at the flank site, using acetaminophen. No fever. Stent in, removal at urology 4/7. Reviewed when to call urology (fever, clots, poor drainage). Op note received and in chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-31a",
+          "kind": "outside_records",
+          "start": "2026-03-31T11:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-24T09:00",
+              "resulted": "2026-03-30T15:00",
+              "results": [
+                {
+                  "test": "Stone analysis",
+                  "loinc": "14638-1",
+                  "text": "Struvite (magnesium ammonium phosphate) with carbonate apatite"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Stone analysis",
+              "author": "MA",
+              "date": "2026-03-31T11:30",
+              "body": "Stone analysis from the 3/24 PCNL received from urology and indexed: struvite (magnesium ammonium phosphate) with carbonate apatite. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "procedure_visit",
+          "start": "2026-04-07T14:00",
+          "service": "Urology",
+          "reason": "ureteral stent removal",
+          "procedures": [
+            {
+              "procedure": "Cystoscopy with removal of ureteral stent",
+              "performed": "2026-04-07T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Stent removal",
+              "author": "urology",
+              "date": "2026-04-08T09:00",
+              "body": "Outside urology group, office procedure 04/07/2026.\n\nFlexible cystoscopy under local anesthetic, latex-free. Right ureteral stent grasped and removed intact. Indwelling catheter replaced. Tolerated well.\nStone analysis reviewed with her: struvite/carbonate apatite, an infection stone. Plan: post-op CT in May, then revisit her bladder management.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "specialist_visit",
+          "start": "2026-05-12T10:30",
+          "service": "Urology",
+          "reason": "post-operative follow-up",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis without contrast",
+              "loinc": "36952-0",
+              "performed": "2026-05-12T08:45",
+              "text": "Non-contrast CT abdomen and pelvis, compared with 02/14/2026. Interval removal of the right renal calculus with no residual calculus. No hydronephrosis. Small healed tract in the right flank. Left kidney and ureters without calculus. Bladder decompressed around a catheter. Remainder unremarkable.",
+              "conclusion": "Stone-free right kidney after PCNL. No hydronephrosis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology post-operative letter",
+              "author": "urology",
+              "date": "2026-05-14T09:10",
+              "body": "Outside urology group. Visit 05/12/2026.\n\nSix weeks after right PCNL for a struvite staghorn. Feels well, no fevers. Today's non-contrast CT shows no residual stone and no hydronephrosis.\n\nAllergies: TMP-SMX (SJS), latex.\nMedications: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, tamsulosin 0.4 mg daily, docusate 100 mg BID.\n\nPlan: with the stone cleared we removed the indwelling catheter today and she resumes clean intermittent self-catheterization with latex-free catheters, which she managed well before. Continue current medications. Return in 6 months with a KUB.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T18:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stone free!",
+              "author": "patient",
+              "date": "2026-05-14T18:25",
+              "body": "Good news — CT shows the stone is all gone and the catheter is out. Back to cathing myself. Feels like getting my life back. I'll need new catheter supply paperwork, the supplier says."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Stone free!",
+              "author": "MA",
+              "date": "2026-05-14T19:00",
+              "body": "That's great news! We'll watch for the supplier's form and get it signed. The doctor also wants to see you in early July to catch up and do your Pap — front desk will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T10:45",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Catheter supplies",
+              "author": "MA",
+              "date": "2026-06-09T10:45",
+              "body": "Renewed prior authorization for latex-free hydrophilic intermittent catheters, 6/day, after the switch back from indwelling catheter. Diagnosis neurogenic bladder. PCP signed, submitted. Approved 6/11, supplier notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-03a",
+          "kind": "office_visit",
+          "start": "2026-07-03T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after kidney stone surgery; Pap",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-03T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-07-03T09:25",
+              "issued": "2026-07-10T14:00",
+              "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-03T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-07-03T09:50",
+              "body": "Catch-up after the stone course. 46F.\n\nRecap: right struvite staghorn (Proteus), admission in Feb, right PCNL 3/24, stent out 4/7, CT 5/12 stone-free. Indwelling catheter removed 5/12; back on CIC q4-6h with latex-free catheters, supplies reauthorized. No fevers or flank pain since. Urine clear. Urology in November with a KUB.\nMeds: oxybutynin 5 TID, methenamine 1 g BID, tamsulosin 0.4 daily, docusate 100 BID. Allergies: TMP-SMX (SJS), latex.\n\nExam: well, vitals normal. Heart RRR, lungs clear. Abdomen soft. Right flank puncture site well healed. No CVA tenderness. Skin intact over sacrum. LE neuro at baseline. Pelvic exam with latex-free speculum, normal cervix; Pap/HPV collected.\n\nA/P:\n1. Kidney stone, right, s/p PCNL, stone-free. Creatinine today. Urology surveillance.\n2. Neurogenic bladder, back to CIC. Continue regimen.\n3. Recurrent UTI/chronic Proteus: no treatment unless symptomatic; call early with fever.\n4. HM: Pap/HPV today (last 2021). FIT due — kit given. Mammogram 1/2026. Physical booked 9/22, flu and COVID then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "portal_message",
+          "start": "2026-07-06T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney function",
+              "author": "PCP",
+              "date": "2026-07-06T08:15",
+              "body": "Creatinine 0.9 — right back at your baseline. Calcium normal. Good to see you Friday."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "portal_message",
+          "start": "2026-07-13T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2026-07-13T12:40",
+              "body": "Your Pap and HPV test are both negative. Next one in 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oxybutynin and methenamine refills",
+              "author": "MA",
+              "date": "2026-08-04T09:10",
+              "body": "Pharmacy requests oxybutynin 5 mg TID #270 and methenamine hippurate 1 g BID #180. Seen 7/3. PCP approved both, 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T21:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical date",
+              "author": "patient",
+              "date": "2026-08-18T21:00",
+              "body": "Just double checking my physical is still Tuesday 9/22 in the morning? Trying to block my work calendar. Also haven't mailed the FIT kit yet, will do this week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical date",
+              "author": "front desk",
+              "date": "2026-08-19T08:20",
+              "body": "Yes, you're set for Tuesday 9/22 at 8:30. Flu and COVID shots can be done at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

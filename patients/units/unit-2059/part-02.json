@@ -1,0 +1,950 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002059",
+   "events": [
+    {
+     "id": "2022-02-08a",
+     "kind": "office_visit",
+     "start": "2022-02-08T16:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 104.5,
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-02-08T16:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-02-08T16:50",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-02-08T16:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-02-08T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-02-08T16:55",
+       "body": "Diabetes f/u. Winter is slow, says he's been snacking at the shop. No hypoglycemia, no polyuria. Still sober, 2 years this month. Meds unchanged: metformin 1000 BID, trientine 250 BID.\n\nExam: NAD. No icterus. Heart RRR, lungs clear. Abdomen soft, no ascites. No edema.\n\nA/P: T2DM, A1c today. UACR. Liver per hepatology; CMP today. RTC 3-4 mo."
+      },
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2022-02-10T08:30",
+       "body": "A1c up a hair, still at goal. Liver tests same as before. No urine protein. Message sent."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "office_visit",
+     "start": "2022-05-17T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2022-05-24a",
+     "kind": "telehealth_visit",
+     "start": "2022-05-24T12:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Missed visit, check-in by video",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2022-05-24T12:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth Visit",
+       "author": "PCP",
+       "date": "2022-05-24T12:35",
+       "body": "Video, pt at work in the break room. Missed last week, a customer's car had to be out that day. Feels fine. Taking his meds. Not drinking. Hepatology appointment coming up in summer.\n\nA/P: T2DM stable by recent labs. Offered to recheck in fall with physical; he'd rather come in once than twice. Office visit in the fall, sooner if anything."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2022-05-17T16:30",
+       "body": "No-show for 4 pm. Left voicemail to reschedule. Pt called back, booked video visit 5/24."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-22a",
+     "kind": "portal_message",
+     "start": "2022-08-22T18:20",
+     "medications": [
+      {
+       "drug_text": "trientine hydrochloride 250 MG Oral Capsule",
+       "action": "stop",
+       "reason": "Dose increased by hepatology"
+      },
+      {
+       "drug_text": "trientine hydrochloride 250 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 2 capsules by mouth twice daily on an empty stomach",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Wilson disease; hepatology raised dose for rising urinary copper"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "liver doctor changed my med",
+       "author": "patient",
+       "date": "2022-08-22T18:20",
+       "body": "fyi saw the liver doctor last week. my urine copper went up so they doubled the trientine, now 2 capsules morning and night. 500 twice a day. they said they'd send you a letter"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: liver doctor changed my med",
+       "author": "PCP",
+       "date": "2022-08-23T07:50",
+       "body": "Thanks for letting me know, Adam. I've updated your list to trientine 500 mg twice a day. Keep the doses away from food and from any iron or zinc pills. See you in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-13a",
+     "kind": "outside_records",
+     "start": "2022-09-13T10:00",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2022-09-16T12:00",
+       "body": "Patient: Adam Coughlin, DOB 02/21/1977. Date of exam 09/13/2022. Dilated exam both eyes. No background or proliferative diabetic retinopathy. Maculae flat. Pressures normal. Return 1 year.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-03a",
+     "kind": "office_visit",
+     "start": "2022-10-03T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, weakness, knee aches",
+     "conditions": [
+      {
+       "label": "Hepatomegaly",
+       "icd10": "R16.0",
+       "action": "diagnosed",
+       "note": "Mild, on exam"
+      }
+     ],
+     "state": {
+      "weight_kg": 105.0,
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Glucose": 151,
+       "Alanine Aminotransferase": 68,
+       "Aspartate Aminotransferase": 61,
+       "Iron": 205,
+       "Total Iron-Binding Capacity": 263
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-03T08:30"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-03T08:32"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-10-03T08:34"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-10-03T08:20",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-10-03T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-03T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2022-10-03T08:20",
+       "resulted": "2022-10-05T11:00",
+       "results": [
+        {
+         "test": "Ferritin",
+         "value": 1850
+        },
+        {
+         "test": "Transferrin Saturation",
+         "value": 78
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-03T08:20",
+       "resulted": "2022-10-12T15:30",
+       "results": [
+        {
+         "test": "HFE gene C282Y",
+         "loinc": "21695-5",
+         "text": "C282Y homozygous"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-10-03T07:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-03T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-10-03T08:50",
+       "body": "CC: tired, weak, knees ache\n\nHPI: 45M with Wilson disease, compensated cirrhosis and T2DM, came fasting. Over roughly the past year he's been running down: more tired by midafternoon, feels weaker lifting at work. Slow, steady, not sudden. New in the last few months: trouble with erections. Knees bother him a little, worst first thing in the morning and loosening as he moves. Mouth feels dry, sometimes enough that eating is a chore. He mentions, almost as an aside, that people at the shop keep asking where he got his tan. He works inside under the lift, hasn't been in the sun, uses no self-tanner, no new medicines or supplements.\n\nStill no alcohol since Feb 2020. Trientine was raised to 500 BID by hepatology in August.\n\nFamily: when asked about iron, says an uncle on his father's side was treated for hemochromatosis. Brother has Wilson disease and got cirrhosis young. Father T2DM, mother hypothyroid.\n\nMeds: metformin 1000 BID, trientine 500 BID. NKDA.\n\nExam: obese, comfortable. Skin with a bronze-gray cast over face, both arms and upper chest, clearly darker than his covered skin. No icterus. Oral mucosa a bit dry, no lesions. Heart RRR. Lungs clear. Abdomen: liver edge palpable just below the right costal margin, smooth, mildly enlarged, nontender; no ascites, no splenomegaly felt. Hands: second and third MCP joints tender with reduced flexion; other joints of the hands fine. Knees without effusion, full range. No edema.\n\nA/P\n1. Fatigue, bronzing, MCP arthropathy, erectile difficulty, hepatomegaly, worsening glucose: picture of iron overload on top of his known liver disease. Iron studies with ferritin and HFE genotype today, along with CMP, CBC, A1c.\n2. T2DM: A1c today; same metformin for now.\n3. Wilson/cirrhosis: per hepatology; will send them today's results.\n4. Vaccines today: flu, bivalent COVID booster, PCV20. Colorectal screening due at 45: FIT kit given.\n5. Will call him with the iron and gene results."
+      },
+      {
+       "type": "Result Note",
+       "title": "Result note - CMP, A1c",
+       "author": "PCP",
+       "date": "2022-10-04T07:30",
+       "body": "Fasting glucose above goal and A1c up from February. AST and ALT mildly up from his usual. Iron panel and HFE pending."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-13a",
+     "kind": "telephone",
+     "start": "2022-10-13T12:10",
+     "conditions": [
+      {
+       "label": "Hereditary hemochromatosis with arthropathy",
+       "icd10": "E83.110",
+       "action": "diagnosed",
+       "onset": "2022-10-01",
+       "note": "HFE C282Y homozygous; ferritin 1,850, transferrin saturation 78%; MCP arthropathy"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "placed",
+       "order": "Hematology referral",
+       "category": "referral",
+       "to": "Hematology",
+       "reason": "Hereditary hemochromatosis, therapeutic phlebotomy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Results call - hemochromatosis",
+       "author": "PCP",
+       "date": "2022-10-13T12:30",
+       "body": "Called pt with results. Transferrin saturation 78%, ferritin 1,850. HFE: homozygous C282Y. This is hereditary hemochromatosis, which explains the skin color, the MCP joints, likely the fatigue and erections, and adds iron to an already damaged liver and to the diabetes.\n\nExplained treatment is regular blood removal (phlebotomy) to bring iron down, then maintenance for life. Referring to hematology; their infusion center does the draws. Avoid iron supplements and vitamin C pills, no raw shellfish. His brother and other blood relatives should be checked; he'll tell his brother.\n\nWill send results to hepatology. He asked if this changes the trientine: that's for hepatology to say, I'll flag it in the letter. He verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-20a",
+     "kind": "lab_only",
+     "start": "2022-10-20T09:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-10-18T07:00",
+       "resulted": "2022-10-20T09:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "PCP",
+       "date": "2022-10-20T13:15",
+       "body": "FIT negative. Repeat in 2 years per our routine for him. Letter to pt."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-07a",
+     "kind": "specialist_visit",
+     "start": "2022-11-07T10:00",
+     "service": "Hematology",
+     "reason": "Hereditary hemochromatosis",
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "done",
+       "date": "2022-11-07T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Consultation",
+       "author": "hematology",
+       "date": "2022-11-14T15:00",
+       "body": "HEMATOLOGY - NEW CONSULT (brief)\nRe: Adam Coughlin, DOB 2/21/1977\nVisit 11/07/2022\n\nReferred for HFE C282Y homozygous hemochromatosis with ferritin 1,850 and transferrin saturation 78%. Background of Wilson disease on trientine, cirrhosis followed by hepatology, type 2 diabetes. MCP arthropathy and skin bronzing.\nAllergies: NKDA.\n\nPlan: therapeutic phlebotomy, 500 mL weekly as tolerated, Hgb checked before each draw (hold if under 12). Ferritin every 4-6 weeks. Target ferritin 50-100, then maintenance draws spaced to keep it there. First draw done today, tolerated.\n\nThank you for the referral.\nHematology"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-20a",
+     "kind": "office_visit",
+     "start": "2022-12-20T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Leg swelling, foamy urine",
+     "state": {
+      "weight_kg": 108.5,
+      "labs": {
+       "Albumin": 2.3,
+       "Total Protein": 5.2,
+       "Creatinine": 0.92,
+       "Microalbumin/Creatinine Ratio": 3600
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-12-20T15:50",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "3+"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-12-20T15:55",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 2.3
+        },
+        {
+         "test": "Creatinine",
+         "value": 0.92
+        },
+        {
+         "test": "Total Protein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-20T15:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 3600
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "neph-referral",
+       "action": "placed",
+       "order": "Nephrology referral, urgent",
+       "category": "referral",
+       "to": "Nephrology",
+       "reason": "Heavy proteinuria, low albumin, edema"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-12-20T15:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-12-20T16:30",
+       "body": "S: About 3 weeks of swelling in both lower legs, worse by end of day, socks leave deep marks. Urine looks foamy in the bowl. Up 3.5 kg since October. No shortness of breath, no orthopnea, no belly swelling he's noticed. Started weekly phlebotomy last month. No new meds, no NSAIDs.\n\nO: Vitals reviewed, afebrile. No icterus. Neck veins flat. Heart regular. Lungs clear. Abdomen soft, liver edge as before, no fluid wave. Pitting edema of both shins. Dipstick in office: protein 3+, blood negative.\n\nA/P\nNew heavy proteinuria with edema: nephrotic picture until proven otherwise. CMP and urine albumin/creatinine sent. Urgent nephrology referral; front desk to call for the soonest slot. Leg elevation, go easy on salt. If short of breath or belly swells, go to ED.\n\nAddendum 12/21: albumin 2.3, creatinine 0.92, urine albumin/creatinine 3,600 mg/g. Nephrology visit confirmed for 1/9. Pt informed."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-06a",
+     "kind": "outside_records",
+     "start": "2023-02-06T09:30",
+     "conditions": [
+      {
+       "label": "Membranous nephropathy",
+       "icd10": "N04.20",
+       "action": "diagnosed",
+       "onset": "2022-12-01",
+       "note": "Kidney biopsy 1/23/2023; nephrology"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Proteinuria; started by nephrology 1/9/2023"
+      },
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Edema; started by nephrology 1/9/2023"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neph-referral",
+       "action": "done",
+       "date": "2023-02-06T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Consultation and Biopsy Result",
+       "author": "nephrology",
+       "date": "2023-02-06T09:30",
+       "body": "NEPHROLOGY\nPatient: Adam Coughlin   DOB: 02/21/1977\nSeen 01/09/2023; kidney biopsy 01/23/2023\n\nDear colleague,\n\nI saw Mr. Coughlin, 45, with his wife, for edema and proteinuria. Over the last month his lower legs have swollen steadily, he is more tired, and his urine has been foamy and at times darker. He takes his medicines as prescribed and has started nothing new. Background: Wilson disease (diagnosed 2017 with abnormal liver tests, mild dysarthria and tremor; copper-restricted diet and trientine, dose raised about 5 months ago for rising urinary copper), hereditary hemochromatosis on phlebotomy, cirrhosis, type 2 diabetes. Former smoker; alcohol use disorder, abstinent about 3 years. Mechanic.\nAllergies: NKDA.\n\nExam: T 36.8 C, BP 130/78, pulse 78, RR 16. Puffy around the eyes. 2+ pitting edema to mid-shin both legs. Heart and lungs normal, no crackles, no JVD. No rash, no joint swelling. Mild hepatomegaly, nontender, no ascites.\n\nData: creatinine 0.9 mg/dL, albumin 2.2 g/dL. Urinalysis 4+ protein, no red cells, no white cells, no casts. 24-hour urine protein 5.8 g/day.\n\nBiopsy (1/23): immunofluorescence shows fine granular IgG and C3 deposits along the glomerular capillary walls, consistent with membranous nephropathy.\n\nImpression: membranous nephropathy with nephrotic syndrome, preserved filtration.\n\nPlan: lisinopril 10 mg daily for proteinuria and furosemide 40 mg daily for edema, both started at the 1/9 visit. Low-salt diet. Given cirrhosis and his infection risk we are holding off on immunosuppression for now and following proteinuria closely. Please check potassium and creatinine in 2-4 weeks; I will see him again in about 3 months.\n\nNephrology"
+      }
+     ]
+    },
+    {
+     "id": "2023-02-13a",
+     "kind": "office_visit",
+     "start": "2023-02-13T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after nephrology, labs on lisinopril",
+     "state": {
+      "weight_kg": 105.0,
+      "labs": {
+       "Albumin": 2.6,
+       "Total Protein": 5.6,
+       "Creatinine": 0.98,
+       "Potassium": 4.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-02-13T16:30",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-02-13T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-02-13T16:40",
+       "body": "S: Here after nephrology and the biopsy. Told it's membranous nephropathy. On lisinopril 10 and furosemide 40 since early January. Swelling much better, down about 3.5 kg, peeing more in the mornings. Phlebotomy weekly, hematology checks his Hgb each time. No drinking.\n\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10 daily, furosemide 40 daily. NKDA.\n\nO: BP fine. Trace ankle edema only. Lungs clear. Abdomen soft, no ascites.\n\nA/P\n- Membranous nephropathy, on supportive therapy per nephrology. CMP today for K and creatinine as they asked; results to nephrology.\n- T2DM, cirrhosis/Wilson, HH: as before.\n- Return in 3 months."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Labs faxed",
+       "author": "MA",
+       "date": "2023-02-14T12:10",
+       "body": "CMP from 2/13 faxed to nephrology as requested in their letter."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-14a",
+     "kind": "portal_message",
+     "start": "2023-02-14T12:00",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2023-02-14T12:00",
+       "body": "Adam, potassium and kidney function are fine on the new pills, and your albumin is coming up a bit. I've faxed these to nephrology. Keep going."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-09a",
+     "kind": "office_visit",
+     "start": "2023-05-09T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes, liver and kidney follow-up",
+     "state": {
+      "weight_kg": 104.5,
+      "labs": {
+       "Hemoglobin A1c": 6.8,
+       "Albumin": 3.0,
+       "Total Protein": 6.0,
+       "Microalbumin/Creatinine Ratio": 2400,
+       "Hemoglobin": 13.1,
+       "Iron": 120,
+       "Total Iron-Binding Capacity": 285,
+       "Glucose": 128
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-05-09T16:35",
+       "results": [
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-05-09T16:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-05-09T16:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2023-05-09T16:35",
+       "results": [
+        {
+         "test": "Ferritin",
+         "value": 610
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-05-09T16:35",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-05-09T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-05-09T16:45",
+       "body": "Interval: saw nephrology in April, staying on lisinopril and furosemide, no other treatment for now. Hematology draws weekly. Says the skin color is lighter, his wife agrees. Knuckles still stiff some mornings. Energy a little better. Not drinking.\n\nExam: weight down. No icterus. Heart RRR, lungs clear. Abdomen: liver edge palpable, nontender, no ascites. Trace ankle edema. MCPs 2-3 mildly tender, same range as fall.\n\nA/P\n- HH: ferritin today; hematology gets a copy.\n- MN: CMP, UACR today.\n- T2DM: A1c today; same metformin.\n- Wilson/cirrhosis: hepatology.\n- 5-6 months, physical in fall.\n\nAddendum: ferritin 610, coming down. A1c back at goal. Albumin 3.0, better."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Ferritin to hematology",
+       "author": "MA",
+       "date": "2023-05-11T09:00",
+       "body": "Ferritin result faxed to hematology infusion center."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-15a",
+     "kind": "portal_message",
+     "start": "2023-08-15T20:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "blood draws",
+       "author": "patient",
+       "date": "2023-08-15T20:05",
+       "body": "hematology says my iron is coming down good and they are spacing the draws to every 2 weeks. just so you know"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: blood draws",
+       "author": "PCP",
+       "date": "2023-08-16T07:40",
+       "body": "Great news, thanks for the update. We'll check ferritin with your physical in October."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "outside_records",
+     "start": "2023-09-12T09:00",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2023-09-14T16:20",
+       "body": "Adam Coughlin, DOB 02/21/1977. Seen 09/12/2023. Dilated fundus exam: no diabetic retinopathy OU, no macular edema. Annual exam recommended.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "annual_physical",
+     "start": "2023-10-17T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 104.0,
+      "labs": {
+       "Albumin": 3.2,
+       "Total Protein": 6.2,
+       "Creatinine": 1.02,
+       "Microalbumin/Creatinine Ratio": 1900,
+       "Hemoglobin": 13.4,
+       "Ferritin": 160,
+       "Iron": 110,
+       "Total Iron-Binding Capacity": 290
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-17T08:40"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-17T08:42"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-10-17T08:45",
+       "results": [
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-10-17T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-10-17T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2023-10-17T08:45",
+       "results": [
+        {
+         "test": "Ferritin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-10-17T08:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-10-17T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-17T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-10-17T09:10",
+       "body": "PHYSICAL\n\n46M. Year of new diagnoses: hemochromatosis last fall, membranous nephropathy in January. Doing better than last winter. Phlebotomy every 2 weeks now. Nephrology twice this year, no change. Hepatology in the summer, trientine the same. Eye exam in September normal. Sober since Feb 2020. Former smoker.\n\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10 daily, furosemide 40 daily. NKDA.\n\nROS: negative except morning stiffness in the knuckles, unchanged.\n\nExam: obese. Skin tone less bronze than last year. HEENT normal. Heart regular. Lungs clear. Abdomen: liver edge palpable, no ascites, nontender. No edema today. Feet: monofilament intact, pulses good.\n\nPHQ-2 0, AUDIT-C 0.\n\nA/P\n- Health maintenance: flu and updated COVID given. FIT next fall. Tdap 2021.\n- HH: ferritin today.\n- MN: CMP, UACR.\n- T2DM: A1c.\n- RTC 4-5 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Result note",
+       "author": "PCP",
+       "date": "2023-10-19T07:45",
+       "body": "Ferritin much lower, still above hematology's target. Albumin better. Urine protein down but still heavy. A1c a little above where it was in May; no change for now. Copies to hematology and nephrology."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-04a",
+     "kind": "office_visit",
+     "start": "2023-12-04T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Mouth burning, food tastes off",
+     "conditions": [
+      {
+       "label": "Community-acquired pneumonia",
+       "action": "history",
+       "onset": "2023-11-10",
+       "note": "Treated at urgent care with a 10-day oral antibiotic course, per patient"
+      },
+      {
+       "label": "Oral candidiasis",
+       "icd10": "B37.0",
+       "action": "diagnosed",
+       "onset": "2023-11-27"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "nystatin 100000 UNT/ML Oral Suspension",
+       "action": "start",
+       "sig": "Swish 5 mL in the mouth as long as possible, then swallow, four times daily for 14 days",
+       "dose": {
+        "value": 5,
+        "unit": "mL"
+       },
+       "frequency": "QID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Oral candidiasis"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-12-04T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Same-day Visit",
+       "author": "PCP",
+       "date": "2023-12-04T11:50",
+       "body": "Texted this morning, seen same day.\n\nS: A week of his mouth burning, and food doesn't taste right. A few weeks ago he had pneumonia, treated at an urgent care with 10 days of an antibiotic pill; he doesn't remember the name and threw out the bottle. Finished it about a week ago and the cough is gone. No fever now, breathing fine. Not drinking.\n\nDiabetes well controlled at his October check. Otherwise followed for HH, Wilson disease, MN.\n\nO: Afebrile, vitals reviewed. Creamy white plaques across both cheeks inside and on the tongue; they wipe off with a tongue blade and leave a red base. Throat otherwise normal. Lungs clear.\nKOH prep of a scraping in the office: budding yeast with pseudohyphae.\n\nA/P\nOral thrush after the antibiotic course. Nystatin suspension, 5 mL swish and swallow four times a day for 14 days. Rinse after meals, soft foods while sore. Message me if not better in a week or if it hurts to swallow. Will ask the urgent care for their note."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-08a",
+     "kind": "portal_message",
+     "start": "2023-12-08T17:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "mouth",
+       "author": "patient",
+       "date": "2023-12-08T17:30",
+       "body": "mouth is way better already. still doing the stuff 4x a day"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: mouth",
+       "author": "RN",
+       "date": "2023-12-11T08:15",
+       "body": "Glad to hear it. Please finish the full 14 days even if it looks clear."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

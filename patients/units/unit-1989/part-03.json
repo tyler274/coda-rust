@@ -1,0 +1,1439 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001989",
+   "events": [
+    {
+     "id": "2024-01-04a",
+     "kind": "specialist_visit",
+     "start": "2024-01-04T09:40",
+     "service": "Cardiology",
+     "reason": "Exertional chest pressure",
+     "conditions": [
+      {
+       "label": "Angina pectoris",
+       "action": "diagnosed",
+       "onset": "2023-11-01",
+       "note": "Stable angina, medical management"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Stable angina, prescribed by cardiology"
+      },
+      {
+       "drug_text": "nitroglycerin 0.4 MG Sublingual Tablet",
+       "action": "historical",
+       "sig": "Dissolve 1 tablet under the tongue as needed for chest pain; may repeat every 5 minutes up to 3 doses; call 911 if pain persists",
+       "dose": {
+        "value": 0.4,
+        "unit": "mg"
+       },
+       "frequency": "PRN",
+       "route": "Sublingual",
+       "course": "chronic",
+       "reason": "Stable angina, prescribed by cardiology"
+      }
+     ],
+     "state": {
+      "bp": [
+       138,
+       86
+      ],
+      "hr": 78,
+      "weight_kg": 95.1
+     },
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "weight_kg",
+      "spo2"
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2023",
+       "action": "done",
+       "date": "2024-01-04T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2024-02-06T15:20",
+       "body": "CARDIOLOGY CONSULTATION\nDate of visit: January 4, 2024\nReferring: primary care - exertional chest discomfort.\n\nHISTORY\nMr. Dowd is a 59-year-old self-employed carpenter with type 2 diabetes, hypertension and hyperlipidemia. Over roughly two months he has noticed a pressure in the left side of the chest that travels into the left arm during his morning walks. It eases with a few minutes of rest. He has had no episodes at rest. His PCP found a normal resting ECG and started aspirin in December. No dyspnea, orthopnea, palpitations or syncope.\nRisk factors: diabetes, hypertension, dyslipidemia, ex-smoker (quit 2021, about 18 pack-years), obesity, father with MI at 64.\n\nMEDICATIONS: metformin 1000 mg twice daily, glipizide 5 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nALLERGIES: none known.\n\nEXAM\nBP 138/86, HR 78 regular, BMI 30.\nJVP not raised. Carotids without bruit. Heart: regular, normal S1/S2, no murmur, gallop or rub. Lungs clear. Abdomen benign. Extremities warm, no edema, pedal pulses present.\n\nASSESSMENT\nTypical exertional angina, stable pattern, in a diabetic man with several risk factors.\n\nPLAN\n1. Begin metoprolol succinate 50 mg daily.\n2. Sublingual nitroglycerin 0.4 mg as needed; instructed on use and when to call 911.\n3. Continue aspirin 81 mg and atorvastatin 40 mg.\n4. Exercise treadmill test.\n5. Depending on result, coronary angiography.\n\nADDENDUM (01/23/2024): Exercise test on 1/9 showed anterior ST depression at high workload. Angiography today: 70% stenosis of the LAD, no other significant disease, normal LV function. We reviewed revascularization versus medical therapy; with stable symptoms and single-vessel disease he prefers medical management. He was offered and agreed to join a randomized, double-blind six-month study comparing an investigational anti-anginal drug with placebo; study medication is dispensed by the research pharmacy and is in addition to his usual regimen. Follow-up in our clinic in 6 months.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2024-01-09a",
+     "kind": "procedure_visit",
+     "start": "2024-01-09T08:00",
+     "service": "Cardiology",
+     "reason": "Exercise treadmill test",
+     "reports": [
+      {
+       "study": "Exercise stress test",
+       "performed": "2024-01-09T08:00",
+       "issued": "2024-01-09T14:00",
+       "text": "Protocol: Bruce. Resting ECG sinus rhythm, no ST changes. Resting BP 136/84. Exercised to stage 4; stopped for fatigue and chest pressure. Peak heart rate 92% of age-predicted maximum. BP response appropriate. At high workload, horizontal ST depression developed in V2-V4, resolving by 4 minutes of recovery. Chest pressure at peak, resolved in recovery. No arrhythmia.",
+       "conclusion": "Positive for exercise-induced anterior ischemia, appearing only at high workload. Good functional capacity."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-17a",
+     "kind": "pharmacy",
+     "start": "2024-01-17T11:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pharmacy call",
+       "author": "RN",
+       "date": "2024-01-17T11:45",
+       "body": "Pharmacist called to sync fills - pt has new metoprolol succinate 50 mg and nitroglycerin SL from cardiology on file, wanted to confirm we're aware. We haven't received cardiology's note yet. Told them fine to fill as written; will reconcile at his next visit."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-23a",
+     "kind": "procedure_visit",
+     "start": "2024-01-23T07:30",
+     "end": "2024-01-23T13:00",
+     "service": "Cardiology - Catheterization Laboratory",
+     "reason": "Coronary angiography after positive stress test",
+     "conditions": [
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed",
+       "onset": "2024-01-23"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cardiac catheterization study",
+       "loinc": "18745-0",
+       "performed": "2024-01-23T08:15",
+       "issued": "2024-02-06T15:21",
+       "text": "Indication: stable exertional angina, positive exercise test.\nAccess: right radial artery, 6 Fr. Moderate sedation.\nLeft main: normal.\nLeft anterior descending: 70% stenosis.\nLeft circumflex: no significant disease.\nRight coronary: dominant, no significant disease.\nLeft ventriculogram: normal wall motion, estimated ejection fraction normal. LVEDP normal.\nHemostasis with radial band. No complications.",
+       "conclusion": "Single-vessel coronary artery disease: 70% LAD stenosis. Normal left ventricular function. Plan medical management."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-09a",
+     "kind": "lab_only",
+     "start": "2024-02-09T07:35",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.9
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-02-09T07:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-09T07:35",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "A1c / BMP",
+       "author": "PCP",
+       "date": "2024-02-09T14:00",
+       "body": "A1c 7.9. BMP ok. Discuss Tuesday."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-13a",
+     "kind": "office_visit",
+     "start": "2024-02-13T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after cardiology",
+     "state": {
+      "bp": [
+       132,
+       80
+      ],
+      "hr": 66,
+      "weight_kg": 96.0
+     },
+     "measure": [
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-13T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up - CAD",
+       "author": "PCP",
+       "date": "2024-02-13T16:30",
+       "body": "F/u after cardiology workup. Cardiology note and cath report arrived last week.\n\nSummary: stress test 1/9 positive anteriorly at high workload; cath 1/23 - 70% LAD, otherwise clean, normal LV. Chose medical management. Started metoprolol succinate 50 and SL NTG. In a 6-month blinded study of an investigational angina drug vs placebo (study bottle with him today - research pharmacy dispenses, I'm not managing it).\n\nSince starting metoprolol: chest pressure only twice, both on steep hills, gone in 2-3 min with rest. Hasn't needed NTG. A bit tired the first week, better now. Wrist healed fine from the cath.\n\nMeds reconciled today: metformin 1000 BID, glipizide 5 qAM, lisinopril 20, atorvastatin 40, aspirin 81, metoprolol succinate 50, NTG SL prn, study drug (blinded).\n\nExam: BP at goal, HR 60s. Heart regular, no murmur. Lungs clear. R radial site clean. No edema.\nA1c 7.9 (2/9). BMP normal.\n\nA/P\n1. CAD / stable angina - on aspirin, statin, beta-blocker, prn NTG. Symptoms improved. Per cardiology. Reviewed NTG use and 911 rules.\n2. T2DM - A1c 7.9. Still above 7. He'd rather wait for the next check before changing; agreed, but if 8 or above I'd like him back with endo.\n3. HTN - controlled.\n4. R cubital tunnel - surgery still on hold; now also wants to sort out heart first.\nRTC 3-4 mo (video ok)."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       128,
+       78
+      ],
+      "hr": 64
+     }
+    },
+    {
+     "id": "2024-05-21a",
+     "kind": "telehealth_visit",
+     "start": "2024-05-21T12:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic disease check-in",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2024-05-21T12:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2024-05-21T12:50",
+       "body": "Video, pt on his lunch break in his truck, consent and ID verified.\n\nAngina: one episode in the last 3 months, carrying lumber up a steep driveway, stopped and it passed. No NTG used. Still in the study, 2 more months.\nDM: fastings 130-160. No lows.\nBP: home average 128/78. HR 60s on his cuff.\nHand: no change, pad and splint.\nMeds: no changes, refills ok through mail order.\n\nA/P: stable angina on medical therapy - doing well. DM above goal - physical in Sept with A1c, decide on endo then. Continue all. Reminder that eye exam is due."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-11a",
+     "kind": "outside_records",
+     "start": "2024-06-11T10:05",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2024-06-11T10:05",
+       "body": "Eye exam report for primary care. Date seen: 06/06/2024.\nDilated fundus exam OU: no diabetic retinopathy, no macular edema. Discs and vessels normal.\nVA 20/20 OD, 20/25 OS (reading glasses updated). IOP normal.\nAllergies: none known.\nReturn 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "outside_records",
+     "start": "2024-08-06T14:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Clinical Research Participation Letter",
+       "author": "cardiology",
+       "date": "2024-08-06T14:30",
+       "body": "Cardiovascular research program - letter to primary care physician.\n\nRe: Darren Dowd, DOB 07/26/1964\n\nThis is to let you know that your patient has completed his six months in our randomized, double-blind study of an investigational anti-anginal agent compared with placebo. His final study visit was 07/23/2024. Study medication has been stopped and returned to the research pharmacy. Treatment assignment remains blinded until the study closes. No study-related adverse events were recorded. He continues on his usual medications under the care of his cardiologist.\n\nAllergies on file: none known.\n\nResearch Coordinator, Cardiology"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-20a",
+     "kind": "lab_only",
+     "start": "2024-09-20T07:20",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.0,
+       "Low Density Lipoprotein": 102,
+       "Microalbumin/Creatinine Ratio": 26
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-20T07:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-20T07:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-09-20T07:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 102
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2024-09-20T07:20",
+       "results": [
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-09-20T07:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.0
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2024-09-24a",
+     "kind": "annual_physical",
+     "start": "2024-09-24T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 99.5
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-09-24T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-09-24T10:01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-09-24T09:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-09-24T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-09-24T10:25",
+       "body": "ANNUAL - 60M\n\nInterval: finished the cardiology study in July (letter received). Angina rare - maybe once a month on the steepest hills, never at work since he paces himself. Hasn't used NTG.\nWeight up a few pounds over the summer.\nMeds: metformin 1000 BID, glipizide 5, lisinopril 20, atorvastatin 40, aspirin 81, metoprolol succ 50, NTG prn. NKDA.\nSocial: ex-smoker since 2021, 1-2 beers/wk.\nROS otherwise negative.\n\nExam: BP at goal. Heart RRR, no murmur. Lungs clear. Abd soft. Ext no edema, pulses ok. Feet: intact monofilament. R hand atrophy unchanged.\nPHQ-9 3.\n\nLabs 9/20: A1c 8.0. LDL 102. CMP, CBC normal. UA neg. Urine microalbumin normal range, slowly creeping up.\n\nA/P\n- T2DM: A1c 8.0 on metformin + glipizide. As we agreed, back to endocrinology - he'll call them (seen there before, return visit). \n- CAD/stable angina: stable, continue.\n- HTN, HLD: continue.\n- Flu + COVID today. FIT kit given.\n- Eye exam June normal.\nRTC after endo / 3-4 months."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       130,
+       78
+      ]
+     }
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "lab_only",
+     "start": "2024-10-22T08:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-10-17T06:30",
+       "resulted": "2024-10-22T11:15",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "done",
+       "date": "2024-10-22T11:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT",
+       "author": "MA",
+       "date": "2024-10-22T14:30",
+       "body": "FIT negative - letter sent."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-12a",
+     "kind": "portal_message",
+     "start": "2024-11-12T06:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "endo appt",
+       "author": "patient",
+       "date": "2024-11-12T06:50",
+       "body": "Diabetes doctor can see me January 6. Earliest they had. Do I need to do anything before?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: endo appt",
+       "author": "RN",
+       "date": "2024-11-12T10:30",
+       "body": "Good. Bring your meter or a log of your sugars for the last few weeks. They'll likely draw their own labs. Keep everything else the same until then."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-06a",
+     "kind": "specialist_visit",
+     "start": "2025-01-06T14:15",
+     "service": "Endocrinology",
+     "reason": "Diabetes above goal",
+     "medications": [
+      {
+       "drug": "glipizide 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Stopped by endocrinology when basal insulin started"
+      },
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject 24 units under the skin at bedtime",
+       "dose": {
+        "value": 24,
+        "unit": "[IU]"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Type 2 diabetes, prescribed by endocrinology"
+      }
+     ],
+     "state": {
+      "bp": [
+       132,
+       86
+      ],
+      "hr": 78,
+      "weight_kg": 101.4,
+      "labs": {
+       "Hemoglobin A1c": 8.2,
+       "Creatinine": 1.0,
+       "Triglycerides": 205,
+       "Microalbumin/Creatinine Ratio": 30
+      }
+     },
+     "vitals": {
+      "bp": [
+       132,
+       86
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-01-06T13:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.2
+        },
+        {
+         "test": "Fasting Glucose",
+         "value": 172
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 30
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-01-06T13:50",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 184
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 42
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 100
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-06T13:50",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology Follow-up",
+       "author": "endocrinology",
+       "date": "2025-02-11T09:00",
+       "body": "ENDOCRINOLOGY - RETURN VISIT\nDate: 01/06/2025\n\nMr. Dowd returns, last seen here January 2022 when glipizide was added. Diabetes now about five years. Since then also diagnosed with coronary disease (single-vessel, medically managed) and continues treatment for hypertension. He takes metformin 1000 mg twice daily and glipizide 5 mg daily reliably and has kept up diet changes, but A1c has crept back up. No hypoglycemia. Denies chest pain, shortness of breath, or change in weight.\n\nMedications: metformin 1000 mg BID, glipizide 5 mg daily, lisinopril 20 mg daily, metoprolol succinate 50 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, nitroglycerin SL prn.\nAllergies: NKDA.\nFamily history: father MI at 64, hypertension; mother type 2 diabetes, dyslipidemia; maternal uncle stroke at 70.\nSocial: carpenter. Former smoker. 1-2 drinks/week.\n\nExam: BP 132/86, HR 78, BMI 32. Thyroid normal. Feet: sensation intact, no lesions.\n\nLabs today: A1c 8.2%. Fasting glucose 172. Total cholesterol 184, HDL 42, LDL 100. Creatinine 1.0. Urine albumin/creatinine 30 mg/g.\n\nAssessment/Plan:\nType 2 diabetes above target on two oral agents.\n- Start insulin glargine 24 units subcutaneously at bedtime. Titrate per fasting log; call us with readings in 2 weeks.\n- Stop glipizide (hypoglycemia risk with basal insulin).\n- Continue metformin 1000 mg twice daily.\n- Insulin teaching done today with our diabetes educator; pen technique, site rotation, hypoglycemia treatment.\n- Follow-up 6 months, A1c with PCP in 3 months.\n\nEndocrinology"
+      }
+     ]
+    },
+    {
+     "id": "2025-01-08a",
+     "kind": "pharmacy",
+     "start": "2025-01-08T09:50",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Insulin glargine pens - prior authorization",
+       "author": "MA",
+       "date": "2025-01-08T09:50",
+       "body": "PA request from insurer for insulin glargine pens (prescriber: endocrinology). Pharmacy routed it to us since we're PCP on file. We don't have an endo note yet - called endo, they confirmed glargine 24 units nightly started 1/6 and glipizide stopped. PA submitted with diagnosis and A1c history from our chart. Approved same day, 12 months. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-09a",
+     "kind": "telephone",
+     "start": "2025-01-09T16:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Insulin start",
+       "author": "RN",
+       "date": "2025-01-09T16:10",
+       "body": "Called pt re new insulin. Picked up pens today. Endo taught him; reviewed again: inject at bedtime, rotate belly sites, glipizide is stopped, keep metformin. Lows: 15 g fast sugar, recheck in 15 min. Keep glucose tabs in the truck. He will send endo his fasting numbers. Updated med list here."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-04a",
+     "kind": "telephone",
+     "start": "2025-02-04T11:25",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request - endocrinology",
+       "author": "MA",
+       "date": "2025-02-04T11:25",
+       "body": "Second request to endocrinology for 1/6/25 visit note and labs. Faxed."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-21a",
+     "kind": "lab_only",
+     "start": "2025-03-21T07:45",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.6
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-03-21T07:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-03-21T07:45",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "A1c on glargine",
+       "author": "PCP",
+       "date": "2025-03-21T13:50",
+       "body": "A1c 7.6, nice drop since glargine started. BMP normal."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-25a",
+     "kind": "office_visit",
+     "start": "2025-03-25T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-03-25T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2025-03-25T11:25",
+       "body": "DM f/u. Endo letter (1/6) received Feb: glargine 24 u qHS started, glipizide stopped. He stayed at 24 units, fastings now mostly 110-140. One 68 at 3 am in Feb after a skipped supper - treated, fine, no repeats. Feels better, less tired in afternoons.\nAngina: none in 2 months. HTN home readings fine.\n\nExam: BP at goal. Heart RRR, lungs clear. Injection sites without lipohypertrophy. Feet normal sensation, pulses ok.\nA1c 7.6 (from 8.2). BMP fine.\n\nA/P\nT2DM - improving on glargine + metformin. Don't skip suppers on insulin nights. Endo f/u in summer.\nCAD - stable on current regimen.\nHTN/HLD - continue.\nRTC 3-4 mo."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       128,
+       80
+      ]
+     }
+    },
+    {
+     "id": "2025-05-20a",
+     "kind": "outside_records",
+     "start": "2025-05-20T15:45",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2025-05-20T15:45",
+       "body": "Diabetic eye report - examined 05/15/2025, dilated.\nVision 20/20 each eye with correction. Normal pressures. Normal pupils.\nRetina both eyes: no diabetic retinopathy. No edema.\nNKDA.\nRecheck 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-24a",
+     "kind": "ed_visit",
+     "start": "2025-06-24T13:05",
+     "end": "2025-06-24T20:40",
+     "service": "Emergency Medicine",
+     "reason": "Fatigue, weakness, palpitations",
+     "conditions": [
+      {
+       "label": "Renal tubular acidosis, type 4 (hyperkalemic)",
+       "icd10": "N25.89",
+       "action": "diagnosed",
+       "onset": "2025-06-24"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held by ED for potassium 6.2 and creatinine 1.9"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held by ED for creatinine 1.9"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-06-24T13:10",
+       "bp": [
+        142,
+        88
+       ],
+       "hr": 98,
+       "rr": 18,
+       "temp_c": 36.8,
+       "spo2": 98
+      },
+      {
+       "time": "2025-06-24T17:30",
+       "bp": [
+        136,
+        84
+       ],
+       "hr": 86,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 98
+      },
+      {
+       "time": "2025-06-24T20:15",
+       "bp": [
+        134,
+        82
+       ],
+       "hr": 82,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 99
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-06-24T13:30",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 138
+        },
+        {
+         "test": "Potassium",
+         "value": 6.2
+        },
+        {
+         "test": "Chloride",
+         "value": 105
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 18
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 29
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.9
+        },
+        {
+         "test": "Glucose",
+         "value": 198
+        }
+       ],
+       "resulted": "2025-06-24T14:25"
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-06-24T14:05",
+       "results": [
+        {
+         "test": "Urine pH",
+         "value": 6.0
+        },
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine Glucose"
+        }
+       ],
+       "resulted": "2025-06-24T14:50"
+      },
+      {
+       "panel": null,
+       "collected": "2025-06-24T13:30",
+       "resulted": "2025-07-01T09:20",
+       "results": [
+        {
+         "test": "Plasma Renin Activity",
+         "text": "Low"
+        },
+        {
+         "test": "Aldosterone",
+         "text": "Low"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-06-24T17:45",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 5.4
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.6
+        }
+       ],
+       "resulted": "2025-06-24T18:35"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2025-06-24T13:20",
+       "text": "Sinus rhythm, rate 98. PR 168 ms, QRS 94 ms, QTc 430 ms. Normal axis. T waves normal in morphology, not peaked. No ST changes. No conduction abnormality.",
+       "conclusion": "Sinus rhythm at upper normal rate. No electrocardiographic signs of hyperkalemia.",
+       "issued": "2025-06-24T13:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-06-24T13:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2025-06-30T08:40",
+       "body": "EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival 06/24/2025 13:05. Regional hospital ED.\n\nCC: tired and weak x 2 weeks, palpitations\n\nHPI: 60M with type 2 diabetes (metformin, basal insulin), coronary artery disease on medical therapy, HTN, HLD. Two weeks of progressive fatigue and generalized muscle weakness, worse the last few days; struggled to carry sheet goods at work. Intermittent palpitations. No chest pain, no shortness of breath, no fainting. Hot weeks working outdoors; thinks he hasn't been drinking enough. No vomiting or diarrhea. No new medicines, no supplements, no salt substitute. No NSAIDs.\n\nMeds (per pt): metformin 1000 BID, insulin glargine 24 u qHS, lisinopril 20, metoprolol succinate 50, atorvastatin 40, aspirin 81.\nAllergies: NKDA.\nFH: father MI at 64, HTN; mother T2DM, dyslipidemia; maternal uncle stroke at 70.\nSH: carpenter, self-employed. Former smoker, 18 pk-yr. Alcohol 1-2/wk.\n\nExam: BP 142/88, HR 98, RR 18, T 36.8, SpO2 98% RA. Tired-appearing, alert, oriented. Mucous membranes dry; skin turgor decreased. Heart regular, no murmur. Lungs clear. Abdomen soft. Strength 5-/5 symmetric proximally, reflexes 2+ symmetric, no focal deficit. No edema.\n\nResults:\nNa 138, K 6.2 (non-hemolyzed), Cl 105, HCO3 18, BUN 29, Cr 1.9 (baseline about 1.0 per records), glucose 198.\nUrine pH 6.0.\nECG: sinus 98, T waves not peaked, intervals normal.\nPlasma renin activity and aldosterone sent - pending at discharge.\n\nED course: 1 L normal saline IV. Regular insulin 10 units IV with dextrose 25 g IV, glucose monitored, no hypoglycemia. Sodium zirconium cyclosilicate 10 g PO x1. Cardiac monitor - sinus, no ectopy. Repeat at 17:45: K 5.4, Cr 1.6. Tolerating fluids by mouth. Symptoms improved.\n\nMDM: Hyperkalemia with a normal-gap-range metabolic acidosis and urine pH 6.0 in a diabetic on an ACE inhibitor, with volume depletion pushing creatinine up. Picture fits type 4 (hyperkalemic) renal tubular acidosis; renin/aldosterone sent to confirm.\n\nImpression: Type 4 renal tubular acidosis (hyperkalemic), hyperkalemia; volume depletion.\n\nDisposition: discharged 20:40.\n- HOLD lisinopril and metformin until seen by PCP with repeat labs.\n- Continue insulin; may need less while eating less - check sugars.\n- Avoid potassium-rich salt substitutes, NSAIDs.\n- Push fluids.\n- PCP in 2 days for BMP. Return for weakness, palpitations, chest pain, fainting.\n\nEmergency Medicine"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Bicarbonate": 19,
+       "Blood Urea Nitrogen": 26
+      }
+     }
+    },
+    {
+     "id": "2025-06-25a",
+     "kind": "telephone",
+     "start": "2025-06-25T08:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED follow-up call",
+       "author": "RN",
+       "date": "2025-06-25T08:05",
+       "body": "Pt called: was in the ED yesterday, potassium 6.2, kidney number up. They held lisinopril and metformin and want labs in 2 days. Feels better today, drinking water. No palpitations since. Has the discharge paperwork - asked him to bring it. Booked tomorrow 9:20 with PCP, lab at visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-26a",
+     "kind": "office_visit",
+     "start": "2025-06-26T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up: hyperkalemia",
+     "state": {
+      "bp": [
+       140,
+       88
+      ],
+      "hr": 74,
+      "labs": {
+       "Bicarbonate": 20,
+       "Blood Urea Nitrogen": 18
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-06-26T09:45",
+       "resulted": "2025-06-26T13:10",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 5.3
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2025-06-26T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED Follow-up",
+       "author": "PCP",
+       "date": "2025-06-26T10:15",
+       "body": "ED f/u (6/24). Reviewed his discharge sheet - full ED record not here yet.\nK 6.2, HCO3 18, Cr 1.9 from ~1.0, BUN 29, glucose 198, urine pH 6.0. ECG without hyperkalemic changes. Treated with fluids, insulin/dextrose and a potassium binder; K 5.4 / Cr 1.6 by discharge. Renin and aldosterone pending. Lisinopril and metformin held.\n\nToday: much better. Weakness gone, no palpitations. Drinking 3-4 bottles of water on job days now. Sugars 130s-170s without metformin. Off lisinopril 2 days.\n\nExam: BP mildly up off ACEi. HR 70s regular. Mucous membranes moist. Heart RRR. Lungs clear. Strength normal. No edema.\n\nA/P\n1. Hyperkalemia with low bicarb and urine pH 6 - ED impression type 4 RTA, makes sense with diabetes + ACEi, dehydration on top. Awaiting renin/aldo. Repeat BMP now; I'll call with result this afternoon.\n2. Creatinine bump - likely volume. Recheck today.\n3. HTN off lisinopril - home BP log while held.\n4. Low-potassium diet handout: go easy on bananas, oranges/OJ, potatoes, tomato sauce, dried fruit; no salt substitutes; no ibuprofen/naproxen.\n5. DM - metformin decision pending today's creatinine. Continue glargine.\nRTC ~2 weeks once renin/aldo back."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-26b",
+     "kind": "telephone",
+     "start": "2025-06-26T15:30",
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes; resumed after ED hold"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "BMP result",
+       "author": "PCP",
+       "date": "2025-06-26T15:30",
+       "body": "Called pt with today's BMP: K 5.3, Cr 1.2 - both much better. OK to restart metformin 1000 BID tonight. Keep lisinopril OFF for now until renin/aldo results and next check. Continue fluids and low-K diet. Pt agreeable."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-01a",
+     "kind": "portal_message",
+     "start": "2025-07-01T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Hormone tests from the ER",
+       "author": "PCP",
+       "date": "2025-07-01T12:40",
+       "body": "Darren - the two hormone tests the ER sent (renin and aldosterone) came back low. That fits what the ER suspected: with diabetes, the kidneys and adrenal glands don't make enough of the hormones that get rid of potassium, which is called type 4 renal tubular acidosis. It's very manageable. Let's talk it through at your visit on the 8th - please do a blood draw that morning before the appointment."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Hormone tests from the ER",
+       "author": "patient",
+       "date": "2025-07-01T19:05",
+       "body": "OK thanks. I'll come in at 7:30 for the blood. Pressure at home is running about 140/88 without the lisinopril."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-08a",
+     "kind": "lab_only",
+     "start": "2025-07-08T07:30",
+     "state": {
+      "labs": {
+       "Potassium": 5.0,
+       "Bicarbonate": 21,
+       "Creatinine": 1.05
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-07-08T07:30",
+       "resulted": "2025-07-08T10:30",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 4.9
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 20
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Chloride"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2025-07-08b",
+     "kind": "office_visit",
+     "start": "2025-07-08T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up: type 4 RTA, blood pressure",
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Essential hypertension, diabetic kidney protection; resumed after ED hold"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "bmp-2025-07",
+       "action": "placed",
+       "order": "Basic metabolic panel in 1 week",
+       "category": "lab",
+       "reason": "Lisinopril restart, type 4 RTA"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-07-08T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up - Type 4 RTA",
+       "author": "PCP",
+       "date": "2025-07-08T14:50",
+       "body": "F/u hyperkalemia. Full ED record received 6/30, reviewed.\nRenin low, aldosterone low (resulted 7/1). This morning: K 4.9, Cr 1.1, HCO3 20.\n\nFeels normal. Back on metformin since 6/26, no GI issues. Off lisinopril 2 wks; home BP ~140/88. Low-K diet going ok, \"miss the OJ.\" No NSAIDs.\n\nExam: BP above goal. HR 70s. Heart RRR. Lungs clear. No edema.\n\nA/P\n1. Type 4 RTA (hyporeninemic hypoaldosteronism) from diabetes - confirmed: hyperkalemia, mild non-gap-range acidosis, urine pH 6, low renin and aldosterone. Volume depletion and ACEi tipped him over in June.\n   - Restart lisinopril 20 mg - he needs it for BP and kidney protection with diabetes and borderline urine albumin; benefit outweighs K risk if we watch closely.\n   - Low-potassium diet, stay hydrated especially on hot job days, no salt substitutes or NSAIDs.\n   - BMP in 1 week, then every 3 months.\n   - If K runs >5.5 on recheck, will revisit (diuretic vs lower ACEi dose).\n2. HTN - as above.\n3. DM - continue glargine 24 u + metformin.\n4. CAD - stable.\nRTC at physical in Sept."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-16a",
+     "kind": "lab_only",
+     "start": "2025-07-16T07:40",
+     "state": {
+      "bp": [
+       132,
+       84
+      ]
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-07-16T07:40",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-2025-07",
+       "action": "done",
+       "date": "2025-07-16T12:00"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-17a",
+     "kind": "portal_message",
+     "start": "2025-07-17T08:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Potassium recheck",
+       "author": "PCP",
+       "date": "2025-07-17T08:30",
+       "body": "Potassium and kidney numbers are stable a week back on lisinopril - good. Stick with the diet. Next check in about 3 months (we'll do it with your physical)."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-26a",
+     "kind": "lab_only",
+     "start": "2025-09-26T07:20",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.4,
+       "Low Density Lipoprotein": 118,
+       "Microalbumin/Creatinine Ratio": 28
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-26T07:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-09-26T07:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-09-26T07:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 118
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-09-26T07:20",
+       "results": [
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine pH"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-09-26T07:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2025-09-30a",
+     "kind": "annual_physical",
+     "start": "2025-09-30T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 99.0
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-09-30T09:40"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-09-30T09:41"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2025-09-30T09:42"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-09-30T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-30T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-09-30T10:10",
+       "body": "PHYSICAL 61M\n\nInterval: ED in June with K 6.2 -> type 4 RTA; back on lisinopril since July with K stable. Still on glargine 24 u; hasn't booked the 6-month endo return yet, says he'll call. Angina: very occasional, no NTG use in over a year. Cubital tunnel unchanged, still deferring surgery.\nMeds: metformin 1000 BID, glargine 24 u qHS, lisinopril 20, metoprolol succ 50, atorvastatin 40, aspirin 81, NTG SL prn. NKDA.\nSocial: carpentry, fewer roofs these days. 1-2 beers a week. No tobacco since 2021.\nROS negative incl. no palpitations, no weakness, no lows.\n\nExam: BP at goal. Heart RRR. Lungs clear. Abd soft. No edema. Feet monofilament intact, DP/PT palpable. R hand atrophy unchanged. \nPHQ-9: 1.\n\nLabs 9/26: A1c 7.4. LDL 118. CMP: K and bicarb in his usual range now, Cr ok. CBC normal. UA neg for protein. Urine microalbumin about the same as January.\n\nA/P\n- T2DM: A1c 7.4, improving.\n- Type 4 RTA: K stable on lisinopril + diet. Continue BMP q3 months.\n- CAD/angina, HTN, HLD: continue current meds.\n- Vaccines: flu, COVID, RSV today.\n- FIT kit.\n- Eye exam May: no retinopathy.\nRTC Jan (fasting labs the week before)."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       126,
+       78
+      ]
+     }
+    },
+    {
+     "id": "2025-10-21a",
+     "kind": "lab_only",
+     "start": "2025-10-21T08:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-10-16T06:10",
+       "resulted": "2025-10-21T09:50",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "done",
+       "date": "2025-10-21T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT",
+       "author": "MA",
+       "date": "2025-10-21T12:40",
+       "body": "FIT negative. Letter mailed."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-30a",
+     "kind": "lab_only",
+     "start": "2025-12-30T07:25",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Low Density Lipoprotein": 130,
+       "Triglycerides": 150,
+       "High Density Lipoprotein": 40
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-12-30T07:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-12-30T07:25",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 210
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 130
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-12-30T07:25",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Fasting labs",
+       "author": "PCP",
+       "date": "2025-12-30T15:20",
+       "body": "A1c 7.2. LDL 130, up from last year on the same atorvastatin. K/bicarb stable. Review at 1/6 visit."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

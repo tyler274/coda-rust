@@ -1,0 +1,199 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002573",
+      "given": "Gavin",
+      "family": "Davidson",
+      "birth_date": "2002-09-26",
+      "address_line": "118 Pendleton Avenue, Apt 2",
+      "phone": "+1-802-555-0114",
+      "email": "gavin.davidson@example.test",
+      "marital_status": "single",
+      "summary": "Healthy undergraduate who joined the practice at 19. Treated in the office for gonococcal urethritis in January 2025 and primary syphilis in July 2025; seen in an outside ED for gonococcal proctitis in July 2026, after his last practice visit.",
+      "events": [
+        {
+          "id": "2022-08-30a",
+          "kind": "telephone",
+          "start": "2022-08-30T10:42",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2022-08-30T10:42",
+              "body": "Caller is a 19 y/o male, college student, looking for a primary doctor close to campus now that he has aged out of his pediatrician. Has the university student health plan; card info taken, membership agreement emailed. No current concerns. Booked new patient visit 9/13 at 9:00. Records release for the pediatric office sent with the welcome packet."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 76.2, "height_cm": 180.3},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social alcohol use (2-3 drinks on weekends)"},
+            {"item": "Occupation", "value": "University undergraduate student"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-13T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-13T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-13T10:05",
+              "body": "19 y/o man here to establish. Second-year undergrad, lives off campus with two roommates. Was followed by a pediatric office through high school; no ongoing problems, no hospital stays, no operations. Takes nothing daily, not even supplements. No drug allergies.\n\nFamily: dad has high blood pressure, found around age 45. Mom has been treated for major depression. No other family history he knows of.\n\nSocial: has never smoked. Drinks socially on weekends, usually 2-3 drinks. Denies other substances. Walks everywhere on campus, plays pickup basketball.\n\nROS: negative across systems today.\n\nExam: well-appearing, comfortable. Vitals reviewed, BP normal. HEENT normal, TMs clear. Neck supple, no nodes, thyroid not enlarged. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin without rashes. Extremities warm, no edema. Neuro grossly intact. Mood bright, PHQ-2 0.\n\nAssessment/plan:\n- Healthy young adult, establishing care. Baseline CBC and CMP today since he has never had adult labs.\n- Immunizations: pediatric office records requested; will update once we see what he has. Flu and COVID boosters when the fall supply arrives.\n- Discussed safer sex and condom use in general terms; he had no questions.\n- Given dad's history, BP check at each visit.\n- Follow up for a yearly physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "author": "PCP",
+              "date": "2022-09-14T16:20",
+              "body": "Hi Gavin, your blood count, kidney and liver tests, sugar and electrolytes from yesterday all came back normal. Nothing to change. Good to meet you, and reach out any time."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:15",
+          "reason": "Prior records received",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2014-10-07T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2018-10-02T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization record from prior pediatric office",
+              "author": "front desk",
+              "date": "2022-09-27T11:15",
+              "body": "One-page immunization printout came back from the pediatric office in response to our request. Shows routine childhood series complete, Tdap 10/7/2014 and MenACWY booster 10/2/2018. No visit notes, problem list or growth charts were included. Tdap and MenACWY entered into immunization history. Copy placed in media."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-18T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine administration",
+              "author": "RN",
+              "date": "2022-10-18T15:50",
+              "body": "Here for seasonal vaccines. Feels well, no fever. No prior vaccine reactions, NKDA. Influenza quadrivalent 0.5 mL IM left deltoid. Pfizer bivalent COVID booster 0.3 mL IM right deltoid. VIS sheets reviewed. Observed 15 minutes, tolerated both, left ambulating."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "portal_message",
+          "start": "2023-03-09T21:04",
+          "reason": "Immunization form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for school",
+              "author": "patient",
+              "date": "2023-03-09T21:04",
+              "body": "Hey, the university health office says my immunization form is missing the doctor signature part for next year's housing. Can you fill it out from what my old doctor sent? I uploaded the blank form. Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for school",
+              "author": "MA",
+              "date": "2023-03-10T10:12",
+              "body": "Hi Gavin, the form is filled out from your record and signed. It is uploaded to your portal documents to download. Let us know if the school needs anything else."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 77.4},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-22T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-22T09:10",
+              "body": "Yearly check before the fall semester. Spent the summer working at a campus library job. No new symptoms or concerns. No meds, no allergies.\n\nHabits: still nonsmoker. Weekend drinking unchanged at 2-3 drinks, AUDIT-C 3. Sleeping 7 hours most nights. Sexually active, says he uses condoms most of the time; declined STI testing today, no symptoms.\n\nExam: NAD. BP within normal range. Eyes, ears, throat normal. No adenopathy. Heart regular, no murmur. Clear lungs. Abdomen benign. Skin clear. No edema. PHQ-2 negative.\n\nA/P: well young adult. Up to date on Tdap and MenACWY per records. Flu vaccine this fall, he will likely get it at the pharmacy near school. Lipids next year. Back in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "portal_message",
+          "start": "2023-10-24T13:18",
+          "reason": "Outside vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-14T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Got my flu shot",
+              "author": "patient",
+              "date": "2023-10-24T13:18",
+              "body": "FYI I got the flu shot at the pharmacy on campus a week ago Saturday, the 14th. They said they would send it to you but just in case."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Got my flu shot",
+              "author": "MA",
+              "date": "2023-10-24T15:02",
+              "body": "Thanks Gavin. Nothing has come from the pharmacy yet, so I entered the 10/14 flu vaccine in your history from your message."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

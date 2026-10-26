@@ -1,0 +1,159 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002204",
+      "events": [
+        {
+          "id": "2026-01-17a",
+          "kind": "telephone",
+          "start": "2026-01-17T16:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "wife reports ICU admission",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's wife",
+              "author": "PCP",
+              "date": "2026-01-17T16:40",
+              "body": "His wife called the practice line. Frederick has been feverish with chills for two days, increasingly confused and not eating; this morning she could barely get him to answer her, so she called 911. He is in the ICU at the area hospital with an infection - she was told it is from his urine and that his blood pressure is very low. Spoke with the ICU team by phone and gave them his allergy history (penicillin anaphylaxis, cefazolin rash) and the July culture result. Asked his wife to keep us posted; we'll get the records."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-17b",
+          "kind": "hospital_admission",
+          "start": "2026-01-17T10:20",
+          "end": "2026-01-27T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "septic shock, urinary source",
+          "vitals": [
+            {"time": "2026-01-17T10:30", "bp": [85, 50], "hr": 120, "rr": 22, "temp_c": 39.2},
+            {"time": "2026-01-19T08:00", "bp": [118, 70], "hr": 92, "rr": 18, "temp_c": 37.6, "spo2": 96},
+            {"time": "2026-01-27T08:00", "bp": [126, 76], "hr": 78, "rr": 16, "temp_c": 36.7, "spo2": 97}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-17T10:45", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 12.0}, {"test": "Platelets", "value": 150}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-17T10:45", "results": [{"test": "Creatinine", "value": 2.5}, {"test": "Blood Urea Nitrogen", "value": 50}]},
+            {"panel": null, "collected": "2026-01-17T10:45", "results": [{"test": "Lactate", "value": 5.0}]},
+            {"panel": "Urinalysis", "collected": "2026-01-17T11:00", "results": [{"test": "Urine Clarity", "text": "Cloudy"}, {"test": "Urine Leukocyte Esterase", "text": "Positive"}, {"test": "Urine White Blood Cells", "text": ">50 /HPF"}]},
+            {"panel": null, "collected": "2026-01-17T10:50", "resulted": "2026-01-22T10:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (2 sets)"}]},
+            {"panel": null, "collected": "2026-01-17T11:00", "resulted": "2026-01-19T09:15", "results": [{"test": "Urine Culture", "text": "Escherichia coli, greater than 100,000 CFU/mL. Multidrug resistant, same susceptibility pattern as the July 2025 isolate; susceptible to aminoglycosides."}]},
+            {"panel": null, "collected": "2026-01-18T06:00", "results": [{"test": "Lactate", "value": 1.6}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-27T05:30", "results": [{"test": "Creatinine", "value": 2.0}]}
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2026-01-17T15:30",
+              "text": "RENAL ULTRASOUND, PORTABLE (ICU)\nIndication: septic shock, urinary source, acute kidney injury.\nBoth kidneys normal in size with preserved corticomedullary differentiation. No hydronephrosis. No calculus or perinephric collection. Bladder unremarkable.\nComparison: 7/13/2025.",
+              "conclusion": "No hydronephrosis. No change from July 2025."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and hospital discharge summary",
+              "author": "critical care",
+              "date": "2026-01-29T11:20",
+              "body": "AREA HOSPITAL - PULMONARY & CRITICAL CARE / MEDICINE DISCHARGE SUMMARY\nPatient: Frederick Esposito, 66M, DOB 11/15/1959\nAdmitted 1/17/2026 via the ED to the medical ICU; ward from 1/20; discharged home 1/27/2026.\nAllergies: PENICILLIN (anaphylaxis); CEFAZOLIN (rash, itching).\nHome medications on admission: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily.\nRelevant history: type 2 diabetes; CKD stage 3b (baseline creatinine 1.6); hypertension; chronic right plantar diabetic ulcer under podiatry care; cefazolin reaction March 2025; multidrug-resistant E. coli pyelonephritis July 2025.\n\nPresentation: per his wife, two days of fever, chills and confusion, progressively less responsive, little oral intake. On arrival T 39.2 C, BP 85/50, HR 120, RR 22. Dry mucous membranes and poor skin turgor; lethargic but arousable. WBC 18.0, Hgb 12.0, platelets 150; creatinine 2.5, BUN 50; lactate 5.0. Urinalysis cloudy, leukocyte esterase positive, >50 WBC/hpf. Blood cultures drawn.\n\nDiagnoses: septic shock, urinary source; acute kidney injury on CKD 3b.\n\nCourse:\n- Shock: supplemental oxygen by nasal cannula, crystalloid boluses, then norepinephrine for persistent hypotension; weaned off 1/19. Lactate 1.6 on 1/18.\n- Infection: empiric IV aztreonam and gentamicin, chosen around his beta-lactam allergies and his prior isolate. Urine culture grew E. coli with the same resistance pattern as July; blood cultures no growth. Narrowed to gentamicin, dosed by levels for his kidney function; 10 days completed in hospital. Renal ultrasound without hydronephrosis.\n- Kidney: creatinine peaked at admission and was 2.0 at discharge. Lisinopril HELD.\n- Mental status back to his baseline before discharge. Metoprolol held during shock, resumed at home dose on the ward. Glipizide held while he was not eating, resumed before discharge.\n\nDischarge medications: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, atorvastatin 40 mg qhs, aspirin 81 mg daily. HOLD lisinopril until kidney function is rechecked by his PCP.\nFollow-up: PCP within 1-2 weeks with BMP. Podiatry as scheduled."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records filed",
+              "author": "PCP",
+              "date": "2026-01-29T15:10",
+              "body": "ICU/hospital discharge summary received and filed. Needs a post-hospital visit and BMP; lisinopril on hold per hospital pending that recheck."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "portal_message",
+          "start": "2026-02-03T09:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "after hospital discharge",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Fred is home",
+              "author": "patient",
+              "date": "2026-02-03T09:12",
+              "body": "This is his wife writing on his account. Fred has been home a week. He's weak and sleeping a lot but eating better and he knows what day it is again. The hospital said to see you and get blood work. He's taking everything except the lisinopril like they said. What should we do?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Fred is home",
+              "author": "PCP",
+              "date": "2026-02-03T12:40",
+              "body": "Thank you for the update - I'm glad he's home. I read the hospital summary. I'd like to see him in the next week or two and repeat his kidney labs then; we'll decide about the lisinopril at that visit. Our front desk will call to set it up. If he has fever, confusion, lightheadedness or isn't drinking, call or text right away."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "telephone",
+          "start": "2026-02-06T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "scheduling hospital follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling outreach",
+              "author": "front desk",
+              "date": "2026-02-06T10:05",
+              "body": "Called home number to schedule post-hospital visit with labs as requested by PCP. No answer; left voicemail with callback number and offered Tuesday or Thursday next week."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2026-03-10T11:20",
+              "body": "Pharmacy refill request: metoprolol tartrate 50 mg #180 and atorvastatin 40 mg #90. Last office visit 10/6/25; hospital stay in January. Pended for PCP.\n\nPCP: approved, 90-day supply each. He is still due for a post-hospital visit and labs - front desk please try him again."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "outside_records",
+          "start": "2026-05-19T14:45",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2026-05-19T14:45",
+              "body": "Diabetic eye exam - letter to PCP\nFrederick Esposito, DOB 11/15/1959. Exam 5/12/2026.\nAllergies: penicillin, cefazolin.\nCorrected acuity 20/25 right, 20/30 left. Dilated fundus exam: lens implant clear and centered. No diabetic retinopathy. No macular edema.\nImpression: type 2 diabetes, no retinopathy. Return in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "overdue visit outreach",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Time for a check-in",
+              "author": "front desk",
+              "date": "2026-06-16T09:30",
+              "body": "Hello Mr. Esposito, our records show you're due for a diabetes visit and the lab check after your January hospital stay. Reply here or call us and we'll find a time that works for you."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

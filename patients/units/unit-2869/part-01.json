@@ -1,0 +1,381 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002869",
+      "given": "Nancy",
+      "family": "Chapman",
+      "birth_date": "1951-05-01",
+      "address_line": "27 Larkspur Lane",
+      "phone": "+1-603-555-0130",
+      "email": "nancy.chapman@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired teacher who joins in late 2023 with depression, lumbar osteoarthritis, glaucoma and overactive bladder, and presents with orthostatic hypotension on amitriptyline. A year later anticholinergic toxicity leads to stopping amitriptyline and oxybutynin, with sertraline and mirabegron in their place. In 2026 a furniture-moving back flare brings a right upper lumbar radiculopathy managed by outside neurology.",
+      "events": [
+        {
+          "id": "2023-10-30a",
+          "kind": "telephone",
+          "start": "2023-10-30T10:20",
+          "reason": "New member enrollment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New member enrollment call",
+              "author": "front desk",
+              "date": "2023-10-30T10:20",
+              "body": "Ms. Chapman phoned to enroll; membership paperwork emailed and returned same morning. Insurance card on file. Asked whether her first appointment could be sooner than the 11/20 slot because she has been lightheaded getting up out of a chair for about a week. Routed to RN, who spoke with her: no chest pain, no head injury, no current lightheadedness while sitting. First visit moved to this Friday 11/3 at 9:00. Asked her to bring all medicine bottles and the name of her prior doctor's office."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-03a",
+          "kind": "establish_care",
+          "start": "2023-11-03T09:00",
+          "end": "2023-11-03T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; dizziness on standing",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, unspecified", "icd10": "F32.9", "action": "history", "note": "treated by prior PCP"},
+            {"label": "Spondylosis without myelopathy or radiculopathy, lumbar region", "icd10": "M47.816", "action": "history"},
+            {"label": "Chronic low back pain", "action": "history"},
+            {"label": "Primary open-angle glaucoma", "action": "history", "note": "outside eye practice"},
+            {"label": "Overactive bladder", "action": "history"},
+            {"label": "Orthostatic hypotension", "action": "diagnosed", "onset": "2023-10-27"}
+          ],
+          "medications": [
+            {"drug_text": "amitriptyline hydrochloride 75 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 75, "unit": "mg"}, "frequency": "AT BEDTIME", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"},
+            {"drug": "oxybutynin chloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Overactive bladder"},
+            {"drug_text": "timolol 5 MG/ML Ophthalmic Solution", "action": "historical", "sig": "Instill 1 drop in each eye twice daily", "dose": {"value": 1, "unit": "drop"}, "frequency": "BID", "route": "Ophthalmic", "course": "chronic", "reason": "Primary open-angle glaucoma"},
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for back pain", "dose": {"value": 400, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Chronic low back pain"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 63.0, "height_cm": 160.0, "labs": {"Creatinine": 0.85, "Low Density Lipoprotein": 88}},
+          "vitals": {"bp": [110, 70], "hr": 78},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-03T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-03T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Wine, 1 to 2 glasses per month"},
+            {"item": "Occupation", "value": "Retired elementary school teacher"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-11-03T09:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-11-03T10:05",
+              "body": "72 y/o retired elementary school teacher establishing care. Seen early because of dizziness.\n\nHPI: For the past week she gets dizzy when she stands up from sitting, and has gone down twice, once in the kitchen and once getting off the couch, no head strike, got herself up both times. A couple of times she felt she was about to black out. Fine once she is up and moving or sitting. Also bothered by a dry mouth and constipation. No chest pain, palpitations, or one-sided weakness.\n\nMeds (bottles reviewed): amitriptyline 75 mg qhs, started by her previous doctor about three months ago for depression; oxybutynin 5 mg BID for bladder; timolol 0.5% 1 gtt OU BID (eye practice manages); ibuprofen 400 mg q6h prn back pain.\nAllergies: NKDA.\nPMH: depression; lumbar spine osteoarthritis with chronic low back pain; primary open-angle glaucoma; overactive bladder.\nPSH: C-section 1978. Right cataract extraction with IOL 2019.\nFH: mother had depression and osteoporosis. Father had degenerative arthritis and high blood pressure. A maternal aunt had open-angle glaucoma.\nSH: never smoker. Wine maybe once or twice a month. Taught elementary school, retired. Daughter lives in the area.\n\nExam: BP 110/70 seated, 90/60 standing. HR 78 seated, 88 standing. Felt woozy on standing, cleared within a minute. Alert, conversant. Heart regular rate and rhythm, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro: strength and gait normal, no focal deficit. Remainder of exam unremarkable.\nPHQ-9 7.\n\nA/P:\n1. Orthostatic hypotension with two falls this week. Reviewed rising in stages (sit at the edge of the bed a minute before standing), good fluid intake, night light and clearing the path to the bathroom. CBC and BMP today. Call right away for any blackout, injury or chest symptoms.\n2. Depression: on amitriptyline from prior PCP, mood fair. Continue.\n3. Overactive bladder: continue oxybutynin.\n4. Glaucoma: continue timolol, eye practice follows.\n5. Chronic low back pain: ibuprofen as needed.\n6. Prior records requested.\nRecheck as needed; will reach out with labs."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2023-11-03T10:30",
+              "body": "Signed release obtained. Request for last 3 years of records faxed to prior primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "portal_message",
+          "start": "2023-11-06T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-11-06T08:40",
+              "body": "Hi Nancy, your blood count and chemistry panel from Friday are normal, no anemia and normal kidney function and salts. Keep taking your time when you stand up. How has the dizziness been over the weekend?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "author": "patient",
+              "date": "2023-11-06T12:15",
+              "body": "Thank you. Better I think. I have been sitting on the edge of the bed first like you said. No more falls."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "nurse_visit",
+          "start": "2023-11-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-11-17T14:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-11-17T14:12"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-11-17T14:10"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-11-17T14:25",
+              "body": "Here for seasonal vaccines. Screening questions negative. High-dose influenza 0.7 mL IM left arm, 2023-24 COVID mRNA 0.3 mL IM right arm. Tolerated. Sat 15 minutes, stood slowly with no lightheadedness. Reports no falls since her visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "portal_message",
+          "start": "2023-11-28T19:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dizziness update",
+              "author": "patient",
+              "date": "2023-11-28T19:02",
+              "body": "Just letting you know the dizzy spells are not as bad. I still have to go slow in the morning. My mouth is still dry all the time but I keep water by the chair."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dizziness update",
+              "author": "PCP",
+              "date": "2023-11-29T07:50",
+              "body": "Glad to hear it. Keep up the slow starts in the morning, and message me if you have another fall or feel faint."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "outside_records",
+          "start": "2023-12-06T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2023-12-06T11:00",
+              "body": "Six pages from the previous primary care office, filed under outside records.\n\nSummary sheet: problems listed as depression, osteoarthritis of the lumbar spine with chronic low back pain, open-angle glaucoma (eye practice), overactive bladder. Medications: oxybutynin 5 mg twice daily, timolol 0.5% drops twice daily, ibuprofen 400 mg as needed; amitriptyline 75 mg at bedtime added at the August 2023 visit for depression. Allergies: none known.\nHealth maintenance: colonoscopy 2016, normal, no polyps. Screening mammogram 2022, negative. Immunizations: pneumococcal PCV13 2017, PPSV23 2018, Tdap 2019.\nNo labs in the packet. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "pharmacy",
+          "start": "2024-01-18T09:30",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Refill request - timolol",
+              "author": "MA",
+              "date": "2024-01-18T09:30",
+              "body": "Pharmacy fax for timolol 0.5% ophthalmic, 90-day supply. Prescribed by her eye practice; pharmacy told to send the request there. Patient informed by voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T15:44",
+          "orders": [{"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram",
+              "author": "patient",
+              "date": "2024-03-12T15:44",
+              "body": "My last mammogram was in 2022. Do I still need them at my age? If so can you send the order so I can book it for May."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mammogram",
+              "author": "PCP",
+              "date": "2024-03-13T08:05",
+              "body": "Yes, every two years is still recommended for you. Order is in; the imaging center will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "imaging",
+          "start": "2024-05-14T10:30",
+          "orders": [{"id": "mammo-2024", "action": "done", "date": "2024-05-14T10:30"}],
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-05-14T10:30",
+              "issued": "2024-05-15T13:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: none available. The breasts are scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion in either breast. Skin and nipples unremarkable.",
+              "conclusion": "Negative. BI-RADS 1. Routine screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2024-05-16T08:20",
+              "body": "Screening mammogram negative, BI-RADS 1. Letter sent through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "pharmacy",
+          "start": "2024-06-20T11:10",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Refills - amitriptyline, oxybutynin",
+              "author": "MA",
+              "date": "2024-06-20T11:10",
+              "body": "Refill request from pharmacy for amitriptyline 75 mg #90 and oxybutynin 5 mg #180. Last visit 11/2023. Sent to PCP for approval."
+            },
+            {
+              "type": "Refill Note",
+              "title": "Refills approved",
+              "author": "PCP",
+              "date": "2024-06-20T16:30",
+              "body": "Approved both for 90 days, 1 refill. Due for a follow-up this fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T13:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Eye practice letter",
+              "author": "ophthalmology",
+              "date": "2024-07-23T13:15",
+              "body": "Glaucoma follow-up, seen 7/16/2024. Primary open-angle glaucoma both eyes, pressures at goal on timolol 0.5% twice daily. Optic nerves unchanged from prior. Right eye pseudophakic, lens well positioned. Allergies: NKDA. Continue current drops; recheck in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T11:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T11:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2024-10-08T11:20",
+              "body": "Seasonal vaccines. No reactions last year. High-dose flu 0.7 mL IM left deltoid; 2024-25 COVID 0.3 mL IM right deltoid. Observed 15 min, fine. Reminded her she has not had a follow-up with the doctor in almost a year; she will call to book."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "telephone",
+          "start": "2024-11-08T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from daughter",
+              "author": "RN",
+              "date": "2024-11-08T09:45",
+              "body": "Daughter (on HIPAA form) called. Over about 3 months her mother has been more forgetful and at times muddled, repeating questions, losing track of the day, and has had some bladder accidents. No fall, no fever, no slurred speech or facial droop, no sudden change. Eating and drinking. Offered same day; daughter can bring her Monday 11/11 and will stay with her this weekend. Advised ED for any sudden change, weakness or new trouble speaking."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-11a",
+          "kind": "office_visit",
+          "start": "2024-11-11T10:30",
+          "end": "2024-11-11T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Memory difficulty, confusion, incontinence",
+          "conditions": [
+            {"label": "Adverse effect of anticholinergic medication", "icd10": "T44.3X5A", "action": "diagnosed", "onset": "2024-08-10"}
+          ],
+          "medications": [
+            {"drug_text": "amitriptyline hydrochloride 75 MG Oral Tablet", "action": "stop", "reason": "Anticholinergic adverse effect"},
+            {"drug": "oxybutynin chloride 5 MG Oral Tablet", "action": "stop", "reason": "Anticholinergic adverse effect"},
+            {"drug": "amitriptyline hydrochloride 25 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets at bedtime for 7 days, then 1 tablet at bedtime for 7 days, then stop", "dose": {"value": 50, "unit": "mg"}, "frequency": "AT BEDTIME", "route": "Oral", "course": "short", "reason": "Taper off amitriptyline"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-11T11:15", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 1.0}, {"test": "Calcium", "value": 9.6}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-11T11:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-11-11T10:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-11-11T11:20",
+              "body": "73 y/o F, last seen 11/2023 for orthostatic dizziness. Here with her daughter.\n\nHPI: Per daughter, three months of worsening memory and spells of confusion; misplacing things, repeating herself, Some urinary leaking lately, not reaching the toilet in time. Patient says her mouth is like cotton and she is badly constipated. She is a bit slow to answer today but knows where she is and why.\nMeds: amitriptyline 75 mg qhs, oxybutynin 5 mg BID, timolol drops BID, ibuprofen prn.\n\nExam: vitals within normal limits. Alert but lethargic. Pupils 4 mm, minimally reactive to light. Mucous membranes dry. Skin warm and dry. Heart regular, lungs clear. Abdomen soft, bowel sounds diminished, nontender. Neuro nonfocal: strength symmetric, no drift, speech fluent.\n\nA/P:\n1. Adverse effect of anticholinergic medication. Picture fits cumulative anticholinergic load from amitriptyline plus oxybutynin: confusion, dry mouth, dry skin, sluggish dilated pupils, slowed gut, and the bladder symptoms. Stop oxybutynin today. Amitriptyline: taper rather than stop cold - 50 mg qhs x 7 days, 25 mg qhs x 7 days, then off (25 mg tabs sent). BMP and CBC today.\n2. Urinary leaking: timed voiding every 2-3 hours while awake, pads for now. Will address bladder once she is clearer.\n3. Depression: will need a replacement as amitriptyline comes off; video visit in 2 weeks to decide.\n4. Daughter to supervise pills over the taper. Return precautions reviewed with both."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "portal_message",
+          "start": "2024-11-12T17:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-11-12T17:20",
+              "body": "Sodium 140, potassium 4.2, calcium 9.6, creatinine 1.0, and blood count normal. Nothing here to explain the confusion, which supports the medication effect. Continue the taper as written."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-25T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up during amitriptyline taper",
+          "medications": [
+            {"drug": "sertraline 25 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 11}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-11-25T13:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-11-25T13:55",
+              "body": "Video, patient at her daughter's house with daughter present. Verified name and DOB.\n\nNow on the 25 mg step of the amitriptyline taper, off oxybutynin two weeks. Daughter thinks she is less foggy and following conversation better. Mouth not as dry. Mood is lower, more tearful and not sleeping as well. PHQ-9 11. No thoughts of self-harm.\nStill some leaking, using pads, voiding on a schedule.\n\nA/P:\n1. Depression, mood dipping as amitriptyline comes off. Start sertraline 25 mg daily. Discussed possible nausea and loose stools the first weeks.\n2. Anticholinergic adverse effect improving. Finish taper as planned.\n3. Office visit late January to recheck standing BP, mood and bladder."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "portal_message",
+          "start": "2024-12-16T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update on Mom",
+              "author": "patient",
+              "date": "2024-12-16T20:10",
+              "body": "This is her daughter writing from Mom's account. She finished the last amitriptyline pill a week ago. She is much sharper, doing her crossword again, and her bowels are moving better. The sertraline gave her a little stomach upset the first few days but that settled."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update on Mom",
+              "author": "PCP",
+              "date": "2024-12-17T08:30",
+              "body": "That is great news, thank you. Keep the sertraline going and we will see her in January."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

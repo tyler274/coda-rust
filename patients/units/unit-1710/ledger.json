@@ -1,0 +1,2853 @@
+{
+  "unit": "unit-1710",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001710",
+      "given": "Willa",
+      "family": "Hayward",
+      "birth_date": "1992-09-16",
+      "address_line": "114 Plumtree Road",
+      "phone": "+1-917-555-0118",
+      "email": "willa.hayward@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher with type 1 diabetes and chronic hypertension who joined in 2021. Her first pregnancy brought a hypertensive emergency at 28 weeks and severe preeclampsia with emergency cesarean at 36 weeks; six months postpartum she had severe hypoglycemia on a low-carbohydrate diet. Last seen at the practice at 30 weeks.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2021-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller moved to Sunderland over the summer and is looking for a new primary care doctor before school starts back. She has type 1 diabetes and high blood pressure, followed until now by a practice in her old town. Explained membership and that insurance still covers labs and specialists. Wants to join. Release of records faxed to her previous office. New patient appointment set for 9/14 at 3:40 after her teaching day. Asked her to bring her insulin pens and meter."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-10a",
+          "kind": "outside_records",
+          "start": "2021-09-10T14:05",
+          "reason": "prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from previous primary care office",
+              "date": "2021-09-10T14:05",
+              "author": "front desk",
+              "body": "38 pages arrived by fax from her prior primary care office, filed under outside records.\n\nSummary sheet from that office: type 1 diabetes since early 2015 (age 22), on basal-bolus insulin. Essential hypertension diagnosed early 2020; labetalol 200 mg twice a day was picked at that time because she wants children down the road. Tonsillectomy as a child. No drug allergies.\n\nCurrent medicines on their list: insulin glargine 22 units at bedtime; insulin aspart 1 unit per 10 g carbohydrate with meals plus 1 unit for every 50 mg/dL over 150; labetalol 200 mg twice daily.\n\nPreventive: Pap in 2020 normal. Childhood vaccines complete per their record, including the HPV series.\n\nForwarded to PCP for review before the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T15:40",
+          "end": "2021-09-14T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care: type 1 diabetes, hypertension",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2015-03-01"
+            },
+            {
+              "label": "Long-term current use of insulin",
+              "action": "history",
+              "onset": "2015-03-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2020-02-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 22 units under the skin at bedtime",
+              "dose": {
+                "value": 22,
+                "unit": "[iU]"
+              },
+              "frequency": "QHS",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug_text": "insulin aspart 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 1 unit per 10 g carbohydrate with meals, plus 1 unit per 50 mg/dL over 150 mg/dL",
+              "frequency": "TID with meals",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              82
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 63.8,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 122
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 203
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 124
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 147
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None now; social drinking in the past"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T17:20",
+              "author": "PCP",
+              "body": "28-year-old new to us, here to set up care. Teaches high school math; first week of classes went fine.\n\nType 1 diabetes since about age 22. Diagnosed after a few months of thirst and weight loss in early 2015, started on insulin right away and has been on a pen regimen since. Glargine 22 units at night, aspart by carb count at 1:10 with a correction of 1 per 50 over 150. Checks fingersticks 5-6 times a day and keeps a log. Lows are uncommon and mild, she feels them coming. Has seen an endocrinologist yearly and wants to keep doing that locally.\n\nBlood pressure: found high at a physical early last year, repeated readings stayed up, and her prior doctor started labetalol 200 twice daily. She brought up that she would like to have kids in a few years and her old doctor chose the drug with that in mind. Home cuff readings mostly 120s/high 70s.\n\nPSH: tonsils out at 8. No other surgery.\nMeds: as above. Allergies: none to medicines.\nFH: mom has high BP and had preeclampsia with her pregnancies. Dad has type 2 diabetes and high cholesterol. A maternal aunt has lupus. Nobody died young of heart disease.\nSH: married, lives in Sunderland with her husband. Never smoked. Used to drink socially, now doesn't. Walks most evenings.\n\nROS: no vision changes, no numbness in the feet, no chest symptoms, no urinary complaints. Periods regular.\n\nExam: well-appearing. Vitals reviewed. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, injection sites rotate cleanly without lipohypertrophy. Feet: skin intact, normal monofilament and vibration both sides, pedal pulses 2+.\n\nAssessment and plan:\n1. Type 1 diabetes, well controlled by her log. Continue glargine and aspart at current settings. A1c, CMP, lipids, urine albumin/creatinine, TSH, celiac screen today. Referral to a local endocrinology group per her preference. Yearly eye exam, she has an optometrist lined up.\n2. Essential hypertension on labetalol 200 BID, controlled here. Continue.\n3. Prevention: Pap done last year per old records. Hep C and HIV screen today, she agreed. Flu shot at a nurse visit next month.\n4. Future pregnancy: no plans this year. We will plan together before she tries.\n\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              122,
+              78
+            ],
+            "weight_kg": 63.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 6.9,
+              "Microalbumin/Creatinine Ratio": 8,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-14b",
+          "kind": "telephone",
+          "start": "2021-09-14T17:30",
+          "reason": "endocrinology referral",
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "type 1 diabetes co-management"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Referral",
+              "title": "Endocrinology referral",
+              "date": "2021-09-14T17:30",
+              "author": "PCP",
+              "body": "Referral to an area endocrinology group for ongoing co-management of type 1 diabetes on multiple daily injections. Transferring care after a move. Current regimen glargine 22 u qhs, aspart 1:10 with 1:50 correction over 150. Labs from today will follow."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "portal_message",
+          "start": "2021-09-21T07:48",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-21T07:48",
+              "author": "PCP",
+              "body": "Hi Willa, all your labs from last week look good. A1c is right where you and I would want it, kidney and liver tests are normal, no protein in the urine, thyroid normal, cholesterol fine. Celiac screen, hep C and HIV all negative. Nothing to change. Welcome aboard."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: flu and COVID booster",
+              "date": "2021-10-19T15:50",
+              "author": "RN",
+              "body": "In after school for flu shot and Pfizer booster (primary series completed in the spring through her school district clinic, per her card). Afebrile. Flu vaccine left arm, booster right arm. Tolerated both, sat 15 minutes, left feeling fine."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "outside_records",
+          "start": "2021-11-10T11:20",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry: diabetic eye examination",
+              "date": "2021-11-10T11:20",
+              "author": "optometry",
+              "body": "Diabetic eye evaluation, exam date 11/03/2021. Patient with type 1 diabetes since 2015. Visual acuity 20/20 each eye with correction. Pupils equal and reactive. Dilated fundus exam: optic nerves healthy, maculae flat, vessels normal caliber, no hemorrhages, exudates or neovascularization. Impression: no diabetic retinopathy either eye. Recommend repeat dilated exam in one year."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              77
+            ],
+            "hr": 69,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-12-14T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-12-14T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: diabetes, hypertension",
+              "date": "2021-12-14T16:25",
+              "author": "PCP",
+              "body": "Three-month check. Semester winding down, she's tired but sleeping okay. Meter download shows most readings in range with a few post-dinner highs on pizza night. Two mild lows, both caught at 60s before bed after a long walk, treated with juice. Endocrinology intake is scheduled for February.\n\nBP fine today, home readings similar. No headaches.\n\nExam: comfortable. Heart regular. Lungs clear. No edema.\n\nA/P: T1DM stable, A1c today, same doses. Suggested a small snack before evening walks. HTN controlled on labetalol, continue. Next visit summer for her physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "specialist_visit",
+          "start": "2022-02-08T09:00",
+          "service": "Endocrinology",
+          "reason": "type 1 diabetes, new to endocrinology group",
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2022-02-08T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation letter",
+              "date": "2022-02-11T13:40",
+              "author": "endocrinology",
+              "body": "Dear colleague,\n\nI saw Ms. Hayward on 02/08/2022 to take over her diabetes care after her move. She has had type 1 diabetes since 2015 and manages a basal-bolus regimen with real skill: glargine 22 units at bedtime and aspart dosed at 1 unit per 10 g of carbohydrate, correcting 1 unit per 50 mg/dL above 150. Her logs show good time in range with infrequent mild lows that she recognizes.\n\nWe reviewed your September labs, which are excellent, including a normal urine albumin and a negative celiac screen. Exam today was unremarkable; feet normal.\n\nI made no changes. We talked about continuous glucose monitoring as an option and she would like to think about it. If she plans a pregnancy, I would like to see her beforehand to set targets.\n\nAllergies: none known. Medications: glargine, aspart, labetalol 200 mg twice daily.\n\nFollow-up here in a year, sooner as needed. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "pharmacy",
+          "start": "2022-04-05T11:15",
+          "reason": "insulin prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Insulin pen prior authorization renewal",
+              "date": "2022-04-05T11:15",
+              "author": "MA",
+              "body": "Pharmacy faxed that her plan wants a renewal on the aspart pens for the new benefit year. Completed the form online with diagnosis, current dosing and A1c from December. Approved for 12 months, pharmacy notified, she can pick up tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "annual_physical",
+          "start": "2022-06-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              76
+            ],
+            "hr": 60,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 62.1,
+            "height_cm": 164.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-21T10:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-21T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-21T10:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 140
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-21T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-06-21T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-06-21T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-06-21T11:30",
+              "author": "PCP",
+              "body": "First week of summer break, in for her physical.\n\nInterval: saw endocrinology in February, no changes, still mulling over a sensor. Diabetes steady. No ED visits or illnesses this year. Walking and some swimming now that school is out. Still no plans for pregnancy this year, maybe next.\n\nMeds: glargine 22 u at bedtime, aspart 1:10 / correction 1:50 >150, labetalol 200 mg BID. NKDA.\n\nROS negative across the board. PHQ-2 0.\n\nExam: BMI about 23. Ears and throat normal. Neck supple, no thyroid enlargement. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Skin without concerning lesions; injection sites fine. Feet: intact sensation to monofilament and vibration, pulses strong, no calluses.\n\nPlan: fasting labs drawn. Pap not due until next year. Flu and COVID in the fall. Return in six months for a diabetes check, physical next summer."
+            }
+          ],
+          "state": {
+            "bp": [
+              122,
+              76
+            ],
+            "weight_kg": 62.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "portal_message",
+          "start": "2022-06-24T08:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2022-06-24T08:05",
+              "author": "PCP",
+              "body": "Labs from your physical are all fine. Sugar control is good, kidneys and urine protein normal, cholesterol and thyroid normal. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "office_visit",
+          "start": "2022-09-27T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2022-09-27T16:30",
+              "author": "front desk",
+              "body": "Did not arrive for 3:40 visit. Called, she apologized, had a parent meeting run late and forgot to call. This visit was booked early by mistake, she is not due until December. Rebooked for December and added a flu/COVID nurse slot in October."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.3
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T15:34"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T15:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: influenza and bivalent booster",
+              "date": "2022-10-11T15:48",
+              "author": "RN",
+              "body": "Flu vaccine and bivalent COVID booster given, one in each arm. No prior reactions other than a sore arm. Observed 15 min, no issues. Reminded her that a booster can nudge sugars up for a day."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "outside_records",
+          "start": "2022-11-09T10:10",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry: annual diabetic eye exam",
+              "date": "2022-11-09T10:10",
+              "author": "optometry",
+              "body": "Exam of 11/02/2022. Dilated retinal examination both eyes: discs sharp and pink, cup-to-disc 0.3, macula normal, no microaneurysms or hemorrhages. No diabetic retinopathy. Mild myopia, glasses updated. Return one year."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              90
+            ],
+            "hr": 57,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-13T15:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-13T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-12-13T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-13T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes / HTN follow-up",
+              "date": "2022-12-13T16:30",
+              "author": "PCP",
+              "body": "Doing well. Grading finals next week. Sugars a bit more variable since Halloween candy in the teachers' lounge, which she laughs about, otherwise steady. No lows below 60. Decided against a sensor for now, fingersticks work for her.\n\nBP at goal. Taking labetalol morning and evening without missing.\n\nExam: well. Heart and lungs normal. No ankle swelling.\n\nA/P: T1DM, A1c and BMP today. No changes. HTN controlled. She and her husband are thinking about starting a family in a year or two. Told her to come in first so we can plan; labetalol is fine to stay on. Endo again in February."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-16a",
+          "kind": "portal_message",
+          "start": "2022-12-16T12:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "December labs",
+              "date": "2022-12-16T12:20",
+              "author": "RN",
+              "body": "Message from your doctor: A1c and kidney panel stable and in a good range. No changes. Happy holidays."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "specialist_visit",
+          "start": "2023-02-07T08:40",
+          "service": "Endocrinology",
+          "reason": "type 1 diabetes, annual",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up letter",
+              "date": "2023-02-09T15:10",
+              "author": "endocrinology",
+              "body": "Follow-up visit 02/07/2023 for type 1 diabetes.\n\nShe continues to do very well on glargine 22 units nightly with aspart at 1 unit/10 g carbohydrate and a 1:50 correction above 150. Meter averages and the December A1c from your office are at target. Occasional mild lows, always with warning symptoms. No change in vision; eye exam in November was clear.\n\nExam: BP acceptable on labetalol. Thyroid normal. Feet with intact sensation.\n\nPlan: no dose changes. She mentioned that she and her husband may try for a pregnancy in the next year or so; I asked that she schedule a preconception visit here first. Return in 12 months.\n\nNKDA. Thank you for sharing her care."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-07a",
+          "kind": "lab_only",
+          "start": "2023-04-07T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "A1c before telehealth visit",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-07T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-07T07:30"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "telehealth_visit",
+          "start": "2023-04-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up by video",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-04-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video follow-up",
+              "date": "2023-04-11T16:30",
+              "author": "PCP",
+              "body": "Video visit, she is at home after school, identity checked with date of birth. Reviewed Friday's A1c, stable. Home BP log she held up to the camera: 118-130 over 74-82. Endocrinology saw her in February, nothing changed. No lows needing help from anyone. Feels well.\n\nPlan: continue current insulin and labetalol. Physical in July with a Pap and HPV test. Refilled labetalol for 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "annual_physical",
+          "start": "2023-07-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 66,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 62.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-07-11T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-11T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-07-11T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-11T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-11T09:50",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-07-11T09:50",
+              "text": "Specimen: liquid-based cervical cytology. Adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-07-11T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-11T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-07-11T10:50",
+              "author": "PCP",
+              "body": "Summer physical. Turns 31 in September.\n\nUpdates: endocrinology in February, no changes. Eye exam last fall without retinopathy. No illnesses, no urgent care. Spending the summer tutoring a few students and gardening. She and her husband now think they will try for a baby sometime next year.\n\nMeds: glargine 22 u qhs; aspart 1:10, correction 1:50 above 150; labetalol 200 mg twice a day. NKDA.\nSH: no tobacco ever, no alcohol.\nPHQ-2: 0.\n\nExam: well appearing, BMI 23. HEENT normal. Thyroid normal size, no nodules. Heart regular, no murmurs or gallops. Lungs clear. Breasts without masses. Abdomen soft. Pelvic: normal external genitalia, vaginal walls and cervix normal, Pap and HPV collected. Extremities without edema. Feet: normal monofilament, normal vibration, pulses palpable.\n\nPlan:\n- Labs: CMP, CBC, lipids, A1c, urine albumin/creatinine, TSH.\n- Pap with HPV today; if negative, next in five years.\n- When they decide to try for pregnancy, book a planning visit here and see endocrinology first.\n- Fall vaccines in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "portal_message",
+          "start": "2023-07-19T13:02",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2023-07-19T13:02",
+              "author": "PCP",
+              "body": "Willa, your Pap is normal and HPV is negative, so the next one isn't needed for five years. Blood work is all normal and the A1c is holding steady. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and labs",
+              "date": "2023-07-19T19:41",
+              "author": "patient",
+              "body": "Great, thanks! Five years sounds lovely."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T15:33"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T15:33"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: fall vaccines",
+              "date": "2023-10-17T15:47",
+              "author": "RN",
+              "body": "Afebrile. Influenza vaccine to the left deltoid and the 2023-24 COVID vaccine to the right. Lot numbers in the immunization record. Waited 15 minutes without a problem."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "outside_records",
+          "start": "2023-11-08T09:45",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry: diabetic retinal exam",
+              "date": "2023-11-08T09:45",
+              "author": "optometry",
+              "body": "Visit 11/01/2023, annual diabetic eye exam. Corrected acuity 20/20 OU. Anterior segment quiet. Dilated fundus: healthy discs, flat maculae, no dot-blot hemorrhages, exudates or new vessels in either eye. Assessment: type 1 diabetes without retinopathy. Recall 12 months; if she becomes pregnant, we would like to see her in the first or second trimester."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              85
+            ],
+            "hr": 61,
+            "weight_kg": 61.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-09T15:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-09T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-01-09T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-09T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-01-09T16:20",
+              "author": "PCP",
+              "body": "Back to school after the break. She has been tightening up her carb counting on purpose, getting ready for a pregnancy later this year, and her meter averages have come down. Lows still mild and recognized, a couple a month.\n\nBP fine.\n\nExam: heart regular, lungs clear, no edema.\n\nA/P: T1DM, A1c and BMP today. Insulin unchanged. HTN on labetalol, at goal. Plan a preconception visit in the spring once she has an endocrinology appointment. Reminded her a low before driving home is the one to watch for."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-12a",
+          "kind": "portal_message",
+          "start": "2024-01-12T07:55",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "January results",
+              "date": "2024-01-12T07:55",
+              "author": "PCP",
+              "body": "Your A1c came down a little from last summer, nice work. Kidney panel normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T20:14",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labetalol refill",
+              "date": "2024-03-12T20:14",
+              "author": "patient",
+              "body": "Hi, the pharmacy says I'm out of refills on the labetalol. Could you send a new one? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labetalol refill",
+              "date": "2024-03-13T09:02",
+              "author": "MA",
+              "body": "Sent to your pharmacy, 90-day supply with refills through the year."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preconception planning",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 73,
+            "weight_kg": 62.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-14T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-14T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-14T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-14T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-14T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preconception visit",
+              "date": "2024-05-14T16:50",
+              "author": "PCP",
+              "body": "Willa came in with her husband to plan for a first pregnancy. They hope to start trying after the school year ends.\n\nDiabetes: type 1 since 2015, glargine 22 at night, aspart 1:10 with 1:50 correction. A1c trending down with her work since winter. Mild lows a few times a month, all with symptoms.\nBlood pressure: on labetalol 200 BID since 2020, controlled.\nNo prior pregnancies. Her mother had preeclampsia, which she has read about and is worried about.\n\nExam: BP at goal today. Heart and lungs normal. No edema.\n\nDiscussion:\n- Labetalol is one of the standard blood pressure choices in pregnancy, so no switch is needed.\n- Insulin needs change through pregnancy; endocrinology will set targets before conception and adjust as she goes. Appointment is in early June.\n- Chronic hypertension, type 1 diabetes and her mother's history make this a higher-risk pregnancy; she will want an obstetric group with maternal-fetal medicine. We will refer as soon as she has a positive test.\n- Eye exam once pregnant.\n\nLabs today: A1c, CMP, CBC, urine albumin/creatinine, TSH. Physical in July as usual."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "specialist_visit",
+          "start": "2024-06-04T10:20",
+          "service": "Endocrinology",
+          "reason": "preconception diabetes planning",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology preconception letter",
+              "date": "2024-06-06T16:05",
+              "author": "endocrinology",
+              "body": "Seen 06/04/2024 for diabetes planning ahead of a first pregnancy.\n\nYour May labs are excellent: A1c within the range we want before conception, kidney function and urine albumin normal, thyroid normal. Current insulin: glargine 22 units at bedtime and aspart 1 unit per 10 g carbohydrate, correction 1 per 50 above 150. She has no complications.\n\nWe reviewed pregnancy glucose goals, the tendency toward more lows in the first trimester and rising needs later, and when to call us. Insulin doses unchanged today. Labetalol 200 mg twice daily is compatible with pregnancy.\n\nPlease let us know when she conceives; we will see her every 4 to 6 weeks in pregnancy. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "annual_physical",
+          "start": "2024-07-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              77
+            ],
+            "hr": 61,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-07-16T10:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-07-16T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-07-16T10:30",
+              "author": "PCP",
+              "body": "Yearly physical. Most labs were drawn in May for her planning visit, so only lipids today.\n\nSince May: saw endocrinology in June, plan in place, doses the same. They are now trying to conceive. Feeling well, swimming in the mornings.\n\nMeds unchanged. NKDA. PHQ-2 0.\n\nExam: normal general exam. Heart regular. Lungs clear. Abdomen soft. Skin clear. Feet with normal sensation and pulses.\n\nHealth maintenance: Pap last July, normal, next 2028. COVID and flu in the fall, both fine in pregnancy if she is pregnant by then. Tdap will be due in the third trimester of any pregnancy.\n\nPlan: lipids. Message us with a positive test and we will see her that week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "portal_message",
+          "start": "2024-10-23T06:52",
+          "reason": "positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "date": "2024-10-23T06:52",
+              "author": "patient",
+              "body": "Good morning, I got a positive home test this morning! Last period started September 20. Sugars have been running a little low the past few days. What should I do next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "date": "2024-10-23T08:30",
+              "author": "RN",
+              "body": "Congratulations! Booked you Friday at 3:40 with your doctor to confirm and start the referrals. Please let endocrinology know today about the lows, and keep glucose tabs with you at school."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "office_visit",
+          "start": "2024-10-25T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of other high risk pregnancies, first trimester",
+              "action": "diagnosed",
+              "onset": "2024-10-23",
+              "note": "LMP 2024-09-20, EDD 2025-06-27; chronic hypertension and type 1 diabetes",
+              "icd10": "O09.891"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              64
+            ],
+            "hr": 68,
+            "weight_kg": 63.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-25T15:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-25T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-25T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.62
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-25T15:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.6
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-25T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-25T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-25T16:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-25T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-25T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-25T16:27"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics / maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Obstetrics and Gynecology",
+              "reason": "high-risk pregnancy: chronic hypertension, type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pregnancy confirmation",
+              "date": "2024-10-25T17:05",
+              "author": "PCP",
+              "body": "Positive home test Wednesday. LMP 9/20/2024, so about 5 weeks today, due date by dates 6/27/2025. First pregnancy. Mild nausea in the mornings, no bleeding or cramping.\n\nGlucose: a few readings in the 60s this week, caught early. She called endocrinology Wednesday; they are seeing her next week and kept her doses for now.\n\nBP fine on labetalol. No headaches.\n\nUrine hCG in the office positive.\n\nExam: well, a little tired. Heart regular, lungs clear, abdomen soft and nontender, no edema.\n\nA/P:\n1. Early pregnancy, high risk with chronic hypertension and type 1 diabetes. Referral placed today to an obstetric group with maternal-fetal medicine; they will do the dating scan and prenatal labs. Added to the problem list.\n2. T1DM: glargine 22 and aspart as before, endocrinology adjusting in pregnancy. A1c, CMP, CBC, urine albumin today and urinalysis for a baseline.\n3. Chronic HTN: labetalol 200 BID continues.\n4. Flu and COVID vaccines given today, both recommended in pregnancy.\n5. She will keep us in the loop and see us between OB visits as needed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "portal_message",
+          "start": "2024-10-29T12:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Friday's labs",
+              "date": "2024-10-29T12:10",
+              "author": "PCP",
+              "body": "All of Friday's labs are normal, including blood count, kidney and liver tests and the urine. Your A1c is as good as it has been with us. The obstetric group has the referral and should call you this week."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "outside_records",
+          "start": "2024-11-20T14:30",
+          "reason": "obstetric new prenatal visit",
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2024-11-20T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics / maternal-fetal medicine: new prenatal visit",
+              "date": "2024-11-20T14:30",
+              "author": "obstetrics",
+              "body": "New obstetric visit 11/18/2024.\n\n32-year-old G1P0 at about 8 weeks 3 days by LMP of 09/20/2024. Pregnancy risk factors: chronic hypertension on labetalol 200 mg twice daily; type 1 diabetes on glargine 22 units nightly and aspart by carbohydrate ratio, co-managed with her endocrinologist; family history of preeclampsia in her mother. Past surgery: tonsillectomy. No known drug allergies.\n\nTransvaginal ultrasound today: single intrauterine pregnancy with cardiac activity, size consistent with dates. EDD confirmed 06/27/2025.\n\nPlan: prenatal care with our group with maternal-fetal medicine involvement; routine prenatal labs sent; diabetic and hypertensive surveillance per our protocol. Continue labetalol and insulin.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pregnancy check-in, diabetes and blood pressure",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-01-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video check-in, 16 weeks",
+              "date": "2025-01-14T16:25",
+              "author": "PCP",
+              "body": "Video from her classroom after the students left; confirmed name and birth date.\n\nAbout 16 and a half weeks. Nausea gone since the new year. Seeing the obstetric group every few weeks and endocrinology monthly. Anatomy scan scheduled for February. Her home cuff runs 120s-130s over 80s on labetalol. Sugars in range, fewer lows than in the first trimester. Same insulin doses.\n\nNo headaches, no vision changes, no swelling.\n\nPlan: continue labetalol 200 BID and current insulin per endocrinology. Eye exam with her optometrist in February. Tdap at the start of the third trimester, we can give it here or OB can. Call or text any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "outside_records",
+          "start": "2025-02-12T10:40",
+          "reason": "diabetic eye exam in pregnancy",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry: diabetic eye exam, pregnancy",
+              "date": "2025-02-12T10:40",
+              "author": "optometry",
+              "body": "Exam 02/05/2025. Patient about 20 weeks pregnant with type 1 diabetes. Acuity 20/20 both eyes with glasses. Dilated fundus exam: normal discs, normal vessels, maculae flat, no hemorrhages or exudates. No diabetic retinopathy. Suggest a repeat exam within a year of delivery, sooner for any change in vision."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-04a",
+          "kind": "ed_visit",
+          "start": "2025-04-04T18:50",
+          "end": "2025-04-04T23:20",
+          "service": "Emergency Medicine",
+          "reason": "severe headache and blurred vision at 28 weeks",
+          "vitals": [
+            {
+              "time": "2025-04-04T18:55",
+              "bp": [
+                172,
+                116
+              ],
+              "hr": 88,
+              "rr": 20
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-04T19:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.25
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-04T19:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 62
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-04T19:25",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-04-07T09:15",
+              "author": "emergency medicine",
+              "body": "Emergency department physician record, date of service 04/04/2025. Received by fax.\n\nCC: bad headache and blurry vision, 28 weeks pregnant.\n\nHPI: 32-year-old G1 at 28 weeks with chronic hypertension and type 1 diabetes, came in this evening with a severe headache and blurring of vision. Per patient, prenatal care had otherwise gone smoothly. Takes labetalol and has done so the whole pregnancy.\n\nPMH: type 1 diabetes since age 22; chronic essential hypertension since age 27.\nPSH: tonsillectomy, age 8.\nMeds: insulin glargine 22 units SC at bedtime; insulin aspart 1 unit/10 g carbohydrate with meals plus correction 1 unit/50 mg/dL above 150; labetalol 200 mg PO twice a day.\nAllergies: NKDA.\nFH: mother hypertension and preeclampsia; father type 2 diabetes, hyperlipidemia; maternal aunt with SLE. No early cardiac deaths.\nSH: math teacher at a high school. Never smoker. No alcohol.\n\nTriage vitals: BP 172/116, HR 88, RR 20.\n\nExam: uncomfortable from the headache, alert and oriented. Fundoscopy: arteriolar narrowing with cotton-wool spots. Reflexes brisk throughout; mild clonus at both ankles. Gravid uterus consistent with dates.\n\nLabs: Hgb 10.2 g/dL. Platelets 95,000/mm3. Creatinine 1.2 mg/dL. AST 70, ALT 65 U/L. UA 2+ protein.\n\nED course: intravenous labetalol given with improvement in pressures. Obstetrics evaluated at the bedside.\n\nImpression: hypertensive emergency in pregnancy at 28 weeks; anemia of pregnancy; thrombocytopenia.\n\nDisposition: admitted to the antepartum service under obstetrics."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-04b",
+          "kind": "hospital_admission",
+          "start": "2025-04-04T23:20",
+          "end": "2025-04-09T13:30",
+          "service": "Obstetrics and Gynecology",
+          "reason": "antepartum admission, hypertensive emergency at 28 weeks",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Antepartum discharge summary",
+              "date": "2025-04-10T11:00",
+              "author": "obstetrics",
+              "body": "Antepartum unit discharge summary. Admitted 04/04/2025, discharged 04/09/2025.\n\nAdmitting diagnosis: hypertensive emergency in pregnancy, 28 weeks, on a background of chronic hypertension and type 1 diabetes.\n\nHospital course: admitted from the emergency department after IV labetalol. Magnesium sulfate given for 24 hours. Betamethasone two doses, 24 hours apart, for fetal lung maturity. Headache and visual symptoms cleared by the second day. Pressures settled on her home oral labetalol 200 mg twice daily without a dose change. Repeat labs during the stay were stable. Fetal testing reassuring throughout. Insulin managed with endocrinology input; home doses resumed at discharge.\n\nDischarge medications: labetalol 200 mg twice daily; insulin glargine 22 units at bedtime; insulin aspart 1 unit/10 g carbohydrate with 1:50 correction above 150.\n\nAllergies: NKDA.\n\nFollow-up: twice-weekly antenatal testing and labs at the obstetric office; return immediately for headache, visual change, right upper quadrant pain or shortness of breath. Primary care follow-up within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "telephone",
+          "start": "2025-04-14T12:15",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-hospital call",
+              "date": "2025-04-14T12:15",
+              "author": "RN",
+              "body": "Called after we received the ED record and antepartum discharge summary. She is home, on leave from school for now. No headache since the hospital, vision normal. Home BP mostly 140s over 90s. Going to OB twice a week for monitoring. Taking labetalol morning and night. Booked Friday 4/18 with her doctor. Reviewed warning signs; she knows to go straight to labor and delivery."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-18a",
+          "kind": "office_visit",
+          "start": "2025-04-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital stay for hypertensive emergency in pregnancy",
+          "conditions": [
+            {
+              "label": "Hypertensive emergency in pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-04-04",
+              "icd10": "I16.1"
+            },
+            {
+              "label": "Anemia complicating pregnancy, third trimester",
+              "action": "diagnosed",
+              "onset": "2025-04-04",
+              "icd10": "O99.013"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2025-04-04"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              146,
+              94
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 74.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-18T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-18T10:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-04-18T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital follow-up, 30 weeks",
+              "date": "2025-04-18T11:20",
+              "author": "PCP",
+              "body": "Seen two weeks after the ED visit and antepartum stay. Records reviewed: at 28 weeks she came in with a severe headache and blurred vision, BP 172/116, cotton-wool spots on fundoscopy, brisk reflexes with ankle clonus, Hgb 10.2, platelets 95K, creatinine 1.2, AST 70 / ALT 65, 2+ protein. Treated as a hypertensive emergency in pregnancy, IV labetalol, magnesium, betamethasone, home 4/9 on her same labetalol dose.\n\nToday: 30 weeks. Headache gone. Vision back to normal. Baby moving well. Home readings mostly 140s/90s. OB is seeing her twice weekly with labs and fetal testing; she says the labs have been holding steady. Out of the classroom for now, a long-term sub has her classes. Husband with her.\n\nMeds: labetalol 200 mg BID; glargine 22 u qhs; aspart 1:10, correction 1:50 >150. NKDA.\n\nExam: BP 146/94. Looks well, a bit anxious. Heart regular. Lungs clear. Abdomen gravid, nontender, including the right upper quadrant. Trace ankle edema. Reflexes normal today, no clonus.\n\nA/P:\n1. Hypertensive emergency in pregnancy, now stable; chronic hypertension underneath. Blood pressure management stays with obstetrics, who have her twice a week. Added to the problem list along with anemia in pregnancy and thrombocytopenia from the April labs; OB is trending both.\n2. T1DM on the same doses with endocrinology following monthly.\n3. Tdap given today, third trimester.\n4. She knows to go to labor and delivery for headache, vision change, upper belly pain or breathlessness.\n5. See us after the baby comes; we'll touch base by message in the meantime."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              94
+            ],
+            "weight_kg": 74.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "hospital_admission",
+          "start": "2025-06-04T07:40",
+          "end": "2025-06-08T12:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "right upper quadrant pain, headache and blurred vision at 36 weeks",
+          "vitals": [
+            {
+              "time": "2025-06-04T07:45",
+              "bp": [
+                165,
+                105
+              ],
+              "hr": 88,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-04T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 55
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-06-04T08:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-04T08:05",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 600
+                },
+                {
+                  "test": "Schistocytes",
+                  "loinc": "800-3",
+                  "text": "Present"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-06-04T08:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary: delivery admission",
+              "date": "2025-06-10T15:20",
+              "author": "obstetrics",
+              "body": "Labor and delivery / postpartum discharge summary. Admitted 06/04/2025, discharged 06/08/2025.\n\nPresentation: 32-year-old G1 at 36 weeks 5 days with chronic hypertension and type 1 diabetes, eight weeks after an emergency department visit and antepartum admission for hypertensive emergency. Arrived with a day of steady, dull right upper quadrant pain that would turn sharp at times, and two days of headache and blurred vision.\n\nAdmission: BP 165/105, HR 88, T 37.2 C. Right upper quadrant tender, no rebound or guarding. Hemoglobin 9.8 g/dL, platelets 55,000/mm3, AST 72, ALT 68 U/L, LDH 600 U/L, total bilirubin 2.1 mg/dL, schistocytes seen on the peripheral smear. Urine protein 2+. Fetal heart tracing reassuring.\n\nDiagnosis: severe preeclampsia with hemolysis, raised liver enzymes and low platelets, requiring immediate delivery.\n\nCourse: Magnesium sulfate started on arrival. Emergency low transverse cesarean section performed the same morning under general anesthesia given the platelet count. Liveborn infant handed to the pediatric team. Magnesium continued 24 hours after delivery. Pressures and laboratory values improved day by day. Incision healing well. Insulin continued at her home doses with endocrinology input.\n\nPast surgical history now: tonsillectomy; cesarean section 06/04/2025.\n\nDischarge medications: labetalol 200 mg by mouth twice daily; insulin glargine 22 units at bedtime; insulin aspart 1 unit/10 g carbohydrate, correction 1:50 above 150.\n\nAllergies: NKDA.\n\nFollow-up: obstetric office in one week for blood pressure and incision check; endocrinology in 2 to 4 weeks; primary care after the postpartum visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              86
+            ]
+          }
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "portal_message",
+          "start": "2025-06-17T21:30",
+          "reason": "update after delivery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby came early",
+              "date": "2025-06-17T21:30",
+              "author": "patient",
+              "body": "Just wanted to let you know the baby came early on June 4th by emergency C-section. It was scary but we are both home and doing okay. OB checked my incision and blood pressure last week and is keeping me on labetalol for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby came early",
+              "date": "2025-06-18T07:10",
+              "author": "PCP",
+              "body": "Willa, congratulations, and I'm so glad you're both home. We got the hospital summary. Keep following the OB plan for your blood pressure. When things settle, please book a visit with me so we can catch up on diabetes and blood pressure going forward. Rest when you can."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "pharmacy",
+          "start": "2025-08-12T09:40",
+          "reason": "labetalol refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Labetalol refill",
+              "date": "2025-08-12T09:40",
+              "author": "MA",
+              "body": "Pharmacy refill request for labetalol 200 mg tablets, twice daily. Last seen 4/18. Per PCP: approved 90 days. Left a message asking her to book a follow-up visit. No call back yet."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "pharmacy",
+          "start": "2025-10-21T14:05",
+          "reason": "insulin refills",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Insulin pen refills",
+              "date": "2025-10-21T14:05",
+              "author": "MA",
+              "body": "Pharmacy request for glargine and aspart pens, same directions on file. Endocrinology usually sends these; pharmacy says their prescription ran out. PCP approved one 90-day fill of each. Sent a portal reminder to schedule a visit with us."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "ed_visit",
+          "start": "2025-12-08T17:25",
+          "end": "2025-12-08T23:10",
+          "service": "Emergency Medicine",
+          "reason": "confusion and agitation",
+          "vitals": {
+            "bp": [
+              108,
+              86
+            ],
+            "hr": 69,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-08T17:30",
+              "results": [
+                {
+                  "test": "Glucose, fingerstick",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-08T17:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-08T17:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-12-10T10:30",
+              "author": "emergency medicine",
+              "body": "Emergency department note, date of service 12/08/2025. Received electronically.\n\nCC: confused and agitated.\n\nHPI: 33-year-old woman with type 1 diabetes, chronic hypertension, and a recent pregnancy complicated by hypertensive emergency and severe preeclampsia, brought in by her husband for confusion and agitation. He reports she has been trying to lose weight and switched to a low-carbohydrate diet recently, and is working out more often. For about a week she has had spells of sweating and a racing heart, which she blamed on the new exercise routine.\n\nMeds: insulin glargine; insulin aspart; labetalol 200 mg twice daily. Allergies: NKDA.\nPSH: cesarean section 6/2025; tonsillectomy.\nSH: never smoker, no alcohol. Teacher.\n\nFingerstick glucose on arrival 45 mg/dL. Remaining vital signs normal.\n\nExam: sweaty and shaky, confused, no focal deficit.\n\nLabs: A1c 6.2%. Creatinine 0.9 mg/dL, potassium 4.2, sodium 140 mEq/L.\n\nCourse: IV dextrose given; within minutes she was alert and oriented and repeat fingersticks were in range. Ate a meal and was observed several hours without a further drop.\n\nImpression: severe hypoglycemia in type 1 diabetes, in the setting of reduced carbohydrate intake and increased exercise on unchanged insulin.\n\nDisposition: discharged home with her husband. Advised to reduce insulin while eating fewer carbohydrates and to contact her endocrinologist within the week."
+            }
+          ],
+          "state": {
+            "bp": [
+              124,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "specialist_visit",
+          "start": "2026-01-14T09:40",
+          "service": "Endocrinology",
+          "reason": "follow-up after severe hypoglycemia",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up letter",
+              "date": "2026-01-16T12:25",
+              "author": "endocrinology",
+              "body": "Seen 01/14/2026 after her December emergency visit for severe hypoglycemia with confusion. She had cut carbohydrates sharply and started exercising more while keeping glargine at 22 units. A1c in the ED was 6.2%. Since then she has eased the diet and had only a few mild lows.\n\nChanges today:\n- Insulin glargine reduced to 18 units at bedtime.\n- Insulin aspart unchanged: 1 unit per 10 g carbohydrate, correction 1 unit per 50 mg/dL above 150.\n- Nasal glucagon 3 mg prescribed for severe lows; her husband was shown how to use it.\n\nWe talked about planning exercise around insulin and carrying fast-acting sugar. Labetalol 200 mg twice daily continues per her other physicians.\n\nReturn in 3 months. NKDA. Copy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "outside_records",
+          "start": "2026-01-20T08:50",
+          "reason": "endocrinology letter filed",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology letter routed",
+              "date": "2026-01-20T08:50",
+              "author": "MA",
+              "body": "January endocrinology letter and December ED record routed to PCP. PCP note on routing slip: reviewed; please ask her to book a visit when she can."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T10:15",
+          "reason": "labetalol refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Labetalol refill",
+              "date": "2026-03-10T10:15",
+              "author": "MA",
+              "body": "Refill request for labetalol 200 mg twice daily. Not seen here since April 2025. PCP approved 90 days. Front desk called and left a voicemail with times for a visit; portal message sent as well."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anemia complicating pregnancy, third trimester|O99.013": {
+        "code": "O99.013",
+        "display": "Anemia complicating pregnancy, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypertensive emergency in pregnancy|I16.1": {
+        "code": "I16.1",
+        "display": "Hypertensive emergency",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of other high risk pregnancies, first trimester|O09.891": {
+        "code": "O09.891",
+        "display": "Supervision of other high risk pregnancies, first trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "insulin aspart 100 UNT/ML Pen Injector": {
+        "code": "2206090",
+        "display": "3 ML insulin, regular, human 100 UNT/ML Pen Injector",
+        "ingredient": "insulin",
+        "receipt": "NLM RxNav drugs"
+      },
+      "labetalol hydrochloride 200 MG Oral Tablet": {
+        "code": "896762",
+        "display": "labetalol hydrochloride 200 MG Oral Tablet",
+        "ingredient": "labetalol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Glucose, fingerstick": {
+        "code": "41653-7",
+        "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Schistocytes": {
+        "code": "800-3",
+        "display": "Schistocytes [Presence] in Blood by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002269",
+      "given": "Gordon",
+      "family": "Ryan",
+      "birth_date": "1957-03-26",
+      "address_line": "61 Lockhouse Road",
+      "phone": "+1-860-555-0182",
+      "email": "gordon.ryan@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired long-haul truck driver with poorly controlled hypertension, COPD and hyperlipidemia who joined in 2022. In late 2025 he had an MI with a stent, then an acute left popliteal occlusion treated with thromboembolectomy and fasciotomy; in June 2026, a week after his last practice visit, an intracerebral hemorrhage led to intubation and ventilator-associated pneumonia, and the practice knows the rest only from faxed notes and a case manager's call.",
+      "events": [
+        {
+          "id": "2022-08-09a",
+          "kind": "telephone",
+          "start": "2022-08-09T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2022-08-09T10:20", "body": "Mr. Ryan called about joining. Says his old doctor is retiring and a friend told him about the membership. Medicare, part D through his plan. Went over the membership agreement and fees, he'll sign at the first visit. Records release signed electronically and faxed to his prior primary care office. New patient visit set for 8/16 at 9:00. Asked him to bring his inhalers and every bottle he takes."}
+          ]
+        },
+        {
+          "id": "2022-08-12a",
+          "kind": "outside_records",
+          "start": "2022-08-12T14:05",
+          "reason": "prior primary care records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "front desk", "date": "2022-08-12T14:05", "body": "38 pages by fax from the prior primary care office, covering 2015 to 2022. Indexed for the PCP.\n\nTheir problem list: hypertension; COPD; hyperlipidemia; former tobacco use.\nTheir medication list: lisinopril 10 mg daily; atorvastatin 40 mg daily; tiotropium 18 mcg inhalation capsule daily; albuterol HFA 2 puffs every 4 hours as needed.\nAllergies: none known.\nScreening on file: colonoscopy 2019, no polyps, next due 2029.\nLast office notes from 2021 and early 2022 record blood pressure above goal at several visits with lisinopril continued."}
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2012-01-01", "note": "above goal on lisinopril 10 mg"},
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "onset": "2014-01-01", "note": "GOLD group B per prior records; spirometry ordered"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2012-01-01"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "1975-01-01", "note": "40 pack-years, quit 2016"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hyperlipidemia"},
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 hours as needed for shortness of breath", "dose": {"value": 90, "unit": "mcg"}, "frequency": "Q4H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Retired long-haul truck driver"}
+          ],
+          "state": {"bp": [152, 92], "weight_kg": 91.0, "height_cm": 178.0, "labs": {"Low Density Lipoprotein": 94, "Total Cholesterol": 172, "High Density Lipoprotein": 41, "Triglycerides": 186, "Hemoglobin A1c": 5.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-16T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-16T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-16T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-08-16T10:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-08-16T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-08-16T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-08-16T10:00"},
+            {"vaccine": "Tdap", "date": "2022-08-16T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-08-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-08-16T10:10"},
+            {"procedure": "Immunization administration", "performed": "2022-08-16T10:00"}
+          ],
+          "orders": [
+            {"id": "spiro-2022", "action": "placed", "order": "Spirometry with bronchodilator", "category": "procedure", "reason": "COPD, no spirometry in prior records"},
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-years, quit 2016"},
+            {"id": "aaa-2022", "action": "placed", "order": "Abdominal aortic ultrasound, screening", "category": "imaging", "reason": "male former smoker age 65"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-08-16T10:05", "body": "65M establishing care. Previous office closing. Brought a grocery bag of bottles and both inhalers.\n\nHPI: Hypertension for years, on lisinopril 10. Doesn't check at home, no cuff. Prior notes show readings in the 150s more often than not. No headaches, no chest discomfort, no swelling. COPD: gets winded on a flight of stairs or carrying groceries in from the truck, has to stop partway up his basement steps. Morning cough, clear sputum. Uses the Spiriva capsule every morning, albuterol maybe 3-4 times a week. No ER trips or steroid bursts for his lungs he can remember in the last couple of years. Never had breathing tests that he recalls. Cholesterol on atorvastatin 40, no muscle aches.\n\nPMH: HTN, COPD, high cholesterol.\nPSH: none.\nMeds: lisinopril 10 daily, atorvastatin 40 daily, tiotropium 18 mcg inhaled daily, albuterol 2 puffs q4h prn.\nAllergies: none to medications.\nFH: father had a heart attack at 61. Mother had a brain bleed at 74. One sibling with blood pressure and type 2 diabetes.\nSH: drove long-haul for 30-some years, retired. Smoked from his late teens, a pack and more a day on the road, about 40 pack-years, quit in 2016 and stayed quit. Doesn't drink at all. Divorced, lives alone in Westfield, drives.\n\nExam: BP high today, repeat similar (see vitals). Comfortable at rest, speaks full sentences. No JVD. Heart regular, no murmur. Lungs: diminished breath sounds throughout, mild prolonged expiration, no wheeze, no crackles. Abdomen benign, no pulsatile mass. Legs: no edema, pedal pulses 2+ both feet. Neuro grossly intact.\nPHQ-2: 0.\n\nA/P\n1. HTN, above goal on lisinopril 10. Office reading only, no home numbers. Recheck next visit; asked him to pick up a home cuff. CMP today.\n2. COPD, group B by prior notes. No spirometry on file: ordering full spirometry with bronchodilator. Continue tiotropium, albuterol prn. Inhaler technique reviewed with the capsule device, he does it well.\n3. Hyperlipidemia on atorvastatin 40. Lipids today.\n4. Former heavy smoker: qualifies for yearly low-dose CT. Ordered. Also one-time aortic ultrasound for AAA screening.\n5. Health maintenance: colonoscopy 2019 normal, due 2029. PCV20 and Tdap given today. Hep C and HIV screening today, A1c with sibling's diabetes. Flu and COVID when the fall vaccines arrive.\nRTC 4-5 months."}
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T16:40",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-08-18T16:40", "body": "Hi Gordon, your labs from Tuesday look fine. Kidney function and potassium are normal on the lisinopril, blood counts normal, sugar and A1c normal, and the hepatitis C and HIV screens are negative. Cholesterol numbers are about where I'd expect on atorvastatin 40, no change. The breathing test and the scans are being scheduled, our staff will call you."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "procedure_visit",
+          "start": "2022-09-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spirometry",
+          "measure": ["hr", "spo2"],
+          "reports": [
+            {"study": "Spirometry", "performed": "2022-09-13T13:30", "text": "Pre- and post-bronchodilator spirometry, albuterol 4 puffs via spacer. Acceptable and repeatable effort. Post-bronchodilator FEV1/FVC 0.64. Post-bronchodilator FEV1 68% of predicted. No significant bronchodilator response. CAT score 14. mMRC dyspnea grade 2.", "conclusion": "Fixed airflow obstruction consistent with COPD. Symptom burden and exacerbation history fit GOLD group B."}
+          ],
+          "procedures": [
+            {"procedure": "Spirometry", "performed": "2022-09-13T13:30"}
+          ],
+          "orders": [
+            {"id": "spiro-2022", "action": "done", "date": "2022-09-13T14:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Spirometry interpretation", "author": "PCP", "date": "2022-09-13T15:00", "body": "Spirometry reviewed. Ratio 0.64 after albuterol with FEV1 68% predicted, no reversibility. CAT 14, mMRC 2, no exacerbations in the past year. COPD, group B. Long-acting antimuscarinic alone is reasonable; stay on tiotropium daily with albuterol as needed. Will revisit if his breathing worsens or he needs rescue more than a few times a week."}
+          ]
+        },
+        {
+          "id": "2022-10-06a",
+          "kind": "nurse_visit",
+          "start": "2022-10-06T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-06T11:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-06T11:22"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-06T11:20"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine administration", "author": "RN", "date": "2022-10-06T11:35", "body": "In for flu and COVID booster. No fever today, no prior reactions. High-dose flu left arm, bivalent COVID booster right arm. Information sheets given. Sat 15 minutes, fine, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "imaging",
+          "start": "2022-10-20T08:40",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-10-20T08:40", "text": "Baseline low-dose CT of the chest without contrast. No pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "done", "date": "2022-10-20T08:40"}
+          ],
+          "documents": [
+            {"type": "Imaging Result Note", "title": "LDCT result", "author": "PCP", "date": "2022-10-20T17:10", "body": "Baseline screening CT negative, Lung-RADS 1. Repeat in a year. Will let him know."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T10:00",
+          "reason": "AAA screening",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2022-11-08T10:00", "text": "Limited ultrasound of the abdominal aorta for aneurysm screening. Aorta visualized from the proximal to distal segments. Maximum anteroposterior diameter 2.1 cm, distal. No focal dilation. No dissection flap.", "conclusion": "Normal caliber abdominal aorta. No aneurysm."}
+          ],
+          "orders": [
+            {"id": "aaa-2022", "action": "done", "date": "2022-11-08T10:00"}
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T12:15",
+          "reason": "imaging results",
+          "documents": [
+            {"type": "Patient Message", "title": "Scan results", "author": "PCP", "date": "2022-11-10T12:15", "body": "Gordon, both scans came back normal. The lung CT showed no spots, and we'll repeat it every fall. The aorta ultrasound is normal size, that one doesn't need repeating. See you in January for blood pressure."},
+            {"type": "Patient Message", "title": "RE: Scan results", "author": "patient", "date": "2022-11-10T19:02", "body": "Thanks doc good news. I got the cuff at the drugstore, will bring it in."}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension and COPD follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-24T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2023-01-24T14:35", "body": "S: Here for BP and lungs. Brought his new cuff, has taken it a handful of times, numbers mostly 140s to 150s on top. Took the lisinopril every day. Breathing same as the fall, short of breath on stairs, rescue inhaler a few times a week, no colds this winter.\nO: Vitals as charted, BP again above goal. Cuff checked against ours, reads within a few points. Lungs diminished, no wheeze. Heart regular. No edema.\nA/P: HTN above goal on lisinopril 10. Wants to keep logging a few more weeks before anything changes; fine, bring the log next visit. COPD stable on tiotropium. Refills sent. RTC 4-5 months."}
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "pharmacy",
+          "start": "2023-04-13T09:30",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Tiotropium refill", "author": "MA", "date": "2023-04-13T09:30", "body": "Pharmacy faxed refill request for tiotropium 18 mcg capsules, 90-day supply, with HandiHaler device. Last fill January. Sent per protocol, PCP cosign."}
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "office_visit",
+          "start": "2023-06-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-20T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2023-06-20T11:30", "body": "Rescheduled from the 6th, his truck was in the shop. Forgot the BP log at home, thinks the readings have been about the same as winter. No symptoms. Lungs unchanged, uses albuterol mostly when mowing.\nExam: BP up again in the office. Lungs diminished, no wheeze. No edema.\nA/P: HTN still above goal, lisinopril 10 continues. Bring the log to the physical in August and we'll go over it then. COPD stable."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T09:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T09:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T09:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-08-22T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T09:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-08-22T09:50", "body": "Initial Medicare wellness visit.\nHealth risk review: lives alone, independent with daily tasks and driving. No falls this year. Hearing fine per him. Vision: readers. No memory concerns. PHQ-2 0. Advance directive: none, given the forms to take home.\nHabits: walks the neighborhood most mornings, short loops because of breath. Nonsmoker since 2016. No alcohol.\nBP log (brought it this time): mostly 140s-150s over high 80s-90s.\nExam: BP above goal. Heart regular. Lungs diminished, no wheeze. Abdomen soft. Feet warm, pulses present.\nScreening: colonoscopy 2019, due 2029. LDCT due this fall, ordering. AAA screen done 2022, normal.\nVaccines: due flu and updated COVID in fall; shingles series not started, recommends at the fall nurse visit.\nPlan: fasting labs today. HTN still above goal on home and office readings; continuing lisinopril 10 for now, will revisit at the winter visit. COPD stable on tiotropium."}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T13:20",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-08-24T13:20", "body": "Labs from the physical are fine. Kidneys and potassium normal, blood count normal, cholesterol steady on the atorvastatin. Nothing to change. Your lung CT is booked for November."}
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "nurse_visit",
+          "start": "2023-10-05T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-05T15:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-05T15:07"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-10-05T15:09"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-05T15:05"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine administration", "author": "RN", "date": "2023-10-05T15:25", "body": "Three today per PCP: high-dose flu L arm, 2023-24 COVID R arm, Shingrix dose 1 L arm lower site. Warned the shingles shot can make him achy for a day or two. Dose 2 due in 2-6 months, reminder set for January. Observed 15 min without problem."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T08:20",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-11-14T08:20", "text": "Annual low-dose CT of the chest without contrast, compared with the prior screening study. No pulmonary nodules. No consolidation, effusion or adenopathy. Heart size normal.", "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "done", "date": "2023-11-14T08:20"}
+          ],
+          "documents": [
+            {"type": "Imaging Result Note", "title": "LDCT result", "author": "PCP", "date": "2023-11-15T08:05", "body": "Second screening CT negative, Lung-RADS 1. Portal note sent. Repeat fall 2024."}
+          ]
+        }
+      ]
+    }
+  ]
+}

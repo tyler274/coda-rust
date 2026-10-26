@@ -1,0 +1,761 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001989",
+   "given": "Darren",
+   "family": "Dowd",
+   "birth_date": "1964-07-26",
+   "address_line": "27 Quarry Hill Lane",
+   "phone": "+1-774-555-0181",
+   "email": "darren.dowd@example.test",
+   "marital_status": "married",
+   "summary": "Self-employed carpenter who joins in 2020 with metformin-treated type 2 diabetes, then has hypertension and hyperlipidemia found in 2021, cubital tunnel syndrome in 2023, stable angina with a 70% LAD lesion in 2024, glargine added in 2025, type 4 RTA after an ED visit for hyperkalemia, and a pupil-involving right third nerve palsy in July 2026 after his last visit.",
+   "events": [
+    {
+     "id": "2020-10-20a",
+     "kind": "establish_care",
+     "start": "2020-10-20T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, transferring care; diabetes",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2020-04-01",
+       "note": "Diagnosed spring 2020 at prior practice"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       84
+      ],
+      "weight_kg": 101.4,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin A1c": 6.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-10-20T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.9
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 drinks per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Carpenter, self-employed"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-20T09:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "lipid-2020",
+       "action": "placed",
+       "order": "Lipid panel, fasting",
+       "category": "lab",
+       "reason": "Diabetes, baseline lipids"
+      },
+      {
+       "id": "fit-2020",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-10-20T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-10-20T10:15",
+       "body": "NEW PATIENT VISIT\n\nDarren is a 56 yo carpenter (self-employed, does mostly finish work and decks) transferring care. His prior PCP retired and the office closed; records release signed today.\n\nDiabetes: told he had type 2 DM this past spring on routine bloodwork. Started metformin, worked up to 1000 mg BID over a few weeks. GI upset at first, now fine. Checks sugars rarely. No hypoglycemia, no polyuria. Has not had an eye exam since diagnosis.\n\nOther history: none he knows of. No surgeries. No hospitalizations.\nMeds: metformin 1000 mg BID.\nAllergies: none to medications.\nFamily: dad had a heart attack at 64 and high BP. Mom has type 2 diabetes and high cholesterol. An uncle on mom's side had a stroke at 70.\nSocial: smokes about half a pack a day, started around 20. Has tried to quit on his own a couple of times. Beer with friends maybe once or twice a week. Works for himself, lots of lifting and kneeling. Right handed. Plays guitar.\n\nROS: negative except as above. No chest pain with work, no dyspnea, no claudication, no vision change, no foot numbness.\n\nExam: well appearing. BP 134/84 single reading, will recheck at next visit. BMI 32. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abd soft, nontender. Feet: skin intact, monofilament normal bilaterally, DP/PT 2+. No edema.\n\nA/P\n1. T2DM, on metformin. A1c drawn today. Needs eye exam - list of local optometrists given. Foot exam normal today.\n2. Tobacco: half ppd, ~18 pack-yr. Talked about quitting. Not ready to pick a date, open to revisiting.\n3. BP 134/84 - above goal for diabetic but one reading. Recheck next visit.\n4. Lipids: wants to come back fasting. Order placed.\n5. HCM: flu shot today. HCV and HIV screening done today. FIT kit given. Prior records requested.\n\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-22a",
+     "kind": "portal_message",
+     "start": "2020-10-22T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent results",
+       "author": "PCP",
+       "date": "2020-10-22T16:40",
+       "body": "Hi Darren,\n\nYour A1c came back at 6.9%, which is close to where we want it on metformin, so no changes for now. Hepatitis C and HIV screens were both negative.\n\nWhen you get a chance, please come by the lab one morning before eating for the cholesterol test. No appointment needed.\n\nAnd drop the FIT kit in the mail when you can.\n\nTake care"
+      }
+     ]
+    },
+    {
+     "id": "2020-11-10a",
+     "kind": "outside_records",
+     "start": "2020-11-10T11:20",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior Primary Care Records",
+       "author": "MA",
+       "date": "2020-11-10T11:20",
+       "body": "Prior primary care records received, 22 pages.\n\nSummary for the chart:\n- Spring 2020: bloodwork at a routine visit showed type 2 diabetes. Metformin 500 mg daily started, increased stepwise to 1000 mg twice daily by early summer.\n- Problem list at that office: type 2 diabetes. Nothing else listed.\n- Medications: metformin 1000 mg BID.\n- Allergies: NKDA.\n- No colonoscopy or stool test on file. No vaccine records other than a tetanus shot listed as more than 10 years ago.\n- Last lipid panel on file is several years old, normal at that time.\n\nFiled to media. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-24a",
+     "kind": "lab_only",
+     "start": "2020-11-24T08:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-11-19T07:00",
+       "resulted": "2020-11-24T10:30",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2020",
+       "action": "done",
+       "date": "2020-11-24T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "PCP",
+       "date": "2020-11-24T13:05",
+       "body": "FIT negative. Repeat yearly. Letter to patient."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-19a",
+     "kind": "office_visit",
+     "start": "2021-01-19T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "3 month diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2021-01-20a",
+     "kind": "telephone",
+     "start": "2021-01-20T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2021-01-20T10:05",
+       "body": "Called re: missed appt yesterday. Pt said he was on a job in another town and lost track of the day. Says he'll call back once his schedule settles to rebook. Reminded him the fasting lab is still open."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-09a",
+     "kind": "pharmacy",
+     "start": "2021-03-09T14:10",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Metformin refill",
+       "author": "RN",
+       "date": "2021-03-09T14:10",
+       "body": "Pharmacy request: metformin 1000 mg BID, #180. Last A1c 6.9 in Oct. Pt overdue for follow-up - approved x1 per protocol, front desk asked to reach him for an appointment."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-13a",
+     "kind": "portal_message",
+     "start": "2021-04-13T19:22",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-16T12:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-06T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "covid shots",
+       "author": "patient",
+       "date": "2021-04-13T19:22",
+       "body": "Got both covid shots at the drugstore, March 16 and April 6. Pfizer. Picture of the card attached. Arm was sore for a day, that's it."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: covid shots",
+       "author": "MA",
+       "date": "2021-04-14T09:10",
+       "body": "Thanks Darren, both doses are entered in your record now. You're also still due for a diabetes visit - want me to have the front desk call you?"
+      }
+     ]
+    },
+    {
+     "id": "2021-06-28a",
+     "kind": "portal_message",
+     "start": "2021-06-28T07:35",
+     "orders": [
+      {
+       "id": "lipid-2020",
+       "action": "cancelled",
+       "date": "2021-06-28T11:50"
+      },
+      {
+       "id": "labs-2021-07",
+       "action": "placed",
+       "order": "BMP, CBC, lipid panel, A1c, urinalysis - fasting",
+       "category": "lab",
+       "reason": "Elevated blood pressure readings, diabetes"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "blood pressure",
+       "author": "patient",
+       "date": "2021-06-28T07:35",
+       "body": "There was a health fair at the lumber yard last week and they took my pressure twice, once in the morning and then again on a different day, both high, something like 160s over high 90s. They told me to tell my doctor. I feel fine. Should I come in?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: blood pressure",
+       "author": "PCP",
+       "date": "2021-06-28T11:50",
+       "body": "Yes, please come in - I've asked the front desk to get you a visit next week. Before that, stop by the lab one morning before breakfast so we have your kidney numbers, blood count, cholesterol and A1c to go over together. If you get a headache that won't quit, chest pain or trouble with vision or speech, go to the ER."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-01a",
+     "kind": "lab_only",
+     "start": "2021-07-01T07:40",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-07-01T07:40",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Glucose",
+         "value": 126
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-07-01T07:40",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 15.0
+        },
+        {
+         "test": "Hematocrit",
+         "value": 45.0
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-07-01T07:40",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 220
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 145
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 35
+        },
+        {
+         "test": "Triglycerides",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2021-07-01T07:40",
+       "results": [
+        {
+         "test": "Urine Protein"
+        },
+        {
+         "test": "Urine Blood"
+        },
+        {
+         "test": "Urine Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-07-01T07:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "labs-2021-07",
+       "action": "done",
+       "date": "2021-07-01T14:00"
+      }
+     ]
+    },
+    {
+     "id": "2021-07-07a",
+     "kind": "office_visit",
+     "start": "2021-07-07T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Elevated blood pressure at health fair",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2021-06-21"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "onset": "2021-07-01"
+      },
+      {
+       "label": "Obesity, unspecified",
+       "action": "diagnosed",
+       "onset": "2020-10-20"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Essential hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia with diabetes"
+      }
+     ],
+     "state": {
+      "bp": [
+       162,
+       98
+      ],
+      "hr": 78,
+      "weight_kg": 101.4
+     },
+     "vitals": {
+      "bp": [
+       162,
+       98
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Current every day smoker"
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-2021-07",
+       "action": "placed",
+       "order": "Basic metabolic panel in 2 weeks",
+       "category": "lab",
+       "reason": "Started lisinopril"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-07-07T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Blood Pressure",
+       "author": "PCP",
+       "date": "2021-07-07T11:30",
+       "body": "S: Here about the health fair readings (two separate days, 160s/high 90s per pt). Feels well, no complaints. No headaches, chest pain, dyspnea, vision change or leg swelling. First visit back since October - missed the January follow-up. Still on metformin 1000 BID, taking it. Still smoking about half a pack a day.\nFH reviewed: maternal uncle with stroke, father MI and HTN.\n\nO: BP 162/98 (repeated after 5 min seated, similar), HR 78. BMI 32.\nNo carotid bruits. Heart regular, S1 S2 normal, no S3 or murmur. Lungs clear. No edema, distal pulses full. Fundi without obvious hemorrhages on undilated look.\n\nLabs from 7/1 (fasting): Na 140, K 4.2, Cr 1.1, eGFR >60, glucose 126. Hgb 15 / Hct 45. UA negative. TC 220, LDL 145, HDL 35, TG 250. A1c 7.2.\n\nA/P\n1. Essential hypertension - readings now confirmed in office on top of the health fair. Kidney function and UA fine, no signs of target-organ damage on exam. With diabetes, ACE inhibitor first. Start lisinopril 20 mg daily. BMP in 2 weeks. Home cuff - he'll buy one, log mornings.\n2. Hyperlipidemia - LDL 145, low HDL, high TG, plus diabetes and smoking. Start atorvastatin 40 mg. Reviewed muscle aches.\n3. T2DM - A1c up a bit to 7.2. Diet: cut the regular soda and the drive-through lunches. Aim for 30 min walking most days.\n4. Obesity, BMI 32 - as above.\n5. Smoking - strongly advised to quit, this is now the single biggest thing he can do. He says he'll think about it. Discussed patch / meds, declines for now.\n\nNurse BP check in a month. Diabetes visit in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-21a",
+     "kind": "lab_only",
+     "start": "2021-07-21T07:55",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-07-21T07:55",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-2021-07",
+       "action": "done",
+       "date": "2021-07-21T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP 2 wk after lisinopril start",
+       "author": "PCP",
+       "date": "2021-07-21T15:10",
+       "body": "K and Cr fine on lisinopril. Message sent."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-22a",
+     "kind": "portal_message",
+     "start": "2021-07-22T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Kidney and potassium check",
+       "author": "PCP",
+       "date": "2021-07-22T08:15",
+       "body": "Darren - your kidney function and potassium look fine on the lisinopril. Keep taking it. How are the home readings looking?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Kidney and potassium check",
+       "author": "patient",
+       "date": "2021-07-22T20:48",
+       "body": "Mostly 130s over 80s now. A couple in the 140s. No side effects."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-10a",
+     "kind": "nurse_visit",
+     "start": "2021-08-10T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "BP check; tetanus booster",
+     "state": {
+      "bp": [
+       134,
+       82
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2021-08-10T15:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-08-10T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit - BP Check",
+       "author": "RN",
+       "date": "2021-08-10T15:55",
+       "body": "BP check 1 month after starting lisinopril. Seated, R arm, large cuff. Brought his home cuff - within a few points of ours. Home log mostly 128-138 / 78-86. No cough, no dizziness.\nTdap given L deltoid (last tetanus >10 yrs per prior records). Tolerated.\nReviewed with PCP: continue current dose, keep logging."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-08a",
+     "kind": "lab_only",
+     "start": "2021-10-08T07:30",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.9,
+       "Microalbumin/Creatinine Ratio": 12
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-10-08T07:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-10-08T07:30",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "A1c / microalbumin",
+       "author": "PCP",
+       "date": "2021-10-08T14:20",
+       "body": "A1c 7.9, up from 7.2. Microalbumin normal. Will discuss at Tuesday visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-12a",
+     "kind": "office_visit",
+     "start": "2021-10-12T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "bp": [
+       132,
+       80
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-12T16:35"
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-ref-2021",
+       "action": "placed",
+       "order": "Endocrinology referral",
+       "category": "referral",
+       "to": "Endocrinology",
+       "reason": "Type 2 diabetes, A1c rising on metformin"
+      },
+      {
+       "id": "fit-2021",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-10-12T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes / HTN Follow-up",
+       "author": "PCP",
+       "date": "2021-10-12T17:10",
+       "body": "Diabetes and BP f/u.\n\nBig news: quit smoking about 3 weeks ago, cold turkey. Says he got tired of being winded on ladders. Some irritability, chewing gum a lot. No cigarettes since.\n\nBP fine on lisinopril, home readings 120s-130s/70s-80s. On atorvastatin without aches.\n\nSugars: has been cutting soda and walking evenings since July. A1c last week 7.9, up from 7.2. He's frustrated - feels like he's doing everything right. Asks to see a diabetes specialist; his mother's endocrinologist helped her a lot.\n\nExam: BP at goal today. Weight roughly flat. Heart RRR, lungs clear. Feet - normal monofilament and pulses.\n\nUrine microalbumin normal. BMP fine.\n\nA/P\n1. T2DM, A1c 7.9 and rising despite metformin full dose + lifestyle. Options reviewed (adding a second agent here vs specialist). He prefers endocrinology - referral placed. Continue metformin meanwhile.\n2. HTN - controlled on lisinopril 20.\n3. HLD - continue atorvastatin 40, lipids at physical.\n4. Tobacco - quit ~3 wks ago. Congratulated. Discussed cravings, offered patch as backup, he wants to stay without it.\n5. Flu shot today. FIT kit for this year given.\n\nStill hasn't had an eye exam - reminded."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       128,
+       78
+      ]
+     }
+    },
+    {
+     "id": "2021-11-02a",
+     "kind": "telephone",
+     "start": "2021-11-02T09:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Endocrinology referral",
+       "author": "front desk",
+       "date": "2021-11-02T09:30",
+       "body": "Endocrinology office called - needed last note and labs before scheduling. Faxed 10/12 note, A1c results and med list. They will call pt; first new-patient opening is early January."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "lab_only",
+     "start": "2021-11-16T08:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-11-12T06:30",
+       "resulted": "2021-11-16T11:10",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2021",
+       "action": "done",
+       "date": "2021-11-16T11:10"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,442 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002144",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "telephone",
+          "start": "2026-01-06T09:20",
+          "reason": "records follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Second Records Request",
+              "author": "MA",
+              "date": "2026-01-06T09:20",
+              "body": "Still no discharge summary from the December admission. Called hospital health information; they had no record of our fax. Re-sent request with the signed release and confirmed receipt by phone this time. Patient also called: transplant center intake nurse reached him, first clinic visit 1/21."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "outside_records",
+          "start": "2026-01-09T14:20",
+          "reason": "hospital records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital Records Received",
+              "author": "MA",
+              "date": "2026-01-09T14:35",
+              "body": "Received by fax from regional hospital: discharge summary 12/15-12/19/2025, ultrasound, MRI and CT chest reports, admission labs. Scanned to chart and routed to PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "Records Reviewed",
+              "author": "PCP",
+              "date": "2026-01-09T17:10",
+              "body": "Reviewed discharge summary and imaging. Matches what patient told us. Child-Pugh B, single 4 cm HCC, no metastases. Med list already reflects discharge changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T13:00",
+          "service": "Transplant Hepatology",
+          "reason": "liver transplant evaluation",
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 2.9,
+              "Prothrombin Time-International Normalized Ratio": 1.5,
+              "Albumin": 3.0,
+              "Bilirubin, Direct": 1.7
+            }
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-21T12:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-21T12:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-21T12:20",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 760
+                },
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Hepatology Consultation",
+              "author": "transplant hepatology",
+              "date": "2026-02-06T11:00",
+              "body": "Transplant hepatology, new patient evaluation\nVisit date: 01/21/2026\nReferred by: hospital gastroenterology service, after December 2025 admission\nCopy to: primary care physician\n\nHistory: 54-year-old man with chronic hepatitis B, previously on tenofovir with interrupted adherence, admitted in December with jaundice, ascites and weight loss. Workup there showed a single 4.0 cm LI-RADS 5 lesion in the right lobe with AFP 800, no vascular invasion and no extrahepatic disease on CT chest, in a cirrhotic liver. Discharged on diuretics.\nSince discharge: energy slightly better, abdomen smaller, weight stable at home. Taking tenofovir daily without misses, confirmed by his brother who fills his pill organizer. No confusion, no GI bleeding, no fevers.\nNo alcohol ever. Never smoker. Works as a logistics coordinator, currently on reduced hours. Brother is his main support and transportation.\nMedications: tenofovir disoproxil fumarate 300 mg daily, spironolactone 100 mg daily, furosemide 40 mg daily, cholecalciferol 2000 IU daily, amlodipine 5 mg daily (listed on referral; patient reports it was stopped). NKDA.\nExam: mildly icteric. Alert, no asterixis. Abdomen with small-volume ascites, nontender. No edema.\nLabs today: total bilirubin 2.9, albumin 3.0, INR 1.5. AFP 760. HBV DNA 210 IU/mL, falling on consistent tenofovir.\n\nAssessment: hepatocellular carcinoma within Milan criteria in decompensated hepatitis B cirrhosis, Child-Pugh B. He is an appropriate candidate for liver transplant evaluation.\nPlan:\n- Formal transplant evaluation begun: surgical, social work, nutrition and financial consultations to be scheduled; standard evaluation testing per protocol.\n- Continue tenofovir 300 mg daily; adherence is essential before and after transplant.\n- Continue spironolactone 100 mg and furosemide 40 mg; 2 g sodium diet.\n- Repeat liver imaging and AFP every 3 months while waiting.\n- We will update primary care with the committee decision.\n\nTransplant hepatology attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "portal_message",
+          "start": "2026-02-20T18:40",
+          "reason": "transplant update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Transplant list",
+              "author": "patient",
+              "date": "2026-02-20T18:40",
+              "body": "Wanted to let you know the transplant center called on Wednesday. The committee approved me and I'm officially on the waiting list as of the 18th. They gave me a pager app. My brother is going to be my support person. Do you need anything from me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Transplant list",
+              "author": "PCP",
+              "date": "2026-02-21T08:15",
+              "body": "That's a big step, Kenji. We haven't received anything from the center yet, so thank you for telling us. Keep your March 3rd appointment and we'll go over everything and do labs then."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, liver disease",
+          "conditions": [
+            {
+              "label": "Awaiting organ transplant status",
+              "icd10": "Z76.82",
+              "action": "diagnosed",
+              "onset": "2026-02-18",
+              "note": "liver transplant waiting list per patient"
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              68
+            ],
+            "weight_kg": 66.0,
+            "labs": {
+              "Sodium": 134,
+              "Potassium": 4.4,
+              "Bilirubin, Total": 2.8,
+              "Alanine Aminotransferase": 72,
+              "Aspartate Aminotransferase": 88,
+              "Alkaline Phosphatase": 262,
+              "Albumin": 3.0,
+              "Platelets": 104,
+              "Bilirubin, Direct": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-03T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-03T10:05",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 88
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 262
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-03T10:05",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 104
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-03T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-03-03T10:10",
+              "body": "54M, HCC in hepatitis B cirrhosis, now listed for liver transplant.\nTransplant hepatology letter from 1/21 received in February: Child-Pugh B, within Milan, evaluation started. He reports committee approval and listing on 2/18; no letter from the center about that yet.\nHow he is doing: energy fair, back to about 30 hours a week. Belly stable, no fullness to speak of. Weighs himself every morning, 145-146 lb. Not missing tenofovir, brother still checks the pill box. No confusion, sleep ok, no bleeding, no fever. Mood: worried at times but coping, PHQ-9 4.\nMeds reconciled with bottles: tenofovir disoproxil 300 mg daily, spironolactone 100 mg daily, furosemide 40 mg daily, vitamin D3 2000 units daily. Not on amlodipine since December. NKDA.\nExam: BP 110/68. Weight 66.0 kg. Mild scleral icterus. Lungs clear. Heart regular. Abdomen soft, no tense ascites, nontender. No asterixis. No ankle edema.\nA/P\n1. HCC, listed for transplant: care led by the center; imaging every 3 months there. Added transplant waiting list status to problem list.\n2. Decompensated HBV cirrhosis with ascites: controlled on spironolactone/furosemide. BMP, hepatic panel, CBC today; results to the transplant team.\n3. Chronic hepatitis B: tenofovir daily, adherence good now.\n4. Hypertension: off medication, BP low-normal on diuretics. No antihypertensive needed.\n5. Vitamin D deficiency: continue D3.\nFollow up in about 6 months or sooner; he will keep us posted after each center visit."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              68
+            ],
+            "weight_kg": 66.0
+          }
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "portal_message",
+          "start": "2026-03-05T12:25",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2026-03-05T12:25",
+              "body": "Results from Tuesday: kidneys and potassium fine on the diuretics, sodium 134. Bilirubin 2.8, a bit better than December. Liver enzymes still up as expected. Platelets 104, similar to the hospital. Copies faxed to the transplant center."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T10:50",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request: Tenofovir",
+              "author": "RN",
+              "date": "2026-04-14T10:50",
+              "body": "Mail-order request for tenofovir disoproxil 300 mg, 90 days. Last fill on time in January. Renewed x1 per PCP. Diuretics are being filled under the transplant center's prescriptions per pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "specialist_visit",
+          "start": "2026-05-20T09:40",
+          "service": "Transplant Hepatology",
+          "reason": "transplant waiting list follow-up",
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 2.7,
+              "Prothrombin Time-International Normalized Ratio": 1.5,
+              "Bilirubin, Direct": 1.5
+            }
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-20T08:55",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.7
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-20T08:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-20T08:55",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 820
+                },
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI abdomen with and without contrast",
+              "performed": "2026-05-12T14:10",
+              "text": "Multiphase liver MRI, comparison 12/16/2025. Cirrhotic liver. The known right hepatic lobe observation now measures 4.3 x 3.9 cm, previously 4.0 x 3.7 cm, with the same arterial hyperenhancement, washout and capsule. No new hepatic observations. No tumor in vein; portal and hepatic veins patent. No lymphadenopathy.",
+              "conclusion": "Single LI-RADS 5 lesion, 4.3 cm, slightly larger; no new lesions or vascular invasion. Remains within Milan criteria.",
+              "loinc": "24556-3"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Hepatology Follow-up",
+              "author": "transplant hepatology",
+              "date": "2026-07-08T10:30",
+              "body": "Transplant hepatology follow-up\nVisit date: 05/20/2026\nCopy to: primary care physician\n\nMr. Chen remains active on the liver transplant waiting list (listed 02/18/2026). Doing reasonably; working part time. Adherent to tenofovir. No encephalopathy, bleeding or infections since our last visit.\nMRI 05/12: single right-lobe LI-RADS 5 lesion, 4.3 cm (from 4.0 cm), no new lesions, no vascular invasion; still within Milan criteria.\nLabs: AFP 820 ng/mL. HBV DNA not detected. Total bilirubin 2.7, INR 1.5.\nMedications: tenofovir disoproxil fumarate 300 mg daily, spironolactone 100 mg daily, furosemide 40 mg daily, cholecalciferol 2000 IU daily. NKDA.\nAssessment: HCC within Milan in Child-Pugh B hepatitis B cirrhosis, on the waiting list. Viral suppression achieved.\nPlan: no medication changes. Bridging locoregional therapy to be discussed at our multidisciplinary tumor board. Next imaging and AFP in 3 months.\n\nTransplant hepatology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Transplant Center Letter Received",
+              "author": "MA",
+              "date": "2026-07-08T11:05",
+              "body": "Transplant hepatology follow-up letter for 5/20 visit with MRI report received by fax. Filed to chart, routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T07:55",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vitamin D refill",
+              "author": "patient",
+              "date": "2026-06-16T07:55",
+              "body": "Can you send more vitamin D to the mail order? I'm down to about two weeks. Everything else came from the transplant pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Vitamin D refill",
+              "author": "RN",
+              "date": "2026-06-16T11:20",
+              "body": "Sent to your mail-order pharmacy, 90-day supply with refills. It should ship this week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T20:10",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall appointment",
+              "author": "patient",
+              "date": "2026-07-21T20:10",
+              "body": "Hi, I'm due for my follow-up around September. Can I get an early morning slot? My brother drives me on Thursdays."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Fall appointment",
+              "author": "front desk",
+              "date": "2026-07-22T09:30",
+              "body": "You're booked for Thursday 9/10 at 8:20 AM. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up, liver disease",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

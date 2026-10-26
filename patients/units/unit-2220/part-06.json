@@ -1,0 +1,160 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002220",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "nurse_visit",
+          "start": "2026-01-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.3}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-01-20T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-01-20T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2026-01-20T09:15",
+             "body": "INR in range. No bleeding. Continue 35 mg/week."}
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-17T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2026-02-17T10:55",
+             "body": "Winter has been long, he says, but no new problems. Left side the same as in the fall. Back aches more with the cold, still manageable. No palpitations, no bleeding, no chest pain.\n\nExam: BP as charted. Irregular rhythm, rate controlled. Mild left-sided weakness unchanged. Gait steady.\n\nA/P\n- Chronic back pain on long-term morphine: unchanged; PDMP reviewed, agreement renewed for the year.\n- AF/warfarin: monthly INR, recent results in range.\n- HTN, DM2, CAD, prior strokes, metastatic colon cancer on observation: no changes.\nPhysical in May."}
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "nurse_visit",
+          "start": "2026-03-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 1.9}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-03-24T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-03-24T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2026-03-24T09:20",
+             "body": "INR just under range. No missed doses per wife. Per PCP: 7.5 mg on Saturdays, 5 mg other days (37.5 mg/week). Recheck 3 weeks."},
+            {"type": "Nurse Note", "title": "Anticoagulation follow-up", "author": "RN", "date": "2026-04-14T11:30",
+             "body": "Called about the 3-week recheck; wife says he has a cold and asked to fold it into the May physical. PCP agreed."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "annual_physical",
+          "start": "2026-05-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.6, "Low Density Lipoprotein": 85, "Hemoglobin A1c": 7.3}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-12T09:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2026-05-12T09:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-05-12T09:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2026-05-12T09:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2026-05-12T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2026-05-12T09:40",
+             "body": "Annual wellness visit, 73.\n\nFunction: independent in self-care; wife handles medications and most driving since the second stroke. Walks daily. No falls this year. Uses the railing on stairs. PHQ-2 1. AUDIT-C 1. Hearing fine. Vision: cataracts per optometry, not limiting.\n\nExam: BP as charted. Irregularly irregular. Lungs clear. Abdomen soft. Mild left-sided weakness, stable. Feet: sensation intact, pulses palpable.\n\nPlan: labs today including INR (recheck skipped in April with a cold). Vaccines current; flu and COVID in the fall. Advance directive reviewed with patient and wife, unchanged. Medications unchanged. Written plan given."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "outside_records",
+          "start": "2026-06-23T14:00",
+          "labs": [{"panel": null, "collected": "2026-06-09T10:00", "results": [{"test": "Carcinoembryonic Antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 8.3}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2026-06-09T08:45",
+            "text": "Surveillance CT chest, abdomen and pelvis with contrast. Comparison 02/2026. Right hepatic lobe lesions unchanged in number and size. Small bilateral pulmonary nodules unchanged. Ascending colon thickening unchanged. Postsurgical change of appendectomy. No new lesions, no adenopathy, no ascites.",
+            "conclusion": "Stable disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology surveillance visit", "author": "oncology", "date": "2026-06-23T14:00",
+             "body": "Medical oncology, visit 06/09/2026.\nMetastatic right colon adenocarcinoma, off treatment since November 2022, stable on serial imaging. Recurrent ischemic stroke July 2025 with mild residual left weakness. ECOG 1.\nCT today stable. CEA 8.3, within the range of the past two years.\nPlan: continue observation. CT and CEA in 3 to 4 months. Port flush every 8 weeks."}
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "nurse_visit",
+          "start": "2026-07-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.7}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2026-07-20T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-07-20T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2026-07-20T09:15",
+             "body": "INR in range on 37.5 mg/week. No bleeding. Continue. Next check mid-August."}
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "office_visit",
+          "start": "2026-08-03T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "quarterly follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-03T08:25", "resulted": "2026-08-03T14:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-08-03T08:25", "resulted": "2026-08-03T14:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-08-03T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2026-08-03T08:35",
+             "body": "First appointment of the day; his wife drove. Doing well over the summer, sits in the yard and does a little sanding in the shop. No new weakness, speech at his usual. No palpitations. No bleeding or black stools. Back about 4/10. Oncology scan in June stable, letter reviewed.\n\nExam: BP as charted. Irregular rhythm, rate controlled. Lungs clear. Mild left-sided weakness, unchanged from spring. Gait steady.\n\nA/P\n- AF on warfarin: INR in range two weeks ago; next check in mid-August as planned.\n- DM2: A1c and BMP drawn today.\n- HTN, CAD, prior strokes: continue current medications.\n- Chronic low back pain on long-term morphine: PDMP reviewed, monthly script sent.\n- Metastatic colon cancer: observation per oncology.\nNext visit booked for November 2."},
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2026-08-03T16:30",
+             "body": "Today's A1c and BMP reviewed: kidney function and potassium stable, A1c in his usual range. No changes. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "outside_records",
+          "start": "2026-08-07T10:45",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-03T12:50", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-08-03T12:50", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 3.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-03T12:50", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Blood Urea Nitrogen", "value": 14}]}
+          ],
+          "reports": [{"study": "CT head without contrast", "performed": "2026-08-03T12:40",
+            "text": "Non-contrast CT head. Acute intraparenchymal hemorrhage in the right basal ganglia. No intraventricular extension. Chronic changes of prior right hemisphere infarcts. No hydrocephalus.",
+            "conclusion": "Acute right basal ganglia hemorrhage without intraventricular extension."}],
+          "documents": [
+            {"type": "Outside Records", "title": "Neurocritical care admission note", "author": "neurocritical care", "date": "2026-08-07T10:45",
+             "body": "Regional hospital neurocritical care unit, admission history and physical, 08/03/2026. Faxed to PCP.\n\nCC: left-sided weakness and slurred speech, then airway compromise.\nHPI: 73 year old man with atrial fibrillation on warfarin and two prior ischemic strokes, with left-sided weakness and slurred speech beginning about two hours before arrival. His wife reports he was in his usual health until that morning.\nPMH: atrial fibrillation; ischemic strokes 2024 and 2025; metastatic right colon adenocarcinoma on observation; hypertension; type 2 diabetes; coronary artery disease; chronic low back pain. PSH: open appendectomy, diagnostic cardiac catheterization, port.\nHome medications: metformin 1000 mg BID, lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily, morphine sulfate ER 30 mg BID, warfarin. NKDA.\nFH: father MI at 72; mother ischemic stroke at 78; paternal uncle colon cancer at 75.\nSH: retired carpenter; former smoker, 30 pack-years, quit 10 years ago; alcohol 1 to 2 drinks a month.\n\nExam on arrival: BP 190/100, HR 78, irregularly irregular. Alert but anxious. Left facial droop, left hemiparesis, dysarthria.\nLabs: hemoglobin 13.2 g/dL, platelets 250,000/uL, INR 3.2, creatinine 1.0 mg/dL, BUN 14 mg/dL.\nCT head: right basal ganglia hemorrhage without intraventricular extension.\n\nED and ICU course: alertness declined in the ED and he could no longer protect his airway; intubated. Warfarin reversed with 4-factor prothrombin complex concentrate and IV vitamin K. Nicardipine infusion for blood pressure. Warfarin and aspirin held.\nAssessment: warfarin-associated intracerebral hemorrhage, right basal ganglia, with airway compromise.\nPlan: neurocritical care admission, repeat imaging, ventilator management, family meeting."},
+            {"type": "Result Note", "title": "Outside record filed", "author": "PCP", "date": "2026-08-07T15:20",
+             "body": "Neurocritical care admission note received and reviewed. Called his wife; she is at the hospital daily and will keep us posted. Filed."}
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T18:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Art update", "author": "patient", "date": "2026-08-19T18:25",
+             "body": "This is his wife writing on Art's account. He is off the breathing machine since last week and they moved him out of the ICU on Sunday. They are talking about a rehab place. I don't think he will make the November appointment but I'm not cancelling yet. Thank you for calling the other day."},
+            {"type": "Patient Message", "title": "RE: Art update", "author": "PCP", "date": "2026-08-20T08:05",
+             "body": "Thank you for writing. I'm glad he is off the ventilator and out of the ICU. Keep the November appointment for now and we'll move it as needed. Please ask the hospital to send us his discharge summary when he leaves, and call any time."}
+          ]
+        },
+        {
+          "id": "2026-11-02a",
+          "kind": "office_visit",
+          "start": "2026-11-02T10:00",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

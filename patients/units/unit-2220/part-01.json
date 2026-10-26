@@ -1,0 +1,290 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002220",
+      "given": "Arthur",
+      "family": "Crowley",
+      "birth_date": "1952-10-20",
+      "address_line": "41 Chestnut Hill Lane",
+      "phone": "+1-646-555-0123",
+      "email": "arthur.crowley@example.test",
+      "marital_status": "married",
+      "summary": "Retired carpenter with hypertension, type 2 diabetes, coronary disease and chronic back pain on long-term morphine who joins in 2020, develops paroxysmal AF on warfarin and stage IV right colon cancer in 2022, has an appendectomy in 2023 and ischemic strokes in 2024 and 2025, and is in hospital with a warfarin-associated intracerebral hemorrhage at today.",
+      "events": [
+        {
+          "id": "2020-08-27a",
+          "kind": "telephone",
+          "start": "2020-08-27T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2020-08-27T10:20",
+             "body": "Caller Arthur Crowley, 67, Florence. His doctor of many years is retiring at the end of September and a neighbor recommended us. Medicare plus a supplement. Explained the membership model and fee; he wants to go ahead. Takes a long-acting pain medicine for his back and asked whether we would keep prescribing it. Told him the physician reviews that at the first visit. New patient visit set for 9/14 at 9:00. Records release faxed to his current office. Asked him to bring all his medicine bottles."}
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T09:00",
+          "end": "2020-09-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history"},
+            {"label": "Coronary artery disease", "action": "history"},
+            {"label": "Chronic low back pain", "action": "history"},
+            {"label": "Long term (current) use of opiate analgesic", "action": "history"},
+            {"label": "History of tobacco dependence", "action": "history"},
+            {"label": "Family history of colon cancer", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 40, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "coronary artery disease"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary artery disease"},
+            {"drug_text": "12 HR morphine sulfate 30 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 12 hours", "dose": {"value": 30, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "chronic low back pain"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [138, 86], "weight_kg": 93.5, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 7.0, "Low Density Lipoprotein": 84, "Creatinine": 1.08, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired carpenter"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per month"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-14T10:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-14T10:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-14T10:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-09-14T10:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": null, "collected": "2020-09-14T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-09-14T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-09-14T10:05",
+             "body": "Arthur is a 67 year old retired carpenter here to establish care; his longtime PCP is retiring. Wife with him for the second half of the visit.\n\nHe says he has had blood pressure trouble and sugar diabetes for a good many years, neither giving him symptoms. Some years back he had chest discomfort and was sent for a heart catheterization at an outside hospital; he was told he had coronary disease, no stent, and to stay on aspirin and the statin. No chest pain since. Back: decades of framing and roofing, low back pain that has been daily for years, no leg weakness, no bladder or bowel trouble. Has been on long-acting morphine 30 mg twice a day under his prior doctor for a long time; says it lets him do yard work and short walks. Does not take extra doses, no early refills by his account.\n\nPMH: hypertension, type 2 diabetes, coronary artery disease (diagnostic cath, medical management), chronic low back pain.\nPSH: diagnostic cardiac catheterization. No other operations.\nMeds (bottles reviewed): metformin 1000 mg BID, lisinopril 20 mg daily, HCTZ 25 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily, morphine ER 30 mg q12h.\nAllergies: none known.\nFH: father had an MI at 72. Mother had an ischemic stroke at 78. A paternal uncle had colon cancer found at 75.\nSH: married, lives with wife in Florence. Carpenter for about 40 years, retired. Smoked roughly a pack a day for 30 years, stopped in 2012. A drink or two a month.\n\nROS otherwise negative.\n\nExam: well appearing, pleasant. Heart rate regular, no murmur. Lungs clear. Abdomen soft, nontender. Lumbar paraspinal tenderness, straight leg raise negative both sides, strength and reflexes symmetric. Feet: skin intact, monofilament felt throughout, pulses palpable. No edema.\n\nAssessment and plan:\n1. Hypertension: around goal today on lisinopril and HCTZ. Continue. BMP.\n2. Type 2 diabetes on metformin: A1c, urine albumin today. Eye exam is due; he will book with his optometrist.\n3. CAD, stable without angina: aspirin and atorvastatin 40 continue. Lipids.\n4. Chronic low back pain on long-term morphine: reviewed state prescription monitoring report, single prescriber and pharmacy, fills on time. Controlled-substance agreement reviewed and signed. Will continue ER morphine 30 mg q12h, monthly scripts from this office. Pain 4/10 today.\n5. Former smoker, 30 pack-years, quit 2012: eligible for annual low-dose CT; he would rather wait until his records arrive and then schedule. Will revisit in December.\n6. Health maintenance: hepatitis C and HIV screening today. Prior office's records requested for colonoscopy and vaccine history. Flu shot when it arrives.\n\nReturn in 3 months."}
+          ]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "portal_message",
+          "start": "2020-09-16T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2020-09-16T16:40",
+             "body": "Arthur, your labs from Monday look good. Kidney function and potassium are normal, the A1c is right about where we want it, and the bad cholesterol is in good range on your atorvastatin. Urine protein is normal. Hepatitis C and HIV screens are negative. No changes to your medicines."}
+          ]
+        },
+        {
+          "id": "2020-10-02a",
+          "kind": "outside_records",
+          "start": "2020-10-02T11:15",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2020-10-02T11:15",
+             "body": "38 pages received by fax from the patient's previous primary care office, scanned. Summary for chart, prepared by the physician:\n- Hypertension and type 2 diabetes followed there for years on the current regimen.\n- Diagnostic cardiac catheterization at an outside hospital, managed medically afterward; the cath report itself is not in the packet.\n- Chronic low back pain on ER morphine 30 mg twice daily, with a signed pain agreement on file there.\n- Colonoscopy 2012: no polyps.\n- Tdap 2016. No shingles or pneumococcal vaccines documented.\n- Allergies: none.\nNothing in the packet changes the current plan."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-06T14:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T14:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2020-10-06T14:45",
+             "body": "High-dose flu vaccine 0.7 mL IM, left deltoid. Screening questions negative. VIS reviewed. Tolerated well, left after 15 minutes."}
+          ]
+        },
+        {
+          "id": "2020-11-03a",
+          "kind": "telephone",
+          "start": "2020-11-03T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Morphine refill", "author": "MA", "date": "2020-11-03T09:10",
+             "body": "Patient called for his monthly morphine ER. Last fill 10/6. Prescription monitoring checked, no other prescribers. Routed to PCP, e-prescribed for 30 days. He was told it would be at his usual pharmacy by noon."}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "office_visit",
+          "start": "2020-12-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "orders": [{"id": "ldct-2020", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "former smoker, 30 pack-years, quit 2012"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-12-08T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2020-12-08T11:10",
+             "body": "Follow-up of HTN, diabetes, back pain.\n\nFeeling fine. Splitting wood most weekends, back about the same, 4/10 most days. Taking everything as listed, no missed doses he can think of. No chest pain, no breathlessness on hills. Home sugars when he checks run 120s to 150s fasting.\n\nRecords from his old office reviewed; colonoscopy 2012 without polyps, so next one is due around 2022.\n\nExam: BP as charted. Regular rhythm. Lungs clear. No edema.\n\nA/P\n- HTN: at goal, continue.\n- DM2: A1c at goal in September, continue metformin.\n- Chronic LBP / long-term opioid: stable function, no aberrant behavior, PDMP reviewed. Continue ER morphine.\n- Lung screening: discussed benefits, false positives and radiation; he would like to do it. Low-dose CT ordered.\n- Shingles vaccine next visit.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2020-12-17a",
+          "kind": "imaging",
+          "start": "2020-12-17T13:00",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2020-12-17T13:00",
+            "text": "Low-dose CT of the chest without contrast. Comparison: none. Lungs: no pulmonary nodules. No consolidation or effusion. Lung parenchyma is unremarkable. Airways patent. Heart normal in size. Coronary artery calcification present, consistent with known coronary disease. No mediastinal or hilar lymphadenopathy. Upper abdomen unremarkable.",
+            "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."}],
+          "orders": [{"id": "ldct-2020", "action": "done", "date": "2020-12-17T13:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lung screening result", "author": "PCP", "date": "2020-12-18T08:30",
+             "body": "LDCT negative, Lung-RADS 1. Coronary calcium noted, already known CAD on statin. Patient notified through the portal; repeat next December."}
+          ]
+        },
+        {
+          "id": "2021-01-26a",
+          "kind": "pharmacy",
+          "start": "2021-01-26T15:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, original", "date": "2021-01-26T11:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "COVID vaccine dose 1, outside", "author": "MA", "date": "2021-01-26T15:00",
+             "body": "Patient sent a photo of his vaccine card: Moderna dose 1 given today at a retail pharmacy clinic. Entered into the immunization record. Dose 2 scheduled there for late February."}
+          ]
+        },
+        {
+          "id": "2021-02-23a",
+          "kind": "pharmacy",
+          "start": "2021-02-23T15:30",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, original", "date": "2021-02-23T10:30"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "COVID vaccine dose 2, outside", "author": "MA", "date": "2021-02-23T15:30",
+             "body": "Dose 2 Moderna recorded from the state registry. Patient said by portal he felt tired and achy the next day only."}
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "office_visit",
+          "start": "2021-03-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, shingles vaccine",
+          "state": {"bp": [140, 86], "weight_kg": 94.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-03-16T09:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2021-03-16T09:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-03-16T09:45"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-03-16T09:20"}, {"procedure": "Immunization administration", "performed": "2021-03-16T09:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2021-03-16T09:55",
+             "body": "Doing well. Both COVID shots done. Back pain unchanged, managing. No chest symptoms.\nBP a touch above where I'd like on recheck; he admits to a lot of ham at the holidays. Lungs clear, heart regular, no edema.\nPlan: continue current meds, cut back salt, BMP and A1c today. Shingrix #1 given, second in 2 to 6 months. Morphine continued, PDMP reviewed."}
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T12:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination", "author": "optometry", "date": "2021-04-20T12:00",
+             "body": "Dilated diabetic eye examination, 04/13/2021.\nVisual acuity 20/25 OD, 20/25 OS with correction. Pressures normal. Lens: mild nuclear changes both eyes. Fundus: no diabetic retinopathy either eye, macula flat, no hemorrhages or exudates.\nImpression: type 2 diabetes without retinopathy. Recheck in one year.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "office_visit",
+          "start": "2021-06-22T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, shingles vaccine dose 2",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-06-22T14:05"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-06-22T13:40"}, {"procedure": "Immunization administration", "performed": "2021-06-22T14:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2021-06-22T14:10",
+             "body": "Quick check-in. Spring labs fine, A1c holding. Building a porch railing for a friend, back sore after but no new symptoms. No chest pain. Taking meds.\nExam unremarkable, BP as charted.\nShingrix #2 today, series complete. Morphine ER continued. Physical in September."}
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "portal_message",
+          "start": "2021-08-10T19:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Refills", "author": "patient", "date": "2021-08-10T19:12",
+             "body": "Hi, I need the metformin and the atorvastatin renewed, the pharmacy says no refills left. Thanks. Art"},
+            {"type": "Patient Message", "title": "RE: Refills", "author": "MA", "date": "2021-08-11T08:50",
+             "body": "Both sent to your pharmacy with a year of refills. Have a good week."}
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "annual_physical",
+          "start": "2021-09-21T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"bp": [138, 84], "labs": {"Hemoglobin A1c": 7.3, "Low Density Lipoprotein": 88}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-21T09:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-21T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-21T09:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-21T09:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2021-09-21T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2021-09-21T09:35",
+             "body": "Initial Medicare wellness visit.\n\nFunction: independent in everything, still drives, does his own carpentry projects. Hearing fine in a quiet room. No falls this year. Sleeps 6 to 7 hours. Lives with wife, two-story house, stairs without trouble.\nMood: PHQ-2 0. Alcohol: AUDIT-C 1.\nCognition: three-word recall and clock draw normal.\nAdvance directive: wife is health care proxy; he will bring a copy.\n\nProblems and meds reviewed, unchanged. Back pain stable on ER morphine, agreement current, PDMP reviewed.\nExam: BP as charted. Heart regular, no murmur. Lungs clear. Abdomen benign. Feet: intact sensation, good pulses, no lesions.\n\nScreening/prevention:\n- Colon: last colonoscopy 2012 normal; due next year, will refer early 2022.\n- Lung: repeat LDCT in December.\n- Vaccines: flu at nurse visit in October; Shingrix complete; COVID booster at the pharmacy when eligible; pneumococcal next year.\n- Labs today: CMP, CBC, lipids, A1c, urine albumin.\nPersonalized plan given in writing."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-05T15:15"},
+            {"vaccine": "COVID-19, mRNA, Moderna, original", "date": "2021-10-01T13:00"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T15:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2021-10-05T15:20",
+             "body": "High-dose flu 0.7 mL IM, right deltoid. He had his Moderna booster at the pharmacy on 10/1; card seen, added to the record. No reactions to either."}
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "office_visit",
+          "start": "2021-12-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2021-12-07T11:30",
+             "body": "No-show for 11:00. Called; wife answered and said he was out at a job site helping a friend and lost track of the day. Rebooked for 12/14."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [{"id": "ldct-2021", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung screening"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-14T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2021-12-14T10:50",
+             "body": "Sorry about last week, he says. Feels well, regular heartbeat by his account, no chest pain. Back 4/10.\nSeptember labs: A1c up slightly, LDL in range, kidney function normal, urine albumin normal.\nExam: regular rhythm, lungs clear, no edema.\nA/P: HTN and DM2 stable on current meds, A1c a bit higher, he knows the holidays are coming. Long-term opioid unchanged, PDMP reviewed, refill sent. Annual LDCT reordered. Colonoscopy referral next visit. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2021-12-21a",
+          "kind": "imaging",
+          "start": "2021-12-21T14:20",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2021-12-21T14:20",
+            "text": "Low-dose CT chest without contrast. Comparison 12/17/2020. No pulmonary nodules. No consolidation, effusion or pneumothorax. Central airways clear. Heart size normal; coronary artery calcification is unchanged. No adenopathy. Visualized upper abdomen unremarkable.",
+            "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."}],
+          "orders": [{"id": "ldct-2021", "action": "done", "date": "2021-12-21T14:20"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lung screening result", "author": "PCP", "date": "2021-12-22T09:05",
+             "body": "Second LDCT negative. Message sent to patient."}
+          ]
+        }
+      ]
+    }
+  ]
+}

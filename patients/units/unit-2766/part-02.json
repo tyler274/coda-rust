@@ -1,0 +1,851 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002766",
+      "events": [
+        {
+          "id": "2024-02-19a",
+          "kind": "portal_message",
+          "start": "2024-02-19T18:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Burning and cloudy urine",
+              "author": "patient",
+              "date": "2024-02-19T18:10",
+              "body": "Hi, since Saturday it burns when I cath and the urine is cloudy and smells off. No fever, back feels fine. This is what my infections usually feel like. Can I come in tomorrow?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Burning and cloudy urine",
+              "author": "RN",
+              "date": "2024-02-19T18:45",
+              "body": "Hi Colleen, yes — 9:40 tomorrow. Please bring a sample from a fresh catheter in a sterile cup (we'll leave a kit at the front if you need one, but a clean container from home is fine). If you get a fever, chills or back pain tonight, call the on-call line."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dysuria, cloudy urine",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-02-20T09:50",
+              "results": [
+                {
+                  "test": "Urine Clarity",
+                  "text": "Cloudy"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 7.5
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 40,
+                  "unit": "/[HPF]"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 3,
+                  "unit": "/[HPF]"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-20T09:50",
+              "resulted": "2024-02-22T08:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": ">100,000 CFU/mL Proteus mirabilis. Susceptible: cephalexin, ciprofloxacin, ceftriaxone. Resistant: nitrofurantoin."
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "urinary tract infection"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-20T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit — UTI symptoms",
+              "author": "PCP",
+              "date": "2024-02-20T10:15",
+              "body": "S: 44F with neurogenic bladder on CIC, chronic Proteus colonization. 2 days of burning with catheterization, cloudy foul urine. No fever or chills, no flank pain, no increase in spasms. Says this is her typical infection.\nO: afebrile, vitals reviewed and normal. Abdomen soft, mild suprapubic tenderness, no CVA tenderness.\nUA in office: cloudy, pH 7.5, LE 2+, nitrite +, WBC 40/hpf, RBC 3/hpf. Culture sent.\nA/P: symptomatic lower UTI, likely her usual Proteus. TMP-SMX contraindicated (SJS) and Proteus is intrinsically resistant to nitrofurantoin, so cephalexin 500 mg BID x 7 days. Will adjust to culture. Fluids, continue CIC schedule. Call for fever or flank pain."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-22a",
+          "kind": "telephone",
+          "start": "2024-02-22T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Urine culture result",
+              "author": "RN",
+              "date": "2024-02-22T11:05",
+              "body": "Culture back: Proteus mirabilis >100K, sensitive to cephalexin. Called pt — already feeling better, burning nearly gone, no fever. Finish all 7 days. PCP aware, no change."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "imaging",
+          "start": "2024-03-12T08:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-03-12T08:10",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2023 and 2021. Scattered fibroglandular densities. No suspicious findings.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2024-03-13T07:40",
+              "body": "Screening mammogram negative. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "pharmacy",
+          "start": "2024-06-04T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oxybutynin refill",
+              "author": "MA",
+              "date": "2024-06-04T09:30",
+              "body": "Electronic refill request oxybutynin 5 mg TID #270. Last visit 09/2023, physical due Sept. Approved by PCP x 90 days + 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T09:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-24T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T09:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T09:20",
+              "body": "44F, yearly visit.\n\nSince last year: one Proteus UTI in February, treated with cephalexin, resolved. Otherwise well. Cathing q4-6h. Bowel program fine. Work steady.\nMeds: oxybutynin 5 TID, methenamine 1 g BID, docusate 100 BID. Allergies: TMP-SMX (SJS), latex.\n\nExam: BP and vitals at goal. Well appearing. Heart RRR. Lungs clear. Abdomen benign, no CVA tenderness. Breast exam normal. Sacrum/heels intact. LE neuro at baseline.\nPHQ-9 1.\n\nA/P:\n- Neurogenic bladder / recurrent UTI / chronic Proteus: stable, urology in Nov.\n- HM: flu and updated COVID given. CMP, CBC, lipids. Mammogram current (3/2024). Colon screening when she turns 45 in December — will send FIT after that. Pap due 2026.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2024-09-26T12:15",
+              "body": "All normal again — kidney function, blood counts, liver and cholesterol. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "outside_records",
+          "start": "2024-11-21T10:40",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up letter",
+              "author": "urology",
+              "date": "2024-11-21T10:40",
+              "body": "Outside urology group. Visit 11/19/2024.\n\nAnnual review for neurogenic bladder after T12 cord injury. Managing well with clean intermittent catheterization. Noted one cystitis episode in February treated in your office with cephalexin; culture Proteus mirabilis as expected. No febrile infections.\n\nAllergies: TMP-SMX (SJS), latex.\nCurrent medications: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, docusate sodium 100 mg BID.\n\nExam: unremarkable abdomen, no flank tenderness.\n\nPlan: continue current program. See again in 12 months.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "portal_message",
+          "start": "2025-01-07T20:30",
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Colon screening",
+              "author": "patient",
+              "date": "2025-01-07T20:30",
+              "body": "You mentioned the colon test after I turned 45. Can I do the at-home kit? A colonoscopy prep sounds rough with my bowel routine."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Colon screening",
+              "author": "PCP",
+              "date": "2025-01-08T07:50",
+              "body": "Yes, FIT is a good choice for you. Ordered — the lab will mail the kit. It's one sample, no diet changes. If it's ever positive we'd talk about colonoscopy then."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "lab_only",
+          "start": "2025-01-21T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-21T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-01-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2025-01-23T08:10",
+              "body": "FIT negative. Portal note sent; repeat yearly."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "imaging",
+          "start": "2025-03-11T08:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-03-11T08:20",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared with prior studies. Scattered areas of fibroglandular density. No mass, suspicious calcifications or distortion.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2025-03-12T13:05",
+              "body": "Negative mammogram. Annual."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "telephone",
+          "start": "2025-04-21T16:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2025-04-21T16:20",
+              "body": "Pt called to cancel tomorrow's check-in — work deadline. Nothing urgent, feels fine. Will keep the September physical instead."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "ed_visit",
+          "start": "2025-06-17T19:40",
+          "end": "2025-06-18T00:30",
+          "service": "Emergency Medicine",
+          "reason": "right flank pain and dysuria",
+          "conditions": [
+            {
+              "label": "Kidney stone",
+              "action": "diagnosed",
+              "onset": "2025-06-15",
+              "note": "right renal colic"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "kidney stone"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1-2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "renal colic"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-17T20:05",
+              "results": [
+                {
+                  "test": "Urine Clarity",
+                  "text": "Cloudy"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 8.5
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Pyuria present"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T20:05",
+              "results": [
+                {
+                  "test": "Urine Gram stain",
+                  "loinc": "664-3",
+                  "text": "No organisms seen"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-06-18T08:40",
+              "body": "Regional emergency department. Date of visit 06/17/2025. Received by fax.\n\nCC: R flank pain, burning x2 days.\nHPI: 45 y/o F, neurogenic bladder from T12 SCI on intermittent cath. Two days of right-sided flank pain, steady, moving down into the groin. Burning with urination, constant urge, getting only small volumes of cloudy urine. No fever. No nausea or vomiting.\nPMH: neurogenic bladder, recurrent UTIs, chronic Proteus bacteriuria. PSH: appendectomy.\nHome meds: oxybutynin, methenamine, docusate.\nAllergies: TMP-SMX (SJS), LATEX.\nSH: former smoker, no EtOH. FH: mother with kidney stones.\n\nExam: uncomfortable, shifting in bed. Afebrile. Right CVA tenderness. Abdomen soft, no peritoneal signs.\nUA: pH 8.5, pyuria, crystals seen on microscopy. Gram stain of urine: no organisms.\n\nMDM: presentation consistent with right renal colic in a patient with a family history of stones. No signs of infection on stain, afebrile. Pain controlled.\nDx: urolithiasis / right renal colic.\nDisposition: home. Tamsulosin 0.4 mg daily, acetaminophen 1 g q6h prn. Strain urine. Follow up with urology and PCP this week. Return for fever, vomiting, uncontrolled pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "portal_message",
+          "start": "2025-06-18T07:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "author": "patient",
+              "date": "2025-06-18T07:15",
+              "body": "FYI I was in the ER last night with right side pain — they think a kidney stone. My mom has had these forever so I guess it was my turn. They gave me tamsulosin and said strain my urine. Pain is better this morning. Do you need to see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Went to the ER last night",
+              "author": "PCP",
+              "date": "2025-06-18T08:55",
+              "body": "Sorry you went through that. Their record just came in. Yes, let's see you next Tuesday and check kidney function. Keep the tamsulosin going and strain everything. Fever, vomiting or pain you can't control = back to the ED or call me directly. I'll let your urologist's office know too."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "office_visit",
+          "start": "2025-06-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for kidney stone",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-24T11:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2025-06-24T11:35",
+              "body": "Seen in ED 6/17 with right renal colic. ED record reviewed: afebrile, R CVA tenderness, UA pH 8.5 with pyuria and crystals, no organisms on stain. Discharged on tamsulosin and acetaminophen.\n\nToday: pain much better, occasional ache. Nothing caught in the strainer yet. No fever, no vomiting. Urgency improving. Taking tamsulosin without dizziness.\n\nExam: afebrile, vitals fine. Mild R CVA tenderness, abdomen soft.\n\nA/P: kidney stone, right, improving. Continue tamsulosin, keep straining and bring in anything she catches. BMP today. Urology office contacted, she has an appointment in late summer. Fluids. Same red flags.\nMeds now: oxybutynin, methenamine, docusate, tamsulosin 0.4 mg daily."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-25a",
+          "kind": "portal_message",
+          "start": "2025-06-25T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney function",
+              "author": "PCP",
+              "date": "2025-06-25T09:20",
+              "body": "Creatinine is 0.9, same as your usual — the kidney is working fine. Keep straining and keep the urology appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "outside_records",
+          "start": "2025-09-05T13:10",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology visit letter",
+              "author": "urology",
+              "date": "2025-09-05T13:10",
+              "body": "Outside urology group. Visit 09/04/2025.\n\nSeen after her June ED visit for right renal colic. Flank pain has settled; no stone recovered. Since June she has had persistent urgency with small-volume voids between catheterizations.\n\nAllergies: TMP-SMX (SJS), latex.\nMedications: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, tamsulosin 0.4 mg daily, docusate 100 mg BID.\n\nPlan: we placed an indwelling urethral catheter today (16 Fr silicone, latex-free) for bladder management, to be changed monthly by our nursing staff. Continue tamsulosin, oxybutynin and methenamine. Return in 3 months, sooner with fever.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "portal_message",
+          "start": "2025-09-11T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Catheter bag question",
+              "author": "patient",
+              "date": "2025-09-11T12:30",
+              "body": "Quick question — urology put in a catheter last week. Is it okay to keep the leg bag on overnight or do I need the big night bag? They gave me both and I forgot what they said."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Catheter bag question",
+              "author": "RN",
+              "date": "2025-09-11T14:05",
+              "body": "Use the larger night drainage bag overnight and keep it below bladder level; switch back to the leg bag in the morning. Rinse bags per the supply instructions. Call urology's nurse line or us if the catheter stops draining."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-23T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T09:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-23T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-23T09:25",
+              "body": "45F, annual.\n\nInterval: ED in June for right renal colic, settled; no stone recovered. Urology switched her to an indwelling catheter on 9/4, changed monthly at their office. Says it's easier day to day, though she misses the independence of cathing. No fever.\nMeds: oxybutynin 5 TID, methenamine 1 g BID, tamsulosin 0.4 daily, docusate 100 BID. Allergies: TMP-SMX (SJS), latex.\n\nExam: well. Heart RRR, lungs clear. Abdomen soft, no CVA tenderness today. Catheter draining clear yellow urine, meatus without irritation. Skin intact. Breast exam normal.\nPHQ-9 2.\n\nA/P:\n- Neurogenic bladder, now indwelling catheter per urology. Reviewed catheter care and when to call (fever, flank pain, poor drainage).\n- Kidney stone, right: asymptomatic. Urology following.\n- Recurrent UTI/Proteus: no treatment of colonization.\n- HM: flu and updated COVID today. CMP, CBC, lipids. FIT negative 1/2025, repeat in January. Mammogram 3/2025 normal. Pap/HPV due next year.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T17:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2025-09-25T17:30",
+              "body": "Labs normal, including kidney function, calcium and cholesterol. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-19a",
+          "kind": "ed_visit",
+          "start": "2025-10-19T14:25",
+          "end": "2025-10-19T21:10",
+          "service": "Emergency Medicine",
+          "reason": "fever, flank pain and dysuria",
+          "vitals": [
+            {
+              "time": "2025-10-19T14:30",
+              "temp_c": 38.6,
+              "hr": 102,
+              "bp": [
+                124,
+                76
+              ],
+              "spo2": 98,
+              "rr": 18
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 1000 MG Injection",
+              "action": "historical",
+              "sig": "1 g IV once in the ED",
+              "dose": {
+                "value": 1,
+                "unit": "g"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "urinary tract infection"
+            },
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "urinary tract infection"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-19T14:50",
+              "results": [
+                {
+                  "test": "Urine pH",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-19T14:50",
+              "resulted": "2025-10-21T09:15",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": ">100,000 CFU/mL Proteus mirabilis. Susceptible: ciprofloxacin, ceftriaxone. Resistant: nitrofurantoin."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "XR Abdomen AP",
+              "loinc": "24799-9",
+              "performed": "2025-10-19T15:30",
+              "text": "Single supine view of the abdomen. A radiopaque calculus projects over the right renal shadow. Bowel gas pattern is nonobstructive. No free air on this supine view. Osseous structures without acute abnormality.",
+              "conclusion": "Right renal calculus."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-10-20T09:30",
+              "body": "Regional emergency department, visit 10/19/2025. Received electronically.\n\nCC: fever, R flank pain, burning.\nHPI: 45F with neurogenic bladder (T12 SCI), recurrent UTIs and known Proteus colonization, with an indwelling urethral catheter for the past several weeks. Presents with fever, right flank pain and dysuria. Seen here in June for right renal colic.\nMeds: oxybutynin, methenamine, tamsulosin, docusate. Allergies: TMP-SMX (SJS), latex.\n\nTriage: T 38.6 C, HR 102, BP 124/76, RR 18, SpO2 98% RA.\nExam: ill-appearing but nontoxic. Right CVA tenderness. Abdomen soft. Catheter in place, cloudy urine in bag.\nUA: alkaline (pH 8.5); microscopy with rectangular prism-shaped crystals. Urine culture sent from the new catheter.\nKUB: radiopaque calculus over the right renal shadow.\n\nCourse: ceftriaxone 1 g IV. Catheter exchanged for a new latex-free catheter. Defervesced, tolerating PO.\nDx: catheter-associated UTI; right renal calculus.\nDispo: home on ciprofloxacin 500 mg BID x 7 days (TMP-SMX allergy). Urology follow-up for the stone. PCP within a week. Return for rigors, vomiting, worsening pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "telephone",
+          "start": "2025-10-21T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2025-10-21T11:40",
+              "body": "Called after ED visit Sunday. ED culture resulted this morning: Proteus mirabilis, sensitive to cipro. Pt on day 3 of ciprofloxacin, no fever since Sunday night, flank pain easing. Catheter draining well. Booked with PCP 10/28. Advised to call if fever returns."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "office_visit",
+          "start": "2025-10-28T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for urinary infection",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-28T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2025-10-28T13:50",
+              "body": "ED 10/19: fever, R flank pain, dysuria with indwelling catheter. Alkaline urine with prism-shaped crystals, KUB with a right renal calculus. Ceftriaxone in ED, catheter exchanged, home on cipro x7d. Culture Proteus mirabilis, cipro-sensitive.\n\nToday: finishing cipro tomorrow. No fever for a week, flank pain gone. Catheter working.\nExam: afebrile, vitals normal. No CVA tenderness. Abdomen soft.\n\nA/P: catheter-associated Proteus UTI, resolved clinically. Right renal calculus on KUB — the alkaline urine and crystals with Proteus raise the question of an infection-related stone; urology needs to see the film. Sent ED records to urology and asked for a sooner visit. Continue current meds."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "outside_records",
+          "start": "2025-12-10T10:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up letter",
+              "author": "urology",
+              "date": "2025-12-10T10:05",
+              "body": "Outside urology group. Visit 12/09/2025.\n\nFollow-up after the October ED visit for a febrile catheter-associated Proteus infection. Afebrile since. We reviewed the ED KUB, which shows a right renal calculus. Given her alkaline urine and Proteus history this is likely an infection stone and will need definitive treatment.\n\nAllergies: TMP-SMX (SJS), latex.\nMedications: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, tamsulosin 0.4 mg daily, docusate 100 mg BID.\n\nPlan: non-contrast CT abdomen and pelvis to define the stone burden before planning surgery; our office will schedule it. Indwelling catheter changes continue monthly. Return after CT.\n\nUrology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

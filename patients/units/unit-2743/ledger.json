@@ -1,0 +1,2164 @@
+{
+  "unit": "unit-2743",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002743",
+      "given": "Dawn",
+      "family": "Cote",
+      "birth_date": "1986-08-02",
+      "address_line": "118 Fairview Avenue",
+      "phone": "+1-646-555-0121",
+      "email": "dawn.cote@example.test",
+      "marital_status": "married",
+      "summary": "Data entry specialist who joins the practice at 35 with autoimmune hypothyroidism on levothyroxine 88 mcg. Gynecology later diagnoses primary ovarian insufficiency during an infertility evaluation, orthopedics diagnoses right carpal tunnel syndrome, and depression diagnosed in 2024 goes on to a slow, disappointing sertraline course with psychiatry.",
+      "events": [
+        {
+          "id": "2021-08-31a",
+          "kind": "telephone",
+          "start": "2021-08-31T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-08-31T10:20",
+              "author": "front desk",
+              "body": "Caller is a 35 y/o woman looking for a new primary care doctor after her previous office stopped taking new appointments for months out. Explained the membership model and what insurance still covers. She wants to go ahead. Booked new patient visit for 9/14 at 9:00. Records release faxed to her prior primary care office today. She takes one thyroid pill, will bring the bottle."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T09:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Hashimoto thyroiditis",
+              "action": "diagnosed",
+              "onset": "2014-05-01",
+              "note": "Diagnosed at prior primary care office; on levothyroxine since."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.088 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 88,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              83
+            ],
+            "hr": 69,
+            "temp_c": 36.7,
+            "spo2": 100,
+            "weight_kg": 78.6,
+            "height_cm": 159.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Data entry specialist"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T09:55",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\nDawn is a 35-year-old data entry specialist transferring care from another primary care office. No acute concerns today; she mostly wants someone she can reach.\n\nHistory: Hypothyroidism diagnosed around 2014 at her old office, told it was autoimmune. Dose was adjusted a few times early on and has been levothyroxine 88 mcg every morning for years, TSH reportedly fine on it. Takes it on an empty stomach, coffee about 45 minutes later. No palpitations, heat or cold intolerance, change in bowel habits, hair or skin change.\nGyn: menses regular, about every 28 days, no heavy bleeding. Not using hormonal contraception. Last Pap at old office, she thinks 2019, normal.\nNo surgeries. No hospitalizations.\nMeds: levothyroxine 88 mcg daily. No supplements.\nAllergies: none known to medications.\nFamily: mother has major depression. A maternal aunt has hypothyroid and went through menopause very early, around 34. Paternal grandmother had rheumatoid arthritis.\nSocial: married, lives with husband. Works full time doing data entry, mostly at a keyboard. Never smoker. A drink once or twice a month at most. No drug use. Walks, likes to cook.\n\nROS: negative except as above. Mood good. Sleeping fine.\n\nExam: Well-appearing, pleasant. Vitals per flowsheet. HEENT unremarkable. Thyroid not enlarged, no nodules palpated. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen soft, nontender. No edema. Skin without rash. Neuro grossly intact.\nPHQ-9: 3.\n\nAssessment and plan:\n1. Hypothyroidism, autoimmune - stable by history. Continue levothyroxine 88 mcg. TSH today.\n2. Health maintenance - baseline CBC, CMP, lipids. HIV and hep C screening once, she agrees. Requested old records for Pap date and vaccines. Flu shot next month when this year's supply comes in; she will book a nurse visit.\n\nFollow up: annual physical in the spring, sooner as needed. Gave her the practice cell number for texts."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.5,
+            "height_cm": 160.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2021-09-16T16:40",
+              "author": "PCP",
+              "body": "Hi Dawn, all of your labs from Tuesday came back normal. Thyroid level is right where it should be on the 88 mcg, so no change. Blood counts, kidney and liver tests and cholesterol all look good. HIV and hepatitis C screens were negative, and those don't need repeating unless something changes. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T11:05",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-06-20T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-18T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-04-15T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-09-28T11:05",
+              "author": "outside primary care",
+              "body": "Prior primary care office, records released at patient request. 41 pages.\n\nSummary of contents:\n- Problem list: hypothyroidism, autoimmune thyroiditis. Diagnosed May 2014 when a screening TSH came back high; thyroid peroxidase antibodies positive at that time. Levothyroxine started and titrated over 2014-2015 to 88 mcg daily, unchanged since. Annual TSH values on file all within range on that dose.\n- Medications: levothyroxine 88 mcg daily.\n- Allergies: NKDA.\n- Cervical screening: Pap with HPV co-test 06/2019, negative for intraepithelial lesion, HPV negative.\n- Immunizations: Tdap 06/2017. COVID-19 Moderna dose 1 03/2021, dose 2 04/2021 (patient-provided card copy). Influenza most years.\n- No surgical history. No hospitalizations.\n\nFiled to chart. Immunizations entered. Next Pap due 2024."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-12T08:30",
+              "author": "RN",
+              "body": "Here before work for flu vaccine. Feeling well, no fever. No prior vaccine reactions. Quadrivalent flu 0.5 mL IM given in left upper arm. VIS reviewed. Sat for 15 minutes, no reaction. She'll keep an eye out for COVID booster eligibility."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T14:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2021-12-07T14:10",
+              "author": "MA",
+              "body": "Electronic refill request from patient's pharmacy for levothyroxine 88 mcg, #90. TSH normal 9/2021. Routed to PCP and approved with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T19:22",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2022-01-08T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Got my booster",
+              "date": "2022-01-11T19:22",
+              "author": "patient",
+              "body": "Hi, just letting you know I got my COVID booster on Saturday at the pharmacy near work. It was the Pfizer one. Arm was sore for a day, that's it. Do you need a picture of the card?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Got my booster",
+              "date": "2022-01-12T09:04",
+              "author": "MA",
+              "body": "Thanks Dawn! No picture needed, the pharmacy record came through and we've added the 1/8/22 booster to your chart."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "annual_physical",
+          "start": "2022-04-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              78
+            ],
+            "hr": 71,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 78.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-12T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-04-12T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-04-12T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-04-12T09:15",
+              "author": "PCP",
+              "body": "Annual exam.\n\nDoing well. Busy stretch at work, long days on the computer but no complaints about hands, neck or eyes. Takes levothyroxine faithfully. Periods regular. Sleeps ok. Mood good.\nMeds: levothyroxine 88 mcg daily. NKDA.\nSocial unchanged: never smoker, rare alcohol.\nPHQ-2 0.\n\nExam: NAD. Vitals reviewed. Eyes, ears, throat normal. Neck supple, thyroid normal size and nontender. CV regular rate, no murmurs. Lungs CTA. Abdomen benign. Extremities warm, no swelling. Skin: no concerning lesions.\n\nImpression:\n- Healthy 35 y/o. Hypothyroidism stable, recheck TSH, refills sent.\n- Pap/HPV last 2019, due 2024.\n- Vaccines: Tdap good until 2027. Flu in the fall.\n- Cholesterol normal last fall; no need to repeat this year.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-13a",
+          "kind": "portal_message",
+          "start": "2022-04-13T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid result",
+              "date": "2022-04-13T12:15",
+              "author": "PCP",
+              "body": "Dawn - TSH is normal again. Keep the same dose. See you next spring, and text if anything comes up before then."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2022-10-18T16:55",
+              "author": "RN",
+              "body": "After-work vaccine appointment. Afebrile, feels well. Quadrivalent influenza 0.5 mL IM left deltoid. Pfizer bivalent COVID booster 0.3 mL IM right deltoid. VIS for both given. Observed 15 min, tolerated well, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "pharmacy",
+          "start": "2022-12-13T10:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine 90-day supply",
+              "date": "2022-12-13T10:30",
+              "author": "MA",
+              "body": "Pharmacy fax: levothyroxine 88 mcg, refills exhausted. Last TSH 4/2022 normal. Approved per standing protocol, #90 x 3. Pharmacy notes manufacturer change on the generic; let patient know via portal that the strength and dose are the same."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "annual_physical",
+          "start": "2023-03-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              79
+            ],
+            "hr": 83,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 78.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-21T09:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-21T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 277
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-03-21T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-21T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-21T09:20",
+              "author": "PCP",
+              "body": "Yearly visit.\n\nShe and her husband started trying for a pregnancy last October. Cycles still like clockwork, every 28 days, normal flow. Wanted to be sure her thyroid is where it should be for conceiving. No other concerns.\nMeds: levothyroxine 88 mcg. NKDA. PHQ-2 0.\n\nExam: Comfortable. Vitals ok. HEENT clear. Thyroid smooth, not enlarged. Heart RRR without murmur. Lungs clear to auscultation. Abdomen soft. No edema, no rash.\n\nPlan:\n- Hypothyroid: TSH today. If she does become pregnant she should message right away, the dose usually needs to go up early.\n- Preconception: discussed that at 36 it's reasonable to get a fertility evaluation if no pregnancy by 6 months of trying; that point is about now. She'd like to give it a couple more months first, will reach out.\n- Pap due next year. Flu/COVID in the fall.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-10a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-10T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Trying to conceive",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-05-10T12:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Not conceiving after about 7 months of trying, age 36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2023-05-10T12:30",
+              "author": "PCP",
+              "body": "Video visit on her lunch break, she is in her car, consented to video.\n\nAbout 7 months trying to conceive without a pregnancy. Regular 28-day cycles, no spotting between, no pelvic pain. Husband is getting a semen analysis through his own doctor. TSH in March was normal.\n\nAssessment: subfertility workup reasonable now given her age.\nPlan: referral to outside gynecology for evaluation; they can do the hormone testing and decide on anything further. Continue levothyroxine. She'll let me know when she hears from them."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "specialist_visit",
+          "start": "2023-06-14T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Infertility evaluation",
+          "conditions": [
+            {
+              "label": "Primary ovarian insufficiency",
+              "action": "diagnosed",
+              "onset": "2023-06-14",
+              "note": "Hypergonadotropic picture with very low AMH; cycles still regular."
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-14T14:40",
+              "resulted": "2023-06-16T10:00",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 15
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 45
+                },
+                {
+                  "test": "Anti-Mullerian hormone",
+                  "loinc": "38476-8",
+                  "unit": "ng/mL",
+                  "value": 0.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2023-06-14T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2023-06-21T09:30",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY - CONSULTATION LETTER\nVisit date: June 14, 2023\nReferred by: primary care physician\n\nThank you for sending Ms. Cote, 36, for evaluation of difficulty conceiving.\n\nShe and her husband have had unprotected intercourse for about 8 months without a pregnancy. Her menses come every 28 days and she has noticed no change in length of cycle or in flow. Her husband's semen analysis was normal. She has autoimmune hypothyroidism on levothyroxine and is otherwise well. Family history is notable for a maternal aunt with hypothyroidism who reached menopause at 34. Never smoker, rare alcohol. No known drug allergies.\n\nMedications: levothyroxine 88 mcg daily.\n\nExam: Vital signs normal. Pelvic examination is normal, with a normal-size mobile uterus and no adnexal masses or tenderness.\n\nLaboratory (drawn at this visit, resulted 6/16):\nFSH 15 IU/L (3.5-12.5)\nEstradiol 45 pg/mL (25-75)\nAnti-Mullerian hormone 0.4 ng/mL (age reference 1-3)\nTSH 2.5 uIU/mL (0.4-4.0)\nProlactin 14 ng/mL (4-23)\n\nImpression: Elevated FSH with a markedly low AMH indicates a significantly reduced ovarian reserve. Taken together with the family history, this is consistent with primary ovarian insufficiency (hypergonadotropic hypogonadism), presenting before cycles have become irregular. Thyroid and prolactin are not contributing.\n\nPlan: We reviewed what these numbers mean for her chances over time at 36 and that reserve is unlikely to improve. I offered referral to reproductive endocrinology for discussion of treatment options, which are time sensitive. She would like to talk it over with her husband before deciding and will call our office. Continue levothyroxine per primary care.\n\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "portal_message",
+          "start": "2023-06-23T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about gyn letter",
+              "date": "2023-06-23T20:14",
+              "author": "patient",
+              "body": "I saw the gynecologist's letter posted. She explained it but I'm still kind of in shock. Does 'ovarian insufficiency' mean I'm going into menopause? My periods are totally normal. Not sure what to do about the fertility doctor yet."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about gyn letter",
+              "date": "2023-06-24T08:50",
+              "author": "PCP",
+              "body": "Hi Dawn, I'm sorry, that's a lot to take in. It means your ovaries have fewer eggs left than expected for your age, which is why the gynecologist brought up the fertility specialist sooner rather than later. It doesn't mean your periods will stop right away; you're still cycling normally now. There is no wrong answer about the referral. If it would help to talk it through, book a visit or call me."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hand numbness",
+          "vitals": {
+            "bp": [
+              113,
+              79
+            ],
+            "hr": 79,
+            "weight_kg": 78.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-12T15:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-12T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T15:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "Right hand numbness and tingling, suspected median nerve entrapment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-09-12T15:50",
+              "author": "PCP",
+              "body": "CC: right hand numbness.\n\nSince around April she's had numbness, tingling and a burning feeling in the right hand on and off. Worst at night, wakes her up most nights; shaking the hand out makes it go away for a while. No fall or injury. Left hand fine. No neck pain. Types all day at work.\nAlso updated me: she and her husband talked it over and decided not to go ahead with fertility treatment for now. She seems settled about it.\nMeds: levothyroxine 88 mcg. NKDA.\n\nExam: Right hand: Tinel sign positive at the wrist, Phalen positive. Radial pulse normal. Neck full range without pain. Left hand normal.\n\nAssessment and plan:\n1. Right hand paresthesias, likely carpal tunnel. Hypothyroid is a known risk factor; recheck TSH. Neutral night splint, sized here. Referral to orthopedics for evaluation and nerve testing.\n2. Primary ovarian insufficiency per gynecology - no fertility treatment for now, her choice. Cycles still regular.\n\nRTC after ortho visit or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T11:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "TSH result",
+              "date": "2023-09-14T11:02",
+              "author": "RN",
+              "body": "Hi Dawn, the doctor reviewed your thyroid test from Tuesday and it is normal, so no dose change. Orthopedics has your referral; their scheduler should call within a week or two."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "specialist_visit",
+          "start": "2023-10-19T10:30",
+          "service": "Orthopedics",
+          "reason": "Right hand numbness",
+          "conditions": [
+            {
+              "label": "Carpal tunnel syndrome",
+              "action": "diagnosed",
+              "onset": "2023-04-15",
+              "note": "Right, median nerve distribution; thenar atrophy; prolonged median latency on NCS."
+            }
+          ],
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2023-10-19T09:45",
+              "text": "Nerve conduction studies of the right upper limb, ordered by orthopedics for right hand numbness. Skin temperature maintained above 32 C. Right median nerve: prolonged latency across the wrist. Right ulnar nerve sensory and motor responses normal in latency, amplitude and conduction velocity. Needle examination was not performed.",
+              "conclusion": "Prolonged right median nerve latency at the wrist, consistent with median neuropathy at the wrist (carpal tunnel syndrome). Normal right ulnar study.",
+              "issued": "2023-10-19T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2023-10-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic hand consultation",
+              "date": "2023-10-24T08:40",
+              "author": "orthopedics",
+              "body": "ORTHOPAEDIC SURGERY - HAND CLINIC\nConsultation, October 19, 2023\nRe: Dawn Cote, age 37\nReferring: primary care\n\nHistory: Six months of intermittent numbness, tingling and burning through the right hand, worse at night and frequently waking her. Relieved for a time by shaking the hand. No trauma. Background of autoimmune hypothyroidism and a recent gynecology diagnosis of primary ovarian insufficiency. Keyboard work full time.\nMedications: levothyroxine. Allergies: none known.\n\nExamination, right upper extremity: Visible thenar muscle atrophy. Tinel sign positive over the median nerve at the wrist. Phalen test reproduces symptoms at 60 seconds. Cervical spine range of motion full and painless. Left hand normal.\n\nStudies: Nerve conduction testing today shows prolonged right median nerve latency (report attached).\n\nImpression: Right carpal tunnel syndrome.\n\nPlan: Given the thenar wasting, I recommended carpal tunnel release, and we went over the procedure and recovery time from keyboard work. She would prefer to keep using a night splint for now because of work and will call our office when she is ready to schedule. Advised her not to wait long if numbness becomes constant or weakness progresses.\n\nThank you for the referral.\nOrthopaedic Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2023-10-24T16:50",
+              "author": "RN",
+              "body": "Flu (quadrivalent) given L deltoid and 2023-24 COVID (Pfizer) given R deltoid; avoided the right wrist side for comfort, she's wearing her splint. No complaints, no prior reactions. Monitored 15 minutes, fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "portal_message",
+          "start": "2023-11-14T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand update",
+              "date": "2023-11-14T21:05",
+              "author": "patient",
+              "body": "Hand surgeon wants to do the release. The splint does help, I'm waking up maybe twice a week instead of every night. Work is slammed until after the new year and I don't want to be out. Is it ok to wait?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hand update",
+              "date": "2023-11-15T07:40",
+              "author": "PCP",
+              "body": "Glad the splint is helping. Waiting a bit is your call, but the surgeon recommended surgery because of the muscle thinning at the base of your thumb, and that part doesn't always come back if it goes on too long. Please don't put it off indefinitely, and call them sooner if the numbness becomes constant or you're dropping things."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              84
+            ],
+            "hr": 83,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 78.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-19T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-19T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-19T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-03-19T08:55",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2024-03-25T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-19T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-19T09:25",
+              "author": "PCP",
+              "body": "Annual physical.\n\nInterval: saw gyn in June (ovarian insufficiency, not pursuing fertility treatment) and ortho in October (right carpal tunnel, surgery recommended). Hasn't scheduled the release yet; splint most nights, hand wakes her now and then. Says she's been more tired than usual the last month or so, chalks it up to work and the winter. Periods still regular.\nMeds: levothyroxine 88 mcg daily. NKDA.\nPHQ-2 1.\n\nExam: Well appearing. Vitals as charted. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs without wheeze or crackles. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal; Pap/HPV collected. Right thenar eminence slightly flatter than left. No edema.\n\nPlan:\n- Hypothyroid: TSH. Refills.\n- Tired: check CBC, CMP with the TSH; lipids while drawing.\n- Carpal tunnel: encouraged her to follow through with ortho.\n- POI: no treatment per gyn.\n- Pap/HPV today.\n- Up to date on Tdap; flu/COVID next fall.\n\nRTC 1 year or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and lab results",
+              "date": "2024-03-26T13:30",
+              "author": "PCP",
+              "body": "Good news, Dawn: your Pap was normal and HPV was negative, so the next one isn't due for five years (2029). Thyroid, blood count, chemistries and cholesterol from last week were all normal too. If the tiredness doesn't lift with spring, let me know."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "office_visit",
+          "start": "2024-08-13T13:40",
+          "end": "2024-08-13T14:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, headaches, muscle aches",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, single episode, moderate",
+              "action": "diagnosed",
+              "onset": "2024-02-15"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              80
+            ],
+            "hr": 74,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 79.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T14:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T14:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T14:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 17
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-08-13T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "therapy-referral",
+              "action": "placed",
+              "order": "Behavioral health referral",
+              "category": "referral",
+              "to": "Behavioral Health",
+              "reason": "Major depressive disorder, psychotherapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-08-13T14:30",
+              "author": "PCP",
+              "body": "Chief complaint: tired, headaches, aching all over.\n\nHPI: 38F with autoimmune hypothyroidism, POI, right CTS. Six months of fatigue, headaches and diffuse muscle aches that are now affecting her work (falling behind on entry quotas) and keeping up at home. When I asked more, she said she has felt down most days for months and isn't sleeping well. Feels hopeless about where things are going. Every so often thinks her family would be better off without her. Denies any plan or intent, has never acted on it, no firearms in the home. No prior depression treatment. Mother has had major depression.\nNo fever, weight change, rash, joint swelling, or new neuro symptoms. Headaches are dull, bilateral, no red flags.\nMeds: levothyroxine 88 mcg. NKDA. Alcohol rare.\n\nExam: Vitals normal. Flat but cooperative, tearful at times. Thyroid normal. Heart and lungs normal. No joint synovitis, no focal muscle tenderness. Neuro nonfocal.\nPHQ-9 17, item 9 scored 1 (passive thoughts only).\n\nAssessment and plan:\n1. Major depressive disorder, single episode, moderate. Likely explains much of the fatigue, aches and headaches; labs to be sure. Safety: passive SI, no plan or intent, protective factors husband and work. Made a safety plan together, gave her 988 and the practice number. Discussed treatment: therapy and/or an SSRI. She would rather not start medication right now and wants to try therapy first; referral to behavioral health placed. She knows she can change her mind about medication at any time.\n2. Hypothyroidism - TSH, though it has been steady.\n3. Labs: CBC, CMP, TSH.\n\nRTC 4 weeks, sooner if worse. Asked her to text me in a week either way."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "portal_message",
+          "start": "2024-08-15T10:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-08-15T10:12",
+              "author": "PCP",
+              "body": "Hi Dawn, your blood count, chemistries and thyroid level all came back normal. That fits with what we talked about, that the tiredness and aches are part of the depression. Have you heard from the counseling office? How are you doing this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-08-15T18:47",
+              "author": "patient",
+              "body": "Ok thanks. Not great but I'm ok, nothing like what we talked about. They left a voicemail, I need to call them back."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              86
+            ],
+            "hr": 73,
+            "weight_kg": 80.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-09-10T16:30",
+              "author": "PCP",
+              "body": "Depression f/u.\n\nA little better than last month, she thinks. Has been going to bed on a schedule and walking at lunch. Still low most days and tired. Never called the counseling office back, says it felt like too much. Passive thoughts less often; no plan or intent. Still prefers no medication.\nPHQ-9 15.\n\nExam: Vitals fine. Affect constricted, makes eye contact, thought process linear.\n\nPlan: Gave her the direct intake number again and offered to have our RN help schedule; she declined for now. Revisited sertraline, she wants to wait. Safety plan reviewed. Telehealth check in about 2 months. Flu shot next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T08:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines given",
+              "date": "2024-10-08T08:20",
+              "author": "MA",
+              "body": "Trivalent flu IM left arm, 2024-25 Moderna COVID IM right arm. Screening questions negative. Waited 15 min, no issues. Pt left for work."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression check-in",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-11-19T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-11-19T12:40",
+              "author": "PCP",
+              "body": "Video, she's at home on lunch. Identity confirmed with name and date of birth.\n\nMood somewhat better. Headaches less frequent. Sleeping 6-7 hours most nights. Still tired in the afternoons and not enjoying much, but getting through work. No thoughts that others would be better off without her in the past few weeks. Has not started therapy.\nPHQ-9 11.\n\nPlan: Moving in the right direction without medication. Left the door open on sertraline and therapy. Safety plan still in place. See her at the annual in March, sooner if it dips."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "pharmacy",
+          "start": "2024-12-17T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2024-12-17T09:40",
+              "author": "MA",
+              "body": "Refill request levothyroxine 88 mcg #90 from patient's pharmacy. TSH 8/2024 normal. Sent with 3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mood follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-01-28T16:10",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:40 follow-up. Called cell, left voicemail to reschedule. Texted the practice line as well. PCP aware."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Callback",
+              "date": "2025-01-29T09:25",
+              "author": "RN",
+              "body": "Pt returned call. Apologized, got stuck at work and forgot. Says she is doing about the same as November, no safety concerns, no thoughts of self-harm. Prefers to keep the March physical rather than add a visit now. PCP ok with plan."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "annual_physical",
+          "start": "2025-03-25T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 78,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 80.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-25T09:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-25T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-25T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "therapy-referral",
+              "action": "cancelled",
+              "date": "2025-03-25T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-25T09:20",
+              "author": "PCP",
+              "body": "Annual exam, age 38.\n\nMood is the best it has been since last summer. Still has flat days, energy fair. Enjoying cooking again some weekends. No thoughts of being a burden lately. Never did start therapy and doesn't want the referral kept open right now. Headaches rare.\nHand: still wears the splint most nights, numbness wakes her occasionally. Has not scheduled the release.\nPeriods regular.\nMeds: levothyroxine 88 mcg. NKDA. Never smoker, alcohol 1-2 drinks a month.\nPHQ-9 8.\n\nExam: Pleasant, brighter affect than in the fall. Vitals as charted. HEENT normal. Thyroid normal size. Heart RRR. Lungs clear. Abdomen soft. Right thenar flattening unchanged. No edema.\n\nAssessment and plan:\n1. MDD, improving without treatment. Closing the unused behavioral health referral at her request. Low threshold to restart the conversation about sertraline if it slips. She agreed to message if PHQ-type symptoms come back.\n2. Hypothyroidism: TSH.\n3. Right CTS: again urged follow-through with the hand surgeon.\n4. Health maintenance: Pap 2024 normal, next 2029. Mammogram discussion at 40. Fall vaccines.\n\nRTC 1 year, or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "portal_message",
+          "start": "2025-03-27T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "TSH",
+              "date": "2025-03-27T08:15",
+              "author": "RN",
+              "body": "Dawn, your TSH from the physical is normal. Stay on levothyroxine 88 mcg."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T11:00",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2025-06-10T11:00",
+              "author": "MA",
+              "body": "Pharmacy requesting levothyroxine 88 mcg, 90-day. TSH 3/2025 normal. Approved, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "portal_message",
+          "start": "2025-08-12T22:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling bad again",
+              "date": "2025-08-12T22:31",
+              "author": "patient",
+              "body": "Hi. I think the depression is back, it's been sliding since about June. Hard to get out of bed and I'm crying at my desk. I'm safe, I just think I need to try the medicine this time. Can I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling bad again",
+              "date": "2025-08-13T07:10",
+              "author": "PCP",
+              "body": "Thank you for telling me. Our front desk will call you this morning to set a visit for early next week; if you want something sooner, text me and I'll fit you in. If you ever feel unsafe, call or text 988 or go to the nearest emergency room."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression, worse",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 84,
+            "weight_kg": 79.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-19T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-19T11:55",
+              "author": "PCP",
+              "body": "Depression, recurrence of symptoms.\n\nAfter the spring improvement her mood started slipping in June. Now low most days, anhedonic, tired, poor sleep, struggling to keep up at work. The thoughts that her family might be better off without her have come back a few times; no plan, no intent, no preparatory behavior. Wants to try medication now.\nMeds: levothyroxine 88 mcg. NKDA.\nPHQ-9 16, item 9 = 1.\n\nExam: Vitals normal. Subdued, slowed speech, appropriate. Thyroid normal.\n\nAssessment and plan:\nMDD, symptoms back to moderate. Start sertraline 50 mg daily. Reviewed common early side effects (GI upset, sleep change, sexual side effects) and the 4-6 weeks it can take. Rare increase in suicidal thoughts early on - she will tell me right away. Safety plan updated, 988. Offered therapy again; she will think about it.\nRecheck in about 6 weeks; plan to go up on the dose if tolerated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "portal_message",
+          "start": "2025-09-03T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sertraline",
+              "date": "2025-09-03T19:50",
+              "author": "patient",
+              "body": "Two weeks on the sertraline. Stomach was a little off the first few days, better now if I take it with breakfast. No change in mood yet. Just checking in like you asked."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sertraline",
+              "date": "2025-09-04T08:05",
+              "author": "PCP",
+              "body": "Thanks for checking in. Taking it with breakfast is fine. It's too early to expect a mood change, so keep going and we'll talk dose at your visit on the 1st."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "office_visit",
+          "start": "2025-10-01T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression follow-up",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily with breakfast",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              85
+            ],
+            "hr": 87,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 81.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-01T10:40",
+              "resulted": "2025-10-02T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-01T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T10:40",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 527
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-01T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-01T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-01T10:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-01T10:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "Major depressive disorder with partial response to sertraline"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-01T10:35",
+              "author": "PCP",
+              "body": "F/u depression on sertraline 50 mg x 6 weeks.\n\nTaking it daily, stomach settled. Mood maybe a little better on some days but overall not much different. Still tired and unmotivated, sleep broken. No thoughts of self-harm since the last visit. Using her safety plan card.\nMeds: levothyroxine 88 mcg, sertraline 50 mg. NKDA.\nPHQ-9 14.\n\nExam: Vitals reviewed; weight up a couple of pounds from last year. Affect flat. Thyroid normal size. Heart RRR, lungs clear.\n\nAssessment and plan:\n1. MDD, small response on sertraline 50. Increase to 100 mg daily. Referral to psychiatry for co-management, given the slow course and her mother's history; she agreed to this one. Therapy still on the table.\n2. Fatigue persists - CBC, CMP, TSH and B12 today.\n3. Hypothyroidism stable.\n4. Flu shot today.\n\nPsychiatry wait is usually 2-3 months. Message me in 2-3 weeks on how the higher dose is going. Follow-up visit after psychiatry."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.5,
+            "labs": {
+              "Vitamin B12": 520
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "portal_message",
+          "start": "2025-10-02T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from yesterday",
+              "date": "2025-10-02T15:20",
+              "author": "PCP",
+              "body": "Your blood count, kidney and liver panel, thyroid and B12 all came back normal. Nothing physical to explain the tiredness, so we keep working on the mood side. Psychiatry has the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "portal_message",
+          "start": "2025-10-22T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Higher dose",
+              "date": "2025-10-22T20:05",
+              "author": "patient",
+              "body": "Three weeks on 100. No side effects except maybe a little jittery the first days. Mood about the same. Psychiatry called, first appointment is December 22."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Higher dose",
+              "date": "2025-10-23T07:55",
+              "author": "PCP",
+              "body": "Good that it's scheduled. Stay on 100 mg until you see them; they'll have the full picture. Reach out sooner if things get worse."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "pharmacy",
+          "start": "2025-11-18T09:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Sertraline refill",
+              "date": "2025-11-18T09:15",
+              "author": "MA",
+              "body": "Pharmacy request: sertraline 100 mg #30. Started 10/1. PCP approved #90 with 1 refill; psychiatry appointment pending."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "specialist_visit",
+          "start": "2025-12-22T09:00",
+          "service": "Psychiatry",
+          "reason": "Depression evaluation",
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2025-12-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatric evaluation",
+              "date": "2025-12-30T14:00",
+              "author": "psychiatry",
+              "body": "PSYCHIATRY - NEW PATIENT EVALUATION\nSeen December 22, 2025. Copy to referring primary care physician.\n\nIdentifying information: 39-year-old married woman, data entry specialist, referred for depression first diagnosed by her PCP in August 2024. Comorbid autoimmune hypothyroidism and primary ovarian insufficiency.\n\nHistory of present illness: Her PCP started sertraline 50 mg in August and increased it to 100 mg about three months ago; she has noticed little benefit. For the past six weeks her mood has been persistently low. She wakes around 4 a.m. daily and cannot get back to sleep, and her concentration is poor. Activities she used to love, hiking and cooking in particular, hold no interest. Appetite is poor and she has lost roughly 10 lb unintentionally in the past month. She feels guilty for being unproductive. At times she wonders whether her family would be better off without her; she denies intent or plan. No history of manic or psychotic symptoms. She has never seen a psychiatrist or therapist. She says she would be open to therapy if it would help, but right now she feels too exhausted to search for a therapist or commit to weekly sessions. She denies recent psychosocial stressors. She asked whether there was something she could take to take the edge off so she can function.\n\nPsychiatric history: as above; no hospitalizations, no self-harm.\nFamily psychiatric history: mother with depression.\nSubstance use: drinks socially, denies drug use. Never smoker.\nMedications: sertraline 100 mg daily, levothyroxine 88 mcg daily. Allergies: NKDA.\n\nExam: Vital signs within normal limits; general physical examination unremarkable.\nMental status: Tired-appearing woman with poor eye contact and psychomotor slowing. Speech soft, coherent. Mood \"empty.\" Affect constricted. Thought process linear. Hopeless about the future, yet willing to try treatment. Passive death wish without intent or plan. No psychotic content. Insight and judgment fair.\n\nData reviewed: CBC, TSH, CMP and B12 from October 1 at her PCP's office, all normal.\n\nAssessment: Major depressive disorder, current episode, with partial at best response to sertraline at 100 mg for about 12 weeks. Risk: chronic passive ideation, no intent, plan, or history of attempts; protective factors include marriage, employment and engagement in care. Overall acute risk low.\n\nPlan:\n1. Continue sertraline 100 mg daily for now to complete an adequate trial at this dose; we will reassess at follow-up and adjust then.\n2. Regarding something to take the edge off: explained why I would not add a sedative such as a benzodiazepine for depression; she accepted this.\n3. Psychotherapy: referral placed through our clinic's therapy program and a short list of in-network therapists provided; we will help with scheduling.\n4. Safety plan reviewed and updated; crisis line information given.\n5. Return in about 3 months, sooner by phone if needed.\n\nPsychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw psychiatry",
+              "date": "2026-01-06T18:30",
+              "author": "patient",
+              "body": "I saw the psychiatrist the week before the holidays. She's keeping me on the 100 for now and wants me in therapy, they're helping set it up. Just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw psychiatry",
+              "date": "2026-01-07T08:12",
+              "author": "PCP",
+              "body": "Thanks, Dawn. Their letter came in and I read it. I'm glad you went. Keep me posted, and I'm here in between."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2026-01-20T10:05",
+              "author": "MA",
+              "body": "Levothyroxine 88 mcg #90 refill request. Last TSH 10/2025 normal. Approved with 1 refill; patient due for physical and labs in the spring, reminder sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "specialist_visit",
+          "start": "2026-03-17T15:30",
+          "service": "Psychiatry",
+          "reason": "Depression follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry follow-up",
+              "date": "2026-03-24T11:20",
+              "author": "psychiatry",
+              "body": "PSYCHIATRY PROGRESS NOTE - copy to PCP\nVisit: March 17, 2026\n\n39-year-old woman with autoimmune hypothyroidism, primary ovarian insufficiency and right carpal tunnel syndrome, followed for major depressive disorder first diagnosed in August 2024 and evaluated here in December 2025.\n\nInterval: Now three months on sertraline 100 mg daily without meaningful improvement. Concentration at work is poor and she takes pleasure in little. Appetite down; she estimates about 5 kg lost over the past 3 months. Denies thoughts of harming herself. New concern: since starting sertraline her libido has dropped markedly, and it is causing tension with her husband. She has had one intake with a therapist through our program.\n\nSubstances: no tobacco, alcohol or drugs; she has not been drinking at all lately.\nMedications: sertraline 100 mg daily, levothyroxine 88 mcg daily. NKDA.\n\nExam: general examination normal.\nMental status: low mood, constricted affect, linear thought, no SI, no psychosis.\n\nLabs (drawn through our office this month): CBC, TSH and fasting glucose within normal limits.\n\nAssessment: MDD, current episode not responding to sertraline 100 mg; sexual side effect.\n\nPlan: Discussed options. Because she has not yet had a trial at a higher dose, we agreed to increase sertraline to 150 mg daily, knowing sexual side effects may not improve; if they become intolerable we will change course. Continue therapy. Safety plan current. Follow up in about 3 months.\n\nPsychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T12:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sertraline prescriptions",
+              "date": "2026-04-07T12:44",
+              "author": "patient",
+              "body": "FYI the psychiatrist is writing my sertraline prescriptions now so the pharmacy might stop asking you. Thyroid one is still yours."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sertraline prescriptions",
+              "date": "2026-04-07T15:10",
+              "author": "MA",
+              "body": "Got it, thank you. We'll keep handling the levothyroxine. The doctor has seen the March letter from psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "specialist_visit",
+          "start": "2026-06-12T13:00",
+          "service": "Psychiatry",
+          "reason": "Depression follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry follow-up",
+              "date": "2026-06-19T10:45",
+              "author": "psychiatry",
+              "body": "PSYCHIATRY PROGRESS NOTE - copy to PCP\nVisit: June 12, 2026\n\nFollow-up for treatment-resistant depression, after evaluations here in December 2025 and March 2026. Background of primary ovarian insufficiency and autoimmune hypothyroidism.\n\nInterval: Six months now of persistent sadness, loss of interest and fatigue, with no improvement in mood since the increase to sertraline 150 mg in March. She is distressed by significant weight gain and a further fall in libido, both worse since the dose went up.\n\nMedications: sertraline 150 mg daily, levothyroxine 88 mcg daily. NKDA. No substance use.\n\nExam: BMI 32 kg/m2. Appears lethargic; otherwise unremarkable.\nMental status: dysphoric, constricted, no SI, no psychosis.\n\nLabs (through our office): TSH and comprehensive metabolic panel within normal limits.\n\nAssessment: MDD without response to sertraline at 100 and 150 mg; weight gain and sexual dysfunction on sertraline.\n\nPlan: Reviewed options: continue as is, switch to a different antidepressant, or add a second medication. She wants to talk it over with her husband before deciding. Continue sertraline 150 mg for now. Continue therapy. She will call or message our office with her decision; otherwise follow up in about 3 months. Safety plan reviewed.\n\nPsychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2026-07-14T09:30",
+              "author": "MA",
+              "body": "Refill request for levothyroxine 88 mcg. 30-day supply approved to bridge; annual physical and TSH needed before further refills. Pt messaged to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T17:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booking my physical",
+              "date": "2026-08-11T17:55",
+              "author": "patient",
+              "body": "Sorry it's been so long. Can I get a physical in September? Mornings are best. I got the reminder about the thyroid refill."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booking my physical",
+              "date": "2026-08-12T09:02",
+              "author": "front desk",
+              "body": "Hi Dawn, you're booked for Tuesday, September 15 at 8:30 for your physical. The doctor will draw your thyroid test that morning, and we sent one more month of levothyroxine to your pharmacy to cover you."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "annual_physical",
+          "start": "2026-09-15T08:30",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "labs": {
+      "Anti-Mullerian hormone": {
+        "code": "38476-8",
+        "display": "Mullerian inhibiting substance [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

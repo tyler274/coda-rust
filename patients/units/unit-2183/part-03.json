@@ -1,0 +1,275 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002183",
+      "events": [
+        {
+          "id": "2022-01-12a",
+          "kind": "specialist_visit",
+          "start": "2022-01-12T14:00",
+          "service": "Vascular Surgery",
+          "reason": "PAD with right foot ulcer",
+          "orders": [{"id": "vascular-2021", "action": "done", "date": "2022-01-12T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Vascular surgery consultation", "author": "vascular surgery", "date": "2022-01-17T10:30", "body": "Outside vascular surgery group\nDate of visit: 01/12/2022\n\nAsked by podiatry to see Mr. Conti for a right plantar forefoot ulcer with a right ABI of 0.62 (left 1.02). He has no rest pain and no calf claudication he can name; the neuropathy may mask some of it. Former smoker. Diabetic on insulin. CAD with prior stent, on aspirin and atorvastatin.\nAllergies: NKDA.\nExam: right foot warm, capillary refill sluggish, DP and PT diminished on the right, normal on the left. The ulcer is smaller than podiatry's measurement, clean, no infection.\nImpression: peripheral arterial disease of the right leg; neuropathic ulcer that is already healing with offloading.\nPlan: no intervention while the ulcer heals. Walking program, continue aspirin and statin, glucose control. Podiatry to keep offloading and wound care. If the ulcer stalls or he develops rest pain, we will see him back for imaging and discussion.\n\nVascular Surgery"}
+          ]
+        },
+        {
+          "id": "2022-01-19a",
+          "kind": "telephone",
+          "start": "2022-01-19T10:15",
+          "reason": "wound check",
+          "documents": [{"type": "Telephone Encounter", "title": "Wound check call", "author": "RN", "date": "2022-01-19T10:15", "body": "Called pt to check on the foot. Wife doing dressings daily, says the sore is shrinking, no smell or redness. Wearing the post-op shoe. Reminded him of the warning signs and to keep the podiatry appointment."}]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "specialist_visit",
+          "start": "2022-03-09T13:30",
+          "service": "Podiatry",
+          "reason": "ulcer follow-up",
+          "conditions": [{"label": "Type 2 diabetes mellitus with foot ulcer", "icd10": "E11.621", "action": "resolved", "onset": "2021-11-15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Podiatry follow-up letter", "author": "podiatry", "date": "2022-03-11T15:00", "body": "Outside podiatry practice\nDate of visit: 03/09/2022\n\nRight plantar first metatarsal head ulcer is fully epithelialized. No callus buildup today. Protective sensation still absent both feet; right pulses diminished as before.\nAllergies: NKDA.\nPlan: diabetic shoes and custom inserts prescribed; daily foot checks with a mirror or his wife; callus care here every 3 months. Ulcer resolved.\n\nPodiatry"}
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "office_visit",
+          "start": "2022-03-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-23T11:00", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-03-23T11:00", "results": [{"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-03-23T11:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 68}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-23T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2022-03-23T11:05", "body": "Foot healed per podiatry and per my look today, skin closed, no callus. Waiting on the diabetic shoes. Vascular saw him, no procedure for now; he's walking the driveway loop daily.\nAngina rare. Breathing baseline. Seizure-free.\nExam: regular, lungs clear, no edema. Right foot pulses faint, left fine. Monofilament absent both soles.\nA/P: T2DM, A1c today, glargine 24 and metformin continue. PAD: aspirin, statin, walking. Healed foot ulcer: shoes, daily checks. VPA level today. RTC 3 months / AWV."}
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "annual_physical",
+          "start": "2022-06-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 8.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-06-08T09:45", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2022-06-08T09:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-06-08T09:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2022-06-08T09:00"}, {"procedure": "Immunization administration", "performed": "2022-06-08T09:40"}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-06-08T09:40"}],
+          "orders": [{"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2022-06-08T09:55", "body": "AWV. Functional status unchanged, independent. No falls despite the numb feet; uses the railing on the stairs. PHQ-9 2. Sober 3 years.\nRecall and clock normal.\nPrevention: LDCT ordered. Shingrix #1 today, #2 in 2-6 months. Colonoscopy due 2026.\nNew diabetic shoes in, wearing them.\nCare plan reviewed, written copy given."}
+          ]
+        },
+        {
+          "id": "2022-06-29a",
+          "kind": "imaging",
+          "start": "2022-06-29T08:10",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-06-29T08:10", "text": "Comparison 06/2021. No pulmonary nodules. Stable emphysema. Coronary calcification with stent. Heart size upper normal. No effusion.", "conclusion": "Lung-RADS 1."}],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-06-29T08:10"}],
+          "documents": [{"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2022-06-30T13:00", "body": "Lung-RADS 1. Letter sent."}]
+        },
+        {
+          "id": "2022-08-17a",
+          "kind": "nurse_visit",
+          "start": "2022-08-17T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-08-17T11:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-08-17T11:05"}],
+          "documents": [{"type": "Nurse Note", "title": "Nurse Visit: Shingrix #2", "author": "RN", "date": "2022-08-17T11:20", "body": "Shingrix #2 given left deltoid, IM. Sore arm and tired for a day after #1, nothing worse. Observed briefly, fine. Series complete."}]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "outside_records",
+          "start": "2022-08-24T14:00",
+          "reason": "diabetic eye exam",
+          "documents": [{"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2022-08-24T14:00", "body": "Optometry. Exam 08/17/2022 with dilation: no diabetic retinopathy. Mild cataracts, stable. Glasses updated. Recheck one year."}]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "nurse_visit",
+          "start": "2022-10-05T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-05T10:45"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-10-05T10:46"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-05T10:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-05T10:45"}],
+          "documents": [{"type": "Nurse Note", "title": "Nurse Visit: vaccines", "author": "RN", "date": "2022-10-05T11:05", "body": "High-dose flu R arm, PCV20 L arm, Pfizer bivalent booster L arm (separate site). VIS sheets given. No reaction during observation. He mentioned his ankles have been puffy in the evenings; advised to bring it up with PCP, offered an appointment, he'll call."}]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "office_visit",
+          "start": "2022-11-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath and ankle swelling",
+          "state": {"bp": [142, 88], "weight_kg": 101.0, "labs": {"Creatinine": 1.15}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "reports": [{"study": "12-lead ECG", "performed": "2022-11-16T10:00", "text": "Sinus rhythm. No acute ST changes. No change from 11/2020.", "conclusion": "No acute changes."}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-11-16T09:40"}, {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-11-16T10:00"}],
+          "orders": [{"id": "cards-2022", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "progressive exertional dyspnea and ankle swelling"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2022-11-16T10:25", "body": "Since late summer he gets winded doing things that used to be easy, the stairs, the leaf blower. Ankles swell by evening and are down by morning. Up about 3 kg since June. No chest tightness beyond his usual rare angina. Albuterol doesn't change the breathlessness.\nExam: comfortable at rest. Heart regular. Lungs clear. Both ankles puffy, pitting.\nECG: sinus, unchanged.\nA/P: exertional dyspnea and edema in a man with ischemic heart disease; worried about his heart pumping. Cardiology referral sent, they can see him in about 2 weeks; they'll do the workup there. Low salt in the meantime, daily weights. ED for breathlessness at rest or lying flat."}
+          ]
+        },
+        {
+          "id": "2022-12-02a",
+          "kind": "specialist_visit",
+          "start": "2022-12-02T11:00",
+          "service": "Cardiology",
+          "reason": "dyspnea on exertion and ankle edema",
+          "conditions": [{"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2022-09-01"}],
+          "medications": [{"drug": "furosemide 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "heart failure with volume overload"}],
+          "vitals": {"bp": [145, 90], "hr": 88, "rr": 18, "spo2": 96},
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-02T11:30", "results": [{"test": "Sodium", "value": 138}, {"test": "Potassium", "value": 4.5}, {"test": "Creatinine", "value": 1.2}]},
+            {"panel": null, "collected": "2022-12-02T11:30", "results": [{"test": "Fasting Glucose", "value": 160}, {"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900}]}
+          ],
+          "reports": [{"study": "Chest X-ray, 2 views", "performed": "2022-12-02T12:00", "text": "PA and lateral. Cardiomegaly. No focal consolidation or pulmonary infiltrate. No pleural effusion. No pneumothorax. Coronary stent noted.", "conclusion": "Cardiomegaly without infiltrates."}],
+          "orders": [
+            {"id": "cards-2022", "action": "done", "date": "2022-12-02T11:00"},
+            {"id": "echo-2022", "action": "placed", "order": "Transthoracic echocardiogram", "category": "imaging", "reason": "suspected heart failure"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology consultation", "author": "cardiology", "date": "2022-12-06T14:30", "body": "Outside cardiology group\nDate of visit: 12/02/2022\n\nKnown to us for CAD and stable angina. Returns at his PCP's request with three months of steadily worsening breathlessness on exertion and swelling of both ankles. No chest pain, palpitations or fainting.\nHistory: hypertension, type 2 diabetes on insulin, MIs 2014 and 2018, stent 2014, COPD, seizure disorder.\nMedications: metformin, lisinopril, atorvastatin 40, aspirin, metoprolol succinate 50, insulin glargine, valproic acid, albuterol, nitroglycerin PRN.\nAllergies: NKDA.\n\nVitals: BP 145/90, HR 88, RR 18, SpO2 96% on room air.\nExam: JVD present. S3 gallop. Lungs clear to auscultation. 2+ pitting edema both ankles.\nLabs today: Na 138, K 4.5, creatinine 1.2, fasting glucose 160, BNP 900.\nChest X-ray: enlarged cardiac silhouette, no infiltrates.\n\nImpression: new heart failure, presumed reduced ejection fraction on an ischemic basis.\nPlan:\n1. Furosemide 20 mg each morning. Daily weights; call for a gain of 1 kg in a day or 2 kg in a week.\n2. Transthoracic echo next week.\n3. BMP in about 2 weeks through his PCP.\n4. Continue metoprolol, lisinopril, aspirin, atorvastatin.\n5. 2 g sodium diet.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "imaging",
+          "start": "2022-12-09T10:00",
+          "reason": "heart failure evaluation",
+          "reports": [{"study": "Transthoracic echocardiogram", "performed": "2022-12-09T10:00", "text": "Technically adequate study. Left ventricular ejection fraction approximately 30% by visual estimate, reduced systolic function. Right ventricular size and function normal. No significant valvular stenosis or regurgitation. No pericardial effusion. Inferior vena cava normal size.", "conclusion": "Reduced left ventricular systolic function, LVEF about 30%."}],
+          "orders": [{"id": "echo-2022", "action": "done", "date": "2022-12-09T10:00"}],
+          "documents": [{"type": "Result Note", "title": "Echo copy received", "author": "PCP", "date": "2022-12-12T08:40", "body": "Echo from cardiology: EF about 30%. Confirms HFrEF. Cardiology following; BMP here next week as they asked."}]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "lab_only",
+          "start": "2022-12-19T08:20",
+          "reason": "BMP on furosemide",
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-19T08:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}],
+          "documents": [{"type": "Result Note", "title": "BMP on furosemide", "author": "PCP", "date": "2022-12-19T16:10", "body": "Potassium and kidney function fine on furosemide. Copy faxed to cardiology. Pt notified via portal."}]
+        },
+        {
+          "id": "2023-01-11a",
+          "kind": "office_visit",
+          "start": "2023-01-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heart failure follow-up",
+          "state": {"bp": [128, 76], "weight_kg": 97.0, "labs": {"Hemoglobin A1c": 8.4}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [{"panel": null, "collected": "2023-01-11T10:40", "results": [{"test": "Hemoglobin A1c"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-11T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-01-11T10:40", "body": "Follow-up on the new heart failure. Down about 4 kg on furosemide. Ankles mostly normal, can do the stairs again with a pause at the top. Weighing himself daily, wife keeps the log on the fridge. Sleeping flat.\nExam: no JVD seen sitting up. Heart regular, no gallop heard today. Lungs clear. Trace ankle edema.\nA/P: HFrEF, EF ~30%, better on furosemide 20. Continue metoprolol, lisinopril. Cardiology follow-up in March. T2DM, A1c today. Low-salt diet reviewed again."}
+          ]
+        },
+        {
+          "id": "2023-03-15a",
+          "kind": "specialist_visit",
+          "start": "2023-03-15T09:00",
+          "service": "Cardiology",
+          "reason": "heart failure follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2023-03-20T12:15", "body": "Outside cardiology group\nDate of visit: 03/15/2023\n\nHeart failure with reduced EF (about 30% on echo 12/2022), ischemic. Much improved since starting furosemide; walking more, ankles near normal. Angina rare, nitroglycerin a few times since the winter began.\nMeds: furosemide 20, metoprolol succinate 50, lisinopril 20, aspirin 81, atorvastatin 40, nitroglycerin PRN, metformin, insulin glargine, valproic acid, albuterol.\nAllergies: NKDA.\nExam: no JVD, regular, no S3, lungs clear, trace edema.\nImpression: HFrEF, compensated. Stable angina.\nPlan: continue current medicines. Daily weights. Return 6 months.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "office_visit",
+          "start": "2023-05-17T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-17T14:00", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2023-05-17T14:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-17T14:00", "results": [{"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-05-17T14:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 74}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-17T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-05-17T14:05", "body": "Spring check. Weight steady on the home scale. No orthopnea. Feet intact, in the diabetic shoes. Podiatry trims every few months. No seizures.\nExam: regular, lungs clear, no edema today. Feet: no breakdown, insensate soles.\nA/P: HFrEF stable. T2DM, A1c today. HLD lipids today. VPA level and CBC. Will see for AWV in June."}
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "annual_physical",
+          "start": "2023-06-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-06-14T09:20"}],
+          "orders": [{"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2023-06-14T10:05", "body": "AWV. Still independent, slower on stairs since the heart failure. No falls. PHQ-9 4, says the heart news knocked him down a bit in the winter but he's fine now. Four years without a drink.\nCognition screen normal.\nPrevention: LDCT ordered. Vaccines up to date except fall boosters.\nAdvance care planning revisited briefly given the heart failure; wife remains proxy, he wants full treatment.\nWritten plan given."}
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "imaging",
+          "start": "2023-07-12T08:30",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-07-12T08:30", "text": "Comparison 06/2022. No pulmonary nodules. Stable emphysema. Cardiomegaly and coronary calcification with stent. No effusion.", "conclusion": "Lung-RADS 1."}],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-07-12T08:30"}],
+          "documents": [{"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2023-07-13T09:00", "body": "No nodules, Lung-RADS 1. Letter mailed."}]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "outside_records",
+          "start": "2023-08-23T15:10",
+          "reason": "diabetic eye exam",
+          "documents": [{"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2023-08-23T15:10", "body": "Optometry. 08/16/2023 dilated exam. No retinopathy OU. Cataracts mild, stable. Annual follow-up."}]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "nurse_visit",
+          "start": "2023-10-04T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-04T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-04T11:06"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-04T11:05"}],
+          "documents": [{"type": "Nurse Note", "title": "Nurse Visit: vaccines", "author": "RN", "date": "2023-10-04T11:20", "body": "High-dose flu right deltoid and 2023-24 Pfizer COVID left deltoid. Tolerated. Asked about the new RSV shot; told him to ask PCP at his next visit."}]
+        },
+        {
+          "id": "2023-11-15a",
+          "kind": "office_visit",
+          "start": "2023-11-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-15T11:20", "results": [{"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-11-15T11:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-15T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-11-15T11:25", "body": "Doing alright. Angina rare, nitro maybe once since summer. Weight stable on the home scale, no swelling, sleeps flat.\nExam: regular, lungs clear, no edema.\nA/P: HFrEF compensated. Stable angina. T2DM, A1c today. RSV vaccine: reasonable for him with heart and lung disease, will give when the clinic has stock. RTC 3 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

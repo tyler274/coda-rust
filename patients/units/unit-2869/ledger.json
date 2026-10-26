@@ -1,0 +1,1867 @@
+{
+  "unit": "unit-2869",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002869",
+      "given": "Nancy",
+      "family": "Chapman",
+      "birth_date": "1951-05-01",
+      "address_line": "27 Larkspur Lane",
+      "phone": "+1-603-555-0130",
+      "email": "nancy.chapman@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired teacher who joins in late 2023 with depression, lumbar osteoarthritis, glaucoma and overactive bladder, and presents with orthostatic hypotension on amitriptyline. A year later anticholinergic toxicity leads to stopping amitriptyline and oxybutynin, with sertraline and mirabegron in their place. In 2026 a furniture-moving back flare brings a right upper lumbar radiculopathy managed by outside neurology.",
+      "events": [
+        {
+          "id": "2023-10-30a",
+          "kind": "telephone",
+          "start": "2023-10-30T10:20",
+          "reason": "New member enrollment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New member enrollment call",
+              "date": "2023-10-30T10:20",
+              "author": "front desk",
+              "body": "Ms. Chapman phoned to enroll; membership paperwork emailed and returned same morning. Insurance card on file. Asked whether her first appointment could be sooner than the 11/20 slot because she has been lightheaded getting up out of a chair for about a week. Routed to RN, who spoke with her: no chest pain, no head injury, no current lightheadedness while sitting. First visit moved to this Friday 11/3 at 9:00. Asked her to bring all medicine bottles and the name of her prior doctor's office."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-03a",
+          "kind": "establish_care",
+          "start": "2023-11-03T09:00",
+          "end": "2023-11-03T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; dizziness on standing",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, single episode, unspecified",
+              "action": "history",
+              "note": "treated by prior PCP",
+              "icd10": "F32.9"
+            },
+            {
+              "label": "Spondylosis without myelopathy or radiculopathy, lumbar region",
+              "action": "history",
+              "icd10": "M47.816"
+            },
+            {
+              "label": "Chronic low back pain",
+              "action": "history"
+            },
+            {
+              "label": "Primary open-angle glaucoma",
+              "action": "history",
+              "note": "outside eye practice"
+            },
+            {
+              "label": "Overactive bladder",
+              "action": "history"
+            },
+            {
+              "label": "Orthostatic hypotension",
+              "action": "diagnosed",
+              "onset": "2023-10-27"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amitriptyline hydrochloride 75 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "AT BEDTIME",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug": "oxybutynin chloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Overactive bladder"
+            },
+            {
+              "drug_text": "timolol 5 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "Instill 1 drop in each eye twice daily",
+              "dose": {
+                "value": 1,
+                "unit": "drop"
+              },
+              "frequency": "BID",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "Primary open-angle glaucoma"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for back pain",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic low back pain"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              70
+            ],
+            "hr": 78,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 62.3,
+            "height_cm": 160.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-03T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-03T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Wine, 1 to 2 glasses per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-11-03T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-11-03T10:05",
+              "author": "PCP",
+              "body": "72 y/o retired elementary school teacher establishing care. Seen early because of dizziness.\n\nHPI: For the past week she gets dizzy when she stands up from sitting, and has gone down twice, once in the kitchen and once getting off the couch, no head strike, got herself up both times. A couple of times she felt she was about to black out. Fine once she is up and moving or sitting. Also bothered by a dry mouth and constipation. No chest pain, palpitations, or one-sided weakness.\n\nMeds (bottles reviewed): amitriptyline 75 mg qhs, started by her previous doctor about three months ago for depression; oxybutynin 5 mg BID for bladder; timolol 0.5% 1 gtt OU BID (eye practice manages); ibuprofen 400 mg q6h prn back pain.\nAllergies: NKDA.\nPMH: depression; lumbar spine osteoarthritis with chronic low back pain; primary open-angle glaucoma; overactive bladder.\nPSH: C-section 1978. Right cataract extraction with IOL 2019.\nFH: mother had depression and osteoporosis. Father had degenerative arthritis and high blood pressure. A maternal aunt had open-angle glaucoma.\nSH: never smoker. Wine maybe once or twice a month. Taught elementary school, retired. Daughter lives in the area.\n\nExam: BP 110/70 seated, 90/60 standing. HR 78 seated, 88 standing. Felt woozy on standing, cleared within a minute. Alert, conversant. Heart regular rate and rhythm, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro: strength and gait normal, no focal deficit. Remainder of exam unremarkable.\nPHQ-9 7.\n\nA/P:\n1. Orthostatic hypotension with two falls this week. Reviewed rising in stages (sit at the edge of the bed a minute before standing), good fluid intake, night light and clearing the path to the bathroom. CBC and BMP today. Call right away for any blackout, injury or chest symptoms.\n2. Depression: on amitriptyline from prior PCP, mood fair. Continue.\n3. Overactive bladder: continue oxybutynin.\n4. Glaucoma: continue timolol, eye practice follows.\n5. Chronic low back pain: ibuprofen as needed.\n6. Prior records requested.\nRecheck as needed; will reach out with labs."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request",
+              "date": "2023-11-03T10:30",
+              "author": "front desk",
+              "body": "Signed release obtained. Request for last 3 years of records faxed to prior primary care office."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 160.0,
+            "labs": {
+              "Creatinine": 0.85,
+              "Low Density Lipoprotein": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "portal_message",
+          "start": "2023-11-06T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-11-06T08:40",
+              "author": "PCP",
+              "body": "Hi Nancy, your blood count and chemistry panel from Friday are normal, no anemia and normal kidney function and salts. Keep taking your time when you stand up. How has the dizziness been over the weekend?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2023-11-06T12:15",
+              "author": "patient",
+              "body": "Thank you. Better I think. I have been sitting on the edge of the bed first like you said. No more falls."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "nurse_visit",
+          "start": "2023-11-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              125,
+              71
+            ],
+            "hr": 50
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-17T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-11-17T14:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-17T14:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-11-17T14:25",
+              "author": "RN",
+              "body": "Here for seasonal vaccines. Screening questions negative. High-dose influenza 0.7 mL IM left arm, 2023-24 COVID mRNA 0.3 mL IM right arm. Tolerated. Sat 15 minutes, stood slowly with no lightheadedness. Reports no falls since her visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "portal_message",
+          "start": "2023-11-28T19:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dizziness update",
+              "date": "2023-11-28T19:02",
+              "author": "patient",
+              "body": "Just letting you know the dizzy spells are not as bad. I still have to go slow in the morning. My mouth is still dry all the time but I keep water by the chair."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dizziness update",
+              "date": "2023-11-29T07:50",
+              "author": "PCP",
+              "body": "Glad to hear it. Keep up the slow starts in the morning, and message me if you have another fall or feel faint."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "outside_records",
+          "start": "2023-12-06T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2023-12-06T11:00",
+              "author": "front desk",
+              "body": "Six pages from the previous primary care office, filed under outside records.\n\nSummary sheet: problems listed as depression, osteoarthritis of the lumbar spine with chronic low back pain, open-angle glaucoma (eye practice), overactive bladder. Medications: oxybutynin 5 mg twice daily, timolol 0.5% drops twice daily, ibuprofen 400 mg as needed; amitriptyline 75 mg at bedtime added at the August 2023 visit for depression. Allergies: none known.\nHealth maintenance: colonoscopy 2016, normal, no polyps. Screening mammogram 2022, negative. Immunizations: pneumococcal PCV13 2017, PPSV23 2018, Tdap 2019.\nNo labs in the packet. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-18a",
+          "kind": "pharmacy",
+          "start": "2024-01-18T09:30",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Refill request - timolol",
+              "date": "2024-01-18T09:30",
+              "author": "MA",
+              "body": "Pharmacy fax for timolol 0.5% ophthalmic, 90-day supply. Prescribed by her eye practice; pharmacy told to send the request there. Patient informed by voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T15:44",
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram",
+              "date": "2024-03-12T15:44",
+              "author": "patient",
+              "body": "My last mammogram was in 2022. Do I still need them at my age? If so can you send the order so I can book it for May."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mammogram",
+              "date": "2024-03-13T08:05",
+              "author": "PCP",
+              "body": "Yes, every two years is still recommended for you. Order is in; the imaging center will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "imaging",
+          "start": "2024-05-14T10:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-05-14T10:30",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: none available. The breasts are scattered areas of fibroglandular density. No suspicious mass, calcifications or architectural distortion in either breast. Skin and nipples unremarkable.",
+              "conclusion": "Negative. BI-RADS 1. Routine screening recommended.",
+              "issued": "2024-05-15T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-05-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2024-05-16T08:20",
+              "author": "PCP",
+              "body": "Screening mammogram negative, BI-RADS 1. Letter sent through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "pharmacy",
+          "start": "2024-06-20T11:10",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Refills - amitriptyline, oxybutynin",
+              "date": "2024-06-20T11:10",
+              "author": "MA",
+              "body": "Refill request from pharmacy for amitriptyline 75 mg #90 and oxybutynin 5 mg #180. Last visit 11/2023. Sent to PCP for approval."
+            },
+            {
+              "type": "Refill Note",
+              "title": "Refills approved",
+              "date": "2024-06-20T16:30",
+              "author": "PCP",
+              "body": "Approved both for 90 days, 1 refill. Due for a follow-up this fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "outside_records",
+          "start": "2024-07-23T13:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Eye practice letter",
+              "date": "2024-07-23T13:15",
+              "author": "ophthalmology",
+              "body": "Glaucoma follow-up, seen 7/16/2024. Primary open-angle glaucoma both eyes, pressures at goal on timolol 0.5% twice daily. Optic nerves unchanged from prior. Right eye pseudophakic, lens well positioned. Allergies: NKDA. Continue current drops; recheck in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              133,
+              71
+            ],
+            "hr": 60
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T11:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2024-10-08T11:20",
+              "author": "RN",
+              "body": "Seasonal vaccines. No reactions last year. High-dose flu 0.7 mL IM left deltoid; 2024-25 COVID 0.3 mL IM right deltoid. Observed 15 min, fine. Reminded her she has not had a follow-up with the doctor in almost a year; she will call to book."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "telephone",
+          "start": "2024-11-08T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from daughter",
+              "date": "2024-11-08T09:45",
+              "author": "RN",
+              "body": "Daughter (on HIPAA form) called. Over about 3 months her mother has been more forgetful and at times muddled, repeating questions, losing track of the day, and has had some bladder accidents. No fall, no fever, no slurred speech or facial droop, no sudden change. Eating and drinking. Offered same day; daughter can bring her Monday 11/11 and will stay with her this weekend. Advised ED for any sudden change, weakness or new trouble speaking."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-11a",
+          "kind": "office_visit",
+          "start": "2024-11-11T10:30",
+          "end": "2024-11-11T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Memory difficulty, confusion, incontinence",
+          "conditions": [
+            {
+              "label": "Adverse effect of anticholinergic medication",
+              "action": "diagnosed",
+              "onset": "2024-08-10",
+              "icd10": "T44.3X5A"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amitriptyline hydrochloride 75 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Anticholinergic adverse effect"
+            },
+            {
+              "drug": "oxybutynin chloride 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Anticholinergic adverse effect"
+            },
+            {
+              "drug": "amitriptyline hydrochloride 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets at bedtime for 7 days, then 1 tablet at bedtime for 7 days, then stop",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "AT BEDTIME",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Taper off amitriptyline"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 64,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-11T11:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 59
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-11T11:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-11-11T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-11-11T11:20",
+              "author": "PCP",
+              "body": "73 y/o F, last seen 11/2023 for orthostatic dizziness. Here with her daughter.\n\nHPI: Per daughter, three months of worsening memory and spells of confusion; misplacing things, repeating herself, Some urinary leaking lately, not reaching the toilet in time. Patient says her mouth is like cotton and she is badly constipated. She is a bit slow to answer today but knows where she is and why.\nMeds: amitriptyline 75 mg qhs, oxybutynin 5 mg BID, timolol drops BID, ibuprofen prn.\n\nExam: vitals within normal limits. Alert but lethargic. Pupils 4 mm, minimally reactive to light. Mucous membranes dry. Skin warm and dry. Heart regular, lungs clear. Abdomen soft, bowel sounds diminished, nontender. Neuro nonfocal: strength symmetric, no drift, speech fluent.\n\nA/P:\n1. Adverse effect of anticholinergic medication. Picture fits cumulative anticholinergic load from amitriptyline plus oxybutynin: confusion, dry mouth, dry skin, sluggish dilated pupils, slowed gut, and the bladder symptoms. Stop oxybutynin today. Amitriptyline: taper rather than stop cold - 50 mg qhs x 7 days, 25 mg qhs x 7 days, then off (25 mg tabs sent). BMP and CBC today.\n2. Urinary leaking: timed voiding every 2-3 hours while awake, pads for now. Will address bladder once she is clearer.\n3. Depression: will need a replacement as amitriptyline comes off; video visit in 2 weeks to decide.\n4. Daughter to supervise pills over the taper. Return precautions reviewed with both."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "portal_message",
+          "start": "2024-11-12T17:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2024-11-12T17:20",
+              "author": "PCP",
+              "body": "Sodium 140, potassium 4.2, calcium 9.6, creatinine 1.0, and blood count normal. Nothing here to explain the confusion, which supports the medication effect. Continue the taper as written."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-25T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up during amitriptyline taper",
+          "medications": [
+            {
+              "drug": "sertraline 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-11-25T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-11-25T13:55",
+              "author": "PCP",
+              "body": "Video, patient at her daughter's house with daughter present. Verified name and DOB.\n\nNow on the 25 mg step of the amitriptyline taper, off oxybutynin two weeks. Daughter thinks she is less foggy and following conversation better. Mouth not as dry. Mood is lower, more tearful and not sleeping as well. PHQ-9 11. No thoughts of self-harm.\nStill some leaking, using pads, voiding on a schedule.\n\nA/P:\n1. Depression, mood dipping as amitriptyline comes off. Start sertraline 25 mg daily. Discussed possible nausea and loose stools the first weeks.\n2. Anticholinergic adverse effect improving. Finish taper as planned.\n3. Office visit late January to recheck standing BP, mood and bladder."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "portal_message",
+          "start": "2024-12-16T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update on Mom",
+              "date": "2024-12-16T20:10",
+              "author": "patient",
+              "body": "This is her daughter writing from Mom's account. She finished the last amitriptyline pill a week ago. She is much sharper, doing her crossword again, and her bowels are moving better. The sertraline gave her a little stomach upset the first few days but that settled."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update on Mom",
+              "date": "2024-12-17T08:30",
+              "author": "PCP",
+              "body": "That is great news, thank you. Keep the sertraline going and we will see her in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "office_visit",
+          "start": "2025-01-27T14:00",
+          "end": "2025-01-27T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: mood, bladder, standing blood pressure",
+          "conditions": [
+            {
+              "label": "Orthostatic hypotension",
+              "action": "resolved"
+            },
+            {
+              "label": "Adverse effect of anticholinergic medication",
+              "action": "resolved",
+              "icd10": "T44.3X5A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increase"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug": "24 HR mirabegron 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Overactive bladder"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              74
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 62.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-27T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-27T14:40",
+              "author": "PCP",
+              "body": "Follow-up after stopping oxybutynin and tapering off amitriptyline (off since early December). Daughter here.\n\nS: Daughter says her memory and attention are back to her usual self; patient agrees, back to managing her own pills and bills. No dizziness when she gets up, no falls. Dry mouth gone, bowels regular. Mood: better than November but still flat some days, sleeping okay. Tolerating sertraline 25. Bladder: urgency and some urge leaking most days since oxybutynin stopped, 1-2 pads a day, up once at night.\n\nO: Seated BP 120/74, HR 72. Standing (2 min) BP 116/72, HR 78, no symptoms. Pupils equal, normal size, briskly reactive. Mucous membranes moist. Bowel sounds normal. Alert, engaged, oriented, conversation fluent and appropriate.\nPHQ-9 9.\n\nA/P:\n1. Orthostatic hypotension: resolved off amitriptyline; standing drop now 4 mmHg.\n2. Anticholinergic adverse effect: resolved. Added both anticholinergics to her list of drugs to avoid in her own notes; she should mention it to any new prescriber.\n3. Depression: partial response. Increase sertraline to 50 mg daily.\n4. Overactive bladder: start mirabegron 25 mg ER daily, a non-anticholinergic option. Continue timed voiding. Will watch BP on it.\n5. Video visit in about 10 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "pharmacy",
+          "start": "2025-02-04T10:05",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Coverage review - mirabegron",
+              "date": "2025-02-04T10:05",
+              "author": "MA",
+              "body": "Part D plan requires coverage review for mirabegron ER 25 mg. Submitted with history of anticholinergic adverse effect on oxybutynin (stopped 11/11/2024)."
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Coverage review approved",
+              "date": "2025-02-06T15:40",
+              "author": "MA",
+              "body": "Plan approved mirabegron for 12 months. Pharmacy notified; patient called and told it can be picked up."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression and bladder follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-04-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-04-14T11:20",
+              "author": "PCP",
+              "body": "Video from home, name and DOB confirmed.\nMood steadier on sertraline 50, more like herself. PHQ-9 6. No side effects.\nBladder: leaking much less since mirabegron, down to a pad on outings only. Home cuff readings she sends run in the 110s-120s over 70s.\nBack pain at its usual level, ibuprofen a few times a week.\nPlan: continue sertraline 50 and mirabegron 25. Annual wellness visit in May with fasting labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "annual_physical",
+          "start": "2025-05-20T08:30",
+          "end": "2025-05-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Initial annual wellness visit",
+          "vitals": {
+            "bp": [
+              127,
+              70
+            ],
+            "hr": 54,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 63.3,
+            "height_cm": 159.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-20T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 101
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-20T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 311
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-20T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 69
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 86
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-20T08:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-20T08:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-05-20T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-20T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-05-20T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-05-20T09:20"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-05-20T09:22"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2025",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "Osteoporosis screening; mother with osteoporosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-05-20T09:30",
+              "author": "PCP",
+              "body": "Initial annual wellness visit, 74 y/o F.\n\nHealth risk review: lives independently, drives in daytime, manages own medications again. No falls in the past year. Hearing and vision adequate; eye practice yearly for glaucoma. Never smoker; wine a glass or two a month. Walks most days.\nCurrent problems: depression on sertraline 50; lumbar osteoarthritis with chronic low back pain, ibuprofen prn; open-angle glaucoma on timolol; overactive bladder on mirabegron. History of anticholinergic adverse effect and orthostatic hypotension, both resolved off amitriptyline and oxybutynin.\nPHQ-9 5.\n\nExam: well appearing. Heart regular, no murmur. Lungs clear. Abdomen benign. No edema. Gait steady, rises from chair without using arms.\n\nPrevention:\n- Colonoscopy 2016 normal. At 74 we talked through whether to repeat; she would rather not do another prep. Will revisit next year.\n- Mammogram 5/2024 negative.\n- Bone density: never done; mother had osteoporosis. DXA ordered.\n- Pneumococcal: PCV13 and PPSV23 in the past; PCV20 today to complete.\n- Shingrix dose 1 today, dose 2 in fall.\n- Tdap 2019.\n- Hepatitis C screening today.\nLabs: CMP, CBC, lipids, TSH.\nFollow-up in the fall."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "portal_message",
+          "start": "2025-05-22T12:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Wellness visit labs",
+              "date": "2025-05-22T12:10",
+              "author": "PCP",
+              "body": "Nancy, all of your labs from Tuesday came back normal: kidney and liver tests, blood count, cholesterol, thyroid, and the hepatitis C screen is negative. Please call the imaging center to book the bone density test."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "imaging",
+          "start": "2025-06-10T13:00",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2025-06-10T13:00",
+              "text": "Dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and both hips. Lumbar spine L1-L4 T-score -0.4. Left femoral neck T-score -0.7. Left total hip T-score -0.3. Right femoral neck T-score -0.6. No vertebrae excluded. No prior study for comparison.",
+              "conclusion": "Normal bone density. Lowest T-score -0.7 at the left femoral neck.",
+              "issued": "2025-06-11T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2025",
+              "action": "done",
+              "date": "2025-06-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bone density result",
+              "date": "2025-06-12T09:15",
+              "author": "PCP",
+              "body": "DXA normal, lowest T-score -0.7. No treatment needed. Message sent to patient; repeat not needed for several years."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T14:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Eye practice letter",
+              "date": "2025-08-19T14:30",
+              "author": "ophthalmology",
+              "body": "Annual glaucoma visit 8/12/2025. Stable open-angle glaucoma both eyes on timolol twice daily; no change. Medications reviewed per patient; allergies NKDA. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "nurse_visit",
+          "start": "2025-09-23T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 63
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-09-23T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T10:37"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-09-23T10:39"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2025-09-23T10:55",
+              "author": "RN",
+              "body": "Three vaccines today per standing orders and her request. Shingrix #2 left deltoid; high-dose influenza right deltoid; 2025-26 COVID right deltoid lower site. Observed 15 minutes without problem. Shingles series now complete."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "office_visit",
+          "start": "2025-10-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              80
+            ],
+            "hr": 57,
+            "spo2": 98,
+            "weight_kg": 62.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-10-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-21T15:30",
+              "author": "PCP",
+              "body": "Routine follow-up.\nMood good, PHQ-9 4. Wants to stay on sertraline 50 through the winter. Bladder controlled on mirabegron, rare leak. Back aches on and off, same as for years; ibuprofen a few times a week, takes it with food. Drops twice a day.\nExam: BP and pulse normal today. Heart and lungs normal. Lumbar spine nontender, straight leg raise negative both sides. Gait normal.\nA/P: depression in good control; OAB controlled; chronic back pain stable. Continue all. Recheck in winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2025-11-18T08:12",
+              "author": "patient",
+              "body": "Can you send a new prescription for the sertraline? The pharmacy says no refills left."
+            },
+            {
+              "type": "Refill Note",
+              "title": "Sertraline renewed",
+              "date": "2025-11-18T11:30",
+              "author": "MA",
+              "body": "Sertraline 50 mg #90 with 3 refills sent per PCP. Patient messaged back."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "telephone",
+          "start": "2025-12-08T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-12-08T16:05",
+              "author": "front desk",
+              "body": "Patient cancelled tomorrow's follow-up; storm forecast and she does not want to drive on the hills. Rebooked for 2/10 in the afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T09:50",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Mail-order transfer",
+              "date": "2026-01-13T09:50",
+              "author": "MA",
+              "body": "New plan year; patient switching sertraline and mirabegron to her plan's mail-order pharmacy. New 90-day prescriptions sent there per PCP. Mirabegron coverage review on file through 2/2026; renewal flagged."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              83
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 62.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-10T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-10T15:00",
+              "author": "PCP",
+              "body": "Rescheduled from December.\nWinter has gone fine, mood holding; PHQ-9 5. Sertraline 50 daily. Bladder good on mirabegron. Back pain baseline. Eye practice saw her in August, no change to drops.\nExam: vitals normal. Comfortable. Heart regular, lungs clear, no edema.\nA/P: all stable, continue current medicines. Mirabegron coverage renewal sent today. Follow-up late spring with annual labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T18:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2026-03-24T18:40",
+              "author": "patient",
+              "body": "Could you put a copy of my vaccine list in the portal? I want to keep one in my wallet."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2026-03-25T09:10",
+              "author": "MA",
+              "body": "Your immunization record is now under Documents in the portal and can be printed from there."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "telephone",
+          "start": "2026-05-04T16:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Back pain and groin burning",
+              "date": "2026-05-04T16:20",
+              "author": "RN",
+              "body": "Patient called. Her back flared up over the weekend after she helped her grandson move furniture, and since yesterday she has a burning feeling across the right groin. No numbness between the legs, no trouble passing urine or stool, walking fine. No fever. Booked first slot tomorrow morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "office_visit",
+          "start": "2026-05-05T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain flare, right groin burning",
+          "conditions": [
+            {
+              "label": "Lumbar radiculopathy",
+              "action": "diagnosed",
+              "onset": "2026-05-03"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              78
+            ],
+            "hr": 54,
+            "temp_c": 36.7,
+            "spo2": 99
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-05T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Right groin burning after back flare, possible upper lumbar radiculopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2026-05-05T09:10",
+              "author": "PCP",
+              "body": "75 y/o F with long-standing lumbar osteoarthritis.\n\nS: Lower back flared up after helping her grandson move furniture over the weekend. Since Sunday, a burning pain across the right groin, worse sitting. Feels the right leg is a little weak lifting it into the car. No saddle numbness, no bladder or bowel change. Walking normally. No fever, no rash in the area. Taking ibuprofen.\n\nO: Afebrile, vitals normal. Gait steady, heel and toe walk normal. No rash. Abdomen soft, no hernia felt. Reflexes symmetric. Exam otherwise normal.\n\nA/P: Burning groin pain with subjective hip weakness after a back flare, most consistent with an upper lumbar radiculopathy. No red flags. Urgent neurology referral placed; neurology can see her Thursday and will decide on imaging. Activity as tolerated, avoid lifting. Call for any numbness in the saddle area, bladder or bowel trouble, or worsening weakness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "outside_records",
+          "start": "2026-05-13T11:45",
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2026-05-13T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2026-05-13T11:45",
+              "author": "neurology",
+              "body": "Outpatient neurology, seen 5/7/2026. Reason for referral: right groin burning.\n\n75-year-old woman with spinal osteoarthritis and chronic low back pain. Back pain worsened after moving furniture with her grandson. Burning across the right groin for 4 days, aggravated by sitting, slightly eased lying on her back; some difficulty lifting the right hip. Denies saddle anesthesia, bowel or bladder dysfunction and paresthesias in the legs. Walks without unsteadiness. Past history includes orthostatic hypotension and an anticholinergic medication reaction, both in the past.\nMedications (per our intake list): amitriptyline 75 mg qhs, oxybutynin 5 mg BID, timolol 0.5% OU BID, ibuprofen 400 mg q6h prn. Allergies: NKDA.\n\nExam: power 5/5 in all groups except mildly reduced right hip flexion. Reflexes symmetric and normal throughout. Decreased light touch and pinprick over the right inguinal area and upper inner thigh; sensation in the lower leg and foot normal. Rectal tone normal. Cranial nerves, coordination and gait normal.\n\nImpression: uncomplicated right upper lumbar radiculopathy, likely root compression in the setting of lumbar spondylosis. No features of cauda equina.\nPlan: MRI lumbar spine without contrast to look for foraminal narrowing. Will contact her with results and next steps."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "portal_message",
+          "start": "2026-05-26T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI done",
+              "date": "2026-05-26T10:02",
+              "author": "patient",
+              "body": "I had the MRI last Thursday. The neurologist's office called and said a nerve is pinched up high in my back and they want me to do physical therapy. My first session is next week. The burning is a bit better."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: MRI done",
+              "date": "2026-05-26T13:20",
+              "author": "PCP",
+              "body": "Thanks for letting me know. Physical therapy is a good plan. We have not received the MRI report yet; I'll go over things with you at your June visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "office_visit",
+          "start": "2026-06-10T09:00",
+          "end": "2026-06-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: back and leg, annual labs",
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 56,
+            "spo2": 96,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-10T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-10T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 315
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-10T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-10T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-06-10T09:40",
+              "author": "PCP",
+              "body": "Follow-up of right upper lumbar radiculopathy, seen by neurology 5/7.\n\nS: Per patient, the lumbar MRI showed a pinched nerve high in the lower back; report not yet received here. Started physical therapy about ten days ago, twice a week plus home exercises. Groin burning less, comes mostly after sitting a long time. Hip feels stronger getting in and out of the car. No bladder or bowel change. Mood a bit lower with the pain but okay; PHQ-9 6. Still taking ibuprofen most days lately.\n\nO: Vitals normal. Walks without limp. Heart regular, lungs clear.\n\nA/P:\n1. Lumbar radiculopathy, improving with PT. Continue PT per neurology; will request the MRI report and neurology notes.\n2. Depression: stable on sertraline 50, mild dip with the pain. Continue.\n3. OAB on mirabegron, glaucoma on timolol: unchanged.\n4. Chronic back pain: back to as-needed ibuprofen as the flare settles, with food.\n5. Annual labs drawn today.\nFollow-up in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "portal_message",
+          "start": "2026-06-12T16:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-06-12T16:05",
+              "author": "PCP",
+              "body": "Your labs from Wednesday are all normal, including kidney function, blood count and cholesterol. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T10:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2026-07-14T10:30",
+              "author": "neurology",
+              "body": "Outpatient neurology follow-up, seen 7/8/2026.\nInterval: MRI lumbar spine without contrast 5/21/2026 showed multilevel degenerative disc disease and facet arthropathy, with moderate right L1-L2 foraminal narrowing from a disc bulge and facet hypertrophy contacting the exiting right L1 root. No central canal stenosis. Conus normal. She has been in physical therapy since early June.\nNow: groin burning much reduced. Exam: right hip flexion 5/5. Patchy reduced sensation persists over the upper medial thigh. Reflexes symmetric.\nImpression: right L1 radiculopathy, improving.\nPlan: continue home exercise program; follow up with neurology as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T09:15",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Refill requests",
+              "date": "2026-08-11T09:15",
+              "author": "MA",
+              "body": "Mail-order requests for sertraline 50 mg and mirabegron 25 mg ER, 90 days each. Approved per PCP and sent. Timolol request forwarded to her eye practice."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T14:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "date": "2026-08-18T14:25",
+              "author": "patient",
+              "body": "Confirming I'm coming in on September 15th at 10. My daughter will drive me."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "date": "2026-08-18T15:00",
+              "author": "front desk",
+              "body": "You're all set for the 15th at 10:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T10:00",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Adverse effect of anticholinergic medication|T44.3X5A": {
+        "code": "T44.3X5A",
+        "display": "Adverse effect of other parasympatholytics [anticholinergics and antimuscarinics] and spasmolytics, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, single episode, unspecified|F32.9": {
+        "code": "F32.9",
+        "display": "Major depressive disorder, single episode, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Spondylosis without myelopathy or radiculopathy, lumbar region|M47.816": {
+        "code": "M47.816",
+        "display": "Spondylosis without myelopathy or radiculopathy, lumbar region",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "amitriptyline hydrochloride 75 MG Oral Tablet": {
+        "code": "856853",
+        "display": "amitriptyline hydrochloride 75 MG Oral Tablet",
+        "ingredient": "amitriptyline",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ibuprofen 400 MG Oral Tablet": {
+        "code": "197805",
+        "display": "ibuprofen 400 MG Oral Tablet",
+        "ingredient": "ibuprofen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "timolol 5 MG/ML Ophthalmic Solution": {
+        "code": "2702393",
+        "display": "timolol hemihydrate 5 MG/ML Ophthalmic Solution",
+        "ingredient": "timolol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

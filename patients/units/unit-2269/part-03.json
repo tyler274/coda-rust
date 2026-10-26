@@ -1,0 +1,697 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002269",
+   "events": [
+    {
+     "id": "2025-11-21a",
+     "kind": "telephone",
+     "start": "2025-11-21T09:05",
+     "reason": "patient reports hospitalization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient call: recent hospital stay",
+       "author": "RN",
+       "date": "2025-11-21T09:05",
+       "body": "Pt called. Says he had a heart attack Monday the 17th, went in by ambulance to a regional hospital, had a stent put in the same day, home yesterday. Feels tired but OK. No chest pain since, no shortness of breath beyond his usual. Has new pills from the hospital: aspirin 81 and metoprolol succinate 50 once a day, plus his old ones. The hospital told him a cardiologist would see him in a few weeks. Doesn't have discharge papers beyond a med sheet; asked him to bring it. Post-hospital visit made for Mon 12/1. Records request faxed to the hospital. Told him to call 911 for any chest pain."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-24a",
+     "kind": "pharmacy",
+     "start": "2025-11-24T13:40",
+     "reason": "fill history",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Medication fill history",
+       "author": "MA",
+       "date": "2025-11-24T13:40",
+       "body": "Pulled external fill history ahead of the 12/1 visit. 11/20/25: metoprolol succinate ER 50 mg #30, prescriber hospital team. 11/20/25: aspirin EC 81 mg #30, same. Also lisinopril 10 mg (last 90-day fill 10/2025), atorvastatin 40 mg (10/2025), tiotropium 18 mcg caps (9/2025), albuterol HFA (8/2025). Hospital records not received yet."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-01a",
+     "kind": "office_visit",
+     "start": "2025-12-01T11:00",
+     "end": "2025-12-01T11:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital visit after heart attack",
+     "conditions": [
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed",
+       "onset": "2025-11-17"
+      },
+      {
+       "label": "Acute myocardial infarction",
+       "icd10": "I21.9",
+       "action": "diagnosed",
+       "onset": "2025-11-17",
+       "note": "PCI with drug-eluting stent at an outside hospital"
+      },
+      {
+       "label": "Presence of coronary artery stent",
+       "action": "diagnosed",
+       "onset": "2025-11-17"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "coronary artery disease"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "coronary artery disease"
+      }
+     ],
+     "state": {
+      "bp": [
+       146,
+       88
+      ],
+      "hr": 62
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-12-01T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-12-01T11:50",
+       "body": "68M, seen after a hospital stay for MI.\n\nWhat we have: his account and the medication sheet he brought. No discharge summary yet despite our request on 11/21; re-requested today.\nPer patient: on 11/17 he felt unwell in the chest, called 911, told it was a heart attack, went for a catheterization the same day and got one stent. Doesn't know which artery. Home 11/20. Since then no chest pain, no palpitations, no fainting. Tired, walking in the house and to the mailbox. Breathing at his baseline.\n\nMeds reconciled against the hospital sheet and the fill history:\n- aspirin EC 81 mg daily (new, hospital)\n- metoprolol succinate 50 mg daily (new, hospital)\n- lisinopril 10 mg daily\n- atorvastatin 40 mg daily\n- tiotropium 18 mcg inhaled daily\n- albuterol HFA 2 puffs q4h prn\nAllergies: NKDA.\n\nExam: vitals as charted, pulse slower than his usual on the beta-blocker, BP still above goal. Comfortable. Neck without JVD. Heart regular, no murmur or rub. Lungs diminished, no crackles. Groin and wrist without hematoma (he isn't sure where they went in). Legs no edema, feet warm, pedal pulses present.\n\nA/P\n1. CAD with recent MI, s/p PCI with drug-eluting stent 11/17/25. Problem list updated. Continue the hospital regimen as above. Cardiology follow-up was arranged by the hospital; he'll get a call. Chest pain warning signs reviewed, 911.\n2. HTN, still above goal now on metoprolol plus lisinopril 10. Will look again after cardiology weighs in.\n3. COPD B, stable.\n4. Hyperlipidemia, atorvastatin 40.\nRTC after the cardiology visit, sooner if needed."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-03a",
+     "kind": "telephone",
+     "start": "2025-12-03T13:10",
+     "reason": "records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Hospital records request",
+       "author": "front desk",
+       "date": "2025-12-03T13:10",
+       "body": "Second request faxed to the regional hospital's records department for the November admission: discharge summary, cath report, medication list. They confirmed receipt of the fax and quoted 7-10 business days."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-08a",
+     "kind": "ed_visit",
+     "start": "2025-12-08T07:50",
+     "end": "2025-12-08T11:30",
+     "service": "Emergency Medicine",
+     "reason": "sudden severe left leg pain",
+     "conditions": [
+      {
+       "label": "Acute embolism and thrombosis of left lower extremity artery",
+       "icd10": "I74.3",
+       "action": "diagnosed",
+       "onset": "2025-12-08",
+       "note": "left popliteal occlusion; thromboembolectomy with fasciotomy"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "rr"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-12-08T08:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-12-08T08:15",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1,
+         "unit": "mg/dL"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-12-08T08:15",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity",
+         "text": "Not elevated"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-12-08T08:15",
+       "results": [
+        {
+         "test": "D-dimer",
+         "loinc": "48065-7",
+         "unit": "ug/mL{FEU}",
+         "text": "Elevated",
+         "resulted": "2025-12-08T09:05"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-12-08T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Note (received)",
+       "author": "emergency medicine",
+       "date": "2025-12-10T10:15",
+       "body": "Regional hospital emergency department. Seen 12/08/2025, received by fax 12/10/2025.\n\nCC: left leg pain, sudden.\nHPI: 68-year-old man three weeks out from MI with a drug-eluting stent, woke with abrupt, severe left lower-leg pain, sharp and constant. Noticed the foot looked white and felt cold. No fall or injury.\nPMH: HTN, COPD, CAD s/p recent MI and PCI, hyperlipidemia.\nMeds: aspirin, atorvastatin, metoprolol succinate, lisinopril, tiotropium, albuterol prn.\nAllergies: NKDA.\nSocial: former smoker, 40 pack-years, quit about 10 years ago. No alcohol. Retired trucker.\n\nVS stable, afebrile.\nExam: left foot pulse diminished relative to the right. Left foot cool, cap refill delayed, sensation decreased. Dorsiflexion and plantar flexion 3/5 on the left.\nLabs: CBC within normal limits. Creatinine 1.1. Troponin not elevated. D-dimer elevated.\nDoppler US, left lower extremity: abrupt cutoff of arterial flow at the left popliteal artery.\nABI left 0.5.\n\nImpression: acute arterial occlusion, left popliteal, thrombotic or embolic, threatened limb.\nDisposition: vascular surgery at bedside; to the OR for left femoral-popliteal thromboembolectomy with fasciotomy. Admitted to vascular surgery."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-19a",
+     "kind": "office_visit",
+     "start": "2025-12-19T14:00",
+     "end": "2025-12-19T14:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital visit after leg surgery",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-12-19T14:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-12-19T14:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-12-19T14:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-12-19T14:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2025",
+       "action": "cancelled",
+       "date": "2025-12-19T14:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-12-19T14:50",
+       "body": "Back after a second hospital stay in a month.\n\nWe have the ED note only (faxed 12/10); no operative note or discharge summary. Re-requested.\nPer patient: the morning of 12/8 his left lower leg went suddenly painful and the foot white and cold. Taken to the OR that day by vascular surgery, who cleared the clot from the artery and opened the calf to relieve the pressure (fasciotomy). Home 12/13. A visiting nurse comes for dressing changes. Vascular surgery follow-up is set by the hospital for early January.\nNo chest pain. Breathing at baseline.\nMeds per patient and bottles: unchanged from 12/1 (aspirin 81, metoprolol succinate 50, lisinopril 10, atorvastatin 40, tiotropium, albuterol). Nothing new from this admission he knows of.\n\nExam: BP above goal. Comfortable. Heart regular. Lungs diminished, no crackles. Left leg: dressings over the calf clean and dry, left in place for the visiting nurse; groin incision clean, no drainage. Left foot warm and pink, cap refill brisk. Right foot normal. Walks unaided across the room.\n\nA/P\n1. Acute arterial embolism/thrombosis, left popliteal, s/p femoral-popliteal thromboembolectomy with fasciotomy 12/8. Added to the problem list. Wound care with VNA, vascular follow-up as arranged.\n2. CAD, MI 11/17 with stent. Cardiology visit pending.\n3. HTN, still above goal; no change for now while he recovers.\n4. COPD B stable.\n5. The lung screening CT ordered in October is cancelled for now, he has had enough scanning this month; will reorder next fall.\nBMP and CBC today. RTC 6-8 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-22a",
+     "kind": "portal_message",
+     "start": "2025-12-22T10:10",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your labs",
+       "author": "PCP",
+       "date": "2025-12-22T10:10",
+       "body": "Gordon, the blood count and kidney labs from Friday are normal. Keep the dressing changes going with the nurse. Call us if the leg gets redder, more painful or the foot turns cold again."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-05a",
+     "kind": "telephone",
+     "start": "2026-01-05T10:40",
+     "reason": "records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Hospital records follow-up",
+       "author": "front desk",
+       "date": "2026-01-05T10:40",
+       "body": "Called the hospital records office about the November cardiology admission and the December vascular surgery admission. Told the requests are in the queue. Nothing received yet; will try again later this month."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-08a",
+     "kind": "telephone",
+     "start": "2026-01-08T15:30",
+     "reason": "update after cardiology and vascular visits",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient update",
+       "author": "RN",
+       "date": "2026-01-08T15:30",
+       "body": "Pt called to let us know he saw the cardiologist on Tuesday: no changes, keep everything the same, see them again in the spring. Vascular surgery saw the leg this week too, healing, the nurse visits are winding down. No chest pain, leg pain getting better. Asked him to have both offices fax their notes; he said he would ask. Follow-up with PCP already set for 2/17."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "office_visit",
+     "start": "2026-02-17T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after MI and leg surgery",
+     "conditions": [
+      {
+       "label": "Acute myocardial infarction",
+       "icd10": "I21.9",
+       "action": "resolved"
+      },
+      {
+       "label": "Old myocardial infarction",
+       "action": "history",
+       "onset": "2025-11-17"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-02-17T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2026-02-17T10:50",
+       "body": "S: Doing better. Cardiology in January made no changes, he says. Vascular surgery told him at the last visit the wounds are healed and he's done with them unless something changes. Walking the block again, slower than before because of breath, not the leg. No chest pain, no calf pain with walking. No outside notes have come in; he says he asked.\nHome BP: high 140s/high 80s.\nO: BP above goal, pulse regular. Lungs diminished, no wheeze. Heart regular. Left calf: healed fasciotomy and groin scars, no redness. Left foot warm, pulses present.\nA/P\n- CAD s/p MI and DES 11/2025: stable. MI moved to history on the list. Same medicines.\n- Arterial embolism L leg s/p thromboembolectomy/fasciotomy, healed.\n- HTN: above goal on lisinopril 10 + metoprolol 50. Will reassess at the next visit with a home log.\n- COPD B: stable.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-24a",
+     "kind": "pharmacy",
+     "start": "2026-03-24T09:15",
+     "reason": "refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Metoprolol and aspirin refills",
+       "author": "MA",
+       "date": "2026-03-24T09:15",
+       "body": "Pharmacy requests new prescriptions for metoprolol succinate ER 50 mg daily and aspirin EC 81 mg daily; the hospital prescriptions are out of refills. Sent 90-day supplies per PCP. Lisinopril and atorvastatin have refills on file."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "office_visit",
+     "start": "2026-04-21T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2026-04-23a",
+     "kind": "portal_message",
+     "start": "2026-04-23T18:22",
+     "reason": "rescheduling",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "missed appt",
+       "author": "patient",
+       "date": "2026-04-23T18:22",
+       "body": "Sorry I missed Tuesday, had it on the wrong week. Can I get in sometime in June? Mornings or Fridays are best."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: missed appt",
+       "author": "front desk",
+       "date": "2026-04-23T19:05",
+       "body": "No problem. You're set for Friday June 12 at 10:40. Please bring your blood pressure readings."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-12a",
+     "kind": "office_visit",
+     "start": "2026-06-12T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and leg follow-up",
+     "state": {
+      "bp": [
+       158,
+       94
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-06-12T11:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-06-12T11:15",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-06-12T10:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-06-12T11:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2026-06-12T11:15",
+       "body": "S: Rescheduled from April. Feels fine. No chest pain, no calf pain walking, leg fully healed. Breathing at his usual, albuterol a couple of times a week. Didn't bring a log; says the cuff has been 'higher lately, 150s.' Taking all his pills, uses a weekly box.\nO: BP 158/94 seated, similar on recheck. Pulse regular, upper 50s. SpO2 normal. Lungs diminished, no wheeze. Heart regular. Left leg scars well healed, foot warm, pulses present. No edema.\nA/P\n1. HTN above goal on lisinopril 10 and metoprolol succinate 50. Two weeks of twice-daily home readings by portal, then decide on the next step. BMP today.\n2. CAD s/p MI/DES: no symptoms. Aspirin, metoprolol, atorvastatin 40. Lipids today.\n3. L leg arterial embolism, s/p surgery: healed.\n4. COPD B: stable on tiotropium.\nRTC 2-3 months."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       158,
+       94
+      ]
+     }
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "portal_message",
+     "start": "2026-06-16T12:40",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from Friday",
+       "author": "PCP",
+       "date": "2026-06-16T12:40",
+       "body": "Hi Gordon, kidney function and potassium are normal. Cholesterol is about where it has been on atorvastatin. Waiting on your two weeks of blood pressure readings before we change anything."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-19a",
+     "kind": "ed_visit",
+     "start": "2026-06-19T21:40",
+     "end": "2026-06-20T01:30",
+     "service": "Emergency Medicine",
+     "reason": "found unresponsive",
+     "vitals": {
+      "bp": [
+       220,
+       120
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "rr",
+      "temp_c"
+     ],
+     "reports": [
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-06-19T22:05",
+       "text": "Non-contrast CT of the head. Hyperdense intraparenchymal collection centered in the basal ganglia and extending into the internal capsule, with surrounding edema. No midline shift. No extra-axial collection; no crescent- or lens-shaped hematoma. Ventricles and basal cisterns otherwise unremarkable. Calvarium intact.",
+       "conclusion": "Acute intraparenchymal hemorrhage of the basal ganglia extending into the internal capsule, with edema and no midline shift.",
+       "issued": "2026-06-19T22:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-06-19T21:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Note (received)",
+       "author": "emergency medicine",
+       "date": "2026-06-22T09:30",
+       "body": "Regional hospital emergency department. Date of service 06/19/2026, faxed 06/22/2026. Filed for PCP review.\n\nCC: unresponsive.\nHPI: 69-year-old man, history of poorly controlled hypertension, COPD, CAD with MI and stent in 11/2025, hyperlipidemia, and an acute left popliteal arterial occlusion treated surgically in 12/2025. Found unresponsive at home, brought in by EMS. No known trauma.\nMeds per pharmacy record: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, tiotropium, albuterol prn.\nAllergies: NKDA.\n\nArrival BP 220/120. GCS 6. Pupils reactive and symmetric.\nCT head non-contrast: basal ganglia hemorrhage extending into the internal capsule with surrounding edema, no midline shift; no crescent- or lens-shaped collection.\n\nAssessment: intracerebral hemorrhage with airway compromise.\nCourse: intubated in the ED for airway protection, placed on mechanical ventilation. Admitted to the ICU."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-22b",
+     "kind": "outside_records",
+     "start": "2026-06-22T15:30",
+     "reason": "ED note review",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "ED note reviewed",
+       "author": "PCP",
+       "date": "2026-06-22T15:30",
+       "body": "Read the faxed ED note from Friday night. He is in the ICU at the regional hospital, intubated. Will wait for hospital records before changing anything on our lists. Staff asked to note the admission on his account and hold routine reminders."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-24a",
+     "kind": "outside_records",
+     "start": "2026-06-24T07:30",
+     "reason": "ICU progress note",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-06-23T05:00",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 12.0,
+         "unit": "10*3/uL"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-06-24T05:00",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 18.0,
+         "unit": "10*3/uL"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2026-06-24T06:10",
+       "text": "Portable AP chest. Endotracheal tube in satisfactory position above the carina. New bilateral airspace infiltrates. No pneumothorax. Cardiac silhouette within normal limits.",
+       "conclusion": "New bilateral infiltrates."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "ICU Progress Note (received)",
+       "author": "critical care",
+       "date": "2026-06-29T14:20",
+       "body": "Regional hospital medical ICU. Date of service 06/24/2026, received by fax 06/29/2026. Filed; PCP aware.\n\n69M with HTN, CAD s/p MI/DES, COPD, admitted 6/19 with basal ganglia intracerebral hemorrhage and airway compromise, intubated on arrival, now ventilator day 5.\nInterval: new fever to 38.9 C in the last 24 hours, increasing purulent secretions from the endotracheal tube, worsening oxygenation.\nOn norepinephrine; hemodynamically stable on current dose.\nExam: sedated. Diffuse crackles both lungs. Remainder of exam unremarkable.\nLabs: WBC 12,000 yesterday, 18,000 today.\nCXR: new bilateral infiltrates.\nHome meds on file: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, tiotropium, albuterol.\nAllergies: NKDA.\n\nAssessment: ventilator-associated pneumonia with respiratory failure and septic shock, in the setting of intracerebral hemorrhage.\nPlan: blood and respiratory cultures sent; empiric IV antibiotics started; continue vasopressor support and ventilator management."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "telephone",
+     "start": "2026-07-14T11:45",
+     "reason": "hospital case manager call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call from hospital case manager",
+       "author": "RN",
+       "date": "2026-07-14T11:45",
+       "body": "Case manager from the regional hospital called to update the PCP office. Mr. Ryan is off the ventilator, off norepinephrine, and finishing his IV antibiotic course. Plan is transfer to an inpatient rehabilitation facility in the coming week. She will send the discharge summary when he leaves. Asked her to include the medication list and to have rehab contact us about a follow-up visit. Routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "PCP note on call",
+       "author": "PCP",
+       "date": "2026-07-14T16:10",
+       "body": "Reviewed. Will see him once he is out of rehab. Awaiting discharge summary."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-28a",
+     "kind": "pharmacy",
+     "start": "2026-07-28T08:50",
+     "reason": "auto-refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Lisinopril auto-refill",
+       "author": "MA",
+       "date": "2026-07-28T08:50",
+       "body": "Pharmacy auto-refill request for lisinopril 10 mg #90. Patient is inpatient at rehab per hospital case manager. Held per PCP until the post-discharge visit; pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "telephone",
+     "start": "2026-08-11T14:15",
+     "reason": "scheduling post-discharge visit",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Follow-up visit scheduled",
+       "author": "front desk",
+       "date": "2026-08-11T14:15",
+       "body": "Rehab facility social worker called asking for a primary care follow-up after his expected discharge. Booked Thu 9/17 at 10:00, 40 minutes, hospital follow-up. Asked them to send the hospital discharge summary and the rehab medication list before the visit. Neither received as of today."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-20a",
+     "kind": "telephone",
+     "start": "2026-08-20T11:00",
+     "reason": "records request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Discharge summary request",
+       "author": "front desk",
+       "date": "2026-08-20T11:00",
+       "body": "Called the hospital records office again for the June admission discharge summary ahead of the 9/17 visit. They show him transferred to rehab in July; summary not yet finalized for release. Request remains open."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-17a",
+     "kind": "office_visit",
+     "start": "2026-09-17T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

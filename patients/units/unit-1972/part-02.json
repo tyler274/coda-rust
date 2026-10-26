@@ -1,0 +1,418 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001972",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up, spirometry",
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2025-01-21T15:35",
+              "text": "Pre- and post-bronchodilator spirometry, albuterol 4 puffs via spacer. Three acceptable, repeatable efforts. Post-bronchodilator FEV1/FVC 0.61. Post-bronchodilator FEV1 64% of predicted. No significant bronchodilator response. Flow-volume loop with expiratory scooping, inspiratory limb normal.",
+              "conclusion": "Moderate airflow obstruction, consistent with COPD."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-21T15:20"
+            },
+            {
+              "procedure": "Spirometry",
+              "performed": "2025-01-21T15:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-01-21T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-01-21T16:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "current smoker, 35 pack-years"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-21T16:15",
+              "body": "Back for COPD f/u and spirometry. Winter's been ok. Job sites slow in January so he's less winded than in summer. Albuterol a couple times a month. No sputum color change, no fevers.\n\nVitals per flowsheet. Lungs with reduced air entry bilaterally, no wheeze. Heart regular. No edema.\n\nSpirometry today: post-BD FEV1/FVC 0.61, FEV1 64% predicted. Moderate obstruction, confirms the COPD label he came with.\n\nPlan:\n- Stay on tiotropium daily, albuterol prn. He's comfortable and not interested in adding a second inhaler.\n- PCV20 given today.\n- Shared decision visit for lung cancer screening: eligible at 51 with 35 pack-years and still smoking. Went over false positives, radiation, the chance of more scans. He wants it. LDCT ordered.\n- Still smoking about a pack a day. Asked again about help quitting; he says maybe in the spring.\n\nRTC 3 months for BP."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              82
+            ]
+          }
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "imaging",
+          "start": "2025-02-11T07:30",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-02-11T07:30",
+              "text": "TECHNIQUE: Low-dose helical CT of the chest without IV contrast, 1.25 mm reconstructions. CTDIvol within screening protocol limits.\nCOMPARISON: None.\nFINDINGS: No pulmonary nodules. Airways patent. No consolidation or pleural effusion. Heart normal in size, no pericardial effusion. No mediastinal or hilar lymphadenopathy. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-02-11T07:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "portal_message",
+          "start": "2025-02-13T12:40",
+          "reason": "CT result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening CT",
+              "author": "PCP",
+              "date": "2025-02-13T12:40",
+              "body": "Keith, the screening CT of your lungs showed no nodules or spots. That's the best category. The plan is to repeat it every year while you qualify, so next one is due around February 2026. Still happy to help with quitting whenever you're ready."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "pharmacy",
+          "start": "2025-03-18T09:02",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Refill request",
+              "author": "RN",
+              "date": "2025-03-18T09:02",
+              "body": "Pharmacy fax for tiotropium capsules and amlodipine 5 mg. Both on current list, last visit Jan. Approved 90 days with 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-22T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-22T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-04-22T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-04-22T08:10",
+              "body": "Early slot before work. BP f/u. Taking amlodipine every day, no swelling, no headaches. Breathing the same as winter, back on a crew full time.\n\nBP at goal on the flowsheet. Heart RRR. Lungs diminished, clear. No pedal edema.\n\nA/P\nHTN controlled on amlodipine 5, no change.\nCOPD stable on tiotropium.\nTobacco: still smoking. Brief counseling, declines meds. \nShingrix #1 today, explained he may feel lousy for a day. #2 in 2 to 6 months.\nF/u in about 2 months then annual in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "portal_message",
+          "start": "2025-06-18T08:20",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed visit",
+              "author": "front desk",
+              "date": "2025-06-18T08:20",
+              "body": "Hi Mr. Dupuis, we missed you yesterday afternoon. Please reply or call to reschedule. A video visit is fine if work makes it hard to get in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed visit",
+              "author": "patient",
+              "date": "2025-06-18T19:47",
+              "body": "sorry, job ran late and forgot to call. video works better. any day after 5 or early morning"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-08T17:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and BP check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-07-08T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-07-08T17:45",
+              "body": "Video, he's in his truck after work, verbal consent for video visit, location in MA confirmed.\n\nHeat makes the breathing harder on roofs but no worse than other summers. Using albuterol maybe twice a week right now, usually midafternoon. No fever, no change in phlegm. Taking amlodipine. No home BP cuff.\n\nNo exam beyond appearance: talking comfortably, no audible wheeze, not using accessory muscles.\n\nA/P: COPD at his baseline, HTN on amlodipine without issues. Refills sent for all 3. Annual visit in October with labs, 2nd Shingrix and flu then. Reminded him the lung CT is yearly."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T10:00",
+          "reason": "annual visit reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual visit",
+              "author": "front desk",
+              "date": "2025-09-30T10:00",
+              "body": "Hi Keith, you're due for your yearly physical and fall shots. We have Friday 10/24 at 8:00 open. Want it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Annual visit",
+              "author": "patient",
+              "date": "2025-09-30T12:31",
+              "body": "yes put me in"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "annual_physical",
+          "start": "2025-10-24T08:00",
+          "end": "2025-10-24T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual preventive visit",
+          "measure": [
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-24T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-24T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-24T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-24T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-24T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-24T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-24T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-24T08:40"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-10-24T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2025-10-24T09:05",
+              "body": "Annual. 52 now. Feels fine. Breathing at his usual, summer was the worst of it and it's eased with cooler weather. Albuterol a few times a month. Denies chest pain, ankle swelling or coughing blood; weight steady.\n\nMeds: tiotropium daily, albuterol prn, amlodipine 5. Takes them.\nAllergies: NKDA.\nSocial: still framing and roofing. Still about a pack a day. Alcohol occasional.\n\nExam: NAD. Eyes, ears, throat normal. No thyromegaly or adenopathy. Heart regular, no murmurs. Lungs with diminished breath sounds both sides, no wheezes, no crackles. Abdomen soft, nontender. Skin without lesions of concern. Extremities without edema, good pulses.\n\nPHQ-9: 2.\n\nAssessment and plan\n- COPD, moderate on spirometry, stable on tiotropium. Continue.\n- HTN controlled on amlodipine 5.\n- Tobacco use: 35+ pack-years. Again discussed quitting, offered patch or varenicline; he says not this year. Lung screening CT due again in February, he knows.\n- Prevention: flu, updated COVID and Shingrix #2 today (series complete). FIT kit given. BMP, CBC, lipids drawn.\n- Return in 6 months, sooner if his breathing changes or he gets a chest cold that doesn't clear."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ]
+          }
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "portal_message",
+          "start": "2025-10-27T13:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual labs",
+              "author": "PCP",
+              "date": "2025-10-27T13:10",
+              "body": "Keith, everything from Friday is normal: kidney function, salts, blood counts and cholesterol. Nothing to change. Send the FIT back when you can."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "lab_only",
+          "start": "2025-11-18T10:30",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-17T06:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-11-18T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "MA",
+              "date": "2025-11-18T14:00",
+              "body": "FIT negative, patient notified by portal. Recall set for 1 year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

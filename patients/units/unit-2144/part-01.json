@@ -1,0 +1,678 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002144",
+      "given": "Kenji",
+      "family": "Chen",
+      "birth_date": "1971-10-07",
+      "address_line": "212 Cabot Street, Apt 3",
+      "phone": "+1-347-555-0182",
+      "email": "kenji.chen@example.test",
+      "marital_status": "single",
+      "summary": "Logistics coordinator with long-standing HBeAg-negative chronic hepatitis B on tenofovir, hypertension and vitamin D deficiency who joined in 2023. Intermittent tenofovir adherence and no HCC surveillance precede a December 2025 admission that finds a 4 cm hepatocellular carcinoma in decompensated hepatitis B cirrhosis; he is listed for liver transplant in February 2026.",
+      "events": [
+        {
+          "id": "2023-08-10a",
+          "kind": "telephone",
+          "start": "2023-08-10T11:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "author": "front desk",
+              "date": "2023-08-10T11:20",
+              "body": "Caller moved to the area this summer for work and wants a primary care doctor here. Previous PCP and his liver doctor were both out of state. He takes three daily medicines and says he has hepatitis B that is followed by a specialist. Booked new patient visit 8/22 at 8:40. Records release form emailed; he will sign and return so we can request from the prior office. Membership info sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:40",
+          "end": "2023-08-22T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis B",
+              "action": "history",
+              "note": "HBeAg-negative per patient; followed by outside GI for years"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Vitamin D deficiency",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tenofovir disoproxil fumarate 300 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hepatitis B"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2000 units (1 capsule) by mouth once daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "vitamin D deficiency"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Logistics coordinator"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 72.6,
+            "height_cm": 170.0,
+            "labs": {
+              "Alanine Aminotransferase": 58,
+              "Aspartate Aminotransferase": 41,
+              "Platelets": 172,
+              "25-hydroxy Vitamin D": 27,
+              "Hemoglobin A1c": 5.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 58
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 172
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 27
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T08:40"
+            },
+            {
+              "procedure": "Inguinal hernia repair",
+              "performed": "2017-04-01T00:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-22T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "ongoing chronic hepatitis B care on tenofovir"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-22T09:35",
+              "body": "51 y/o man new to the practice. Relocated here in June for a logistics coordinator job with a regional distributor. Prior primary care and hepatitis B care were out of state; records release signed today.\n\nHepatitis B: has known about it for many years, told it is the \"e-antigen negative\" kind. On tenofovir for years, prescribed by his old GI. Last liver labs he thinks were about a year ago. No abdominal pain, no jaundice, no itching, appetite fine. Wants a GI doctor closer to home.\nBP: on amlodipine 5 mg, home readings he says are usually high 120s/low 80s. No headaches, no chest pain.\nVitamin D: low level found by prior PCP, on 2000 units a day.\n\nPast surgical: inguinal hernia repair in spring 2017, uncomplicated.\nMeds: tenofovir disoproxil 300 mg daily, amlodipine 5 mg daily, vitamin D3 2000 units daily.\nAllergies: none to medications.\nFamily: father had liver cancer and died at 71. Mother has type 2 diabetes. Older brother also has hepatitis B, followed where he lives.\nSocial: came to the US with his family as a young boy. Lives alone in an apartment. Has never used tobacco. Does not drink at all. No recreational drugs. Walks most evenings.\n\nExam: well appearing, no scleral icterus. Neck supple, no thyromegaly. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no hepatosplenomegaly, healed groin scar. No edema. Skin without spider angiomata or jaundice.\n\nAssessment/plan\n1. Chronic hepatitis B on tenofovir: continue. Baseline CMP and CBC today. Referral to local GI to take over HBV management.\n2. Hypertension: reasonable on amlodipine 5. Continue.\n3. Vitamin D deficiency: level today on current dose.\n4. Health maintenance: HCV and HIV screening today. A1c given mother's diabetes. Lipids. Tdap today, last one he can't recall. Colon screening to discuss at next visit once prior records are in. PHQ-2 negative.\nFollow up in about 6 months, sooner once labs are back."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 72.6,
+            "height_cm": 170.0
+          }
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2023-08-24T16:05",
+              "body": "Hi Kenji, your labs are back. Kidney function, blood sugar, A1c and cholesterol all look good. Your blood counts are normal. Your liver enzyme ALT is a little above the normal range (58), which we see sometimes in hepatitis B; the new GI team will want to see this, and I've sent it along with the referral. Hepatitis C and HIV screens were negative. Vitamin D is 27, a bit below where I'd like it, but let's keep the same dose for now and recheck next year. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T10:30",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Received",
+              "author": "MA",
+              "date": "2023-09-12T10:30",
+              "body": "38 pages from the patient's previous primary care office, faxed after release. Contents: office notes 2018-2023, medication list (tenofovir disoproxil 300 mg, amlodipine 5 mg, vitamin D3 2000 units), labs. Hepatitis B listed since before 2018 with GI co-management. Inguinal hernia repair 2017 op note included. Influenza vaccines yearly. No colon cancer screening on file. Routed to PCP for review and filed under media."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T17:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-19T17:25",
+              "body": "Came in after work for flu and the 2023-24 COVID vaccine. No fever today, no prior vaccine reactions. Flu 0.5 mL IM left arm, COVID 0.3 mL IM right arm. Observed 15 minutes, no reaction. VIS sheets provided."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "specialist_visit",
+          "start": "2023-12-08T10:00",
+          "service": "Gastroenterology",
+          "reason": "chronic hepatitis B follow-up",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-12-08T10:45",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-08T10:45",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B core antibody",
+                  "loinc": "16933-4",
+                  "text": "Positive (IgG)"
+                },
+                {
+                  "test": "Hepatitis B e antigen",
+                  "loinc": "13954-3",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B e antibody",
+                  "loinc": "13953-5",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "done",
+              "date": "2023-12-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2023-12-14T09:10",
+              "body": "Gastroenterology outpatient consultation\nDate of visit: 12/08/2023\nReferred by: primary care, for continuing management of chronic hepatitis B\n\nMr. Chen is a 52-year-old man with long-standing chronic hepatitis B, previously managed by a gastroenterologist in another state, on tenofovir disoproxil fumarate 300 mg daily. He presents to establish with our group. He is entirely asymptomatic: energy is good, no abdominal pain, no change in weight, no yellowing of the eyes, no pruritus, no dark urine.\n\nOther history: hypertension on amlodipine 5 mg; vitamin D deficiency on cholecalciferol 2000 IU; remote inguinal hernia repair.\nAllergies: NKDA.\nFamily history notable for hepatocellular carcinoma in his father (died at 71) and chronic hepatitis B in an older brother. Mother with type 2 diabetes.\nSocial: abstains from alcohol, never smoker. Emigrated as a child.\n\nExamination: alert, comfortable, anicteric. Abdomen soft and nontender without organomegaly or ascites. No stigmata of chronic liver disease. Remainder of exam within normal limits.\n\nData: ALT today 64 U/L, mildly above the reference range. Hepatitis B profile: surface antigen positive, surface antibody negative, core antibody positive (IgG), e antigen negative, e antibody positive, consistent with HBeAg-negative chronic infection.\n\nImpression: HBeAg-negative chronic hepatitis B on tenofovir with mild ALT elevation.\nRecommendations:\n- Continue tenofovir disoproxil fumarate 300 mg once daily; reviewed the importance of taking it every day.\n- Return to clinic in 12 months with labs.\n\nNKDA. Medications at time of visit: tenofovir disoproxil fumarate 300 mg daily, amlodipine 5 mg daily, cholecalciferol 2000 IU daily.\n\nAttending gastroenterologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "pharmacy",
+          "start": "2024-01-30T13:45",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request: Tenofovir",
+              "author": "RN",
+              "date": "2024-01-30T13:45",
+              "body": "Pharmacy fax requesting tenofovir disoproxil 300 mg #30. Last fill per pharmacy was early December. Patient says his old GI's prescription ran out of refills and the new GI office told him to ask us. Per PCP OK to refill, 90 day supply with 3 refills. Sent."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2024-01-30T15:02",
+              "body": "Tenofovir 300 mg daily renewed, 90 days x3. Fine for us to keep this going between GI visits."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-13T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2024",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-02-13T16:50",
+              "body": "S: Here for BP check. Feels fine. Saw the new GI in December, letter reviewed: mild ALT bump, stay on tenofovir, see them yearly. Taking amlodipine every morning. Busy season at work over the holidays, a lot of overtime.\nO: vitals as charted. Alert, no jaundice. Heart regular, no murmur. Lungs clear. No edema.\nA/P:\n- HTN: at goal on amlodipine 5, no change.\n- Chronic HBV: per GI. Tenofovir refills through us.\n- Colorectal screening: never done, age 52. Prefers colonoscopy over stool testing. Referral placed.\nRTC August for physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "procedure_visit",
+          "start": "2024-04-11T07:30",
+          "end": "2024-04-11T09:45",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2024-04-11T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2024",
+              "action": "done",
+              "date": "2024-04-11T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2024-04-16T12:00",
+              "body": "Procedure: screening colonoscopy, 04/11/2024. Indication: average-risk screening, first exam. Sedation: monitored anesthesia care. Prep adequate, good visualization.\nFindings: scope advanced to the cecum, appendiceal orifice and ileocecal valve identified. Mucosa normal throughout. No polyps. Small internal hemorrhoids on retroflexion. Withdrawal time 9 minutes.\nImpression: normal screening colonoscopy.\nRecommendation: repeat in 10 years. Resume prior medications.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 53,
+              "Aspartate Aminotransferase": 39,
+              "25-hydroxy Vitamin D": 32
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 164
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 32
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-08-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T08:45",
+              "body": "Annual exam, 52M.\nInterval: colonoscopy in April normal, next 2034. No ED visits. Feels well, sleeping ok, work steady. Walking 30-40 min most evenings. Reports taking tenofovir, though admits he sometimes realizes at night he skipped it.\nMeds: tenofovir disoproxil 300 daily, amlodipine 5 daily, D3 2000 units daily. NKDA.\nROS negative in full: no weight change, no abdominal pain or swelling, no jaundice, no chest pain, no dyspnea, no urinary or bowel changes, mood good.\nExam: NAD. HEENT normal, sclerae anicteric. Thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin unremarkable. Normal gait, neuro grossly normal.\nPHQ-2 0.\nPlan:\n- HBV: tenofovir every day; set a phone alarm. ALT and CMP today, will forward to GI. GI annual visit due December.\n- HTN controlled, continue amlodipine.\n- Vit D: recheck today.\n- Labs: CMP, CBC, lipids, A1c, vit D.\n- Vaccines: flu and the new COVID shot when they arrive in the fall. Shingles series discussed, wants to wait until after his busy season.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T12:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results From Your Physical",
+              "author": "PCP",
+              "date": "2024-08-22T12:40",
+              "body": "Labs look steady. ALT 53, slightly high but a touch better than last year. Cholesterol, sugar and kidneys normal. Vitamin D is up to 32, so the current dose is working. Keep taking the tenofovir every day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Lab Results From Your Physical",
+              "author": "patient",
+              "date": "2024-08-22T19:15",
+              "body": "Thanks doc. The phone alarm is helping. Should I send these to the GI office or will you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Lab Results From Your Physical",
+              "author": "MA",
+              "date": "2024-08-23T09:05",
+              "body": "We faxed the results to your GI office this morning."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-17T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-17T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-17T17:00",
+              "body": "Influenza and 2024-25 COVID vaccines given, left and right deltoid. Afebrile, well. Tolerated without issue after a 15 minute wait. Reminded him the shingles series can start any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "author": "front desk",
+              "date": "2024-12-10T16:50",
+              "body": "Did not arrive for 4:20 follow-up. Called and left voicemail to reschedule. Text sent as well."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,279 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002204",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.1}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-09T11:25", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-01-09T11:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-09T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes / CKD Follow-up",
+              "author": "PCP",
+              "date": "2024-01-09T11:30",
+              "body": "S: Back after the holidays. Less walking with the ice; using the mall track twice a week instead. Fasting readings 140-165. Denies lows, chest pain, dyspnea, ankle swelling, urinary symptoms.\nO: vitals per flowsheet. Alert, comfortable. RRR. CTA bilaterally. Feet: skin intact both soles, no ulceration.\nA/P: T2DM on glipizide, CKD 3b, HTN. A1c and BMP drawn. Continue meds. Eye exam due in March, he has it booked. 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "outside_records",
+          "start": "2024-03-19T14:10",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2024-03-19T14:10",
+              "body": "Annual diabetic eye exam - report to primary care\nPatient: Frederick Esposito, DOB 11/15/1959\nSeen 3/12/2024. Allergy: penicillin.\nBest corrected acuity 20/25 each eye. Pupils dilated. Intraocular lens stable and clear. Retina: no hemorrhages, exudates or neovascularization in either eye. Macula flat and dry.\nAssessment: type 2 diabetes, no diabetic retinopathy.\nReturn one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes, hypertension, CKD follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.9}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-16T09:25", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-04-16T09:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-16T09:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Disease Follow-up",
+              "author": "PCP",
+              "date": "2024-04-16T09:30",
+              "body": "Routine follow-up. Feels well. Eye exam in March without retinopathy. Morning sugars mostly in the 140s. Back outside walking.\n\nExam: BP charted. Heart regular. Lungs clear. Extremities warm, no swelling. Feet without breakdown.\n\nPlan: same three medicines for sugar and pressure, statin and aspirin. Labs today. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T20:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sore on foot",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Spot on bottom of my foot",
+              "author": "patient",
+              "date": "2024-06-11T20:14",
+              "body": "Hi, I've been finding a little wet spot on my right sock for about a week. There's a sore on the bottom of the foot, doesn't hurt much. My wife looked at it and said call you. Should I come in?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Spot on bottom of my foot",
+              "author": "PCP",
+              "date": "2024-06-11T21:02",
+              "body": "Yes, I'd like to look at it tomorrow. The front desk will text you a morning time. Keep it covered with a clean dry bandage and try to stay off it tonight."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "office_visit",
+          "start": "2024-06-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right foot sore",
+          "conditions": [
+            {"label": "Diabetic foot ulcer, right plantar surface", "icd10": "L97.519", "action": "diagnosed", "onset": "2024-06-04"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-12T08:40"}],
+          "orders": [
+            {"id": "podiatry-2024", "action": "placed", "order": "Podiatry referral", "category": "referral", "to": "Podiatry", "reason": "right plantar diabetic foot ulcer"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day visit - right foot",
+              "author": "PCP",
+              "date": "2024-06-12T09:05",
+              "body": "Seen same day after last night's portal message. Noticed drainage on his right sock about a week ago; found a sore on the sole. Little pain. No fever or chills. No injury he remembers.\n\nExam: afebrile, vitals charted. Right foot: plantar ulcer approx 1.2 x 1.0 cm with a clean pink base. No surrounding redness or warmth, no purulent drainage, no odor. No streaking up the foot. Pedal pulses palpable. Left foot intact.\n\nA/P: diabetic foot ulcer, right plantar surface, uninfected. Cleaned and dressed in office. Urgent podiatry referral for debridement and offloading. Daily dressing changes, keep weight off it as much as possible. Reviewed warning signs - spreading redness, swelling, fever, pus - and to text me right away if any of those."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "specialist_visit",
+          "start": "2024-06-27T10:00",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer",
+          "orders": [{"id": "podiatry-2024", "action": "done", "date": "2024-06-27T10:00"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry consultation",
+              "author": "podiatry",
+              "date": "2024-06-28T16:30",
+              "body": "OUTSIDE PODIATRY GROUP - CONSULTATION\nRe: Frederick Esposito  DOB 11/15/1959\nDate of service: 6/27/2024\nReferred by primary care for a right plantar wound.\nAllergies: penicillin (anaphylaxis).\nMeds: glipizide, metoprolol, lisinopril, atorvastatin, aspirin.\n\nHistory: 64-year-old with type 2 diabetes and stage 3 CKD; wound on the right sole first noticed about three weeks ago.\nExam: DP and PT pulses palpable bilaterally. Right plantar foot: full-thickness ulcer 1.2 x 1.0 x 0.3 cm, granular base, no exposed bone or tendon, no probe to bone. Periwound with mild callus, no erythema or fluctuance. Left foot intact.\nProcedure: sharp excisional debridement of callus and nonviable tissue, tolerated well.\nImpression: diabetic foot ulcer, right plantar surface, no signs of infection.\nPlan: offloading walker boot dispensed; dressing changes daily; follow-up every 2-4 weeks. Glucose control discussed.\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "portal_message",
+          "start": "2024-07-09T10:37",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dressing supplies",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Bandages",
+              "author": "patient",
+              "date": "2024-07-09T10:37",
+              "body": "The foot doctor wants me doing dressings every day and I'm going through the supplies fast. Pharmacy says insurance would cover them with an order. Can you send one? The boot is a pain but I'm wearing it."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Bandages",
+              "author": "MA",
+              "date": "2024-07-09T14:02",
+              "body": "Hi Frederick, the doctor signed an order for daily wound dressing supplies and we faxed it to your pharmacy. They should have it by tomorrow. Glad you're sticking with the boot."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 8.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T08:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-24T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio", "value": 22}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-24T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T08:30"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T08:55",
+              "body": "Annual physical, age 64.\n\nSince last year: right plantar diabetic ulcer since June, under podiatry every few weeks, debrided, in an offloading boot. Says it is 'shrinking slowly.' No fever. Otherwise well. Less walking because of the boot. PHQ-2 1 (a bit fed up with the boot), no depressed mood.\n\nMeds: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg. Allergy: penicillin - anaphylaxis.\n\nExam: NAD. Heart RRR without murmur. Lungs clear. Abdomen benign. Right foot: dressing removed - small plantar ulcer, clean base, no surrounding erythema or drainage; boot back on. Left foot intact. No edema.\n\nAssessment/Plan:\n1. T2DM - A1c today.\n2. Right plantar ulcer - podiatry following; keep offloading.\n3. CKD 3b / HTN - CMP, urine albumin today. Meds unchanged.\n4. Lipids today on atorvastatin 40.\n5. Lung screening CT ordered for October.\n6. Vaccines: flu, COVID and RSV at an October nurse visit.\nNext visit December."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T13:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T13:52"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2024-10-08T13:55"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T13:50"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-08T14:15",
+              "body": "Three vaccines today per PCP order: high-dose flu (L arm), 2024-25 COVID (R arm), RSV (L arm, separate site). RSV recommended given age and diabetes/CKD. Screening negative. Observed 15 minutes without reaction. Walking boot on right foot, gait steady."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "imaging",
+          "start": "2024-10-22T09:15",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-22T09:15",
+              "text": "OUTSIDE IMAGING CENTER - LDCT LUNG SCREENING, ANNUAL\nComparison: 10/24/2023 and 10/18/2022.\nTechnique: Low-dose CT of the chest, no IV contrast.\nFindings: Lungs without nodules. No airspace disease. No pleural or pericardial effusion. Mediastinum and hila normal. Visualized upper abdomen unremarkable.\nRequisition allergies: penicillin.",
+              "conclusion": "Lung-RADS 1, negative. Next annual LDCT in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-10-22T09:15"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2024",
+              "author": "PCP",
+              "date": "2024-10-23T07:55",
+              "body": "Third screening CT negative. Message sent to patient. Next due fall 2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "specialist_visit",
+          "start": "2024-11-12T14:30",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "author": "podiatry",
+              "date": "2024-11-13T12:00",
+              "body": "PODIATRY PROGRESS LETTER\nPatient: Frederick Esposito  DOB 11/15/1959  Visit 11/12/2024\nAllergies: penicillin.\nRight plantar ulcer now 0.8 x 0.6 cm, shallow, granular base, no drainage, no erythema, no undermining. Pulses palpable. Debrided rim of callus.\nAssessment: diabetic foot ulcer right plantar surface, improving, not infected.\nPlan: continue offloading boot and daily dressings; return 3 months, sooner for any change."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.2}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-10T10:25", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-12-10T10:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-10T10:00"}],
+          "orders": [
+            {"id": "aaa-us", "action": "placed", "order": "Abdominal ultrasound, limited aorta (AAA screening)", "category": "imaging", "reason": "AAA screening, man 65-75 who has smoked"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2024-12-10T10:30",
+              "body": "Just turned 65 and now on Medicare. Foot ulcer smaller per podiatry last month; still in the boot. No redness or fever. Sugars 140s-170s in the mornings. No lows.\n\nExam: vitals charted. Cardiac regular. Lungs clear. Right foot: small plantar ulcer, clean, no surrounding redness; dressing replaced.\n\nA/P\n- T2DM: A1c, BMP today. No changes.\n- Diabetic foot ulcer, right sole: podiatry following, next visit February.\n- CKD 3b/HTN: stable regimen.\n- One-time abdominal aortic ultrasound now that he is 65 with a smoking history - ordered.\nNext visit spring."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
