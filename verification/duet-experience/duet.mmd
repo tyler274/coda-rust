@@ -268,7 +268,7 @@ stateDiagram-v2
 %% event open your phone's health data | by you | needs TabYou, TCur | reason: newer Terms wait first | Its connection, what it brought in, and its controls.
 %% event open Settings | by you | needs DIn, AReady | reason: Settings stay reachable even before newer Terms, for exporting, deleting your account and withdrawing AI permission | Your name, AI, privacy, export, sign-out and deletion (ui-surface-map.md, Settings).
 %% event open AI settings | by you | needs DIn, AReady | reason: AI settings stay reachable even before newer Terms, for withdrawing permission | Your AI permission, the AI switch, and proactive work.
-%% event go back on You | by you | needs TabYou | reason: only the tab you're on goes back | You return one step; nothing you had saved changes.
+%% event go back on You | by you | needs TabYou | reason: only the tab you're on goes back | You return to your health library; nothing you had saved changes. How far back goes is presentation.
 %% event open supporting information | by you | needs TabDuet, TCur | reason: citations are in the conversation; newer Terms wait first | The exact version of what a reply cited, never a newer one in its place (C6; ui-surface-map.md, cited source).
 %% event close the supporting information | by you | needs CoSource | reason: only open supporting information closes | You're back in the conversation where you were.
 %% event {read} shows a saved copy | by the app | needs RdLoading@{key} | reason: only a read in progress shows a saved copy | What you saw last appears at once and refreshes quietly; loading shows only when nothing can.
@@ -1177,14 +1177,12 @@ stateDiagram-v2
         }
         --
         %% What is open on You (north-star.md, You; ui-surface-map.md, You library through Settings).
-        %% A record opens from its group, a search or Health history, and going back returns there.
+        %% A record opens from its group, a search or Health history. Going back returns to the library.
         state "Open on You" as YouOpen {
           [*] --> YoNone
           state "Your health library" as YoNone
           state "A records group" as YoGroup
-          state "A record, from its group" as YoRecordGroup
-          state "A record, from search" as YoRecordSearch
-          state "A record, from Health history" as YoRecordHistory
+          state "A record" as YoRecord
           state "Measurements & trends" as YoMeasures
           state "A measurement's chart" as YoChart
           state "Health history" as YoHistory
@@ -1197,16 +1195,14 @@ stateDiagram-v2
           state "AI settings" as YoAI
           YoNone --> YoGroup : open a records group
           YoGroup --> YoNone : go back on You
-          YoGroup --> YoRecordGroup : open a record
-          YoRecordGroup --> YoGroup : go back on You
-          YoSearch --> YoRecordSearch : open a record
-          YoRecordSearch --> YoSearch : go back on You
-          YoHistory --> YoRecordHistory : open a record
-          YoRecordHistory --> YoHistory : go back on You
+          YoGroup --> YoRecord : open a record
+          YoSearch --> YoRecord : open a record
+          YoHistory --> YoRecord : open a record
+          YoRecord --> YoNone : go back on You
           YoNone --> YoMeasures : open Measurements & trends
           YoMeasures --> YoNone : go back on You
           YoMeasures --> YoChart : open a measurement in You
-          YoChart --> YoMeasures : go back on You
+          YoChart --> YoNone : go back on You
           YoNone --> YoHistory : open Health history
           YoHistory --> YoNone : go back on You
           YoNone --> YoEarlier : open Earlier insights
@@ -1216,9 +1212,9 @@ stateDiagram-v2
           YoNone --> YoSources : open Sources & data
           YoSources --> YoNone : go back on You
           YoSources --> YoOrg : open Doctors & hospitals
-          YoOrg --> YoSources : go back on You
+          YoOrg --> YoNone : go back on You
           YoSources --> YoPhone : open your phone's health data
-          YoPhone --> YoSources : go back on You
+          YoPhone --> YoNone : go back on You
           YoNone --> YoSettings : open Settings
           YoGroup --> YoSettings : open Settings
           YoMeasures --> YoSettings : open Settings
@@ -1230,9 +1226,7 @@ stateDiagram-v2
           YoOrg --> YoSettings : open Settings
           YoPhone --> YoSettings : open Settings
           YoAI --> YoSettings : open Settings
-          YoRecordGroup --> YoSettings : open Settings
-          YoRecordSearch --> YoSettings : open Settings
-          YoRecordHistory --> YoSettings : open Settings
+          YoRecord --> YoSettings : open Settings
           YoSettings --> YoNone : go back on You
           YoNone --> YoAI : open AI settings
           YoGroup --> YoAI : open AI settings
@@ -1245,10 +1239,8 @@ stateDiagram-v2
           YoOrg --> YoAI : open AI settings
           YoPhone --> YoAI : open AI settings
           YoSettings --> YoAI : open AI settings
-          YoRecordGroup --> YoAI : open AI settings
-          YoRecordSearch --> YoAI : open AI settings
-          YoRecordHistory --> YoAI : open AI settings
-          YoAI --> YoSettings : go back on You
+          YoRecord --> YoAI : open AI settings
+          YoAI --> YoNone : go back on You
         }
         --
         state "Your health library read" as LibraryRead {
@@ -1319,22 +1311,10 @@ stateDiagram-v2
           RdKept --> RdLoading : open AI settings
           RdFailed --> RdLoading : open AI settings
           RdLoading --> RdLoading : open AI settings
-          RdShown --> YiNone : go back on You [to the library]
-          %% when YoGroup, YoMeasures, YoHistory, YoEarlier, YoSearch, YoSources, YoSettings | reason: back from a first page shows the library itself
-          RdShown --> RdLoading : go back on You [to the page before]
-          %% when YoRecordGroup, YoRecordSearch, YoRecordHistory, YoChart, YoOrg, YoPhone, YoAI | reason: the page before reads again, showing its saved copy at once
-          RdKept --> YiNone : go back on You [to the library]
-          %% when YoGroup, YoMeasures, YoHistory, YoEarlier, YoSearch, YoSources, YoSettings | reason: back from a first page shows the library itself
-          RdKept --> RdLoading : go back on You [to the page before]
-          %% when YoRecordGroup, YoRecordSearch, YoRecordHistory, YoChart, YoOrg, YoPhone, YoAI | reason: the page before reads again, showing its saved copy at once
-          RdFailed --> YiNone : go back on You [to the library]
-          %% when YoGroup, YoMeasures, YoHistory, YoEarlier, YoSearch, YoSources, YoSettings | reason: back from a first page shows the library itself
-          RdFailed --> RdLoading : go back on You [to the page before]
-          %% when YoRecordGroup, YoRecordSearch, YoRecordHistory, YoChart, YoOrg, YoPhone, YoAI | reason: the page before reads again, showing its saved copy at once
-          RdLoading --> YiNone : go back on You [to the library]
-          %% when YoGroup, YoMeasures, YoHistory, YoEarlier, YoSearch, YoSources, YoSettings | reason: back from a first page shows the library itself
-          RdLoading --> RdLoading : go back on You [to the page before]
-          %% when YoRecordGroup, YoRecordSearch, YoRecordHistory, YoChart, YoOrg, YoPhone, YoAI | reason: the page before reads again, showing its saved copy at once
+          RdShown --> YiNone : go back on You
+          RdKept --> YiNone : go back on You
+          RdFailed --> YiNone : go back on You
+          RdLoading --> YiNone : go back on You
         }
         --
         state "The conversation read" as ConvRead {

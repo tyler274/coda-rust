@@ -361,8 +361,9 @@ map; Page and state inventory), with later decisions winning.
   other tabs as they were.
 - You holds the library (records groups, records, Measurements & trends,
   Health history, Earlier insights, search), Sources & data, and Settings. A
-  record opens from its group, a search or Health history, and going back
-  returns there.
+  record opens from its group, a search or Health history. How far back goes
+  is presentation; in the graph, going back returns to the library and changes
+  nothing you saved (Dev 2026-10-26).
 - Settings and AI settings stay reachable while newer Terms wait, since
   exporting, deleting your account and withdrawing AI permission are allowed
   then; everything else waits for the Terms (Dev 2026-10-26).
