@@ -866,6 +866,34 @@ ${group}state Desk {
   assert.match(cmd("lint", fixture(chart("%% events closing = close it | you leave\n")).input, "--repeats").stdout, /^No findings\.\n$/);
 });
 
+test("lint --unread lists states that nothing outside their own region reads", () => {
+  const chart = (rule) => `stateDiagram-v2
+state Room {
+ state Door {
+  [*] --> Shut
+  Shut --> Open : open it
+  Open --> Shut : close it
+ }
+ --
+ state Lamp {
+  [*] --> Off
+  Off --> On : switch on [door open]
+  %% when Open
+  On --> Off : switch off
+  ${rule}
+ }
+}
+[*] --> Room
+`;
+  const found = cmd("lint", fixture(chart("")).input, "--unread");
+  assert.match(found.stdout, /^unread region: Lamp: nothing outside it reads its states\n1 finding\.\n$/);
+  const ruled = cmd("lint", fixture(chart("%% never DarkWhenShut: On & Shut -- The lamp is off while the door is shut.")).input, "--unread");
+  assert.match(ruled.stdout, /^No findings\.\n$/);
+  const third = cmd("lint", fixture(chart("").replace("  On --> Off : switch off", "  On --> Off : switch off\n  On --> Dim : dim it\n  Dim --> Off : switch off\n  %% never DarkWhenShut: On & Shut -- The lamp is off while the door is shut.")).input, "--unread");
+  assert.match(third.stdout, /^unread: Lamp: Dim\n1 finding\.\n$/);
+  assert.match(cmd("lint", fixture(chart("")).input).stdout, /^No findings\.\n$/);
+});
+
 test("query lists ways in and out with cause, needs and intent, reacting regions, and region summaries", () => {
   const f = fixture(door);
   const armed = cmd("query", f.input, "--state", "Armed");

@@ -198,7 +198,7 @@ export function queryRegion(compiled, text) {
 // Static findings. Each is a fact about the flat model, not a judgement of design.
 // With cause, also list every limit (a guard on a move, or the event's needs) on an event
 // declared with that cause that states no reason.
-export function lint(compiled, { cause, repeats = false } = {}) {
+export function lint(compiled, { cause, repeats = false, unread = false } = {}) {
   const g = graph(compiled);
   const { regions, edges } = g;
   const { parsed } = compiled;
@@ -296,6 +296,33 @@ export function lint(compiled, { cause, repeats = false } = {}) {
       const set = key.split("\u0000");
       if (count >= 3 && !named(set))
         findings.push(`repeated on ${count} moves: ${set.map(quoted).join(", ")}; one %% events group could name them once`);
+    }
+  }
+  // With unread: states nothing outside their own region reads. A rule, a guard or needs on
+  // another region's move, or a part scoped to the state reads it; a region's own moves do not,
+  // and a region's start is left out.
+  // What is left is either something the reader sees, which the chart may keep, or mechanism
+  // that belongs to the implementation rather than the chart.
+  if (unread) {
+    const read = regions.map(() => new Set());
+    const mark = (ri, name) => {
+      if (ri === undefined) return;
+      for (const v of regions[ri].values) if (v === name || v.startsWith(`${name}.`)) read[ri].add(v);
+    };
+    for (const rule of compiled.ir.rules) for (const p of rule.parts ?? []) for (const s of p.states) mark(p.ri, s);
+    for (const t of edges)
+      for (const c of [t.guard, t.needs, ...(t.within ?? []), ...(t.unless ?? []).flat()].filter(Boolean))
+        for (const [region, states] of Object.entries(c.states)) {
+          const ri = g.index.get(region);
+          if (ri !== t.ri) for (const s of states) mark(ri, s);
+        }
+    for (const r of regions) if (r.scope) mark(r.parent, r.scope.state);
+    // A region's start is its empty or default state, which the reader sees as "none yet".
+    for (const [ri, r] of regions.entries()) {
+      if (!read[ri].size) { findings.push(`unread region: ${r.caption}: nothing outside it reads its states`); continue; }
+      const start = new Set(r.initial);
+      const left = r.values.filter((v) => v !== r.inactive && !start.has(v) && !read[ri].has(v));
+      if (left.length) findings.push(`unread: ${r.caption}: ${left.join(" / ")}`);
     }
   }
   return findings;
