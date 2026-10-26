@@ -289,7 +289,14 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         Some(&serde_json::json!(chat)),
         "selecting the saved conversation left the new conversation in the address: {selected}"
     );
-    browser.eval("location.reload()").await;
+    let previous_document = browser.eval("performance.timeOrigin").await;
+    browser.reload().await;
+    let reloaded_document = browser.eval("performance.timeOrigin").await;
+    assert_ne!(
+        reloaded_document.pointer("/result/result/value"),
+        previous_document.pointer("/result/result/value"),
+        "the conversation must be reopened in a new document, not read from the old page"
+    );
     browser
         .wait_for_text(message, Duration::from_secs(20))
         .await;
@@ -325,7 +332,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         ])),
         "changing patient retained the previous patient's conversation: {address}"
     );
-    browser.eval("location.reload()").await;
+    browser.reload().await;
     browser
         .wait_for_text("Patient summary", Duration::from_secs(20))
         .await;
@@ -1621,6 +1628,31 @@ impl CdpBrowser {
     async fn navigate(&mut self, url: &str) {
         self.call("Page.navigate", serde_json::json!({ "url": url }))
             .await;
+    }
+
+    async fn reload(&mut self) {
+        let previous = self.document_loader().await;
+        self.call("Page.reload", serde_json::json!({})).await;
+        let started = Instant::now();
+        // The same conversation text is visible before and after a reload.
+        // Wait for a different document before text waits or clicks can run;
+        // otherwise they can act on the page the browser is about to discard.
+        while self.document_loader().await == previous {
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "reload did not replace the document"
+            );
+            tokio::time::sleep(Duration::from_millis(20)).await;
+        }
+    }
+
+    async fn document_loader(&mut self) -> String {
+        self.call("Page.getFrameTree", serde_json::json!({}))
+            .await
+            .pointer("/result/frameTree/frame/loaderId")
+            .and_then(|id| id.as_str())
+            .expect("main frame document loader")
+            .to_owned()
     }
 
     async fn set_viewport(&mut self, width: u32, height: u32, reduced_motion: bool) {
