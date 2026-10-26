@@ -416,8 +416,9 @@ map; Page and state inventory), with later decisions winning.
 - A Check-in that can't finish posts in the thread with Try again and alerts
   like any message, since you asked for it; the Check-in on Today shows it
   too (Dev 2026-10-26).
-- After failing three times in a row, a Check-in pauses itself and Duet says
-  so in the thread; you resume it (Dev 2026-10-26).
+- After failing repeatedly, a Check-in pauses itself and Duet says so in the
+  thread; you resume it (Dev 2026-10-26). How many failures in a row is the
+  runtime's (infrastructure-gaps.md).
 - Duet may propose an update to For my doctor as a message with Save and
   Dismiss. Tapping Save, or replying in words that ask for it, saves it, since
   Duet already does what you ask in conversation; For my doctor shows the same

@@ -22,6 +22,16 @@ behind it; it reaches that reply. The cost guard ENG-191 added (one model run in
 flight per account) can stay, since Duet has one continuous conversation: the
 second message steers that run instead of being turned away.
 
+## A Check-in that keeps failing
+
+**Assumed away.** How many failures in a row pause a Check-in. The graph keeps
+only what you see: it couldn't finish, with Try again, and after failing
+repeatedly it is paused, with Resume (Dev 2026-10-26).
+
+**Must guarantee.** A Check-in that keeps failing stops on its own and says so
+in the thread instead of failing silently at every scheduled time; three in a
+row is the starting point Dev picked. Only you resume it.
+
 ## Sending messages
 
 **Assumed away.** How an unconfirmed send is checked. The graph keeps Sending,
