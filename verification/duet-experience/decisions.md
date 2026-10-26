@@ -408,6 +408,10 @@ map; Page and state inventory), with later decisions winning.
   switch, which follows your account. A shared phone alerts for whoever is
   signed in. Lock-screen text is generic (north-star.md, Notifications;
   Dev 2026-10-26).
+- At most one notification waits on a device for everything since you last
+  saw the thread; opening it lands on the conversation at the newest message,
+  since every alert is a message there (follows from thread-first,
+  Dev 2026-10-26).
 
 - A Check-in that can't finish posts in the thread with Try again and alerts
   like any message, since you asked for it; the Check-in on Today shows it

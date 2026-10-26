@@ -3,7 +3,7 @@ stateDiagram-v2
 %% The graph is the spec; Verus derives from it. It states the ideal behavior of the full
 %% product for every person, from Dev's intent and the settled sources, never from existing
 %% code. decisions.md holds the charter, the sources and the dated decisions it cites.
-%% Written region by region; this file currently holds your screens, the thread, the account and export, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
+%% Written region by region; this file currently holds your screens, the thread and its alerts, the account and export, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
 %% Scope: MVP behavior (Dev 2026-10-25); later functionality joins as connected graphs.
 %%
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
@@ -59,6 +59,21 @@ stateDiagram-v2
 %% event you see the new messages on another device | by you | needs ThUnseen, ODIn | reason: only a signed-in device shows the conversation | You read Duet's new messages on your other device; they are seen here too (Dev 2026-10-26).
 %% event leave Duet | by you | needs AppFront | reason: only an app on screen goes to the background | Duet goes to the background on this device; anything in progress keeps going.
 %% event open Duet | by you | needs AppBack | reason: only an app in the background comes back | Duet is on screen again, where you left it.
+%% Alerts (north-star.md, Notifications; Dev 2026-10-26). Each message alerts once, like texting, while Duet is in
+%% the background on a device whose alerts are allowed and that is signed in to your account. Replies, what you
+%% asked for and your practice's news always alert there; what Duet noticed from its own work alerts only once you
+%% turn on its one switch, which follows your account. Duet keeps no quiet hours of its own: your device's Focus
+%% or Do Not Disturb decides whether an alert sounds. Lock-screen text is generic: no health value, source,
+%% doctor content or medical claim; a Reminder may show the words you agreed. A notification never proves the
+%% work behind it finished, and opening one starts nothing new.
+%% event allow alerts | by you | needs NtAsk | reason: only the first ask is answered here | You allow Duet's alerts on this device when it first asks.
+%% event don't allow alerts | by you | needs NtAsk | reason: only the first ask is answered here | Duet works the same without alerts; everything waits in the thread.
+%% event turn alerts off in your device's settings | by you | needs NtOn | reason: only allowed alerts are turned off | This device stops getting Duet's alerts, and the notification waiting on it goes.
+%% event turn alerts on in your device's settings | by you | needs NtOff | reason: only alerts that are off are turned on | This device gets Duet's alerts again from now on; nothing missed arrives late.
+%% event turn on alerts for Duet's own work | by you | command on your alerts: Turn on, clicked while DIn | needs IaOff, TCur | reason: the choice is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Off until you turn it on (north-star.md, Notifications): what Duet noticed from its own work then alerts you too. One switch saved with your account, so every device follows it (Dev 2026-10-26).
+%% event turn off alerts for Duet's own work | by you | command on your alerts: Turn off, clicked while DIn | needs IaOn, TCur | reason: the choice is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | What Duet noticed still posts in the thread, without alerting you.
+%% event open the notification | by you | needs NoWaiting, AppBack | reason: only a notification waiting on this device opens, from outside Duet | Duet opens on the conversation at its newest message; it starts nothing new.
+%% events Duet tells you what you asked for or your practice's news = Duet delivers the Reminder | Duet delivers the Check-in | the Check-in can't finish | the Check-in can't finish a third time in a row | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
 %% event try the reply again | by you | command on the reply: Try again, clicked while DIn | needs RUnfinished, PAllowed, SwOn, TCur | reason: Duet's AI needs your permission, the switch on and current Terms | Duet writes the reply again from your messages.
 %% event Duet's AI sees a possible emergency or self-harm | by Duet's AI | needs RWriting | reason: only a reply being written can carry a safety line | Duet's AI judges that what you describe could be an emergency, or mentions self-harm.
 %% event mark the reply helpful | by you | command on your feedback: Helpful, clicked while DIn | needs RDone, TCur | reason: only a finished reply takes feedback; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | 👍 saves at once, a quiet tapback; switching from 👎 drops its reasons and note (Dev 2026-09-23).
@@ -465,6 +480,15 @@ stateDiagram-v2
           %% never WaitsNotAfterFinish: A message waiting for the reply to end & Reply finished -- A finished reply posts what waited.
           %% never WaitsNotAfterFailure: A message waiting for the reply to end & Reply unfinished, with Try again -- A reply that can't finish posts what waited.
           %% never WaitsNotWhilePaused: A message waiting for the reply to end & Reply paused -- A paused reply posts what waited.
+        }
+        --
+        %% One switch for alerts about what Duet noticed from its own work, saved with your account (Dev 2026-10-26).
+        state "Alerts for Duet's own work" as InsAlerts {
+          [*] --> IaOff
+          state "Duet's own work doesn't alert you" as IaOff
+          state "Duet's own work alerts you" as IaOn
+          IaOff --> IaOn : turn on alerts for Duet's own work
+          IaOn --> IaOff : turn off alerts for Duet's own work
         }
         --
         %% One saved item per kind stands for each of its kind; each behaves the same way.
@@ -992,6 +1016,10 @@ stateDiagram-v2
           %% receipt your phone's health data
         }
         --
+        state "Your command on your alerts" as AlertRc {
+          %% receipt your alerts
+        }
+        --
         %% Which tab you're on (ui-surface-map.md, Navigation map). Ask about this takes you to the conversation
         %% with that item; Settings and AI settings are in You.
         state "Tab" as Tab {
@@ -1007,6 +1035,8 @@ stateDiagram-v2
           TabYou --> TabToday : go to Today
           TabToday --> TabDuet : ask about this
           TabYou --> TabDuet : ask about this
+          TabToday --> TabDuet : open the notification
+          TabYou --> TabDuet : open the notification
           TabDuet --> TabYou : open Settings
           TabToday --> TabYou : open Settings
           TabDuet --> TabYou : open AI settings
@@ -1291,6 +1321,7 @@ stateDiagram-v2
           CoSource --> CoSource : open supporting information
           CoSource --> CoNone : close the supporting information
           CoSource --> CoNone : ask about this
+          CoSource --> CoNone : open the notification
         }
         %% How every read behaves, written once (ui-surface-map.md, Navigation map: first load is distinct
         %% from a refresh; a loader belongs only to an unresolved read; a failure keeps what is shown;
@@ -1339,6 +1370,46 @@ stateDiagram-v2
       state "Duet in the background" as AppBack
       AppFront --> AppBack : leave Duet
       AppBack --> AppFront : open Duet
+      AppBack --> AppFront : open the notification
+    }
+    --
+    %% This device's own alert permission: it belongs to the device, not the session (north-star.md, Notifications).
+    state "This device's alerts" as Alerts {
+      [*] --> NtAsk
+      state "Duet hasn't asked for alerts yet" as NtAsk
+      state "Alerts allowed on this device" as NtOn
+      state "Alerts not allowed on this device" as NtOff
+      NtAsk --> NtOn : allow alerts
+      NtAsk --> NtOff : don't allow alerts
+      NtOn --> NtOff : turn alerts off in your device's settings
+      NtOff --> NtOn : turn alerts on in your device's settings
+    }
+    --
+    %% What waits on this device's lock screen: at most one notification stands for every message since you last
+    %% saw the thread. Only the signed-in account's alerts wait here, so a shared device alerts for whoever is
+    %% signed in; signing out or deleting clears it. Seeing the messages on any device clears it (Dev 2026-10-26).
+    state "Notification on this device" as Notice {
+      [*] --> NoNone
+      state "No notification waiting" as NoNone
+      state "A notification from Duet waiting" as NoWaiting
+      NoNone --> NoWaiting : Duet posts in the thread [you're away, alerts allowed]
+      %% when AppBack, NtOn, DIn | reason: a reply alerts like a text, only while you're away and this device allows alerts (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet tells you what you asked for or your practice's news [you're away, alerts allowed, not mid-reply]
+      %% when AppBack, NtOn, DIn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what you asked for and your practice's news alert wherever alerts are allowed; while Duet writes it waits for the reply (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet finishes with something to tell you [you're away, alerts allowed, your switch on, not mid-reply]
+      %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet stops writing early [with a message waiting, you're away, alerts allowed]
+      %% when OmWaiting, AppBack, NtOn, DIn | reason: a reply that stops posts what waited, and it alerts
+      NoWaiting --> NoNone : open the notification
+      NoWaiting --> NoNone : you see the new messages
+      NoWaiting --> NoNone : you see the new messages on another device
+      NoWaiting --> NoNone : turn alerts off in your device's settings
+      NoWaiting --> NoNone : sign out on this device
+      NoWaiting --> NoNone : sign out everywhere
+      NoWaiting --> NoNone : the deletion finishes
+      %% never NoticeOnlySignedIn: A notification from Duet waiting & Signed out on this device -- Only the signed-in account's alerts wait on this device (Dev 2026-10-26).
+      %% never NoticeOnlyWithAlerts: A notification from Duet waiting & Alerts not allowed on this device -- Turning alerts off ends what this device was owed (north-star.md, Notifications).
+      %% never NoticeOnlyAfterAsking: A notification from Duet waiting & Duet hasn't asked for alerts yet -- Duet alerts only after you allow it.
     }
     --
     %% Your practice: the connection is yours and the practice's, not a device's. Connected means
