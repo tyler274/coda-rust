@@ -36,6 +36,15 @@ impl Drop for Running {
 }
 
 async fn running(label: &str, failures: Option<u32>, delay_ms: Option<u64>) -> Option<Running> {
+    running_with(label, failures, delay_ms, false).await
+}
+
+async fn running_with(
+    label: &str,
+    failures: Option<u32>,
+    delay_ms: Option<u64>,
+    fail_marker: bool,
+) -> Option<Running> {
     let database = support::Database::create(label).await?;
     let store = Store::connect(&database.url).await.expect("runtime store");
     let worker_port = support::free_port();
@@ -62,6 +71,9 @@ async fn running(label: &str, failures: Option<u32>, delay_ms: Option<u64>) -> O
     if let Some(ms) = delay.as_deref() {
         env.push(("PHYSICIAN_WORKER_FIXED_DELAY_MS", ms));
     }
+    if fail_marker {
+        env.push(("PHYSICIAN_WORKER_FIXED_FAIL_MARKER", "1"));
+    }
     let mut worker = support::Process::spawn("worker", support::worker_bin(), &[], &env, &home);
     support::wait_ready(&mut worker, worker_port).await;
     Some(Running {
@@ -75,6 +87,10 @@ async fn running(label: &str, failures: Option<u32>, delay_ms: Option<u64>) -> O
 }
 
 async fn accept_turn(url: &str, store: &Store) -> (Scope, Delivery) {
+    accept_text(url, store, "Hello").await
+}
+
+async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) {
     let auth = PostgresAuthStore::connect_without_migrations(url)
         .await
         .expect("auth store");
@@ -124,7 +140,7 @@ async fn accept_turn(url: &str, store: &Store) -> (Scope, Delivery) {
             &scope,
             &Input {
                 key: key.clone(),
-                text: "Hello".into(),
+                text: text.into(),
                 timezone: "America/New_York".into(),
             },
             PostgresAuthStore::session_reference(&session),
@@ -252,6 +268,46 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
             .iter()
             .any(|attempt| attempt.status == "completed"),
         "redelivery should complete an attempt"
+    );
+}
+
+fn attempt_statuses(state: &Conversation) -> Vec<&str> {
+    state
+        .attempts
+        .iter()
+        .map(|attempt| attempt.status.as_str())
+        .collect()
+}
+
+/// One worker, both kinds of turn: `[fail:1]` fails once and the redelivery
+/// answers; a plain turn on the same worker never fails.
+#[tokio::test]
+async fn fail_marker_fails_only_the_marked_message() {
+    let _guard = lock().lock().await;
+    let Some(running) = running_with("marker", None, None, true).await else {
+        return;
+    };
+    let (plain_scope, plain) = accept_turn(&running.database.url, &running.store).await;
+    running.emulator.publish(&plain).await;
+    let state = wait_assistant(&running.store, &plain_scope, &running.worker).await;
+    assert_eq!(state.status, "completed");
+    assert_eq!(attempt_statuses(&state), ["completed"]);
+
+    let (marked_scope, marked) =
+        accept_text(&running.database.url, &running.store, "Retry [fail:1]").await;
+    running.emulator.publish(&marked).await;
+    let state = wait_assistant(&running.store, &marked_scope, &running.worker).await;
+    assert_eq!(state.status, "completed");
+    assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
+    assert_eq!(attempt_statuses(&state), ["failed", "completed"]);
+
+    let (again_scope, again) = accept_turn(&running.database.url, &running.store).await;
+    running.emulator.publish(&again).await;
+    let state = wait_assistant(&running.store, &again_scope, &running.worker).await;
+    assert_eq!(
+        attempt_statuses(&state),
+        ["completed"],
+        "a plain turn after a marked one must not fail"
     );
 }
 
