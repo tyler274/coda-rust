@@ -1,0 +1,2323 @@
+{
+  "unit": "unit-2144",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002144",
+      "given": "Kenji",
+      "family": "Chen",
+      "birth_date": "1971-10-07",
+      "address_line": "212 Cabot Street, Apt 3",
+      "phone": "+1-347-555-0182",
+      "email": "kenji.chen@example.test",
+      "marital_status": "single",
+      "summary": "Logistics coordinator with long-standing HBeAg-negative chronic hepatitis B on tenofovir, hypertension and vitamin D deficiency who joined in 2023. Intermittent tenofovir adherence and no HCC surveillance precede a December 2025 admission that finds a 4 cm hepatocellular carcinoma in decompensated hepatitis B cirrhosis; he is listed for liver transplant in February 2026.",
+      "events": [
+        {
+          "id": "2023-08-10a",
+          "kind": "telephone",
+          "start": "2023-08-10T11:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2023-08-10T11:20",
+              "author": "front desk",
+              "body": "Caller moved to the area this summer for work and wants a primary care doctor here. Previous PCP and his liver doctor were both out of state. He takes three daily medicines and says he has hepatitis B that is followed by a specialist. Booked new patient visit 8/22 at 8:40. Records release form emailed; he will sign and return so we can request from the prior office. Membership info sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:40",
+          "end": "2023-08-22T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis B",
+              "action": "history",
+              "note": "HBeAg-negative per patient; followed by outside GI for years"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Vitamin D deficiency",
+              "action": "history"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tenofovir disoproxil fumarate 300 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hepatitis B"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2000 units (1 capsule) by mouth once daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "vitamin D deficiency"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              84
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 72.6,
+            "height_cm": 170.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 58
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 172
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 27
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Logistics coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T08:40"
+            },
+            {
+              "procedure": "Inguinal hernia repair",
+              "performed": "2017-04-01T00:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-22T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "ongoing chronic hepatitis B care on tenofovir"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-22T09:35",
+              "author": "PCP",
+              "body": "51 y/o man new to the practice. Relocated here in June for a logistics coordinator job with a regional distributor. Prior primary care and hepatitis B care were out of state; records release signed today.\n\nHepatitis B: has known about it for many years, told it is the \"e-antigen negative\" kind. On tenofovir for years, prescribed by his old GI. Last liver labs he thinks were about a year ago. No abdominal pain, no jaundice, no itching, appetite fine. Wants a GI doctor closer to home.\nBP: on amlodipine 5 mg, home readings he says are usually high 120s/low 80s. No headaches, no chest pain.\nVitamin D: low level found by prior PCP, on 2000 units a day.\n\nPast surgical: inguinal hernia repair in spring 2017, uncomplicated.\nMeds: tenofovir disoproxil 300 mg daily, amlodipine 5 mg daily, vitamin D3 2000 units daily.\nAllergies: none to medications.\nFamily: father had liver cancer and died at 71. Mother has type 2 diabetes. Older brother also has hepatitis B, followed where he lives.\nSocial: came to the US with his family as a young boy. Lives alone in an apartment. Has never used tobacco. Does not drink at all. No recreational drugs. Walks most evenings.\n\nExam: well appearing, no scleral icterus. Neck supple, no thyromegaly. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no hepatosplenomegaly, healed groin scar. No edema. Skin without spider angiomata or jaundice.\n\nAssessment/plan\n1. Chronic hepatitis B on tenofovir: continue. Baseline CMP and CBC today. Referral to local GI to take over HBV management.\n2. Hypertension: reasonable on amlodipine 5. Continue.\n3. Vitamin D deficiency: level today on current dose.\n4. Health maintenance: HCV and HIV screening today. A1c given mother's diabetes. Lipids. Tdap today, last one he can't recall. Colon screening to discuss at next visit once prior records are in. PHQ-2 negative.\nFollow up in about 6 months, sooner once labs are back."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 72.6,
+            "height_cm": 170.0,
+            "labs": {
+              "25-hydroxy Vitamin D": 27,
+              "Alanine Aminotransferase": 58,
+              "Aspartate Aminotransferase": 41,
+              "Hemoglobin A1c": 5.5,
+              "Platelets": 172
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2023-08-24T16:05",
+              "author": "PCP",
+              "body": "Hi Kenji, your labs are back. Kidney function, blood sugar, A1c and cholesterol all look good. Your blood counts are normal. Your liver enzyme ALT is a little above the normal range (58), which we see sometimes in hepatitis B; the new GI team will want to see this, and I've sent it along with the referral. Hepatitis C and HIV screens were negative. Vitamin D is 27, a bit below where I'd like it, but let's keep the same dose for now and recheck next year. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T10:30",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records Received",
+              "date": "2023-09-12T10:30",
+              "author": "MA",
+              "body": "38 pages from the patient's previous primary care office, faxed after release. Contents: office notes 2018-2023, medication list (tenofovir disoproxil 300 mg, amlodipine 5 mg, vitamin D3 2000 units), labs. Hepatitis B listed since before 2018 with GI co-management. Inguinal hernia repair 2017 op note included. Influenza vaccines yearly. No colon cancer screening on file. Routed to PCP for review and filed under media."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T17:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T17:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-19T17:25",
+              "author": "RN",
+              "body": "Came in after work for flu and the 2023-24 COVID vaccine. No fever today, no prior vaccine reactions. Flu 0.5 mL IM left arm, COVID 0.3 mL IM right arm. Observed 15 minutes, no reaction. VIS sheets provided."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "specialist_visit",
+          "start": "2023-12-08T10:00",
+          "service": "Gastroenterology",
+          "reason": "chronic hepatitis B follow-up",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-12-08T10:45",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 42
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-08T10:45",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B core antibody",
+                  "loinc": "16933-4",
+                  "text": "Positive (IgG)"
+                },
+                {
+                  "test": "Hepatitis B e antigen",
+                  "loinc": "13954-3",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B e antibody",
+                  "loinc": "13953-5",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "done",
+              "date": "2023-12-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2023-12-14T09:10",
+              "author": "gastroenterology",
+              "body": "Gastroenterology outpatient consultation\nDate of visit: 12/08/2023\nReferred by: primary care, for continuing management of chronic hepatitis B\n\nMr. Chen is a 52-year-old man with long-standing chronic hepatitis B, previously managed by a gastroenterologist in another state, on tenofovir disoproxil fumarate 300 mg daily. He presents to establish with our group. He is entirely asymptomatic: energy is good, no abdominal pain, no change in weight, no yellowing of the eyes, no pruritus, no dark urine.\n\nOther history: hypertension on amlodipine 5 mg; vitamin D deficiency on cholecalciferol 2000 IU; remote inguinal hernia repair.\nAllergies: NKDA.\nFamily history notable for hepatocellular carcinoma in his father (died at 71) and chronic hepatitis B in an older brother. Mother with type 2 diabetes.\nSocial: abstains from alcohol, never smoker. Emigrated as a child.\n\nExamination: alert, comfortable, anicteric. Abdomen soft and nontender without organomegaly or ascites. No stigmata of chronic liver disease. Remainder of exam within normal limits.\n\nData: ALT today 64 U/L, mildly above the reference range. Hepatitis B profile: surface antigen positive, surface antibody negative, core antibody positive (IgG), e antigen negative, e antibody positive, consistent with HBeAg-negative chronic infection.\n\nImpression: HBeAg-negative chronic hepatitis B on tenofovir with mild ALT elevation.\nRecommendations:\n- Continue tenofovir disoproxil fumarate 300 mg once daily; reviewed the importance of taking it every day.\n- Return to clinic in 12 months with labs.\n\nNKDA. Medications at time of visit: tenofovir disoproxil fumarate 300 mg daily, amlodipine 5 mg daily, cholecalciferol 2000 IU daily.\n\nAttending gastroenterologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "pharmacy",
+          "start": "2024-01-30T13:45",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request: Tenofovir",
+              "date": "2024-01-30T13:45",
+              "author": "RN",
+              "body": "Pharmacy fax requesting tenofovir disoproxil 300 mg #30. Last fill per pharmacy was early December. Patient says his old GI's prescription ran out of refills and the new GI office told him to ask us. Per PCP OK to refill, 90 day supply with 3 refills. Sent."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approved",
+              "date": "2024-01-30T15:02",
+              "author": "PCP",
+              "body": "Tenofovir 300 mg daily renewed, 90 days x3. Fine for us to keep this going between GI visits."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              84
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 72.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-13T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2024",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-13T16:50",
+              "author": "PCP",
+              "body": "S: Here for BP check. Feels fine. Saw the new GI in December, letter reviewed: mild ALT bump, stay on tenofovir, see them yearly. Taking amlodipine every morning. Busy season at work over the holidays, a lot of overtime.\nO: vitals as charted. Alert, no jaundice. Heart regular, no murmur. Lungs clear. No edema.\nA/P:\n- HTN: at goal on amlodipine 5, no change.\n- Chronic HBV: per GI. Tenofovir refills through us.\n- Colorectal screening: never done, age 52. Prefers colonoscopy over stool testing. Referral placed.\nRTC August for physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "procedure_visit",
+          "start": "2024-04-11T07:30",
+          "end": "2024-04-11T09:45",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2024-04-11T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colonoscopy-2024",
+              "action": "done",
+              "date": "2024-04-11T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "date": "2024-04-16T12:00",
+              "author": "gastroenterology",
+              "body": "Procedure: screening colonoscopy, 04/11/2024. Indication: average-risk screening, first exam. Sedation: monitored anesthesia care. Prep adequate, good visualization.\nFindings: scope advanced to the cecum, appendiceal orifice and ileocecal valve identified. Mucosa normal throughout. No polyps. Small internal hemorrhoids on retroflexion. Withdrawal time 9 minutes.\nImpression: normal screening colonoscopy.\nRecommendation: repeat in 10 years. Resume prior medications.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              139,
+              83
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 72.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 53
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 39
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 164
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 32
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-08-20T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-20T08:45",
+              "author": "PCP",
+              "body": "Annual exam, 52M.\nInterval: colonoscopy in April normal, next 2034. No ED visits. Feels well, sleeping ok, work steady. Walking 30-40 min most evenings. Reports taking tenofovir, though admits he sometimes realizes at night he skipped it.\nMeds: tenofovir disoproxil 300 daily, amlodipine 5 daily, D3 2000 units daily. NKDA.\nROS negative in full: no weight change, no abdominal pain or swelling, no jaundice, no chest pain, no dyspnea, no urinary or bowel changes, mood good.\nExam: NAD. HEENT normal, sclerae anicteric. Thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin unremarkable. Normal gait, neuro grossly normal.\nPHQ-2 0.\nPlan:\n- HBV: tenofovir every day; set a phone alarm. ALT and CMP today, will forward to GI. GI annual visit due December.\n- HTN controlled, continue amlodipine.\n- Vit D: recheck today.\n- Labs: CMP, CBC, lipids, A1c, vit D.\n- Vaccines: flu and the new COVID shot when they arrive in the fall. Shingles series discussed, wants to wait until after his busy season.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 32,
+              "Alanine Aminotransferase": 53,
+              "Aspartate Aminotransferase": 39
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T12:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results From Your Physical",
+              "date": "2024-08-22T12:40",
+              "author": "PCP",
+              "body": "Labs look steady. ALT 53, slightly high but a touch better than last year. Cholesterol, sugar and kidneys normal. Vitamin D is up to 32, so the current dose is working. Keep taking the tenofovir every day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Lab Results From Your Physical",
+              "date": "2024-08-22T19:15",
+              "author": "patient",
+              "body": "Thanks doc. The phone alarm is helping. Should I send these to the GI office or will you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Lab Results From Your Physical",
+              "date": "2024-08-23T09:05",
+              "author": "MA",
+              "body": "We faxed the results to your GI office this morning."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-17T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-17T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-17T17:00",
+              "author": "RN",
+              "body": "Influenza and 2024-25 COVID vaccines given, left and right deltoid. Afebrile, well. Tolerated without issue after a 15 minute wait. Reminded him the shingles series can start any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2024-12-10T16:50",
+              "author": "front desk",
+              "body": "Did not arrive for 4:20 follow-up. Called and left voicemail to reschedule. Text sent as well."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-23T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up (rescheduled)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-01-23T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Follow-up",
+              "date": "2025-01-23T12:35",
+              "author": "PCP",
+              "body": "Video from his car on lunch break, rescheduled from the December miss (forgot, double-booked with a warehouse audit).\nBP: home cuff readings he read off his phone, mostly 126-134 over 78-84. No symptoms.\nHBV: pharmacy profile shows tenofovir fills in September and then not again until early January. He says he ran out over the holidays and didn't get to the pharmacy. No symptoms. We talked about why stopping and starting this medicine matters for the liver. He'll switch to 90-day mail order so it comes to the door.\nHas not been back to GI since 2023; their office is supposed to send a reminder.\nPlan: continue amlodipine 5 and tenofovir 300. Mail-order scripts sent. Shingles vaccine #1 nurse visit in March. Physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "nurse_visit",
+          "start": "2025-03-11T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine dose 1",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-03-11T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix Dose 1",
+              "date": "2025-03-11T17:25",
+              "author": "RN",
+              "body": "Shingrix #1, 0.5 mL IM left deltoid. Counseled on sore arm and possible tiredness for a day or two. Dose 2 due in 2 to 6 months; scheduled for June."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "nurse_visit",
+          "start": "2025-06-10T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-06-10T17:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix Dose 2",
+              "date": "2025-06-10T17:20",
+              "author": "RN",
+              "body": "Second Shingrix, 0.5 mL IM right deltoid. After the first one his arm ached about a day, nothing more. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "pharmacy",
+          "start": "2025-07-08T10:10",
+          "reason": "mail-order renewals",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Mail-Order Renewal Requests",
+              "date": "2025-07-08T10:10",
+              "author": "RN",
+              "body": "Mail-order pharmacy requesting renewals: amlodipine 5 mg, tenofovir disoproxil 300 mg. Both last filled in April as 90-day supplies. Renewed per protocol, 90 days with 1 refill each; physical booked for 8/26."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "annual_physical",
+          "start": "2025-08-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              87
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 72.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-26T08:55",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-26T08:55",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 151
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-26T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-26T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-08-26T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-26T08:50",
+              "author": "PCP",
+              "body": "Physical, age 53.\nSince last year: shingles series done. No illnesses. Work has been heavy, now coordinating two warehouses. Mail-order tenofovir arriving, though he says some weeks he still misses a couple of doses.\nMeds: tenofovir disoproxil 300 mg daily, amlodipine 5 mg daily, cholecalciferol 2000 units daily. No drug allergies.\nROS: negative for fatigue, weight loss, abdominal pain or swelling, jaundice, dark urine, itching, GI bleeding, chest pain, dyspnea. Mood fine.\nExam: comfortable. Sclerae clear. Neck normal. Cardiac regular rhythm, no murmur or gallop. Lungs clear to auscultation. Abdomen soft, nontender, liver edge not felt, no fluid. Extremities without edema. Skin normal.\nPHQ-2 0.\nA/P\n- Chronic HBV: CMP and CBC today. Overdue for GI; he will call them, number given again.\n- HTN controlled on amlodipine.\n- Vit D on replacement, level today.\n- Lipids and A1c today.\n- Flu and COVID vaccines in October.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.4,
+            "labs": {
+              "25-hydroxy Vitamin D": 30,
+              "Alanine Aminotransferase": 61,
+              "Albumin": 3.9,
+              "Aspartate Aminotransferase": 47,
+              "Bilirubin, Total": 0.9,
+              "Platelets": 151
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "portal_message",
+          "start": "2025-08-28T15:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "date": "2025-08-28T15:30",
+              "author": "PCP",
+              "body": "Kenji, results: ALT 61, still mildly elevated, about where it has been. Bilirubin and albumin normal. Platelets 151, normal. Cholesterol and A1c fine, vitamin D 30. Please do get the GI visit on the calendar, they will want these."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T17:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-14T17:35",
+              "author": "RN",
+              "body": "Flu (trivalent) left deltoid and 2025-26 COVID right deltoid. Feels well, no fever. No reaction during the observation period."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-15a",
+          "kind": "office_visit",
+          "start": "2025-12-15T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, abdominal swelling, weight loss",
+          "vitals": {
+            "bp": [
+              133,
+              86
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 68.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-12-15T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Not feeling right",
+              "date": "2025-12-15T07:12",
+              "author": "patient",
+              "body": "Morning doc. I've been really worn out for a couple of months and my stomach keeps getting bigger even though I'm eating less. Pants are tight but I've lost weight on the scale. Coworker said my eyes look yellow. Can I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Not feeling right",
+              "date": "2025-12-15T07:40",
+              "author": "PCP",
+              "body": "Yes, today. Come at 11:30. If you get confused, vomit blood or have black stools before then, go straight to the emergency department."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2025-12-15T13:05",
+              "author": "PCP",
+              "body": "Same-day visit for progressive tiredness, a swelling belly and weight loss.\nHPI: 54M with chronic hepatitis B. About two months of fatigue that has steadily worsened, now leaving work early. Abdomen enlarging over the same period with early fullness. Down about 10 lb from his usual without trying (72.4 kg in August, 68.1 today). Coworkers noticed yellow eyes last week. Urine darker. No fever, no vomiting, no blood in stool, no black stools, no confusion.\nOn direct questioning he has been missing tenofovir doses on and off for months, more this fall when work got busy; the mail-order box sat unopened for weeks at a time. Never made the GI follow-up. No alcohol.\nExam: tired appearing, oriented, no asterixis. Scleral icterus and jaundiced skin. Abdomen distended, liver edge firm and palpable below the right costal margin, shifting dullness. No tenderness. No leg edema.\nAssessment: new jaundice, ascites and hepatomegaly with weight loss in chronic HBV with interrupted antiviral therapy. Concern for decompensated liver disease and a liver tumor given the family history.\nPlan: called the regional hospital gastroenterology service and spoke with the admitting gastroenterologist, who accepted him for direct admission this afternoon for imaging, labs and paracentesis. His brother is driving him there now. Told to bring his medicine bottles. Resume tenofovir today, do not skip. Will follow while inpatient."
+            }
+          ],
+          "state": {
+            "bp": [
+              124,
+              78
+            ],
+            "weight_kg": 68.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-15b",
+          "kind": "hospital_admission",
+          "start": "2025-12-15T15:20",
+          "end": "2025-12-19T12:40",
+          "service": "Gastroenterology",
+          "reason": "jaundice, ascites, liver mass",
+          "conditions": [
+            {
+              "label": "Hepatocellular carcinoma",
+              "action": "diagnosed",
+              "onset": "2025-12-15",
+              "icd10": "C22.0"
+            },
+            {
+              "label": "Cirrhosis of liver due to chronic hepatitis B",
+              "action": "diagnosed",
+              "onset": "2025-12-15",
+              "icd10": "K74.69"
+            },
+            {
+              "label": "Ascites in cirrhosis",
+              "action": "diagnosed",
+              "onset": "2025-10-15",
+              "icd10": "R18.8"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "spironolactone 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ascites"
+            },
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily in the morning",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ascites"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "stopped with diuretic start in decompensated cirrhosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              69
+            ],
+            "hr": 57,
+            "spo2": 100
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-12-15T16:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 90
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 110
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 300
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-15T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-15T16:10",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 98
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-12-15T16:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 19.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-15T16:10",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 800
+                },
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "value": 38600
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-12-15T18:30",
+              "text": "Complete abdominal ultrasound. Liver enlarged with a coarse echotexture. In the right hepatic lobe there is a solid mass measuring 4.0 cm with irregular margins. Gallbladder without stones or wall thickening. No intrahepatic or extrahepatic biliary ductal dilatation; common bile duct normal caliber. Portal vein patent with hepatopetal flow. Moderate ascites. Kidneys normal in size without hydronephrosis. Pancreas partially obscured by bowel gas, visualized portions unremarkable. Aorta normal caliber.",
+              "conclusion": "4 cm right hepatic lobe mass with irregular borders. Ascites. No gallstones or biliary dilatation."
+            },
+            {
+              "study": "MRI abdomen with and without contrast",
+              "loinc": "24556-3",
+              "performed": "2025-12-16T10:45",
+              "text": "Multiphase MRI of the liver with and without gadolinium. Nodular liver contour consistent with cirrhosis. Single 4.0 x 3.7 cm observation in the right hepatic lobe showing nonrim arterial phase hyperenhancement, nonperipheral washout on portal venous and delayed phases, and an enhancing capsule. No additional hepatic observations. No tumor in vein; portal and hepatic veins patent. Moderate ascites. Gallbladder, pancreas, adrenals and kidneys unremarkable. No abdominal lymphadenopathy.",
+              "conclusion": "LI-RADS 5 (definite HCC), single 4.0 cm right-lobe lesion, no tumor in vein. Cirrhotic liver with moderate ascites."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2025-12-17T14:20",
+              "text": "CT chest with IV contrast for staging. Lungs clear without nodules or masses. No pleural effusion. No mediastinal or hilar lymphadenopathy. Heart size normal. No osseous lesions.",
+              "conclusion": "No evidence of thoracic metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-01-09T14:20",
+              "author": "gastroenterology",
+              "body": "Regional hospital, gastroenterology inpatient service\nAdmitted 12/15/2025 (direct admission from primary care). Discharged 12/19/2025.\n\nReason for admission: two months of worsening fatigue, enlarging abdomen and a 10-pound weight loss in a 54-year-old man with chronic hepatitis B who has taken tenofovir inconsistently.\n\nOn arrival: jaundiced, liver palpably enlarged, fluid wave present. Alert, no encephalopathy. Afebrile, hemodynamically stable.\n\nKey data: AFP 800 ng/mL. ALT 90, AST 110, alkaline phosphatase 300 U/L, total bilirubin 3.2 mg/dL, albumin 2.8. INR 1.6. Sodium 134, creatinine 0.94. WBC 5.1, hemoglobin 12.9, platelets 98. HBV DNA 38,600 IU/mL.\nUltrasound: 4 cm irregular mass in the right lobe; no gallstones; bile ducts not dilated.\nMRI liver 12/16: single 4.0 cm right lobe lesion meeting LI-RADS 5 criteria, no vascular invasion; cirrhotic liver; moderate ascites.\nCT chest 12/17: no metastases.\nDiagnostic paracentesis 12/16: high serum-ascites albumin gradient, consistent with portal hypertension; cell count without evidence of infection; culture no growth.\n\nDiagnoses:\n1. Hepatocellular carcinoma, single 4.0 cm lesion, within Milan criteria (imaging diagnosis, no biopsy).\n2. Decompensated cirrhosis secondary to chronic hepatitis B, with ascites. Child-Pugh class B (9).\n3. Chronic hepatitis B with viremia in the setting of interrupted tenofovir.\n4. Hypertension.\n\nHospital course: started on spironolactone and furosemide with a 2 g sodium diet; weight and abdominal girth decreased, electrolytes and creatinine stable. Tenofovir resumed on admission with extensive adherence teaching. Amlodipine discontinued as the diuretics were started; blood pressure 110s-120s systolic off it. Case discussed at the multidisciplinary liver tumor conference; recommendation for referral to transplant hepatology for liver transplant evaluation. Referral sent to the transplant center.\n\nDischarge medications:\n- tenofovir disoproxil fumarate 300 mg by mouth daily (do not miss doses)\n- spironolactone 100 mg by mouth daily (new)\n- furosemide 40 mg by mouth every morning (new)\n- cholecalciferol 2000 IU daily\nSTOPPED: amlodipine 5 mg.\nAllergies: no known drug allergies.\n\nFollow-up: primary care within 1 week with basic metabolic panel; transplant hepatology clinic, to be scheduled by the center. Return for fever, abdominal pain, confusion, bleeding or rapid weight gain.\n\nDischarging gastroenterology attending"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 90,
+              "Albumin": 2.8,
+              "Alkaline Phosphatase": 300,
+              "Aspartate Aminotransferase": 110,
+              "Bilirubin, Direct": 1.9,
+              "Bilirubin, Total": 3.2,
+              "Hemoglobin": 12.9,
+              "Platelets": 98,
+              "Prothrombin Time-International Normalized Ratio": 1.6,
+              "Sodium": 134
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "telephone",
+          "start": "2025-12-17T12:50",
+          "reason": "inpatient update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call With Inpatient Team",
+              "date": "2025-12-17T13:05",
+              "author": "PCP",
+              "body": "Spoke with the inpatient GI fellow. MRI yesterday shows a single liver lesion they are calling HCC, about 4 cm, in a cirrhotic liver. Ascites tapped, no infection. Starting diuretics. Plan transplant referral. Patient aware; brother at bedside. Will see him within a week of discharge."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "office_visit",
+          "start": "2025-12-23T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 66.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-23T11:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-12-23T10:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-12-23T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-12-23T11:30",
+              "author": "PCP",
+              "body": "Seen 4 days after discharge from the regional hospital GI service, with his older brother. No discharge summary in our system yet; history from patient, brother, his after-visit paperwork and the pharmacy fill list.\nWhat he was told: liver cancer, about 4 cm, one spot, and cirrhosis from the hepatitis B with fluid in the belly. Fluid was tapped and was not infected. Being referred for a liver transplant evaluation.\nMedicines per discharge sheet and pharmacy: tenofovir 300 mg daily, spironolactone 100 mg daily (new), furosemide 40 mg mornings (new), vitamin D 2000 units. Amlodipine stopped in hospital. He has been taking every dose; brother set up a pill box.\nFeels a little less heavy, still tired. Urinating more. No confusion, no fever, no bleeding, no dizziness standing.\nExam: weight 66.4 kg, down from 68.1 a week ago. BP 112/70. Jaundiced. Abdomen less tense, mild shifting dullness. No asterixis. No edema.\nA/P:\n- HCC in HBV cirrhosis, transplant referral pending: center will call him; he has the number. Med list updated.\n- Ascites on diuretics: BMP today. Low salt diet reviewed with brother. Daily weights; call if up more than 2 lb in a day or 5 in a week.\n- Chronic HBV: tenofovir daily, no misses.\n- HTN: off amlodipine, BP fine.\n- PCV20 today given cirrhosis.\n- Records request sent to hospital for full summary and imaging.\nRecheck 6-8 weeks, sooner as needed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2025-12-23T14:10",
+              "author": "MA",
+              "body": "Faxed request to regional hospital health information for discharge summary, MRI, CT chest and labs for 12/15-12/19 admission."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "weight_kg": 66.4,
+            "labs": {
+              "Potassium": 4.6,
+              "Sodium": 133
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-26a",
+          "kind": "portal_message",
+          "start": "2025-12-26T09:45",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Test After Hospital",
+              "date": "2025-12-26T09:45",
+              "author": "PCP",
+              "body": "Your kidney numbers and potassium are fine on the new water pills, and sodium is 133, just a hair low, which is common with cirrhosis and these medicines. No dose change. Keep up the low-salt diet and daily weights."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "telephone",
+          "start": "2025-12-30T10:15",
+          "reason": "diuretic check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse Check-in Call",
+              "date": "2025-12-30T10:15",
+              "author": "RN",
+              "body": "Called to check on him one week into the diuretics. Morning weights 146.8, 146.2, 145.9 lb over the last three days. Some leg cramps at night, mild. Lightheaded once getting out of bed quickly, none since. Eating a low-salt diet, his brother is cooking. Reminded to rise slowly and keep the weight log. Transplant center has not called yet; he will let us know. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Re: Nurse Check-in Call",
+              "date": "2025-12-30T12:40",
+              "author": "PCP",
+              "body": "Weights steady, labs last week fine. No change. Call if dizziness recurs."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "telephone",
+          "start": "2026-01-06T09:20",
+          "reason": "records follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Second Records Request",
+              "date": "2026-01-06T09:20",
+              "author": "MA",
+              "body": "Still no discharge summary from the December admission. Called hospital health information; they had no record of our fax. Re-sent request with the signed release and confirmed receipt by phone this time. Patient also called: transplant center intake nurse reached him, first clinic visit 1/21."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "outside_records",
+          "start": "2026-01-09T14:20",
+          "reason": "hospital records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital Records Received",
+              "date": "2026-01-09T14:35",
+              "author": "MA",
+              "body": "Received by fax from regional hospital: discharge summary 12/15-12/19/2025, ultrasound, MRI and CT chest reports, admission labs. Scanned to chart and routed to PCP."
+            },
+            {
+              "type": "Result Note",
+              "title": "Records Reviewed",
+              "date": "2026-01-09T17:10",
+              "author": "PCP",
+              "body": "Reviewed discharge summary and imaging. Matches what patient told us. Child-Pugh B, single 4 cm HCC, no metastases. Med list already reflects discharge changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T13:00",
+          "service": "Transplant Hepatology",
+          "reason": "liver transplant evaluation",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-21T12:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 94
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 116
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 306
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-21T12:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-21T12:20",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 760
+                },
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Hepatology Consultation",
+              "date": "2026-02-06T11:00",
+              "author": "transplant hepatology",
+              "body": "Transplant hepatology, new patient evaluation\nVisit date: 01/21/2026\nReferred by: hospital gastroenterology service, after December 2025 admission\nCopy to: primary care physician\n\nHistory: 54-year-old man with chronic hepatitis B, previously on tenofovir with interrupted adherence, admitted in December with jaundice, ascites and weight loss. Workup there showed a single 4.0 cm LI-RADS 5 lesion in the right lobe with AFP 800, no vascular invasion and no extrahepatic disease on CT chest, in a cirrhotic liver. Discharged on diuretics.\nSince discharge: energy slightly better, abdomen smaller, weight stable at home. Taking tenofovir daily without misses, confirmed by his brother who fills his pill organizer. No confusion, no GI bleeding, no fevers.\nNo alcohol ever. Never smoker. Works as a logistics coordinator, currently on reduced hours. Brother is his main support and transportation.\nMedications: tenofovir disoproxil fumarate 300 mg daily, spironolactone 100 mg daily, furosemide 40 mg daily, cholecalciferol 2000 IU daily, amlodipine 5 mg daily (listed on referral; patient reports it was stopped). NKDA.\nExam: mildly icteric. Alert, no asterixis. Abdomen with small-volume ascites, nontender. No edema.\nLabs today: total bilirubin 2.9, albumin 3.0, INR 1.5. AFP 760. HBV DNA 210 IU/mL, falling on consistent tenofovir.\n\nAssessment: hepatocellular carcinoma within Milan criteria in decompensated hepatitis B cirrhosis, Child-Pugh B. He is an appropriate candidate for liver transplant evaluation.\nPlan:\n- Formal transplant evaluation begun: surgical, social work, nutrition and financial consultations to be scheduled; standard evaluation testing per protocol.\n- Continue tenofovir 300 mg daily; adherence is essential before and after transplant.\n- Continue spironolactone 100 mg and furosemide 40 mg; 2 g sodium diet.\n- Repeat liver imaging and AFP every 3 months while waiting.\n- We will update primary care with the committee decision.\n\nTransplant hepatology attending"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.0,
+              "Bilirubin, Direct": 1.7,
+              "Bilirubin, Total": 2.9,
+              "Prothrombin Time-International Normalized Ratio": 1.5
+            }
+          }
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "portal_message",
+          "start": "2026-02-20T18:40",
+          "reason": "transplant update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Transplant list",
+              "date": "2026-02-20T18:40",
+              "author": "patient",
+              "body": "Wanted to let you know the transplant center called on Wednesday. The committee approved me and I'm officially on the waiting list as of the 18th. They gave me a pager app. My brother is going to be my support person. Do you need anything from me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Transplant list",
+              "date": "2026-02-21T08:15",
+              "author": "PCP",
+              "body": "That's a big step, Kenji. We haven't received anything from the center yet, so thank you for telling us. Keep your March 3rd appointment and we'll go over everything and do labs then."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, liver disease",
+          "conditions": [
+            {
+              "label": "Awaiting organ transplant status",
+              "action": "diagnosed",
+              "onset": "2026-02-18",
+              "note": "liver transplant waiting list per patient",
+              "icd10": "Z76.82"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              68
+            ],
+            "hr": 72,
+            "spo2": 99,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-03T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-03T10:05",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 88
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 262
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-03T10:05",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 104
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-03T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-03T10:10",
+              "author": "PCP",
+              "body": "54M, HCC in hepatitis B cirrhosis, now listed for liver transplant.\nTransplant hepatology letter from 1/21 received in February: Child-Pugh B, within Milan, evaluation started. He reports committee approval and listing on 2/18; no letter from the center about that yet.\nHow he is doing: energy fair, back to about 30 hours a week. Belly stable, no fullness to speak of. Weighs himself every morning, 145-146 lb. Not missing tenofovir, brother still checks the pill box. No confusion, sleep ok, no bleeding, no fever. Mood: worried at times but coping, PHQ-9 4.\nMeds reconciled with bottles: tenofovir disoproxil 300 mg daily, spironolactone 100 mg daily, furosemide 40 mg daily, vitamin D3 2000 units daily. Not on amlodipine since December. NKDA.\nExam: BP 110/68. Weight 66.0 kg. Mild scleral icterus. Lungs clear. Heart regular. Abdomen soft, no tense ascites, nontender. No asterixis. No ankle edema.\nA/P\n1. HCC, listed for transplant: care led by the center; imaging every 3 months there. Added transplant waiting list status to problem list.\n2. Decompensated HBV cirrhosis with ascites: controlled on spironolactone/furosemide. BMP, hepatic panel, CBC today; results to the transplant team.\n3. Chronic hepatitis B: tenofovir daily, adherence good now.\n4. Hypertension: off medication, BP low-normal on diuretics. No antihypertensive needed.\n5. Vitamin D deficiency: continue D3.\nFollow up in about 6 months or sooner; he will keep us posted after each center visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              68
+            ],
+            "weight_kg": 66.0,
+            "labs": {
+              "Alanine Aminotransferase": 72,
+              "Albumin": 3.0,
+              "Alkaline Phosphatase": 262,
+              "Aspartate Aminotransferase": 88,
+              "Bilirubin, Direct": 1.6,
+              "Bilirubin, Total": 2.8,
+              "Platelets": 104,
+              "Potassium": 4.4,
+              "Sodium": 134
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "portal_message",
+          "start": "2026-03-05T12:25",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-03-05T12:25",
+              "author": "PCP",
+              "body": "Results from Tuesday: kidneys and potassium fine on the diuretics, sodium 134. Bilirubin 2.8, a bit better than December. Liver enzymes still up as expected. Platelets 104, similar to the hospital. Copies faxed to the transplant center."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T10:50",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request: Tenofovir",
+              "date": "2026-04-14T10:50",
+              "author": "RN",
+              "body": "Mail-order request for tenofovir disoproxil 300 mg, 90 days. Last fill on time in January. Renewed x1 per PCP. Diuretics are being filled under the transplant center's prescriptions per pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "specialist_visit",
+          "start": "2026-05-20T09:40",
+          "service": "Transplant Hepatology",
+          "reason": "transplant waiting list follow-up",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-20T08:55",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 90
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 270
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-20T08:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-20T08:55",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 820
+                },
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI abdomen with and without contrast",
+              "loinc": "24556-3",
+              "performed": "2026-05-12T14:10",
+              "text": "Multiphase liver MRI, comparison 12/16/2025. Cirrhotic liver. The known right hepatic lobe observation now measures 4.3 x 3.9 cm, previously 4.0 x 3.7 cm, with the same arterial hyperenhancement, washout and capsule. No new hepatic observations. No tumor in vein; portal and hepatic veins patent. No lymphadenopathy.",
+              "conclusion": "Single LI-RADS 5 lesion, 4.3 cm, slightly larger; no new lesions or vascular invasion. Remains within Milan criteria."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Hepatology Follow-up",
+              "date": "2026-07-08T10:30",
+              "author": "transplant hepatology",
+              "body": "Transplant hepatology follow-up\nVisit date: 05/20/2026\nCopy to: primary care physician\n\nMr. Chen remains active on the liver transplant waiting list (listed 02/18/2026). Doing reasonably; working part time. Adherent to tenofovir. No encephalopathy, bleeding or infections since our last visit.\nMRI 05/12: single right-lobe LI-RADS 5 lesion, 4.3 cm (from 4.0 cm), no new lesions, no vascular invasion; still within Milan criteria.\nLabs: AFP 820 ng/mL. HBV DNA not detected. Total bilirubin 2.7, INR 1.5.\nMedications: tenofovir disoproxil fumarate 300 mg daily, spironolactone 100 mg daily, furosemide 40 mg daily, cholecalciferol 2000 IU daily. NKDA.\nAssessment: HCC within Milan in Child-Pugh B hepatitis B cirrhosis, on the waiting list. Viral suppression achieved.\nPlan: no medication changes. Bridging locoregional therapy to be discussed at our multidisciplinary tumor board. Next imaging and AFP in 3 months.\n\nTransplant hepatology"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Transplant Center Letter Received",
+              "date": "2026-07-08T11:05",
+              "author": "MA",
+              "body": "Transplant hepatology follow-up letter for 5/20 visit with MRI report received by fax. Filed to chart, routed to PCP inbox."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Direct": 1.5,
+              "Bilirubin, Total": 2.7,
+              "Prothrombin Time-International Normalized Ratio": 1.5
+            }
+          }
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T07:55",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vitamin D refill",
+              "date": "2026-06-16T07:55",
+              "author": "patient",
+              "body": "Can you send more vitamin D to the mail order? I'm down to about two weeks. Everything else came from the transplant pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Vitamin D refill",
+              "date": "2026-06-16T11:20",
+              "author": "RN",
+              "body": "Sent to your mail-order pharmacy, 90-day supply with refills. It should ship this week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T20:10",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall appointment",
+              "date": "2026-07-21T20:10",
+              "author": "patient",
+              "body": "Hi, I'm due for my follow-up around September. Can I get an early morning slot? My brother drives me on Thursdays."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Fall appointment",
+              "date": "2026-07-22T09:30",
+              "author": "front desk",
+              "body": "You're booked for Thursday 9/10 at 8:20 AM. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up, liver disease",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Ascites in cirrhosis|R18.8": {
+        "code": "R18.8",
+        "display": "Other ascites",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Awaiting organ transplant status|Z76.82": {
+        "code": "Z76.82",
+        "display": "Awaiting organ transplant status",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cirrhosis of liver due to chronic hepatitis B|K74.69": {
+        "code": "K74.69",
+        "display": "Other cirrhosis of liver",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hepatocellular carcinoma|C22.0": {
+        "code": "C22.0",
+        "display": "Liver cell carcinoma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "spironolactone 100 MG Oral Tablet": {
+        "code": "198222",
+        "display": "spironolactone 100 MG Oral Tablet",
+        "ingredient": "spironolactone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tenofovir disoproxil fumarate 300 MG Oral Tablet": {
+        "code": "349251",
+        "display": "tenofovir disoproxil fumarate 300 MG Oral Tablet",
+        "ingredient": "tenofovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Alpha-1-Fetoprotein": {
+        "code": "1834-1",
+        "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B core antibody": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B e antibody": {
+        "code": "13953-5",
+        "display": "Hepatitis B virus e Ab [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B e antigen": {
+        "code": "13954-3",
+        "display": "Hepatitis B virus e Ag [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B virus DNA": {
+        "code": "42595-9",
+        "display": "Hepatitis B virus DNA [Units/volume] (viral load) in Serum or Plasma by NAA with probe detection",
+        "unit": "[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI abdomen with and without contrast": {
+        "code": "24556-3",
+        "display": "MR Abdomen",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

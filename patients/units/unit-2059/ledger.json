@@ -1,0 +1,5205 @@
+{
+  "unit": "unit-2059",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002059/2024-12-09a: reaction \"Immune hemolytic anemia\" not in catalog (text only)",
+    "MRN00002059/2024-12-09a: reaction \"Avoid: penicillin class after amoxicillin hemolytic anemia\" not in catalog (text only)",
+    "left text-only (not verified): lab \"HFE gene C282Y\" LOINC 21695-5 not found"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002059",
+      "given": "Adam",
+      "family": "Coughlin",
+      "birth_date": "1977-02-21",
+      "address_line": "27 Ferry Brook Road",
+      "phone": "+1-646-555-0174",
+      "email": "adam.coughlin@example.test",
+      "marital_status": "married",
+      "summary": "Automotive mechanic with Wilson disease, compensated cirrhosis and type 2 diabetes who joins in 2020; hereditary hemochromatosis is found in 2022 and membranous nephropathy in 2023, followed by a run of serious infections and an amoxicillin hemolysis, with slow decline to CKD 3a. Records from outside care are sparse; a 2026 GI bleed admission arrives after his last visit.",
+      "events": [
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T09:00",
+          "end": "2020-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Wilson disease",
+              "action": "diagnosed",
+              "onset": "2017-06-01",
+              "note": "Diagnosed 2017 elsewhere; trientine and low-copper diet; followed by outside hepatology",
+              "icd10": "E83.01"
+            },
+            {
+              "label": "Cirrhosis of liver",
+              "action": "diagnosed",
+              "onset": "2017-06-01",
+              "note": "Compensated per hepatology; Wilson disease and past heavy alcohol use",
+              "icd10": "K74.60"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "note": "On metformin, well controlled per patient"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Alcohol use disorder, in remission",
+              "action": "diagnosed",
+              "onset": "2020-02-01",
+              "note": "Abstinent since early 2020"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "Quit 2016"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug_text": "trientine hydrochloride 250 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily on an empty stomach",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Wilson disease; prescribed by hepatology"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              71
+            ],
+            "hr": 86,
+            "spo2": 95,
+            "weight_kg": 105.4,
+            "height_cm": 178.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 132
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 48
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 152
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.27
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 17
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Alcohol use disorder, abstinent since early 2020"
+            },
+            {
+              "item": "Occupation",
+              "value": "Automotive mechanic"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-14T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n43M, mechanic at an auto repair shop, here to set up primary care. His last PCP closed her practice over the summer and he went months without anyone. Wife made the appointment.\n\nMain issues he brings:\n1. Wilson disease. Diagnosed 2017 after his liver tests came back off and he had some slurring of speech and a hand tremor. Sees an outside hepatology group; on trientine 250 mg twice a day and keeps copper low in the diet (no shellfish, nuts, chocolate, liver). Says the speech and tremor settled after treatment started. Gets 24 h urine copper checks through them.\n2. Cirrhosis. Hepatology told him his liver is scarred, from the Wilson disease and years of drinking. No known bleeding, no fluid, never been yellow. They follow it.\n3. Type 2 diabetes. On metformin 1000 mg twice daily, tolerates it. No home meter readings to share; says his A1c was fine last time.\n4. Alcohol. Drank heavily for years; stopped in February of this year on his own and has not had a drink since. Knows he can't go back to it with his liver. Not in a program, says he doesn't need one right now. Open to talking more if that changes.\n5. Weight. Has been heavy for a long time.\n\nTobacco: smoked for years, quit 2016. No vaping. No drugs.\nFamily: brother has Wilson disease too and got cirrhosis young. Father with type 2 diabetes. Mother with an underactive thyroid.\nAllergies: none known.\nMeds: metformin 1000 mg BID, trientine 250 mg BID.\n\nROS: no abdominal swelling, no black stools, no vomiting blood, no confusion, no leg swelling. Energy ok. Works full days on his feet.\n\nExam: obese man in no distress. No scleral icterus. Mouth and throat normal. Heart regular, no murmur. Lungs clear. Abdomen obese, soft, nontender, no shifting dullness. No edema. Speech normal, no tremor at rest or with arms out. Skin without spider angiomas.\n\nPHQ-2 0. AUDIT-C 0 (abstinent).\n\nA/P\n- Wilson disease / cirrhosis, compensated: continue trientine; hepatology owns this, will request their notes. CMP, CBC today.\n- T2DM: A1c, UACR, lipids today. Continue metformin. Eye exam this year.\n- AUD in remission: congratulated him; door open.\n- Prevention: HCV, HIV once. Check hep B immunity given cirrhosis. Flu shot and pneumococcal vaccine next visit with nurse.\n- Return 3 months, sooner by text if needed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2020-09-15T10:00",
+              "author": "front desk",
+              "body": "Records request faxed to hepatology group and prior PCP office per signed release."
+            }
+          ],
+          "state": {
+            "weight_kg": 104.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Alanine Aminotransferase": 52,
+              "Albumin": 3.8,
+              "Aspartate Aminotransferase": 49,
+              "Bilirubin, Total": 1.1,
+              "Creatinine": 0.86,
+              "Glucose": 135,
+              "Hemoglobin A1c": 6.9,
+              "Microalbumin/Creatinine Ratio": 18,
+              "Platelets": 152
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-18a",
+          "kind": "portal_message",
+          "start": "2020-09-18T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2020-09-18T16:40",
+              "author": "PCP",
+              "body": "Hi Adam, your labs are back. Your diabetes number (A1c) is in a good range. Your liver tests are a little above normal, which fits with what hepatology already knows, and your platelet count is on the low side of normal, also typical with a scarred liver. Kidneys look fine, no protein in the urine. Hepatitis C and HIV screens are negative.\n\nOne thing: you are not immune to hepatitis B. With your liver, I'd like you protected. It's a two-shot series a month apart. Can we start it with your flu shot? The front desk will set up a nurse visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2020-09-18T19:12",
+              "author": "patient",
+              "body": "ok thanks. tuesdays are best, shop is slow"
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T08:20"
+            },
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2020-10-06T08:22"
+            },
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2020-10-06T08:24"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2020-10-06T08:40",
+              "author": "RN",
+              "body": "In for flu, PPSV23 and hep B #1 per PCP orders. Screening questions negative, no prior reactions. Flu IM L deltoid, PPSV23 IM R deltoid, Heplisav-B IM L deltoid lower site. VIS sheets given. Tolerated well. Hep B #2 due in about 4 weeks, scheduled for 11/10."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-10a",
+          "kind": "nurse_visit",
+          "start": "2020-11-10T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-11-10T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, CpG-adjuvanted (Heplisav-B)",
+              "date": "2020-11-10T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Hep B #2",
+              "date": "2020-11-10T08:30",
+              "author": "RN",
+              "body": "Heplisav-B dose 2 of 2 given IM R deltoid. Sore arm for a day after the first one, nothing else. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-07a",
+          "kind": "lab_only",
+          "start": "2020-12-07T07:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-12-07T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-12-07T07:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 126
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-12-07T07:30"
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-08T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up (video)",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-12-08T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2020-12-08T12:55",
+              "author": "PCP",
+              "body": "Video visit from his truck on lunch break, identity verified, consents to video.\n\nDiabetes check-in. Labs from yesterday: A1c steady in the high 6s, liver numbers unchanged from September. Taking metformin twice a day without trouble. Still not drinking, about 10 months now. Hepatology saw him in the fall and kept trientine the same.\n\nNo new symptoms.\n\nA/P: T2DM at goal on metformin. Wilson/cirrhosis stable per hepatology. Will ask again for their records (first request unanswered). Office visit in ~6 months with labs."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, second",
+              "date": "2020-12-09T09:30",
+              "author": "front desk",
+              "body": "Second request faxed to hepatology. Prior PCP office sent immunization list only (flu shots, nothing else on file)."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "telephone",
+          "start": "2021-01-19T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - trientine",
+              "date": "2021-01-19T10:05",
+              "author": "RN",
+              "body": "Specialty pharmacy called: insurer wants prior auth renewal on trientine for 2021. Prescriber of record is hepatology, not us. Gave pharmacy the hepatology office fax. Called pt to let him know so he doesn't run out; he has about 2 weeks left and will call hepatology too."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - trientine (follow-up)",
+              "date": "2021-01-26T14:20",
+              "author": "RN",
+              "body": "Pt called back, hepatology got the PA approved, capsules shipping this week. Nothing needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-12a",
+          "kind": "pharmacy",
+          "start": "2021-04-12T15:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-12T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization - COVID-19 dose 1",
+              "date": "2021-04-14T09:10",
+              "author": "MA",
+              "body": "COVID-19 Pfizer dose 1 given 4/12/21 at a community pharmacy, per state registry query. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-03a",
+          "kind": "pharmacy",
+          "start": "2021-05-03T15:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-03T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization - COVID-19 dose 2",
+              "date": "2021-05-05T09:00",
+              "author": "MA",
+              "body": "COVID-19 Pfizer dose 2 on 5/3/21 at the same pharmacy, pulled from the registry. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "office_visit",
+          "start": "2021-06-08T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and liver follow-up",
+          "vitals": {
+            "bp": [
+              106,
+              64
+            ],
+            "hr": 77,
+            "spo2": 96,
+            "weight_kg": 102.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T16:40",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 140
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 49
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 53
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-08T16:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 146
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T16:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T16:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-08T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-06-08T16:45",
+              "author": "PCP",
+              "body": "S: Routine check. Down a couple pounds, cut out soda at work. Sugars fine when he checks, which is rarely. Abstinent, 16 months. Trientine twice daily, sometimes forgets the evening dose when he works late; we talked about pairing it with something he does every night. Had both COVID shots in the spring. No abdominal swelling, no dark stools, no yellowing.\n\nO: Vitals reviewed. Alert, normal speech. No icterus. Heart RRR. Lungs clear. Abdomen soft, nontender, no ascites. No edema. Feet: skin intact, monofilament sensation normal both feet, DP pulses 2+.\n\nA/P\n- T2DM, at goal: same metformin. A1c, UACR today.\n- Cirrhosis / Wilson: CMP, CBC today; hepatology records still not here, third request sent. Pt says his last copper check was fine.\n- Eye exam: he'll book with the optometrist near the shop.\n- Physical in the fall with flu shot."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note",
+              "date": "2021-06-10T07:40",
+              "author": "PCP",
+              "body": "A1c at goal. Liver tests and platelets stable. UACR normal. Pt messaged."
+            }
+          ],
+          "state": {
+            "weight_kg": 103.0,
+            "labs": {
+              "Hemoglobin A1c": 6.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "outside_records",
+          "start": "2021-08-17T11:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2021-08-20T13:00",
+              "author": "optometry",
+              "body": "Re: Adam Coughlin, DOB 02/21/1977\nExam date 08/17/2021. Dilated fundus exam OU. Visual acuity 20/20 OD, 20/25 OS uncorrected. No diabetic retinopathy either eye. No macular edema. Lens clear. Recommend repeat dilated exam in 12 months.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "annual_physical",
+          "start": "2021-10-05T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              69
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 103.2
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-05T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-05T08:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 131
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-10-05T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 170
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-05T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-10-05T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T08:40"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2021-10-05T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-05T09:05",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n44M. Doing well. Working full time, lots of overtime this summer. No drinking since Feb 2020. Former smoker, quit 2016. Wife wants him to walk more; he does some weekends.\n\nInterval: eye exam in August, no retinopathy. Hepatology visit in the spring, no changes, trientine 250 BID.\n\nROS negative.\n\nExam: obese. HEENT normal. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, no ascites, nontender. Skin: no jaundice, no rashes. Joints: full ROM hands, knees. Neuro: no tremor, gait normal. Feet normal.\n\nScreens: PHQ-2 0, AUDIT-C 0.\n\nA/P\n- Health maintenance: flu and Tdap today (last tetanus he can't remember, works with sharp metal). Colorectal screening starts at 45, next year. Lipids, CMP, CBC, A1c today.\n- T2DM: continue metformin.\n- Wilson/cirrhosis: per hepatology.\n- Follow-up 4 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note",
+              "date": "2021-10-07T08:00",
+              "author": "PCP",
+              "body": "Lipids acceptable. CMP, CBC as before. A1c at goal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "portal_message",
+          "start": "2021-11-16T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "metformin refill",
+              "date": "2021-11-16T07:55",
+              "author": "patient",
+              "body": "need a refill on the metformin, pharmacy said no refills left"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: metformin refill",
+              "date": "2021-11-16T11:30",
+              "author": "MA",
+              "body": "Sent to your pharmacy, 90 days with 3 refills. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 70,
+            "spo2": 96,
+            "weight_kg": 104.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-08T16:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-02-08T16:50",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 51
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 128
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-08T16:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-02-08T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-02-08T16:55",
+              "author": "PCP",
+              "body": "Diabetes f/u. Winter is slow, says he's been snacking at the shop. No hypoglycemia, no polyuria. Still sober, 2 years this month. Meds unchanged: metformin 1000 BID, trientine 250 BID.\n\nExam: NAD. No icterus. Heart RRR, lungs clear. Abdomen soft, no ascites. No edema.\n\nA/P: T2DM, A1c today. UACR. Liver per hepatology; CMP today. RTC 3-4 mo."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note",
+              "date": "2022-02-10T08:30",
+              "author": "PCP",
+              "body": "A1c up a hair, still at goal. Liver tests same as before. No urine protein. Message sent."
+            }
+          ],
+          "state": {
+            "weight_kg": 104.5,
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "office_visit",
+          "start": "2022-05-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "telehealth_visit",
+          "start": "2022-05-24T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Missed visit, check-in by video",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-05-24T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2022-05-24T12:35",
+              "author": "PCP",
+              "body": "Video, pt at work in the break room. Missed last week, a customer's car had to be out that day. Feels fine. Taking his meds. Not drinking. Hepatology appointment coming up in summer.\n\nA/P: T2DM stable by recent labs. Offered to recheck in fall with physical; he'd rather come in once than twice. Office visit in the fall, sooner if anything."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2022-05-17T16:30",
+              "author": "front desk",
+              "body": "No-show for 4 pm. Left voicemail to reschedule. Pt called back, booked video visit 5/24."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-22a",
+          "kind": "portal_message",
+          "start": "2022-08-22T18:20",
+          "medications": [
+            {
+              "drug_text": "trientine hydrochloride 250 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Dose increased by hepatology"
+            },
+            {
+              "drug_text": "trientine hydrochloride 250 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules by mouth twice daily on an empty stomach",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Wilson disease; hepatology raised dose for rising urinary copper"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "liver doctor changed my med",
+              "date": "2022-08-22T18:20",
+              "author": "patient",
+              "body": "fyi saw the liver doctor last week. my urine copper went up so they doubled the trientine, now 2 capsules morning and night. 500 twice a day. they said they'd send you a letter"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: liver doctor changed my med",
+              "date": "2022-08-23T07:50",
+              "author": "PCP",
+              "body": "Thanks for letting me know, Adam. I've updated your list to trientine 500 mg twice a day. Keep the doses away from food and from any iron or zinc pills. See you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "outside_records",
+          "start": "2022-09-13T10:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2022-09-16T12:00",
+              "author": "optometry",
+              "body": "Patient: Adam Coughlin, DOB 02/21/1977. Date of exam 09/13/2022. Dilated exam both eyes. No background or proliferative diabetic retinopathy. Maculae flat. Pressures normal. Return 1 year.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "office_visit",
+          "start": "2022-10-03T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weakness, knee aches",
+          "conditions": [
+            {
+              "label": "Hepatomegaly",
+              "action": "diagnosed",
+              "note": "Mild, on exam",
+              "icd10": "R16.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              70
+            ],
+            "hr": 74,
+            "spo2": 96,
+            "weight_kg": 104.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-03T08:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 146
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 58
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-10-03T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 157
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-03T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-10-03T08:20",
+              "resulted": "2022-10-05T11:00",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 1850
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 78
+                },
+                {
+                  "test": "Iron",
+                  "value": 197
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 284
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-03T08:20",
+              "resulted": "2022-10-12T15:30",
+              "results": [
+                {
+                  "test": "HFE gene C282Y",
+                  "loinc": "21695-5",
+                  "text": "C282Y homozygous"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-10-03T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-03T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-03T08:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-03T08:32"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-10-03T08:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-10-03T08:50",
+              "author": "PCP",
+              "body": "CC: tired, weak, knees ache\n\nHPI: 45M with Wilson disease, compensated cirrhosis and T2DM, came fasting. Over roughly the past year he's been running down: more tired by midafternoon, feels weaker lifting at work. Slow, steady, not sudden. New in the last few months: trouble with erections. Knees bother him a little, worst first thing in the morning and loosening as he moves. Mouth feels dry, sometimes enough that eating is a chore. He mentions, almost as an aside, that people at the shop keep asking where he got his tan. He works inside under the lift, hasn't been in the sun, uses no self-tanner, no new medicines or supplements.\n\nStill no alcohol since Feb 2020. Trientine was raised to 500 BID by hepatology in August.\n\nFamily: when asked about iron, says an uncle on his father's side was treated for hemochromatosis. Brother has Wilson disease and got cirrhosis young. Father T2DM, mother hypothyroid.\n\nMeds: metformin 1000 BID, trientine 500 BID. NKDA.\n\nExam: obese, comfortable. Skin with a bronze-gray cast over face, both arms and upper chest, clearly darker than his covered skin. No icterus. Oral mucosa a bit dry, no lesions. Heart RRR. Lungs clear. Abdomen: liver edge palpable just below the right costal margin, smooth, mildly enlarged, nontender; no ascites, no splenomegaly felt. Hands: second and third MCP joints tender with reduced flexion; other joints of the hands fine. Knees without effusion, full range. No edema.\n\nA/P\n1. Fatigue, bronzing, MCP arthropathy, erectile difficulty, hepatomegaly, worsening glucose: picture of iron overload on top of his known liver disease. Iron studies with ferritin and HFE genotype today, along with CMP, CBC, A1c.\n2. T2DM: A1c today; same metformin for now.\n3. Wilson/cirrhosis: per hepatology; will send them today's results.\n4. Vaccines today: flu, bivalent COVID booster, PCV20. Colorectal screening due at 45: FIT kit given.\n5. Will call him with the iron and gene results."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note - CMP, A1c",
+              "date": "2022-10-04T07:30",
+              "author": "PCP",
+              "body": "Fasting glucose above goal and A1c up from February. AST and ALT mildly up from his usual. Iron panel and HFE pending."
+            }
+          ],
+          "state": {
+            "weight_kg": 105.0,
+            "labs": {
+              "Alanine Aminotransferase": 68,
+              "Aspartate Aminotransferase": 61,
+              "Glucose": 151,
+              "Hemoglobin A1c": 7.2,
+              "Iron": 205,
+              "Total Iron-Binding Capacity": 263
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "telephone",
+          "start": "2022-10-13T12:10",
+          "conditions": [
+            {
+              "label": "Hereditary hemochromatosis with arthropathy",
+              "action": "diagnosed",
+              "onset": "2022-10-01",
+              "note": "HFE C282Y homozygous; ferritin 1,850, transferrin saturation 78%; MCP arthropathy",
+              "icd10": "E83.110"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "Hereditary hemochromatosis, therapeutic phlebotomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call - hemochromatosis",
+              "date": "2022-10-13T12:30",
+              "author": "PCP",
+              "body": "Called pt with results. Transferrin saturation 78%, ferritin 1,850. HFE: homozygous C282Y. This is hereditary hemochromatosis, which explains the skin color, the MCP joints, likely the fatigue and erections, and adds iron to an already damaged liver and to the diabetes.\n\nExplained treatment is regular blood removal (phlebotomy) to bring iron down, then maintenance for life. Referring to hematology; their infusion center does the draws. Avoid iron supplements and vitamin C pills, no raw shellfish. His brother and other blood relatives should be checked; he'll tell his brother.\n\nWill send results to hepatology. He asked if this changes the trientine: that's for hepatology to say, I'll flag it in the letter. He verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "lab_only",
+          "start": "2022-10-20T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-10-18T07:00",
+              "resulted": "2022-10-20T09:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2022-10-20T13:15",
+              "author": "PCP",
+              "body": "FIT negative. Repeat in 2 years per our routine for him. Letter to pt."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "specialist_visit",
+          "start": "2022-11-07T10:00",
+          "service": "Hematology",
+          "reason": "Hereditary hemochromatosis",
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "done",
+              "date": "2022-11-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2022-11-14T15:00",
+              "author": "hematology",
+              "body": "HEMATOLOGY - NEW CONSULT (brief)\nRe: Adam Coughlin, DOB 2/21/1977\nVisit 11/07/2022\n\nReferred for HFE C282Y homozygous hemochromatosis with ferritin 1,850 and transferrin saturation 78%. Background of Wilson disease on trientine, cirrhosis followed by hepatology, type 2 diabetes. MCP arthropathy and skin bronzing.\nAllergies: NKDA.\n\nPlan: therapeutic phlebotomy, 500 mL weekly as tolerated, Hgb checked before each draw (hold if under 12). Ferritin every 4-6 weeks. Target ferritin 50-100, then maintenance draws spaced to keep it there. First draw done today, tolerated.\n\nThank you for the referral.\nHematology"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "office_visit",
+          "start": "2022-12-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling, foamy urine",
+          "vitals": {
+            "bp": [
+              120,
+              74
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 108.9
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-12-20T15:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-12-20T15:55",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 69
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-20T15:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 3600
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-20T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "placed",
+              "order": "Nephrology referral, urgent",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "Heavy proteinuria, low albumin, edema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-20T16:30",
+              "author": "PCP",
+              "body": "S: About 3 weeks of swelling in both lower legs, worse by end of day, socks leave deep marks. Urine looks foamy in the bowl. Up 3.5 kg since October. No shortness of breath, no orthopnea, no belly swelling he's noticed. Started weekly phlebotomy last month. No new meds, no NSAIDs.\n\nO: Vitals reviewed, afebrile. No icterus. Neck veins flat. Heart regular. Lungs clear. Abdomen soft, liver edge as before, no fluid wave. Pitting edema of both shins. Dipstick in office: protein 3+, blood negative.\n\nA/P\nNew heavy proteinuria with edema: nephrotic picture until proven otherwise. CMP and urine albumin/creatinine sent. Urgent nephrology referral; front desk to call for the soonest slot. Leg elevation, go easy on salt. If short of breath or belly swells, go to ED.\n\nAddendum 12/21: albumin 2.3, creatinine 0.92, urine albumin/creatinine 3,600 mg/g. Nephrology visit confirmed for 1/9. Pt informed."
+            }
+          ],
+          "state": {
+            "weight_kg": 108.5,
+            "labs": {
+              "Albumin": 2.3,
+              "Creatinine": 0.92,
+              "Microalbumin/Creatinine Ratio": 3600,
+              "Total Protein": 5.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "outside_records",
+          "start": "2023-02-06T09:30",
+          "conditions": [
+            {
+              "label": "Membranous nephropathy",
+              "action": "diagnosed",
+              "onset": "2022-12-01",
+              "note": "Kidney biopsy 1/23/2023; nephrology",
+              "icd10": "N04.20"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Proteinuria; started by nephrology 1/9/2023"
+            },
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Edema; started by nephrology 1/9/2023"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "done",
+              "date": "2023-02-06T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation and Biopsy Result",
+              "date": "2023-02-06T09:30",
+              "author": "nephrology",
+              "body": "NEPHROLOGY\nPatient: Adam Coughlin   DOB: 02/21/1977\nSeen 01/09/2023; kidney biopsy 01/23/2023\n\nDear colleague,\n\nI saw Mr. Coughlin, 45, with his wife, for edema and proteinuria. Over the last month his lower legs have swollen steadily, he is more tired, and his urine has been foamy and at times darker. He takes his medicines as prescribed and has started nothing new. Background: Wilson disease (diagnosed 2017 with abnormal liver tests, mild dysarthria and tremor; copper-restricted diet and trientine, dose raised about 5 months ago for rising urinary copper), hereditary hemochromatosis on phlebotomy, cirrhosis, type 2 diabetes. Former smoker; alcohol use disorder, abstinent about 3 years. Mechanic.\nAllergies: NKDA.\n\nExam: T 36.8 C, BP 130/78, pulse 78, RR 16. Puffy around the eyes. 2+ pitting edema to mid-shin both legs. Heart and lungs normal, no crackles, no JVD. No rash, no joint swelling. Mild hepatomegaly, nontender, no ascites.\n\nData: creatinine 0.9 mg/dL, albumin 2.2 g/dL. Urinalysis 4+ protein, no red cells, no white cells, no casts. 24-hour urine protein 5.8 g/day.\n\nBiopsy (1/23): immunofluorescence shows fine granular IgG and C3 deposits along the glomerular capillary walls, consistent with membranous nephropathy.\n\nImpression: membranous nephropathy with nephrotic syndrome, preserved filtration.\n\nPlan: lisinopril 10 mg daily for proteinuria and furosemide 40 mg daily for edema, both started at the 1/9 visit. Low-salt diet. Given cirrhosis and his infection risk we are holding off on immunosuppression for now and following proteinuria closely. Please check potassium and creatinine in 2-4 weeks; I will see him again in about 3 months.\n\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "office_visit",
+          "start": "2023-02-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after nephrology, labs on lisinopril",
+          "vitals": {
+            "bp": [
+              113,
+              72
+            ],
+            "hr": 77,
+            "spo2": 97,
+            "weight_kg": 104.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-13T16:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 158
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 59
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 66
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-13T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-02-13T16:40",
+              "author": "PCP",
+              "body": "S: Here after nephrology and the biopsy. Told it's membranous nephropathy. On lisinopril 10 and furosemide 40 since early January. Swelling much better, down about 3.5 kg, peeing more in the mornings. Phlebotomy weekly, hematology checks his Hgb each time. No drinking.\n\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10 daily, furosemide 40 daily. NKDA.\n\nO: BP fine. Trace ankle edema only. Lungs clear. Abdomen soft, no ascites.\n\nA/P\n- Membranous nephropathy, on supportive therapy per nephrology. CMP today for K and creatinine as they asked; results to nephrology.\n- T2DM, cirrhosis/Wilson, HH: as before.\n- Return in 3 months."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Labs faxed",
+              "date": "2023-02-14T12:10",
+              "author": "MA",
+              "body": "CMP from 2/13 faxed to nephrology as requested in their letter."
+            }
+          ],
+          "state": {
+            "weight_kg": 105.0,
+            "labs": {
+              "Albumin": 2.6,
+              "Creatinine": 0.98,
+              "Potassium": 4.6,
+              "Total Protein": 5.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "portal_message",
+          "start": "2023-02-14T12:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-02-14T12:00",
+              "author": "PCP",
+              "body": "Adam, potassium and kidney function are fine on the new pills, and your albumin is coming up a bit. I've faxed these to nephrology. Keep going."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "office_visit",
+          "start": "2023-05-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, liver and kidney follow-up",
+          "vitals": {
+            "bp": [
+              108,
+              69
+            ],
+            "hr": 58,
+            "spo2": 96,
+            "weight_kg": 104.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-09T16:35",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 131
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 66
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-09T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 130
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-09T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-05-09T16:35",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 610
+                },
+                {
+                  "test": "Iron",
+                  "value": 117
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 265
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 44
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-09T16:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 2384
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-09T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-05-09T16:45",
+              "author": "PCP",
+              "body": "Interval: saw nephrology in April, staying on lisinopril and furosemide, no other treatment for now. Hematology draws weekly. Says the skin color is lighter, his wife agrees. Knuckles still stiff some mornings. Energy a little better. Not drinking.\n\nExam: weight down. No icterus. Heart RRR, lungs clear. Abdomen: liver edge palpable, nontender, no ascites. Trace ankle edema. MCPs 2-3 mildly tender, same range as fall.\n\nA/P\n- HH: ferritin today; hematology gets a copy.\n- MN: CMP, UACR today.\n- T2DM: A1c today; same metformin.\n- Wilson/cirrhosis: hepatology.\n- 5-6 months, physical in fall.\n\nAddendum: ferritin 610, coming down. A1c back at goal. Albumin 3.0, better."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Ferritin to hematology",
+              "date": "2023-05-11T09:00",
+              "author": "MA",
+              "body": "Ferritin result faxed to hematology infusion center."
+            }
+          ],
+          "state": {
+            "weight_kg": 104.5,
+            "labs": {
+              "Albumin": 3.0,
+              "Glucose": 128,
+              "Hemoglobin": 13.1,
+              "Hemoglobin A1c": 6.8,
+              "Iron": 120,
+              "Microalbumin/Creatinine Ratio": 2400,
+              "Total Iron-Binding Capacity": 285,
+              "Total Protein": 6.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "portal_message",
+          "start": "2023-08-15T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "blood draws",
+              "date": "2023-08-15T20:05",
+              "author": "patient",
+              "body": "hematology says my iron is coming down good and they are spacing the draws to every 2 weeks. just so you know"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: blood draws",
+              "date": "2023-08-16T07:40",
+              "author": "PCP",
+              "body": "Great news, thanks for the update. We'll check ferritin with your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2023-09-14T16:20",
+              "author": "optometry",
+              "body": "Adam Coughlin, DOB 02/21/1977. Seen 09/12/2023. Dilated fundus exam: no diabetic retinopathy OU, no macular edema. Annual exam recommended.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 64,
+            "spo2": 96,
+            "weight_kg": 103.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T08:45",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 133
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 57
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-10-17T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 166
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-17T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-10-17T08:45",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 144
+                },
+                {
+                  "test": "Iron",
+                  "value": 116
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 296
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 39
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-17T08:45",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 1918
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-17T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T09:10",
+              "author": "PCP",
+              "body": "PHYSICAL\n\n46M. Year of new diagnoses: hemochromatosis last fall, membranous nephropathy in January. Doing better than last winter. Phlebotomy every 2 weeks now. Nephrology twice this year, no change. Hepatology in the summer, trientine the same. Eye exam in September normal. Sober since Feb 2020. Former smoker.\n\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10 daily, furosemide 40 daily. NKDA.\n\nROS: negative except morning stiffness in the knuckles, unchanged.\n\nExam: obese. Skin tone less bronze than last year. HEENT normal. Heart regular. Lungs clear. Abdomen: liver edge palpable, no ascites, nontender. No edema today. Feet: monofilament intact, pulses good.\n\nPHQ-2 0, AUDIT-C 0.\n\nA/P\n- Health maintenance: flu and updated COVID given. FIT next fall. Tdap 2021.\n- HH: ferritin today.\n- MN: CMP, UACR.\n- T2DM: A1c.\n- RTC 4-5 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note",
+              "date": "2023-10-19T07:45",
+              "author": "PCP",
+              "body": "Ferritin much lower, still above hematology's target. Albumin better. Urine protein down but still heavy. A1c a little above where it was in May; no change for now. Copies to hematology and nephrology."
+            }
+          ],
+          "state": {
+            "weight_kg": 104.0,
+            "labs": {
+              "Albumin": 3.2,
+              "Creatinine": 1.02,
+              "Ferritin": 160,
+              "Hemoglobin": 13.4,
+              "Iron": 110,
+              "Microalbumin/Creatinine Ratio": 1900,
+              "Total Iron-Binding Capacity": 290,
+              "Total Protein": 6.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "office_visit",
+          "start": "2023-12-04T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mouth burning, food tastes off",
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "history",
+              "onset": "2023-11-10",
+              "note": "Treated at urgent care with a 10-day oral antibiotic course, per patient"
+            },
+            {
+              "label": "Oral candidiasis",
+              "action": "diagnosed",
+              "onset": "2023-11-27",
+              "icd10": "B37.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nystatin 100000 UNT/ML Oral Suspension",
+              "action": "start",
+              "sig": "Swish 5 mL in the mouth as long as possible, then swallow, four times daily for 14 days",
+              "dose": {
+                "value": 5,
+                "unit": "mL"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Oral candidiasis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              74
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 104.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-04T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day Visit",
+              "date": "2023-12-04T11:50",
+              "author": "PCP",
+              "body": "Texted this morning, seen same day.\n\nS: A week of his mouth burning, and food doesn't taste right. A few weeks ago he had pneumonia, treated at an urgent care with 10 days of an antibiotic pill; he doesn't remember the name and threw out the bottle. Finished it about a week ago and the cough is gone. No fever now, breathing fine. Not drinking.\n\nDiabetes well controlled at his October check. Otherwise followed for HH, Wilson disease, MN.\n\nO: Afebrile, vitals reviewed. Creamy white plaques across both cheeks inside and on the tongue; they wipe off with a tongue blade and leave a red base. Throat otherwise normal. Lungs clear.\nKOH prep of a scraping in the office: budding yeast with pseudohyphae.\n\nA/P\nOral thrush after the antibiotic course. Nystatin suspension, 5 mL swish and swallow four times a day for 14 days. Rinse after meals, soft foods while sore. Message me if not better in a week or if it hurts to swallow. Will ask the urgent care for their note."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "portal_message",
+          "start": "2023-12-08T17:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "mouth",
+              "date": "2023-12-08T17:30",
+              "author": "patient",
+              "body": "mouth is way better already. still doing the stuff 4x a day"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: mouth",
+              "date": "2023-12-11T08:15",
+              "author": "RN",
+              "body": "Glad to hear it. Please finish the full 14 days even if it looks clear."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "telephone",
+          "start": "2024-01-16T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Trientine prior auth",
+              "date": "2024-01-16T09:40",
+              "author": "RN",
+              "body": "New year, new PA on trientine. Specialty pharmacy faxed us by mistake again. Forwarded to hepatology, called pharmacy to correct the prescriber on file. Pt has 10 days of capsules. Will check back Friday."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Trientine prior auth (closed)",
+              "date": "2024-01-19T15:05",
+              "author": "RN",
+              "body": "Hepatology confirms PA approved through end of year. Pharmacy shipping Monday. Closed."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, iron and kidney follow-up",
+          "conditions": [
+            {
+              "label": "Oral candidiasis",
+              "action": "resolved",
+              "icd10": "B37.0"
+            },
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 79,
+            "spo2": 96,
+            "weight_kg": 103.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-12T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 126
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-12T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 128
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.4
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-03-12T16:35",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 88
+                },
+                {
+                  "test": "Iron",
+                  "value": 83
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 274
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-12T16:40",
+              "author": "PCP",
+              "body": "Follow-up. Thrush cleared within the two weeks, no return. Lungs fine since the pneumonia. Hematology now drawing about monthly. Nephrology in January: same plan. Sober four years last month.\n\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10, furosemide 40. NKDA.\n\nExam: mouth clear, no plaques. Heart RRR. Lungs clear. Abdomen: liver edge palpable, no ascites. Ankles with trace edema at end of day per pt, none now.\n\nA/P\n- Oral candidiasis: resolved.\n- HH: ferritin 88 today, in hematology's target range. They'll move to maintenance.\n- MN: CMP today.\n- T2DM: A1c.\n- Physical in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Ferritin result",
+              "date": "2024-03-14T08:10",
+              "author": "PCP",
+              "body": "Adam, your ferritin is 88, right in the target range. Nice work sticking with the draws. Kidney and diabetes labs steady."
+            }
+          ],
+          "state": {
+            "weight_kg": 104.0,
+            "labs": {
+              "Creatinine": 1.08,
+              "Ferritin": 88,
+              "Hemoglobin A1c": 6.9,
+              "Iron": 95,
+              "Total Iron-Binding Capacity": 300
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "outside_records",
+          "start": "2024-07-09T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic Eye Examination",
+              "date": "2024-07-12T10:40",
+              "author": "optometry",
+              "body": "Adam Coughlin, DOB 02/21/1977. Exam 07/09/2024, dilated. No diabetic retinopathy in either eye. Return in 1 year.\nOptometry"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              78
+            ],
+            "hr": 61,
+            "spo2": 96,
+            "weight_kg": 103.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 125
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 60
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 154
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 75
+                },
+                {
+                  "test": "Iron",
+                  "value": 102
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 302
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 34
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 1743
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T09:05",
+              "author": "PCP",
+              "body": "ANNUAL EXAM\n\n47M. Quiet year. Maintenance phlebotomy roughly every 2-3 months now. Nephrology and hepatology visits on schedule, no changes. Eye exam in July without retinopathy. Working full time.\n\nMeds unchanged: metformin, trientine 500 BID, lisinopril 10, furosemide 40. NKDA.\nSocial: sober since Feb 2020. Ex-smoker since 2016.\n\nROS negative.\n\nExam: obese. Skin tone near his baseline. Mouth normal. Heart regular, no murmur. Lungs clear. Abdomen: liver edge just palpable, soft, no ascites. No edema. Hands: MCP 2-3 mildly tender, unchanged. Feet: sensation and pulses normal.\n\nPHQ-2 0. AUDIT-C 0.\n\nA/P\n- Prevention: flu and COVID today. FIT kit for colorectal screening (last 2022).\n- HH maintenance: ferritin.\n- MN: CMP, UACR.\n- T2DM: A1c.\n- 6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note",
+              "date": "2024-09-26T07:50",
+              "author": "PCP",
+              "body": "Ferritin in maintenance range. Creatinine a touch higher than spring, albumin stable, urine protein lower. A1c at goal. Copies to nephrology and hematology."
+            }
+          ],
+          "state": {
+            "weight_kg": 103.5,
+            "labs": {
+              "Albumin": 3.3,
+              "Creatinine": 1.12,
+              "Ferritin": 72,
+              "Microalbumin/Creatinine Ratio": 1700,
+              "Total Protein": 6.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "lab_only",
+          "start": "2024-10-02T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-30T07:00",
+              "resulted": "2024-10-02T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2024-10-02T12:30",
+              "author": "PCP",
+              "body": "FIT negative. Letter sent. Next due fall 2026."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-29a",
+          "kind": "ed_visit",
+          "start": "2024-11-29T19:40",
+          "end": "2024-11-29T23:30",
+          "service": "Emergency Medicine",
+          "reason": "Left arm redness, fever after hand cut",
+          "conditions": [
+            {
+              "label": "Acute lymphangitis of left upper limb",
+              "action": "diagnosed",
+              "onset": "2024-11-27",
+              "icd10": "L03.124"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Lymphangitis; prescribed by ED"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-29T19:50",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 100,
+              "temp_c": 38.5
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-29T20:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 75
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 15
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.27
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 166
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-29T20:15",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 18
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "date": "2024-12-02T10:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT - VISIT SUMMARY\nPatient: Adam Coughlin  DOB 02/21/1977  Date of service 11/29/2024\nAllergies: NKDA\n\n47M, mechanic, with hemochromatosis, Wilson disease, type 2 diabetes and cirrhosis. Small cut to the left hand at work 3 days ago, rinsed with water, nothing else. For 2 days, pain and redness moving up the left arm with fevers and chills.\n\nVitals: T 38.5 C, HR 100, BP 135/85.\nExam: healing superficial cut on the left hand without abscess or foreign body; red tender streak about 5 cm long running proximally from it; tender left axilla. Hand tendons and range intact.\nLabs: WBC 12.0, neutrophils 75%, lymphocytes 15%, CRP 18 mg/L.\nTetanus: Tdap 2021.\n\nImpression: acute lymphangitis, left upper limb.\nDisposition: home on amoxicillin-clavulanate 875/125 mg twice daily x 10 days. Mark the edge of the redness, return for spreading, worse fever or pus. PCP follow-up in 2-3 days."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "office_visit",
+          "start": "2024-12-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, left arm lymphangitis",
+          "vitals": {
+            "bp": [
+              122,
+              83
+            ],
+            "hr": 85,
+            "temp_c": 36.6,
+            "spo2": 96
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-12-03T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2024-12-03T11:25",
+              "author": "PCP",
+              "body": "ED Friday night for lymphangitis of the L arm after a hand cut at work. Day 5 of amoxicillin-clavulanate. Fever gone since Saturday. Arm less sore.\n\nExam: afebrile. L hand cut closed, clean. Red streak faded, now well below the pen line the ED drew. Axilla barely tender.\n\nA/P: Lymphangitis improving. Finish all 10 days (last dose 12/9). Gloves at work. Call for any new fever or redness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "ed_visit",
+          "start": "2024-12-09T18:50",
+          "end": "2024-12-10T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue, dizziness, dark urine",
+          "conditions": [
+            {
+              "label": "Drug-induced hemolytic anemia (amoxicillin-induced)",
+              "action": "diagnosed",
+              "onset": "2024-12-09",
+              "icd10": "D59.0"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Amoxicillin",
+              "reaction": "Immune hemolytic anemia",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Penicillin",
+              "reaction": "Avoid: penicillin class after amoxicillin hemolytic anemia",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-12-09T19:00",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 100,
+              "rr": 18,
+              "temp_c": 37.6
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-09T19:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 172
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.6
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-09T19:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-09T19:20",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 450
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-09T19:20",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "<10"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-09T19:20",
+              "results": [
+                {
+                  "test": "Direct antiglobulin test, IgG",
+                  "loinc": "1007-4",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "date": "2024-12-11T14:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT NOTE (abbreviated)\nAdam Coughlin, DOB 02/21/1977. Seen 12/09/2024, observed overnight, discharged 12/10.\nAllergies on arrival: NKDA. Updated this visit: AMOXICILLIN (immune hemolytic anemia); PENICILLINS, avoid.\n\nHemochromatosis patient here 10 days after our visit for left-arm lymphangitis. Took the last amoxicillin-clavulanate tablet this morning; a few hours later became very tired and dizzy and noticed dark urine.\n\nT 37.6 C, BP 135/85, P 100, RR 18. Jaundiced. Spleen tip palpable.\nHgb 7.8. Total bilirubin 3.2, direct 0.5. LDH 450. Haptoglobin <10. Smear: spherocytes. Direct Coombs positive, IgG.\n\nImpression: drug-induced immune hemolytic anemia from amoxicillin.\nCourse: antibiotic already finished. Observed overnight; Hgb stable on recheck, no transfusion. Discharged.\nPlan: no amoxicillin or other penicillins. CBC with PCP this week. Hematology informed."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Direct": 0.5,
+              "Bilirubin, Total": 3.2,
+              "Hemoglobin": 7.8
+            }
+          }
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "office_visit",
+          "start": "2024-12-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hemolytic anemia",
+          "conditions": [
+            {
+              "label": "Acute lymphangitis of left upper limb",
+              "action": "resolved",
+              "icd10": "L03.124"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              67
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 103.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-12T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 152
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-12T15:50",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-12T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2024-12-12T16:15",
+              "author": "PCP",
+              "body": "S: ED 12/9 into 12/10 for immune hemolysis from amoxicillin, the day he finished the lymphangitis course. Urine back to normal color since yesterday. Still tired, a bit dizzy on stairs. No chest pain, no shortness of breath at rest, no black stools. Hematology called him: no phlebotomy until his counts recover.\n\nO: Vitals reviewed. Mild scleral icterus. Heart regular. Lungs clear. Abdomen soft, liver edge as before. L arm: no redness, cut healed.\n\nA/P\n1. Drug-induced hemolytic anemia (amoxicillin): allergy list updated with amoxicillin and all penicillins. CBC and bilirubin today. Expect recovery over weeks now that the drug is gone. Repeat CBC early January.\n2. Lymphangitis L arm: resolved.\n3. HH: phlebotomy on hold per hematology.\n\nAddendum: Hgb 9.1, up from 7.8. Bilirubin coming down."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 1.8,
+              "Hemoglobin": 9.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "lab_only",
+          "start": "2025-01-08T07:20",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-08T07:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.05
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 114
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-01-08T07:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 67
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-08T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result note - CBC",
+              "date": "2025-01-08T13:10",
+              "author": "PCP",
+              "body": "Hgb 11.6, recovering. Bilirubin back near his usual. Recheck in a month. Copy to hematology."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 1.2,
+              "Hemoglobin": 11.6
+            }
+          }
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "lab_only",
+          "start": "2025-02-11T07:15",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-11T07:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 150
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-11T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-02-11T14:00",
+              "author": "PCP",
+              "body": "Adam, your hemoglobin is 13.0, back to where it was before the reaction. I've sent it to hematology so they can decide when to restart your draws. See you in March."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood count",
+              "date": "2025-02-11T18:45",
+              "author": "patient",
+              "body": "good. they already called, starting back up next month"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.0
+            }
+          }
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: diabetes, kidneys, after hemolysis",
+          "conditions": [
+            {
+              "label": "Drug-induced hemolytic anemia (amoxicillin-induced)",
+              "action": "resolved",
+              "icd10": "D59.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              70
+            ],
+            "hr": 57,
+            "spo2": 97,
+            "weight_kg": 103.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-18T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 128
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 60
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 66
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-18T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-18T16:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 1748
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-03-18T16:35",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 128
+                },
+                {
+                  "test": "Iron",
+                  "value": 108
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 309
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 35
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-18T16:50",
+              "author": "PCP",
+              "body": "S: Feels like himself again. Energy back. Phlebotomy restarting this month. Nephrology in February, same meds. No drinking, 5 years last month.\n\nAllergies: amoxicillin (immune hemolysis), penicillins.\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10, furosemide 40.\n\nO: No icterus. Heart RRR. Lungs clear. Abdomen soft, liver edge palpable, no ascites. No edema.\n\nA/P\n- Hemolytic anemia from amoxicillin: resolved, Hgb normal in Feb.\n- MN: creatinine 1.3, drifting up over the last two years. Sent to nephrology.\n- T2DM: A1c.\n- HH: ferritin crept up during the pause, as expected; hematology resuming.\n- 3-4 months."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-03-20T12:30",
+              "author": "PCP",
+              "body": "Hi Adam, A1c is fine. Creatinine is 1.3, a little higher than last year, so I've sent it to your kidney doctor. Ferritin rose a bit during the break from draws, which hematology expected."
+            }
+          ],
+          "state": {
+            "weight_kg": 103.0,
+            "labs": {
+              "Creatinine": 1.3,
+              "Ferritin": 115,
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-01a",
+          "kind": "ed_visit",
+          "start": "2025-06-01T06:30",
+          "end": "2025-06-01T10:45",
+          "service": "Emergency Medicine",
+          "reason": "Severe sore throat, muffled voice, drooling",
+          "conditions": [
+            {
+              "label": "Acute epiglottitis with obstruction",
+              "action": "diagnosed",
+              "onset": "2025-05-31",
+              "icd10": "J05.11"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-01T06:40",
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-01T07:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 250
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.36
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 64
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "date": "2025-06-09T11:20",
+              "author": "emergency medicine",
+              "body": "ED NOTE - brief\nPt: Adam Coughlin, DOB 02/21/1977. Arrived 06/01/2025 06:30.\nAllergies: amoxicillin (hemolytic anemia), penicillins.\n\n48M with hemochromatosis, Wilson disease, cirrhosis, membranous nephropathy and type 2 diabetes; immune hemolysis from amoxicillin last December. Cold last week he thought had cleared. Since yesterday severe throat pain, painful swallowing and a muffled voice; can't get his own saliva down; no diabetes pills since yesterday.\n\nT 38.9 C, HR 110, RR 22.\nAnxious, sitting bolt upright and leaning forward. Anterior neck tender. Stridor. Drooling.\nGlucose 250.\nLateral soft-tissue neck film: enlarged epiglottis, thumbprint sign.\n\nImpression: acute epiglottitis with airway compromise.\nDisposition: admitted to ICU for airway monitoring and IV antibiotics. Hospital course per inpatient team; discharged 06/05/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, epiglottitis",
+          "conditions": [
+            {
+              "label": "Acute epiglottitis with obstruction",
+              "action": "resolved",
+              "icd10": "J05.11"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              75
+            ],
+            "hr": 66,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 99.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T11:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 125
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.32
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 67
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-06-10T11:10",
+              "author": "PCP",
+              "body": "S: In the ICU 6/1 to 6/5 with epiglottitis. Was watched closely, never needed a breathing tube per his account. IV antibiotics, then pills to finish at home, done yesterday; doesn't have the name with him. We only have the ED note so far. Throat back to normal, eating and talking fine. Back on metformin since discharge. Lost some weight while he couldn't eat.\n\nO: Afebrile. Voice normal. Oropharynx normal. Neck soft, nontender, no nodes. Lungs clear. Heart regular.\n\nA/P\n1. Acute epiglottitis: resolved. Requested discharge summary.\n2. T2DM: glucose was high in the ED off his meds and sick. A1c and BMP today.\n3. Hemolysis history: reminded him to carry his allergy list.\n4. Back in 2-3 months.\n\nAddendum: A1c higher than spring, likely the time off metformin and the illness. Recheck in December before changing anything."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - hospital",
+              "date": "2025-06-11T09:15",
+              "author": "front desk",
+              "body": "Requested discharge summary for 6/1-6/5 admission. Hospital sent ED note only so far; second request placed 6/25."
+            }
+          ],
+          "state": {
+            "weight_kg": 100.0,
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-07-26a",
+          "kind": "hospital_admission",
+          "start": "2025-07-26T14:10",
+          "end": "2025-08-02T11:30",
+          "service": "Emergency Medicine / ICU",
+          "reason": "Neck swelling, trouble swallowing and speaking",
+          "conditions": [
+            {
+              "label": "Ludwig angina",
+              "action": "diagnosed",
+              "onset": "2025-07-24",
+              "icd10": "K12.2"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-26T14:20",
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-26T14:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 80
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 167
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 16
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 3
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 14.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-26T14:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 250
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2025-08-05T16:00",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY (abbreviated)\nPatient: Adam Coughlin   DOB 02/21/1977\nAdmitted 07/26/2025 via ED to ICU   Discharged 08/02/2025\nAllergies: amoxicillin (hemolytic anemia), penicillin\n\nReason: 48M with hemochromatosis, Wilson disease, cirrhosis, and recent lymphangitis and epiglottitis, two days of increasing neck pain and swelling that started at a tooth, with difficulty swallowing and speaking.\nOn arrival: T 38.9 C, HR 110, RR 22, SpO2 94% on room air. Firm, brawny, tender swelling of the upper neck and submandibular region; drooling; tongue displaced back and hard to protrude; muffled voice. WBC 18.0 with 80% neutrophils. Glucose 250.\n\nDiagnosis: Ludwig angina.\nCourse: ICU for airway watch, IV antibiotics, oral surgery extracted the offending tooth. Swelling receded; moved to the floor, then home.\nFollow-up: PCP within 1 week; oral surgery as scheduled.\nHome medications unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "office_visit",
+          "start": "2025-08-06T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, Ludwig angina",
+          "conditions": [
+            {
+              "label": "Ludwig angina",
+              "action": "resolved",
+              "icd10": "K12.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 65,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 97.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-06T15:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 163
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-06T15:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.35
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 125
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 65
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-08-06T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-08-06T15:40",
+              "author": "PCP",
+              "body": "S: Home since Saturday after a week in hospital with Ludwig angina from a bad tooth, which was pulled. Swelling gone, swallowing fine, a little sore where the tooth was. Third serious infection in under a year and he's shaken by it. No fever.\n\nMeds unchanged per summary. Allergies: amoxicillin, penicillins.\n\nO: Afebrile. Extraction site healing, no pus. Floor of mouth soft. Neck without swelling or tenderness. Lungs clear. Heart regular. Down to 97.5 kg.\n\nA/P\n1. Ludwig angina: resolved. Oral surgery follow-up as booked. Regular dental care matters with his diabetes and liver; he'll find a dentist.\n2. Recurrent serious infections in a man with cirrhosis and diabetes: reviewed glucose control and vaccines (up to date). Flu shot in the fall.\n3. CBC, BMP today.\n4. Recheck in fall."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result note",
+              "date": "2025-08-07T08:20",
+              "author": "PCP",
+              "body": "WBC back to normal. Hgb fine. Creatinine 1.35, similar to spring. Next labs in September with flu shot."
+            }
+          ],
+          "state": {
+            "weight_kg": 97.5,
+            "labs": {
+              "Creatinine": 1.35,
+              "Hemoglobin": 12.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "nurse_visit",
+          "start": "2025-09-23T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine and labs",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.48
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 127
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 58
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 62
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 68
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T08:10",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 2079
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "date": "2025-09-23T08:25",
+              "author": "RN",
+              "body": "Flu vaccine IM L deltoid, tolerated. Labs drawn per PCP standing order (CMP, UACR). Pt reports feeling well, no fevers since August."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.48,
+              "Microalbumin/Creatinine Ratio": 2100
+            }
+          }
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "portal_message",
+          "start": "2025-09-25T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney labs",
+              "date": "2025-09-25T12:20",
+              "author": "PCP",
+              "body": "Hi Adam, your creatinine is 1.48, a bit higher again, and your estimated kidney function is now just under 60. One reading doesn't make a diagnosis; we'll repeat it at your December visit. I've sent it to nephrology. Keep taking the lisinopril and avoid ibuprofen and naproxen."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney labs",
+              "date": "2025-09-25T21:02",
+              "author": "patient",
+              "body": "ok. i only take tylenol"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "pharmacy",
+          "start": "2025-10-14T17:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization - COVID-19",
+              "date": "2025-10-16T09:20",
+              "author": "MA",
+              "body": "2025-26 COVID vaccine given 10/14/25 at a community pharmacy (registry). Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "office_visit",
+          "start": "2025-12-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: kidneys, diabetes, iron",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "diagnosed",
+              "onset": "2025-09-23",
+              "note": "From membranous nephropathy; eGFR under 60 twice, 3 months apart"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              77
+            ],
+            "hr": 75,
+            "spo2": 96,
+            "weight_kg": 98.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-17T16:40",
+              "resulted": "2025-12-18T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.55
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 129
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 55
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 60
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.1
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-17T16:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 171
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-17T16:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-12-17T16:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 64
+                },
+                {
+                  "test": "Iron",
+                  "value": 80
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 308
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 26
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-17T16:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 1984
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-17T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-17T17:20",
+              "author": "PCP",
+              "body": "S: 48M. Quiet fall, no infections since the summer. Phlebotomy every 2-3 months again. Saw nephrology in October: they're watching the creatinine, same meds. Hepatology in November, trientine unchanged. Found a dentist, cleaning done. Still sober, nearly 6 years. Weight holding a little under 100 kg.\n\nMeds: metformin 1000 BID, trientine 500 BID, lisinopril 10 daily, furosemide 40 daily.\nAllergies: amoxicillin (immune hemolytic anemia), penicillins.\n\nO: Vitals reviewed. No icterus. Mouth healthy. Heart RRR. Lungs clear. Abdomen soft, liver edge palpable, nontender, no ascites. No edema. Feet: sensation intact, pulses 2+.\n\nA/P\n1. Kidney function: creatinine today 1.55 (resulted 12/18), eGFR mid-50s; with September's value that is two readings under 60 three months apart. CKD stage 3a from his membranous nephropathy. Continue lisinopril; avoid NSAIDs; nephrology has the numbers. Metformin dose okay at this level, will review if eGFR keeps falling.\n2. T2DM: A1c today.\n3. HH: ferritin today.\n4. Wilson disease / cirrhosis: hepatology.\n5. Return in about 4 months; front desk to book in spring."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Results to nephrology",
+              "date": "2025-12-18T14:00",
+              "author": "MA",
+              "body": "CMP and UACR from 12/17 faxed to nephrology per PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 99.0,
+            "labs": {
+              "Albumin": 3.1,
+              "Creatinine": 1.55,
+              "Ferritin": 81,
+              "Hemoglobin": 13.3,
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "portal_message",
+          "start": "2025-12-19T11:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2025-12-19T11:45",
+              "author": "PCP",
+              "body": "Adam, results from Wednesday: creatinine 1.55, which together with September puts you in stage 3a kidney disease, as we talked about. Diabetes number and iron level are both in range. Nothing to change before your spring visit. Happy holidays."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - metformin",
+              "date": "2026-01-13T10:30",
+              "author": "MA",
+              "body": "Pharmacy fax: metformin 1000 mg BID, out of refills. Last visit 12/17, on list. Sent 90-day supply with 1 refill per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "hospital_admission",
+          "start": "2026-02-04T09:15",
+          "end": "2026-02-09T13:00",
+          "service": "Gastroenterology",
+          "reason": "Vomiting blood, black stools",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-02-20T14:30",
+              "author": "gastroenterology",
+              "body": "DISCHARGE SUMMARY - brief\nAdam Coughlin, DOB 02/21/1977\nAdmitted 02/04/2026, discharged 02/09/2026, gastroenterology service\nAllergies: amoxicillin (hemolytic anemia), penicillin\n\nPresentation: 48M with hereditary hemochromatosis, Wilson disease and cirrhosis, history of membranous nephropathy and prior severe infections including Ludwig angina, with two days of vomiting blood and black stools. No trauma, no NSAID use.\n\nExam: jaundiced. Several spider angiomas over the chest. Liver enlarged and tender below the right costal margin. Abdomen distended with a fluid wave (ascites).\n\nLabs on admission: Hgb 8.2 g/dL; platelets 110,000/mm3; PT 18 s; INR 1.8; PTT 42 s; albumin 2.9 g/dL; total bilirubin 5.1 mg/dL.\n\nDiagnoses: upper GI bleeding; coagulopathy due to vitamin K deficiency; cirrhosis with ascites.\nTreatment: IV vitamin K for the coagulopathy; GI management of the bleed.\nDischarge: stable. Follow up with GI and hepatology; see PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request - GI admission",
+              "date": "2026-02-13T09:00",
+              "author": "front desk",
+              "body": "Requested discharge summary for the 2/4-2/9 admission at pt's report."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "was in the hospital",
+              "date": "2026-02-12T19:40",
+              "author": "patient",
+              "body": "wanted to let you know i was in the hospital last week. threw up blood and had black stool. they gave me vitamin K and watched me. home since monday. GI and liver doctors want to see me"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: was in the hospital",
+              "date": "2026-02-12T21:05",
+              "author": "PCP",
+              "body": "Adam, thank you for telling me, and I'm sorry you went through that. I've asked the hospital for the discharge summary. Please keep the GI and hepatology appointments, and call the front desk to come in and see me once you're up to it. If the vomiting blood or black stools come back, go straight to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telephone",
+          "start": "2026-04-21T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Specialty pharmacy - trientine",
+              "date": "2026-04-21T09:10",
+              "author": "RN",
+              "body": "Specialty pharmacy calling about trientine refill authorization. Prescriber is hepatology; gave them the hepatology fax and confirmed dose on our list (500 mg BID). Nothing further from us."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "refills",
+              "date": "2026-07-14T07:30",
+              "author": "patient",
+              "body": "can you refill the lisinopril and the water pill. kidney doctor is on vacation"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refills",
+              "date": "2026-07-14T10:50",
+              "author": "MA",
+              "body": "Lisinopril 10 mg and furosemide 40 mg sent for 30 days to tide you over. Dr. asks that you call to schedule a visit, you're due."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute epiglottitis with obstruction|J05.11": {
+        "code": "J05.11",
+        "display": "Acute epiglottitis with obstruction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute lymphangitis of left upper limb|L03.124": {
+        "code": "L03.124",
+        "display": "Acute lymphangitis of left upper limb",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cirrhosis of liver|K74.60": {
+        "code": "K74.60",
+        "display": "Unspecified cirrhosis of liver",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Drug-induced hemolytic anemia (amoxicillin-induced)|D59.0": {
+        "code": "D59.0",
+        "display": "Drug-induced autoimmune hemolytic anemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hepatomegaly|R16.0": {
+        "code": "R16.0",
+        "display": "Hepatomegaly, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hereditary hemochromatosis with arthropathy|E83.110": {
+        "code": "E83.110",
+        "display": "Hereditary hemochromatosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Ludwig angina|K12.2": {
+        "code": "K12.2",
+        "display": "Cellulitis and abscess of mouth",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Membranous nephropathy|N04.20": {
+        "code": "N04.20",
+        "display": "Nephrotic syndrome with diffuse membranous glomerulonephritis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Oral candidiasis|B37.0": {
+        "code": "B37.0",
+        "display": "Candidal stomatitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Wilson disease|E83.01": {
+        "code": "E83.01",
+        "display": "Wilson's disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "nystatin 100000 UNT/ML Oral Suspension": {
+        "code": "312055",
+        "display": "nystatin 100000 UNT/ML Oral Suspension",
+        "ingredient": "nystatin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "trientine hydrochloride 250 MG Oral Capsule": {
+        "code": "313472",
+        "display": "trientine hydrochloride 250 MG Oral Capsule",
+        "ingredient": "trientine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Direct antiglobulin test, IgG": {
+        "code": "1007-4",
+        "display": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Haptoglobin": {
+        "code": "4542-7",
+        "display": "Haptoglobin [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "lab \"HFE gene C282Y\" LOINC 21695-5 not found"
+    ]
+  }
+}

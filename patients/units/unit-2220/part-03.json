@@ -1,0 +1,255 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002220",
+      "events": [
+        {
+          "id": "2023-01-10a",
+          "kind": "nurse_visit",
+          "start": "2023-01-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.5}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-01-10T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-01-10T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2023-01-10T09:20",
+             "body": "INR in range on 35 mg/week. No bleeding. On a chemo break, feeling stronger. Recheck 4 to 6 weeks."}
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "office_visit",
+          "start": "2023-02-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [{"label": "Iron deficiency anemia", "action": "resolved"}],
+          "medications": [{"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "stop", "reason": "hemoglobin normal"}],
+          "state": {"weight_kg": 83.0, "bp": [140, 86], "labs": {"Hemoglobin": 14.0, "Mean Corpuscular Volume": 88, "Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-02-14T11:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2023-02-14T11:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-14T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-02-14T11:20",
+             "body": "Tells me he was in the ED at the end of January, the 30th, with his heart racing again and some breathlessness. They gave him something in the IV, it slowed down, and he went home that night. No papers with him and nothing has come to us; release signed today and request faxed.\nSince then fine. No chest pain. Energy back since chemo stopped. Eating well, weight creeping up. Stools normal, no dark stools. He says the ED told him his blood count was normal.\n\nExam: irregular rhythm, rate controlled. Lungs clear. No edema. Port site clean.\n\nA/P\n- AF, second ED visit for rapid rate; resting rate fine today. Continue warfarin. Will review ED record when it arrives.\n- Iron deficiency anemia: hemoglobin reportedly normal; stop ferrous sulfate. Recheck CBC with spring labs.\n- DM2: A1c and BMP today.\n- Colon cancer: on treatment break, CT every 3 to 4 months with oncology.\n- Back pain: stable on ER morphine, PDMP reviewed, agreement renewed.\nRTC 3 months, physical."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "nurse_visit",
+          "start": "2023-03-14T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 3.2}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-03-14T09:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-03-14T09:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2023-03-14T09:30",
+             "body": "INR a bit above range. No bleeding. Admits he's been skipping salads this winter. Hold tonight's dose, then resume 35 mg/week. Recheck 2 weeks."},
+            {"type": "Nurse Note", "title": "Anticoagulation follow-up", "author": "RN", "date": "2023-03-28T15:10",
+             "body": "Called for the 2-week recheck; he says he was at an oncology CT and blood draw last week and could not fit in another trip. Will come with his May physical. Reinforced that he should not skip checks; he agreed to call with any bleeding."}
+          ]
+        },
+        {
+          "id": "2023-04-03a",
+          "kind": "outside_records",
+          "start": "2023-04-03T14:15",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-30T16:20", "results": [{"test": "Hemoglobin", "value": 14}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-30T16:20", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Potassium", "value": 4.2}]},
+            {"panel": null, "collected": "2023-01-30T16:20", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}]}
+          ],
+          "reports": [{"study": "12-lead ECG", "performed": "2023-01-30T16:05",
+            "text": "No P waves. Irregularly irregular R-R intervals. Ventricular rate about 110. Narrow QRS. No acute ST elevation.",
+            "conclusion": "Atrial fibrillation with rapid ventricular response."}],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record (received on request)", "author": "emergency medicine", "date": "2023-04-03T14:15",
+             "body": "Emergency department visit 01/30/2023, sent in response to records request.\n\nCC: palpitations, mild shortness of breath.\nHPI: patient with recurrent atrial fibrillation, three hours of palpitations and mild dyspnea. Denies chest pain, dizziness or syncope.\nMedications reported: metformin, lisinopril, hydrochlorothiazide; on warfarin. NKDA.\nSocial: former smoker (30 pack-years, quit 10 years ago), alcohol 1 to 2 drinks monthly, retired carpenter.\n\nVitals: BP 145/90, HR 110 irregularly irregular, SpO2 97% on room air.\nExam: lungs without crackles. No lower extremity edema.\nLabs: hemoglobin 14 g/dL, creatinine 1.2 mg/dL, potassium 4.2 mEq/L, TSH 2.5 mIU/L.\nECG: absent P waves, irregular R-R intervals, ventricular rate around 110.\n\nED course: diltiazem IV, rate improved to the 80s, symptoms resolved.\nImpression: recurrent atrial fibrillation with rapid ventricular response.\nDisposition: home, follow up with PCP."},
+            {"type": "Result Note", "title": "ED record reviewed", "author": "PCP", "date": "2023-04-04T08:40",
+             "body": "January ED record arrived after our request. Hemoglobin 14, thyroid normal, kidney function stable. Nothing new to act on; reviewed with him by phone."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"weight_kg": 84.0, "labs": {"Prothrombin Time-International Normalized Ratio": 2.4, "Low Density Lipoprotein": 86}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-16T09:30", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-16T09:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-05-16T09:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-05-16T09:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2023-05-16T09:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-05-16T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2023-05-16T09:40",
+             "body": "Subsequent wellness visit.\n\nInterval: FOLFOX finished in November with partial response; on a treatment break. He says the March scan was stable; we have no letter from that visit yet and have asked oncology for it. Two AF visits to the ED last year and in January, none since. No bleeding.\n\nFunction: independent. Back to small woodworking jobs in the garage. No falls. Drives. Hearing and vision adequate. Mood good, PHQ-2 1. AUDIT-C 1. Health care proxy (wife) on file now.\n\nExam: BP as charted. Irregular rhythm, controlled. Lungs clear. Abdomen soft, nontender. Port site clean. Feet: monofilament intact, pulses palpable, skin fine.\n\nPrevention: colon - not applicable now, followed by oncology. Lung screening stopped; his chest is imaged on the oncology scans. Vaccines: flu and RSV in the fall; COVID per season.\n\nLabs today, including CBC to confirm the anemia has resolved, and an INR since he missed the last recheck.\nPlan given in writing."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "nurse_visit",
+          "start": "2023-06-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.3}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-06-13T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-06-13T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2023-06-13T09:15",
+             "body": "INR in range. No bleeding. Continue 35 mg/week. Recheck 5 to 6 weeks."}
+          ]
+        },
+        {
+          "id": "2023-07-24a",
+          "kind": "telephone",
+          "start": "2023-07-24T11:05",
+          "conditions": [{"label": "Acute appendicitis", "icd10": "K35.80", "action": "diagnosed", "onset": "2023-07-21"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Wife calling: hospital admission", "author": "RN", "date": "2023-07-24T11:05",
+             "body": "Wife called. He went to the ED Friday 7/21 with bad right-sided belly pain, they found appendicitis and took his appendix out through an incision that night or the next morning; his warfarin was stopped and reversed for the surgery. He is coming home today and they restarted warfarin. Asked about INR: will check at the post-op visit next week. PCP informed. Discharge summary requested."}
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "outside_records",
+          "start": "2023-08-01T10:30",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-21T11:40", "results": [{"test": "White Blood Cells", "value": 14.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-07-21T11:40", "results": [{"test": "Creatinine", "value": 1.1}, {"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Glucose", "value": 160}]},
+            {"panel": null, "collected": "2023-07-21T11:45", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.52},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 28},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 95}
+            ]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-07-21T13:10",
+             "text": "CT abdomen and pelvis with IV contrast. Comparison: prior oncology CTs. The appendix is dilated with wall thickening and surrounding fat stranding, without abscess, extraluminal air or free fluid. Known ascending colon wall thickening at the site of the primary tumor, not changed. Known right hepatic lobe lesions without change. No bowel obstruction. Kidneys and bladder unremarkable.",
+             "conclusion": "Acute appendicitis without perforation or abscess. Known colon primary and hepatic lesions unchanged."},
+            {"study": "Surgical pathology report", "performed": "2023-07-21T20:30",
+             "text": "Specimen: appendix, open appendectomy. Gross: appendix with congested serosa. Microscopic: transmural acute inflammation with mucosal ulceration. No neoplasm identified.",
+             "conclusion": "Acute appendicitis. Negative for malignancy."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary, general surgery", "author": "general surgery", "date": "2023-08-01T10:30",
+             "body": "Regional hospital. Admitted 07/21/2023, discharged 07/24/2023.\n\nPresentation: right lower quadrant pain since that morning, sharp and constant and worse with movement, in a man with metastatic ascending colon cancer (on a treatment break) and atrial fibrillation on warfarin. Home medications included sustained-release morphine, lisinopril and metformin; full list reconciled. NKDA.\nED vitals: temperature 37.8 C, HR 102, RR 28, BP 138/86, SpO2 98% on room air.\nExam: rebound tenderness and guarding in the right lower quadrant; bowel sounds normal.\nLabs: WBC 14,000/uL, hemoglobin 13.2 g/dL, platelets 250,000/uL, creatinine 1.1 mg/dL, BUN 18 mg/dL, glucose 160 mg/dL. Arterial gas (obtained for tachypnea): pH 7.52, PaCO2 28, HCO3 24, PaO2 95, consistent with respiratory alkalosis from pain.\nCT: acute appendicitis without perforation; known colon primary and liver lesions unchanged.\n\nCourse: warfarin held and INR reversed with IV vitamin K. Open appendectomy through a right lower quadrant incision the evening of 7/21; acute appendicitis, no tumor on pathology. Recovery uneventful, diet advanced, pain controlled on his home morphine. Warfarin resumed 7/23.\n\nDischarge diagnosis: acute appendicitis, status post open appendectomy.\nDischarge medications: unchanged from home.\nFollow-up: PCP within 1 to 2 weeks with INR; surgical clinic in 2 weeks for wound check."}
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "office_visit",
+          "start": "2023-08-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "conditions": [{"label": "Acute appendicitis", "icd10": "K35.80", "action": "resolved"}],
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 1.7}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-08-08T14:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-08T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2023-08-08T14:55",
+             "body": "Two weeks out from an open appendectomy for acute appendicitis. Discharge summary reviewed. Incision sore but improving, eating normally, bowels moving, no fever. Taking his usual morphine, nothing extra needed.\n\nExam: afebrile. RLQ incision healing well, staples out at surgery clinic last week, no redness or drainage. Abdomen soft. Heart irregular, rate controlled. Lungs clear.\nINR below range today, not surprising after the vitamin K and a few held doses.\n\nA/P\n- Appendicitis, s/p open appendectomy: recovering as expected; lifting limits per surgery.\n- Warfarin: INR low; take 7.5 mg tonight and tomorrow, then back to 5 mg daily. Recheck 2 weeks.\n- Surgical history updated."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "nurse_visit",
+          "start": "2023-08-29T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.4}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-08-29T09:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-08-29T09:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2023-08-29T09:25",
+             "body": "Back in range. Incision healed. Continue 35 mg/week. Next check 6 weeks, can pair with flu shot."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T12:15",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination", "author": "optometry", "date": "2023-09-26T12:15",
+             "body": "Dilated eye exam 09/19/2023. Best corrected 20/25 right, 20/30 left. Early cataracts, stable. No diabetic retinopathy in either eye. Return in one year. NKDA."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check, vaccines",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.7}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-10-10T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-10T09:15"},
+            {"vaccine": "RSV, bivalent (Abrysvo)", "date": "2023-10-10T09:16"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-04T14:00"}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-10-10T09:05"}, {"procedure": "Immunization administration", "performed": "2023-10-10T09:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "INR and vaccines", "author": "RN", "date": "2023-10-10T09:35",
+             "body": "INR in range, no bleeding. High-dose flu in the left arm and RSV in the right, given with PCP order; pressure held 2 minutes at each site given warfarin. Updated COVID shot 10/4 at the pharmacy, added from registry. Observed 15 minutes, fine."}
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "office_visit",
+          "start": "2023-11-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up",
+          "state": {"weight_kg": 85.0, "labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-07T10:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-11-07T10:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-07T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-11-07T10:55",
+             "body": "Feels good. Weight back up. Oncology scan last month stable per him; letter pending. No palpitations to speak of. Back pain the same, 4/10, ER morphine still working, no sedation, bowels OK.\n\nExam: BP as charted. Irregular, rate controlled. Lungs clear. Abdomen soft, incision well healed. Feet unremarkable.\n\nA/P\n- DM2: A1c and BMP today; continue metformin 1000 BID.\n- HTN: continue lisinopril and HCTZ.\n- AF/warfarin, CAD: continue warfarin, aspirin, atorvastatin.\n- Metastatic colon cancer: surveillance with oncology.\n- Chronic pain on long-term opioid: PDMP reviewed, refill sent.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "outside_records",
+          "start": "2023-11-20T13:30",
+          "labs": [{"panel": null, "collected": "2023-10-24T10:00", "results": [{"test": "Carcinoembryonic Antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 6.4}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2023-10-24T09:00",
+            "text": "Surveillance CT chest, abdomen and pelvis with contrast. Comparison 07/2023 and 03/2023. Right hepatic lobe lesions stable in number and size. Small bilateral pulmonary nodules stable. Ascending colon wall thickening stable. Postsurgical change of appendectomy. No new lesion, no adenopathy, no ascites.",
+            "conclusion": "Stable disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology surveillance visit", "author": "oncology", "date": "2023-11-20T13:30",
+             "body": "Medical oncology, visit 10/24/2023.\nMetastatic right colon adenocarcinoma, on treatment break since November 2022. Recovered from appendectomy in July. Feels well, ECOG 0.\nCT today stable. CEA 6.4.\nPlan: continue observation, CT and CEA every 3 to 4 months, port flush every 8 weeks. Next visit February."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "nurse_visit",
+          "start": "2023-12-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.2}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2023-12-12T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2023-12-12T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2023-12-12T09:15",
+             "body": "INR in range. Holiday reminders given about alcohol and greens. Continue 35 mg/week."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002183",
+      "events": [
+        {
+          "id": "2025-12-23a",
+          "kind": "telephone",
+          "start": "2025-12-23T10:30",
+          "reason": "RN check-in",
+          "documents": [{"type": "Telephone Encounter", "title": "RN check-in call", "author": "RN", "date": "2025-12-23T10:30", "body": "Weekly check-in as planned. Ortho visit went fine, partial tear, no surgery, PT starting after the holidays. Using the pillbox, wife says no missed doses this week. Mood 'about the same'. Psychiatry called him, appointment 1/8. Denies any thoughts of harming himself. Knows to call 988 or come in if that changes."}]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "telephone",
+          "start": "2025-12-30T14:15",
+          "reason": "RN check-in",
+          "documents": [{"type": "Telephone Encounter", "title": "RN check-in call", "author": "RN", "date": "2025-12-30T14:15", "body": "Spoke with pt. Spent the holiday at his mother's; says it was hard but he's glad he went. Eating better, up on the weekends. Ankle less sore in the boot. No safety concerns. Next call after his psychiatry visit."}]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "specialist_visit",
+          "start": "2026-01-08T13:00",
+          "service": "Psychiatry",
+          "reason": "worsening depression",
+          "medications": [
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "stop", "reason": "dose increased"},
+            {"drug": "sertraline 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "major depressive disorder"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry follow-up letter", "author": "psychiatry", "date": "2026-01-12T09:15", "body": "Outpatient behavioral health\nDate of service: 01/08/2026\n\nSeen sooner at his PCP's request. Depression returned over November and December after his mother's diagnosis of metastatic small cell lung cancer and conflict with his sister about her estate. Fatigue, daytime sleep, poor appetite, guilt, withdrawal from the senior center. Adherence slipped, now better with a pillbox. No SI, intent or plan. Also recovering from an Achilles tear.\nAllergies: ciprofloxacin (tendon injury).\nMSE: tired, cooperative, mood 'low', affect constricted, linear, no SI/HI.\nAssessment: MDD, single episode, worsened by caregiver and family stress.\nPlan: increase sertraline to 100 mg daily. Weekly supportive therapy for 6 weeks, focusing on his mother's illness and setting limits with his sister; he can ask her to route estate questions through an attorney. Return 6 weeks.\n\nPsychiatry"}
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "specialist_visit",
+          "start": "2026-01-14T10:00",
+          "service": "Physical Therapy",
+          "reason": "Achilles partial tear rehabilitation",
+          "orders": [{"id": "pt-2025", "action": "done", "date": "2026-01-14T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Physical therapy evaluation", "author": "physical therapy", "date": "2026-01-16T12:00", "body": "Outpatient physical therapy\nDate of evaluation: 01/14/2026\n\nDx: right Achilles high-grade partial tear, nonoperative.\nPt in walking boot with two heel wedges, weight bearing as tolerated, ambulating without crutches indoors.\nObjective: right ankle swelling mild, tender mid-tendon; limited dorsiflexion, guarded; plantar flexion weak. Protective sensation absent both feet (known neuropathy), skin intact.\nPlan: 2x weekly for 8-10 weeks. Wedge weaning per ortho protocol, gentle range of motion, progressive calf loading, balance work. Skin checks given neuropathy.\n\nPhysical Therapy"}
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "portal_message",
+          "start": "2026-02-11T17:45",
+          "reason": "update",
+          "documents": [
+            {"type": "Patient Message", "title": "update", "author": "patient", "date": "2026-02-11T17:45", "body": "Down to one wedge in the boot. PT says I'm ahead of schedule. Feeling a bit better on the higher dose of the sertraline. My mother finished her second round of chemo. Do you need to see me before March?"},
+            {"type": "Patient Message", "title": "RE: update", "author": "PCP", "date": "2026-02-11T19:10", "body": "Good to hear on all fronts. March is fine unless something changes. Keep your feet checked with the boot on and off, the skin under it can rub without you feeling it."}
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "office_visit",
+          "start": "2026-03-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"weight_kg": 94.0, "labs": {"Hemoglobin A1c": 8.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-11T10:40", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2026-03-11T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 9}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-11T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2026-03-11T10:45", "body": "Out of the boot as of last week, in sneakers with a heel lift. PT twice a week. Mood a good deal better on sertraline 100 and the therapy sessions; PHQ-9 9, down from 15. Back to the senior center Tuesdays. Mother still on treatment. Taking meds from the pillbox, wife does the evening fill.\nNo chest pain, no swelling, breathing usual.\nExam: walks with a slight limp. Right Achilles thickened, mildly tender, intact. Feet: skin intact, no pressure areas from the boot. Heart regular, lungs clear, no edema.\nA/P: MDD improving. Achilles partial tear healing, PT. T2DM: A1c today, sugars were higher during the bad weeks. HFrEF, CAD stable. RTC July for AWV."}
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "specialist_visit",
+          "start": "2026-04-08T09:20",
+          "service": "Orthopedics",
+          "reason": "Achilles follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedics follow-up letter", "author": "orthopedics", "date": "2026-04-10T14:00", "body": "Outside orthopedic group\nDate of visit: 04/08/2026\n\nRight Achilles high-grade partial tear, nonoperative. Out of the boot about five weeks. Walking without a limp on level ground, mild ache after long walks. PT reports steady strength gains.\nAllergies: ciprofloxacin.\nExam: tendon thickened, nontender, continuous. Thompson test normal plantar flexion. Single-leg heel raise not yet possible on the right.\nPlan: finish PT, then home program. No return to ladders or jumping until he can do repeated single-leg heel raises. Follow up as needed.\n\nOrthopedics"}
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T10:30",
+          "service": "Cardiology",
+          "reason": "annual follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2026-05-18T11:40", "body": "Outside cardiology group\nDate of visit: 05/13/2026\n\nCAD s/p CABG 2024 and HFrEF. No angina or nitroglycerin use. A difficult winter with an Achilles tear and family illness; activity back up since PT. No orthopnea or edema.\nMeds: aspirin, metoprolol succinate 50, atorvastatin 40, lisinopril 20, furosemide 20, sertraline 100, metformin, insulin glargine, valproic acid, albuterol, NTG PRN.\nAllergies: ciprofloxacin.\nExam: euvolemic, regular, lungs clear.\nPlan: continue. Annual visit.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "pharmacy",
+          "start": "2026-06-17T09:00",
+          "reason": "refill request",
+          "documents": [{"type": "Refill Encounter", "title": "Refill: valproic acid and sertraline", "author": "RN", "date": "2026-06-17T09:00", "body": "Pharmacy request for valproic acid 250 mg caps (2 BID) and sertraline 100 mg, 90 days. Approved. VPA level due at the July visit, noted on the order."}]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "annual_physical",
+          "start": "2026-07-23T09:00",
+          "end": "2026-07-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit and chronic care review",
+          "state": {"labs": {"Hemoglobin A1c": 7.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-23T09:50", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2026-07-23T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-23T09:50", "results": [{"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-07-23T09:50", "results": [{"test": "Hemoglobin A1c", "value": 7.7}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 64}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2026-07-23T09:00"}],
+          "orders": [
+            {"id": "fit-2026", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening, colonoscopy 2016 now due"},
+            {"id": "ldct-2026", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2026-07-23T10:10", "body": "AWV plus chronic care review.\nFunction: independent. Walking 30 minutes most days again, ankle good, finished PT in May. No falls. Driving.\nMood: PHQ-9 6. Sertraline 100, sees psychiatry every couple of months. Mother finishing treatment; he and his sister have an attorney handling the estate questions now, which has calmed things.\nSober 7 years. Cognitive screen normal.\nHeart: no angina, no nitro this year. No swelling or orthopnea. Cardiology in May, no changes.\nDiabetes: pillbox routine holding, sugars back down per his meter.\nMeds reviewed with bottles, list current. Ciprofloxacin intolerance on file.\nExam: regular, lungs with mild prolonged expiration, no edema. Right Achilles thickened, nontender. Feet: insensate soles, skin intact, right pulses faint.\nPrevention: colonoscopy from 2016 is due; at 70 with his heart history he prefers a stool test, FIT kit given. LDCT ordered for the fall. Flu and COVID in the fall. Eye exam due August.\nACP: wife remains proxy; reviewed his wishes, unchanged.\nLabs today. Follow-up booked for October."}
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "portal_message",
+          "start": "2026-07-24T16:20",
+          "reason": "lab results",
+          "documents": [{"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2026-07-24T16:20", "body": "Stanley, labs from yesterday look steady. A1c 7.7, better than March. Kidney, liver and blood counts fine. LDL holding on the atorvastatin. Valproic acid level in range. Don't forget the stool kit."}]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "lab_only",
+          "start": "2026-08-05T10:00",
+          "reason": "FIT returned",
+          "labs": [{"panel": null, "collected": "2026-08-03T07:00", "resulted": "2026-08-05T10:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "orders": [{"id": "fit-2026", "action": "done", "date": "2026-08-05T10:00"}],
+          "documents": [{"type": "Result Note", "title": "FIT result", "author": "PCP", "date": "2026-08-05T13:30", "body": "FIT negative. Repeat yearly. Portal note sent."}]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T09:15",
+          "reason": "refill request",
+          "documents": [{"type": "Refill Encounter", "title": "Refill: insulin glargine pens", "author": "RN", "date": "2026-08-12T09:15", "body": "Pharmacy request, glargine pens 24 units qHS and pen needles, 90-day. Approved."}]
+        },
+        {
+          "id": "2026-10-21a",
+          "kind": "office_visit",
+          "start": "2026-10-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

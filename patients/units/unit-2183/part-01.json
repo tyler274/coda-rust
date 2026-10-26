@@ -1,0 +1,216 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002183",
+      "given": "Stanley",
+      "family": "Conti",
+      "birth_date": "1955-09-23",
+      "address_line": "38 Jabish Brook Road",
+      "phone": "+1-347-555-0167",
+      "email": "stanley.conti@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction foreman with CAD (MIs 2014 and 2018, stent), insulin-treated type 2 diabetes with neuropathy, COPD and well-controlled complex partial seizures who joins in 2018. Course runs through statin muscle symptoms, stable angina, a diabetic foot ulcer with PAD, HFrEF, a 2024 STEMI with CABG and a post-op effusion, post-MI depression, and a 2025 ciprofloxacin Achilles injury.",
+      "events": [
+        {
+          "id": "2018-10-03a",
+          "kind": "telephone",
+          "start": "2018-10-03T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2018-10-03T10:20", "body": "Mr. Conti phoned about joining. His last doctor retired over the summer and he wants one place to manage his heart, sugar and seizure meds. Medicare on disability plus a Blue Cross supplement. Membership details mailed. New patient slot held for 10/17, 60 min. Asked him to bring every bottle he takes and the name of his old office so we can send for records."}
+          ]
+        },
+        {
+          "id": "2018-10-17a",
+          "kind": "establish_care",
+          "start": "2018-10-17T09:00",
+          "end": "2018-10-17T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Coronary artery disease", "action": "history", "onset": "2014-03-01"},
+            {"label": "Old myocardial infarction", "action": "history", "onset": "2014-03-01", "note": "MIs 2014 and August 2018"},
+            {"label": "Presence of coronary artery stent", "action": "history", "onset": "2014-03-01"},
+            {"label": "Type 2 diabetes mellitus with diabetic polyneuropathy", "action": "history", "onset": "2003-06-01"},
+            {"label": "Long-term current use of insulin", "action": "history", "onset": "2012-01-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2008-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2008-01-01"},
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "onset": "2012-01-01"},
+            {"label": "Localization-related symptomatic epilepsy with complex partial seizures, not intractable, without status epilepticus", "icd10": "G40.209", "action": "history", "onset": "1995-01-01", "note": "complex partial seizures, well controlled on valproic acid"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2014-03-01"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic"},
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "units"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic"},
+            {"drug_text": "valproic acid 250 MG Oral Capsule", "action": "historical", "sig": "Take 2 capsules (500 mg) by mouth twice daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 hours as needed for shortness of breath", "dose": {"value": 2, "unit": "puffs"}, "frequency": "Q4H PRN", "route": "Inhalation", "course": "chronic"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [134, 80], "weight_kg": 98.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 8.1, "Triglycerides": 290, "Low Density Lipoprotein": 68, "High Density Lipoprotein": 41, "Glucose": 152, "Microalbumin/Creatinine Ratio": 14, "Creatinine": 1.02}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-10-17T10:10", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2018-10-17T10:10", "results": [{"test": "Low Density Lipoprotein", "value": 68}, {"test": "Triglycerides", "value": 290}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-10-17T10:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2018-10-17T10:10", "results": [
+              {"test": "Hemoglobin A1c", "value": 8.1},
+              {"test": "Microalbumin/Creatinine Ratio"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 72}
+            ]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 6}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "2-3 drinks nightly"},
+            {"item": "Occupation", "value": "Retired construction foreman"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2018-10-17T09:00"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2018-10-17T10:00"}],
+          "orders": [{"id": "records-prior-pcp", "action": "placed", "order": "Request outside records from prior primary care office", "category": "procedure", "reason": "establish care"}],
+          "documents": [
+            {"type": "History and Physical", "title": "New Patient Visit", "author": "PCP", "date": "2018-10-17T10:05", "body": "63M here to set up care. Prior PCP retired. Brought a bag of bottles, which helped.\n\nHeart: two heart attacks. First in 2014, cathed and stented then; that was also when he put the cigarettes down for good. Second this past August, kept a few days at a regional hospital and sent home on the same pills, no new stent per his account. No chest pain since. Follows with an outside cardiology group.\nDiabetes since roughly 2003, on insulin for years. Glargine 24 units at night plus metformin 1000 twice a day. Checks sugars when he remembers, mostly 140s to 180s fasting. Feet have been numb and tingly for a while.\nBP and cholesterol on lisinopril, metoprolol, atorvastatin 40.\nCOPD: uses albuterol a few times a month, mostly cold air or heavy yard work. No hospital stays for breathing.\nSeizures: complex partial spells as a younger man, none in many years on valproic acid 500 twice daily. Drives. Prior PCP refilled it.\n\nSocial: retired construction foreman, on disability. Married, wife at home. Former smoker, about 40 pack-years, quit 2014. Alcohol: 2 to 3 drinks every night, mostly whiskey. No drugs.\nFamily: father had his first MI at 58. Mother has type 2 diabetes. Sister with high blood pressure.\nAllergies: none known.\n\nExam: well-appearing heavyset man. Heart regular, no murmur. Lungs with mildly prolonged expiration, no wheeze. Abdomen soft. No leg swelling. Feet: skin intact, monofilament reduced over both soles, pulses palpable.\n\nA/P:\n1. CAD s/p MI x2, stent 2014. Aspirin, metoprolol, atorvastatin 40, lisinopril. Keep cardiology.\n2. T2DM with neuropathy, on insulin. A1c and kidney labs today. Foot care reviewed.\n3. HTN, at goal today.\n4. Hyperlipidemia: lipid panel today.\n5. COPD: albuterol PRN. Will get spirometry on file, none in what he brought.\n6. Seizure history: valproic acid, level and CBC/LFTs today.\n7. Alcohol: AUDIT-C 6. Talked plainly about drinking with his heart and his seizure med. He's thinking about it, not ready to set a date.\n8. Health maintenance: flu shot today. Hep C and HIV once. Requesting records from the old office for colonoscopy and the cath reports.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2018-10-19a",
+          "kind": "portal_message",
+          "start": "2018-10-19T16:40",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2018-10-19T16:40", "body": "Stanley, your labs are back. A1c 8.1, a bit above where we want it. Kidney and liver numbers fine. LDL 68 is good on the atorvastatin. Triglycerides are high at 290; cutting back the evening drinks would help that more than anything. Seizure medicine level is right in range. Hep C and HIV negative. We'll go over it in January."}
+          ]
+        },
+        {
+          "id": "2018-10-26a",
+          "kind": "outside_records",
+          "start": "2018-10-26T11:15",
+          "reason": "prior primary care records",
+          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2018-10-26T11:15"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records (summary)", "author": "MA", "date": "2018-10-26T11:15", "body": "86 pages faxed by the prior PCP office. Abstracted for the chart:\n- 2014: MI at a regional hospital, cardiac cath with PCI and stent. Discharge summary and cath report included.\n- 08/2018: second MI, regional hospital, managed medically. Discharge summary included; meds unchanged on discharge.\n- Seizure disorder: complex partial seizures, on valproic acid long term, no events documented in the notes we have.\n- Colonoscopy 2016: normal to the cecum, no polyps, 10-year recall.\n- Diabetes: insulin glargine since about 2012 per the notes.\n- Immunizations: Pneumovax listed years ago, no date.\nScanned to Media. PCP to review."}
+          ]
+        },
+        {
+          "id": "2018-12-05a",
+          "kind": "pharmacy",
+          "start": "2018-12-05T09:10",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Refill: insulin glargine pens and pen needles", "author": "RN", "date": "2018-12-05T09:10", "body": "Pharmacy fax for glargine pens and pen needles, 90-day. Last dispensed by prior PCP. Approved per protocol, 24 units qHS unchanged."}
+          ]
+        },
+        {
+          "id": "2019-01-16a",
+          "kind": "office_visit",
+          "start": "2019-01-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-01-16T14:30", "results": [{"test": "Creatinine"}]}, {"panel": null, "collected": "2019-01-16T14:30", "results": [{"test": "Hemoglobin A1c"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-01-16T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2019-01-16T14:40", "body": "S: Diabetes check. Says he's been better about the bedtime glargine. Sugars mornings 130s-170s. Still drinking most nights, maybe a little less. No chest pain, using albuterol about once a week in the cold.\nO: vitals in flowsheet. Heart regular. Lungs clear, slightly long expiratory phase. No edema.\nA/P: T2DM - A1c today. No change to insulin for now, he wants to work on the evening snacking and drinks first. CAD stable. Spirometry booked for March. RTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2019-03-13a",
+          "kind": "procedure_visit",
+          "start": "2019-03-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spirometry",
+          "reports": [{"study": "Spirometry", "performed": "2019-03-13T10:30", "text": "Pre- and post-bronchodilator spirometry, acceptable and reproducible efforts. FEV1/FVC 0.64. FEV1 71% predicted. No significant change after albuterol. Flow-volume loop with a concave expiratory limb.", "conclusion": "Fixed obstruction consistent with COPD, moderate by FEV1 percent predicted. No significant bronchodilator response."}],
+          "procedures": [{"procedure": "Spirometry", "performed": "2019-03-13T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Spirometry", "author": "RN", "date": "2019-03-13T11:05", "body": "Spirometry done per order. Good effort x3, post-albuterol set obtained. Pt tolerated well. Results routed to PCP."},
+            {"type": "Progress Notes", "title": "Spirometry interpretation", "author": "PCP", "date": "2019-03-14T08:15", "body": "FEV1/FVC 0.64, FEV1 71% predicted, no bronchodilator response. Fits his COPD. Symptoms are light, rescue inhaler a few times a month, no exacerbations. Keep albuterol as needed for now."}
+          ]
+        },
+        {
+          "id": "2019-04-24a",
+          "kind": "specialist_visit",
+          "start": "2019-04-24T09:00",
+          "service": "Cardiology",
+          "reason": "cardiology follow-up after MI",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2019-04-29T13:00", "body": "Outside cardiology group\nDate of visit: 04/24/2019\n\nThank you for following Mr. Conti with us. Seen eight months after his August 2018 MI, his second after the 2014 event treated with a stent. He reports no angina, walks the dog daily without symptoms. Former smoker since 2014.\nMedications: aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, metformin, insulin glargine, valproic acid, albuterol PRN.\nAllergies: NKDA.\nExam: regular rhythm, no murmur or gallop, lungs clear, no edema.\nECG: sinus rhythm, no acute changes.\nImpression: CAD, stable on medical therapy.\nPlan: continue current regimen. Strongly encourage him to stop drinking. Return in 1 year.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2019-05-22a",
+          "kind": "annual_physical",
+          "start": "2019-05-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-05-22T10:20", "results": [{"test": "Creatinine"}]}, {"panel": null, "collected": "2019-05-22T10:20", "results": [{"test": "Hemoglobin A1c"}]}],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}, {"survey": "AUDIT-C total score", "value": 5}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2019-05-22T09:30"}],
+          "orders": [{"id": "ldct-2019", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year former smoker, quit 2014"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2019-05-22T10:25", "body": "AWV. Health risk assessment reviewed with him.\nFunction: independent, drives, does his own yard. Hearing ok. No falls this year. Lives with wife, two-story house.\nMood: PHQ-9 2.\nAlcohol: AUDIT-C 5. Says he's cut back on weeknights. We talked again about stopping; his wife wants him to. He says he'll try this summer.\nCognition: three-word recall and clock draw normal.\nPrevention: colonoscopy 2016 normal, due 2026. Lung screening: 40 pack-years, quit 5 yrs ago, eligible; LDCT ordered. Flu done last fall. Pneumococcal history unclear, will sort out in the fall.\nAdvance directive: wife is health care proxy, form given.\nWritten prevention plan given."}
+          ]
+        },
+        {
+          "id": "2019-06-12a",
+          "kind": "imaging",
+          "start": "2019-06-12T08:40",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2019-06-12T08:40", "text": "Low-dose noncontrast CT of the chest. No pulmonary nodules. Mild centrilobular emphysema in the upper lobes. Coronary artery calcification and a coronary stent. No pleural effusion. No lymphadenopathy.", "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."}],
+          "orders": [{"id": "ldct-2019", "action": "done", "date": "2019-06-12T08:40"}],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2019-06-13T12:10", "body": "Lung-RADS 1, no nodules. Emphysema and coronary calcium as expected. Repeat in a year. Letter to patient."}
+          ]
+        },
+        {
+          "id": "2019-08-21a",
+          "kind": "outside_records",
+          "start": "2019-08-21T15:00",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2019-08-21T15:00", "body": "Optometry report. Exam 08/14/2019, dilated. Visual acuity 20/25 both eyes with correction. No diabetic retinopathy either eye. Early lens changes, not visually significant. Recheck in 1 year."}
+          ]
+        },
+        {
+          "id": "2019-09-18a",
+          "kind": "office_visit",
+          "start": "2019-09-18T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": null, "collected": "2019-09-18T11:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 66}]}, {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-18T11:40", "results": [{"test": "Hemoglobin"}]}],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 0}],
+          "social": [{"item": "History of alcohol use", "value": "Former heavy use, abstinent since June 2019"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-09-18T11:00"}, {"procedure": "Immunization administration", "performed": "2019-09-18T11:35"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2019-09-18T11:35"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2019-09-18T11:50", "body": "Big news from him: no alcohol since the third week of June. Says it was easier than he expected once he stopped keeping it in the house. Sleeping better. Proud of it, and he should be.\nNo chest pain. Breathing same. Sugars a bit better.\nExam: regular, lungs clear, no edema. Feet: reduced monofilament both soles, skin intact, no calluses of concern.\nA/P: T2DM, A1c today. Alcohol use, now abstinent ~3 months, AUDIT-C 0, encouraged. Seizures quiet, VPA level and CBC today. Flu shot today. Lipids due at the December visit."}
+          ]
+        },
+        {
+          "id": "2019-12-11a",
+          "kind": "office_visit",
+          "start": "2019-12-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hyperlipidemia follow-up",
+          "state": {"bp": [136, 78], "labs": {"Triglycerides": 318, "Low Density Lipoprotein": 64}},
+          "vitals": {"bp": [136, 78]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Lipid Panel", "collected": "2019-12-04T08:10", "resulted": "2019-12-05T07:30", "results": [{"test": "Triglycerides", "value": 318}, {"test": "Low Density Lipoprotein", "value": 64}]}],
+          "medications": [{"drug_text": "fenofibrate 145 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 145, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertriglyceridemia"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-11T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2019-12-11T10:35", "body": "Here to go over cholesterol. Fasting panel drawn last week.\nHe has stuck with the eating plan we talked about, fewer fried things and less bread. Off alcohol since June, denies any now. Now and then a mild sense of fullness in the upper belly after meals, no pain, no vomiting. Denies yellowing of the skin or eyes, weight steady.\nOn atorvastatin 40, which is already high-intensity, plus lisinopril and metoprolol for pressure.\n\nExam: BMI 31. BP 136/78. Heart regular, lungs clear, abdomen soft and nontender, no organomegaly. Rest unremarkable.\n\nLabs: LDL 64, nicely controlled. Triglycerides 318, still high even with the drinking stopped.\n\nA/P:\n1. Hyperlipidemia with residual high triglycerides on high-intensity statin. Adding fenofibrate 145 mg daily. Recheck lipids, liver and kidney in about 5 months. Call with any muscle aches.\n2. Upper abdominal fullness, intermittent and mild, exam benign. Watch.\n3. Diabetes, HTN, CAD: no changes today."}
+          ]
+        }
+      ]
+    }
+  ]
+}

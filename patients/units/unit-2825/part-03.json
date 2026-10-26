@@ -1,0 +1,1530 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002825",
+      "events": [
+        {
+          "id": "2024-01-18a",
+          "kind": "pharmacy",
+          "start": "2024-01-18T09:20",
+          "medications": [
+            {
+              "drug_text": "metoclopramide 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped by neurology 12/29/2023 for drug-induced parkinsonism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request - metoclopramide",
+              "author": "MA",
+              "date": "2024-01-18T09:20",
+              "body": "Pharmacy requesting renewal of metoclopramide 10 mg TID, 90 days. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill declined",
+              "author": "PCP",
+              "date": "2024-01-18T12:40",
+              "body": "Called daughter before sending: she says neurology stopped the metoclopramide at the 12/29 visit and told them to throw out the rest; the pharmacy request was an automatic one. We do not have the neurology note yet - requested. Refill declined, pharmacy told to inactivate the prescription. Removed from med list. Daughter says the shaking already looks a little less."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: diabetes, parkinsonism off metoclopramide",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.1,
+              "Creatinine": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-12T10:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-03-12T10:50",
+              "body": "Neurology letter (12/29) arrived in late January and is reviewed: metoclopramide-induced parkinsonism, drug stopped. Now 10 weeks off it. Daughter: tremor much less, she is moving faster, buttons again on her own. Stomach: some fullness and nausea after large meals; they are doing smaller meals through the day and it is manageable.\nExam: face more animated than December. Minimal right-hand tremor at rest. Tone near normal. Walks at a fair pace with arm swing.\nPlan: A1c, BMP. Neurology recheck in April. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "portal_message",
+          "start": "2024-03-13T18:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "author": "PCP",
+              "date": "2024-03-13T18:00",
+              "body": "A1c came back 8.1, up a little from last year. Kidney function steady. With the new eating pattern the numbers may shift; let's recheck at the next visit before changing insulin. Please keep making sure the nightly glargine dose happens."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "specialist_visit",
+          "start": "2024-04-16T14:30",
+          "service": "Neurology (outside)",
+          "reason": "Parkinsonism follow-up",
+          "conditions": [
+            {
+              "label": "Drug-induced parkinsonism due to metoclopramide",
+              "icd10": "G21.19",
+              "action": "resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "author": "neurology",
+              "date": "2024-04-22T09:00",
+              "body": "Neurology follow-up 4/16/2024. Off metoclopramide since late December. Tremor and rigidity have resolved; facial expression, blink and arm swing normal today; gait at her prior pace. Drug-induced parkinsonism, resolved. Avoid metoclopramide and other dopamine-blocking drugs in future. Cognition stable per daughter; continue donepezil 10 mg at bedtime. Return in 6-12 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "annual_physical",
+          "start": "2024-05-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-14T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-14T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-05-14T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-14T09:45",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-05-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-05-14T09:55",
+              "body": "AWV with daughter.\nNeurology says the parkinsonism has cleared; metoclopramide on her do-not-use list.\nFunction: walks independently, needs help with meals, pills, finances and transport. No falls. Pessary checks continuing at gyn.\nPHQ-2 1. Cognition: slow decline per daughter, still recognizes family and friends.\nAdvance directive: proxy on file (daughter).\nExam: as charted; lungs without wheeze, regular rhythm, feet intact, no edema.\nPlan: yearly labs. GI MRI next month. A1c at the summer visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "specialist_visit",
+          "start": "2024-06-18T10:30",
+          "service": "Gastroenterology (outside)",
+          "reason": "Pancreatic cyst surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up",
+              "author": "gastroenterology",
+              "date": "2024-06-25T13:00",
+              "body": "GI visit 6/18/2024. Surveillance MRI/MRCP 6/11/2024: pancreatic head cystic lesion 4.1 cm (4.0 cm 9/2023), thick wall and peripheral calcification unchanged, no enhancing solid component, main duct not dilated, no biliary dilatation. No new features. Clinically well; occasional mild epigastric ache, no weight loss, no jaundice. Plan: given stability and her goals, lengthen surveillance to yearly MRI. Current medications per her PCP list. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "telephone",
+          "start": "2024-07-24T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-07-24T11:05",
+              "body": "Called re: missed visit yesterday. Daughter apologized - she was away and her brother mixed up the date. Rebooked for September 10, daughter will bring her."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-10T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-10T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "author": "PCP",
+              "date": "2024-09-10T10:30",
+              "body": "Missed July visit. Here with daughter. Sugars at home not being checked. Daughter fills the pill box but Frances does her own insulin at night and daughter is not always sure it happens. No hypoglycemia. Eating small meals.\nExam: comfortable; lungs without wheeze; RRR; feet intact; no edema.\nA1c pending at end of visit; March was 8.1.\nAddendum 9/11: A1c 8.5. Above her goal of under 8. Spoke with daughter: she will try to be there for the bedtime dose more nights. Recheck in 3 months; if still up, will adjust insulin then."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T13:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T13:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T13:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2024-10-08T13:40",
+              "body": "High-dose trivalent flu (L deltoid) and 2024-25 COVID (R deltoid). Patient and son present. No adverse reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "specialist_visit",
+          "start": "2024-11-19T11:00",
+          "service": "Gynecology (outside)",
+          "reason": "Pessary check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pessary check",
+              "author": "gynecology",
+              "date": "2024-11-26T09:30",
+              "body": "Pessary maintenance 11/19/2024. Ring with support in good position; removed, cleaned, replaced. No erosion, no bleeding. Daughter reports no urinary trouble. Return 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "outside_records",
+          "start": "2024-12-03T10:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam letter",
+              "author": "optometry",
+              "date": "2024-12-03T10:00",
+              "body": "Dilated eye exam 11/26/2024 for diabetes. No retinopathy OU, no macular edema. Cataracts mild, glasses updated. See again in one year. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-29a",
+          "kind": "hospital_admission",
+          "start": "2024-12-29T15:40",
+          "end": "2025-01-03T12:00",
+          "service": "Critical Care (outside)",
+          "reason": "Confusion, lethargy, polyuria, polydipsia",
+          "vitals": [
+            {
+              "time": "2024-12-29T15:50",
+              "temp_c": 36.5,
+              "bp": [
+                105,
+                68
+              ],
+              "hr": 112
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hyperosmolar hyperglycemic state",
+              "icd10": "E11.00",
+              "action": "diagnosed",
+              "onset": "2024-12-27"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-29T16:05",
+              "resulted": "2024-12-29T16:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 127
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 94
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 790
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU discharge summary",
+              "author": "critical care",
+              "date": "2025-02-10T11:00",
+              "body": "Regional hospital discharge summary. Admitted 12/29/2024, discharged 1/3/2025. Received by fax 2/10/2025.\nAdmitting diagnosis: hyperosmolar hyperglycemic state.\nPresentation: 76-year-old woman with type 2 diabetes on metformin and glargine, Alzheimer's dementia (2021), and a history of metoclopramide-related parkinsonism (2023), brought to the ED by her daughter for two days of worsening drowsiness and disorientation. Family noted constant thirst and urination about every hour. No head injury, no recent illness, no alcohol.\nOther history: hypertension, coronary artery disease, COPD, CKD 3, hyperlipidemia, osteoporosis, gastroparesis, pancreatic cyst under surveillance, pelvic prolapse with pessary. Home medications as listed by family: metformin 1000 mg BID, insulin glargine 24 units nightly, lisinopril 20 mg, hydrochlorothiazide 25 mg, atorvastatin 40 mg, aspirin 81 mg, tiotropium, donepezil 10 mg, metoclopramide 10 mg before meals. NKDA. FH: mother T2DM, father CAD, sister Alzheimer's. Former smoker, quit ~20 years ago; no alcohol; retired teacher.\nOn arrival: T 36.5 C, BP 105/68, HR 112. Disoriented to time and place. Mucous membranes dry, skin turgor poor.\nLabs: Na 127, K 3.7, Cl 94, HCO3 22, BUN 26, glucose 790, creatinine 1.6.\nCourse: admitted to the ICU for HHS. Aggressive IV fluid resuscitation, insulin infusion with potassium monitoring, transitioned to subcutaneous insulin on day 3 once eating. Mental status returned to her baseline by day 4. Creatinine improved with fluids. No infection identified.\nDischarge medications: resume home regimen as above, including glargine 24 units nightly and metformin.\nFollow-up: PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "portal_message",
+          "start": "2024-12-30T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mom in the ICU",
+              "author": "patient",
+              "date": "2024-12-30T08:10",
+              "body": "Writing to let you know Mom was admitted to the ICU yesterday. She was sleepy and confused for two days and drinking water nonstop. They said her sugar was 790 and called it HHS. She's on an insulin drip and fluids. I will let you know when she's coming home."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Mom in the ICU",
+              "author": "PCP",
+              "date": "2024-12-30T09:30",
+              "body": "I'm so sorry - thank you for telling me. Please have the hospital fax the discharge summary to us, and call when she is home so we can see her within a week."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "office_visit",
+          "start": "2025-01-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after HHS",
+          "state": {
+            "labs": {
+              "Creatinine": 1.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Hyperosmolar hyperglycemic state",
+              "icd10": "E11.00",
+              "action": "resolved"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-08T11:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-01-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-01-08T11:50",
+              "body": "Seen 5 days after discharge from an ICU stay for hyperosmolar hyperglycemic state. No discharge summary yet; daughter brought the discharge paperwork and medication sheet, which reviewed: same home regimen, no insulin change.\nSince home: eating and drinking normally, back to herself per daughter, no excessive thirst. Daughter has decided she will give the bedtime glargine herself every night from now on.\nExam: alert, at baseline orientation. Mucous membranes moist. Lungs without wheeze, heart regular, no edema.\nAssessment: HHS, resolved. The September A1c was 8.5 and missed doses are the likeliest background.\nPlan: BMP today. Same regimen with daughter-supervised insulin; recheck A1c in 3 months. Asked hospital again for the summary.\nAddendum 1/9: creatinine 1.4, higher than her usual 1.0-1.1 before the admission. Recheck at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and kidney follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.8,
+              "Creatinine": 1.45
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 3a",
+              "action": "resolved"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "diagnosed",
+              "onset": "2025-01-08"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-08T10:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-08T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-04-08T11:10",
+              "body": "Hospital summary from the HHS stay finally arrived in February; reviewed, consistent with what the family told us.\nDaughter giving the glargine every night since January. No lows, no thirst.\nExam: weight stable. Lungs without wheeze. RRR. Feet intact.\nAddendum 4/9: A1c 7.8, back near her usual. Creatinine 1.4-1.5 again, so her kidney function has settled lower since the admission; eGFR now in the stage 3b range. Updated the problem list. Avoid NSAIDs and dehydration; sick-day instructions reviewed with daughter by phone."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "annual_physical",
+          "start": "2025-05-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-13T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-13T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-05-13T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-05-13T09:50",
+              "body": "Wellness visit, 77, with daughter.\nFunction: walks on her own, needs help with all instrumental tasks, now with some help in the shower. No falls. Gyn pessary visits continue.\nPHQ-2 0. Cognition: further slow decline, still pleasant and social.\nGoals unchanged from 2023 planning; proxy on file.\nGI: yearly MRI is due in June - daughter will schedule.\nExam: as charted, chest without wheeze, regular rhythm, no edema.\nPlan: yearly labs. Fall vaccines in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "hospital_admission",
+          "start": "2025-06-23T18:30",
+          "end": "2025-06-27T13:00",
+          "service": "Internal Medicine (outside)",
+          "reason": "Pneumonia with acute kidney injury",
+          "vitals": [
+            {
+              "time": "2025-06-23T18:40",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 88,
+              "rr": 22,
+              "spo2": 94
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "diagnosed",
+              "onset": "2025-06-21"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-06-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held for acute kidney injury and potassium 5.2"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held for acute kidney injury"
+            },
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held for acute kidney injury"
+            },
+            {
+              "drug_text": "cefpodoxime proxetil 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily to complete the course",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Community-acquired pneumonia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-23T19:00",
+              "resulted": "2025-06-23T19:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 36
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-23T19:00",
+              "resulted": "2025-06-24T06:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-06-23T19:20",
+              "text": "PA and lateral chest. Patchy airspace opacity in the right lower lobe. Left lung clear. No pleural effusion or pneumothorax. Heart size normal. Hyperinflation.",
+              "conclusion": "Right lower lobe infiltrate, consistent with pneumonia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records (partial)",
+              "author": "health information management",
+              "date": "2025-07-22T10:00",
+              "body": "Faxed in response to records request 7/8/2025. Admission 6/23/2025 to 6/27/2025, internal medicine service.\nIncluded: admission history and physical (excerpt), lab pages, chest X-ray report. Discharge summary not included ('not yet signed').\nH&P excerpt: Community-acquired pneumonia with superimposed acute kidney injury. Son at bedside with a written list of her medicines but unsure of doses; patient names metformin, lisinopril and her 'water pill.' On admission BP 145/90, HR 88, RR 22, SpO2 94% on room air. Crackles at the right base. Listed home medications: glargine 24 units nightly, hydrochlorothiazide 25 mg, atorvastatin 40 mg, aspirin 81 mg, tiotropium 18 mcg, metoclopramide 10 mg TID AC. NKDA. No prior surgery.\nLabs 6/23: creatinine 2.1 (baseline 1.5), BUN 36, potassium 5.2; A1c 7.8.\nCXR: right lower lobe infiltrate.\nPlan per H&P: IV ceftriaxone and azithromycin; hold lisinopril, hydrochlorothiazide and metformin; IV fluids; recheck renal function daily."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-28a",
+          "kind": "telephone",
+          "start": "2025-06-28T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Son calling - recent hospitalization",
+              "author": "RN",
+              "date": "2025-06-28T10:15",
+              "body": "Son called: Mom was in the hospital 6/23-6/27 with pneumonia and her kidneys 'got worse.' Home yesterday on an antibiotic pill twice a day (pharmacy filled cefpodoxime 200 mg). He says they told her to stop the blood pressure pill, the water pill and the metformin until she sees her doctor. No discharge paperwork with him, sister has it. Mom eating, coughing less, no fever. Booked post-hospital visit 7/8. Advised to call if breathing worse, fever, or not drinking. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP review",
+              "author": "PCP",
+              "date": "2025-06-28T12:00",
+              "body": "Agree. Keep the three held until labs at the 7/8 visit. Will request records."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up: pneumonia, acute kidney injury",
+          "state": {
+            "labs": {
+              "Creatinine": 1.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-08T11:10",
+              "resulted": "2025-07-08T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-08T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-07-08T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-2025-06",
+              "action": "placed",
+              "order": "Request hospital records, June 2025 admission",
+              "category": "referral",
+              "to": "Hospital health information management",
+              "reason": "No discharge summary received"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-07-08T15:00",
+              "body": "Seen after a 6/23-6/27 admission for right lower lobe pneumonia with acute kidney injury. Still no discharge summary; history from daughter and son's phone call. Finished cefpodoxime 7/1. Lisinopril, HCTZ and metformin on hold since admission.\nNow: occasional dry cough, no fever, breathing at her usual, eating well.\nExam: SpO2 and vitals as charted. Lungs clear at the right base today, no wheeze. Heart regular. No edema.\nAssessment: pneumonia resolved clinically. AKI - check today.\nPlan: BMP, CBC. Records request faxed to the hospital.\nAddendum 2:45 pm: creatinine 1.5, potassium 4.6 - back to her post-January baseline. Called daughter: restart lisinopril 20, HCTZ 25 and metformin 1000 twice daily tomorrow. Recheck BMP at the September visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "outside_records",
+          "start": "2025-07-22T10:00",
+          "orders": [
+            {
+              "id": "records-2025-06",
+              "action": "done",
+              "date": "2025-07-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records request - partial response",
+              "author": "MA",
+              "date": "2025-07-22T10:05",
+              "body": "Hospital faxed H&P excerpt, lab pages and the chest X-ray report from the June admission; filed with the admission. They state the discharge summary is not finalized. PCP notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T10:00",
+          "service": "Gynecology (outside)",
+          "reason": "Pessary check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pessary check",
+              "author": "gynecology",
+              "date": "2025-08-25T09:00",
+              "body": "Pessary visit 8/19/2025, first since her June hospital stay. Exam: mucosa intact, no ulceration or discharge. Pessary cleaned and reinserted. Voiding without difficulty. Next visit in 4 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, CKD follow-up; yearly labs",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-16T10:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-09-16T10:45",
+              "body": "Back to her routine after the June hospitalization. Cough gone. Daughter giving insulin nightly; no lows. The yearly pancreas MRI didn't get scheduled with everything in June - daughter will call GI.\nExam: lungs clear without wheeze; RRR; abdomen soft; feet with intact sensation; no edema.\nPlan: A1c, BMP today. Flu and COVID in October. Next visit in about 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-14T13:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T13:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2025-10-14T13:20",
+              "body": "Flu (high-dose) left deltoid, 2025-26 COVID right deltoid. Patient with daughter. Fine afterward."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "outside_records",
+          "start": "2025-12-09T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam letter",
+              "author": "optometry",
+              "date": "2025-12-09T09:30",
+              "body": "Diabetic eye exam, dilated, 12/2/2025: no diabetic retinopathy in either eye. Cataracts stable. Return 12 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-25a",
+          "kind": "hospital_admission",
+          "start": "2025-12-25T11:20",
+          "end": "2025-12-30T14:00",
+          "service": "Emergency Medicine and Orthopedics (outside)",
+          "reason": "Fall with right hip fracture",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ],
+          "conditions": [
+            {
+              "label": "Displaced fracture of right femoral neck",
+              "icd10": "S72.001A",
+              "action": "diagnosed",
+              "onset": "2025-12-25"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 40 mg under the skin once daily for 28 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "short",
+              "reason": "VTE prophylaxis after hip surgery"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Postoperative pain"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Low vitamin D, osteoporosis with fracture"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-25T11:45",
+              "resulted": "2025-12-25T12:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-25T11:45",
+              "resulted": "2025-12-26T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 20
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "author": "emergency medicine",
+              "date": "2026-01-05T10:00",
+              "body": "Regional hospital ED, 12/25/2025 (received with discharge packet 1/5/2026).\nCC: fell at home, right hip pain, unable to stand.\nHPI: 77-year-old with Alzheimer's dementia, osteoporosis and past medication-induced parkinsonism. Slipped on a wet kitchen floor and came down on her right side. Immediate severe right hip pain; cannot put weight on the right leg. No head strike or loss of consciousness per daughter.\nMeds per pharmacy list: metformin, glargine 24 units, lisinopril, hydrochlorothiazide, atorvastatin, aspirin, tiotropium, donepezil, metoclopramide. NKDA. No prior major surgery.\nVitals stable on arrival.\nExam: right lower extremity shortened and externally rotated; tender over the right hip; any hip motion very painful. Distal pulses, sensation and movement of the foot intact.\nLabs: calcium 9.2, A1c 7.8, 25-OH vitamin D 20 (low).\nX-ray right hip and pelvis: displaced fracture through the right femoral neck.\nDisposition: orthopedics consulted, admitted for surgery."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "orthopedics",
+              "date": "2026-01-05T10:05",
+              "body": "Admitted 12/25/2025, discharged 12/30/2025 to a rehabilitation facility.\nDiagnosis: displaced right femoral neck fracture after a mechanical fall.\nProcedure: right hip hemiarthroplasty (cemented), 12/26/2025, spinal anesthesia with sedation. Uncomplicated.\nCourse: mobilized with PT weight-bearing as tolerated from day 1. Pain controlled with scheduled acetaminophen and small doses of oxycodone. Glucose managed with home glargine plus correction. Vitamin D 20: supplementation started.\nDischarge medications: home medications unchanged; plus enoxaparin 40 mg SC daily for 28 days; oxycodone 5 mg/acetaminophen 325 mg 1 tab q6h as needed (short supply); cholecalciferol 2000 units daily.\nFollow-up: orthopedics 6 weeks; PCP after rehab discharge; osteoporosis treatment per PCP. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-27a",
+          "kind": "portal_message",
+          "start": "2025-12-27T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mom broke her hip",
+              "author": "patient",
+              "date": "2025-12-27T16:30",
+              "body": "Mom slipped in the kitchen on the 25th and broke her right hip. They put in a partial hip replacement yesterday. Probably going to rehab early next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Mom broke her hip",
+              "author": "PCP",
+              "date": "2025-12-28T10:15",
+              "body": "Thank you for letting me know, and I'm sorry you all had this over the holiday. Rehab is the right next step. Please book a visit with me for the week she gets home, and ask them to send the hospital and rehab paperwork."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "outside_records",
+          "start": "2026-01-20T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Rehabilitation facility discharge note",
+              "author": "rehabilitation medicine",
+              "date": "2026-01-20T14:00",
+              "body": "Short-term rehabilitation stay 12/30/2025 - 1/16/2026 after right hip hemiarthroplasty. Progressed from transfers with assistance to walking 150 feet with a rolling walker and supervision. Stairs with rail and standby assist. Incision healed, staples removed day 14. Enoxaparin to finish 1/23. Pain controlled with acetaminophen; last oxycodone dose 1/4. Discharged home with daughter; home PT arranged. Medications otherwise per hospital list. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T11:00",
+          "end": "2026-01-21T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital visit after hip fracture",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-21T11:40",
+              "resulted": "2026-01-21T16:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.5
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2026-01-21T12:20",
+              "body": "First visit since her 12/25 fall and right femoral neck fracture, treated with hemiarthroplasty 12/26, then rehab until 1/16. Hospital and rehab summaries received and reviewed.\nNow: walking around the house with a walker, daughter staying with her this month, home PT twice a week. Pain mild, acetaminophen only. Enoxaparin through 1/23. Sleeping fine.\nExam: vitals as charted. Walks slowly with rolling walker, steady. Right hip incision well healed, no redness. Calves soft and nontender. Lungs without wheeze; heart regular.\nOsteoporosis: known since her 2019 DXA, now with a hip fracture, never on treatment. Vitamin D was 20 in hospital; on D3 2000 units since. Kidney function too low for alendronate or zoledronic acid (eGFR in the mid-30s). Discussed denosumab every 6 months; daughter and Frances agree. Need vitamin D and calcium in range first and insurance approval.\nPlan: BMP with calcium today. Prior auth for denosumab. Recheck vitamin D in about 8 weeks, first injection then if levels OK. Fall prevention: bathroom grab bars, night lights, rug removal - daughter on it."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "telephone",
+          "start": "2026-02-10T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - denosumab",
+              "author": "MA",
+              "date": "2026-02-10T09:45",
+              "body": "Prior authorization submitted for denosumab 60 mg every 6 months, office-administered, diagnosis osteoporosis with recent hip fracture, CKD 3b. Approval received 2/12; note added. Daughter informed; injection planned at the March visit after vitamin D recheck."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "office_visit",
+          "start": "2026-03-20T10:00",
+          "end": "2026-03-20T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; osteoporosis treatment",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug_text": "1 ML denosumab 60 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 60 mg under the skin every 6 months (given in office)",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "EVERY 6 MONTHS",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Osteoporosis with hip fracture"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-20T10:10",
+              "resulted": "2026-03-20T10:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.5
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-20T10:10",
+              "resulted": "2026-03-20T10:40",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up and denosumab",
+              "author": "PCP",
+              "date": "2026-03-20T11:10",
+              "body": "Here with daughter. Hip doing well - walks in the house with a cane now, walker outside. Home PT finished. Saw orthopedics in February per daughter; no letter has come to us. No falls since.\nDiabetes: daughter giving glargine nightly, no lows.\nBreathing at baseline, no chest pain.\nExam: vitals as charted. Gait slow but steady with cane. Lungs without wheeze. RRR. No edema. Mouth: own teeth in fair repair, no planned dental work.\nLabs drawn on arrival (point-of-care and stat send): calcium 9.4, creatinine 1.5, vitamin D 34.\nPlan: denosumab 60 mg SC given today, left upper arm, lot recorded; next dose due September. Keep D3 2000 units daily; dietary calcium reviewed. Reminder that doses should not be skipped or delayed. A1c sent. GI MRI still to be rescheduled - daughter has the number. Follow-up in about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "portal_message",
+          "start": "2026-03-23T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2026-03-23T17:10",
+              "body": "Final results from Friday: vitamin D 34 (good now), calcium 9.4, kidney function steady, and A1c 7.8, right where we want it. No changes. Next denosumab shot is due in September - we'll send a reminder."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "pharmacy",
+          "start": "2026-04-21T08:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - insulin glargine",
+              "author": "MA",
+              "date": "2026-04-21T08:30",
+              "body": "Pharmacy request: insulin glargine pens and pen needles, 90-day. Dose 24 units nightly unchanged. Sent per PCP refill protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T21:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2026-05-19T21:00",
+              "body": "Hi, Mom needs refills on the donepezil and her once-a-day inhaler. Same pharmacy. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Refills",
+              "author": "MA",
+              "date": "2026-05-20T09:15",
+              "body": "Both sent this morning for 90 days with refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-13a",
+          "kind": "hospital_admission",
+          "start": "2026-06-13T07:50",
+          "end": "2026-06-17T13:00",
+          "service": "Emergency Medicine and Cardiology (outside)",
+          "reason": "Shortness of breath; inferior STEMI",
+          "vitals": [
+            {
+              "time": "2026-06-13T07:55",
+              "bp": [
+                160,
+                90
+              ],
+              "hr": 102,
+              "rr": 22,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-13T08:05",
+              "resulted": "2026-06-13T08:50",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 1860
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-13T08:00",
+              "text": "Sinus tachycardia. ST-segment elevation in leads II, III and aVF.",
+              "conclusion": "Acute inferior ST-elevation myocardial infarction."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-06-14T10:30",
+              "text": "Left ventricle normal size. LVEF estimated 50%. Hypokinesis of the inferior wall. Right ventricle normal size and function. No significant valve disease. No pericardial effusion.",
+              "conclusion": "LVEF 50% with inferior wall hypokinesis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2026-06-13T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "cardiology",
+              "date": "2026-06-24T14:00",
+              "body": "Admitted 6/13/2026 via the ED, discharged home 6/17/2026. Received 6/24/2026.\nDiagnosis: acute inferior ST-elevation myocardial infarction.\nPresentation: 78-year-old woman with CAD, COPD, Alzheimer's dementia and a right hip fracture in December. About a week of feeling run down, which she and her family put down to her lungs; that morning acutely short of breath and very tired. No chest pain.\nED: BP 160/90, HR 102, RR 22, SpO2 94% room air. Mild wheeze both lungs. Heart regular without murmur, rub or gallop. ECG: ST elevation II, III, aVF. hs-troponin I 1,860 ng/L.\nCourse: emergency catheterization: mid right coronary artery 100% thrombotic occlusion, treated with one drug-eluting stent with TIMI 3 flow; LAD 40%, no other obstructive disease. Radial access. Echo: LVEF 50%, inferior hypokinesis. Wheeze settled with nebulized bronchodilator. No arrhythmia on telemetry. Creatinine stable after contrast.\nHome medication list from the pharmacy also showed metoclopramide and simvastatin; family confirms neither is taken.\nDischarge medications: aspirin 81 mg daily; clopidogrel 75 mg daily (new); atorvastatin increased to 80 mg daily; metoprolol succinate 25 mg daily (new); continue lisinopril 20 mg, hydrochlorothiazide 25 mg, metformin 1000 mg BID, glargine 24 units nightly, tiotropium, donepezil 10 mg, cholecalciferol, denosumab every 6 months.\nReferrals: cardiac rehabilitation. Cardiology clinic in 4 weeks. PCP follow-up. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "portal_message",
+          "start": "2026-06-15T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heart attack",
+              "author": "patient",
+              "date": "2026-06-15T19:40",
+              "body": "Mom had a heart attack Saturday. She didn't have chest pain, just couldn't catch her breath and was wiped out. They put a stent in that morning. She's doing OK and they think she can go home midweek with two new heart pills. Wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Heart attack",
+              "author": "PCP",
+              "date": "2026-06-16T08:05",
+              "body": "Thank you for telling me - I'm glad they caught it quickly. Please make sure the discharge summary is sent to us, keep the cardiology follow-up, and bring all her bottles to her next visit here. Call anytime before then with questions."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T09:30",
+          "service": "Cardiology (outside)",
+          "reason": "Post-MI follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              76
+            ],
+            "hr": 64
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up",
+              "author": "cardiology",
+              "date": "2026-07-21T11:30",
+              "body": "Cardiology clinic, 7/14/2026, one month after inferior STEMI treated with a drug-eluting stent to the mid RCA.\nSince discharge: no angina, breathing back to her usual, energy improving. Taking all medicines per daughter, who manages them. Cardiac rehab intake scheduled.\nBP 132/76, HR 64. Lungs without wheeze today. Heart regular, no murmur. Radial site healed. No edema.\nPlan: continue aspirin 81 mg and clopidogrel 75 mg (dual antiplatelet therapy for at least 12 months), atorvastatin 80 mg, metoprolol succinate 25 mg, lisinopril 20 mg. Lipids and liver tests at 3 months. Return 3 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up appointment",
+              "author": "patient",
+              "date": "2026-08-04T12:20",
+              "body": "Mom's cardiologist said she should see you too now that things have settled. Can we get her in early September? Mornings are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Follow-up appointment",
+              "author": "front desk",
+              "date": "2026-08-04T14:00",
+              "body": "You're booked for Tuesday 9/8 at 10:00 with her PCP. Please bring all of her medicine bottles."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-08a",
+          "kind": "office_visit",
+          "start": "2026-09-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after June hospitalization",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

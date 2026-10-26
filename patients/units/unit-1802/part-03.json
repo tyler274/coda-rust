@@ -1,0 +1,353 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001802",
+      "events": [
+        {
+          "id": "2025-11-28a",
+          "kind": "ed_visit",
+          "start": "2025-11-28T13:40",
+          "end": "2025-11-28T19:10",
+          "service": "Emergency Medicine",
+          "reason": "Severe lower abdominal pain and vaginal bleeding",
+          "vitals": [
+            {"time": "2025-11-28T13:45", "bp": [84, 50], "hr": 116, "temp_c": 37.4, "rr": 20, "spo2": 98},
+            {"time": "2025-11-28T15:30", "bp": [104, 64], "hr": 98, "temp_c": 37.3, "rr": 18, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-28T14:00", "results": [
+              {"test": "White Blood Cells", "value": 15.8},
+              {"test": "Hemoglobin", "value": 11.2},
+              {"test": "Platelets"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-28T14:00", "results": [
+              {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}
+            ]},
+            {"panel": null, "collected": "2025-11-28T14:00", "results": [
+              {"test": "Lactate", "value": 2.4},
+              {"test": "C Reactive Protein", "value": 96},
+              {"test": "Choriogonadotropin beta subunit, quantitative", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 412},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Rapid Plasma Reagin", "text": "Nonreactive"}
+            ]},
+            {"panel": null, "collected": "2025-11-28T14:05", "resulted": "2025-12-03T08:00", "results": [
+              {"test": "Blood Culture", "text": "No growth at 5 days"}
+            ]},
+            {"panel": null, "collected": "2025-11-28T13:55", "resulted": "2025-11-28T14:12", "results": [
+              {"test": "Pregnancy Test, Urine", "text": "Positive"}
+            ]},
+            {"panel": null, "collected": "2025-11-28T15:10", "resulted": "2025-11-29T10:30", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Detected (cervical)"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected (cervical)"}
+            ]},
+            {"panel": null, "collected": "2025-11-28T15:12", "resulted": "2025-11-29T10:30", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Detected (pharyngeal)"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected (pharyngeal)"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-11-28T14:40", "text": "Transabdominal and transvaginal pelvic ultrasound. Indication: positive hCG, pelvic pain, bleeding.\nUterus: anteverted, normal size. Endometrium 7 mm, no intrauterine gestational sac, yolk sac or embryo.\nRight adnexa: complex mass measuring 4.6 x 3.8 cm, thick-walled with internal septations and low-level echoes, inseparable from the right ovary, with surrounding hyperemia on color flow. No extrauterine gestational sac, yolk sac or embryo seen.\nLeft ovary normal in size and appearance.\nSmall amount of anechoic free fluid in the pelvis, without clot or echogenic debris. No fluid in the hepatorenal space.", "conclusion": "No intrauterine pregnancy. Complex right adnexal mass 4.6 x 3.8 cm, favored tubo-ovarian complex in this clinical setting; no adnexal gestation identified. Small simple pelvic free fluid. Correlate with serial hCG."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-12-01T09:15", "body": "Regional hospital emergency department\nArrival 11/28/2025 13:40\n\nCC: sudden bad lower belly pain and vaginal bleeding\n\nHPI: 24F G1 by today's test, known genital HSV-2, gonococcal cervicitis treated with IM ceftriaxone about 6 months ago, seen by gynecology in September for cervical bleeding and discharge. Today developed sudden, severe lower abdominal pain this morning, worse on the right, with vaginal bleeding. LMP 7 weeks ago. Unaware she was pregnant.\n\nMeds: none daily. Allergies: penicillin.\n\nExam: pale, uncomfortable. BP 84/50, HR 116, T 37.4. Oropharynx: posterior pharynx mildly erythematous, no exudate. Abdomen: diffusely tender, most marked RLQ, with rebound and voluntary guarding. Pelvic per gyn.\n\nData: urine bHCG positive; quant hCG 412. WBC 15.8, Hgb 11.2, lactate 2.4, CRP 96. CMP unremarkable. TVUS: no IUP, small simple free fluid, 4.6 cm complex R adnexal mass, no adnexal gestation seen. Cervical and throat NAATs sent. Blood cultures x2.\n\nCourse: 2 L LR, BP up to 104/64, HR 98. Gyn at bedside; ectopic considered, but low hCG, no extrauterine gestation, simple fluid only and stable after fluids, with imaging favoring tubo-ovarian complex. Started ceftriaxone, metronidazole and azithromycin.\n\nImpression: pelvic inflammatory disease with right tubo-ovarian complex, early pregnancy of unknown location, sepsis responding to fluids.\nDisposition: admitted to gynecology.\n\nAddendum 11/29: cervical and pharyngeal chlamydia NAAT positive, gonorrhea negative. HIV and RPR nonreactive."}
+          ]
+        },
+        {
+          "id": "2025-11-28b",
+          "kind": "hospital_admission",
+          "start": "2025-11-28T19:10",
+          "end": "2025-12-01T12:30",
+          "service": "Gynecology",
+          "reason": "Pelvic inflammatory disease with tubo-ovarian complex",
+          "conditions": [
+            {"label": "Chlamydial pelvic inflammatory disease", "icd10": "A56.11", "action": "diagnosed", "onset": "2025-11-28"},
+            {"label": "Chlamydial pharyngitis", "icd10": "A56.4", "action": "diagnosed", "onset": "2025-11-28"}
+          ],
+          "medications": [
+            {"drug_text": "doxycycline hyclate 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily to complete 14 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Pelvic inflammatory disease"},
+            {"drug_text": "metronidazole 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily to complete 14 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Pelvic inflammatory disease"}
+          ],
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2025-11-30T06:00", "results": [
+              {"test": "Choriogonadotropin beta subunit, quantitative", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 236}
+            ]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Gynecology Discharge Summary", "author": "gynecology", "date": "2025-12-02T10:40", "body": "Admitted 11/28/2025, discharged 12/01/2025\n\nDiagnoses:\n1. Acute pelvic inflammatory disease, Chlamydia trachomatis, with right tubo-ovarian complex\n2. Pharyngeal chlamydia infection\n3. Early pregnancy of unknown location, failing (hCG 412 -> 236)\n\nHospital course: Presented with acute lower abdominal pain, bleeding and hypotension that corrected with IV fluid. Ultrasound showed no intrauterine pregnancy and a complex right adnexal mass consistent with tubo-ovarian complex, with only simple free fluid. Ectopic gestation was not seen and the clinical picture stayed stable, so she was managed medically with close hCG follow-up. Treated with IV ceftriaxone 1 g daily and IV metronidazole; azithromycin 1 g single dose given at admission while pregnancy status was uncertain. hCG fell from 412 to 236 at 48 hours, consistent with a failing pregnancy. Afebrile throughout, tenderness much improved by day 3, tolerating diet. Penicillin allergy noted; tolerated ceftriaxone, as she did in May.\n\nDischarge medications: doxycycline 100 mg PO BID and metronidazole 500 mg PO BID to complete 14 days total. Ibuprofen as needed for cramping.\nAllergies: penicillin.\n\nFollow-up: gynecology clinic 12/08 with repeat hCG, weekly until negative. Repeat pelvic ultrasound in about 6 weeks. Partner to be treated before resuming intercourse. Test of reinfection in 3 months. Primary care within one week.\nReturn precautions given: worsening pain, fever, heavy bleeding, fainting."}
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "telephone",
+          "start": "2025-12-02T11:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2025-12-02T11:05", "body": "Transitional care call after gyn admission 11/28-12/1. Pt reached. Pain mild, cramping only, taking ibuprofen once or twice a day. Spotting, light. No fever. Has doxycycline and metronidazole, taking with food, some nausea with the metronidazole but keeping them down. Reminded no alcohol with metronidazole. Gyn appt 12/8 for hCG. PCP visit booked 12/4. Partner has an appointment for treatment."}
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "office_visit",
+          "start": "2025-12-04T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {"label": "Herpesviral cervicitis", "icd10": "A60.03", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 2}],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2025-12-04T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2025-12-04T15:20", "body": "Seen after 3-day gyn admission for chlamydial PID with a right tubo-ovarian complex; ED found a positive pregnancy test with no IUP, hCG 412 then 236, being followed as a failing pregnancy. Also pharyngeal chlamydia. Discharge summary reviewed.\n\nToday: cramping is mild, needs ibuprofen maybe once a day. Light spotting. No fevers. On day 7 of 14 of doxycycline + metronidazole, some queasiness but taking everything. Pregnancy was unexpected and she says she's sad and relieved at the same time; has support from a close friend and her sister. Partner is getting treated.\n\nExam: afebrile, BP normal. Looks well. Abdomen soft, mild tenderness right lower quadrant, no rebound. Throat clear.\n\nA/P\n1. Chlamydial PID with R TO complex - improving on oral therapy. Finish 14 days. Gyn has hCG 12/8 and repeat ultrasound in January. Abstain until both she and partner are done with treatment. Retest GC/CT (genital and throat) late February.\n2. Pharyngeal chlamydia - covered by the doxycycline.\n3. Pregnancy of unknown location, hCG falling - gyn following to zero. Bleeding precautions reviewed.\n4. HSV cervicitis from September - resolved, no further bleeding before this. Removing from active list.\n5. Mood: PHQ-2 of 2, understandable after a hard week. Offered counseling resources through the university; she'll reach out if she wants a referral. Check in at next visit."}
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "outside_records",
+          "start": "2025-12-10T09:30",
+          "labs": [
+            {"panel": null, "collected": "2025-12-08T10:15", "results": [
+              {"test": "Choriogonadotropin beta subunit, quantitative", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 61}
+            ]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Gynecology follow-up note", "author": "gynecology", "date": "2025-12-10T09:30", "body": "Gynecology clinic, visit 12/08/2025. Post-discharge check after PID/TOC and failing pregnancy of unknown location. Cramping minimal, bleeding nearly stopped, afebrile. Abdomen soft with minimal right adnexal tenderness on bimanual. Serum hCG 61, down from 236. Completing doxycycline and metronidazole. Plan: weekly hCG until negative; pelvic ultrasound early January. Allergies: penicillin."}
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "outside_records",
+          "start": "2025-12-23T13:50",
+          "labs": [
+            {"panel": null, "collected": "2025-12-22T08:40", "results": [
+              {"test": "Choriogonadotropin beta subunit, quantitative", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "<5"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Gynecology result letter", "author": "gynecology", "date": "2025-12-23T13:50", "body": "hCG on 12/22/2025: less than 5 mIU/mL. The pregnancy has fully resolved; no further hCG testing needed. Ultrasound scheduled 01/07/2026 to confirm the right adnexal complex has cleared. Patient notified."}
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "outside_records",
+          "start": "2026-01-09T10:20",
+          "conditions": [
+            {"label": "Chlamydial pelvic inflammatory disease", "icd10": "A56.11", "action": "resolved"}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2026-01-07T09:00", "text": "Transvaginal pelvic ultrasound, follow-up of right adnexal complex.\nUterus anteverted, normal size and contour. Endometrium 5 mm, homogeneous.\nRight ovary 3.1 x 2.0 cm, normal follicles, normal flow. No adnexal mass.\nLeft ovary 2.9 x 1.8 cm, normal.\nNo free fluid.", "conclusion": "Normal pelvic ultrasound. Previously seen right adnexal complex has resolved."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Gynecology ultrasound follow-up", "author": "gynecology", "date": "2026-01-09T10:20", "body": "Follow-up visit 01/07/2026. Feels well, no pelvic pain, normal period in late December. Exam nontender. Ultrasound today normal with resolution of the right tubo-ovarian complex. PID resolved clinically and on imaging. She is returning to primary care for the 3-month chlamydia retest. No gynecology follow-up needed beyond routine care."}
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and fever",
+          "conditions": [
+            {"label": "Community-acquired pneumonia", "action": "diagnosed", "onset": "2026-01-16"}
+          ],
+          "medications": [
+            {"drug_text": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 5 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Community-acquired pneumonia"}
+          ],
+          "vitals": {"temp_c": 38.4, "spo2": 96},
+          "measure": ["bp", "hr", "rr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-01-20T10:55", "results": [
+              {"test": "SARS-CoV-2 (COVID-19) PCR", "text": "Not detected"},
+              {"test": "Rapid Influenza A+B Antigen", "text": "Negative"}
+            ]}
+          ],
+          "orders": [
+            {"id": "cxr-jan26", "action": "placed", "order": "Chest X-ray, 2 views", "category": "imaging", "reason": "Fever, cough, crackles right base"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-20T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-day visit: cough, fever", "author": "PCP", "date": "2026-01-20T10:40", "body": "Texted this morning, worked in late morning.\n\n4 days of cough, now productive of yellow sputum, fevers to 101-102 at home, chills, tired. Some right-sided chest discomfort when she coughs hard. No shortness of breath at rest. Roommate had a cold last week. No recent travel.\nNo daily meds. Allergy PCN.\n\nT 38.4, SpO2 96% RA, other vitals in flowsheet. Tired but not toxic. Speaking full sentences. Throat mildly injected. Lungs: crackles at the right base, no wheeze, otherwise good air movement. Heart regular, tachy-ish with fever.\n\nRapid flu neg, COVID PCR neg.\nCXR (read below): right lower lobe airspace opacity.\n\nA/P: Community-acquired pneumonia, RLL, outpatient-appropriate (young, no comorbidities, sats fine, CURB-65 0). Penicillin allergy so doxycycline 100 bid x5 days. Fluids, acetaminophen. Expect fever to break in 48-72h; message me Friday with an update, sooner if short of breath or not improving. Follow-up visit in about a month, which can line up with her chlamydia retest."}
+          ]
+        },
+        {
+          "id": "2026-01-20b",
+          "kind": "imaging",
+          "start": "2026-01-20T11:30",
+          "service": "Radiology",
+          "orders": [
+            {"id": "cxr-jan26", "action": "done", "date": "2026-01-20T11:30"}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2026-01-20T11:30", "issued": "2026-01-20T12:05", "text": "PA and lateral views of the chest. Patchy airspace opacity in the right lower lobe, posterior basal region on the lateral view. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal. Osseous structures intact.", "conclusion": "Right lower lobe airspace opacity consistent with pneumonia in the appropriate clinical setting."}
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Update", "author": "patient", "date": "2026-01-23T12:15", "body": "Fever broke yesterday, still coughing but way less. Feeling human again. Last doxy pill is tomorrow night."},
+            {"type": "Patient Message", "title": "Reply", "author": "PCP", "date": "2026-01-23T13:02", "body": "Great, that's the course we hoped for. The cough can hang on for a few weeks. Front desk will set up the visit in late February."}
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up pneumonia; STI retest",
+          "conditions": [
+            {"label": "Community-acquired pneumonia", "action": "resolved"},
+            {"label": "Chlamydial pharyngitis", "icd10": "A56.4", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-02-24T09:40", "resulted": "2026-02-26T10:05", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected (urine)"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected (urine)"}
+            ]},
+            {"panel": null, "collected": "2026-02-24T09:42", "resulted": "2026-02-26T10:05", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected (pharyngeal)"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected (pharyngeal)"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-02-24T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2026-02-24T09:20", "body": "Pneumonia f/u: cough gone for about 10 days, energy back, running again. No fevers.\nPID: gyn ultrasound in January was normal, hCG negative in December. No pelvic pain. Period regular.\nHere for the 3-month chlamydia retest, urine and throat swab. Partner was treated in December.\nMood better than in December, PHQ deferred today, she declines counseling for now.\n\nVitals normal, SpO2 normal. Lungs clear throughout, no crackles. Abdomen benign.\n\nA/P\n- CAP resolved clinically. No repeat imaging needed at her age with full recovery.\n- PID resolved per gyn.\n- Chlamydia test of reinfection: urine and pharyngeal NAAT sent. Will message results.\n- Physical due in late summer; Pap due this year too."},
+            {"type": "Result Note", "title": "Retest results", "author": "PCP", "date": "2026-02-26T11:30", "body": "Portal: your chlamydia and gonorrhea retests (urine and throat) were negative. All clear."}
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "hospital_admission",
+          "start": "2026-03-25T16:10",
+          "end": "2026-03-28T11:45",
+          "service": "Internal Medicine",
+          "reason": "Bloody diarrhea and abdominal cramping after clindamycin",
+          "conditions": [
+            {"label": "Severe Clostridioides difficile infection without toxic megacolon", "icd10": "A04.72", "action": "diagnosed", "onset": "2026-03-18"}
+          ],
+          "medications": [
+            {"drug_text": "clindamycin 300 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily for 10 days", "dose": {"value": 300, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "Dental abscess (prescribed by dentist, completed 03/11/2026)"},
+            {"drug_text": "vancomycin 125 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily for 10 days", "dose": {"value": 125, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "C. difficile infection"}
+          ],
+          "vitals": [
+            {"time": "2026-03-25T16:20", "bp": [108, 68], "hr": 94, "temp_c": 37.2, "rr": 16, "spo2": 99},
+            {"time": "2026-03-27T08:00", "bp": [112, 70], "hr": 78, "temp_c": 36.8, "rr": 14, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-03-25T16:40", "results": [
+              {"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-25T16:40", "results": [
+              {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Albumin", "value": 2.9}
+            ]},
+            {"panel": null, "collected": "2026-03-25T17:30", "resulted": "2026-03-25T21:15", "results": [
+              {"test": "Clostridioides difficile toxin B gene, NAA", "loinc": "54067-4", "text": "Detected"},
+              {"test": "Clostridioides difficile toxin A+B, immunoassay", "loinc": "34713-8", "text": "Positive"}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-27T06:00", "results": [
+              {"test": "Creatinine"}, {"test": "Potassium"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Medicine Discharge Summary", "author": "hospital medicine", "date": "2026-03-30T08:50", "body": "Regional hospital, internal medicine service\nAdmitted 03/25/2026, discharged 03/28/2026\n\nPrincipal diagnosis: severe Clostridioides difficile infection, no toxic megacolon\n\nHPI: 25 year old woman with genital HSV-2 and prior gonococcal cervicitis and chlamydial PID, both treated. Took clindamycin 300 mg four times daily for 10 days for a dental abscess (prescribed by her dentist, finished 3/11). About a week later she developed watery diarrhea, now 6-7 times daily and for the past day streaked with blood, with two days of severe crampy lower abdominal pain. Mildly nauseated, no vomiting, no fever. Takes no regular medications.\nAllergies: penicillin.\n\nExam on admission: uncomfortable, afebrile. Abdomen soft, tender left lower quadrant, no rebound or guarding, bowel sounds active. No distension.\n\nData: WBC and creatinine normal. Albumin 2.9. Stool C. difficile PCR positive with toxin positive. Abdominal imaging not performed; no distension or peritoneal signs.\n\nCourse: classified as severe given bloody diarrhea, frequency and hypoalbuminemia despite a normal white count. Supportive care with IV fluids and antiemetic as needed, diet advanced. Oral vancomycin 125 mg four times daily started 3/25. Stool frequency down to 3 per day without blood by discharge, cramping mild. Contact precautions observed.\n\nDischarge medications: vancomycin 125 mg PO four times daily to complete 10 days (through 4/3).\nInstructions: hand washing with soap and water at home, bleach-based cleaner for bathroom. Avoid unnecessary antibiotics; tell any prescriber, including the dentist, about this infection. Return for fever, worsening pain, distension, or more than 6 stools per day.\nFollow-up: primary care within 1 week."}
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "telephone",
+          "start": "2026-03-30T10:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-03-30T10:30", "body": "TCM outreach after 3/25-3/28 admission for C. diff. Pt reports 2-3 loose-to-soft stools per day, no blood since Friday. Eating bland foods, drinking well. Taking oral vancomycin 4x daily, has enough to finish 4/3. Reviewed handwashing (soap, not gel) and bathroom cleaning. Video follow-up 4/2 with PCP."}
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "telehealth_visit",
+          "start": "2026-04-02T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2026-04-02T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth follow-up after admission", "author": "PCP", "date": "2026-04-02T13:00", "body": "Video, pt at her apartment, consented.\n\nAdmitted 3/25-3/28 for severe C. diff after a 10-day clindamycin course from her dentist. Discharge summary reviewed: C. diff PCR and toxin positive, albumin 2.9, WBC and kidney function normal, on oral vancomycin.\n\nNow 2 soft stools a day, no blood, cramps gone. Appetite coming back. Thinks she lost a few pounds. Last vancomycin dose tomorrow.\n\nLooks well on video, no distress.\n\nA/P\nC. difficile infection, severe, improving. Finish vancomycin tomorrow. About 1 in 5 people have a recurrence in the next 2 months; if diarrhea returns (3+ loose stools a day), message the same day and we'll test and treat - don't use loperamide. Avoid antibiotics unless truly needed; clindamycin noted as the trigger, please flag with her dentist. Weight at physical. Doing well otherwise: pneumonia and PID both resolved, chlamydia retest negative."}
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T09:40",
+          "conditions": [
+            {"label": "Severe Clostridioides difficile infection without toxic megacolon", "icd10": "A04.72", "action": "resolved"},
+            {"label": "History of Clostridioides difficile infection", "action": "history", "onset": "2026-03-18"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Checking in", "author": "patient", "date": "2026-04-21T09:40", "body": "Just wanted to say I'm back to normal, no diarrhea since finishing the vancomycin. Do I need any test to make sure it's gone?"},
+            {"type": "Patient Message", "title": "Reply", "author": "PCP", "date": "2026-04-21T11:15", "body": "Glad to hear it. No test needed - we don't retest when you feel well, because the test can stay positive without infection. Only if symptoms come back. I've moved it to your past history."}
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "annual_physical",
+          "start": "2026-06-26T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 60.4},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-26T09:20", "results": [
+              {"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-26T09:20", "results": [
+              {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}
+            ]},
+            {"panel": null, "collected": "2026-06-26T09:20", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Rapid Plasma Reagin", "text": "Nonreactive"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2026-06-26T09:05", "issued": "2026-06-30T15:00", "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. No organisms identified.", "conclusion": "NILM."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-06-26T08:40"},
+            {"procedure": "Venipuncture", "performed": "2026-06-26T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Preventive Visit", "author": "PCP", "date": "2026-06-26T08:40", "body": "25 yo F, yearly visit, a few months early by her request.\n\nInterval: hard winter - PID admission in November (failing pregnancy of unknown location, resolved), pneumonia in January, C. diff in March after clindamycin. All resolved. No diarrhea since April. Weight back to about where she was. HSV quiet, one short flare in May treated with her valacyclovir. No pelvic pain, periods regular.\n\nMeds: valacyclovir prn. Allergies: penicillin (tolerated ceftriaxone twice).\nPMH/PSH reviewed: no surgeries.\nFH: mother HTN, father T2DM, sister asthma.\nSH: grad student, same partner. Never smoker. 1-2 drinks/week. AUDIT-C 2.\n\nExam: well, BMI normal. HEENT normal. Neck without adenopathy or thyromegaly. Lungs clear. Heart: regular, no murmur. Abdomen soft and nontender, no masses. Pelvic: external normal; cervix normal, no friability, no discharge; Pap collected. Bimanual nontender, no adnexal fullness. Skin clear.\n\nA/P\n1. Preventive: Pap today (3 yrs since 2023). Urine GC/CT, HIV, RPR given this year's infections. CBC/CMP to confirm recovery (albumin was low in March). PHQ-2 0. Vaccines: Tdap 2024, flu and COVID in the fall.\n2. Genital HSV-2, infrequent recurrences, episodic valacyclovir.\n3. History of C. diff - antibiotic stewardship, clindamycin flagged as the precipitant in her chart.\n4. History of gonorrhea and chlamydial PID, treated, retests negative.\nFollow-up early fall for flu shot and check-in."}
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "portal_message",
+          "start": "2026-07-01T10:25",
+          "documents": [
+            {"type": "Result Note", "title": "Physical results", "author": "PCP", "date": "2026-07-01T10:25", "body": "Hi Caitlin - all normal: Pap smear normal (next in 3 years), blood counts, kidney/liver tests and albumin normal, and the STI tests negative. Have a good summer."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T14:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Valacyclovir refill", "author": "front desk", "date": "2026-08-11T14:30", "body": "Pharmacy refill request: valacyclovir 500 mg, #6, no refills remaining. Pt asked pharmacy to request more."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2026-08-11T16:05", "body": "Approved valacyclovir 500 mg #6 with 3 refills, episodic use as before."}
+          ]
+        },
+        {
+          "id": "2026-09-29a",
+          "kind": "office_visit",
+          "start": "2026-09-29T15:00",
+          "reason": "Fall check-in and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

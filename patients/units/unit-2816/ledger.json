@@ -1,0 +1,1314 @@
+{
+  "unit": "unit-2816",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002816",
+      "given": "Jada",
+      "family": "Washington",
+      "birth_date": "1981-03-25",
+      "address_line": "23 Cosgrove Avenue",
+      "phone": "+1-978-555-0195",
+      "email": "jada.washington@example.test",
+      "marital_status": "partnered",
+      "summary": "45-year-old woman with HIV/AIDS followed at an outside ID clinic and opioid use disorder in remission on buprenorphine-naloxone prescribed by the practice. Develops CMV retinitis of the left eye in September 2025 and primary CNS lymphoma in May 2026, after her last practice visit; sparse outside records.",
+      "events": [
+        {
+          "id": "2024-08-06a",
+          "kind": "telephone",
+          "start": "2024-08-06T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-06T10:12",
+              "author": "front desk",
+              "body": "Caller wants to establish with Dr. as her new PCP. Her old primary care office stopped taking her plan. Has Medicaid, card info taken. Sees an infectious disease clinic for HIV and says she will keep seeing them. Also needs someone to keep writing her Suboxone, last script from old office runs out end of the month. Booked new patient visit Tue 8/20 9:00, 60 min. Membership info emailed. Asked her to bring all her medicine bottles and the name of her ID doctor's office."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T09:00",
+          "end": "2024-08-20T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; continue buprenorphine",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "diagnosed",
+              "note": "AIDS, CD4 under 200; managed by outside ID clinic"
+            },
+            {
+              "label": "Opioid dependence, in remission",
+              "action": "diagnosed",
+              "note": "sustained remission on buprenorphine-naloxone maintenance",
+              "icd10": "F11.21"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2024-03-01",
+              "note": "quit March 2024, 20 pack-years"
+            },
+            {
+              "label": "Personal history of HIV-related opportunistic skin infection",
+              "action": "history",
+              "note": "HIV-related opportunistic skin infection, treated and resolved before joining",
+              "icd10": "Z86.19"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV infection (prescribed by ID)"
+            },
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 DS tablet by mouth three times weekly on Monday, Wednesday and Friday",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pneumocystis prophylaxis (prescribed by ID)"
+            },
+            {
+              "drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film",
+              "action": "start",
+              "sig": "Dissolve 1 film under the tongue once daily",
+              "dose": {
+                "value": 1,
+                "unit": "film"
+              },
+              "frequency": "DAILY",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Opioid use disorder in remission"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              73
+            ],
+            "hr": 56,
+            "spo2": 99,
+            "weight_kg": 67.6,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time customer service representative"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-08-20T10:40",
+              "author": "PCP",
+              "body": "43F here to establish. Moving her primary care from a prior office; keeps her HIV care with an outside infectious disease clinic.\n\nHIV: AIDS-defining CD4 (under 200) per her report, on bictegravir/emtricitabine/TAF one pill a day and TMP-SMX DS M/W/F for PJP prophylaxis, both from ID. She does not know her last numbers offhand. Sees ID every few months, labs there. Feels well.\n\nOUD: in sustained remission, years now by her account, on buprenorphine-naloxone 8/2 mg film once daily. Prior prescriber was at the old office. No cravings, no use, no recent ED visits. Brother has struggled with opioids too and she says watching that keeps her steady. Asks us to take over the prescription; agreed. PMP reviewed today: single prescriber, single pharmacy, buprenorphine only, fills on time.\n\nPast history: had a skin infection tied to the HIV some time ago, treated and cleared, no recurrence. No surgeries.\nMeds: as above. Allergies: none to medicines.\nFH: mother with type 2 diabetes. Father had high blood pressure and a stroke at 67. Older brother with opioid use disorder.\nSH: lives in Florence with her partner. Works part time doing customer service by phone. Smoked about a pack a day for 20 years, stopped in March, no slips, no vaping. Drinks once or twice a month, socially. No other substances.\n\nROS: no fevers, sweats, weight change, cough, rash, mouth sores, vision change, headaches.\n\nExam: well appearing, pleasant. Vitals as recorded. Oropharynx clear, no thrush. No lymphadenopathy. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin: no lesions or rashes. Neuro grossly intact.\n\nPHQ-9: 3.\n\nA/P\n1. HIV with AIDS: continue ART and TMP-SMX per ID. Will request their notes and recent labs.\n2. OUD in remission on buprenorphine-naloxone: e-prescribed 8/2 mg film daily, #28, 2 refills. Follow up every 2-3 months.\n3. Former smoker: congratulated; continue abstinence.\n4. Health maintenance: CMP, lipids, A1c, HCV antibody today. Records release signed for prior office and ID clinic. Vaccines at next visit when flu is in.\n\nReturn in about 2 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T16:02",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-08-23T16:02",
+              "author": "PCP",
+              "body": "Hi Jada, your labs from Tuesday came back fine. Kidney and liver tests normal, cholesterol in a good range, A1c (diabetes screen) normal, and hepatitis C screen negative. Nothing to change. See you in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2024-08-23T18:40",
+              "author": "patient",
+              "body": "Thank you!! good to hear"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-05a",
+          "kind": "outside_records",
+          "start": "2024-09-05T11:30",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2024-09-05T11:30",
+              "author": "MA",
+              "body": "38 pages from prior PCP office. Mostly visit notes and buprenorphine prescribing record. Relevant: cervical cytology 03/2023 negative for intraepithelial lesion, HPV not detected. Screening mammogram 05/2023 BI-RADS 1. Immunization history incomplete in their records. ID clinic records requested again, not yet received. Abstracted, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "office_visit",
+          "start": "2024-10-23T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up; vaccines",
+          "vitals": {
+            "bp": [
+              124,
+              59
+            ],
+            "hr": 62,
+            "weight_kg": 67.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-10-23T14:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-23T14:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-23T14:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-23T14:52"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-10-23T14:54"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-10-23T15:05",
+              "author": "PCP",
+              "body": "Follow-up, buprenorphine maintenance.\nDoing well. Taking film every morning, no missed doses, no cravings, no use. Work is steady, partner supportive. Saw ID last month, she says they were happy and kept everything the same. Still not smoking.\nPMP checked, consistent.\nExam: comfortable, vitals reviewed. Mouth without thrush. Lungs clear, heart regular.\nPHQ-9 2.\nPlan: buprenorphine-naloxone 8/2 daily continued, new script #28 x2 refills. Flu, updated COVID and PCV20 today (immunocompromised, no prior pneumococcal on record). Shingrix series to start next visit. Back in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "pharmacy",
+          "start": "2024-12-18T09:20",
+          "reason": "Refill authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2024-12-18T09:20",
+              "author": "MA",
+              "body": "Pharmacy faxed request for buprenorphine-naloxone 8/2 mg films, last refill on current script used. Pt has follow-up 1/16. Sent to PCP to authorize a bridge."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill authorized",
+              "date": "2024-12-18T12:45",
+              "author": "PCP",
+              "body": "PMP reviewed. Bridge sent, #28, no refills. Keep January visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "office_visit",
+          "start": "2025-01-16T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              71
+            ],
+            "hr": 64,
+            "weight_kg": 68.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-01-16T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-01-16T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-01-16T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-01-16T09:20",
+              "author": "PCP",
+              "body": "Here for buprenorphine follow-up. Holidays were a bit stressful (busy season at work, more call volume) but no cravings and no use. Taking 8/2 daily. Sleep okay. Still off cigarettes, chewing gum when the urge hits.\nHIV followed by ID, no changes she knows of.\nPMP reviewed, no other prescribers.\nExam: well, vitals reviewed, lungs clear, no rash.\nPHQ-9 4.\nPlan: continue buprenorphine-naloxone 8/2 mg daily, #28 x2 refills. Shingrix dose 1 today, second in 3 months. Screening mammogram ordered (last 2023). Return 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "imaging",
+          "start": "2025-02-04T10:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-02-04T10:30",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: 2023 outside study. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-02-04T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-04-08T14:30",
+              "author": "front desk",
+              "body": "No-show for 1:40. Called cell, left VM to reschedule. Texted as well."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Missed appointment",
+              "date": "2025-04-08T17:10",
+              "author": "front desk",
+              "body": "Pt texted back, got stuck covering a shift, apologized. Rebooked 4/24 2:00. Has enough film to get there per pt."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "office_visit",
+          "start": "2025-04-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up; Pap",
+          "vitals": {
+            "bp": [
+              110,
+              79
+            ],
+            "hr": 64,
+            "weight_kg": 68.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-04-24T14:25",
+              "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, high-risk HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-24T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-24T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-04-24T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-04-24T14:50",
+              "author": "PCP",
+              "body": "Rescheduled from 4/8, work conflict. Doing well. No cravings, no use, daily film. No problems with the second-shift schedule other than the missed visit. Arm sore for a day after the first Shingrix, nothing else.\nPMP reviewed, appropriate.\nExam: vitals reviewed. Heart and lungs normal. Pelvic: normal external genitalia, vaginal walls and cervix normal appearing, no discharge; Pap with HPV collected. No adnexal tenderness.\nPHQ-9 2.\nPlan: buprenorphine-naloxone 8/2 mg daily, #28 x2 refills. Shingrix #2 today, series complete. Pap sent; with HIV we will keep cervical screening on a closer schedule. Annual physical in July with labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "portal_message",
+          "start": "2025-04-29T12:15",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2025-04-29T12:15",
+              "author": "PCP",
+              "body": "Jada, your Pap came back normal and the HPV test was negative. We'll plan the next one in about a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "annual_physical",
+          "start": "2025-07-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              67
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 68.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-10T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-10T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-10T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 133
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-10T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-07-10T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-10T10:25",
+              "author": "PCP",
+              "body": "Annual exam, 44F.\nInterval: no illnesses. Buprenorphine going well, still in remission, film daily. HIV meds and Mon/Wed/Fri TMP-SMX from ID, saw them in June. Off cigarettes over a year now. A drink or so a month.\nROS: negative for fever, sweats, weight loss, cough, swallowing trouble, vision change, headache, rash.\nMeds reviewed: bictegravir/FTC/TAF daily, TMP-SMX DS MWF, buprenorphine-naloxone 8/2 daily.\nAllergies: NKDA.\nExam: NAD. HEENT normal, oropharynx without thrush or ulcers. Neck supple, no nodes, thyroid normal. Heart regular, no murmur. Lungs clear. Breasts without masses. Abdomen benign. Skin clear. Neuro nonfocal. Mood good.\nPHQ-9 3, AUDIT-C 1.\nHealth maintenance: mammogram Feb normal, Pap April normal, Shingrix done, PCV20 done, flu/COVID due in fall. Colon screening at 45 next spring.\nPlan: CMP, CBC, lipids, A1c today. Continue current regimen. Return in the fall for vaccines and buprenorphine visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-14a",
+          "kind": "ed_visit",
+          "start": "2025-09-14T15:10",
+          "end": "2025-09-14T20:45",
+          "service": "Emergency Medicine",
+          "reason": "Blurred vision and discomfort, left eye",
+          "vitals": [
+            {
+              "time": "2025-09-14T15:20",
+              "bp": [
+                122,
+                68
+              ],
+              "hr": 74,
+              "temp_c": 36.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-14T16:05",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 86
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-09-14T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-09-16T08:30",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nVisit: 09/14/2025\n\nCC: L eye blurry x6 days.\nHPI: 44F with HIV/AIDS on ART, OUD in remission on buprenorphine-naloxone. Six days of worsening blur and an ache in the left eye, light bothers her a little, seeing floaters. No injury, no travel.\nMeds: bictegravir/FTC/TAF daily, TMP-SMX DS MWF, buprenorphine-naloxone 8/2 SL daily. Allergies: NKDA.\nVS: T 36.9, HR 74, BP 122/68.\nExam: Dilated fundus exam OS with areas of whitened retina and intraretinal hemorrhage. No skin lesions. No oral thrush.\nLabs: CD4 86.\nMDM: Retinal findings in a patient with advanced immunosuppression most consistent with a viral, likely CMV, retinitis. Discussed with on-call ophthalmology, who will see her in clinic in 2 days. ID clinic notified.\nDispo: home, ophthalmology 9/16, return for worsening vision or new eye pain.\n\nReceived by fax 09/16/2025."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "telephone",
+          "start": "2025-09-16T16:40",
+          "reason": "ED follow-up call; eye infection",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call after ED visit",
+              "date": "2025-09-16T16:40",
+              "author": "RN",
+              "body": "Pt calling to let us know she was in the ED Sunday for her L eye. Saw the retina specialist today, told it is CMV infection in the left eye, right eye looks fine. Her ID doctor started valganciclovir, 2 pills twice a day for 3 weeks, then she will be told the next dose. Pharmacy said it needs a prior auth. ED note came by fax this morning. Vision still blurry L, no new pain. Booked post-ED visit 9/24. Advised call or go back for any worse vision."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "pharmacy",
+          "start": "2025-09-17T09:05",
+          "reason": "Prior authorization request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization routed",
+              "date": "2025-09-17T09:05",
+              "author": "MA",
+              "body": "PA request for valganciclovir 450 mg tabs came to us from pharmacy, but prescriber is the ID clinic. Called ID office, they have it and are submitting today. Pharmacy gave pt a 3-day emergency supply. Pt updated by text."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "office_visit",
+          "start": "2025-09-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, CMV retinitis",
+          "conditions": [
+            {
+              "label": "CMV retinitis, left eye",
+              "action": "diagnosed",
+              "onset": "2025-09-08",
+              "note": "confirmed by ophthalmology 2025-09-16; on valganciclovir via ID",
+              "icd10": "B25.8"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "valganciclovir 450 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (900 mg) by mouth twice daily for 21 days",
+              "dose": {
+                "value": 900,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "CMV retinitis, induction (prescribed by ID)"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              68
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 67.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-09-24T11:40",
+              "author": "PCP",
+              "body": "Follow-up after ED 9/14 for left eye.\nED note reviewed: retinal whitening and hemorrhage OS, CD4 86. Retina saw her 9/16 and confirmed CMV retinitis in the left eye, right eye clear by her report; no letter from them yet. ID started valganciclovir 900 mg twice daily x 21 days; PA went through, she has the full supply and is taking it with food.\nSince then: left eye still blurry but floaters a bit fewer, the light sensitivity is better. No eye pain. Right eye fine. Taking ART daily and TMP-SMX MWF. Buprenorphine steady, no cravings even with the stress of this.\nExam: vitals reviewed. Right eye visual acuity grossly normal, left reduced. No conjunctival injection. Mouth clear. Lungs clear, heart regular. Skin without lesions.\nA/P\n1. CMV retinitis OS: on induction via ID; retina follow-up next month. Added to problem list and med list. ID following blood counts on valganciclovir.\n2. HIV/AIDS: CD4 86 noted. Per ID.\n3. OUD in remission: continue buprenorphine-naloxone 8/2 daily; script current.\nFlu/COVID shots with nurse in October. Will request retina and ID notes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines; medication reconciliation",
+          "medications": [
+            {
+              "drug_text": "valganciclovir 450 MG Oral Tablet",
+              "action": "stop",
+              "reason": "induction complete"
+            },
+            {
+              "drug_text": "valganciclovir 450 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (900 mg) by mouth once daily",
+              "dose": {
+                "value": 900,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "CMV retinitis, maintenance (prescribed by ID)"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              78
+            ],
+            "hr": 74
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T10:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2025-10-14T10:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T10:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "date": "2025-10-14T10:45",
+              "author": "RN",
+              "body": "Here for flu and COVID vaccines. Screening questions negative, no fever today. Flu L deltoid, COVID R deltoid, tolerated, observed 15 min.\nMed rec: pt states ID changed valganciclovir to 2 tabs once a day starting 10/7 after the 3 weeks were up; pharmacy fill history matches (10/7, #60). Updated med list. Says L eye vision slowly improving, next retina appt in November. Routed to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "office_visit",
+          "start": "2025-12-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 70,
+            "weight_kg": 68.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-11T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-12-11T15:55",
+              "author": "PCP",
+              "body": "Buprenorphine visit and check-in on the eye.\nOUD: no cravings, no use. Film daily. Says the fall was hard but her partner and routine kept her steady. PMP clean.\nEye: retina visit in November, told it is quiet now and stable; still on valganciclovir 900 once daily from ID until her counts come up. Left eye vision better though not back to where it was. Reading with the right eye mostly.\nHIV: ID visit in November, no changes to ART.\nExam: well, vitals reviewed. Lungs clear, heart regular. No rash.\nPHQ-9 4.\nA/P: OUD in remission, continue buprenorphine-naloxone 8/2 daily, #28 x2 refills. CMV retinitis OS on maintenance per ID and retina. Still no letters from either office, requested again. Return March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T07:55",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2026-01-20T07:55",
+              "author": "patient",
+              "body": "Hi, pharmacy says my last refill on the strips is used up. I have 4 left. My appt isnt till March. Can you send more? thank you"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2026-01-20T12:30",
+              "author": "PCP",
+              "body": "Checked the monitoring database, all set. Sent buprenorphine-naloxone 8/2 mg, 28 films with 1 refill to your usual pharmacy. That gets you to March. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "office_visit",
+          "start": "2026-03-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up; health maintenance",
+          "vitals": {
+            "bp": [
+              115,
+              68
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 67.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-20T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2026",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening, age 45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-20T11:20",
+              "author": "PCP",
+              "body": "Buprenorphine maintenance and health maintenance. Turns 45 next week.\nOUD: still in remission, no use, no cravings. Daily film, no side effects. PMP: buprenorphine only, this office only.\nCMV retinitis OS: retina in February said stable. Remains on valganciclovir 900 daily via ID. Left eye still a little hazy, unchanged.\nHIV: ART daily, TMP-SMX MWF. ID visit due next month. She does not have her recent numbers with her.\nNo headaches, no fevers, no weight change, no swallowing problems.\nExam: well appearing. Vitals reviewed. Mouth clear. Lungs clear, heart regular. Skin without lesions. Neuro: alert, fluent, strength symmetric.\nPHQ-9 3.\nA/P\n1. OUD in sustained remission: continue buprenorphine-naloxone 8/2 mg daily, #28 x2 refills sent.\n2. CMV retinitis OS: per ID and retina.\n3. HIV/AIDS: per ID.\n4. Colon screening: FIT kit given with instructions, mail back within 2 weeks.\n5. Pap due in April/May, mammogram due February next year; will do Pap at next visit.\nReturn about 3 months, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "ed_visit",
+          "start": "2026-05-12T13:25",
+          "end": "2026-05-12T21:10",
+          "service": "Emergency Medicine",
+          "reason": "Confusion and headache",
+          "vitals": {
+            "bp": [
+              118,
+              65
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-12T13:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2026-05-14T09:15",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nVisit: 05/12/2026\n\nCC: Confusion, headache.\nHPI (from partner): 45F with HIV/AIDS and OUD in remission, here last September for a CMV eye infection. For about a week has had a worsening headache and has been more and more confused; today barely speaking and very sleepy, so partner brought her in. Most recent CD4 at her ID clinic 70.\nMeds per partner: bictegravir/FTC/TAF, buprenorphine-naloxone 8/2 SL daily, valganciclovir. Allergies: NKDA.\nSH: former smoker, quit about 2 years ago, 20 pack-years. Rare alcohol. Works part time.\nExam: drowsy, opens eyes to voice, not oriented to place or date, says only a few words. Mild weakness of the right arm and leg.\nCT head: left cerebral mass.\nMDM: New mass lesion with altered mental status in advanced HIV. Neurosurgery and medicine consulted. Admitted for MRI and further workup.\nDispo: admitted.\n\nReceived by fax 05/14/2026."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "telephone",
+          "start": "2026-05-13T09:40",
+          "reason": "Partner call; patient admitted",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from partner",
+              "date": "2026-05-13T09:40",
+              "author": "RN",
+              "body": "Pt's partner (listed contact, pt previously signed release) called. Pt admitted since yesterday at the area hospital, was confused and not talking, they found something on her head CT, more scans today. Partner wanted Dr. to know and asked whether we will keep the buprenorphine going. Told her the hospital will give it while she is admitted and we will handle scripts after discharge. Gave our number for the team to call. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Call from partner",
+              "date": "2026-05-13T13:05",
+              "author": "PCP",
+              "body": "Called partner back, thanked her. Asked the floor team to send discharge summary. Will call after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "outside_records",
+          "start": "2026-06-03T14:10",
+          "reason": "Hospital discharge summary",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-06-03T14:10",
+              "author": "hospital medicine",
+              "body": "AREA HOSPITAL, INPATIENT MEDICINE\nAdmitted 05/12/2026  Discharged 05/29/2026\n\nPrincipal diagnosis: Primary CNS lymphoma, diffuse large B-cell type.\nOther: HIV/AIDS; CMV retinitis OS on maintenance valganciclovir; opioid use disorder in remission on buprenorphine-naloxone.\n\nCourse: Presented with a week of headache and progressive confusion, nonverbal on arrival, with mild right-sided weakness; head CT with a left cerebral mass. MRI brain with and without contrast showed a single enhancing mass in the left cerebral hemisphere with surrounding vasogenic edema. Neurosurgery performed stereotactic biopsy; pathology diffuse large B-cell lymphoma, consistent with primary CNS lymphoma. Dexamethasone started for edema. Oncology began induction with high-dose methotrexate plus rituximab, with leucovorin rescue; first cycles given inpatient with level monitoring. ART, TMP-SMX, valganciclovir and buprenorphine-naloxone continued throughout. ID followed.\n\nAt discharge: alert and oriented, speaking normally, right-sided weakness improving.\n\nDischarge medications: bictegravir/FTC/TAF 1 tab daily; TMP-SMX DS MWF; valganciclovir 900 mg daily; buprenorphine-naloxone 8/2 mg SL daily; dexamethasone taper per oncology.\nAllergies: NKDA.\n\nFollow-up: oncology clinic for next scheduled inpatient cycle; ID clinic; PCP for buprenorphine prescribing.\n\nScanned to chart 06/03/2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T10:00",
+          "reason": "Buprenorphine refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-06-09T10:00",
+              "author": "MA",
+              "body": "Pharmacy request for buprenorphine-naloxone 8/2 mg films; March script refills used. Pt home from hospital per discharge summary filed 6/3. To PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2026-06-09T13:20",
+              "author": "PCP",
+              "body": "PMP reviewed: inpatient period, no outside buprenorphine fills. Sent #28 x1 refill. Discharge summary reviewed. Will reach out to schedule when her chemo calendar allows."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "telephone",
+          "start": "2026-07-07T11:30",
+          "reason": "Partner call; refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from partner",
+              "date": "2026-07-07T11:30",
+              "author": "RN",
+              "body": "Partner calling for pt, who is home between treatment admissions and talking and walking on her own now. Needs buprenorphine refill before next admission next week. Not able to come in for a visit right now, will call to book when oncology gives her a break. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Call from partner",
+              "date": "2026-07-07T15:00",
+              "author": "PCP",
+              "body": "PMP fine. Sent #28 x1 refill. Told partner to call any time; we can do a video visit when she is up to it."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "outside_records",
+          "start": "2026-08-11T09:45",
+          "reason": "Oncology note",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hematology-Oncology Clinic Note",
+              "date": "2026-08-11T09:45",
+              "author": "oncology",
+              "body": "OUTSIDE HEMATOLOGY-ONCOLOGY CLINIC\nVisit: 08/04/2026\n\nDx: Primary CNS lymphoma, DLBCL, diagnosed 05/2026, in the setting of HIV/AIDS.\nTreatment: induction high-dose methotrexate with rituximab and leucovorin rescue, given as scheduled inpatient cycles; tolerating.\nInterval: dexamethasone taper completed. Speech normal.\nInterim MRI brain: the left hemisphere lesion is smaller, with less surrounding edema.\nAllergies: NKDA.\nPlan: continue induction per protocol; repeat MRI after induction; ID co-managing ART and prophylaxis.\n\ncc: primary care. Received 08/11/2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:20",
+          "reason": "Partner message",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2026-08-18T19:20",
+              "author": "patient",
+              "body": "Hi it's Jada's partner typing for her. She wanted you to know the cancer doctors said the MRI looked smaller. She's still doing the hospital stays every couple weeks. She'll need the strips again around the 1st. Thanks for everything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2026-08-19T08:10",
+              "author": "PCP",
+              "body": "That is really good news, thank you for letting me know. I saw the oncology note too. Have the pharmacy send the refill request near the end of the month and I'll take care of it. When she feels up to it, a video visit is easy to set up."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "CMV retinitis, left eye|B25.8": {
+        "code": "B25.8",
+        "display": "Other cytomegaloviral diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Opioid dependence, in remission|F11.21": {
+        "code": "F11.21",
+        "display": "Opioid dependence, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of HIV-related opportunistic skin infection|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "valganciclovir 450 MG Oral Tablet": {
+        "code": "313566",
+        "display": "valganciclovir 450 MG Oral Tablet",
+        "ingredient": "valganciclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

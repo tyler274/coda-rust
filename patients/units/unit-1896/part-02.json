@@ -1,0 +1,171 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001896",
+      "events": [
+        {
+          "id": "2025-02-18a",
+          "kind": "office_visit",
+          "start": "2025-02-18T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "UTI symptoms",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-02-18T15:55", "results": [
+              {"test": "Urine Clarity", "text": "Cloudy"},
+              {"test": "Urine pH", "value": 8.0},
+              {"test": "Urine Leukocyte Esterase", "text": "Positive"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine White Blood Cells", "value": 60},
+              {"test": "Urine Blood", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2025-02-18T15:55", "resulted": "2025-02-20T08:10", "results": [
+              {"test": "Urine Culture", "text": "Proteus mirabilis >100,000 CFU/mL. Susceptible: cephalexin, ceftriaxone, trimethoprim-sulfamethoxazole, ciprofloxacin. Resistant: nitrofurantoin."}
+            ]}
+          ],
+          "medications": [
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 3 days", "dose": {"value": 1, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Proteus cystitis"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-18T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-18T16:20",
+              "body": "Texted at lunch about burning again, came in after dismissal.\n\nS: 3 days dysuria, urgency, urine cloudy and \"smells off.\" No fever or chills. No flank pain. No visible blood. Last episode in November grew Proteus, cleared on cephalexin.\n\nO: afebrile, vitals fine. Abdomen soft, mild suprapubic discomfort, no CVA tenderness.\nUA: cloudy, pH 8.0, LE+, nitrite+, 60 WBC, blood negative.\n\nA/P: recurrent cystitis, likely same organism. It was sensitive to TMP-SMX last time, so TMP-SMX DS BID x3 days. Culture sent. If she has another one this spring we should think about why they keep coming back."
+            },
+            {
+              "type": "Result Note",
+              "title": "Urine culture",
+              "author": "PCP",
+              "date": "2025-02-20T12:15",
+              "body": "Proteus mirabilis again, sensitive to TMP-SMX. Current treatment appropriate. MA to let her know."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "recurrent UTI, right side pain",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-06-10T15:50", "results": [
+              {"test": "Urine Clarity", "text": "Cloudy"},
+              {"test": "Urine pH", "value": 8.0},
+              {"test": "Urine Leukocyte Esterase", "text": "Positive"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine White Blood Cells", "value": 20},
+              {"test": "Urine Blood", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2025-06-10T15:50", "resulted": "2025-06-12T09:30", "results": [
+              {"test": "Urine Culture", "text": "Proteus mirabilis >100,000 CFU/mL. Susceptible: cephalexin, ceftriaxone, trimethoprim-sulfamethoxazole, ciprofloxacin. Resistant: nitrofurantoin."}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-10T16:15", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]}
+          ],
+          "medications": [
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Proteus cystitis"}
+          ],
+          "orders": [
+            {"id": "uro-referral", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "recurrent UTIs with intermittent right flank pain"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-10T15:45"},
+            {"procedure": "Venipuncture", "performed": "2025-06-10T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-06-10T16:30",
+              "body": "Follow-up, urinary symptoms again.\n\nShe says the infections never really go away. After each course she feels better for a few weeks, then the urine is cloudy and foul-smelling again. Over the last few months she has also noticed an ache in the right flank that comes and goes, sometimes for an afternoon, then nothing for a week or two. No fever, no chills, no blood in the urine. No vomiting. Bowels normal.\n\nExam: afebrile, BP normal. Appears well. Abdomen soft, nontender. Mild tenderness at the right CVA; left nontender.\nUA: cloudy, pH 8.0, LE+, nitrite+, 20 WBC, no blood.\n\nAssessment: recurrent UTI, Proteus on both cultures since November, persistently alkaline urine, now with intermittent right flank pain. Not acutely ill.\n\nPlan:\n- Cephalexin 500 BID x7d, culture sent.\n- BMP today for kidney function.\n- Urology referral to look for a structural cause. Order placed, she prefers late July, after the school year.\n- To the ED for fever, vomiting or severe pain."
+            },
+            {
+              "type": "Result Note",
+              "title": "Culture and BMP",
+              "author": "PCP",
+              "date": "2025-06-12T13:00",
+              "body": "Culture Proteus again, sensitive to cephalexin. Kidney function normal. Urology referral already sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "specialist_visit",
+          "start": "2025-07-21T09:30",
+          "service": "Urology",
+          "reason": "recurrent UTIs, right flank pain",
+          "conditions": [
+            {"label": "Kidney stone", "action": "diagnosed", "onset": "2025-07-21", "note": "7 mm right lower pole calculus on KUB"}
+          ],
+          "measure": ["bp", "hr", "temp_c"],
+          "reports": [
+            {"study": "XR Abdomen AP (KUB)", "loinc": "24799-9", "performed": "2025-07-21T09:55", "text": "Single supine view of the abdomen. A 7 mm radiopaque calculus projects over the lower pole of the right kidney. No other calcification along the expected course of either ureter or in the pelvis. Left renal shadow without calculus. Nonobstructive bowel gas pattern. Osseous structures unremarkable.", "conclusion": "7 mm right lower pole renal calculus."}
+          ],
+          "orders": [
+            {"id": "uro-referral", "action": "done", "date": "2025-07-21T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Consultation",
+              "author": "urology",
+              "date": "2025-07-24T14:20",
+              "body": "OUTSIDE UROLOGY GROUP - NEW PATIENT CONSULTATION\nDate of service: 07/21/2025\nRe: Kelly Bergeron, DOB 10/13/1990\nReferred by: primary care\n\nReason for referral: recurrent urinary tract infections.\n\nHistory: 34-year-old teacher with repeated infections over the past year. Her PCP has treated them with several antibiotic courses; she describes each one as improving her symptoms without ever fully clearing them. For a few months she has had an intermittent right flank ache and urine that is cloudy and foul-smelling. She has had no fevers or chills and has not seen blood. Cultures from her primary care office have grown Proteus mirabilis three times, with alkaline urine each time.\n\nMedications: none currently.\nAllergies: NKDA.\nPast surgical history: none.\nFamily history: mother with nephrolithiasis; father with hypertension.\nSocial history: never smoker; alcohol occasionally, one or two drinks a month; elementary school teacher.\n\nExam: vital signs normal. Comfortable. Abdomen soft without masses. Mild right costovertebral angle tenderness. No suprapubic tenderness.\n\nImaging: KUB obtained in clinic today, personally reviewed: 7 mm radiopaque calculus over the right lower pole. No ureteral or bladder calculi.\n\nImpression:\n1. Right renal calculus, 7 mm.\n2. Recurrent UTI with a urease-producing organism and alkaline urine. The stone may well be infection related and could be acting as a reservoir.\n\nPlan:\n- Fluids, at least 2.5 liters daily.\n- Urine culture with any symptoms; treat per sensitivities.\n- We discussed elective ureteroscopy to remove the stone versus watching it. She would like time to think and would rather not schedule anything during the school year.\n- Return in 6 months with repeat imaging, sooner for fever or severe pain.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "portal_message",
+          "start": "2025-07-28T19:40",
+          "reason": "question about urology visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney stone question",
+              "author": "patient",
+              "date": "2025-07-28T19:40",
+              "body": "Hi, I saw urology last week and they found a kidney stone on the right. They gave me the option of having it taken out or waiting. Did you get their letter? Mom had stones too so I'm not totally shocked. Is waiting ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney stone question",
+              "author": "PCP",
+              "date": "2025-07-29T08:15",
+              "body": "Hi Kelly, yes, the letter came in and I read it. Waiting is a reasonable option for now, and the urologist will re-image you in about 6 months. Keep up the water. If you get fever, vomiting, or pain that won't settle, go to the ER. Happy to talk it through by phone if helpful."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T15:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-07T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-07T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2025-10-07T15:50",
+              "body": "Here for seasonal vaccines. Feeling well, no fever. No prior vaccine reactions. Flu 0.5 mL IM left arm, 2025-26 COVID (Moderna) IM right arm. VIS reviewed. Observed 15 min, no reaction. Asked about her urine: no infections since June."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

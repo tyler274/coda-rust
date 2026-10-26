@@ -1,0 +1,259 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002575",
+      "given": "Ethan",
+      "family": "Pickett",
+      "birth_date": "2001-09-13",
+      "address_line": "118 Grantwood Lane",
+      "phone": "+1-201-555-0121",
+      "email": "ethan.pickett@example.test",
+      "marital_status": "single",
+      "summary": "Healthy university student who joined the practice at 21 and lives with his parents in Amherst. Schizophrenia was diagnosed by psychiatry in October 2024 after months of withdrawal and then paranoid delusions; he declined medication until a February 2026 ED visit and inpatient psychiatric stay started risperidone. The practice follows him with antipsychotic metabolic monitoring.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient request",
+              "author": "front desk",
+              "date": "2023-08-08T10:12",
+              "body": "Mother called on behalf of her son Ethan, 21, who has outgrown his pediatrician and needs an adult doctor before he heads back to classes. No current concerns per mom. Insured through his parents' PPO. Booked new patient physical 8/22 at 9:00. Asked mom to have the pediatric office send his records and vaccine history."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "outside_records",
+          "start": "2023-08-14T14:30",
+          "reason": "Pediatric records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pediatric practice records",
+              "author": "pediatrics",
+              "date": "2023-08-14T14:30",
+              "body": "Records from his pediatric practice, 22 pages, covering well visits from infancy through age 19. Growth and development normal throughout. No chronic problems, no hospitalizations, no surgeries. No known drug allergies. Childhood and adolescent immunization series complete, including Tdap at age 11 and the adolescent series; influenza most years. Last well visit at 19 unremarkable.\n\nFiled to media. Immunization dates abstracted for the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T09:00",
+          "end": "2023-08-22T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 74.0, "height_cm": 180.0, "labs": {"Thyroid Stimulating Hormone": 1.7, "Hemoglobin A1c": 5.1, "Fasting Glucose": 87, "Low Density Lipoprotein": 86, "Total Cholesterol": 162, "Non-HDL Cholesterol": 108}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "University student"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2023-08-22T09:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-08-22T09:40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-08-22T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T09:50"},
+            {"procedure": "Immunization administration", "performed": "2023-08-22T09:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2023-08-22T09:45",
+              "body": "21 y/o M establishing care, coming over from his pediatrician. Rising junior at the university, commutes from home, lives with mom and dad in Amherst. Feels well. No complaints today.\n\nPMH: none. PSH: none. Meds: none. Allergies: NKDA.\nFH: maternal uncle with schizophrenia; paternal grandmother with bipolar disorder; mother with major depression.\nSH: never a smoker, does not drink. Tried cannabis in the past, not using now. Not sexually active currently; discussed HIV/HCV one-time screening, agrees.\n\nROS: negative except as above. Sleeping fine, mood good.\n\nExam: well-appearing young man, pleasant, good eye contact. HEENT normal, TMs clear. Neck supple, no thyroid enlargement or nodes. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin without rashes. Neuro grossly intact, normal gait.\nPHQ-9 2.\n\nA/P\n1. Health maintenance in a healthy 21 y/o. Pediatric records reviewed; series complete, last Tdap at 11, so Tdap given today. HIV and hep C screening drawn. Flu and COVID in October, nurse visit.\n2. Family psychiatric history noted. Asked him to reach out if sleep, mood or stress change during the semester.\nReturn yearly."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:05",
+          "reason": "Screening results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your screening results",
+              "author": "PCP",
+              "date": "2023-08-24T16:05",
+              "body": "Hi Ethan, your HIV and hepatitis C screens came back negative, which is what we expected. Nothing else to do on these. Good luck with the fall semester."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-12T15:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-12T15:27"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-12T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-12T15:35",
+              "body": "In for seasonal vaccines between classes. Screening questions negative, no prior reactions. Flu 0.5 mL IM left arm, COVID 2023-24 formula 0.3 mL IM right arm, VIS provided for both. Observed 15 minutes, no reaction, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "annual_physical",
+          "start": "2024-07-23T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-07-25a",
+          "kind": "portal_message",
+          "start": "2024-07-25T11:40",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "We missed you on Tuesday",
+              "author": "front desk",
+              "date": "2024-07-25T11:40",
+              "body": "Hi Ethan, we had you down for your yearly physical on 7/23 at 10:30 and didn't see you. No problem, these things happen. Reply here or call and we'll find a new time that works around your summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "telephone",
+          "start": "2024-09-19T08:47",
+          "reason": "Mother concerned about behavior",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Parent concern",
+              "author": "RN",
+              "date": "2024-09-19T08:47",
+              "body": "Mother called. Since around spring Ethan has been keeping to his room, stopped seeing his friends, skips family meals. She and his dad have heard him talking out loud when nobody is with him and laughing to himself. No threats, no talk of hurting himself per mom, eating, no known substance use. He agreed to come in if they come with him. Discussed with PCP: 40 min slot Tues 9/24, earlier if things change; ED or 988 for any safety concern. Mom verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T13:20",
+          "end": "2024-09-24T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Social withdrawal, behavior change",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T14:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T14:15", "results": [{"test": "Sodium"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2024-09-24T14:15", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [
+            {"id": "psych-referral", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "five months of social withdrawal, talking and laughing to himself"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-24T13:20"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T14:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-09-24T14:10",
+              "body": "Here with both parents, who did most of the talking. Last seen at his new patient visit a year ago; missed his July physical.\n\nParents describe roughly five months of Ethan drawing inward: in his room most of the day, little interest in friends or in family, and they hear him talking to himself and laughing at nothing in particular. They are not aware of drug use. Ethan himself says he is \"fine,\" that he just likes being alone. Answers are short. Denies feeling sad or down. Denies any thoughts of hurting himself or anyone else. Will not elaborate on what he is talking about when alone. Sleeping and eating per parents.\n\nMeds none. NKDA. FH notable for schizophrenia in a maternal uncle, bipolar disorder in paternal grandmother, depression in mother. Tried cannabis years ago, says none now.\n\nExam: vitals reviewed, unremarkable. Quiet, flat, limited eye contact, slightly unkempt. No tremor. Heart and lungs normal. Neuro: CN II-XII intact, strength and reflexes symmetric, gait steady, no focal findings.\nPHQ-9 3.\n\nA/P\nBehavior change over five months in a 23 y/o with a strong family psychiatric history. Not acutely unsafe today by his report and parents'. Want a medical screen and psychiatry soon.\n- CBC, CMP, TSH today\n- Urgent referral to outpatient psychiatry, parents will keep after the scheduling\n- Safety plan reviewed with parents: ED or 988 if he talks about harming himself or others, or stops eating or sleeping\nFollow up after psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T12:18",
+          "reason": "Lab results and referral",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bloodwork and psychiatry appointment",
+              "author": "PCP",
+              "date": "2024-09-26T12:18",
+              "body": "Ethan, your blood count, chemistries and thyroid all came back normal. The psychiatry office has you for Wednesday 10/16. Please keep that appointment, and it's fine for your mom or dad to come with you. Call us if anything changes before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "specialist_visit",
+          "start": "2024-10-16T10:00",
+          "end": "2024-10-16T11:15",
+          "service": "Psychiatry",
+          "reason": "Psychiatric evaluation",
+          "conditions": [
+            {"label": "Schizophrenia", "action": "diagnosed", "onset": "2024-04-01"}
+          ],
+          "orders": [
+            {"id": "psych-referral", "action": "done", "date": "2024-10-16T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Psychiatric diagnostic evaluation with medical services", "performed": "2024-10-16T10:00"}
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "outside_records",
+          "start": "2024-10-24T09:30",
+          "reason": "Psychiatry consult letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry evaluation letter",
+              "author": "psychiatry",
+              "date": "2024-10-24T09:30",
+              "body": "Outside psychiatry practice. Visit of 10/16/2024.\n\nThank you for sending Ethan, 23, whom we saw with his mother and father. They describe half a year of growing isolation; he keeps to his room, has little to do with friends or family, and is overheard speaking to no one and laughing without a clear cause. He used cannabis in the past and says not lately.\n\nAllergies: NKDA. Medications: none.\nFamily: schizophrenia in a maternal uncle, bipolar illness in the paternal grandmother, major depression in his mother.\n\nVitals normal. He was unkempt, made little eye contact, spoke in a flat tone with sparse replies. Described his mood as fine and denied sadness or loss of enjoyment. No suicidal or homicidal ideation. Thinking was hard to follow and he seemed absorbed in his own thoughts. Neurological screen normal.\n\nImpression: schizophrenia. We discussed starting an antipsychotic. Ethan does not see himself as ill and declined; his parents would like him to start but respect his choice for now. Psychoeducation given to the family. We will continue to follow him in clinic and revisit medication at each visit.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "portal_message",
+          "start": "2024-11-07T09:02",
+          "reason": "Flu vaccine reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu season reminder",
+              "author": "MA",
+              "date": "2024-11-07T09:02",
+              "body": "Our records show you haven't had a flu shot this season. Walk-in nurse hours are weekday afternoons, or let us know if you got one somewhere else."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

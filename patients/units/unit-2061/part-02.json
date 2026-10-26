@@ -1,0 +1,1260 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002061",
+      "events": [
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "abdominal distension",
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 3.0,
+              "Albumin": 2.8,
+              "Prothrombin Time-International Normalized Ratio": 1.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-01-17T14:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-17T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-01-17T14:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-17T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-2023-01",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "increasing abdominal girth; due for liver surveillance"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Visit: belly getting bigger",
+              "author": "PCP",
+              "date": "2023-01-17T14:20",
+              "body": "He messaged that his pants don't close anymore. About 2 months of the belly slowly growing and feeling tight, uncomfortable after meals. Appetite off. No nausea or vomiting, bowels unchanged, no fever, no belly pain to speak of. Taking both diuretics daily. Hasn't been anywhere, no one sick at home or work. Drinking the same.\n\nBP 98/60 HR 66 afebrile. Weight up from fall. Abdomen tense-ish, distended, fluid wave and shifting dullness, mildly uncomfortable to deep palpation, no rebound. No asterixis. Mild ankle edema.\n\nA/P: More ascites. Ultrasound this week (also covers his 6-month surveillance) plus AFP, and labs today. Spoke with his GI office — they can see him in 3 weeks with a tap in clinic; sooner through the ED if fever, pain, confusion or bleeding. Not changing diuretics before GI weighs in since BP runs low."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              98,
+              60
+            ],
+            "hr": 66
+          }
+        },
+        {
+          "id": "2023-01-20a",
+          "kind": "imaging",
+          "start": "2023-01-20T09:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-20T10:00",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-01-20T09:15",
+              "text": "Indication: increasing abdominal girth; cirrhosis surveillance. Comparison 7/26/2022. Nodular hepatic contour with coarse echotexture. No focal liver lesion. Portal vein patent, hepatopetal. No biliary dilation. Gallbladder wall normal for the setting. Splenomegaly. Ascites throughout the abdomen, more than on the prior exam.",
+              "conclusion": "Cirrhosis with splenomegaly and ascites, increased since prior. No focal hepatic lesion."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-2023-01",
+              "action": "done",
+              "date": "2023-01-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Ultrasound",
+              "author": "PCP",
+              "date": "2023-01-20T15:45",
+              "body": "More fluid than last summer, no liver mass, AFP normal. Forwarded to GI ahead of his 2/6 visit. Pt informed."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "specialist_visit",
+          "start": "2023-02-06T10:20",
+          "service": "Gastroenterology",
+          "reason": "abdominal distension",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-06T10:00",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-02-06T10:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-06T11:05",
+              "results": [
+                {
+                  "test": "Albumin in Peritoneal fluid",
+                  "loinc": "1749-1",
+                  "unit": "g/dL",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology clinic note with paracentesis",
+              "author": "gastroenterology",
+              "date": "2023-02-10T09:20",
+              "body": "GI CLINIC — 2/6/2023, note faxed 2/10/2023.\n\nSeen a year after his hemorrhoid workup. Two months of gradually worsening abdominal swelling and discomfort. Eating less. Denies nausea, vomiting or a change in bowel habits. No travel, no ill contacts. Adherent to furosemide and spironolactone. Ongoing alcohol use.\n\nMeds: furosemide 40 daily, spironolactone 100 daily, propranolol 20 BID, testosterone cypionate 200 mg IM q2wk, vitamin K 10 mg daily, lactulose PRN. NKDA.\n\nExam: cachectic. Palmar erythema. Abdomen distended with fluid wave and shifting dullness. No peripheral edema today.\n\nLabs: albumin 2.8, sodium 135, creatinine 1.1, total bilirubin 3.2, INR 1.5.\n\nProcedure: diagnostic paracentesis, left lower quadrant, ultrasound-marked, after consent. Clear straw-colored fluid. Ascitic albumin 1.2 g/dL; serum-ascites albumin gradient 1.6, consistent with portal hypertension. Cell count without evidence of infection. No complications.\n\nImpression: alcohol-related cirrhosis with portal hypertensive ascites; recent PCP ultrasound without liver lesion.\nPlan: continue current diuretic doses — his blood pressure limits increases. Two-gram sodium diet reviewed. Abstinence strongly advised. Return in one year or sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "portal_message",
+          "start": "2023-03-09T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2023-03-09T19:12",
+              "body": "Can you send the water pills again, both of them. Pharmacy says no refills left on the spironolactone. Thanks."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "author": "RN",
+              "date": "2023-03-10T08:30",
+              "body": "Spironolactone 100 mg and furosemide 40 mg, 90-day supply with 1 refill each, sent per standing plan. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "state": {
+            "labs": {
+              "Aspartate Aminotransferase": 85,
+              "Alanine Aminotransferase": 72,
+              "Bilirubin, Total": 2.3,
+              "Albumin": 3.1,
+              "Prothrombin Time-International Normalized Ratio": 1.3,
+              "Platelets": 105
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-18T08:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-18T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-04-18T08:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-04-18T08:50",
+              "body": "GI tapped him in Feb, fluid was from the portal pressure, no infection. Says he's been better about salt (\"no more frozen dinners\") and the belly has come down some. Working. Drinking — he says 3–4 most nights.\n\nBP 104/62 HR 60. Abdomen distended but softer than January, fluid wave present. No edema today. No asterixis, oriented.\n\nAssessment/plan\n# Cirrhosis with ascites: improved on diet. Continue furosemide/spironolactone and propranolol. Labs.\n# AUD: still drinking daily. Same conversation; he asked what the medicine options were and I went through them. He'll think about it.\n# Return July for physical."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              62
+            ],
+            "hr": 60
+          }
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "annual_physical",
+          "start": "2023-07-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-07-25T08:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-07-25T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-25T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-25T08:35",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                },
+                {
+                  "test": "Testosterone, Total"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-07-25T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2023-07",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "liver cancer surveillance in cirrhosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-07-25T08:55",
+              "body": "Yearly exam.\n\nSince last year: GI paracentesis in February, ascites portal-hypertensive, no infection. Belly stable since. No bleeding episodes since the 2021 admission. Hep C cured 2022. Testosterone shots every other Friday, no problems. Libido still low; he's made his peace with it. Drinking is back up to about 6 a night after a stressful spring at work. AUDIT-C 10. Mood okay; PHQ-2 0.\n\nExam: BP 102/64, HR 61, afebrile. Thin, temporal wasting. Anicteric today. Spider angiomata, palmar erythema. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen distended with fluid wave, nontender. No asterixis. Trace edema.\n\nPrevention: colonoscopy 2022 (next 2032). Shingrix done. Flu yearly. Tdap 2016. Still no hep A/B or pneumococcal vaccine.\n\nPlan:\n- Cirrhosis/portal HTN/ascites — continue meds; labs; surveillance US + AFP ordered.\n- Testosterone: level, Hct, PSA today.\n- AUD — offered referral again; declined. Asked him to at least keep it under where it was last fall.\n- RTC 3 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              102,
+              64
+            ],
+            "hr": 61
+          }
+        },
+        {
+          "id": "2023-07-28a",
+          "kind": "imaging",
+          "start": "2023-07-28T07:45",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-07-28T08:30",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 4.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2023-07-28T07:45",
+              "text": "Indication: HCC surveillance. Comparison 1/20/2023. Liver nodular with coarse echotexture; no focal lesion. Portal vein patent with normal direction of flow. Common bile duct normal caliber. Spleen enlarged. Ascites, less than on the January study.",
+              "conclusion": "Cirrhosis, no focal hepatic lesion. Splenomegaly. Ascites, decreased."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2023-07",
+              "action": "done",
+              "date": "2023-07-28T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Surveillance US/AFP",
+              "author": "PCP",
+              "date": "2023-07-28T16:10",
+              "body": "No mass, AFP normal, less fluid than January. Physical labs okay for him — testosterone and PSA normal. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "office_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up; vaccines",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-10T15:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-10T15:35",
+              "results": [
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-10-10T15:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-10-10T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-10-10T15:30",
+              "body": "Stable. No bleeding, no confusion per pt, appetite fair. Belly about the same as summer. Sodium restriction going okay. Alcohol unchanged.\nBP 100/64, HR 62. Distended, fluid wave, NT. No asterixis.\nFlu + 2023–24 COVID today. Labs. Continue meds. Due for ID annual visit in January and next US in Feb."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              64
+            ],
+            "hr": 62
+          }
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-09T10:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-09T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-09T10:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-09T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-01-09T10:05",
+              "body": "S: Holidays were rough on the diet, belly a touch bigger, settling now. Tired some afternoons. No bleeding, black stools, fevers or confusion. ID visit later this month.\nO: BP 102/62, HR 64. Wt stable. Abdomen distended with fluid wave, nontender. Trace ankle edema. Alert, no asterixis.\nA/P: Cirrhosis w/ ascites, stable. Labs. Same regimen. Spironolactone and furosemide refilled. RTC after ID."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              102,
+              62
+            ],
+            "hr": 64
+          }
+        },
+        {
+          "id": "2024-01-29a",
+          "kind": "specialist_visit",
+          "start": "2024-01-29T14:00",
+          "service": "Infectious Diseases",
+          "reason": "routine follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-29T14:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-29T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-01-29T14:40",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-29T14:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases annual follow-up",
+              "author": "infectious diseases",
+              "date": "2024-02-05T11:15",
+              "body": "ID CLINIC — annual visit 1/29/2024, letter 2/5/2024.\n\nFollowing for hepatitis C, treated with sofosbuvir/velpatasvir in 2021–22 with sustained virologic response, on a background of alcohol-related cirrhosis with portal hypertension, Kallmann syndrome and internal hemorrhoids (banded 2022). He has no acute concerns; some fatigue now and then. He continues to drink daily.\n\nMeds: furosemide, spironolactone, vitamin K, propranolol 20 mg BID, testosterone cypionate 200 mg IM every 2 weeks, lactulose 30 mL BID PRN. NKDA.\n\nVitals stable. Exam: mild ascites. Spider angiomas on the upper trunk; palmar erythema.\n\nLabs: platelets 110,000, INR 1.2, albumin 3.2, total bilirubin 2.1, AST 80, ALT 75. HCV RNA not detected. Hepatitis B surface antigen negative, surface antibody negative.\n\nImmunizations: tetanus booster 8 years ago (2016). No record of hepatitis A, hepatitis B or pneumococcal vaccination.\n\nAssessment: HCV remains cured. Cirrhosis with no immunity to hepatitis B and no record of hepatitis A or pneumococcal vaccine.\nRecommendations to primary care: hepatitis A series, hepatitis B series and a pneumococcal conjugate vaccine (PCV20). Tdap due in 2026. We will see him again only if needed; repeat HCV RNA if there is any new exposure."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines per ID",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-02-13T11:20"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-02-13T11:21"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2024-02-13T11:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-13T11:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-13T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2024-02",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "liver cancer surveillance in cirrhosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Vaccine visit",
+              "author": "PCP",
+              "date": "2024-02-13T11:30",
+              "body": "ID letter reviewed: hep C still cured; he has no hep B immunity and no hep A or pneumococcal vaccine on record. Should have caught that sooner. Talked through the plan with him.\n\nToday: PCV20 R deltoid; hep A #1 and hep B #1 L deltoid. Hep B #2 in 1 month (nurse visit booked), hep A #2 and hep B #3 at 6 months. Tolerated, no reaction during observation.\n\nOtherwise unchanged: belly stable, no bleeding. BP 100/62.\nOrdered 6-month surveillance US + AFP."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              62
+            ]
+          }
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "imaging",
+          "start": "2024-02-20T08:10",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-20T08:50",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 3.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2024-02-20T08:10",
+              "text": "Indication: cirrhosis surveillance. Comparison 7/28/2023. Coarse, nodular liver; no focal hepatic lesion. Portal vein patent, hepatopetal flow. No biliary ductal dilation. Splenomegaly. Mild ascites.",
+              "conclusion": "Cirrhotic morphology without focal lesion. Splenomegaly and mild ascites, stable."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2024-02",
+              "action": "done",
+              "date": "2024-02-20T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Surveillance US",
+              "author": "PCP",
+              "date": "2024-02-21T09:00",
+              "body": "Stable, no lesion, AFP normal. Next in August."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "nurse_visit",
+          "start": "2024-03-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2024-03-14T16:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-03-14T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: hep B #2",
+              "author": "RN",
+              "date": "2024-03-14T16:45",
+              "body": "Hep B vaccine dose 2 of 3 given IM L deltoid. Pt denies reaction to dose 1 besides a sore arm. Observed 15 minutes, no issues. Dose 3 due mid-August with hep A #2 — will line up with his physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-14T14:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-14T14:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-05-14T14:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-14T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-05-14T14:50",
+              "body": "Three-month check. Feels \"same as always.\" Spring inventory at work has him on his feet a lot; ankles puffy by evening, gone by morning. No bleeding, no fever, no confusion, sleeping okay. Beer most nights.\n\nBP 104/64, HR 63. Abdomen distended, fluid wave, nontender. 1+ ankle edema. No asterixis.\n\nCirrhosis/ascites stable — no med change; legs up in the evening. Labs. Physical + remaining vaccines in August. Alcohol: same discussion, same answer."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              64
+            ],
+            "hr": 63
+          }
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "pharmacy",
+          "start": "2024-06-25T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization renewal",
+              "author": "MA",
+              "date": "2024-06-25T10:15",
+              "body": "Insurance requires annual PA renewal for testosterone cypionate. Submitted with diagnosis of Kallmann syndrome and last testosterone level from 7/2023. Approved through 6/2025. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical; vaccines",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-20T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-08-20T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:40",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                },
+                {
+                  "test": "Testosterone, Total"
+                },
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 4.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-08-20T08:30"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2024-08-20T08:31"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-08-20T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-20T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2024-08",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "liver cancer surveillance in cirrhosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T09:00",
+              "body": "Annual visit.\n\nInterval: ID in January — hep C still cured, flagged his vaccine gaps; PCV20 and hep A/B series started here in Feb/March. No bleeding. Belly up and down with salt. Fatigue in the afternoons. Still 6 beers a night, AUDIT-C 10. Not interested in treatment; \"I know, I know.\" PHQ-2 1.\n\nExam: BP 98/62, HR 64, afebrile, weight about the same. Chronically ill-looking, thin arms. Faint scleral yellowing in daylight. Spider angiomata chest, palmar erythema. Heart regular. Lungs clear. Abdomen distended, fluid wave, nontender. 1+ ankle edema. No asterixis, alert and oriented.\n\nVaccines: hep A #2 and hep B #3 today — both series complete.\n\nPlan:\n- Cirrhosis/portal HTN/ascites: continue regimen. Labs and AFP drawn today; US ordered for this week.\n- Kallmann syndrome: testosterone level, Hct, PSA.\n- AUD: remains the main driver. Discussed again what continued drinking means for bleeding and liver failure, and that I'm here when he is ready.\n- RTC November."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              98,
+              62
+            ],
+            "hr": 64
+          }
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "imaging",
+          "start": "2024-08-23T07:30",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2024-08-23T07:30",
+              "text": "Indication: HCC surveillance. Comparison 2/20/2024. Liver nodular and coarse; no focal mass. Portal vein patent with hepatopetal flow. Bile ducts not dilated. Splenomegaly. Ascites throughout the abdomen.",
+              "conclusion": "Cirrhosis without focal liver lesion. Splenomegaly and ascites."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2024-08",
+              "action": "done",
+              "date": "2024-08-23T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "US and physical labs",
+              "author": "PCP",
+              "date": "2024-08-23T15:20",
+              "body": "No liver lesion. AFP normal. Labs at his baseline; PSA and testosterone normal. Next surveillance due February — GI usually images him around then."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: fall vaccines",
+              "author": "RN",
+              "date": "2024-10-08T16:35",
+              "body": "Came after work for fall vaccines. Influenza L deltoid, 2024–25 COVID R deltoid. No prior reactions. Observed, left in good condition. Reminded him of his November follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "office_visit",
+          "start": "2024-11-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-11-12T11:05",
+              "body": "No-show for 10:20 follow-up. Called, voicemail. Left message to call back and reschedule; portal message sent too."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Rescheduled",
+              "author": "front desk",
+              "date": "2024-11-13T09:10",
+              "body": "Pt called back, forgot — short-staffed at work. Rebooked 12/3 at 8:40."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "office_visit",
+          "start": "2024-12-03T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "state": {
+            "labs": {
+              "Aspartate Aminotransferase": 115,
+              "Alanine Aminotransferase": 88,
+              "Bilirubin, Total": 3.0,
+              "Albumin": 2.8,
+              "Prothrombin Time-International Normalized Ratio": 1.6,
+              "Platelets": 90,
+              "Hemoglobin": 10.4,
+              "Sodium": 133,
+              "Creatinine": 1.0,
+              "Chloride": 99,
+              "Bicarbonate": 25
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-03T09:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-03T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-12-03T09:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-03T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-12-03T09:10",
+              "body": "Apologized for missing November. Feels more worn out this fall, naps on weekends. Appetite smaller. Belly about the same, no pain. No bleeding, no black stools, no fever. Says he's thinking clearly; no one has told him otherwise. Drinking unchanged.\n\nBP 98/60 HR 65. Mild scleral icterus. Distended, fluid wave, nontender. 1+ ankle edema. No asterixis on my exam.\n\nCirrhosis — he looks a little more worn down. Labs today. GI follow-up in February; sooner if the labs slip. Same meds."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              98,
+              60
+            ],
+            "hr": 65
+          }
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "portal_message",
+          "start": "2024-12-04T17:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "December labs",
+              "author": "PCP",
+              "date": "2024-12-04T17:30",
+              "body": "Your labs show the liver working a bit harder than this summer — bilirubin is up, albumin down, clotting time a little longer, and your blood count is a bit lower. None of this needs a change today, but it is a step in the wrong direction and alcohol is the biggest thing driving it. I've sent the results to your GI team ahead of your February visit. Call if you notice black stools, yellowing, confusion or belly pain."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

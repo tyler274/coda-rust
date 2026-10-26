@@ -1,0 +1,605 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002789",
+      "given": "Dawn",
+      "family": "McGrath",
+      "birth_date": "1977-07-11",
+      "address_line": "118 Meadowlark Lane",
+      "phone": "+1-201-555-0138",
+      "email": "dawn.mcgrath@example.test",
+      "marital_status": "married",
+      "summary": "Administrative assistant who joined in 2022 with chronic low back pain treated for decades with daily OTC ibuprofen. In April 2025 she was admitted with alveolar hemorrhage and rapidly progressive glomerulonephritis from GPA, leaving stage 3b CKD on prednisone and rituximab; in August 2026 outside nephrology diagnosed nephrogenic diabetes insipidus after her last practice visit.",
+      "events": [
+        {
+          "id": "2022-05-24a",
+          "kind": "telephone",
+          "start": "2022-05-24T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2022-05-24T10:12",
+              "body": "Ms. McGrath phoned looking for a new primary care doctor. Explained the membership model and what insurance still covers. She wants a full new-patient physical. Booked Wed 6/8 at 8:40, asked her to arrive 15 min early for paperwork. Emailed the records release for her previous primary care office. Reminded her to bring her insurance card and a list of anything she takes, including over-the-counter."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "establish_care",
+          "start": "2022-06-08T08:40",
+          "end": "2022-06-08T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {
+              "label": "Chronic low back pain",
+              "action": "history",
+              "onset": "2000-06-01",
+              "note": "Mechanical, since her early twenties; self-treats with OTC ibuprofen"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth daily as needed for back pain (OTC)",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic low back pain"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Creatinine": 0.98
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-08T09:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-08T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-08T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-08T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-08T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-06-08T09:20",
+              "issued": "2022-06-23T14:00",
+              "text": "Specimen: liquid-based cervical cytology with reflex-independent high-risk HPV testing. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2022-06-08T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            },
+            {
+              "id": "records-prior-pcp",
+              "action": "placed",
+              "order": "Request records from prior primary care office",
+              "category": "procedure",
+              "reason": "New patient"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2022-06-08T09:45",
+              "body": "44F here to establish care and for a physical. Prior PCP was across the river; records requested today.\n\nConcerns: none acute. Low back has bothered her on and off since her early 20s, worse after long days at the desk. Never had imaging or PT for it. Manages with store-brand ibuprofen, usually two 200 mg tabs most days, sometimes skips a day. No leg pain, numbness, weakness, bladder or bowel change.\n\nPMH: chronic mechanical low back pain.\nPSH: endoscopic sinus surgery 2020 (outside ENT; she says chronic sinus trouble, much better since).\nMeds: OTC ibuprofen as above. No prescriptions. No supplements.\nAllergies: none to drugs.\nFamily: mother with rheumatoid arthritis. Father has high blood pressure and kidney disease. A maternal aunt has type 1 diabetes.\nSocial: administrative assistant, full time. Never smoked. Wine socially, a glass or two a week. No drug use.\nScreening: last Pap she thinks 2019. Mammogram last year, normal per patient. No colonoscopy yet.\n\nExam: comfortable, well appearing. HEENT clear, nasal mucosa unremarkable. Neck supple, no thyroid enlargement or nodes. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, nontender. Back: mild paraspinal tightness low lumbar, no midline tenderness, SLR negative both sides. Strength, reflexes and sensation normal in the legs. Skin without rash. Speculum exam normal; Pap/HPV collected. Breast exam deferred to imaging per her preference.\n\nPHQ-2: 0.\n\nA/P\n1. Health maintenance. CMP, CBC, lipids. One-time HCV and HIV screens, she agreed. Pap/HPV sent. Screening mammogram ordered. Colon screening due at 45; will raise next year.\n2. Chronic low back pain, mechanical. Reviewed posture, core work, desk setup. She is using ibuprofen most days; talked about taking the least that works and not stacking with other NSAIDs. She would rather not try PT right now.\n\nReturn in a year for her physical, sooner as needed."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 70.5,
+            "height_cm": 165.0
+          }
+        },
+        {
+          "id": "2022-06-10a",
+          "kind": "portal_message",
+          "start": "2022-06-10T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-06-10T16:05",
+              "body": "Hi Dawn, your blood work from Wednesday is back and looks good: kidney and liver tests, blood counts and cholesterol are all in a healthy range. The hepatitis C and HIV screens were negative. The Pap result takes a couple of weeks and I will send a note when it comes in. Please go ahead and book the mammogram if you haven't yet."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-21T11:30",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-17T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-prior-pcp",
+              "action": "done",
+              "date": "2022-06-21T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2022-06-21T11:30",
+              "body": "38 pages arrived by secure fax from her prior primary care office, covering 2017 through early 2022. Indexed to the chart. Summary for the PCP: yearly physicals with normal labs; Tdap given 09/2019; ENT referral in 2019 for recurrent sinus symptoms, endoscopic sinus surgery done 2020 at an outside surgical center; screening mammogram 2021 read as negative; no medication list beyond OTC ibuprofen for back pain; no allergies on file."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "portal_message",
+          "start": "2022-06-24T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2022-06-24T09:20",
+              "body": "Your Pap and HPV test came back normal. With both negative, the next one is due in five years (2027)."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "imaging",
+          "start": "2022-07-12T13:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-07-12T13:10",
+              "text": "Bilateral screening digital mammography with tomosynthesis. Comparison: 2021 outside study. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-07-12T13:10"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T16:30",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T16:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2022-10-12T16:50",
+              "body": "Came by after work for flu and the bivalent COVID booster. Screening questions negative, no prior reactions. Flu 0.5 mL IM left arm, COVID 0.3 mL IM right arm. VIS sheets reviewed. Observed 15 minutes, no problems, left ambulating."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low back pain flare",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-02-07T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-back-2023",
+              "action": "placed",
+              "order": "Physical therapy referral, lumbar",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "Chronic low back pain, flare"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-02-07T11:55",
+              "body": "Back worse x10 days, no particular trigger she can name. Achy band across the low back, stiff in the morning, better once moving. No radiation below the knee, no numbness or weakness, no fever, no urinary or bowel trouble, no weight loss.\nTaking ibuprofen 400 mg most days, up to three times on the worst days. Heat helps.\n\nExam: moves carefully but gets on the table without help. Bilateral lumbar paraspinal spasm and tenderness, no spinous tenderness. Flexion limited by pain. SLR negative. Heel and toe walk fine. Knee and ankle reflexes 2+ and symmetric. Sensation intact.\n\nA/P: acute on chronic mechanical low back pain, no red flags, no imaging needed.\n- PT referral, she is willing this time.\n- Heat, walking, avoid bed rest.\n- Ibuprofen: ok short-term at the lowest dose that works, with food, and back down to occasional use once this settles. Acetaminophen is an alternative.\n- Return if not improving in 4-6 weeks or new leg symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-01a",
+          "kind": "outside_records",
+          "start": "2023-03-01T15:00",
+          "orders": [
+            {
+              "id": "pt-back-2023",
+              "action": "done",
+              "date": "2023-03-01T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical therapy initial evaluation",
+              "author": "physical therapy",
+              "date": "2023-03-01T15:00",
+              "body": "Outpatient physical therapy initial evaluation. Referral: chronic low back pain with recent flare.\nSubjective: low back ache for many years, flared in late January without a clear trigger. Sits at a desk most of the day. Pain today 4/10.\nObjective: lumbar flexion about 75% of expected, extension full with end-range discomfort. Hip flexor and hamstring tightness bilaterally. Core endurance reduced. Neuro screen of the lower limbs normal. No directional preference.\nAssessment: mechanical low back pain with deconditioning and postural contributors. Good rehab potential.\nPlan: twice weekly for 6 weeks; mobility, core stabilization, hip strengthening, home program, workstation advice.\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "portal_message",
+          "start": "2023-04-04T19:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back update",
+              "author": "patient",
+              "date": "2023-04-04T19:42",
+              "body": "Just wanted to say PT has really helped, the back is mostly back to its usual. Doing the exercises at lunch. I have two more sessions. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back update",
+              "author": "PCP",
+              "date": "2023-04-05T08:15",
+              "body": "Great to hear. Keep up the home program after PT wraps up, that is what keeps it from coming back."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-14a",
+          "kind": "annual_physical",
+          "start": "2023-06-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-14T09:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-14T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-14T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-14T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral for screening colonoscopy",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Colorectal cancer screening, average risk"
+            },
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-06-14T09:10",
+              "body": "Yearly visit. Feeling well. Back has been decent since PT in the spring; does the stretches a few times a week. Still takes ibuprofen 200-400 mg on bad days, she estimates most days of the week. No new symptoms, no sinus trouble since surgery.\n\nMeds: OTC ibuprofen. NKDA.\nSocial unchanged: same job, never smoker, wine a couple times a week at most.\n\nExam: well. Nose and throat normal. No lymphadenopathy. Heart regular, no murmur. Lungs clear. Abdomen benign. Back nontender today, full flexion. No edema. Skin normal.\n\nPHQ-2 0.\n\nPlan:\n- Annual labs: CMP, CBC, lipids.\n- Colon screening: 45 now; prefers colonoscopy over stool test. GI referral placed.\n- Mammogram due next month, ordered.\n- Pap up to date (2022, co-test negative).\n- Back: continue home exercises.\nSee her in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "procedure_visit",
+          "start": "2023-08-22T07:30",
+          "end": "2023-08-22T10:00",
+          "service": "Gastroenterology",
+          "reason": "Screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2023-08-22T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2023",
+              "action": "done",
+              "date": "2023-08-22T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "author": "gastroenterology",
+              "date": "2023-08-22T09:40",
+              "body": "Outside endoscopy center. Indication: average-risk colorectal cancer screening, age 46, no prior colonoscopy.\nSedation: monitored anesthesia care. Bowel preparation good throughout.\nFindings: the cecum was reached and confirmed by the appendiceal orifice and ileocecal valve. Withdrawal time 9 minutes. Mucosa normal in the entire colon and rectum. No polyps or masses.\nImpression: normal screening colonoscopy.\nRecommendation: repeat colonoscopy in 10 years. Resume prior diet and activity."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "imaging",
+          "start": "2023-09-12T12:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-09-12T12:40",
+              "text": "Bilateral screening digital mammography with tomosynthesis. Compared with 07/2022. Heterogeneously dense breast tissue. No new or suspicious mass, distortion or calcifications. Stable appearance.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-09-12T12:40"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T17:05",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T17:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T17:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "MA",
+              "date": "2023-10-11T17:25",
+              "body": "Flu (L deltoid) and 2023-24 COVID (R deltoid) given IM, lot numbers in the immunization record. Tolerated well. Watched 15 min, fine."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

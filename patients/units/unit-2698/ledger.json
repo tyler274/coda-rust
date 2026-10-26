@@ -1,0 +1,1964 @@
+{
+  "unit": "unit-2698",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002698",
+      "given": "Valerie",
+      "family": "Labrie",
+      "birth_date": "1971-05-03",
+      "address_line": "112 Pomeroy Terrace",
+      "phone": "+1-201-555-0196",
+      "email": "valerie.labrie@example.test",
+      "marital_status": "divorced",
+      "summary": "Regional sales manager with type 2 diabetes, hypertension and rheumatoid arthritis on long-term low-dose prednisone who joins the practice in June 2025 right after a travel-provoked left popliteal DVT. A second, iliofemoral DVT after a transatlantic flight in November 2025 puts her on indefinite apixaban. On the day of her last practice visit in June 2026 she falls at home and is admitted to the ICU with adrenal crisis.",
+      "events": [
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2025-05-21T10:12",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor in the area, last PCP was out of state and she has been going without. 54 yo, says she has diabetes, high blood pressure and RA, on three daily meds. Membership explained, she enrolled over the phone. First available new patient slot 6/20 at 9:00, she took it. Records release signed electronically for her former primary care office; request faxed today."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "outside_records",
+          "start": "2025-06-04T14:30",
+          "reason": "Prior primary care records",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2013-01-01"
+            },
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Rheumatoid arthritis",
+              "action": "history",
+              "onset": "2008-01-01"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "history",
+              "onset": "2010-01-01",
+              "note": "Total abdominal hysterectomy 2010"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Rheumatoid arthritis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2025-06-04T14:30",
+              "author": "front desk",
+              "body": "31 pages received by fax from the patient's former primary care office (out of state), scanned under Outside Records.\n\nSummary sheet from that office:\nProblems: hypertension (since about 2013), type 2 diabetes (since about 2016), rheumatoid arthritis (since about 2008, maintained on low-dose prednisone for years).\nSurgeries: total abdominal hysterectomy 2010; right carpal tunnel release 2015.\nMedications: metformin 1000 mg twice daily; lisinopril 10 mg daily; prednisone 5 mg each morning.\nAllergies: none known.\nFamily: mother with rheumatoid arthritis; father had a blood clot in the leg at 62; maternal grandmother with type 2 diabetes.\nScreening on file there: screening colonoscopy 2021 with no polyps, 10-year repeat; mammograms through 2024 read as negative.\n\nFlagged for PCP before the 6/20 new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "ed_visit",
+          "start": "2025-06-09T15:20",
+          "end": "2025-06-09T20:05",
+          "service": "Emergency Medicine",
+          "reason": "Left calf pain and swelling",
+          "conditions": [
+            {
+              "label": "Acute deep vein thrombosis of left popliteal vein",
+              "action": "diagnosed",
+              "onset": "2025-06-06",
+              "icd10": "I82.432"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (10 mg) by mouth twice daily for 7 days, then 1 tablet (5 mg) twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Left popliteal DVT, planned 3 months"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              60
+            ],
+            "hr": 75,
+            "temp_c": 36.7,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-09T15:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-09T15:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2025-06-09T17:10",
+              "text": "Left lower extremity venous duplex. Indication: left calf pain and swelling. Grayscale compression, color and spectral flow were assessed from the common femoral vein to the calf. The common femoral, femoral and proximal deep femoral veins compress fully with normal phasic flow and augmentation. The left popliteal vein is distended with echogenic intraluminal material and does not compress. The posterior tibial and peroneal veins compress where seen. The great saphenous vein is patent. Contralateral common femoral vein shows normal respiratory phasicity.",
+              "conclusion": "Acute deep vein thrombosis of the left popliteal vein.",
+              "issued": "2025-06-09T17:48"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-06-09T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Emergency Department Note",
+              "title": "Emergency Department Record (received)",
+              "date": "2025-06-11T09:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 06/09/2025. Received by fax 06/11/2025.\n\nCC: L lower leg pain and swelling.\n\nHPI: 54F with T2DM, HTN and RA on chronic low-dose prednisone. Three days of left calf pain and swelling that has steadily worsened. Drove about 9 hours each way for a work trip roughly two weeks ago. Denies any injury to the leg. No chest pain, no dyspnea, no hemoptysis.\n\nMeds: metformin, lisinopril, prednisone 5 mg daily. Allergies: NKDA.\nPSH: TAH 2010, R carpal tunnel release 2015.\nFH: father DVT at 62; mother RA; maternal grandmother T2DM.\nSH: never smoker, wine socially, 1-2 glasses a week. Regional sales manager.\n\nExam: VS within normal limits throughout stay. L calf erythematous, warm, tender. Pitting edema from the ankle up to mid-calf. Calf circumference 3 cm greater on the left than the right. Distal pulses intact. Heart and lungs normal. Remainder of exam unremarkable.\n\nLabs: BMP with normal renal function; CBC unremarkable.\nImaging: venous duplex, L popliteal vein noncompressible, consistent with DVT.\n\nMDM: Provoked L popliteal DVT (prolonged car travel). Hemodynamically normal, no signs of PE. Normal renal function, no bleeding history. Suitable for outpatient anticoagulation.\n\nDisposition: discharged home. Apixaban 10 mg BID x 7 days then 5 mg BID; anticipate a 3 month course, duration per PCP. Leg elevation, walk as tolerated. Return for chest pain, shortness of breath or bleeding. Pt reports she has a new PCP visit on 6/20."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T07:55",
+          "reason": "ED visit for leg clot",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER yesterday",
+              "date": "2025-06-10T07:55",
+              "author": "patient",
+              "body": "Hi, I'm a new patient, my first appointment is the 20th. I ended up in the ER yesterday afternoon with my left leg and they found a blood clot behind the knee. They started me on Eliquis. Should I keep the appointment on the 20th or come in sooner? I'm supposed to drive to a client meeting on Thursday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER yesterday",
+              "date": "2025-06-10T12:20",
+              "author": "PCP",
+              "body": "Hi Valerie, welcome, and sorry this was your introduction to us. Keep taking the Eliquis exactly as the ER wrote it, two tablets twice a day for the first week then one twice a day. Keeping the 20th is fine. For Thursday: stop every hour or so and walk around for a few minutes. If you get chest pain, trouble breathing, or any bleeding that doesn't stop, go straight to the ER. I've asked the hospital to send me their record."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-20a",
+          "kind": "establish_care",
+          "start": "2025-06-20T09:00",
+          "end": "2025-06-20T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit; recent DVT",
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 85,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 77.1,
+            "height_cm": 165.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-20T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-20T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 208
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-06-20T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-20T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Regional sales manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-06-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-20T10:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Breast cancer screening"
+            },
+            {
+              "id": "eye-2025",
+              "action": "placed",
+              "order": "Diabetic eye examination",
+              "category": "referral",
+              "to": "Optometry",
+              "reason": "Yearly diabetic eye exam"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-06-20T11:30",
+              "author": "PCP",
+              "body": "New patient, 54 yo woman, transferring care; prior records reviewed (scanned 6/4) and ED record from 6/9 reviewed.\n\nHPI: Seen in the ED 11 days ago for L calf pain/swelling after a long drive; duplex showed L popliteal DVT and she was started on apixaban. Finished the 10 mg loading week on 6/16 and is now on 5 mg twice a day, no missed doses. Swelling is down a lot, calf still a little sore at the end of a long day. No bruising problems, no blood in urine or stool, no chest symptoms or breathlessness. Made the client drive last week with stops.\n\nDiabetes about 9 years, metformin 1000 BID, tolerates it. Checks sugars a few mornings a week, mostly 120s-140s per her. HTN on lisinopril 10, home cuff readings fine. RA for many years on prednisone 5 mg every morning; hands are quiet on that and she's been on the same dose a long time. Her former office wrote the prednisone.\n\nPMH/PSH/FH/SH as in the records summary: TAH 2010, R CTR 2015. Father had a leg clot at 62, mother RA, maternal grandmother T2DM. Never smoker, a glass or two of wine weekly, travels a lot for work as a regional sales manager. Divorced, lives alone.\n\nMeds: apixaban 5 mg BID, metformin 1000 mg BID, lisinopril 10 mg daily, prednisone 5 mg daily. NKDA.\n\nExam: Well appearing. Vitals reviewed. HEENT normal. Neck supple, no thyromegaly. Heart RRR without murmur. Lungs clear bilaterally. Abd soft, nontender. L calf mildly fuller than R, nontender now, no erythema; trace ankle edema L. R leg normal. Hands: no synovitis today, no deformity. Feet: skin intact, monofilament and vibration normal, DP/PT pulses 2+ both sides. Skin no rash.\n\nPHQ-9: 2.\n\nAssessment/plan:\n1. L popliteal DVT, provoked by prolonged travel, 6/9/25. Apixaban 5 mg BID, plan 3 months total, revisit in September. Discussed travel precautions.\n2. T2DM: A1c, CMP, lipids, urine microalbumin today. Continue metformin. Eye exam referral to optometry.\n3. HTN: at goal on lisinopril, continue.\n4. RA on chronic prednisone 5 mg: continue; I'll take over the prescription.\n5. Health maintenance: colonoscopy 2021 normal, next 2031. Status post hysterectomy, no Pap needed. Mammogram ordered. Hep C and HIV screen today. Flu/COVID/pneumonia and shingles vaccines in the fall.\n\nFollow up in about 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 7.4,
+              "Microalbumin/Creatinine Ratio": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "portal_message",
+          "start": "2025-06-23T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your lab results",
+              "date": "2025-06-23T08:15",
+              "author": "PCP",
+              "body": "Hi Valerie, your labs from Friday are back. A1c is a little above where I'd like it but reasonable; let's see where it is in September. Kidney and liver tests are normal, blood counts normal, urine protein normal. Cholesterol panel is fine. Hepatitis C and HIV screens are negative. No changes for now."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "imaging",
+          "start": "2025-07-14T16:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-07-14T16:00",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: none available. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples are unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine screening in 1 year."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-07-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Screening mammogram result",
+              "date": "2025-07-15T10:00",
+              "author": "radiology",
+              "body": "Outside imaging center report received electronically. Bilateral screening mammogram 07/14/2025: negative, BI-RADS 1. Annual screening recommended. Reviewed by PCP, patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-30a",
+          "kind": "pharmacy",
+          "start": "2025-07-30T11:05",
+          "reason": "Apixaban prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Apixaban prior authorization",
+              "date": "2025-07-30T11:05",
+              "author": "MA",
+              "body": "Pharmacy flagged that her plan now requires PA for apixaban beyond the first 30 days. Submitted through the plan portal with dx L popliteal DVT 6/9/25, planned 3 month course. Approved same day through 12/31/25. Pharmacy notified, pt aware via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T13:40",
+          "reason": "Diabetic eye exam report",
+          "orders": [
+            {
+              "id": "eye-2025",
+              "action": "done",
+              "date": "2025-08-19T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "date": "2025-08-19T13:40",
+              "author": "optometry",
+              "body": "Diabetic eye examination, exam date 08/12/2025. Dilated fundus exam both eyes. Visual acuity corrected 20/20 OD, 20/25 OS. Pressures normal. Lenses clear. Discs healthy with normal cup to disc ratio, maculae flat, vessels normal. No diabetic retinopathy in either eye. Recommend repeat dilated exam in 12 months. Allergies: no known drug allergies. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-12a",
+          "kind": "office_visit",
+          "start": "2025-09-12T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "DVT and diabetes follow-up",
+          "conditions": [
+            {
+              "label": "Acute deep vein thrombosis of left popliteal vein",
+              "action": "resolved",
+              "onset": "2025-06-06",
+              "icd10": "I82.432"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "3-month course for provoked DVT complete"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              71
+            ],
+            "hr": 71,
+            "spo2": 96,
+            "weight_kg": 76.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-12T15:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-12T15:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-12T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-12T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-09-12T16:10",
+              "author": "PCP",
+              "body": "S: Here to close out the clot. Three months of apixaban done as of this week, took it faithfully. Leg back to normal, no swelling even after long drives, no pain. No bleeding issues. Sugars at home similar to before. No new joint flares. Still on the road 3 days a week.\n\nMeds: apixaban 5 BID, metformin 1000 BID, lisinopril 10, prednisone 5.\n\nO: Vitals reviewed, BP at goal. Calves symmetric and soft, no edema, no tenderness either leg. Heart and lungs normal.\n\nA/P:\n1. L popliteal DVT, travel-provoked, treated 3 months. Resolved clinically. Stop apixaban today. Reviewed what a recurrence feels like and to call right away if it happens. For long car rides or flights: move every 1-2 hours, stay hydrated, calf exercises.\n2. T2DM: A1c and BMP today, continue metformin.\n3. HTN controlled.\n4. RA on prednisone 5, stable.\nVaccines next month when the fall shots are in. RTC 3 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2025-09-15T09:30",
+              "author": "PCP",
+              "body": "A1c basically unchanged from June; kidney function and potassium normal. Keep doing what you're doing. Fall vaccine visit with the nurse is set for 10/7."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "bp": [
+              120,
+              77
+            ],
+            "hr": 79
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T08:46"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-10-07T08:48"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-10-07T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-07T09:20",
+              "author": "RN",
+              "body": "Pt in for vaccines per PCP. Screening questions negative, no prior vaccine reactions. Given: influenza trivalent 0.5 mL IM L deltoid; COVID 2025-26 Pfizer 0.3 mL IM R deltoid; PCV20 0.5 mL IM L deltoid (separate site, 1 inch apart); Shingrix dose 1 0.5 mL IM R deltoid. VIS sheets provided. Observed 15 min, no reaction. Shingrix #2 due between December and April; she'll book it with her next follow-up. Told to expect a sore arm and maybe a day of feeling run down from Shingrix."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-28a",
+          "kind": "portal_message",
+          "start": "2025-11-28T07:42",
+          "reason": "Left leg swelling again",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg is swollen again",
+              "date": "2025-11-28T07:42",
+              "author": "patient",
+              "body": "Sorry to bother you on a holiday weekend. I got back from London on Tuesday and since Wednesday my left leg has been getting bigger and sore again, this time it's going up into the thigh. It feels like last time but worse. What should I do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg is swollen again",
+              "date": "2025-11-28T08:05",
+              "author": "PCP",
+              "body": "Not a bother at all. With your history this needs an ultrasound today and likely a blood thinner right away, and the ER is the fastest way to get both on a holiday Friday. Please go this morning, don't drive yourself if the leg is very painful. If you have any chest pain or shortness of breath call 911. I'll let them know you're coming."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-28b",
+          "kind": "hospital_admission",
+          "start": "2025-11-28T10:30",
+          "end": "2025-12-01T12:40",
+          "service": "Internal Medicine",
+          "reason": "Left leg swelling, recurrent DVT",
+          "conditions": [
+            {
+              "label": "Acute deep vein thrombosis of left iliofemoral veins",
+              "action": "diagnosed",
+              "onset": "2025-11-26",
+              "icd10": "I82.422"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (10 mg) by mouth twice daily through 12/7, then 1 tablet (5 mg) twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Recurrent DVT, left iliofemoral; indefinite"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              69
+            ],
+            "hr": 79,
+            "temp_c": 36.6,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-28T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-28T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 67
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-28T11:05",
+              "results": [
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "mg/L{FEU}",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2025-11-28T12:30",
+              "text": "Left lower extremity venous duplex with evaluation of the external iliac vein. Indication: left calf and thigh swelling and pain, prior left popliteal DVT. Comparison: duplex 06/09/2025. The left common femoral vein is expanded, filled with echogenic thrombus and noncompressible; thrombus continues through the femoral vein and the popliteal vein. Thrombus extends cephalad into the left external iliac vein, which shows no detectable flow. Calf veins compress where visualized. The great saphenous vein is patent. Right common femoral vein compressible with normal phasic flow.",
+              "conclusion": "Acute occlusive deep vein thrombosis of the left external iliac, common femoral, femoral and popliteal veins (iliofemoral DVT).",
+              "issued": "2025-11-28T13:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-28T15:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-12-01T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (received)",
+              "date": "2025-12-02T10:15",
+              "author": "hospital medicine",
+              "body": "Regional hospital, Department of Internal Medicine. Admitted 11/28/2025, discharged 12/01/2025. Received electronically 12/02/2025.\n\nAdmitting diagnosis: left lower extremity swelling.\nDischarge diagnosis: acute left iliofemoral deep vein thrombosis, recurrent.\n\nHistory: 54-year-old woman with type 2 diabetes, hypertension, rheumatoid arthritis on prednisone 5 mg daily, and a left popliteal DVT in June 2025 treated with 3 months of apixaban (completed September). Two days of progressive pain and swelling of the left calf and thigh beginning one day after a transatlantic flight; she landed three days before presentation. No trauma. Directed to the ED by her primary care physician.\n\nExam on admission: vital signs stable. Left calf erythematous, warm, tender to palpation, with pitting edema from the calf down to the ankle; left calf circumference 3 cm larger than right. Pain in the calf with passive dorsiflexion of the foot. Remainder unremarkable.\n\nData: CBC within normal limits. Creatinine 1.0 mg/dL. D-dimer 2.6 mg/L FEU (ref <0.5). Venous duplex: occlusive thrombus from the left external iliac vein through the common femoral, femoral and popliteal veins.\n\nHospital course: Started on weight-based enoxaparin 1 mg/kg subcutaneously every 12 hours. Leg elevated, pain controlled with acetaminophen. Swelling and pain improved over 72 hours, ambulating without difficulty. No signs of pulmonary embolism. Transitioned to apixaban at discharge. Given a second venous thrombosis, the team recommends indefinite anticoagulation with periodic review of bleeding risk.\n\nDischarge medications: apixaban 10 mg twice daily through 12/07, then 5 mg twice daily (NEW); metformin 1000 mg twice daily; lisinopril 10 mg daily; prednisone 5 mg daily.\nAllergies: NKDA.\nProblem list per hospital: acute DVT of left popliteal vein; iliofemoral DVT; type 2 diabetes; hypertension; rheumatoid arthritis.\n\nFollow-up: primary care within 1 week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "office_visit",
+          "start": "2025-12-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, DVT",
+          "vitals": {
+            "bp": [
+              114,
+              76
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 77.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-05T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 186
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-05T11:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-05T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-05T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2025-12-05T12:35",
+              "author": "PCP",
+              "body": "Seen 4 days after discharge for a L iliofemoral DVT (admitted 11/28-12/1; discharge summary reviewed). Second clot in 6 months, this one after a long flight home from overseas.\n\nShe feels much better. Thigh swelling mostly gone, calf still heavier by evening. Walking normally. On apixaban 10 mg BID until Sunday, then 5 mg BID; knows the switch date. No bleeding. No chest pain or breathlessness.\n\nExam: Vitals reviewed. L thigh soft, L calf mildly swollen, minimal tenderness, no erythema. Lungs clear. Heart regular.\n\nA/P:\n1. Recurrent L leg DVT, now iliofemoral. Agree with hospital: anticoagulation indefinitely. Will review yearly for bleeding risk. Gave her a written plan for flights: aisle seat, get up hourly, fluids. Bleeding precautions reviewed; avoid NSAIDs, Tylenol is fine for the leg. CBC and BMP today to check counts and kidney function on apixaban.\n2. T2DM, HTN, RA: no changes. A1c due next visit.\nWill need a new PA on apixaban for 2026 - MA to start it. RTC early March, sooner for any new swelling."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-18a",
+          "kind": "pharmacy",
+          "start": "2025-12-18T15:30",
+          "reason": "Apixaban prior authorization renewal",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Apixaban PA renewal",
+              "date": "2025-12-18T15:30",
+              "author": "MA",
+              "body": "PA renewal submitted for apixaban 5 mg BID, indication recurrent DVT (L iliofemoral 11/28/25), long-term. Approved 12/18/25 for 12 months. Pharmacy updated."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "pharmacy",
+          "start": "2026-01-09T09:25",
+          "reason": "Prednisone refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Prednisone refill",
+              "date": "2026-01-09T09:25",
+              "author": "RN",
+              "body": "Pharmacy refill request: prednisone 5 mg tab, 1 every morning, #90. Last filled 10/2025, on med list, seen 12/5. Sent per protocol with 1 refill, PCP cosign."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "telephone",
+          "start": "2026-02-24T16:50",
+          "reason": "Cancel appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment change",
+              "date": "2026-02-24T16:50",
+              "author": "front desk",
+              "body": "Pt called, has to be at a regional sales meeting all week and can't make Friday's follow-up. Rebooked for 3/6 at 8:00. Asked her to come in fasting for labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "office_visit",
+          "start": "2026-02-27T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, BP, DVT on anticoagulation",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 83,
+            "spo2": 97,
+            "weight_kg": 76.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-06T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-06T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 227
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-06T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-06T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-03-06T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-06T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2026-03-06T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Follow-up",
+              "date": "2026-03-06T09:15",
+              "author": "PCP",
+              "body": "Follow-up for diabetes, BP and the clot. Rescheduled from last week.\n\nDoing well. Leg back to baseline, only a bit of heaviness on travel days; getting up on flights as planned. On apixaban 5 BID, maybe missed 2 doses this winter, no bleeding beyond a nick shaving. No chest pain or breathlessness. Diet slipped over the holidays she says, back on track now. Morning sugars 120s-150s. RA quiet on prednisone 5.\n\nMeds: apixaban 5 mg BID; metformin 1000 mg BID; lisinopril 10 mg daily; prednisone 5 mg daily. NKDA.\n\nExam: Vitals reviewed, BP at goal. L calf slightly larger than R, soft, nontender, no edema. Heart RRR, lungs clear. Feet: skin intact, sensation normal, pulses good.\n\nA/P:\n1. T2DM: A1c, BMP today. Continue metformin, revisit if A1c creeping.\n2. HTN: controlled on lisinopril.\n3. Recurrent L leg DVT on indefinite apixaban: CBC today. Tolerating well.\n4. RA on prednisone 5 mg daily.\n5. Shingrix #2 today (RN). Mammogram due July.\nRTC June for the yearly labs."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-03-09T08:05",
+              "author": "PCP",
+              "body": "Valerie, labs look stable: blood counts and kidney function normal on the apixaban, potassium fine. A1c is up a little from the fall, which fits the holidays you mentioned; let's recheck in June before changing anything."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "portal_message",
+          "start": "2026-04-20T19:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-04-20T19:10",
+              "author": "patient",
+              "body": "Can you send 90 days of the Eliquis and the metformin to the mail order pharmacy? My insurance is pushing me to use it. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-04-21T09:00",
+              "author": "RN",
+              "body": "Done - apixaban 5 mg twice daily and metformin 1000 mg twice daily, 90-day supplies with refills, sent to your mail order pharmacy this morning. Your current prior authorization on the apixaban covers it through December."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "office_visit",
+          "start": "2026-06-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up and yearly labs",
+          "vitals": {
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 67,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 77.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-12T09:05",
+              "resulted": "2026-06-12T12:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-12T09:05",
+              "resulted": "2026-06-12T12:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-12T09:05",
+              "resulted": "2026-06-12T12:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-12T09:05",
+              "resulted": "2026-06-12T12:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-12T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-12T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-06-12T09:40",
+              "author": "PCP",
+              "body": "Routine 3-month visit plus yearly labs.\n\nFeeling fine today. Busy quarter at work, a lot of driving, taking breaks as we discussed. No leg swelling beyond her usual mild heaviness on the left. No bleeding. Taking all meds; prednisone 5 every morning for years now, RA under control. No hypoglycemia. PHQ-2 0.\n\nMeds: apixaban 5 mg BID; metformin 1000 mg BID; lisinopril 10 mg daily; prednisone 5 mg daily. NKDA.\n\nExam: Vitals reviewed, at goal. Comfortable. Heart RRR, lungs clear, abdomen soft and nontender. L calf a touch fuller than R, nontender. Feet: monofilament intact, pulses 2+, skin fine.\n\nA/P:\n1. T2DM: A1c, CMP, lipids, urine microalbumin today. Optometry eye exam due August, she'll schedule.\n2. HTN: controlled, continue lisinopril.\n3. Recurrent L leg DVT: on long-term apixaban, doing well; CBC today.\n4. RA on chronic prednisone 5 mg: continue.\n5. Mammogram due next month, order to be placed with results.\nRTC 3 months, early September."
+            },
+            {
+              "type": "Result Note",
+              "title": "Your lab results",
+              "date": "2026-06-12T13:20",
+              "author": "PCP",
+              "body": "Hi Valerie, today's labs are back already. Kidney and liver tests are normal, blood counts normal, urine protein normal, cholesterol fine. A1c is in your usual range. Nothing to change. Have a good weekend."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-12b",
+          "kind": "hospital_admission",
+          "start": "2026-06-12T18:25",
+          "end": "2026-06-17T13:30",
+          "service": "Internal Medicine",
+          "reason": "Abdominal pain, vomiting and hypotension after a fall",
+          "vitals": [
+            {
+              "time": "2026-06-12T18:30",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 110,
+              "rr": 20,
+              "temp_c": 37.0,
+              "spo2": 97
+            },
+            {
+              "time": "2026-06-12T21:45",
+              "bp": [
+                104,
+                64
+              ],
+              "hr": 96,
+              "rr": 18,
+              "temp_c": 37.1,
+              "spo2": 98
+            },
+            {
+              "time": "2026-06-17T08:00",
+              "bp": [
+                126,
+                78
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-12T18:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 99
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 20
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 25
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 53
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-12T18:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-17T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 136
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-06-12T19:40",
+              "text": "CT of the abdomen and pelvis with IV contrast. Indication: abdominal pain after a fall, on anticoagulation. Liver, gallbladder, spleen and pancreas are normal. Both adrenal glands are normal in size and appearance without hemorrhage. Kidneys enhance symmetrically without hydronephrosis. No free fluid or free air. No hematoma in the abdominal wall, retroperitoneum or pelvis. Bowel is normal in caliber without wall thickening. Uterus surgically absent. No acute fracture of the lumbar spine or pelvis.",
+              "conclusion": "No acute abnormality in the abdomen or pelvis. No hemorrhage.",
+              "issued": "2026-06-12T20:25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-12T18:25"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-12T23:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-17T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (received)",
+              "date": "2026-06-18T11:05",
+              "author": "hospital medicine",
+              "body": "Regional hospital, Internal Medicine (ICU then medical floor). Admitted 06/12/2026, discharged 06/17/2026. Received electronically 06/18/2026; filed for PCP review.\n\nPrincipal diagnosis: adrenal crisis.\nOther: type 2 diabetes; hypertension; rheumatoid arthritis on long-term glucocorticoid; recurrent left lower extremity DVT on apixaban.\n\nPresentation: 55-year-old woman who slipped and fell at home in the afternoon. Within a couple of hours she developed abrupt, severe abdominal pain with repeated vomiting. Did not hit her head, no loss of consciousness. In the ED: BP 85/50, HR 110, afebrile. Abdomen tender to palpation without rebound or guarding. Na 130, K 5.5, BUN 25, creatinine 1.2, glucose 92, WBC 12.0. Pressure remained low despite an initial normal saline bolus.\n\nCourse: Given chronic prednisone use and refractory hypotension, adrenal crisis was diagnosed and hydrocortisone 100 mg IV was given in the ED, followed by 50 mg IV every 6 hours. Systolic pressure rose above 100 within a few hours. Admitted to the ICU for monitoring. CT abdomen/pelvis with contrast, done given abdominal pain on anticoagulation, showed no acute findings and no bleeding; normal adrenal glands. Apixaban was held until the CT was read, then resumed. Lisinopril and metformin were held on admission. Vomiting stopped overnight, eating by day 2, transferred to the floor on day 2. Hydrocortisone tapered and converted to oral prednisone 10 mg daily. Electrolytes and renal function normalized: on 06/17 Na 136, K 4.3, creatinine 0.9. Lisinopril and metformin restarted before discharge with pressures and sugars stable.\n\nDischarge medications: prednisone 10 mg daily for 5 days, then back to 5 mg daily (CHANGED, temporary); hydrocortisone sodium succinate 100 mg IM emergency injection kit (NEW); apixaban 5 mg twice daily; metformin 1000 mg twice daily; lisinopril 10 mg daily.\nAllergies: NKDA.\n\nEducation: steroid sick-day rules (double the prednisone dose for fever or acute illness, use the emergency injection and call 911 if vomiting and unable to keep the dose down); never stop prednisone abruptly.\n\nFollow-up: endocrinology referral placed by the inpatient team; primary care after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T14:22",
+          "reason": "Home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home from the hospital",
+              "date": "2026-06-18T14:22",
+              "author": "patient",
+              "body": "Just wanted you to know I was in the hospital since last Friday, a few hours after I saw you. I fell in the kitchen and then got really sick, they said it was an adrenal crisis from the prednisone. I'm home since yesterday and feeling a lot better, just tired. They gave me an emergency shot to keep at home. Do I need to come in? I have a work trip I can't move the first week of July and then I'm on vacation until late August."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home from the hospital",
+              "date": "2026-06-18T17:40",
+              "author": "PCP",
+              "body": "Valerie, I'm so sorry, and glad you're home. I have the hospital summary. Take the prednisone exactly as they wrote it, 10 mg for the five days and then back to your usual 5 mg, and keep the injection kit with you when you travel. If you get a fever, a stomach bug, or start vomiting, follow the sick-day rules they gave you and call us. Our nurse will call you Monday to go over everything. Please keep the endocrinology appointment they set up. I'd still like to see you in person after your trips; the front desk will reach out to book."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "telephone",
+          "start": "2026-06-22T10:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-06-22T10:15",
+              "author": "RN",
+              "body": "Called pt after 6/12-6/17 admission for adrenal crisis. Reports feeling close to normal, energy coming back, no vomiting, eating well, no dizziness on standing. Finished the 5 days of prednisone 10 mg this weekend, back to 5 mg this morning. Has the hydrocortisone IM kit and watched the hospital's teaching video; knows when to use it. Sick-day rules reviewed again, she repeated them back. Taking apixaban, metformin, lisinopril as before. Endocrinology appt 7/24 confirmed. She declined an in-person visit before her July travel. Front desk to book PCP follow-up for after Labor Day per her schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22b",
+          "kind": "telephone",
+          "start": "2026-06-22T11:30",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up booked",
+              "date": "2026-06-22T11:30",
+              "author": "front desk",
+              "body": "Booked hospital follow-up/diabetes visit 9/4 at 10:00, first date she's back and available. Pt aware she can text or call sooner if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "specialist_visit",
+          "start": "2026-07-24T13:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency after adrenal crisis",
+          "vitals": {
+            "bp": [
+              133,
+              74
+            ],
+            "hr": 73,
+            "weight_kg": 77.4
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation (received)",
+              "date": "2026-07-28T15:10",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Date of service 07/24/2026. Received by fax 07/28/2026.\n\nReason for referral: adrenal crisis 06/2026.\n\nThank you for the referral of Ms. Labrie, 55, who has taken prednisone 5 mg daily for many years for rheumatoid arthritis. In June she had a fall at home followed by abdominal pain, vomiting and hypotension with hyponatremia and hyperkalemia, which responded promptly to IV hydrocortisone; CT showed normal adrenals and no hemorrhage. She completed a brief 10 mg prednisone course and has been on 5 mg daily since. She feels well, back at work, no lightheadedness, salt craving, nausea or weight change.\n\nMedications: prednisone 5 mg daily; apixaban 5 mg twice daily; metformin 1000 mg twice daily; lisinopril 10 mg daily; hydrocortisone 100 mg IM emergency kit.\nAllergies: no known drug allergies.\n\nExam: vitals reviewed, not orthostatic. Well appearing. Remainder unremarkable.\n\nImpression: adrenal insufficiency due to long-term glucocorticoid therapy, with adrenal crisis precipitated by acute illness. She should be regarded as steroid dependent.\n\nRecommendations:\n1. Continue prednisone 5 mg each morning; do not stop or taper without guidance.\n2. Sick-day rules reviewed: double the dose for fever or acute illness for the duration of illness; emergency IM hydrocortisone 100 mg and emergency care if vomiting or unable to take oral doses.\n3. Stress-dose steroid coverage for surgery or procedures; please share this letter with any surgical team.\n4. Medical alert bracelet or ID advised.\n5. Follow up here in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "pharmacy",
+          "start": "2026-08-10T08:50",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Lisinopril and prednisone refills",
+              "date": "2026-08-10T08:50",
+              "author": "RN",
+              "body": "Mail order requests: lisinopril 10 mg daily #90 and prednisone 5 mg daily #90. Both on current list, last seen 6/12. Sent per protocol, 1 refill each. Pt has follow-up booked 9/4."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "outside_records",
+          "start": "2026-08-21T12:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "date": "2026-08-21T12:00",
+              "author": "optometry",
+              "body": "Diabetic eye examination, exam date 08/18/2026. Dilated exam both eyes. Corrected acuity 20/20 right, 20/25 left, unchanged. Intraocular pressures normal. Lens clear both eyes. Optic nerves healthy, maculae normal, no hemorrhages or exudates. No diabetic retinopathy. Return in one year. Allergies: none known."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-04a",
+          "kind": "office_visit",
+          "start": "2026-09-04T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up and diabetes check",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute deep vein thrombosis of left iliofemoral veins|I82.422": {
+        "code": "I82.422",
+        "display": "Acute embolism and thrombosis of left iliac vein",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute deep vein thrombosis of left popliteal vein|I82.432": {
+        "code": "I82.432",
+        "display": "Acute embolism and thrombosis of left popliteal vein",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "mg/L{FEU}",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

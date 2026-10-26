@@ -1,0 +1,289 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002698",
+      "events": [
+        {
+          "id": "2026-01-09a",
+          "kind": "pharmacy",
+          "start": "2026-01-09T09:25",
+          "reason": "Prednisone refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Prednisone refill",
+              "author": "RN",
+              "date": "2026-01-09T09:25",
+              "body": "Pharmacy refill request: prednisone 5 mg tab, 1 every morning, #90. Last filled 10/2025, on med list, seen 12/5. Sent per protocol with 1 refill, PCP cosign."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "telephone",
+          "start": "2026-02-24T16:50",
+          "reason": "Cancel appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment change",
+              "author": "front desk",
+              "date": "2026-02-24T16:50",
+              "body": "Pt called, has to be at a regional sales meeting all week and can't make Friday's follow-up. Rebooked for 3/6 at 8:00. Asked her to come in fasting for labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "office_visit",
+          "start": "2026-02-27T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, BP, DVT on anticoagulation",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-06T08:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-06T08:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-03-06T08:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2026-03-06T08:50"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-06T08:00"},
+            {"procedure": "Immunization administration", "performed": "2026-03-06T08:50"},
+            {"procedure": "Venipuncture", "performed": "2026-03-06T08:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Follow-up",
+              "author": "PCP",
+              "date": "2026-03-06T09:15",
+              "body": "Follow-up for diabetes, BP and the clot. Rescheduled from last week.\n\nDoing well. Leg back to baseline, only a bit of heaviness on travel days; getting up on flights as planned. On apixaban 5 BID, maybe missed 2 doses this winter, no bleeding beyond a nick shaving. No chest pain or breathlessness. Diet slipped over the holidays she says, back on track now. Morning sugars 120s-150s. RA quiet on prednisone 5.\n\nMeds: apixaban 5 mg BID; metformin 1000 mg BID; lisinopril 10 mg daily; prednisone 5 mg daily. NKDA.\n\nExam: Vitals reviewed, BP at goal. L calf slightly larger than R, soft, nontender, no edema. Heart RRR, lungs clear. Feet: skin intact, sensation normal, pulses good.\n\nA/P:\n1. T2DM: A1c, BMP today. Continue metformin, revisit if A1c creeping.\n2. HTN: controlled on lisinopril.\n3. Recurrent L leg DVT on indefinite apixaban: CBC today. Tolerating well.\n4. RA on prednisone 5 mg daily.\n5. Shingrix #2 today (RN). Mammogram due July.\nRTC June for the yearly labs."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-03-09T08:05",
+              "body": "Valerie, labs look stable: blood counts and kidney function normal on the apixaban, potassium fine. A1c is up a little from the fall, which fits the holidays you mentioned; let's recheck in June before changing anything."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "portal_message",
+          "start": "2026-04-20T19:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2026-04-20T19:10",
+              "body": "Can you send 90 days of the Eliquis and the metformin to the mail order pharmacy? My insurance is pushing me to use it. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "RN",
+              "date": "2026-04-21T09:00",
+              "body": "Done - apixaban 5 mg twice daily and metformin 1000 mg twice daily, 90-day supplies with refills, sent to your mail order pharmacy this morning. Your current prior authorization on the apixaban covers it through December."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "office_visit",
+          "start": "2026-06-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up and yearly labs",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-12T09:05", "resulted": "2026-06-12T12:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-12T09:05", "resulted": "2026-06-12T12:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2026-06-12T09:05", "resulted": "2026-06-12T12:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2026-06-12T09:05", "resulted": "2026-06-12T12:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-12T08:30"},
+            {"procedure": "Venipuncture", "performed": "2026-06-12T09:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-06-12T09:40",
+              "body": "Routine 3-month visit plus yearly labs.\n\nFeeling fine today. Busy quarter at work, a lot of driving, taking breaks as we discussed. No leg swelling beyond her usual mild heaviness on the left. No bleeding. Taking all meds; prednisone 5 every morning for years now, RA under control. No hypoglycemia. PHQ-2 0.\n\nMeds: apixaban 5 mg BID; metformin 1000 mg BID; lisinopril 10 mg daily; prednisone 5 mg daily. NKDA.\n\nExam: Vitals reviewed, at goal. Comfortable. Heart RRR, lungs clear, abdomen soft and nontender. L calf a touch fuller than R, nontender. Feet: monofilament intact, pulses 2+, skin fine.\n\nA/P:\n1. T2DM: A1c, CMP, lipids, urine microalbumin today. Optometry eye exam due August, she'll schedule.\n2. HTN: controlled, continue lisinopril.\n3. Recurrent L leg DVT: on long-term apixaban, doing well; CBC today.\n4. RA on chronic prednisone 5 mg: continue.\n5. Mammogram due next month, order to be placed with results.\nRTC 3 months, early September."
+            },
+            {
+              "type": "Result Note",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2026-06-12T13:20",
+              "body": "Hi Valerie, today's labs are back already. Kidney and liver tests are normal, blood counts normal, urine protein normal, cholesterol fine. A1c is in your usual range. Nothing to change. Have a good weekend."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12b",
+          "kind": "hospital_admission",
+          "start": "2026-06-12T18:25",
+          "end": "2026-06-17T13:30",
+          "service": "Internal Medicine",
+          "reason": "Abdominal pain, vomiting and hypotension after a fall",
+          "vitals": [
+            {"time": "2026-06-12T18:30", "bp": [85, 50], "hr": 110, "temp_c": 37.0, "rr": 20, "spo2": 97},
+            {"time": "2026-06-12T21:45", "bp": [104, 64], "hr": 96, "temp_c": 37.1, "rr": 18, "spo2": 98},
+            {"time": "2026-06-17T08:00", "bp": [126, 78], "hr": 78, "temp_c": 36.8, "rr": 16, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-12T18:45", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 5.5}, {"test": "Chloride", "value": 99}, {"test": "Bicarbonate", "value": 20}, {"test": "Blood Urea Nitrogen", "value": 25}, {"test": "Creatinine", "value": 1.2}, {"test": "Glucose", "value": 92}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-12T18:45", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-17T06:00", "results": [{"test": "Sodium", "value": 136}, {"test": "Potassium", "value": 4.3}, {"test": "Creatinine", "value": 0.9}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-06-12T19:40",
+              "issued": "2026-06-12T20:25",
+              "text": "CT of the abdomen and pelvis with IV contrast. Indication: abdominal pain after a fall, on anticoagulation. Liver, gallbladder, spleen and pancreas are normal. Both adrenal glands are normal in size and appearance without hemorrhage. Kidneys enhance symmetrically without hydronephrosis. No free fluid or free air. No hematoma in the abdominal wall, retroperitoneum or pelvis. Bowel is normal in caliber without wall thickening. Uterus surgically absent. No acute fracture of the lumbar spine or pelvis.",
+              "conclusion": "No acute abnormality in the abdomen or pelvis. No hemorrhage."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-06-12T18:25"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-06-12T23:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-06-17T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary (received)",
+              "author": "hospital medicine",
+              "date": "2026-06-18T11:05",
+              "body": "Regional hospital, Internal Medicine (ICU then medical floor). Admitted 06/12/2026, discharged 06/17/2026. Received electronically 06/18/2026; filed for PCP review.\n\nPrincipal diagnosis: adrenal crisis.\nOther: type 2 diabetes; hypertension; rheumatoid arthritis on long-term glucocorticoid; recurrent left lower extremity DVT on apixaban.\n\nPresentation: 55-year-old woman who slipped and fell at home in the afternoon. Within a couple of hours she developed abrupt, severe abdominal pain with repeated vomiting. Did not hit her head, no loss of consciousness. In the ED: BP 85/50, HR 110, afebrile. Abdomen tender to palpation without rebound or guarding. Na 130, K 5.5, BUN 25, creatinine 1.2, glucose 92, WBC 12.0. Pressure remained low despite an initial normal saline bolus.\n\nCourse: Given chronic prednisone use and refractory hypotension, adrenal crisis was diagnosed and hydrocortisone 100 mg IV was given in the ED, followed by 50 mg IV every 6 hours. Systolic pressure rose above 100 within a few hours. Admitted to the ICU for monitoring. CT abdomen/pelvis with contrast, done given abdominal pain on anticoagulation, showed no acute findings and no bleeding; normal adrenal glands. Apixaban was held until the CT was read, then resumed. Lisinopril and metformin were held on admission. Vomiting stopped overnight, eating by day 2, transferred to the floor on day 2. Hydrocortisone tapered and converted to oral prednisone 10 mg daily. Electrolytes and renal function normalized: on 06/17 Na 136, K 4.3, creatinine 0.9. Lisinopril and metformin restarted before discharge with pressures and sugars stable.\n\nDischarge medications: prednisone 10 mg daily for 5 days, then back to 5 mg daily (CHANGED, temporary); hydrocortisone sodium succinate 100 mg IM emergency injection kit (NEW); apixaban 5 mg twice daily; metformin 1000 mg twice daily; lisinopril 10 mg daily.\nAllergies: NKDA.\n\nEducation: steroid sick-day rules (double the prednisone dose for fever or acute illness, use the emergency injection and call 911 if vomiting and unable to keep the dose down); never stop prednisone abruptly.\n\nFollow-up: endocrinology referral placed by the inpatient team; primary care after discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T14:22",
+          "reason": "Home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home from the hospital",
+              "author": "patient",
+              "date": "2026-06-18T14:22",
+              "body": "Just wanted you to know I was in the hospital since last Friday, a few hours after I saw you. I fell in the kitchen and then got really sick, they said it was an adrenal crisis from the prednisone. I'm home since yesterday and feeling a lot better, just tired. They gave me an emergency shot to keep at home. Do I need to come in? I have a work trip I can't move the first week of July and then I'm on vacation until late August."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home from the hospital",
+              "author": "PCP",
+              "date": "2026-06-18T17:40",
+              "body": "Valerie, I'm so sorry, and glad you're home. I have the hospital summary. Take the prednisone exactly as they wrote it, 10 mg for the five days and then back to your usual 5 mg, and keep the injection kit with you when you travel. If you get a fever, a stomach bug, or start vomiting, follow the sick-day rules they gave you and call us. Our nurse will call you Monday to go over everything. Please keep the endocrinology appointment they set up. I'd still like to see you in person after your trips; the front desk will reach out to book."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "telephone",
+          "start": "2026-06-22T10:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-06-22T10:15",
+              "body": "Called pt after 6/12-6/17 admission for adrenal crisis. Reports feeling close to normal, energy coming back, no vomiting, eating well, no dizziness on standing. Finished the 5 days of prednisone 10 mg this weekend, back to 5 mg this morning. Has the hydrocortisone IM kit and watched the hospital's teaching video; knows when to use it. Sick-day rules reviewed again, she repeated them back. Taking apixaban, metformin, lisinopril as before. Endocrinology appt 7/24 confirmed. She declined an in-person visit before her July travel. Front desk to book PCP follow-up for after Labor Day per her schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22b",
+          "kind": "telephone",
+          "start": "2026-06-22T11:30",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up booked",
+              "author": "front desk",
+              "date": "2026-06-22T11:30",
+              "body": "Booked hospital follow-up/diabetes visit 9/4 at 10:00, first date she's back and available. Pt aware she can text or call sooner if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "specialist_visit",
+          "start": "2026-07-24T13:00",
+          "service": "Endocrinology",
+          "reason": "Adrenal insufficiency after adrenal crisis",
+          "measure": ["bp", "hr", "weight_kg"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation (received)",
+              "author": "endocrinology",
+              "date": "2026-07-28T15:10",
+              "body": "Outside endocrinology group. Date of service 07/24/2026. Received by fax 07/28/2026.\n\nReason for referral: adrenal crisis 06/2026.\n\nThank you for the referral of Ms. Labrie, 55, who has taken prednisone 5 mg daily for many years for rheumatoid arthritis. In June she had a fall at home followed by abdominal pain, vomiting and hypotension with hyponatremia and hyperkalemia, which responded promptly to IV hydrocortisone; CT showed normal adrenals and no hemorrhage. She completed a brief 10 mg prednisone course and has been on 5 mg daily since. She feels well, back at work, no lightheadedness, salt craving, nausea or weight change.\n\nMedications: prednisone 5 mg daily; apixaban 5 mg twice daily; metformin 1000 mg twice daily; lisinopril 10 mg daily; hydrocortisone 100 mg IM emergency kit.\nAllergies: no known drug allergies.\n\nExam: vitals reviewed, not orthostatic. Well appearing. Remainder unremarkable.\n\nImpression: adrenal insufficiency due to long-term glucocorticoid therapy, with adrenal crisis precipitated by acute illness. She should be regarded as steroid dependent.\n\nRecommendations:\n1. Continue prednisone 5 mg each morning; do not stop or taper without guidance.\n2. Sick-day rules reviewed: double the dose for fever or acute illness for the duration of illness; emergency IM hydrocortisone 100 mg and emergency care if vomiting or unable to take oral doses.\n3. Stress-dose steroid coverage for surgery or procedures; please share this letter with any surgical team.\n4. Medical alert bracelet or ID advised.\n5. Follow up here in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "pharmacy",
+          "start": "2026-08-10T08:50",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Lisinopril and prednisone refills",
+              "author": "RN",
+              "date": "2026-08-10T08:50",
+              "body": "Mail order requests: lisinopril 10 mg daily #90 and prednisone 5 mg daily #90. Both on current list, last seen 6/12. Sent per protocol, 1 refill each. Pt has follow-up booked 9/4."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "outside_records",
+          "start": "2026-08-21T12:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye exam",
+              "author": "optometry",
+              "date": "2026-08-21T12:00",
+              "body": "Diabetic eye examination, exam date 08/18/2026. Dilated exam both eyes. Corrected acuity 20/20 right, 20/25 left, unchanged. Intraocular pressures normal. Lens clear both eyes. Optic nerves healthy, maculae normal, no hemorrhages or exudates. No diabetic retinopathy. Return in one year. Allergies: none known."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-04a",
+          "kind": "office_visit",
+          "start": "2026-09-04T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up and diabetes check",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

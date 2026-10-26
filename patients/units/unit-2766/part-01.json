@@ -1,0 +1,267 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002766",
+      "given": "Colleen",
+      "family": "Romano",
+      "birth_date": "1979-12-05",
+      "address_line": "118 Sheridan Street",
+      "phone": "+1-802-555-0185",
+      "email": "colleen.romano@example.test",
+      "marital_status": "single",
+      "summary": "Remote data analyst with neurogenic bladder after a remote T12 spinal cord injury, recurrent UTIs and chronic Proteus bacteriuria, who joins in 2022. Two ED visits for right renal colic and a febrile catheter-associated infection in 2025 lead to a 2026 admission for an infected right staghorn calculus, treated by PCNL; stone-free by May 2026.",
+      "events": [
+        {
+          "id": "2022-08-29a",
+          "kind": "telephone",
+          "start": "2022-08-29T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-08-29T10:20",
+              "body": "Caller wants to transfer care to us; her previous primary care doctor retired over the summer. Works from home as a data analyst, flexible schedule. Has a urologist she plans to keep. Mentions she self-caths and gets a lot of bladder infections, wanted to know if the doctor is comfortable with that. Told her the physician sees patients with neurogenic bladder and will coordinate with urology. Booked new patient visit 9/13 at 9:00. Sent the records release form by email and the intake questionnaire through the portal. Reminded her to bring her medication bottles and catheter supply info."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit, establish care",
+          "conditions": [
+            {"label": "Neurogenic bladder", "action": "diagnosed", "onset": "2012-01-01", "note": "secondary to remote T12 spinal cord injury; clean intermittent self-catheterization, followed by outside urology"},
+            {"label": "Urinary tract infection", "action": "diagnosed", "onset": "2013-01-01", "note": "recurrent"},
+            {"label": "Chronic Proteus mirabilis bacteriuria", "icd10": "R82.71", "action": "diagnosed", "onset": "2014-01-01"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2015-01-01", "note": "quit 2015, 10 pack-years"}
+          ],
+          "medications": [
+            {"drug": "oxybutynin chloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "neurogenic bladder"},
+            {"drug_text": "methenamine hippurate 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 1, "unit": "g"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "UTI prophylaxis"},
+            {"drug_text": "docusate sodium 100 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth twice daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "bowel regimen"}
+          ],
+          "allergies": [
+            {"substance": "Trimethoprim-sulfamethoxazole", "reaction": "Stevens-Johnson syndrome", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Latex", "criticality": "high", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 68.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T10:10", "results": [{"test": "Creatinine", "value": 0.9, "unit": "mg/dL"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Data analyst (remote)"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-13T09:00"}],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-13T10:05",
+              "body": "New patient, 42F, here to establish primary care. Prior PCP retired; records requested.\n\nBackground: remote T12 spinal cord injury with neurogenic bladder. Manages her bladder with clean intermittent self-catheterization, latex-free catheters, about every 4-6 hours. Followed by an outside urology group once a year or so. Long history of bladder infections; she says cultures usually come back Proteus. Urology has told her the Proteus is chronic colonization and not to be treated unless she is symptomatic. Takes oxybutynin for bladder spasm/leakage, methenamine for prevention, and docusate for her bowel program. Nothing acute today.\n\nPMH: neurogenic bladder after T12 SCI; recurrent UTIs; chronic Proteus mirabilis bacteriuria.\nPSH: appendectomy 2005.\nMeds: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, docusate 100 mg BID.\nAllergies: TMP-SMX (Stevens-Johnson syndrome). LATEX — needs latex-free gloves and supplies.\nFH: mother has had kidney stones many times; father with hypertension.\nSH: data analyst, works remotely. Quit smoking 2015, about 10 pack-years. Does not drink.\n\nROS: no fever, no flank pain, no hematuria. Bowel program working. Mood good.\n\nExam: NAD, pleasant. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, healed RLQ scar. No CVA tenderness. Skin intact over sacrum and heels, no pressure areas. Neuro: upper extremities strength and sensation normal; lower-extremity findings at her known baseline from the cord injury.\n\nA/P:\n1. Neurogenic bladder, remote T12 SCI — stable on CIC. Continue oxybutynin, methenamine. Will get urology notes. Latex allergy flagged in chart.\n2. Recurrent UTI / chronic Proteus bacteriuria — agree with urology, no urine testing unless symptomatic. Avoid TMP-SMX (SJS). Reviewed red flags: fever, flank pain, new spasm or autonomic symptoms -> call same day.\n3. Former smoker, 10 pack-years — no lung screening indicated.\n4. Health maintenance: CMP, CBC, lipids, one-time hep C and HIV today. Asked for prior Pap and mammogram reports. Flu and COVID next month at nurse visit.\n\nRTC 1 year for physical, sooner as needed. Text or call anytime."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-09-15T16:40",
+              "body": "Hi Colleen — your bloodwork looks good. Kidney function is normal (creatinine 0.9), blood counts and liver tests normal, cholesterol fine. Hep C and HIV screens negative, so those are done for good. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:15",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2021-08-10T09:30", "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."},
+            {"study": "Screening mammogram, bilateral", "performed": "2021-10-05T08:40", "text": "Bilateral digital screening mammogram with tomosynthesis. Scattered fibroglandular densities. No suspicious mass, calcifications or architectural distortion.", "conclusion": "BI-RADS 1, negative. Routine annual screening."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "MA",
+              "date": "2022-09-27T11:15",
+              "body": "43 pages from prior PCP office indexed to chart. Includes office notes 2016-2022, med list (oxybutynin, methenamine, docusate), allergy list matching ours (TMP-SMX with SJS, latex), immunization record, Pap/HPV co-test 08/2021 negative, screening mammogram 10/2021 negative. Last tetanus booster on their record was 2012. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T08:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, bivalent", "date": "2022-10-11T08:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T08:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2022-10-11T08:50",
+              "body": "Here for flu and COVID booster. Latex-free gloves and bandage used. Flu vaccine 0.5 mL IM left deltoid, Moderna bivalent IM right deltoid. VIS provided. Observed 15 min, no reaction. Pt left in good spirits."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "outside_records",
+          "start": "2022-11-10T14:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up letter",
+              "author": "urology",
+              "date": "2022-11-10T14:00",
+              "body": "Outside urology group. Date of visit: 11/08/2022.\n\nDear colleague,\n\nI saw Ms. Romano for her yearly neurogenic bladder visit. She continues clean intermittent catheterization with latex-free catheters and has no problems with passage. Continence between catheterizations is acceptable on oxybutynin 5 mg three times daily. Surveillance urine grows Proteus mirabilis as before; she is asymptomatic today and we will not treat colonization.\n\nAllergies: trimethoprim-sulfamethoxazole (SJS), latex.\nMedications: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, docusate 100 mg BID.\n\nExam: abdomen soft, nontender, bladder not palpable. No CVA tenderness.\n\nPlan: continue current regimen including methenamine. Return in one year. Thank you for sharing her care.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "pharmacy",
+          "start": "2023-01-17T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Methenamine refill",
+              "author": "MA",
+              "date": "2023-01-17T09:05",
+              "body": "Pharmacy fax requesting methenamine hippurate 1 g BID #180. Last written by prior PCP. Pended for PCP — approved, 90-day supply with 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "imaging",
+          "start": "2023-03-14T07:50",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-03-14T07:50", "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 10/2021. Scattered fibroglandular densities. No suspicious mass, calcifications or architectural distortion. Stable.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2023-03-15T12:30",
+              "body": "Mammogram normal, BI-RADS 1. Letter mailed by imaging center. Repeat in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "telephone",
+          "start": "2023-06-06T13:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Catheter supplies prior authorization",
+              "author": "MA",
+              "date": "2023-06-06T13:30",
+              "body": "Medical supply company called — insurance now requires a prior auth for hydrophilic latex-free intermittent catheters, 6 per day. Completed form with diagnosis neurogenic bladder, latex allergy noted, PCP signed. Faxed back. Pt informed by phone; she has two weeks of supplies left. Approval received 6/9, supplier notified."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T09:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T09:20", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-09-19T09:10"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-19T08:30"},
+            {"procedure": "Immunization administration", "performed": "2023-09-19T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-19T09:25",
+              "body": "Annual exam, 43F.\n\nInterval: good year, no infections needing treatment. Still self-cathing every 4-6 h. Supplies sorted after the prior auth in June. Bowels regular on docusate. Saw urology last November, due again this fall.\n\nMeds: oxybutynin 5 mg TID, methenamine 1 g BID, docusate 100 mg BID. Allergies: TMP-SMX (SJS), latex.\n\nExam: well appearing. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no CVA tenderness. Breasts without masses. Skin over sacrum and heels intact. Lower-extremity neuro at her baseline.\nPHQ-9: 2.\n\nA/P:\n- Neurogenic bladder, recurrent UTI, Proteus colonization: stable. Continue regimen.\n- HM: Tdap today (last 2012). CMP, CBC. Mammogram done March. Pap/HPV 2021 negative, next 2026. Colon screening starts at 45. Flu/COVID at October nurse visit.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2023-09-21T07:55",
+              "body": "Labs from your physical are all normal, kidney numbers steady. No changes. See you for flu shot in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T08:20"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-17T08:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T08:20"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2023-10-17T08:40",
+              "body": "Flu IM L deltoid, updated Moderna COVID IM R deltoid. Latex-free supplies. No reaction during 15 minute wait."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "outside_records",
+          "start": "2023-11-16T15:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up letter",
+              "author": "urology",
+              "date": "2023-11-16T15:20",
+              "body": "Outside urology group. Visit 11/14/2023.\n\nMs. Romano returns for routine neurogenic bladder follow-up. CIC continues without difficulty. Proteus mirabilis remains on surveillance cultures; not treated in the absence of symptoms. Renal function normal per your September labs.\n\nAllergies: TMP-SMX (Stevens-Johnson), latex.\nMedications unchanged: oxybutynin 5 mg TID, methenamine hippurate 1 g BID, docusate 100 mg BID.\n\nImpression: stable neurogenic bladder on CIC; recurrent UTI; chronic Proteus bacteriuria.\nPlan: no changes. Return 12 months or sooner with febrile infection.\n\nUrology"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4910 @@
+{
+  "unit": "unit-2107",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002107",
+      "given": "Daniel",
+      "family": "Chen",
+      "birth_date": "1982-05-05",
+      "address_line": "27 Laurel Park Road",
+      "phone": "+1-603-555-0169",
+      "email": "daniel.chen@example.test",
+      "marital_status": "single",
+      "summary": "China-born IT specialist who joined in 2019; the practice found chronic hepatitis B in 2020 (tenofovir via GI), and MEN2A surfaced in 2021 with a pheochromocytoma and medullary thyroid carcinoma both resected. In late 2023, after stopping tenofovir on his own, he developed hepatitis B associated polyarteritis nodosa, treated with prednisone and azathioprine; last seen January 2025, with an active-disease rheumatology letter in December 2025.",
+      "events": [
+        {
+          "id": "2019-08-20a",
+          "kind": "telephone",
+          "start": "2019-08-20T11:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2019-08-20T11:52",
+              "author": "front desk",
+              "body": "Caller Daniel Chen, 37, works in IT, wants a primary care home after several years without a regular doctor. Membership and insurance billing explained. Records release faxed to his last primary care office. New patient visit set for 9/10 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-30a",
+          "kind": "outside_records",
+          "start": "2019-08-30T14:10",
+          "reason": "Prior PCP records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-08-30T14:10",
+              "author": "MA",
+              "body": "11 pages from his previous primary care office, last visit there in 2016. Contents: two brief annual visits, normal vitals, a normal basic metabolic panel and CBC from 2015, tetanus booster 2009. Allergy list there: sulfa drug (anaphylaxis as a child) and latex (skin reaction). No chronic problems or medications listed. Abstracted to chart; originals scanned."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:00",
+          "end": "2019-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit",
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              86
+            ],
+            "hr": 63,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 69.8,
+            "height_cm": 172.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.14
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Information technology specialist"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-09-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-10T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-10T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T10:20",
+              "author": "PCP",
+              "body": "New patient, 37 y/o man, here to set up primary care. Feels well. No ongoing symptoms. Has not had a physical in about three years.\n\nPMH: none. PSH: none. Meds: none, no supplements.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis). Sulfa reaction was as a young child, throat closing, per his parents; latex gloves give him an itchy rash.\nFH: father had thyroid cancer (he is not sure of the type). Mother has type 2 diabetes and high blood pressure.\nSH: born in China. Works as an IT specialist, mostly desk work. Single, lives alone. Never smoker. Alcohol a drink or two a month. No drugs.\n\nROS negative across systems.\n\nExam: BP 136/86 (rechecked, same). Well appearing. HEENT unremarkable, thyroid not enlarged, no nodules felt. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen soft, no organomegaly. Skin without rashes. No edema.\nPHQ-2: 0.\n\nAssessment/plan:\n1. Health maintenance: CMP, CBC, lipids, A1c. One-time HCV and HIV screens, he agrees. Tdap today (last tetanus 2009 per old records).\n2. BP borderline today: recheck at next visit; less salt, keep moving.\n3. Flu shot when this season's supply arrives, nurse visit.\nReturn in a year or as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 70.2,
+            "height_cm": 173.0,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Hemoglobin A1c": 5.3,
+              "Metanephrine, Free, Plasma": 0.21,
+              "Normetanephrine, Free, Plasma": 0.47,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Vitamin B12": 520
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Daniel, all of your blood work from this week came back normal: kidney and liver tests, blood counts, cholesterol and sugar are fine, and the hepatitis C and HIV screens were negative. Nothing to do. The flu vaccine should be in by early October; the front desk can book you a quick nurse visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-10-08T08:45",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM given in the left deltoid. Screening questions negative. Latex-free gloves used. Tolerated well, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-07a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-07T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-07T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-2020-04",
+              "action": "placed",
+              "order": "CMP, CBC, TSH",
+              "category": "lab",
+              "reason": "fatigue"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-04-07T13:45",
+              "author": "PCP",
+              "body": "Video visit (clinic in-person visits limited this month). Patient at home, identity verified.\n\nS: About two months of feeling tired, worse by mid-afternoon. Also a mild dull ache under the right ribs on and off, not related to meals, no nausea or vomiting. No jaundice that he has noticed, urine normal color, stools normal. Sleeping 7 hours. Working from home now. Mood okay. No fever or weight change. Drinks rarely.\n\nO: Comfortable on video, no scleral icterus visible, speaking in full sentences.\n\nA/P: Fatigue with vague RUQ discomfort, nonspecific. Start with labs: CMP, CBC, TSH. Lab is open mornings by appointment. Will call with results. If pain becomes constant or he turns yellow, call the same day."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-09a",
+          "kind": "lab_only",
+          "start": "2020-04-09T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue labs",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-04-09T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-04-09T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 286
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-04-09T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "lab-2020-04",
+              "action": "done",
+              "date": "2020-04-09T08:10"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 92,
+              "Aspartate Aminotransferase": 61
+            }
+          }
+        },
+        {
+          "id": "2020-04-13a",
+          "kind": "telephone",
+          "start": "2020-04-13T12:15",
+          "reason": "Lab results",
+          "orders": [
+            {
+              "id": "hep-serol-2020",
+              "action": "placed",
+              "order": "Hepatitis B surface antigen, core antibody, surface antibody",
+              "category": "lab",
+              "reason": "elevated transaminases"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result call",
+              "date": "2020-04-13T12:30",
+              "author": "PCP",
+              "body": "Called him about the 4/9 labs. ALT 92 and AST 61, mildly up; bilirubin, blood counts, kidney function and TSH normal. Not taking Tylenol, supplements or anything new. Asked about family liver disease: he says his sister was told years ago she carries hepatitis B. He has never been tested himself that he knows of and does not recall being vaccinated. Ordered hep B surface antigen, core antibody and surface antibody; he can go on the 16th. Added sister's hepatitis B to family history."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-16a",
+          "kind": "lab_only",
+          "start": "2020-04-16T08:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis serologies",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-04-16T08:25",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-04-16T08:25",
+              "results": [
+                {
+                  "test": "Hepatitis B core antibody, total",
+                  "loinc": "16933-4",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-04-16T08:25",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "hep-serol-2020",
+              "action": "done",
+              "date": "2020-04-16T08:25"
+            }
+          ]
+        },
+        {
+          "id": "2020-04-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-20T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B results",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2020-04-20T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Hepatitis B",
+              "date": "2020-04-20T16:30",
+              "author": "PCP",
+              "body": "Video visit to go over serologies. HBsAg positive, total core antibody positive, surface antibody negative, with the mildly raised ALT/AST from 4/9.\n\nExplained what this means: active hepatitis B infection; with his sister a carrier and birth in China, most likely acquired early in life, but we cannot call it chronic until the surface antigen is still positive after 6 months. He is single, no current partner; reviewed how it spreads (blood, sex, shared razors or toothbrushes). Avoid alcohol and extra acetaminophen.\n\nStill tired, RUQ ache unchanged and mild.\n\nPlan: repeat HBsAg and liver tests in October with his physical, and GI referral at that point if it persists. He prefers to wait given the current situation. Call sooner for jaundice, dark urine or worse pain."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "annual_physical",
+          "start": "2020-10-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2020-10-13"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              148,
+              94
+            ],
+            "hr": 64,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 69.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-10-13T09:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 84
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 57
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-13T09:20",
+              "resulted": "2020-10-15T14:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-10-13T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-13T09:40",
+              "author": "PCP",
+              "body": "38 y/o here for yearly exam. Still runs low on energy most afternoons, the right-sided ache comes and goes, no change. No jaundice. Working remotely, eating more takeout than he would like.\n\nMeds: none. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\nFH: father thyroid cancer; mother DM2 and HTN; sister hepatitis B carrier.\n\nExam: BP 148/94 seated, repeat after 5 minutes 146/92. Well. Thyroid without palpable nodule. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender today, liver edge not felt. No edema. Skin clear.\nPHQ-2: 1.\n\nA/P:\n1. Elevated blood pressure: second time above 140/90 here, now 148/94, and mother has HTN. Diagnosing essential hypertension. Start with lifestyle: salt under 2 g, back to exercise, fewer takeout meals. Bought a home cuff today at my suggestion; log morning and evening readings for two weeks and send them. Recheck in 3 months, and we talk about medicine then if still high.\n2. Hepatitis B surface antigen positive in April: repeat today with liver tests.\n3. Flu shot today, R deltoid.\n4. Routine labs otherwise up to date from last year."
+            }
+          ],
+          "state": {
+            "bp": [
+              148,
+              94
+            ],
+            "labs": {
+              "Alanine Aminotransferase": 84,
+              "Aspartate Aminotransferase": 57
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-10-16a",
+          "kind": "telephone",
+          "start": "2020-10-16T11:05",
+          "reason": "Results",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis B",
+              "action": "diagnosed",
+              "onset": "2020-04-16"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chronic hepatitis B with raised ALT"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result call - hepatitis B",
+              "date": "2020-10-16T11:20",
+              "author": "PCP",
+              "body": "Spoke with patient. HBsAg remains positive six months after the first test, so this is chronic hepatitis B. ALT 84, AST 57, similar to spring; albumin and bilirubin normal. Referred to gastroenterology for viral load, staging and a treatment decision. He agrees. Referral faxed with April and October labs. Home BP log still to come."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-28a",
+          "kind": "specialist_visit",
+          "start": "2020-12-28T10:30",
+          "service": "Gastroenterology",
+          "reason": "Chronic hepatitis B consultation",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-12-28T11:15",
+              "resulted": "2020-12-30T09:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "110965-1",
+                  "unit": "[IU]/mL",
+                  "value": 46000
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2020-12-28T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2020-12-30T15:20",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology consultation. Date of service 12/28/2020. Reason: chronic hepatitis B, referred by his primary care physician.\n\nMr. Chen is a 38-year-old man found this spring to be hepatitis B surface antigen positive, and still positive on repeat in October, so about eight months now. He describes being worn out for several months and a mild intermittent ache in the right upper abdomen. No jaundice, pruritus, GI bleeding or confusion. Rare alcohol. No transfusions or injection drug use. Sister is a known carrier.\n\nMedications: none. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: Comfortable, anicteric. Abdomen soft, minimal RUQ tenderness, no hepatosplenomegaly, no ascites. No stigmata of chronic liver disease.\n\nData: ALT 92 and AST 61 in April, ALT 84 and AST 57 in October. HBsAg positive both times, core antibody positive. HBV DNA drawn today: 46,000 IU/mL.\n\nImpression: chronic hepatitis B with persistently raised transaminases and moderate viremia. Biopsy will help us judge the degree of inflammation before we commit him to long-term antiviral therapy.\n\nPlan: percutaneous liver biopsy, scheduled 1/12. Will see him by video afterward to review.\n\nThank you for this referral.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "procedure_visit",
+          "start": "2021-01-12T08:00",
+          "service": "Gastroenterology",
+          "reason": "Liver biopsy",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-01-12T08:30",
+              "text": "Specimen: liver, percutaneous needle core biopsy (ultrasound guided, right lobe). Gross: two tan cores, 1.6 and 1.4 cm. Microscopic: chronic portal and lobular inflammation, predominantly lymphocytic, with scattered areas of hepatocyte injury. No steatosis. No dysplasia or malignancy. Iron stain negative.",
+              "conclusion": "Liver, needle biopsy: chronic hepatitis with chronic inflammation and areas of hepatocyte injury, consistent with the clinical history of chronic hepatitis B.",
+              "issued": "2021-01-15T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "office_visit",
+          "start": "2021-01-19T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-01-21a",
+          "kind": "specialist_visit",
+          "start": "2021-01-21T14:00",
+          "service": "Gastroenterology",
+          "reason": "Biopsy review",
+          "medications": [
+            {
+              "drug_text": "tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily with food",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hepatitis B"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up (video)",
+              "date": "2021-01-22T10:10",
+              "author": "gastroenterology",
+              "body": "Gastroenterology follow-up by video, 1/21/2021.\n\nBiopsy from 1/12 shows chronic hepatitis with inflammation and areas of hepatocyte injury. With persistently raised ALT and HBV DNA of 46,000 IU/mL, he meets criteria for treatment.\n\nPlan: start tenofovir alafenamide 25 mg once daily with food, long term. Counseled not to stop it on his own, since stopping can cause a flare. Prior authorization submitted by our office. Recheck HBV DNA and liver tests in about 6 months. Please keep his blood pressure care with you.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2021-01-25a",
+          "kind": "pharmacy",
+          "start": "2021-01-25T10:40",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy - prior authorization",
+              "date": "2021-01-25T10:40",
+              "author": "MA",
+              "body": "Pharmacy called: Vemlidy prior authorization approved for 12 months (GI submitted). Patient picking up today. Added tenofovir alafenamide to med list as prescribed by GI."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "office_visit",
+          "start": "2021-03-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure; spells of headache and sweating",
+          "vitals": {
+            "bp": [
+              158,
+              96
+            ],
+            "hr": 96,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-09T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral, urgent",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "episodic headache, palpitations, sweating with hypertension; family history of MEN2"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-03-09T11:05",
+              "author": "PCP",
+              "body": "Overdue BP recheck (January visit was cancelled; never sent the home log).\n\nSince around the new year he has had spells: a pounding headache, his heart racing, and drenching sweat, lasting 10 to 30 minutes, a few times a week, no clear trigger. Between spells he feels sluggish. A few episodes of vague belly discomfort. Appetite normal. Home cuff readings he remembers: mostly 150s/90s, one at 180-something during a spell. Taking tenofovir daily since late January without trouble.\n\nAsked again about his father's thyroid cancer. He has since asked his family: father was told he has MEN2 and had medullary thyroid cancer removed; a paternal aunt had an adrenal tumor, a pheochromocytoma. Updated family history.\n\nExam: BP 158/96, HR 96 regular. Not diaphoretic now. Thyroid: no palpable nodule. Heart RRR, no murmur. Lungs clear. Abdomen soft. No tremor.\n\nA/P:\n1. Hypertension with paroxysmal headache, palpitations and sweating, and a father with MEN2: pheochromocytoma has to be excluded first. Urgent endocrinology referral today; I called their office and they will see him in early April. Holding off on starting a BP medicine so the workup and any alpha blockade are planned by endocrinology; avoid beta-blocker until then.\n2. Chronic hepatitis B on tenofovir per GI.\nED precautions reviewed for a spell with chest pain, severe headache or BP over 200."
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              96
+            ]
+          },
+          "measure": [
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-04-05a",
+          "kind": "specialist_visit",
+          "start": "2021-04-05T09:30",
+          "service": "Endocrinology",
+          "reason": "Episodic headache, palpitations and sweating",
+          "vitals": {
+            "bp": [
+              166,
+              94
+            ],
+            "hr": 92,
+            "weight_kg": 69.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-04-05T10:30",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 10.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-04-05T10:30",
+              "resulted": "2021-04-08T12:00",
+              "results": [
+                {
+                  "test": "Calcitonin",
+                  "loinc": "1992-7",
+                  "unit": "pg/mL",
+                  "value": 186
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-04-06T08:00",
+              "resulted": "2021-04-09T15:00",
+              "results": [
+                {
+                  "test": "Normetanephrine, 24 hour urine",
+                  "loinc": "2671-6",
+                  "unit": "ug/(24.h)",
+                  "value": 1120
+                },
+                {
+                  "test": "Metanephrine, 24 hour urine",
+                  "loinc": "19049-6",
+                  "unit": "ug/(24.h)",
+                  "value": 430
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2021-04-05T09:30"
+            },
+            {
+              "id": "ct-adrenal",
+              "action": "placed",
+              "order": "CT abdomen, adrenal protocol",
+              "category": "imaging",
+              "reason": "suspected pheochromocytoma"
+            },
+            {
+              "id": "us-thyroid",
+              "action": "placed",
+              "order": "Thyroid ultrasound",
+              "category": "imaging",
+              "reason": "family history of medullary thyroid carcinoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2021-04-07T09:15",
+              "author": "endocrinology",
+              "body": "Endocrinology new consult, seen 4/5/2021, at the request of his primary care physician.\n\n38-year-old man with chronic hepatitis B, on tenofovir since January after GI evaluation in December. For several months, headaches that come with a racing heartbeat and heavy sweating. Feels more sluggish lately and has had a few spells of vague abdominal discomfort. Eats normally. Denies illicit drugs, decongestants or stimulants.\n\nFamily history is notable for endocrine surgery on his father's side: father with MEN2 and medullary thyroid cancer, paternal aunt with pheochromocytoma.\n\nMedications: tenofovir alafenamide 25 mg daily. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: BP 166/94, HR 92. Alert, not flushed. Neck: no goiter or discrete nodule on palpation. Cardiac exam normal, regular rhythm, no murmur. Abdomen soft, nontender, no masses. No marfanoid habitus, no mucosal neuromas.\n\nImpression: spells with hypertension in a man whose father has MEN2. Need to exclude pheochromocytoma and medullary thyroid carcinoma.\n\nPlan: BMP with calcium and serum calcitonin today; 24-hour urine fractionated metanephrines (collection starts tomorrow morning); adrenal-protocol CT and thyroid ultrasound this week; germline RET testing sent with his consent. No beta-blocker. Will write again with results.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-04-08a",
+          "kind": "imaging",
+          "start": "2021-04-08T13:00",
+          "service": "Radiology",
+          "reason": "Adrenal CT and thyroid ultrasound",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2021-04-08T13:00",
+              "text": "Adrenal protocol CT of the abdomen with unenhanced, portal venous and delayed images, with pelvis included. Left adrenal: fullness of the gland. Right adrenal: normal. Liver normal in size and attenuation without focal lesion. Gallbladder, pancreas, spleen and kidneys unremarkable. No hydronephrosis. Normal caliber aorta. No lymphadenopathy. No free fluid. Pelvic organs unremarkable. Lung bases clear.",
+              "conclusion": "Left adrenal fullness; correlate with biochemical testing. Right adrenal normal. Otherwise unremarkable.",
+              "issued": "2021-04-08T17:30"
+            },
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2021-04-08T14:10",
+              "text": "Right lobe 4.6 x 1.7 x 1.6 cm. Left lobe 4.4 x 1.5 x 1.5 cm. Isthmus 0.3 cm. In the right lobe there is a 1.4 cm solid hypoechoic nodule. Left lobe without nodules. No abnormal cervical lymph nodes.",
+              "conclusion": "1.4 cm solid hypoechoic right thyroid nodule.",
+              "issued": "2021-04-08T17:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-adrenal",
+              "action": "done",
+              "date": "2021-04-08T13:00"
+            },
+            {
+              "id": "us-thyroid",
+              "action": "done",
+              "date": "2021-04-08T14:10"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-19a",
+          "kind": "specialist_visit",
+          "start": "2021-04-19T15:30",
+          "service": "Endocrinology",
+          "reason": "Results review",
+          "conditions": [
+            {
+              "label": "Multiple endocrine neoplasia type 2A",
+              "action": "diagnosed",
+              "onset": "2021-04-19",
+              "icd10": "E31.22"
+            },
+            {
+              "label": "Pheochromocytoma of left adrenal gland",
+              "action": "diagnosed",
+              "onset": "2021-04-08",
+              "icd10": "D35.02"
+            },
+            {
+              "label": "Thyroid nodule",
+              "action": "diagnosed",
+              "onset": "2021-04-08"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "doxazosin 4 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "alpha blockade before adrenalectomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2021-04-20T08:40",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up by video, 4/19/2021, results review.\n\nResults: serum calcium 10.6 mg/dL, borderline high. Calcitonin 186 pg/mL, clearly raised. 24-hour urine normetanephrine 1,120 mcg (reference under 900) and metanephrine 430 mcg (reference under 400), mildly elevated. CT: fullness of the left adrenal, right adrenal normal. Thyroid ultrasound: 1.4 cm solid hypoechoic right lobe nodule. Germline testing: pathogenic point mutation in the RET proto-oncogene.\n\nImpression: multiple endocrine neoplasia type 2 (2A pattern) with a left pheochromocytoma and a thyroid nodule that, with this calcitonin, is very likely medullary carcinoma.\n\nPlan:\n- Doxazosin 4 mg daily starting today for alpha blockade, liberal salt and fluids. Expect some lightheadedness on standing at first.\n- Laparoscopic left adrenalectomy first (tentatively 4/29), then total thyroidectomy with central neck dissection once he recovers. Referral to endocrine surgery sent.\n- Genetic counseling referral; first-degree relatives should be offered testing.\nWill keep you posted.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-26a",
+          "kind": "specialist_visit",
+          "start": "2021-04-26T11:00",
+          "service": "Medical Genetics",
+          "reason": "Genetic counseling",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Genetic Counseling",
+              "date": "2021-04-27T09:30",
+              "author": "genetic counselor",
+              "body": "Genetic counseling session by video, 4/26/2021.\n\nReviewed his RET result and what it means: the variant causes MEN2 and is passed on in an autosomal dominant way, so each child of a carrier has a one-in-two chance of inheriting it. It explains his father's medullary thyroid cancer and his aunt's pheochromocytoma. Lifelong surveillance after his surgeries will be run by endocrinology.\n\nHe has a sister; we recommend she be tested, and gave him a family letter to share. He has no children. Discussed options for future family planning when relevant.\n\nQuestions answered. Letter and result copy sent to the patient.\nMedical Genetics"
+            }
+          ]
+        },
+        {
+          "id": "2021-04-29a",
+          "kind": "hospital_admission",
+          "start": "2021-04-29T06:30",
+          "end": "2021-05-01T11:00",
+          "service": "General Surgery",
+          "reason": "Laparoscopic left adrenalectomy",
+          "conditions": [
+            {
+              "label": "Pheochromocytoma of left adrenal gland",
+              "action": "resolved",
+              "icd10": "D35.02"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-04-29T09:40",
+              "text": "Specimen: left adrenal gland, laparoscopic adrenalectomy. Gross: adrenal gland with a well-circumscribed tan-red nodule, 2.4 cm in greatest dimension. Microscopic: nested (zellballen) pattern of polygonal cells with granular cytoplasm; chromogranin and synaptophysin positive. Tumor confined to the gland. Margins clear.",
+              "conclusion": "Left adrenal gland: pheochromocytoma, 2.4 cm, confined to the adrenal gland; margins clear.",
+              "issued": "2021-05-03T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - General Surgery",
+              "date": "2021-05-03T10:00",
+              "author": "general surgery",
+              "body": "Admitted 4/29/2021, discharged 5/1/2021.\n\nProcedure: laparoscopic left adrenalectomy for pheochromocytoma in the setting of MEN2, after 10 days of alpha blockade with doxazosin 4 mg daily.\n\nCourse: uncomplicated surgery. Brief intraoperative BP swings on gland handling, controlled. First postoperative night in step-down; no hypotension or hypoglycemia. Tolerated diet on day 1. Pain controlled with acetaminophen and a short course of oxycodone. Port sites clean.\nBlood pressure on the ward ran 136-142/86-90 on doxazosin, so doxazosin is continued at discharge for hypertension; primary care to follow.\n\nDischarge medications: doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily, acetaminophen as needed.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis). Latex precautions observed.\n\nFollow-up: surgery clinic in 2 weeks; endocrinology to arrange the thyroid operation. Pathology to follow."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "office_visit",
+          "start": "2021-05-11T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-operative follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              88
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 70.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-05-11T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - after adrenalectomy",
+              "date": "2021-05-11T14:40",
+              "author": "PCP",
+              "body": "Seen 12 days after laparoscopic left adrenalectomy. Pathology: pheochromocytoma 2.4 cm, confined, clear margins. The spells have stopped completely since surgery. Port sites a little sore. Off oxycodone. Some lightheadedness standing up fast in the first week on doxazosin, better now.\n\nMeds: doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily.\n\nExam: BP 138/88. Port sites healing, no redness. Heart RRR. Lungs clear.\n\nA/P:\n1. Pheochromocytoma, resected.\n2. Hypertension, still above goal after the tumor was removed: continue doxazosin 4 mg as his BP medicine for now, home log, recheck after the thyroid surgery.\n3. MEN2: total thyroidectomy with central neck dissection being scheduled for June by endocrine surgery.\n4. Chronic hepatitis B on tenofovir, GI following."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              88
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "hospital_admission",
+          "start": "2021-06-21T06:00",
+          "end": "2021-06-22T12:00",
+          "service": "General Surgery",
+          "reason": "Total thyroidectomy with central neck dissection",
+          "conditions": [
+            {
+              "label": "Thyroid nodule",
+              "action": "resolved"
+            },
+            {
+              "label": "Medullary thyroid carcinoma",
+              "action": "diagnosed",
+              "onset": "2021-04-19",
+              "icd10": "C73"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 125,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "replacement after total thyroidectomy"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-06-21T09:10",
+              "text": "Specimens: (A) thyroid, total thyroidectomy; (B) central compartment (level VI) lymph nodes. Gross: thyroid 32 g; firm white-tan nodule in the right lobe, 1.3 cm. Microscopic: nests and sheets of round to spindled cells with stippled chromatin and amyloid stroma; calcitonin positive, thyroglobulin negative. Background C-cell hyperplasia. Margins negative. Central compartment nodes: all negative for carcinoma. Parathyroid tissue not identified in the specimen.",
+              "conclusion": "Medullary thyroid carcinoma, right lobe, 1.3 cm; margins negative; central compartment lymph nodes negative.",
+              "issued": "2021-06-25T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - General Surgery",
+              "date": "2021-06-24T09:30",
+              "author": "general surgery",
+              "body": "Admitted 6/21/2021, discharged 6/22/2021.\n\nProcedure: total thyroidectomy with central neck dissection for a calcitonin-secreting right thyroid nodule in MEN2. Both recurrent laryngeal nerves identified and preserved. Parathyroids identified and left in situ with blood supply.\n\nCourse: voice normal. Calcium checks overnight and in the morning normal; no tingling. Drain removed day 1. Incision clean.\n\nDischarge medications: levothyroxine 125 mcg every morning (new), doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily, acetaminophen as needed.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nFollow-up: surgery clinic 2 weeks; endocrinology in 4 to 6 weeks for calcitonin and TSH. Pathology to follow."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "specialist_visit",
+          "start": "2021-07-20T10:00",
+          "service": "Endocrinology",
+          "reason": "Post-operative surveillance",
+          "conditions": [
+            {
+              "label": "Medullary thyroid carcinoma",
+              "action": "resolved",
+              "icd10": "C73"
+            },
+            {
+              "label": "History of thyroid cancer",
+              "action": "history",
+              "onset": "2021-06-21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              84
+            ],
+            "hr": 67,
+            "weight_kg": 70.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-07-20T10:40",
+              "results": [
+                {
+                  "test": "Calcitonin",
+                  "loinc": "1992-7",
+                  "unit": "pg/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-07-20T10:40",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 0.22
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 0.47
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-07-20T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-07-20T10:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2021-07-23T13:15",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up 7/20/2021, four weeks after total thyroidectomy with central neck dissection.\n\nPathology: medullary thyroid carcinoma, 1.3 cm, right lobe, margins negative, central nodes negative. Adrenal pathology from April: pheochromocytoma, confined.\n\nFeels well, voice normal, no tingling. No more spells. Taking levothyroxine correctly.\n\nLabs today: calcitonin undetectable (<2 pg/mL). Plasma free metanephrines normal. TSH and free T4 in range on 125 mcg. Calcium normal.\n\nImpression: MEN2A with medullary carcinoma and pheochromocytoma both resected, biochemically clear.\nPlan: continue levothyroxine 125 mcg and doxazosin 4 mg per primary care. Yearly calcitonin, plasma metanephrines and TSH; sooner for any recurrent spells.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-07-27a",
+          "kind": "nurse_visit",
+          "start": "2021-07-27T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-07-27T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-07-27T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "COVID-19 vaccine, dose 1",
+              "date": "2021-07-27T16:35",
+              "author": "RN",
+              "body": "First Pfizer dose 0.3 mL IM left arm. Delayed his series around the two surgeries. Sulfa anaphylaxis history noted (not a vaccine component); observed 30 minutes, no reaction. Dose 2 booked 8/17."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-03a",
+          "kind": "specialist_visit",
+          "start": "2021-08-03T09:00",
+          "service": "Gastroenterology",
+          "reason": "Hepatitis B follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-08-03T09:30",
+              "resulted": "2021-08-05T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "110965-1",
+                  "unit": "[IU]/mL",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-08-03T09:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2021-08-06T11:00",
+              "author": "gastroenterology",
+              "body": "GI follow-up 8/3/2021. On tenofovir alafenamide since January, no missed doses by his account. Had a busy spring: left adrenalectomy for pheochromocytoma and total thyroidectomy for medullary carcinoma as part of a new MEN2 diagnosis. No abdominal complaints now; energy better.\n\nHBV DNA not detected. ALT and AST now normal.\n\nPlan: continue tenofovir indefinitely. Yearly visit with HBV DNA, liver tests and liver ultrasound for cancer surveillance, starting next summer.\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 27,
+              "Aspartate Aminotransferase": 23
+            }
+          }
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "nurse_visit",
+          "start": "2021-08-17T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-08-17T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-08-17T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "COVID-19 vaccine, dose 2",
+              "date": "2021-08-17T16:50",
+              "author": "MA",
+              "body": "Second Pfizer dose right deltoid. Arm sore after the first and tired one day, nothing else. Watched 15 min, fine. Card updated."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              86
+            ],
+            "hr": 71,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 71.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-19T08:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-19T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-19T09:15",
+              "author": "PCP",
+              "body": "Yearly exam, age 39. Big year medically: chronic hep B now on tenofovir (viral load undetectable in August), MEN2 found in April with left pheochromocytoma removed 4/29 and total thyroidectomy for medullary carcinoma 6/21. Endocrinology letter 7/20: calcitonin undetectable, metanephrines normal.\n\nToday: feels the best he has in two years. Home BPs 130s/80s. Neck scar healing well. No palpitations or sweating spells.\n\nMeds: levothyroxine 125 mcg daily, doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: BP 134/86. Well. Neck: healed low collar incision. Heart RRR, no murmur. Lungs clear. Abdomen soft, port scars fine. Skin clear. No edema.\nPHQ-2: 0.\n\nA/P:\n1. Hypertension on doxazosin 4 mg: acceptable today, continue.\n2. MEN2A s/p adrenalectomy and thyroidectomy: endocrinology surveillance yearly; levothyroxine per endo.\n3. Chronic hepatitis B: GI yearly with ultrasound.\n4. Prevention: flu shot today. CMP, CBC, lipids. COVID primary series done in August. Booster when eligible."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              86
+            ],
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-10-21a",
+          "kind": "portal_message",
+          "start": "2021-10-21T12:30",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-10-21T12:30",
+              "author": "PCP",
+              "body": "Daniel, your labs from the physical look good. Kidney function, calcium, liver enzymes and blood counts are normal, and your cholesterol is in a healthy range. "
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "outside_records",
+          "start": "2021-12-14T17:00",
+          "reason": "Immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization report",
+              "date": "2021-12-14T17:00",
+              "author": "MA",
+              "body": "State registry update: Pfizer COVID-19 booster given 12/11/2021 at a community pharmacy. Entered in immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-25a",
+          "kind": "portal_message",
+          "start": "2022-01-25T07:50",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "date": "2022-01-25T07:50",
+              "author": "patient",
+              "body": "Hi, can I get 90-day supplies of the levothyroxine and doxazosin sent to my pharmacy? Insurance says it's cheaper. Thanks, Dan"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "date": "2022-01-25T11:20",
+              "author": "RN",
+              "body": "Done, 90-day supplies of both with refills went to your pharmacy. Your tenofovir stays with GI."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "office_visit",
+          "start": "2022-04-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              85
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-04-12T16:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-04-12T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2022-04-12T16:50",
+              "author": "PCP",
+              "body": "BP follow-up. Doing well. Home average about 132/84. No orthostatic symptoms on doxazosin. No spells. \n\nMeds: levothyroxine 125 mcg daily, doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily.\n\nExam: vitals reviewed. Heart RRR. Lungs clear. No edema.\n\nA/P: Hypertension controlled enough on doxazosin 4 mg; continue. BMP today. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "specialist_visit",
+          "start": "2022-06-14T09:40",
+          "service": "Endocrinology",
+          "reason": "MEN2 surveillance",
+          "vitals": {
+            "bp": [
+              138,
+              79
+            ],
+            "hr": 56,
+            "weight_kg": 71.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:20",
+              "results": [
+                {
+                  "test": "Calcitonin",
+                  "loinc": "1992-7",
+                  "unit": "pg/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:20",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 0.2
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 0.48
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-14T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-06-14T10:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Surveillance Visit",
+              "date": "2022-06-16T10:30",
+              "author": "endocrinology",
+              "body": "Endocrinology yearly visit, 6/14/2022. MEN2A, s/p left adrenalectomy (pheochromocytoma) and total thyroidectomy with central neck dissection (medullary carcinoma, node negative) in 2021.\n\nOne year from surgery. No palpitations, headaches or sweats. Voice normal. Weight stable. Feels well.\n\nLabs: calcitonin remains undetectable. Plasma free metanephrines normal. TSH in range on levothyroxine 125 mcg. Calcium normal.\n\nPlan: no change from our side. Same panel in a year, sooner for spells, a neck lump or diarrhea.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "imaging",
+          "start": "2022-07-12T08:30",
+          "service": "Radiology",
+          "reason": "Hepatitis B surveillance",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2022-07-12T08:30",
+              "text": "Indication: chronic hepatitis B, surveillance. Liver 15.2 cm, normal echotexture, smooth contour, no focal lesion. Portal vein patent with normal flow direction. Gallbladder without stones or wall thickening. Common bile duct 3 mm. Right kidney normal. Pancreas partially seen, unremarkable. No ascites.",
+              "conclusion": "Normal liver; no focal hepatic lesion.",
+              "issued": "2022-07-12T12:10"
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "specialist_visit",
+          "start": "2022-07-19T13:30",
+          "service": "Gastroenterology",
+          "reason": "Hepatitis B follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-19T14:00",
+              "resulted": "2022-07-21T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "110965-1",
+                  "unit": "[IU]/mL",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-07-19T14:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2022-07-22T09:00",
+              "author": "gastroenterology",
+              "body": "GI yearly, 7/19/2022. Taking tenofovir alafenamide every day. No complaints.\n\nUltrasound 7/12: normal liver, no focal lesion. HBV DNA not detected; ALT normal, albumin normal.\n\nPlan: continue tenofovir. Return in a year with ultrasound and labs. Reminded him never to stop it without talking to us.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "annual_physical",
+          "start": "2022-10-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              137,
+              87
+            ],
+            "hr": 60,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 72.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-25T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-25T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-25T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-10-25T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-25T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-25T08:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-25T08:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-25T08:55",
+              "author": "PCP",
+              "body": "Age 40, yearly exam. No new concerns. Endocrinology in June: calcitonin still undetectable. GI in July: hep B suppressed, ultrasound normal. Sleeping fine, work busy but manageable.\n\nMeds: levothyroxine 125 mcg daily, doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: vitals reviewed, BP fine. Well. Neck scar well healed, no masses. Heart RRR, no murmur. Lungs clear. Abdomen soft, no hepatomegaly. No edema. Skin normal.\nPHQ-2: 0.\n\nA/P:\n1. HTN: at goal on doxazosin.\n2. MEN2A post-resection: per endo.\n3. Chronic HBV on tenofovir: per GI.\n4. Mother has diabetes: A1c with today's CMP and CBC.\n5. Flu and bivalent COVID boosters today, opposite arms.\nNo colon screening yet (starts at 45)."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "portal_message",
+          "start": "2022-10-27T09:10",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2022-10-27T09:10",
+              "author": "PCP",
+              "body": "All normal: A1c is in the non-diabetic range, kidney function and calcium are normal, and your blood count is fine. See you in the spring for a BP check."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "pharmacy",
+          "start": "2023-02-07T14:25",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy - prior authorization",
+              "date": "2023-02-07T14:25",
+              "author": "MA",
+              "body": "Pharmacy says Vemlidy needs a renewed prior authorization. Forwarded to the GI office, which prescribes it; they confirmed they will submit today. Let patient know by voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T12:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              90
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 70.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-04-18T12:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Hypertension",
+              "date": "2023-04-18T13:05",
+              "author": "PCP",
+              "body": "Routine BP visit. Says he is fine. Home readings few and far between, the ones he has are in the 130s. Busy at work, a new system rollout.\n\nMeds per list: levothyroxine 125 mcg daily, doxazosin 4 mg daily, tenofovir alafenamide 25 mg daily.\n\nExam: vitals as charted. Heart RRR. Lungs clear. Ankles without swelling.\n\nA/P: HTN acceptable, continue doxazosin. Physical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "specialist_visit",
+          "start": "2023-06-20T09:40",
+          "service": "Endocrinology",
+          "reason": "MEN2 surveillance",
+          "vitals": {
+            "bp": [
+              133,
+              89
+            ],
+            "hr": 65,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-20T10:20",
+              "results": [
+                {
+                  "test": "Calcitonin",
+                  "loinc": "1992-7",
+                  "unit": "pg/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-20T10:20",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 0.21
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 0.44
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-20T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-20T10:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Surveillance Visit",
+              "date": "2023-06-22T15:00",
+              "author": "endocrinology",
+              "body": "Endocrinology yearly visit, 6/20/2023. MEN2A, s/p left adrenalectomy (pheochromocytoma) and total thyroidectomy with central neck dissection (medullary carcinoma, node negative) in 2021.\n\nNo spells, no neck symptoms. Busy at work. Reports taking levothyroxine regularly.\n\nLabs: calcitonin remains undetectable. Plasma free metanephrines normal. TSH in range on levothyroxine 125 mcg. Calcium normal.\n\nPlan: no change from our side. Same panel in a year, sooner for spells, a neck lump or diarrhea.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "outside_records",
+          "start": "2023-07-25T10:15",
+          "reason": "Missed specialist appointment",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "GI office notice",
+              "date": "2023-07-25T10:15",
+              "author": "front desk",
+              "body": "Fax from the gastroenterology office: patient did not attend his yearly hepatitis B visit and liver ultrasound on 7/18/2023; two reminder calls unanswered. Asking that we encourage him to reschedule. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "portal_message",
+          "start": "2023-08-01T17:40",
+          "reason": "GI follow-up reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your liver follow-up",
+              "date": "2023-08-01T17:40",
+              "author": "PCP",
+              "body": "Hi Daniel, the GI office let us know you missed your July visit and ultrasound. Those checks matter with hepatitis B, especially the yearly ultrasound. Could you call them to rebook?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your liver follow-up",
+              "date": "2023-08-02T21:15",
+              "author": "patient",
+              "body": "Sorry, work has been crazy. I'll call them."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "annual_physical",
+          "start": "2023-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "hospital_admission",
+          "start": "2023-12-19T19:40",
+          "end": "2023-12-23T13:00",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue, weakness, dark urine",
+          "conditions": [
+            {
+              "label": "Polyarteritis nodosa",
+              "action": "diagnosed",
+              "onset": "2023-12-01",
+              "note": "hepatitis B associated",
+              "icd10": "M30.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily with breakfast; rheumatology to taper",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "polyarteritis nodosa"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-12-19T19:52",
+              "bp": [
+                168,
+                94
+              ],
+              "hr": 98,
+              "rr": 16,
+              "temp_c": 37.9,
+              "spo2": 98
+            },
+            {
+              "time": "2023-12-23T08:00",
+              "bp": [
+                148,
+                90
+              ],
+              "hr": 80,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-19T20:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-19T20:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.64
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 54
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-19T20:10",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 68
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-12-19T20:30",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 15
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-20T06:00",
+              "resulted": "2023-12-21T15:00",
+              "results": [
+                {
+                  "test": "Neutrophil cytoplasmic antibodies",
+                  "loinc": "17351-8",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-20T06:00",
+              "resulted": "2023-12-22T11:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "110965-1",
+                  "unit": "[IU]/mL",
+                  "value": 1900000
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-22T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.52
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 59
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT angiogram, mesenteric vessels",
+              "loinc": "87851-2",
+              "performed": "2023-12-20T13:30",
+              "text": "CT angiography of the abdomen with arterial and portal venous phase imaging and multiplanar reconstructions. Multiple small aneurysms along branches of the superior mesenteric artery with segmental areas of narrowing. Celiac axis and inferior mesenteric artery origins patent. No bowel wall thickening or pneumatosis. No active extravasation. Liver, spleen and pancreas unremarkable. Postsurgical absence of the left adrenal gland. Kidneys enhance symmetrically. No free fluid.",
+              "conclusion": "Multiple small mesenteric branch aneurysms with segmental narrowing, consistent with a medium-vessel vasculitis such as polyarteritis nodosa."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2023-12-26T09:00",
+              "author": "emergency medicine",
+              "body": "Emergency department, 12/19/2023, arrival 19:40.\n\n41-year-old man with chronic hepatitis B and MEN2A (s/p adrenalectomy and thyroidectomy 2021) presenting with two weeks of steadily worse fatigue, generalized weakness and vague abdominal discomfort. Low-grade fevers at home. Has lost about 4 kg in the past month without trying. Urine has looked dark for several days. On questioning, he stopped his tenofovir around May because he felt fine and kept meaning to see GI.\n\nMeds: levothyroxine 125 mcg, doxazosin 4 mg, tenofovir (not taking since spring). Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nTriage: BP 168/94, T 37.9 C (100.2 F), HR 98, SpO2 98% RA.\nExam: tired appearing. No rash, no joint swelling or deformity. Heart regular. Lungs clear. Abdomen soft, mildly tender in the right flank, no guarding. No edema. Neuro nonfocal.\n\nResults: creatinine 1.64 (normal in 2022), hemoglobin 11.6 with MCV 88, ESR 68. Urinalysis: blood 2+, 15 RBC/hpf, protein negative.\n\nImpression: subacute systemic illness with renal involvement, elevated inflammatory markers and anemia in a man with untreated hepatitis B; concern for hepatitis B related vasculitis. Admitted to medicine; ANCA, HBV DNA and mesenteric CT angiography requested.\nEmergency Medicine"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Medicine",
+              "date": "2023-12-27T14:10",
+              "author": "hospital medicine",
+              "body": "Admitted 12/19/2023 through the ED, discharged 12/23/2023.\n\nDiagnosis: polyarteritis nodosa associated with chronic hepatitis B, with renal involvement and acute kidney injury.\n\nCourse: ANCA negative. HBV DNA 1,900,000 IU/mL off therapy. Mesenteric CT angiogram 12/20: multiple small branch aneurysms with segmental narrowing, consistent with PAN. Rheumatology and hepatology consulted. Tenofovir alafenamide 25 mg daily restarted 12/20. Prednisone 40 mg daily started 12/20. Fevers settled within two days. Creatinine 1.52 on 12/22. BP 140s-150s/90.\n\nDischarge medications: prednisone 40 mg daily (new, rheumatology to taper), tenofovir alafenamide 25 mg daily (resumed; do not stop), doxazosin 4 mg daily, levothyroxine 125 mcg daily.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nFollow-up: PCP within one week with BMP and CBC; rheumatology early January; GI/hepatology in about 6 weeks with HBV DNA.\nHospital Medicine"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.8,
+            "labs": {
+              "Creatinine": 1.64,
+              "Erythrocyte Sedimentation Rate": 68,
+              "Hemoglobin": 11.6,
+              "Mean Corpuscular Volume": 88
+            }
+          }
+        },
+        {
+          "id": "2023-12-28a",
+          "kind": "office_visit",
+          "start": "2023-12-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              92
+            ],
+            "hr": 61,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 66.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-28T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.48
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-28T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-12-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2023-12-28T11:50",
+              "author": "PCP",
+              "body": "Seen five days after discharge. Admitted 12/19-12/23 with hepatitis B associated polyarteritis nodosa (mesenteric CT angiogram with small aneurysms, ANCA negative, HBV DNA 1.9 million off tenofovir), with kidney involvement, creatinine 1.64 peaking, 1.52 at discharge.\n\nHe tells me he stopped the tenofovir himself around May, and that he skipped his GI visit and the physical here. He knows now. Back on tenofovir since the hospital, plus prednisone 40 mg. Fevers gone. Still tired. Appetite returning. Sleeping poorly on the steroid. Urine looks normal now.\n\nMeds reconciled: prednisone 40 mg daily, tenofovir alafenamide 25 mg daily, doxazosin 4 mg daily, levothyroxine 125 mcg daily.\nAllergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: BP 146/92. Afebrile. Thin, tired. Heart RRR. Lungs clear. Abdomen soft, slight right flank tenderness. No rash. No edema.\n\nA/P:\n1. Polyarteritis nodosa, hepatitis B associated: rheumatology 1/9. Prednisone 40 mg until they taper. BMP and CBC today.\n2. Chronic hepatitis B: tenofovir restarted; GI follow-up being rebooked, he says he will go. Discussed plainly that stopping it likely set this off.\n3. Hypertension: above goal today, on steroid and with kidney involvement. Keep doxazosin, home log, recheck at next visit.\n4. Sleep on prednisone: take it early in the morning.\nFollow up after rheumatology, sooner for fever, flank pain or dark urine."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              92
+            ],
+            "labs": {
+              "Creatinine": 1.48
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "specialist_visit",
+          "start": "2024-01-09T10:15",
+          "service": "Rheumatology",
+          "reason": "Polyarteritis nodosa",
+          "medications": [
+            {
+              "drug_text": "azathioprine 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1.5 tablets (75 mg) by mouth daily",
+              "dose": {
+                "value": 75,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "polyarteritis nodosa"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              90
+            ],
+            "hr": 66,
+            "temp_c": 37.0,
+            "weight_kg": 66.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-09T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-09T11:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.53
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 58
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Consultation",
+              "date": "2024-01-11T16:00",
+              "author": "rheumatology",
+              "body": "Rheumatology outpatient visit 1/9/2024, following our inpatient consultation in December.\n\nHepatitis B associated polyarteritis nodosa diagnosed during his December admission: mesenteric microaneurysms, renal involvement (creatinine up to 1.64, hematuria), ANCA negative, viremic after stopping tenofovir. On prednisone 40 mg since 12/20 and tenofovir back on board. Feels stronger, no fevers, no new rash or numbness.\n\nMeds: prednisone 40 mg daily, tenofovir alafenamide 25 mg, doxazosin 4 mg, levothyroxine 125 mcg. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: vitals reviewed. No livedo or skin ulcers. Joints quiet. No focal weakness.\n\nPlan:\n- Begin tapering prednisone, aiming for 5 mg daily by April. Written schedule given.\n- Start azathioprine 75 mg daily as a steroid-sparing agent. CBC and liver tests every 4 weeks at first.\n- Tenofovir must continue without interruption; we are in touch with his GI team.\nReturn in 3 months.\nRheumatology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "specialist_visit",
+          "start": "2024-02-13T14:00",
+          "service": "Gastroenterology",
+          "reason": "Hepatitis B follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-13T14:30",
+              "resulted": "2024-02-15T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "110965-1",
+                  "unit": "[IU]/mL",
+                  "value": 640
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-02-13T14:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2024-02-16T09:20",
+              "author": "gastroenterology",
+              "body": "GI visit 2/13/2024, first since 2022 (missed last July). Off tenofovir from roughly May to December 2023; admitted in December with hepatitis B associated PAN; tenofovir resumed 12/20. Now also on prednisone taper and azathioprine from rheumatology.\n\nHBV DNA 640 IU/mL, down from 1.9 million. ALT normal.\n\nPlan: continue tenofovir alafenamide daily, firmly. Repeat viral load with his next rheumatology labs. Ultrasound and visit in a year.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "specialist_visit",
+          "start": "2024-04-16T09:00",
+          "service": "Rheumatology",
+          "reason": "Polyarteritis nodosa follow-up",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "tapered"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "polyarteritis nodosa"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              83
+            ],
+            "hr": 69,
+            "weight_kg": 68.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-16T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-16T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-16T09:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-16T09:40",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2024-04-18T12:00",
+              "author": "rheumatology",
+              "body": "Rheumatology follow-up 4/16/2024. PAN, hepatitis B associated.\n\nTaper completed: prednisone now 5 mg daily. Azathioprine 75 mg tolerated, monthly counts fine. Energy back to near normal, regained weight. No fevers, abdominal pain, rash or numbness.\n\nLabs: creatinine 1.24, hemoglobin 14.0, ESR 16. Urine blood clearing.\n\nPlan: prednisone 5 mg daily and azathioprine 75 mg daily continue. Labs every 3 months. Return in 6 months.\nRheumatology"
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0,
+            "labs": {
+              "Creatinine": 1.24,
+              "Erythrocyte Sedimentation Rate": 16,
+              "Hemoglobin": 14.0,
+              "Mean Corpuscular Volume": 89
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; vaccines",
+          "vitals": {
+            "bp": [
+              140,
+              88
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 69.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-05-14T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-14T16:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.23
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-14T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-05-14T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-05-14T16:05"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-05-14T16:06"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-14T16:25",
+              "author": "PCP",
+              "body": "Follow-up. Rheumatology in April: prednisone down to 5 mg, azathioprine 75 mg, creatinine 1.24, ESR 16. GI in February: HBV DNA 640 and falling. He feels well and is taking every pill, uses a weekly box now.\n\nMeds: prednisone 5 mg daily, azathioprine 75 mg daily, tenofovir alafenamide 25 mg daily, doxazosin 4 mg daily, levothyroxine 125 mcg daily. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: BP 140/88, home readings similar. Heart RRR. Lungs clear. No edema. Skin: no rash or ulcers.\n\nA/P:\n1. HTN: 140/88, continue doxazosin 4 mg.\n2. PAN on low-dose prednisone and azathioprine: per rheumatology. A1c and BMP today given the steroid course.\n3. Immunosuppressed: PCV20 and first Shingrix today; second Shingrix in 2 months. No live vaccines.\n4. Chronic HBV: tenofovir, GI following."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              88
+            ],
+            "labs": {
+              "Hemoglobin A1c": 5.6
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "nurse_visit",
+          "start": "2024-07-16T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-07-16T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-07-16T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2024-07-16T08:30",
+              "author": "RN",
+              "body": "Second Shingrix dose IM, left deltoid. Had a sore arm and chills for a day after the first. Latex-free supplies. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "pharmacy",
+          "start": "2024-08-20T09:30",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2024-08-20T09:30",
+              "author": "RN",
+              "body": "Electronic refill requests for doxazosin 4 mg and levothyroxine 125 mcg. Seen in May, TSH checked by endocrinology. Approved, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "specialist_visit",
+          "start": "2024-10-08T13:20",
+          "service": "Rheumatology",
+          "reason": "Polyarteritis nodosa follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              85
+            ],
+            "hr": 67,
+            "weight_kg": 68.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T14:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-08T14:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 10
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 75
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T14:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2024-10-10T10:00",
+              "author": "rheumatology",
+              "body": "Rheumatology follow-up 10/8/2024. PAN, hepatitis B associated, in remission on prednisone 5 mg and azathioprine 75 mg. No new symptoms. Exam unremarkable. Counts, creatinine and ESR stable.\n\nPlan: unchanged regimen. Return in 6 months.\nRheumatology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              140,
+              88
+            ],
+            "hr": 66,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 69.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 80
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 87
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-22T08:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T08:41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T09:00",
+              "author": "PCP",
+              "body": "42 y/o, yearly exam (missed last year's). PAN in remission per rheumatology this month. Hepatitis B suppressed per GI. MEN2 surveillance due with endo next month. Feels well.\n\nMeds: prednisone 5 mg daily, azathioprine 75 mg daily, tenofovir alafenamide 25 mg daily, doxazosin 4 mg daily, levothyroxine 125 mcg daily. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: BP 140/88. Well. Neck scar fine. Heart RRR. Lungs clear. Abdomen soft, no organomegaly. Skin without rash, livedo or ulcer. No edema. Sensation grossly intact in feet.\nPHQ-2: 1.\n\nA/P:\n1. HTN on doxazosin: 140/88, continue.\n2. PAN, chronic HBV, MEN2A: specialists following; lists updated from their letters.\n3. Prevention: flu and updated COVID today. Pneumococcal and shingles done this year. CMP, CBC, lipids today. Colon screening at 45."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:15",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2024-10-24T13:15",
+              "author": "PCP",
+              "body": "Labs are stable: kidney number about where it has been since spring, liver tests normal, blood count normal, cholesterol fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "specialist_visit",
+          "start": "2024-11-12T09:40",
+          "service": "Endocrinology",
+          "reason": "MEN2 surveillance",
+          "vitals": {
+            "bp": [
+              131,
+              83
+            ],
+            "hr": 67,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-12T10:20",
+              "results": [
+                {
+                  "test": "Calcitonin",
+                  "loinc": "1992-7",
+                  "unit": "pg/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T10:20",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 0.2
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 0.47
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-12T10:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.21
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Surveillance Visit",
+              "date": "2024-11-14T11:30",
+              "author": "endocrinology",
+              "body": "Endocrinology yearly visit, 11/12/2024. MEN2A, s/p left adrenalectomy (pheochromocytoma) and total thyroidectomy with central neck dissection (medullary carcinoma, node negative) in 2021.\n\nSince last year he was hospitalized with hepatitis B associated polyarteritis nodosa and is on prednisone 5 mg and azathioprine per rheumatology. No spells or neck complaints.\n\nLabs: calcitonin remains undetectable. Plasma free metanephrines normal. TSH in range on levothyroxine 125 mcg. Calcium normal.\n\nPlan: no change from our side. Same panel in a year, sooner for spells, a neck lump or diarrhea.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-31a",
+          "kind": "office_visit",
+          "start": "2025-01-31T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Numbness and tingling in feet",
+          "conditions": [
+            {
+              "label": "Peripheral neuropathy",
+              "action": "diagnosed",
+              "onset": "2024-12-01",
+              "note": "sensory, both feet"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "gabapentin 300 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule at bedtime for 3 days, then twice daily for 3 days, then 1 capsule three times daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "peripheral sensory neuropathy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 69.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-31T14:00",
+              "resulted": "2025-02-01T10:00",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 512
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-31T14:00",
+              "resulted": "2025-02-01T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-31T14:00",
+              "resulted": "2025-02-01T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-31T14:00",
+              "resulted": "2025-02-01T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-31T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-31T14:10",
+              "author": "PCP",
+              "body": "Here for numb, tingly feet. Started about two months ago in the toes and now reaches the tops of both feet, worse at night, sometimes a burning edge that keeps him awake. Both sides about the same. No weakness, no tripping, no hand symptoms. No back pain. No new rash or skin sores. No fever. Taking all meds; prednisone 5 mg and azathioprine unchanged.\n\nMeds: prednisone 5 mg daily, azathioprine 75 mg daily, tenofovir alafenamide 25 mg daily, doxazosin 4 mg daily, levothyroxine 125 mcg daily. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: BP 142/88. Feet: light touch and pinprick reduced to the ankles on both sides, vibration mildly reduced at the great toes. Strength 5/5 in ankles and toes. Ankle reflexes present. Pulses palpable. Skin intact, no ulcers or livedo.\n\nA/P:\n1. Peripheral sensory neuropathy, symmetric, both feet. With PAN this could be vasculitic nerve involvement; ruling out the common metabolic causes too: B12, A1c, TSH, BMP today. Messaged his rheumatologist with today's findings.\n2. Night-time neuropathic pain: gabapentin, 300 mg at bedtime working up over a week to three times daily. Dizziness and sleepiness discussed; no driving if groggy. Dose fine for his kidney function.\n3. HTN 142/88: continue doxazosin.\nWill send results through the portal."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              88
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "portal_message",
+          "start": "2025-02-03T10:30",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neuropathy labs",
+              "date": "2025-02-03T10:30",
+              "author": "PCP",
+              "body": "Daniel, B12, A1c and thyroid are all normal, and kidney function is steady. So no vitamin or sugar cause for the foot numbness. I've passed this to rheumatology since it may be related to the PAN; please keep your appointment with them. How is the gabapentin going?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neuropathy labs",
+              "date": "2025-02-03T19:02",
+              "author": "patient",
+              "body": "Thanks. Sleeping better already, a bit foggy in the morning but ok."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "imaging",
+          "start": "2025-03-04T09:15",
+          "service": "Radiology",
+          "reason": "Hepatitis B surveillance",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-03-04T09:15",
+              "text": "Indication: chronic hepatitis B, surveillance. Liver 15.6 cm, homogeneous echotexture, no focal lesion. Portal vein patent, hepatopetal flow. Gallbladder normal. Common duct 3 mm. Spleen 10.4 cm. No ascites.",
+              "conclusion": "No focal liver lesion.",
+              "issued": "2025-03-04T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "specialist_visit",
+          "start": "2025-03-11T11:00",
+          "service": "Gastroenterology",
+          "reason": "Hepatitis B follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-11T11:30",
+              "resulted": "2025-03-13T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "110965-1",
+                  "unit": "[IU]/mL",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-03-11T11:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2025-03-14T15:30",
+              "author": "gastroenterology",
+              "body": "GI follow-up 3/11/2025. Adherent to tenofovir since December 2023. On prednisone 5 mg, azathioprine and, since January, gabapentin.\n\nUltrasound 3/4: no focal lesion. HBV DNA not detected. ALT and albumin normal.\n\nPlan: continue tenofovir. Yearly ultrasound and labs.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "pharmacy",
+          "start": "2025-04-22T12:05",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2025-04-22T12:05",
+              "author": "RN",
+              "body": "Refill request: gabapentin 300 mg capsules, #270 for 90 days. Last seen 1/31. Approved by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T10:40",
+          "service": "Rheumatology",
+          "reason": "Polyarteritis nodosa follow-up",
+          "vitals": {
+            "bp": [
+              137,
+              93
+            ],
+            "hr": 76,
+            "weight_kg": 69.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-10T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T11:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T11:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2025-06-12T09:45",
+              "author": "rheumatology",
+              "body": "Rheumatology 6/10/2025. PAN on prednisone 5 mg and azathioprine 75 mg. Foot numbness from the winter noted by his PCP, on gabapentin and sleeping better; stable since. No fevers, abdominal pain or skin lesions. Exam without new findings. Labs stable.\n\nPlan: regimen unchanged; return in 6 months.\nRheumatology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T20:45",
+          "reason": "Refill and scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "gabapentin",
+              "date": "2025-09-16T20:45",
+              "author": "patient",
+              "body": "Can you send another 90 days of gabapentin? Running low."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: gabapentin",
+              "date": "2025-09-17T09:10",
+              "author": "RN",
+              "body": "Sent today. Dr. asks that you book a visit; it has been since January and you are due for a physical and flu shot. You can book online or call us."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "specialist_visit",
+          "start": "2025-11-18T09:40",
+          "service": "Endocrinology",
+          "reason": "MEN2 surveillance",
+          "vitals": {
+            "bp": [
+              138,
+              92
+            ],
+            "hr": 64,
+            "weight_kg": 69.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-18T10:20",
+              "results": [
+                {
+                  "test": "Calcitonin",
+                  "loinc": "1992-7",
+                  "unit": "pg/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T10:20",
+              "results": [
+                {
+                  "test": "Metanephrine, Free, Plasma",
+                  "value": 0.21
+                },
+                {
+                  "test": "Normetanephrine, Free, Plasma",
+                  "value": 0.47
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T10:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-18T10:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 74
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Surveillance Visit",
+              "date": "2025-11-20T14:20",
+              "author": "endocrinology",
+              "body": "Endocrinology yearly visit, 11/18/2025. MEN2A, s/p left adrenalectomy (pheochromocytoma) and total thyroidectomy with central neck dissection (medullary carcinoma, node negative) in 2021.\n\nRheumatology following PAN on prednisone 5 mg and azathioprine. Feels more tired this fall. No spells or neck symptoms.\n\nLabs: calcitonin remains undetectable. Plasma free metanephrines normal. TSH in range on levothyroxine 125 mcg. Calcium normal.\n\nPlan: no change from our side. Same panel in a year, sooner for spells, a neck lump or diarrhea.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "specialist_visit",
+          "start": "2025-12-19T09:20",
+          "service": "Rheumatology",
+          "reason": "Fatigue, weight loss, leg paresthesia, thigh ulcer",
+          "vitals": {
+            "bp": [
+              138,
+              96
+            ],
+            "hr": 63,
+            "temp_c": 36.7,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-19T10:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 118
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.16
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-12-19T10:00",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "1+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-12-19T10:30",
+              "text": "PA and lateral chest. Lungs clear without infiltrate, nodule or features of hemorrhage. Heart size normal. No effusion or pneumothorax. Surgical clips in the neck and left upper abdomen.",
+              "conclusion": "No acute cardiopulmonary findings.",
+              "issued": "2025-12-19T14:00"
+            },
+            {
+              "study": "CT angiogram, renal vessels",
+              "loinc": "36833-2",
+              "performed": "2025-12-22T11:00",
+              "text": "CT angiography of the renal arteries with thin-section arterial phase imaging and reconstructions. Multiple microaneurysms in intrarenal branches of both kidneys with areas of narrowing of medium-sized arteries. Main renal arteries patent and normal in caliber. No renal mass. No hydronephrosis. Postsurgical absence of the left adrenal gland.",
+              "conclusion": "Multiple renal microaneurysms with narrowing of medium-sized arteries, consistent with polyarteritis nodosa.",
+              "issued": "2025-12-22T16:30"
+            },
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-12-23T09:30",
+              "text": "Specimen: liver, percutaneous needle core biopsy. Microscopic: medium-sized arteries with transmural inflammation, fibrinoid necrosis and surrounding mixed inflammatory infiltrate. Background parenchyma with mild portal inflammation.",
+              "conclusion": "Liver, needle biopsy: necrotizing arteritis of medium-sized arteries (transmural inflammation with fibrinoid necrosis), consistent with polyarteritis nodosa.",
+              "issued": "2025-12-26T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "date": "2025-12-30T10:15",
+              "author": "rheumatology",
+              "body": "Rheumatology follow-up, seen 12/19/2025; letter completed 12/29 after the studies below.\n\n43-year-old man with hepatitis B associated PAN (diagnosed December 2023), chronic hepatitis B on tenofovir, and MEN2A after adrenal and thyroid surgery. Over the last month: more fatigue, weight coming off without trying (about 3 kg since January), intermittent abdominal pain, worsening numbness and tingling in both lower legs, and a painful sore on the thigh that appeared recently.\n\nMeds: prednisone 5 mg daily, azathioprine 75 mg daily, tenofovir alafenamide 25 mg daily, gabapentin 300 mg three times daily, doxazosin 4 mg daily, levothyroxine 125 mcg daily. Allergies: sulfamethoxazole (anaphylaxis), latex (contact dermatitis).\n\nExam: vitals as recorded. Liver palpably enlarged. Painful ulcer on the thigh. Reduced sensation in both lower legs.\n\nResults: AST 96, ALT 118. Urinalysis with 1+ protein, no red cell casts. Chest X-ray unremarkable, no infiltrate, nodule or hemorrhage. Renal CT angiogram 12/22: multiple microaneurysms and narrowing of medium-sized arteries. Liver biopsy 12/23: transmural inflammation of medium-sized arteries with fibrinoid necrosis.\n\nImpression: active polyarteritis nodosa involving the renal and hepatic arteries, with skin and nerve features.\n\nPlan: current medicines continue for now while we decide the next treatment step together with hepatology, given his hepatitis B. He will be seen again in our clinic.\nRheumatology"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.2,
+            "labs": {
+              "Alanine Aminotransferase": 118,
+              "Aspartate Aminotransferase": 96
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T15:20",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2026-02-10T15:20",
+              "author": "RN",
+              "body": "Refill requests for doxazosin 4 mg and levothyroxine 125 mcg. Not seen since 1/2025; endocrinology checked TSH in November. 90-day supply approved by PCP with a note to the patient to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T08:05",
+          "reason": "Refill question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vemlidy",
+              "date": "2026-05-19T08:05",
+              "author": "patient",
+              "body": "My GI is out on leave and the pharmacy says the Vemlidy needs a new prescription. Can you send one so I don't run out?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vemlidy",
+              "date": "2026-05-19T12:40",
+              "author": "PCP",
+              "body": "Yes, sent a 90-day supply of tenofovir alafenamide today; please don't miss any doses. Their covering doctor can take it from there. And please book a visit with me, it has been well over a year."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Medullary thyroid carcinoma|C73": {
+        "code": "C73",
+        "display": "Malignant neoplasm of thyroid gland",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Multiple endocrine neoplasia type 2A|E31.22": {
+        "code": "E31.22",
+        "display": "Multiple endocrine neoplasia [MEN] type IIA",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pheochromocytoma of left adrenal gland|D35.02": {
+        "code": "D35.02",
+        "display": "Benign neoplasm of left adrenal gland",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Polyarteritis nodosa|M30.0": {
+        "code": "M30.0",
+        "display": "Polyarteritis nodosa",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "azathioprine 50 MG Oral Tablet": {
+        "code": "197388",
+        "display": "azathioprine 50 MG Oral Tablet",
+        "ingredient": "azathioprine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "doxazosin 4 MG Oral Tablet": {
+        "code": "197627",
+        "display": "doxazosin 4 MG Oral Tablet",
+        "ingredient": "doxazosin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tenofovir alafenamide 25 MG Oral Tablet": {
+        "code": "1858261",
+        "display": "tenofovir alafenamide 25 MG Oral Tablet",
+        "ingredient": "tenofovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Calcitonin": {
+        "code": "1992-7",
+        "display": "Calcitonin [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B core antibody, total": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B virus DNA": {
+        "code": "110965-1",
+        "display": "Hepatitis B virus DNA [Measurement] in Serum",
+        "unit": "[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Metanephrine, 24 hour urine": {
+        "code": "19049-6",
+        "display": "Metanephrine [Mass/time] in 24 hour Urine",
+        "unit": "ug/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Neutrophil cytoplasmic antibodies": {
+        "code": "17351-8",
+        "display": "Neutrophil cytoplasmic Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Normetanephrine, 24 hour urine": {
+        "code": "2671-6",
+        "display": "Normetanephrine [Mass/time] in 24 hour Urine",
+        "unit": "ug/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT angiogram, mesenteric vessels": {
+        "code": "87851-2",
+        "display": "CTA Mesenteric vessels W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CT angiogram, renal vessels": {
+        "code": "36833-2",
+        "display": "CTA Renal vessels W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

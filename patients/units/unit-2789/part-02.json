@@ -1,0 +1,863 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002789",
+      "events": [
+        {
+          "id": "2024-03-19a",
+          "kind": "portal_message",
+          "start": "2024-03-19T12:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "author": "patient",
+              "date": "2024-03-19T12:31",
+              "body": "Hi, can I get my yearly physical on the calendar for June? Mornings are best, before 9 if possible. Thank you, Dawn"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "author": "front desk",
+              "date": "2024-03-19T14:02",
+              "body": "You're set for Wednesday June 12 at 8:10. We'll draw labs at the visit, so nothing to eat after midnight is helpful but not required."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "annual_physical",
+          "start": "2024-06-12T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "labs": {
+              "Creatinine": 1.04
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-12T08:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-12T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-12T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-06-12T08:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-06-12T08:55",
+              "body": "Annual. No complaints. Busy at work, sleeping ok. Back flares a few times a year, manages with the PT exercises and ibuprofen; still uses it most days in some amount.\n\nNKDA. Meds: ibuprofen OTC.\nNever smoker; occasional wine.\n\nVitals reviewed. Exam: NAD. TMs and pharynx normal. Neck without nodes or thyromegaly. Heart regular rate, no murmur, rub or gallop. Lungs clear bilaterally. Abdomen soft, no masses. Lumbar ROM full. No edema. Mood and affect normal.\nPHQ-2: 1.\n\nHealth maintenance: colonoscopy 08/2023 normal, next 2033. Pap/HPV 2022 negative, next 2027. Mammogram due, ordered. Tdap 2019.\n\nPlan: CMP, CBC, lipids today. Flu and COVID in the fall. RTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "portal_message",
+          "start": "2024-06-13T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-06-13T17:20",
+              "body": "Dawn, your labs from yesterday are fine overall: blood counts normal, cholesterol in a good place, liver tests normal. Nothing to change. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "imaging",
+          "start": "2024-08-27T15:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-08-27T15:20",
+              "text": "Bilateral screening digital mammography with tomosynthesis. Comparison 09/2023 and 07/2022. Heterogeneously dense breasts. No suspicious findings in either breast. No change from prior.",
+              "conclusion": "BI-RADS 1, negative. Return to annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-08-27T15:20"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T16:45",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T16:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-09T16:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-09T17:05",
+              "body": "Here for seasonal vaccines. No fever today, no egg or vaccine reactions in the past. 2024-25 flu IM L arm; 2024-25 Moderna COVID IM R arm. Post-vaccine instructions given; stayed 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Back pain follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "telephone",
+          "start": "2024-12-11T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-12-11T09:05",
+              "body": "Missed yesterday's 3:40. Reached her; she forgot with year-end deadlines at work and says the back is fine right now. She'll call when she wants to come in. No reschedule for now."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "office_visit",
+          "start": "2025-04-28T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Coughing up blood, dark urine",
+          "state": {
+            "weight_kg": 69.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-04-28T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "author": "PCP",
+              "date": "2025-04-28T14:20",
+              "body": "Texted this morning about blood when she coughs; seen same day.\n\nTwo days of coughing up bright red blood, streaks at first and today about a teaspoon several times. Over the same two days her urine has turned a dark red-brown, like cola. Has felt run down. No chest injury, no recent travel, no new medications other than her usual ibuprofen. Never smoker.\n\nExam: tired appearing, speaking full sentences. Blood-tinged sputum in a tissue. Nose without active bleeding. Breathing unlabored, lungs without wheeze. Heart regular. No edema. No rash.\nUrine dip in office: large blood.\n\nA/P: hemoptysis with what looks like glomerular hematuria. This needs same-day hospital evaluation for a pulmonary-renal process; not safe to work up as an outpatient. Discussed with her and called the regional hospital ED to give report. She has a ride and is leaving now. Will follow from here."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 69.8
+          }
+        },
+        {
+          "id": "2025-04-28b",
+          "kind": "hospital_admission",
+          "start": "2025-04-28T16:10",
+          "end": "2025-05-09T12:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Hemoptysis and hematuria",
+          "conditions": [
+            {
+              "label": "Diffuse alveolar hemorrhage",
+              "icd10": "R04.89",
+              "action": "diagnosed",
+              "onset": "2025-04-26"
+            },
+            {
+              "label": "Rapidly progressive glomerulonephritis",
+              "icd10": "N01.7",
+              "action": "diagnosed",
+              "onset": "2025-04-26"
+            },
+            {
+              "label": "Granulomatosis with polyangiitis with renal involvement",
+              "icd10": "M31.31",
+              "action": "diagnosed",
+              "onset": "2025-04-26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital admission notice",
+              "author": "front desk",
+              "date": "2025-04-29T08:10",
+              "body": "Automated admission notice from the regional hospital: Dawn McGrath admitted 04/28/2025 via the emergency department to the medicine service. Routed to PCP."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-05-12T10:30",
+              "body": "Regional hospital, medicine service. Admitted 04/28/2025, discharged 05/09/2025.\n\nReason for admission: hemoptysis and hematuria, sent in by her primary care physician.\n\nCourse: the hemoptysis was due to diffuse alveolar hemorrhage. Kidney function was declining over days with active urine sediment; ANCA testing returned positive for PR3. Nephrology consulted. Percutaneous kidney biopsy showed pauci-immune crescentic necrotizing glomerulonephritis. Diagnosis: granulomatosis with polyangiitis with diffuse alveolar hemorrhage and rapidly progressive glomerulonephritis. Treated with pulse IV methylprednisolone then oral prednisone, and rituximab 1000 mg IV on 05/02, second dose scheduled at the outpatient infusion center 05/16. The bleeding stopped during the first week. Kidney function improved from its worst but did not return to baseline. Ibuprofen stopped permanently given the kidney injury. Calcium and vitamin D started for bone protection on steroids.\n\nDischarge medications: prednisone 40 mg daily, taper per nephrology; calcium carbonate 600 mg three times daily with meals; cholecalciferol 2000 units daily; acetaminophen 500 mg as needed for back pain, no more than 3 g per day. Rituximab second dose 05/16.\nStopped: ibuprofen. Avoid all NSAIDs.\nAllergies: NKDA.\n\nFollow-up: nephrology within 2-3 weeks; primary care within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Diffuse alveolar hemorrhage",
+              "icd10": "R04.89",
+              "action": "resolved",
+              "onset": "2025-04-26"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Kidney injury; avoid NSAIDs"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily; taper per nephrology",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Granulomatosis with polyangiitis"
+            },
+            {
+              "drug_text": "rituximab 10 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "1000 mg IV per nephrology infusion schedule",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Granulomatosis with polyangiitis"
+            },
+            {
+              "drug_text": "calcium carbonate 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily with meals",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bone protection on steroids"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2000 units by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Bone protection on steroids"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for back pain; no more than 3 g per day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic low back pain"
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "labs": {
+              "Hemoglobin": 11.4,
+              "Creatinine": 1.78
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-13T10:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.78
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-13T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Lymphocytes %"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-05-13T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-05-13T11:05",
+              "body": "Seen 4 days after discharge. Called her on 5/12 when the summary came in.\n\nShe was in for 11 days with alveolar hemorrhage and a rapidly progressive GN, and came out with a diagnosis of GPA (PR3-ANCA; crescentic pauci-immune GN on biopsy). Pulse steroids and the first rituximab dose inpatient; second dose is this Friday 5/16 at the infusion center. Nephrology is running the immunosuppression and the taper; first visit with them is scheduled.\n\nToday: no coughing up blood since the first week in the hospital. No shortness of breath walking around the house. Very tired, naps in the afternoon. Urine looks normal color now. Appetite fine. Out of work for now.\n\nMeds reconciled against the discharge list: prednisone 40 mg daily, calcium carbonate 600 mg TID with meals, vitamin D3 2000 units, acetaminophen 500 mg prn (max 3 g/day), rituximab per nephrology. Ibuprofen is off for good; she knows to avoid naproxen and the other OTC NSAIDs as well, and that acetaminophen is the back pain option now.\n\nExam: tired but comfortable. Lungs clear, no crackles. Heart regular. No edema. Biopsy site on the back healed, no hematoma.\n\nA/P\n1. GPA with renal involvement: per nephrology. Labs today, BMP and CBC with diff, copy to nephrology.\n2. Diffuse alveolar hemorrhage: resolved clinically.\n3. RPGN: kidney function improving; trend per nephrology.\n4. Back pain: acetaminophen only.\n5. Steroid side effects reviewed (sleep, mood, sugar, appetite).\nCall with any blood in sputum, fever or dark urine. Recheck after her nephrology visit."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 68.0
+          }
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "portal_message",
+          "start": "2025-05-14T15:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's labs",
+              "author": "PCP",
+              "date": "2025-05-14T15:48",
+              "body": "Your kidney number (creatinine) is 1.78, better than in the hospital but not back to where it used to be; nephrology will be watching that closely. Your blood count is a little low at 11.4, which is expected after the bleeding and the illness. I sent both to the kidney team. Good luck Friday with the infusion."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-31a",
+          "kind": "specialist_visit",
+          "start": "2025-07-31T09:30",
+          "service": "Nephrology",
+          "reason": "Follow-up after hospitalization",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "diagnosed",
+              "onset": "2025-04-28"
+            },
+            {
+              "label": "Rapidly progressive glomerulonephritis",
+              "icd10": "N01.7",
+              "action": "resolved",
+              "onset": "2025-04-26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up letter",
+              "author": "nephrology",
+              "date": "2025-08-11T13:00",
+              "body": "Outside nephrology group. Visit 07/31/2025.\n\nDear colleague,\nI saw Ms. McGrath in follow-up for PR3-ANCA vasculitis (GPA) about three months after her admission with pulmonary hemorrhage and crescentic glomerulonephritis.\n\nSince she left the hospital she has felt worn out most days and is down about 5 lb. She describes a vague ache in both knees and wrists without swelling, some constipation, and two episodes of crampy belly pain over the past week. She denies fever, sweats or any infection.\nVitals normal. Her mouth is somewhat dry and she looks a little pale. Lungs clear.\nKidney function is holding steady at the level it reached after the admission. Stool for occult blood is negative. Phosphorus 5.0 mg/dL.\n\nImpression: GPA in remission on induction. The acute glomerulonephritis has settled into chronic kidney disease, stage 3b, from the vasculitic injury on a background of many years of daily NSAID use.\n\nPlan:\n- Prednisone is now 10 mg daily and will stay there for now.\n- Rituximab maintenance 1000 mg IV every 6 months; next in November.\n- Low-phosphate diet handout given. Calcium acetate 667 mg three times daily with meals; stop the calcium carbonate.\n- Continue vitamin D3 2000 units. Vitamin D metabolites (25-hydroxy and 1,25-dihydroxy) sent.\n- No NSAIDs.\nReturn in about 6 months.\n\nMedications: prednisone 10 mg daily, rituximab as above, calcium acetate 667 mg TID with meals, cholecalciferol 2000 units daily, acetaminophen 500 mg prn. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, kidney disease",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Tapered by nephrology"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Granulomatosis with polyangiitis"
+            },
+            {
+              "drug_text": "calcium carbonate 600 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Replaced by calcium acetate per nephrology"
+            },
+            {
+              "drug_text": "calcium acetate 667 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily with meals",
+              "dose": {
+                "value": 667,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Phosphate binder, chronic kidney disease"
+            }
+          ],
+          "state": {
+            "weight_kg": 65.7,
+            "labs": {
+              "Creatinine": 1.65
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-19T09:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.65
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-19T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-08-19T09:35",
+              "body": "Follow-up after her nephrology visit on 7/31; letter came last week and reviewed with her.\n\nGPA in remission per nephrology. Kidneys have settled at CKD stage 3b. Back at work half days. Still tired by mid-afternoon but a bit better week to week. Knee and wrist aches come and go, no swelling. Bowels a little slow; the cramping hasn't returned. No cough, no blood in sputum or urine. Weight down a few pounds since May.\n\nMedication changes from nephrology entered: prednisone now 10 mg daily; calcium acetate 667 mg with each meal replaces the calcium carbonate; she is following the low-phosphate sheet. D3 2000 units continues. Rituximab next in November. Acetaminophen for the back, works well enough. No NSAIDs.\n\nExam: looks better than in May. No pallor today. Lungs clear. Heart regular. Joints without synovitis. No edema.\n\nA/P\n1. CKD 3b after ANCA GN: BMP today; nephrology following. Renal dosing for anything new; no NSAIDs.\n2. GPA on prednisone and rituximab: per nephrology.\n3. Low back pain: acetaminophen, stay under 3 g/day.\n4. Mammogram due, ordered.\n5. Vaccines: flu in October. Will plan pneumococcal and shingles vaccines at the next visit given the immunosuppression.\nRTC in about 4 months."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 65.7
+          }
+        },
+        {
+          "id": "2025-08-22a",
+          "kind": "outside_records",
+          "start": "2025-08-22T11:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-31T10:15",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-31T10:15",
+              "resulted": "2025-08-07T16:00",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-31T10:15",
+              "resulted": "2025-08-07T16:00",
+              "results": [
+                {
+                  "test": "1,25-dihydroxy Vitamin D",
+                  "loinc": "1649-3",
+                  "unit": "pg/mL",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Nephrology lab results",
+              "author": "nephrology",
+              "date": "2025-08-22T11:15",
+              "body": "Results from the 07/31/2025 nephrology draw, faxed for your records.\nPhosphorus 5.0 mg/dL (high).\n25-hydroxy vitamin D 38 ng/mL (sufficient).\n1,25-dihydroxy vitamin D 14 pg/mL (low).\nNephrology comment: stores are adequate on D3; the low active form reflects reduced kidney activation in CKD. No calcitriol for now; continue current plan and recheck with her next visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vitamin D question",
+              "author": "patient",
+              "date": "2025-08-25T10:02",
+              "body": "The kidney office sent me my vitamin D results and one is low and one is fine. Does that mean I should take more D? I don't want to double up if it's not needed."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vitamin D question",
+              "author": "PCP",
+              "date": "2025-08-25T13:40",
+              "body": "Good question. The one that is fine (25-hydroxy) is your stored vitamin D, and it shows the 2000 units you take is enough. The low one is the active form, which the kidneys make from the stored form. Because your kidneys are weaker, they make less of it, and more D3 wouldn't change that. Nephrology decided not to add anything for now. So: keep the same dose, nothing extra."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "imaging",
+          "start": "2025-09-16T14:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-09-16T14:00",
+              "text": "Bilateral screening digital mammography with tomosynthesis. Comparison 08/2024, 09/2023. Heterogeneously dense tissue. No suspicious mass, distortion or calcification. Unchanged.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-09-16T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T16:20",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T16:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2025-10-08T16:45",
+              "body": "Inactivated flu and 2025-26 COVID today. Patient on prednisone and rituximab, so no live vaccines; both of these are fine. Afebrile, feels well. Flu L deltoid, COVID R deltoid, IM. Observed 15 min without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Infusion done",
+              "author": "patient",
+              "date": "2025-11-12T18:30",
+              "body": "FYI I had my rituximab maintenance infusion today, the 1000 mg one. Went fine, just sleepy. The infusion nurse said to tell you so it's in your records."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Infusion done",
+              "author": "RN",
+              "date": "2025-11-13T08:20",
+              "body": "Thanks Dawn, noted in your chart. Rest up."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; vaccines",
+          "state": {
+            "weight_kg": 66.8,
+            "labs": {
+              "Hemoglobin": 12.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-09T11:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-09T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-12-09T10:55"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-12-09T10:57"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-09T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-12-09T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-12-09T11:10",
+              "body": "4-month check. Rituximab maintenance given 11/12. Energy noticeably better, back to full days at work since October. The knee and wrist aches have gone. Bowels normal. No cough or hemoptysis, urine clear. Back pain mild, acetaminophen a few times a week.\n\nMeds: prednisone 10 mg daily, calcium acetate 667 mg with meals, D3 2000 units, acetaminophen prn; rituximab q6 months per nephrology. NKDA.\n\nExam: well appearing, color good. Lungs clear. Heart RRR. No edema. Lumbar exam unremarkable.\n\nA/P\n1. GPA in remission / CKD 3b: BMP and CBC today. Nephrology visit in the new year.\n2. Immunosuppressed: PCV20 today. Shingrix #1 today, #2 in 2-6 months. Flu and COVID done in October.\n3. Back: stable.\nFollow up at her physical in the spring."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 66.8
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3859 @@
+{
+  "unit": "unit-2204",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002204/2025-03-25a: allergen \"Cefazolin\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002204",
+      "given": "Frederick",
+      "family": "Esposito",
+      "birth_date": "1959-11-15",
+      "address_line": "88 Pine Hollow Road",
+      "phone": "+1-603-555-0105",
+      "email": "frederick.esposito@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal worker with long-standing type 2 diabetes on glipizide alone, stage 3b CKD and hypertension who joins in 2022. A chronic right plantar ulcer from mid-2024 leads to a 2025 admission complicated by a cefazolin reaction and hypoglycemia, then a resistant E. coli pyelonephritis, and after his last practice visit an ICU stay for urinary septic shock.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "telephone",
+          "start": "2022-08-24T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-08-24T10:12",
+              "author": "front desk",
+              "body": "Caller Frederick Esposito, DOB 11/15/1959, South Hadley. His primary care doctor of many years is retiring at the end of the month and a neighbor recommended us. Explained the membership model, call/text access and that he keeps his insurance for labs, imaging and prescriptions. He wants to go ahead. New patient visit booked for 9/6 at 9:00. Records release form emailed; he will sign and send it to his old office. Asked him to bring all medications in their bottles and his glucose meter."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "establish_care",
+          "start": "2022-09-06T09:00",
+          "end": "2022-09-06T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+              "action": "history",
+              "onset": "2010-06-01"
+            },
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "history",
+              "onset": "2019-01-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2008-01-01"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2017-06-01",
+              "note": "30 pack-years, quit about 2017"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "glipizide 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily with breakfast",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "metoprolol tartrate 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension, CKD"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Diabetes, cardiovascular risk"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Cardiovascular risk"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              79
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 88.8,
+            "height_cm": 175.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-06T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 151
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 46
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-06T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-06T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 77
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 131
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 151
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-09-06T10:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-06T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 14
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal worker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-06T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-06T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-06T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-06T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "30 pack-years, quit about 5 years ago"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-06T10:05",
+              "author": "PCP",
+              "body": "New patient, 62 y/o man, here to establish. Prior PCP retiring; records requested.\n\nHPI: Type 2 diabetes for a long time, managed on glipizide alone as long as he can remember. Checks sugars a few mornings a week, mostly 130s-160s fasting. No lows he can recall. Told several years ago his kidneys were 'stage 3' and that the blood pressure pills protect them. BP pills are metoprolol and lisinopril; takes them reliably. No chest pain on exertion, no dyspnea, no edema. No foot sores. Eyes: had a cataract out earlier this year, vision good since.\n\nPMH: T2DM; CKD 3b; HTN.\nPSH: appendectomy at 12; cataract surgery 2022.\nMeds (bottles reviewed): glipizide 5 daily, metoprolol tartrate 50 BID, lisinopril 10 daily, atorvastatin 40 qhs, aspirin 81 daily.\nAllergies: PENICILLIN - anaphylaxis (remote; he was told never to take it again).\nFH: father T2DM and a stroke; mother HTN and kidney disease; brother has coronary disease.\nSH: retired from the postal service after a long career carrying mail. Married, lives with his wife in South Hadley. Smoked about a pack a day for 30 years, stopped around 2017. A drink once or twice a month. Walks the neighborhood most days.\n\nExam: BP and vitals per flowsheet. Well appearing. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, well-healed RLQ scar. Feet: skin intact, no calluses or wounds, DP and PT pulses 2+ both feet. No edema.\n\nA/P\n1. Type 2 diabetes - on sulfonylurea only. A1c, CMP, urine albumin/Cr today. Continue glipizide 5.\n2. CKD 3b - CMP today; prior records will show trend. Continue ACE inhibitor.\n3. HTN - near goal today. Continue metoprolol and lisinopril.\n4. Statin/aspirin - continue.\n5. Former heavy smoker - eligible for annual lung cancer screening CT; discussed what it involves and the chance of a false positive; he wants it. Ordered.\n6. Health maintenance - PCV20 given today. Hep C and HIV once. Colonoscopy and tetanus per old records. Flu and COVID in October.\n\nRTC 3 months, sooner as needed. He has the practice number for calls or texts."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              84
+            ],
+            "weight_kg": 89.0,
+            "height_cm": 175.0,
+            "labs": {
+              "Creatinine": 1.7,
+              "Fasting Glucose": 148,
+              "Glucose": 150,
+              "Hemoglobin": 14.4,
+              "Hemoglobin A1c": 7.9,
+              "Low Density Lipoprotein": 80
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "portal_message",
+          "start": "2022-09-08T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your lab results",
+              "date": "2022-09-08T16:40",
+              "author": "PCP",
+              "body": "Hi Frederick, your labs from Tuesday are back. Your A1c is a bit above where I'd like it but in the range we'd expect on your current medicine. Kidney function is in the stage 3b range, which fits with what you were told before; once your old records arrive I can see whether it has been steady. Potassium is fine. Cholesterol numbers look good on the atorvastatin. Urine protein check was normal, and the hepatitis C and HIV screens were negative. We'll recheck the sugar and kidney numbers at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-19a",
+          "kind": "outside_records",
+          "start": "2022-09-19T13:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior PCP records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-19T13:25",
+              "author": "MA",
+              "body": "62 pages received from the patient's previous primary care office (records release on file). Abstracted for the chart:\n- Problems carried there: type 2 diabetes, hypertension, chronic kidney disease stage 3b. Creatinine on their draws from 2019 through 2022 ranges 1.6 to 1.7.\n- Meds match what the patient brought in.\n- Allergy: penicillin, anaphylaxis.\n- Screening colonoscopy 2018, normal, next in 10 years.\n- Tdap 2019.\n- Cataract surgery report, early 2022, lens implant placed without complication.\nPaper copies to scan queue. Forwarded to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2022-09-20T08:10",
+              "author": "PCP",
+              "body": "Old records reviewed. Kidney function steady at stage 3b for at least three years, creatinine 1.6-1.7. Colonoscopy and Tdap current. Updated health maintenance."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-04T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T14:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-10-04T14:20",
+              "author": "RN",
+              "body": "In for fall vaccines. High-dose flu given left arm, bivalent COVID booster right arm. Screening questions negative, penicillin allergy noted (not relevant to vaccines). Tolerated both; observed 15 minutes, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "imaging",
+          "start": "2022-10-18T11:30",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-18T11:30",
+              "text": "OUTSIDE IMAGING CENTER - LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: 62-year-old former smoker, 30 pack-years, quit 2017.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: Lungs are clear without nodule, mass or consolidation. Airways patent. No pleural effusion. Heart size normal. No mediastinal or hilar lymph node enlargement. Upper abdomen unremarkable on limited views.\nAllergies on requisition: penicillin.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-10-18T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2022-10-19T09:02",
+              "author": "PCP",
+              "body": "Baseline screening CT negative, Lung-RADS 1. Repeat next fall. Portal note sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              80
+            ],
+            "hr": 77,
+            "weight_kg": 89.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-13T10:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.76
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 146
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 43
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-13T10:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-13T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2022-12-13T11:00",
+              "author": "PCP",
+              "body": "Three month follow-up. Says the holidays are a tough stretch for eating; morning sugars creeping into the 150s-170s. No low readings. No new symptoms. Taking everything as prescribed.\n\nExam: BP per flowsheet. Heart regular. Lungs clear. Feet intact, pulses present, no lesions.\n\nAssessment/Plan:\n- T2DM: A1c and BMP today. Continue glipizide.\n- CKD 3b / HTN: continue lisinopril and metoprolol. BMP today.\n- Lung screen negative in October.\nNext visit in about four months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "pharmacy",
+          "start": "2023-02-07T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "date": "2023-02-07T09:15",
+              "author": "MA",
+              "body": "Pharmacy requesting 90-day supplies with 3 refills: glipizide 5 mg, metoprolol tartrate 50 mg, lisinopril 10 mg, atorvastatin 40 mg. Last visit 12/13/22, labs current. Pended for PCP.\n\nPCP: approved all four as requested."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "outside_records",
+          "start": "2023-03-21T15:00",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "date": "2023-03-21T15:00",
+              "author": "optometry",
+              "body": "Community optometry - diabetic eye exam letter\nPatient: Frederick Esposito  DOB 11/15/1959\nExam date: 3/14/2023\nAllergies per patient: penicillin.\nDilated fundus exam both eyes. Visual acuity 20/25 right, 20/25 left with correction. Posterior chamber lens implant from 2022 cataract surgery well centered. No diabetic retinopathy either eye; no macular edema. Optic nerves healthy.\nImpression: diabetes without retinopathy.\nRecommend: repeat dilated exam in one year.\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes, blood pressure and kidney follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              90
+            ],
+            "hr": 76,
+            "weight_kg": 88.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-11T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.75
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 154
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 43
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-11T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-11T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Disease Follow-up",
+              "date": "2023-04-11T09:00",
+              "author": "PCP",
+              "body": "Doing well. Has been walking more now that the weather turned. Fasting sugars 130s-150s. Eye exam last month showed no retinopathy. No chest discomfort, breathing fine, no swelling.\n\nExam: vitals as charted. Cor RRR. Lungs clear. No edema. Feet without wounds.\n\nPlan: A1c and BMP today; continue current regimen. Shingles vaccine series - he'd like to start; nurse visit scheduled. Back in 3-4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "portal_message",
+          "start": "2023-04-12T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Results",
+              "date": "2023-04-12T12:20",
+              "author": "PCP",
+              "body": "Frederick - A1c came down a little from December. Kidney function and potassium unchanged from your usual. Keep up the walking."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Results",
+              "date": "2023-04-12T19:48",
+              "author": "patient",
+              "body": "Thanks Doc. My wife says it's her cooking. See you in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "nurse_visit",
+          "start": "2023-05-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine #1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-05-16T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-05-16T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix dose 1",
+              "date": "2023-05-16T13:50",
+              "author": "RN",
+              "body": "Shingrix dose 1 given IM left deltoid. Counseled on sore arm and possible fatigue for a day or two. Dose 2 due in 2-6 months; will give at his August visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "portal_message",
+          "start": "2023-07-19T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "We missed you yesterday",
+              "date": "2023-07-19T09:05",
+              "author": "front desk",
+              "body": "Hi Mr. Esposito, we had you down for a 9:30 visit yesterday. Hope all is well. Please reply or call to reschedule."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: We missed you yesterday",
+              "date": "2023-07-19T11:31",
+              "author": "patient",
+              "body": "Sorry about that, had it on the calendar for the 25th. Wrote it down wrong. Anything early August works."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: We missed you yesterday",
+              "date": "2023-07-19T11:52",
+              "author": "front desk",
+              "body": "No problem. You're set for Tuesday 8/8 at 10:00. The nurse will have your second shingles shot ready too."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "office_visit",
+          "start": "2023-08-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up; Shingrix #2",
+          "vitals": {
+            "bp": [
+              135,
+              79
+            ],
+            "hr": 74,
+            "weight_kg": 88.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-08T10:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-08-08T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-08T10:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-08-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2023-08-08T10:35",
+              "author": "PCP",
+              "body": "Rescheduled from July. Sugars a little higher, mostly 140s-160s mornings, no lows. Feels fine.\n\nExam: vitals reviewed. Heart and lungs normal. Feet: no wounds, skin intact.\n\nPlan: A1c today. Second Shingrix given by RN. Annual physical in late September with full labs."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 88.9,
+            "height_cm": 175.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-26T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 148
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 44
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-26T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-26T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 79
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 150
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-26T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 19
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-26T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-26T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-26T08:50",
+              "author": "PCP",
+              "body": "Annual exam, 63M.\n\nInterval: no illnesses, ER visits or new medicines this year. Walking 30-40 minutes most days. Sleeping well. Mood good; PHQ-2 0. Hearing and vision fine. Still not smoking.\n\nMeds unchanged: glipizide 5, metoprolol tartrate 50 BID, lisinopril 10, atorvastatin 40, ASA 81. Allergy: penicillin (anaphylaxis).\n\nROS otherwise negative.\n\nExam: well appearing. HEENT normal. Neck no adenopathy. Heart regular rate, no murmurs. Lungs clear. Abdomen soft, nontender. Skin no concerning lesions. Feet: no wounds or calluses, pedal pulses palpable. No edema.\n\nAssessment/Plan:\n- T2DM, CKD 3b, HTN: CMP, CBC, lipids, A1c, urine albumin today. Same regimen.\n- Lung screening: annual CT due next month, order in.\n- Vaccines: flu and updated COVID at a nurse visit in October. Shingrix complete. PCV20 done 2022.\n- Colonoscopy due 2028.\nFollow up in 3-4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T15:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-10T15:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-10T15:20",
+              "author": "RN",
+              "body": "High-dose influenza and 2023-24 COVID vaccines administered, one in each arm. No contraindications on screening. Waited 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "imaging",
+          "start": "2023-10-24T10:45",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-24T10:45",
+              "text": "OUTSIDE IMAGING CENTER - LOW-DOSE CT CHEST, ANNUAL SCREENING\nComparison: 10/18/2022.\nTechnique: Low-dose non-contrast CT chest.\nFindings: No pulmonary nodules. No consolidation or effusion. Central airways clear. Normal heart size. No adenopathy.\nAllergies on requisition: penicillin.",
+              "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-24T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2023-10-25T08:40",
+              "author": "PCP",
+              "body": "Second annual LDCT clear, Lung-RADS 1. Patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "office_visit",
+          "start": "2024-01-09T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              79
+            ],
+            "hr": 76,
+            "weight_kg": 88.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-09T11:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.68
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 156
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-09T11:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-09T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes / CKD Follow-up",
+              "date": "2024-01-09T11:30",
+              "author": "PCP",
+              "body": "S: Back after the holidays. Less walking with the ice; using the mall track twice a week instead. Fasting readings 140-165. Denies lows, chest pain, dyspnea, ankle swelling, urinary symptoms.\nO: vitals per flowsheet. Alert, comfortable. RRR. CTA bilaterally. Feet: skin intact both soles, no ulceration.\nA/P: T2DM on glipizide, CKD 3b, HTN. A1c and BMP drawn. Continue meds. Eye exam due in March, he has it booked. 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "outside_records",
+          "start": "2024-03-19T14:10",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "date": "2024-03-19T14:10",
+              "author": "optometry",
+              "body": "Annual diabetic eye exam - report to primary care\nPatient: Frederick Esposito, DOB 11/15/1959\nSeen 3/12/2024. Allergy: penicillin.\nBest corrected acuity 20/25 each eye. Pupils dilated. Intraocular lens stable and clear. Retina: no hemorrhages, exudates or neovascularization in either eye. Macula flat and dry.\nAssessment: type 2 diabetes, no diabetic retinopathy.\nReturn one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes, hypertension, CKD follow-up",
+          "vitals": {
+            "bp": [
+              146,
+              90
+            ],
+            "hr": 69,
+            "weight_kg": 88.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-16T09:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.69
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 155
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-16T09:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Disease Follow-up",
+              "date": "2024-04-16T09:30",
+              "author": "PCP",
+              "body": "Routine follow-up. Feels well. Eye exam in March without retinopathy. Morning sugars mostly in the 140s. Back outside walking.\n\nExam: BP charted. Heart regular. Lungs clear. Extremities warm, no swelling. Feet without breakdown.\n\nPlan: same three medicines for sugar and pressure, statin and aspirin. Labs today. Physical in September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T20:14",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sore on foot",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Spot on bottom of my foot",
+              "date": "2024-06-11T20:14",
+              "author": "patient",
+              "body": "Hi, I've been finding a little wet spot on my right sock for about a week. There's a sore on the bottom of the foot, doesn't hurt much. My wife looked at it and said call you. Should I come in?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Spot on bottom of my foot",
+              "date": "2024-06-11T21:02",
+              "author": "PCP",
+              "body": "Yes, I'd like to look at it tomorrow. The front desk will text you a morning time. Keep it covered with a clean dry bandage and try to stay off it tonight."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "office_visit",
+          "start": "2024-06-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right foot sore",
+          "conditions": [
+            {
+              "label": "Diabetic foot ulcer, right plantar surface",
+              "action": "diagnosed",
+              "onset": "2024-06-04",
+              "icd10": "L97.519"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              85
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "weight_kg": 89.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-12T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "podiatry-2024",
+              "action": "placed",
+              "order": "Podiatry referral",
+              "category": "referral",
+              "to": "Podiatry",
+              "reason": "right plantar diabetic foot ulcer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day visit - right foot",
+              "date": "2024-06-12T09:05",
+              "author": "PCP",
+              "body": "Seen same day after last night's portal message. Noticed drainage on his right sock about a week ago; found a sore on the sole. Little pain. No fever or chills. No injury he remembers.\n\nExam: afebrile, vitals charted. Right foot: plantar ulcer approx 1.2 x 1.0 cm with a clean pink base. No surrounding redness or warmth, no purulent drainage, no odor. No streaking up the foot. Pedal pulses palpable. Left foot intact.\n\nA/P: diabetic foot ulcer, right plantar surface, uninfected. Cleaned and dressed in office. Urgent podiatry referral for debridement and offloading. Daily dressing changes, keep weight off it as much as possible. Reviewed warning signs - spreading redness, swelling, fever, pus - and to text me right away if any of those."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "specialist_visit",
+          "start": "2024-06-27T10:00",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer",
+          "orders": [
+            {
+              "id": "podiatry-2024",
+              "action": "done",
+              "date": "2024-06-27T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry consultation",
+              "date": "2024-06-28T16:30",
+              "author": "podiatry",
+              "body": "OUTSIDE PODIATRY GROUP - CONSULTATION\nRe: Frederick Esposito  DOB 11/15/1959\nDate of service: 6/27/2024\nReferred by primary care for a right plantar wound.\nAllergies: penicillin (anaphylaxis).\nMeds: glipizide, metoprolol, lisinopril, atorvastatin, aspirin.\n\nHistory: 64-year-old with type 2 diabetes and stage 3 CKD; wound on the right sole first noticed about three weeks ago.\nExam: DP and PT pulses palpable bilaterally. Right plantar foot: full-thickness ulcer 1.2 x 1.0 x 0.3 cm, granular base, no exposed bone or tendon, no probe to bone. Periwound with mild callus, no erythema or fluctuance. Left foot intact.\nProcedure: sharp excisional debridement of callus and nonviable tissue, tolerated well.\nImpression: diabetic foot ulcer, right plantar surface, no signs of infection.\nPlan: offloading walker boot dispensed; dressing changes daily; follow-up every 2-4 weeks. Glucose control discussed.\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "portal_message",
+          "start": "2024-07-09T10:37",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dressing supplies",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Bandages",
+              "date": "2024-07-09T10:37",
+              "author": "patient",
+              "body": "The foot doctor wants me doing dressings every day and I'm going through the supplies fast. Pharmacy says insurance would cover them with an order. Can you send one? The boot is a pain but I'm wearing it."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Bandages",
+              "date": "2024-07-09T14:02",
+              "author": "MA",
+              "body": "Hi Frederick, the doctor signed an order for daily wound dressing supplies and we faxed it to your pharmacy. They should have it by tomorrow. Glad you're sticking with the boot."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              84
+            ],
+            "hr": 67,
+            "spo2": 99,
+            "weight_kg": 89.3,
+            "height_cm": 175.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 145
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 43
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 74
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 143
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 97
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.5
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T08:55",
+              "author": "PCP",
+              "body": "Annual physical, age 64.\n\nSince last year: right plantar diabetic ulcer since June, under podiatry every few weeks, debrided, in an offloading boot. Says it is 'shrinking slowly.' No fever. Otherwise well. Less walking because of the boot. PHQ-2 1 (a bit fed up with the boot), no depressed mood.\n\nMeds: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg. Allergy: penicillin - anaphylaxis.\n\nExam: NAD. Heart RRR without murmur. Lungs clear. Abdomen benign. Right foot: dressing removed - small plantar ulcer, clean base, no surrounding erythema or drainage; boot back on. Left foot intact. No edema.\n\nAssessment/Plan:\n1. T2DM - A1c today.\n2. Right plantar ulcer - podiatry following; keep offloading.\n3. CKD 3b / HTN - CMP, urine albumin today. Meds unchanged.\n4. Lipids today on atorvastatin 40.\n5. Lung screening CT ordered for October.\n6. Vaccines: flu, COVID and RSV at an October nurse visit.\nNext visit December."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T13:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T13:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T13:52"
+            },
+            {
+              "vaccine": "RSV, bivalent (Abrysvo)",
+              "date": "2024-10-08T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-08T14:15",
+              "author": "RN",
+              "body": "Three vaccines today per PCP order: high-dose flu (L arm), 2024-25 COVID (R arm), RSV (L arm, separate site). RSV recommended given age and diabetes/CKD. Screening negative. Observed 15 minutes without reaction. Walking boot on right foot, gait steady."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "imaging",
+          "start": "2024-10-22T09:15",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-22T09:15",
+              "text": "OUTSIDE IMAGING CENTER - LDCT LUNG SCREENING, ANNUAL\nComparison: 10/24/2023 and 10/18/2022.\nTechnique: Low-dose CT of the chest, no IV contrast.\nFindings: Lungs without nodules. No airspace disease. No pleural or pericardial effusion. Mediastinum and hila normal. Visualized upper abdomen unremarkable.\nRequisition allergies: penicillin.",
+              "conclusion": "Lung-RADS 1, negative. Next annual LDCT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-10-22T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2024",
+              "date": "2024-10-23T07:55",
+              "author": "PCP",
+              "body": "Third screening CT negative. Message sent to patient. Next due fall 2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "specialist_visit",
+          "start": "2024-11-12T14:30",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "date": "2024-11-13T12:00",
+              "author": "podiatry",
+              "body": "PODIATRY PROGRESS LETTER\nPatient: Frederick Esposito  DOB 11/15/1959  Visit 11/12/2024\nAllergies: penicillin.\nRight plantar ulcer now 0.8 x 0.6 cm, shallow, granular base, no drainage, no erythema, no undermining. Pulses palpable. Debrided rim of callus.\nAssessment: diabetic foot ulcer right plantar surface, improving, not infected.\nPlan: continue offloading boot and daily dressings; return 3 months, sooner for any change."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              134,
+              76
+            ],
+            "hr": 71,
+            "weight_kg": 89.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-10T10:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 154
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 44
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-10T10:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-10T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "Abdominal ultrasound, limited aorta (AAA screening)",
+              "category": "imaging",
+              "reason": "AAA screening, man 65-75 who has smoked"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2024-12-10T10:30",
+              "author": "PCP",
+              "body": "Just turned 65 and now on Medicare. Foot ulcer smaller per podiatry last month; still in the boot. No redness or fever. Sugars 140s-170s in the mornings. No lows.\n\nExam: vitals charted. Cardiac regular. Lungs clear. Right foot: small plantar ulcer, clean, no surrounding redness; dressing replaced.\n\nA/P\n- T2DM: A1c, BMP today. No changes.\n- Diabetic foot ulcer, right sole: podiatry following, next visit February.\n- CKD 3b/HTN: stable regimen.\n- One-time abdominal aortic ultrasound now that he is 65 with a smoking history - ordered.\nNext visit spring."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "imaging",
+          "start": "2025-01-14T13:20",
+          "service": "Radiology",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-01-14T13:20",
+              "text": "OUTSIDE IMAGING CENTER - ULTRASOUND, ABDOMINAL AORTA (limited)\nIndication: abdominal aortic aneurysm screening, 65-year-old man, former smoker.\nTechnique: Grayscale and color Doppler imaging of the abdominal aorta from the diaphragm to the bifurcation; diameters measured outer wall to outer wall.\nFindings: Proximal, mid and distal abdominal aorta of normal caliber, each under 3 cm. No aneurysmal dilatation. Common iliac origins normal caliber. No periaortic fluid.\nAllergies on requisition: penicillin.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2025-01-14T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Aortic ultrasound",
+              "date": "2025-01-15T08:20",
+              "author": "PCP",
+              "body": "AAA screen normal, aorta under 3 cm throughout. No further screening needed. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "specialist_visit",
+          "start": "2025-02-11T15:00",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "date": "2025-02-12T11:40",
+              "author": "podiatry",
+              "body": "Podiatry progress note to PCP\nFrederick Esposito, DOB 11/15/1959. DOS 2/11/2025.\nAllergy: penicillin.\nRight plantar ulcer measures 0.7 x 0.6 cm today. Base granular, edges callused, no drainage. No periwound erythema, warmth or tracking. Pedal pulses present.\nDebridement of hyperkeratotic rim performed.\nA: chronic diabetic ulcer, right plantar surface, still open, no infection.\nP: keep using the boot; daily dressings; recheck in about 2 months. Advised him to call promptly for redness, swelling or fever."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "telephone",
+          "start": "2025-03-18T07:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "foot redness",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Text/phone - foot redness",
+              "date": "2025-03-18T07:20",
+              "author": "PCP",
+              "body": "Texted a photo at 6:50 this morning: right foot red and puffy around the sore, worse since Sunday. Called him back. Says the foot feels warm and tight, the dressing has more drainage. Has not checked a temperature. With an ulcer that has been open since June, spreading redness needs IV antibiotics and imaging today. Advised he go to the hospital emergency department this morning rather than wait for an office slot; his wife is driving. I called ahead to the ED with his history and the penicillin anaphylaxis."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18b",
+          "kind": "hospital_admission",
+          "start": "2025-03-18T09:40",
+          "end": "2025-03-24T12:30",
+          "service": "Internal Medicine — Hospital",
+          "reason": "right plantar diabetic foot ulcer with surrounding soft-tissue infection",
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily for 10 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "foot ulcer soft-tissue infection, after IV vancomycin"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-03-18T09:50",
+              "bp": [
+                132,
+                86
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.2,
+              "spo2": 97
+            },
+            {
+              "time": "2025-03-21T00:05",
+              "bp": [
+                136,
+                82
+              ],
+              "hr": 96,
+              "rr": 18,
+              "temp_c": 38.4,
+              "spo2": 96
+            },
+            {
+              "time": "2025-03-24T08:00",
+              "bp": [
+                128,
+                78
+              ],
+              "hr": 72,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-18T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.68
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 144
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-20T06:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 156
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-20T19:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.2
+                },
+                {
+                  "test": "Glucose, 2 hours post meal",
+                  "loinc": "6689-4",
+                  "unit": "mg/dL",
+                  "value": 198
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-21T06:10",
+              "results": [
+                {
+                  "test": "Glucose, point of care",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 48
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Foot X-ray",
+              "performed": "2025-03-18T11:00",
+              "text": "RIGHT FOOT, 3 VIEWS\nIndication: diabetic with chronic plantar ulcer, new redness and swelling.\nFindings: Plantar soft-tissue swelling. No soft-tissue gas. No cortical erosion, periosteal reaction or bone destruction to suggest osteomyelitis. No fracture. Joint spaces preserved. No radiopaque foreign body.",
+              "conclusion": "Soft-tissue swelling without radiographic evidence of osteomyelitis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary - Internal Medicine",
+              "date": "2025-03-25T10:15",
+              "author": "hospitalist",
+              "body": "AREA HOSPITAL - INTERNAL MEDICINE DISCHARGE SUMMARY\nPatient: Frederick Esposito  DOB 11/15/1959\nAdmitted 3/18/2025 via ED. Discharged 3/24/2025 to home.\nAllergies: PENICILLIN (anaphylaxis); CEFAZOLIN (rash, pruritus - added this admission).\n\nReason for admission: chronic right plantar diabetic foot ulcer with new surrounding soft-tissue infection - erythema and warmth around the wound - requiring IV antibiotics and inpatient glucose management.\n\nHospital course:\n1. Right plantar foot ulcer with soft-tissue infection. Foot films without osteomyelitis. Treated with IV vancomycin, levels followed with his kidney function. Erythema receded steadily. Changed to oral doxycycline for discharge.\n2. Type 2 diabetes. Glipizide held; basal-bolus insulin with frequent fingersticks. A1c 8.2%. Fasting glucose 156, post-meal 198 on 3/20. After nocturnal low readings the insulin doses were reduced on 3/20.\n3. Fever and drug reaction. Shortly after midnight on hospital day 3 (night of 3/20-3/21) he spiked to 38.4 C. The covering physician ordered a dose of IV cefazolin; within the hour he developed an itchy rash. Cefazolin was stopped; the rash and itching resolved over the following day without airway symptoms. Recorded as allergic reaction to cefazolin with penicillin cross-sensitivity. Fever did not recur.\n4. Hypoglycemia. Morning fingerstick 48 mg/dL on 3/21, treated with oral glucose with prompt recovery; insulin reduced further. No further lows.\n5. Hypertension. Metoprolol continued; BP 132/86 on arrival and controlled throughout. Lisinopril continued.\n6. CKD 3b. Creatinine at his usual baseline during the stay.\n\nDischarge medications: doxycycline 100 mg PO BID x 10 days (new); resume glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg nightly, aspirin 81 mg daily. Insulin stopped at discharge.\nFollow-up: PCP within one week; podiatry within 2-4 weeks. Continue offloading boot and daily dressings."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "outside_records",
+          "start": "2025-03-25T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital discharge summary review",
+          "conditions": [
+            {
+              "label": "Allergic reaction to cefazolin due to penicillin cross-sensitivity",
+              "action": "diagnosed",
+              "onset": "2025-03-21",
+              "icd10": "T36.1X5A"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Cefazolin",
+              "reaction": "Rash",
+              "severity": "moderate",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Discharge summary review",
+              "date": "2025-03-25T13:00",
+              "author": "PCP",
+              "body": "Hospital summary reviewed. Cefazolin added to allergy list (rash/itching), penicillin anaphylaxis already listed. Doxycycline course noted. Post-discharge visit Friday 3/28."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-28a",
+          "kind": "office_visit",
+          "start": "2025-03-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Allergic reaction to cefazolin due to penicillin cross-sensitivity",
+              "action": "resolved",
+              "onset": "2025-03-21",
+              "icd10": "T36.1X5A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              83
+            ],
+            "hr": 78,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 90.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-28T11:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 45
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-03-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-03-28T11:35",
+              "author": "PCP",
+              "body": "Seen 4 days after discharge from a 6-day stay for an infected right plantar ulcer.\n\nHe and his wife report he's doing well. On day 6 of 10 of doxycycline, taking it with food. Rash from the cefazolin gone within a day, no recurrence. Home sugars 120s-180s, no readings under 70 since he came home and no shaky spells. Back in the boot. Glipizide restarted at discharge.\n\nExam: afebrile, vitals charted. Rash: none visible. Right foot: plantar ulcer with clean base, the surrounding redness has faded to a faint pink rim, no warmth or drainage. Pulses palpable.\n\nA/P\n1. Right plantar diabetic ulcer, soft-tissue infection improving - finish doxycycline; podiatry next month.\n2. Cefazolin reaction - resolved. Allergy list now reads penicillin (anaphylaxis) and cefazolin (rash, itching). Told him to mention both at every pharmacy and any hospital.\n3. T2DM - back on glipizide 5; low in hospital was on insulin. BMP today.\n4. HTN/CKD 3b - unchanged.\nCall or text for fever or spreading redness."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "specialist_visit",
+          "start": "2025-04-22T09:30",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer, post-hospital",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "date": "2025-04-23T10:05",
+              "author": "podiatry",
+              "body": "Podiatry follow-up letter\nRe: Frederick Esposito, DOB 11/15/1959. Seen 4/22/2025, first visit since his March admission.\nAllergies: penicillin (anaphylaxis), cefazolin (rash).\nRight plantar ulcer 0.9 x 0.7 cm, granular base, no residual erythema, warmth or drainage. Pulses palpable. Light debridement.\nImpression: chronic diabetic ulcer, right plantar surface; infection cleared.\nPlan: continue offloading boot and dressings; recheck in 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T16:00",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "date": "2025-05-20T16:00",
+              "author": "optometry",
+              "body": "Diabetic eye exam report\nFrederick Esposito  DOB 11/15/1959  exam 5/13/2025\nAllergies: penicillin, cefazolin.\nCorrected acuity 20/25 OD, 20/30 OS. Dilated exam: lens implant in good position. No diabetic retinopathy in either eye. No macular edema.\nImpression: type 2 diabetes without retinopathy. Recheck in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              130,
+              89
+            ],
+            "hr": 80,
+            "weight_kg": 88.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T09:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 153
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 44
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2025-06-10T10:00",
+              "author": "PCP",
+              "body": "Routine 3-month visit. No problems since the March admission. Podiatry in April: ulcer clean, no infection. Eye exam in May clear. Morning sugars 130s-160s, no lows.\n\nExam: BP charted. RRR. Lungs clear. Right sole: small ulcer, clean, no redness. No edema.\n\nPlan: A1c and BMP today. Meds unchanged. Next lung CT ordered for September. Podiatry August. See me in early fall for his Medicare wellness visit."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-12a",
+          "kind": "telephone",
+          "start": "2025-07-12T06:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fever and flank pain",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Weekend text - fever, flank pain",
+              "date": "2025-07-12T06:58",
+              "author": "PCP",
+              "body": "Saturday-morning text, then phone. Three days of fevers and chills, pain in the right side of his back, burning when he urinates and going often. Feels washed out. With diabetes, CKD and his antibiotic allergies this needs blood work, urine culture and likely IV treatment - not a weekend phone prescription. Directed to the hospital ED now; wife driving. I phoned the ED charge nurse with his allergy list (penicillin anaphylaxis, cefazolin rash)."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-12b",
+          "kind": "ed_visit",
+          "start": "2025-07-12T07:45",
+          "end": "2025-07-12T13:10",
+          "service": "Emergency Medicine",
+          "reason": "fever, chills, right flank pain, dysuria",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "diagnosed",
+              "onset": "2025-07-09",
+              "icd10": "N10"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2025-07-12",
+              "icd10": "N17.9"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-12T07:50",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 98,
+              "rr": 20,
+              "temp_c": 38.9,
+              "spo2": 96
+            },
+            {
+              "time": "2025-07-12T12:30",
+              "bp": [
+                138,
+                82
+              ],
+              "hr": 88,
+              "rr": 18,
+              "temp_c": 37.9,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-12T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-12T08:05",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 40
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 152
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 32
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-07-12T08:20",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Numerous (pyuria)"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-12T08:20",
+              "resulted": "2025-07-14T09:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli, greater than 100,000 CFU/mL. Resistant to multiple antibiotics on the tested panel; susceptible to aminoglycosides (gentamicin, amikacin)."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2025-07-14T08:45",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL - EMERGENCY PHYSICIAN RECORD\nPatient: Frederick Esposito, 65M  DOB 11/15/1959\nArrival 7/12/2025 07:45, sent in by his primary care physician.\nAllergies: penicillin (anaphylaxis), cefazolin (rash).\nHome meds: glipizide 5 daily, metoprolol 50 BID, lisinopril 10 daily, atorvastatin 40 qhs, ASA 81.\nPMH: T2DM, CKD 3b, HTN, chronic R plantar diabetic ulcer (infected ulcer admission March).\n\nHPI: 3 days of fever with rigors, right flank pain, dysuria and urinary frequency.\n\nTriage: T 38.9 C (102 F), BP 150/90, HR 98, RR 20.\nExam: uncomfortable, nontoxic. Right CVA tenderness. Abdomen soft. Lungs clear. Right foot dressing clean, ulcer without surrounding erythema.\n\nLabs: WBC 14.0, Hgb 13.2. BUN 40, creatinine 2.2 (baseline 1.6). UA: pyuria, leukocyte esterase positive, nitrite positive.\n\nED course: urine culture sent before antibiotics. IV fluid bolus, then maintenance. Empiric IV aztreonam, selected because of his penicillin anaphylaxis and cefazolin reaction.\n\nImpression: acute pyelonephritis; acute kidney injury on CKD 3b.\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-12c",
+          "kind": "hospital_admission",
+          "start": "2025-07-12T13:10",
+          "end": "2025-07-20T11:30",
+          "service": "Internal Medicine — Hospital",
+          "reason": "acute pyelonephritis with acute kidney injury",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-16T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 148
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 36
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-20T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 143
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 39
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2025-07-13T10:20",
+              "text": "RENAL ULTRASOUND\nIndication: pyelonephritis, acute kidney injury.\nBoth kidneys normal in size. Cortical thickness and echogenicity within normal limits. No hydronephrosis either side. No renal stone or perinephric fluid collection. Bladder partially distended, unremarkable.",
+              "conclusion": "No hydronephrosis or obstruction."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary - pyelonephritis",
+              "date": "2025-07-21T09:10",
+              "author": "hospitalist",
+              "body": "AREA HOSPITAL - MEDICINE DISCHARGE SUMMARY\nFrederick Esposito  DOB 11/15/1959. Admitted 7/12/2025 from the ED; discharged 7/20/2025 home.\nAllergies: penicillin - anaphylaxis; cefazolin - rash.\n\nDiagnoses: acute pyelonephritis, E. coli, multidrug resistant; acute kidney injury on CKD stage 3b.\n\nCourse: Started on IV fluids and empiric aztreonam in the ED. Renal ultrasound 7/13 showed no hydronephrosis. On 7/14 the urine culture grew E. coli resistant to several classes but sensitive to aminoglycosides. In light of his renal function and the susceptibility pattern, therapy changed to IV gentamicin with once-daily dosing adjusted for kidney function and trough levels monitored. Afebrile from 7/14; flank pain resolved. Seven days of active therapy completed in hospital - no oral antibiotic at discharge.\nCreatinine 2.2 on arrival, 2.0 on 7/16, 1.9 on 7/20 (baseline 1.6). Lisinopril held during the admission, resumed at discharge.\n\nDischarge medications: unchanged home list - glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily.\nFollow-up: PCP within 1 week with repeat BMP."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "office_visit",
+          "start": "2025-07-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pyelonephritis",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "resolved",
+              "onset": "2025-07-09",
+              "icd10": "N10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              92
+            ],
+            "hr": 83,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 88.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-24T14:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 154
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 41
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-07-24T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-aug-2025",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "creatinine recheck after acute kidney injury"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-07-24T14:40",
+              "author": "PCP",
+              "body": "Follow-up after an 8-day admission for E. coli pyelonephritis (multidrug resistant, treated with IV gentamicin) with kidney injury.\n\nFeels nearly back to normal; tired the first few days home. No fever since the 14th. No flank pain, burning or frequency. Eating and drinking well. Back on all home meds including lisinopril.\n\nExam: afebrile; vitals charted. No CVA tenderness. Abdomen soft. Right foot ulcer unchanged, clean.\n\nA/P\n1. Pyelonephritis - clinically resolved.\n2. AKI on CKD 3b - creatinine today; recheck in about 4 weeks to make sure it returns to baseline. Hydrate well in the heat.\n3. T2DM/HTN - unchanged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "lab_only",
+          "start": "2025-08-19T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "creatinine recheck",
+          "conditions": [
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "onset": "2025-07-12",
+              "icd10": "N17.9"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-19T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 153
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 44
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T08:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-aug-2025",
+              "action": "done",
+              "date": "2025-08-19T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP recheck",
+              "date": "2025-08-19T15:30",
+              "author": "PCP",
+              "body": "Creatinine 1.7 - back to his baseline. Kidney injury from July resolved. Potassium normal. Portal message sent: no changes, see him in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "specialist_visit",
+          "start": "2025-08-26T13:15",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "date": "2025-08-27T09:30",
+              "author": "podiatry",
+              "body": "Podiatry note for PCP\nPt: Frederick Esposito, DOB 11/15/1959. Seen 8/26/2025.\nAllergies: penicillin (anaphylaxis), cefazolin (rash).\nInterval: admitted in July for a kidney infection; foot not involved.\nRight plantar ulcer 0.6 x 0.5 cm, shallow, pink granular base, no drainage, no erythema. Pulses palpable. Callus pared.\nA: chronic diabetic foot ulcer, right plantar surface, slowly contracting.\nP: continue boot and dressings. Return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "imaging",
+          "start": "2025-09-23T10:00",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-09-23T10:00",
+              "text": "OUTSIDE IMAGING CENTER - LOW-DOSE CT CHEST (ANNUAL LUNG SCREENING)\nComparison: 10/22/2024, 10/24/2023, 10/18/2022.\nTechnique: Low-dose helical CT without contrast.\nFindings: No pulmonary nodule or mass. Lungs clear. No effusion. Normal heart size; no pericardial effusion. No thoracic adenopathy.\nAllergies listed: penicillin, cefazolin.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual LDCT."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-09-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2025",
+              "date": "2025-09-24T08:15",
+              "author": "PCP",
+              "body": "Fourth annual screening CT negative, Lung-RADS 1. Will review with him at the wellness visit 10/6."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "annual_physical",
+          "start": "2025-10-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              134,
+              86
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 89.7,
+            "height_cm": 175.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 152
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 43
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 80
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 152
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 131
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 106
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.0
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-10-06T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-06T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-06T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-06T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2025-10-06T09:55",
+              "author": "PCP",
+              "body": "Initial Medicare AWV, 65M.\n\nThe year: admitted in March (infected right plantar ulcer; cefazolin reaction; a low sugar on hospital insulin) and in July (resistant E. coli pyelonephritis with AKI, creatinine back to 1.7 in August). Since then he feels like himself. Still followed by podiatry; ulcer smaller in August.\n\nFunctional: independent with daily activities, drives, handles his own medications and his wife helps with dressings. No falls this year; uses the boot outdoors. Hearing adequate. Vision good, eye exam May without retinopathy. PHQ-2 0. Lives with his wife.\n\nMeds: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily.\nAllergies: penicillin (anaphylaxis); cefazolin (rash/itching).\n\nExam: vitals charted. Comfortable. Heart RRR. Lungs clear. Abdomen soft, no CVA tenderness. Right sole: small clean ulcer, no surrounding redness; left foot intact. No edema.\n\nPrevention: flu (high dose) and 2025-26 COVID given today. Shingrix, PCV20, RSV, Tdap done. Colonoscopy due 2028. Lung CT 9/23 negative; next fall. Aortic ultrasound normal in January.\n\nPlan: CMP, CBC, lipids, A1c, urine albumin today. Diabetes, pressure and kidney medicines unchanged. Podiatry in November. Follow-up in 3 months for diabetes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "portal_message",
+          "start": "2025-10-07T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Wellness visit labs",
+              "date": "2025-10-07T17:05",
+              "author": "PCP",
+              "body": "Frederick, your labs from yesterday: kidney function steady at your usual level, potassium normal, blood count normal, cholesterol well controlled, urine protein normal. A1c is in the same range as the past couple of years. Please book a diabetes visit for January."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Wellness visit labs",
+              "date": "2025-10-08T08:22",
+              "author": "patient",
+              "body": "Will do after the holidays. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day refill request",
+              "date": "2025-12-09T10:40",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy: glipizide 5 mg #90, lisinopril 10 mg #90. Last visit 10/6/25. Routed to PCP.\n\nPCP: both approved, 90 days with 1 refill. Please remind him to schedule the January diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-17b",
+          "kind": "hospital_admission",
+          "start": "2026-01-17T10:20",
+          "end": "2026-01-27T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "septic shock, urinary source",
+          "vitals": [
+            {
+              "time": "2026-01-17T10:30",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 39.2
+            },
+            {
+              "time": "2026-01-19T08:00",
+              "bp": [
+                118,
+                70
+              ],
+              "hr": 92,
+              "rr": 18,
+              "temp_c": 37.6,
+              "spo2": 96
+            },
+            {
+              "time": "2026-01-27T08:00",
+              "bp": [
+                126,
+                76
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-17T10:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 150
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 11.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-17T10:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.5
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 50
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 149
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 28
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-17T10:45",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-17T11:00",
+              "results": [
+                {
+                  "test": "Urine Clarity",
+                  "text": "Cloudy"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": ">50 /HPF"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-17T10:50",
+              "resulted": "2026-01-22T10:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (2 sets)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-17T11:00",
+              "resulted": "2026-01-19T09:15",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli, greater than 100,000 CFU/mL. Multidrug resistant, same susceptibility pattern as the July 2025 isolate; susceptible to aminoglycosides."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-18T06:00",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-27T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 149
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 36
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2026-01-17T15:30",
+              "text": "RENAL ULTRASOUND, PORTABLE (ICU)\nIndication: septic shock, urinary source, acute kidney injury.\nBoth kidneys normal in size with preserved corticomedullary differentiation. No hydronephrosis. No calculus or perinephric collection. Bladder unremarkable.\nComparison: 7/13/2025.",
+              "conclusion": "No hydronephrosis. No change from July 2025."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and hospital discharge summary",
+              "date": "2026-01-29T11:20",
+              "author": "critical care",
+              "body": "AREA HOSPITAL - PULMONARY & CRITICAL CARE / MEDICINE DISCHARGE SUMMARY\nPatient: Frederick Esposito, 66M, DOB 11/15/1959\nAdmitted 1/17/2026 via the ED to the medical ICU; ward from 1/20; discharged home 1/27/2026.\nAllergies: PENICILLIN (anaphylaxis); CEFAZOLIN (rash, itching).\nHome medications on admission: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily.\nRelevant history: type 2 diabetes; CKD stage 3b (baseline creatinine 1.6); hypertension; chronic right plantar diabetic ulcer under podiatry care; cefazolin reaction March 2025; multidrug-resistant E. coli pyelonephritis July 2025.\n\nPresentation: per his wife, two days of fever, chills and confusion, progressively less responsive, little oral intake. On arrival T 39.2 C, BP 85/50, HR 120, RR 22. Dry mucous membranes and poor skin turgor; lethargic but arousable. WBC 18.0, Hgb 12.0, platelets 150; creatinine 2.5, BUN 50; lactate 5.0. Urinalysis cloudy, leukocyte esterase positive, >50 WBC/hpf. Blood cultures drawn.\n\nDiagnoses: septic shock, urinary source; acute kidney injury on CKD 3b.\n\nCourse:\n- Shock: supplemental oxygen by nasal cannula, crystalloid boluses, then norepinephrine for persistent hypotension; weaned off 1/19. Lactate 1.6 on 1/18.\n- Infection: empiric IV aztreonam and gentamicin, chosen around his beta-lactam allergies and his prior isolate. Urine culture grew E. coli with the same resistance pattern as July; blood cultures no growth. Narrowed to gentamicin, dosed by levels for his kidney function; 10 days completed in hospital. Renal ultrasound without hydronephrosis.\n- Kidney: creatinine peaked at admission and was 2.0 at discharge. Lisinopril HELD.\n- Mental status back to his baseline before discharge. Metoprolol held during shock, resumed at home dose on the ward. Glipizide held while he was not eating, resumed before discharge.\n\nDischarge medications: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, atorvastatin 40 mg qhs, aspirin 81 mg daily. HOLD lisinopril until kidney function is rechecked by his PCP.\nFollow-up: PCP within 1-2 weeks with BMP. Podiatry as scheduled."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records filed",
+              "date": "2026-01-29T15:10",
+              "author": "PCP",
+              "body": "ICU/hospital discharge summary received and filed. Needs a post-hospital visit and BMP; lisinopril on hold per hospital pending that recheck."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-17a",
+          "kind": "telephone",
+          "start": "2026-01-17T16:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "wife reports ICU admission",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's wife",
+              "date": "2026-01-17T16:40",
+              "author": "PCP",
+              "body": "His wife called the practice line. Frederick has been feverish with chills for two days, increasingly confused and not eating; this morning she could barely get him to answer her, so she called 911. He is in the ICU at the area hospital with an infection - she was told it is from his urine and that his blood pressure is very low. Spoke with the ICU team by phone and gave them his allergy history (penicillin anaphylaxis, cefazolin rash) and the July culture result. Asked his wife to keep us posted; we'll get the records."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "portal_message",
+          "start": "2026-02-03T09:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "after hospital discharge",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Fred is home",
+              "date": "2026-02-03T09:12",
+              "author": "patient",
+              "body": "This is his wife writing on his account. Fred has been home a week. He's weak and sleeping a lot but eating better and he knows what day it is again. The hospital said to see you and get blood work. He's taking everything except the lisinopril like they said. What should we do?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Fred is home",
+              "date": "2026-02-03T12:40",
+              "author": "PCP",
+              "body": "Thank you for the update - I'm glad he's home. I read the hospital summary. I'd like to see him in the next week or two and repeat his kidney labs then; we'll decide about the lisinopril at that visit. Our front desk will call to set it up. If he has fever, confusion, lightheadedness or isn't drinking, call or text right away."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "telephone",
+          "start": "2026-02-06T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "scheduling hospital follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling outreach",
+              "date": "2026-02-06T10:05",
+              "author": "front desk",
+              "body": "Called home number to schedule post-hospital visit with labs as requested by PCP. No answer; left voicemail with callback number and offered Tuesday or Thursday next week."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2026-03-10T11:20",
+              "author": "MA",
+              "body": "Pharmacy refill request: metoprolol tartrate 50 mg #180 and atorvastatin 40 mg #90. Last office visit 10/6/25; hospital stay in January. Pended for PCP.\n\nPCP: approved, 90-day supply each. He is still due for a post-hospital visit and labs - front desk please try him again."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "outside_records",
+          "start": "2026-05-19T14:45",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "date": "2026-05-19T14:45",
+              "author": "optometry",
+              "body": "Diabetic eye exam - letter to PCP\nFrederick Esposito, DOB 11/15/1959. Exam 5/12/2026.\nAllergies: penicillin, cefazolin.\nCorrected acuity 20/25 right, 20/30 left. Dilated fundus exam: lens implant clear and centered. No diabetic retinopathy. No macular edema.\nImpression: type 2 diabetes, no retinopathy. Return in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "overdue visit outreach",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Time for a check-in",
+              "date": "2026-06-16T09:30",
+              "author": "front desk",
+              "body": "Hello Mr. Esposito, our records show you're due for a diabetes visit and the lab check after your January hospital stay. Reply here or call us and we'll find a time that works for you."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute kidney injury|N17.9": {
+        "code": "N17.9",
+        "display": "Acute kidney failure, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute pyelonephritis|N10": {
+        "code": "N10",
+        "display": "Acute pyelonephritis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Allergic reaction to cefazolin due to penicillin cross-sensitivity|T36.1X5A": {
+        "code": "T36.1X5A",
+        "display": "Adverse effect of cephalosporins and other beta-lactam antibiotics, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Diabetic foot ulcer, right plantar surface|L97.519": {
+        "code": "L97.519",
+        "display": "Non-pressure chronic ulcer of other part of right foot with unspecified severity",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Glucose, 2 hours post meal": {
+        "code": "6689-4",
+        "display": "Glucose [Mass/volume] in Blood --2 hours post meal",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, point of care": {
+        "code": "41653-7",
+        "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

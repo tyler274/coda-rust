@@ -1,0 +1,169 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001802",
+      "given": "Caitlin",
+      "family": "Keane",
+      "birth_date": "2001-03-23",
+      "address_line": "27 Bay Road, Apt 3",
+      "phone": "+1-603-555-0187",
+      "email": "caitlin.keane@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student who joined at 21 with known genital HSV-2 on episodic valacyclovir. Over 2025-2026 she has treated gonococcal cervicitis, HSV cervicitis seen by gynecology, an admission for chlamydial PID with a tubo-ovarian complex and a failing pregnancy of unknown location, a community-acquired pneumonia, and a post-clindamycin severe C. difficile admission; well at her June 2026 physical.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T10:05",
+          "reason": "New patient intake",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2022-08-16T10:05", "body": "Caller is a 21 yo student moving to the area for the fall, wants an internal medicine doctor here instead of going home for care. Uses the university student health plan; membership terms reviewed and emailed. Prior care at her college health service, records release form sent by email. Booked new patient visit 8/30 at 9:00. Asked her to bring any vaccine records she has."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "establish_care",
+          "start": "2022-08-30T09:00",
+          "end": "2022-08-30T09:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Genital herpes simplex virus infection", "icd10": "A60.9", "action": "diagnosed", "onset": "2020-03-10", "note": "HSV-2 by lesion PCR at college health 2020; episodic treatment"}
+          ],
+          "medications": [
+            {"drug_text": "valacyclovir 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 3 days at the first sign of an outbreak", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Genital HSV recurrences"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 61.2, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Student"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-30T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-30T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-30T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-08-30T09:50", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
+              {"test": "Rapid Plasma Reagin", "text": "Nonreactive"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-08-30T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-08-30T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-08-30T09:00", "body": "21 yo F here to establish care. Starting her last undergraduate year and planning on graduate school locally, so wanted a doctor in town.\n\nPMH: genital herpes, HSV-2, confirmed by swab PCR at college health spring 2020. Gets 2-3 outbreaks a year, small cluster, uses valacyclovir 500 bid x3 days when it starts and it settles within a few days. Not interested in daily suppression right now. Otherwise healthy. No hospitalizations.\nPSH: none.\nMeds: valacyclovir prn only.\nAllergies: penicillin. Told as a child she reacted to it; she doesn't know what the reaction was.\nFH: mom with high blood pressure, dad has type 2 diabetes, younger sister has asthma.\nSH: student. Lives in an apartment with a roommate. Never smoked. Alcohol socially, a drink or two a week. Sexually active, uses condoms most of the time. Not currently on hormonal contraception.\nGYN: menses monthly, regular. No Pap yet.\n\nROS negative except as above.\n\nExam: well-appearing. HEENT normal, no adenopathy. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Mood and affect normal. Pelvic deferred, will do with Pap at next physical.\n\nA/P\n1. Genital HSV-2, infrequent recurrences. Continue episodic valacyclovir, refills on file. Reviewed that suppressive therapy is an option if outbreaks become frequent, and that it reduces but does not eliminate transmission.\n2. Health maintenance: screening labs today (CBC, CMP, lipids), one-time HIV and hep C, RPR, urine GC/CT. Will get vaccine history from college records; believes HPV series is done. Pap next year at her physical. Flu shot in the fall.\n3. Penicillin allergy, reaction unknown. Could consider allergy testing at some point.\n\nRTC 1 year for physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2022-09-01a",
+          "kind": "portal_message",
+          "start": "2022-09-01T16:20",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2022-09-01T16:20", "body": "Hi Caitlin, everything from Tuesday came back fine: blood counts, kidney and liver tests, and cholesterol are all normal, and the HIV, hepatitis C, syphilis, gonorrhea and chlamydia tests were all negative. Nothing to do. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T11:30",
+          "immunizations": [
+            {"vaccine": "MMR", "date": "2002-04-02T10:00"},
+            {"vaccine": "Varicella", "date": "2002-04-02T10:00"},
+            {"vaccine": "MMR", "date": "2005-06-14T10:00"},
+            {"vaccine": "Varicella", "date": "2005-06-14T10:00"},
+            {"vaccine": "Tdap", "date": "2014-05-06T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2014-05-06T10:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2014-05-06T10:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2014-11-18T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2018-07-24T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T13:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "College health service records", "author": "front desk", "date": "2022-09-20T11:30", "body": "Records from college student health service, 14 pages, received by secure email and scanned.\n\nContents: immunization record (childhood MMR and varicella x2 each, Tdap and MenACWY at 13, MenACWY booster 2018, 2-dose HPV series 2014, hepatitis B series in infancy per pediatric record, COVID primary series 2021). Visit 03/2020: painful vulvar ulcers, swab PCR positive for HSV-2, treated with valacyclovir. Two later visits for recurrences, episodic valacyclovir. Annual GC/CT screens negative. Allergy listed as penicillin, reaction not recorded.\n\nImmunizations abstracted to chart. Forwarded to PCP."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T15:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-20T15:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2022-10-20T15:40", "body": "In for flu and bivalent COVID booster. Screening questions negative, no egg or vaccine reactions. Flu 0.5 mL IM left arm, COVID 0.3 mL IM right arm. VIS reviewed. Observed 15 min, felt fine, left with arm soreness instructions."}
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "portal_message",
+          "start": "2023-02-08T08:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Outbreak, need refill", "author": "patient", "date": "2023-02-08T08:12", "body": "Hi, I can feel an outbreak starting (the tingling, same spot as usual) and I'm out of the valacyclovir. Can you send more? Thanks!"},
+            {"type": "Telephone Encounter", "title": "Refill sent", "author": "PCP", "date": "2023-02-08T09:30", "body": "Valacyclovir 500 mg #6 with 2 refills sent so she has some on hand. Start now, bid x3 days. Message her back to come in if it is atypical or not better in a week."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Occupation", "value": "Graduate student"}],
+          "labs": [
+            {"panel": null, "collected": "2023-09-12T09:10", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-09-12T09:00", "issued": "2023-09-18T11:00", "text": "Specimen: cervical, liquid-based. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-12T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-12T08:30", "body": "22 yo here for yearly exam. Started her master's program this month, busy but good. HSV: two outbreaks since last fall, both brief with the episodic valacyclovir. No other concerns. Same partner situation as before, uses condoms.\nNo daily meds. Allergy PCN.\nSmoking never. EtOH 1-2/wk. Exercises - runs a few times a week.\n\nExam: NAD. HEENT clear, neck supple, no thyromegaly. Cardiac regular, no murmurs. Lungs clear bilaterally. Abd soft, NT. Pelvic: normal external genitalia, no lesions today. Vaginal walls normal, cervix normal appearing, Pap obtained. Bimanual without tenderness or masses. Skin normal.\n\nA/P\n- Well visit. Pap today (first one). Urine GC/CT.\n- HSV-2 stable on episodic tx.\n- Flu and updated COVID when the clinic gets supply.\n- Tdap due next year (last 2014).\nFollow up 1 yr."}
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "portal_message",
+          "start": "2023-09-18T14:05",
+          "documents": [
+            {"type": "Result Note", "title": "Pap and screening results", "author": "PCP", "date": "2023-09-18T14:05", "body": "Your Pap smear was normal and the gonorrhea/chlamydia tests were negative. The next Pap is due in three years (2026). Have a good semester."}
+          ]
+        },
+        {
+          "id": "2023-10-26a",
+          "kind": "nurse_visit",
+          "start": "2023-10-26T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-26T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-26T16:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-26T16:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "MA", "date": "2023-10-26T16:10", "body": "Flu vaccine L deltoid and 2023-24 COVID vaccine R deltoid given, no contraindications on screening. Pt tolerated both. Waited 15 minutes, no reaction. Lot numbers in immunization record."}
+          ]
+        }
+      ]
+    }
+  ]
+}
