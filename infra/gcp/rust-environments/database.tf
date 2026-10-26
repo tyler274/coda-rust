@@ -95,11 +95,12 @@ resource "google_sql_user" "app" {
   instance            = google_sql_database_instance.app[each.value.app].name
   name                = "${each.value.app}-${each.value.role}"
   type                = "BUILT_IN"
-  password_wo         = try(var.database_passwords[each.key], "bootstrap-replaced-out-of-band")
+  password_wo         = lookup(var.database_passwords, each.key, null)
   password_wo_version = try(var.database_password_versions[each.key], 1)
   deletion_policy     = "ABANDON"
-  # Passwords are write-only: they are set out of band and stored only in
-  # Doppler, so no password value enters this state. These users get no SQL
+  # Passwords are required when databases are enabled and supplied from
+  # Doppler through this write-only field; no password value enters state.
+  # These users get no SQL
   # grants here and MUST NOT receive cloudsqlsuperuser. An authorized DB
   # operator runs bootstrap-grants.sql before acknowledging
   # runtime_and_database_contract_approved.

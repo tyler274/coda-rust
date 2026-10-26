@@ -119,8 +119,17 @@ variable "production_activation_approved" {
 variable "database_passwords" {
   type        = map(string)
   default     = {}
-  description = "Write-only passwords for the four per-app, per-role database users, keyed physician-runtime, physician-migration, duet-runtime, duet-migration. Set out of band; stored only in Doppler. Write-only values never enter state. An empty or missing value keeps the bootstrap placeholder, which the operator replaces before any workload connects."
+  description = "Write-only passwords from Doppler for all four per-app, per-role database users. Required when databases are enabled; foundations alone need no credentials. Write-only values never enter state."
   sensitive   = true
+  nullable    = false
+
+  validation {
+    condition = !var.enable_databases || alltrue([
+      for key in ["physician-runtime", "physician-migration", "duet-runtime", "duet-migration"] :
+      try(trimspace(var.database_passwords[key]) != "" && trimspace(var.database_passwords[key]) != "bootstrap-replaced-out-of-band", false)
+    ])
+    error_message = "Enabling databases requires a nonempty Doppler password for each of physician-runtime, physician-migration, duet-runtime, and duet-migration. The former bootstrap placeholder is not a credential."
+  }
 }
 
 variable "database_password_versions" {
