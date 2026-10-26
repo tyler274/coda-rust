@@ -5,9 +5,10 @@
 //! plus the analyzer's variation, a member with none reads the patient's own
 //! normal, a qualitative member reads its usual result, the open differential
 //! shares what the stated members leave of 100%, and red-cell indices, eGFR
-//! (CKD-EPI 2021), anion gap, cholesterol totals and transferrin saturation are
-//! calculated from the draw's other values. A value the author wrote stays as
-//! written. Every value lands in the ledger, so the ledger holds the whole chart.
+//! (CKD-EPI 2021), anion gap, cholesterol totals, transferrin saturation and
+//! prothrombin time are calculated from the draw's other values. A value the
+//! author wrote stays as written. Every value lands in the ledger, so the ledger
+//! holds the whole chart.
 
 use std::collections::HashMap;
 
@@ -89,6 +90,14 @@ const DERIVED: &[(&str, &[&str], Formula, usize)] = &[
         &["Iron", "Total Iron-Binding Capacity"],
         |v, _| v[0] / v[1] * 100.0,
         0,
+    ),
+    (
+        // INR is (PT / the lab's normal PT) ^ ISI; with ISI 1 and a normal PT of
+        // 12.2 s, PT follows the INR the chart is managed by
+        "Prothrombin Time",
+        &["Prothrombin Time-International Normalized Ratio"],
+        |v, _| v[0] * 12.2,
+        1,
     ),
 ];
 

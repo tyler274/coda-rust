@@ -67,8 +67,9 @@ under the ignored `target/patient-bank/`. `PATIENT_BANK_DATA`,
   patient's level (set in `state`, or the patient's own normal) plus the scatter a
   cuff or an analyzer gives. Unstated panel members are measured too, the open
   differential shares what is left of 100%, and red-cell indices, eGFR (CKD-EPI
-  2021), anion gap, cholesterol totals and transferrin saturation are calculated
-  from the draw. A level set on a calculated test moves the inputs it comes from.
+  2021), anion gap, cholesterol totals, transferrin saturation and prothrombin
+  time are calculated from the draw. A level set on a calculated test moves the
+  inputs it comes from.
 - **The renderer.** Encounters, Conditions, MedicationRequests, Observations
   (lab panels with `hasMember`, BP with components), DiagnosticReports,
   Procedures, AllergyIntolerances, DocumentReferences, Immunizations and
