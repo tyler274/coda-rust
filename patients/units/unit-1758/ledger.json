@@ -1,0 +1,3873 @@
+{
+  "unit": "unit-1758",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001758/2019-09-10a: allergen \"Pollen (seasonal)\" not in catalog (text only)",
+    "MRN00001758/2025-01-06a: allergen \"Phenytoin\" not in catalog (text only)",
+    "MRN00001758/2025-01-06a: reaction \"Stevens-Johnson syndrome\" not in catalog (text only)",
+    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001758",
+      "given": "Morgan",
+      "family": "Sheehan",
+      "birth_date": "1992-08-29",
+      "address_line": "41 Cape Street",
+      "phone": "+1-802-555-0162",
+      "email": "morgan.sheehan@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with asthma and epilepsy who joins in 2019, then develops a prolactin- and TSH-secreting pituitary adenoma and Graves disease, a postpartum PE, acute promyelocytic leukemia with DIC, phenytoin-induced Stevens-Johnson syndrome, and status asthmaticus. Outside records are sparse.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Mild intermittent asthma",
+              "action": "history",
+              "note": "albuterol only, a few times a month in pollen season"
+            },
+            {
+              "label": "Epilepsy",
+              "action": "history",
+              "onset": "2008-03-01",
+              "note": "seizure-free for years on phenytoin"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "phenytoin sodium 100 MG Extended Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 3 capsules (300 mg) by mouth daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Asthma"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Pollen (seasonal)",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 77,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 56.0,
+            "height_cm": 165.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T09:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:25",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 14.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T09:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-10T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-10T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-09-10T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2019",
+              "action": "placed",
+              "order": "Records request, prior primary care",
+              "category": "procedure",
+              "reason": "establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T09:30",
+              "author": "PCP",
+              "body": "27 yo teacher (2nd grade, local elementary) here to set up care. Moving her records over from her old office in the spring, wanted a practice she could reach by text.\n\nPMH\n- Asthma since childhood. Uses albuterol a few times a month, mostly May-June and again late summer when pollen is bad. Never intubated, no steroid bursts she can remember in adulthood. No daily inhaler.\n- Epilepsy, onset in her teens. Followed by a neurologist through high school/college, on phenytoin 300 mg daily ever since. Last seizure many years ago, she can't put a year on it. Drives. Has not seen neurology in a few years - happy to stay on what works.\nPSH: none.\nMeds: phenytoin ER 100 mg x3 daily; albuterol HFA prn.\nAllergies: seasonal pollen (hay fever type). No drug allergies.\nFH: mom hypothyroid. Dad asthma. Older sister has lupus. Maternal aunt with some kind of thyroid problem.\nSH: married, lives in Goshen. Never smoker, does not drink, no drugs. Teaches second grade.\nGYN: periods monthly, no pregnancies.\n\nROS otherwise negative.\n\nExam: well, thin. HEENT normal, no thyroid enlargement. Heart RRR without murmur. Lungs clear, good air movement. Abd soft. Skin clear. Neuro grossly normal, gait normal.\n\nA/P\n1. Asthma, mild intermittent - fine on rescue inhaler alone. Refilled.\n2. Epilepsy, well controlled on phenytoin - level today. Discussed calcium/vit D intake and gum care on phenytoin. Will refill here.\n3. Health maintenance - flu shot today. One-time HIV and hep C screens with baseline labs. Pap last year at old office per her, will confirm from records.\n\nRecords release signed. Return for a physical next fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2019-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Morgan - your blood counts, kidney and liver tests all look normal. Phenytoin level is right in range at 14.2. HIV and hepatitis C screens were negative. Nice to have you with us."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "outside_records",
+          "start": "2019-09-26T11:10",
+          "orders": [
+            {
+              "id": "prior-records-2019",
+              "action": "done",
+              "date": "2019-09-26T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-09-26T11:10",
+              "author": "front desk",
+              "body": "14 pages received from prior PCP office. Includes: visit notes 2015-2019 (asthma, epilepsy, refills), immunization record, cervical cytology 06/2018 negative for intraepithelial lesion, and a 2016 neurology follow-up letter: seizure-free, continue phenytoin 300 mg daily, routine levels. Filed under outside records for PCP review.\n\nPCP addendum: reviewed. Pap 2018 normal, next due 2021. Nothing new."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-14a",
+          "kind": "pharmacy",
+          "start": "2020-01-14T10:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Phenytoin refill",
+              "date": "2020-01-14T10:20",
+              "author": "RN",
+              "body": "Pharmacy fax for phenytoin ER 100 mg #270, 90-day supply. Last level 9/2019 14.2, seen 9/2019. Approved per refill protocol, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "office_visit",
+          "start": "2020-06-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nipple discharge, irregular periods",
+          "vitals": {
+            "bp": [
+              129,
+              84
+            ],
+            "hr": 74,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 56.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-06-09T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2020",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "galactorrhea and oligomenorrhea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-06-09T15:55",
+              "author": "PCP",
+              "body": "Masked visit (clinic COVID protocol).\n\nS: Since around November she has noticed milky fluid from both nipples, sometimes on its own, sometimes on her bra in the morning. Never bloody. At the same time her periods spread out, now every 6-8 weeks and lighter than they used to be. Home pregnancy tests negative. No headaches, no change in vision. She was waiting for school to end to deal with it.\n\nMeds: phenytoin 300 daily, albuterol prn.\n\nO: Vitals as charted. Breasts symmetric, no masses, no skin change, no axillary nodes. Did not express. Thyroid normal size. Visual fields full to confrontation.\n\nA/P: Galactorrhea with oligomenorrhea in a 27 yo, not pregnant by home test. Needs prolactin, pregnancy test and likely pituitary imaging - referring to endocrinology, who can get all of that in one go and will want to read the MRI themselves. Their first opening is July; she's fine to wait. Call if headaches or vision changes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "specialist_visit",
+          "start": "2020-07-14T10:00",
+          "service": "Endocrinology",
+          "reason": "Galactorrhea and irregular menses",
+          "conditions": [
+            {
+              "label": "Prolactinoma",
+              "action": "diagnosed",
+              "onset": "2020-07-14"
+            },
+            {
+              "label": "Oligomenorrhea",
+              "action": "diagnosed",
+              "onset": "2019-11-01",
+              "icd10": "N91.5"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice weekly",
+              "dose": {
+                "value": 0.5,
+                "unit": "mg"
+              },
+              "frequency": "TWICE WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prolactinoma"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2020",
+              "action": "done",
+              "date": "2020-07-24T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2020-07-24T13:40",
+              "author": "endocrinology",
+              "body": "Outpatient Endocrinology - Consultation Letter\n\nReason for referral: galactorrhea, irregular menses.\n\nThank you for sending Ms. Sheehan, 27. For roughly eight months she has had spontaneous milky, non-bloody discharge from both breasts. Cycles now come every 6 to 8 weeks and are lighter. She has never been pregnant. She reports no change in weight, no headaches and no visual complaints.\n\nOther history: asthma, epilepsy on phenytoin 300 mg daily (seizure-free). Allergies: seasonal pollen. Non-smoker, no alcohol.\n\nExamination: gentle pressure on either breast produces milky fluid from the nipple. No masses, skin change or signs of inflammation. Visual fields normal on formal confrontation testing.\n\nResults: serum hCG negative. Prolactin elevated. Pituitary MRI: 6 mm lesion in the anterior pituitary.\n\nImpression: prolactinoma (microadenoma) with galactorrhea and oligomenorrhea.\n\nPlan: cabergoline 0.5 mg twice weekly, prescribed today. Repeat prolactin in about 3 months and follow-up visit in 6 months. She knows to report headache or visual change.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              75
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 56.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T08:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-22T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 84
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T08:35",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 12.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-22T08:45",
+              "author": "PCP",
+              "body": "Annual. Back in the classroom in person with masks and plexiglass, stressful but OK.\n\nInterval: saw endocrinology in July - prolactinoma on MRI, 6 mm. On cabergoline twice a week since, tolerating it, a little queasy the first couple of doses. Discharge less. Periods still irregular. No headaches or vision change. Asthma quiet this summer, used albuterol maybe twice. No seizures.\n\nMeds: phenytoin 300 mg daily, cabergoline 0.5 mg twice weekly, albuterol prn.\nAllergies: pollen.\n\nExam: Vitals reviewed. NAD. Thyroid not enlarged. Heart regular, no murmur. Lungs clear throughout. Breast exam deferred to endo follow-up per her preference. Abdomen benign. Skin and gums fine.\nPHQ-2 negative.\n\nA/P\n- Prolactinoma on cabergoline: endo managing, repeat prolactin with them.\n- Oligomenorrhea: expect improvement as prolactin normalizes.\n- Epilepsy: level today.\n- Asthma: rescue only.\n- HM: flu today. Pap due next year. Routine labs.\n\nFollow up in a year, sooner prn."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T12:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results",
+              "date": "2020-09-24T12:30",
+              "author": "PCP",
+              "body": "Morgan, everything from Tuesday came back normal, cholesterol included. Phenytoin 12.8, still in the target range. Enjoy the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "specialist_visit",
+          "start": "2021-01-12T09:30",
+          "service": "Endocrinology",
+          "reason": "Weight loss, heat intolerance, palpitations",
+          "conditions": [
+            {
+              "label": "Graves disease",
+              "action": "diagnosed",
+              "onset": "2020-10-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "vitals": {
+            "hr": 108
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2021-01-21T14:15",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up note (copy to PCP)\n\nSix-month follow-up for prolactinoma on cabergoline. Over the last three months she has lost weight without trying and has been hot when others are not, with frequent pounding heartbeats. Cycles remain irregular, as they have been for about six months.\n\nHR 108.\nThyroid diffusely enlarged and non-tender. Fine tremor of the outstretched hands at rest. Mild lid lag on both sides with some swelling around the eyes.\n\nTSH low.\n\nAssessment: Graves disease.\nPlan: methimazole 10 mg daily started. Labs in 4-6 weeks. Continue cabergoline 0.5 mg twice weekly. Return in 6 months, sooner if symptoms worsen."
+            }
+          ],
+          "state": {
+            "hr": 108,
+            "weight_kg": 52.5
+          }
+        },
+        {
+          "id": "2021-01-25a",
+          "kind": "portal_message",
+          "start": "2021-01-25T19:40",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "New thyroid medicine",
+              "date": "2021-01-25T19:40",
+              "author": "patient",
+              "body": "Hi, endo started me on methimazole for Graves. They said I need bloodwork in about a month to check my blood counts and liver and that you could draw it here since it's closer to school. Is that ok? Also the heart pounding is a little better already."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: New thyroid medicine",
+              "date": "2021-01-26T07:50",
+              "author": "PCP",
+              "body": "Yes, of course. I put in a CBC and liver panel - come any morning the week of Feb 22. With methimazole, if you get a fever or a sore throat, stop it and call us the same day so we can check your white count. Glad the palpitations are easing."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-23a",
+          "kind": "lab_only",
+          "start": "2021-02-23T07:15",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-02-23T07:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-02-23T07:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-02-23T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Methimazole monitoring labs",
+              "date": "2021-02-24T12:10",
+              "author": "PCP",
+              "body": "CBC with diff and LFTs normal, neutrophils fine. Copy faxed to endocrinology. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T20:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-27T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-20T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "COVID vaccine card",
+              "date": "2021-03-24T20:15",
+              "author": "patient",
+              "body": "Got both Pfizer doses through the educator clinic, 2/27 and 3/20. Photo of my card attached. Just a sore arm and a tired day after the second."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: COVID vaccine card",
+              "date": "2021-03-25T08:30",
+              "author": "MA",
+              "body": "Thanks Morgan, both doses are entered in your record."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "office_visit",
+          "start": "2021-06-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Asthma check, refills",
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "stop",
+              "reason": "replaced by practice prescription"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Asthma"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              87
+            ],
+            "hr": 78,
+            "temp_c": 36.3,
+            "spo2": 96,
+            "weight_kg": 52.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-06-08T16:10",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 15.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-06-08T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-08T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-06-08T16:15",
+              "author": "PCP",
+              "body": "Came in after school. Pollen season, using albuterol a few times a week the last 3 weeks, mostly after recess duty outside. Sleeping through the night, no night cough. Never needed urgent care.\n\nThyroid: on methimazole since January per endo, weight coming back up, palpitations gone. Cabergoline continues. No seizures.\n\nVitals as charted. Lungs clear, no wheeze today, normal effort. Heart regular, not fast. No tremor.\n\nA/P\nAsthma - seasonal, intermittent. New albuterol script (old one from prior office). Rinse/shower after yard duty helps some people. Return if needing it daily.\nEpilepsy - phenytoin level today.\nGraves/prolactinoma - per endo."
+            }
+          ],
+          "state": {
+            "hr": 76,
+            "weight_kg": 53.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T13:00",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Phenytoin level",
+              "date": "2021-06-10T13:00",
+              "author": "PCP",
+              "body": "Level 15.6, right where we want it. No change."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "annual_physical",
+          "start": "2021-10-05T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Missed appointment",
+              "date": "2021-10-05T09:00",
+              "author": "front desk",
+              "body": "No-show for 7:40 physical. Called, left voicemail. Pt texted back - parent-teacher conferences were moved to this morning, forgot to cancel. Rebooked 10/19."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              79
+            ],
+            "hr": 71,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 54.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T08:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-19T08:15",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 13.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-19T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-19T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-19T08:30",
+              "author": "PCP",
+              "body": "Physical (rebooked from 10/5).\n\nDoing well. Graves treated since Jan, endo saw her this summer - stable, staying on methimazole 10. Cabergoline twice weekly. Periods still not like clockwork. Asthma fine after June, rescue inhaler rarely. No seizures.\n\nMeds: phenytoin 300 daily, methimazole 10 daily, cabergoline 0.5 twice weekly, albuterol prn.\nAllergies: pollen.\n\nExam: vitals reviewed, weight up a bit. Eyes look comfortable, no stare. Thyroid smooth, maybe slightly full. Heart RRR. Lungs clear. Abdomen soft. No tremor. Skin normal.\nPHQ-2: 1.\n\nPlan: flu today. Pap is due - she'd rather do it on a separate day; will plan at next physical (she knows it's overdue by a year). Booster when eligible. Labs and phenytoin level."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "portal_message",
+          "start": "2021-11-16T18:25",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Booster",
+              "date": "2021-11-16T18:25",
+              "author": "patient",
+              "body": "Got my booster Saturday at the pharmacy (Pfizer). Labs from the physical came through on the app, all looked normal to me?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Booster",
+              "date": "2021-11-17T07:30",
+              "author": "PCP",
+              "body": "Booster recorded. Yes, all normal, phenytoin 13.1."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-21a",
+          "kind": "specialist_visit",
+          "start": "2022-01-21T13:00",
+          "service": "Endocrinology",
+          "reason": "Restlessness, insomnia, weight loss",
+          "vitals": {
+            "bp": [
+              132,
+              76
+            ],
+            "hr": 106
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2022-01-31T10:20",
+              "author": "endocrinology",
+              "body": "Endocrinology - follow-up visit note\n\nProlactinoma and Graves disease, on cabergoline and methimazole.\n\nFor several months she has felt restless and irritable and sleeps poorly. She has lost 10 lb over the past 3 months although she is eating well. Her sister came with her today and told us privately that Morgan has become very focused on her appearance and has been taking triiodothyronine tablets ordered online. Morgan denies chest pain, tremor and any recent illness.\n\nHR 106, BP 132/76.\nAnxious-appearing, alert and cooperative. Thyroid not palpable, no tenderness or enlargement. No lid lag, no proptosis, no pretibial edema.\n\nAssessment: thyrotoxic symptoms; exogenous T3 vs. endogenous source.\nPlan: thyroid function panel and pituitary hormone labs, radioactive iodine uptake scan, and repeat pituitary MRI. Results letter to follow."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              76
+            ],
+            "hr": 106,
+            "weight_kg": 50.0
+          }
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "outside_records",
+          "start": "2022-02-14T11:45",
+          "conditions": [
+            {
+              "label": "Secondary hyperthyroidism due to TSH-secreting pituitary adenoma",
+              "action": "diagnosed",
+              "onset": "2022-02-14",
+              "icd10": "E05.80"
+            },
+            {
+              "label": "Plurihormonal pituitary macroadenoma (prolactin- and TSH-secreting)",
+              "action": "diagnosed",
+              "onset": "2022-02-14",
+              "icd10": "D35.2"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-01-28T08:30",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-01-28T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 3.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology results letter",
+              "date": "2022-02-14T11:45",
+              "author": "endocrinology",
+              "body": "Dear colleague,\n\nWorkup for Ms. Sheehan's thyrotoxic symptoms is back:\n- Free T4 2.4 ng/dL (high) with TSH 3.6 mIU/L, i.e. TSH not suppressed.\n- Radioactive iodine uptake 52% at 24 hours, diffuse.\n- Pituitary MRI: the adenoma now measures 11 mm. It does not reach the optic chiasm.\n\nA normal-range TSH alongside a high free T4 and high diffuse uptake is not what exogenous T3 would produce. We now consider this a plurihormonal pituitary macroadenoma secreting prolactin and TSH, with secondary hyperthyroidism.\n\nI discussed the online T3 with her and she has agreed to stop it. She is to continue cabergoline 0.5 mg twice weekly and methimazole 10 mg daily. We will see her in 6 months with labs.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-02-16a",
+          "kind": "portal_message",
+          "start": "2022-02-16T21:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Endo letter",
+              "date": "2022-02-16T21:05",
+              "author": "patient",
+              "body": "I saw the endo letter got sent to you. I want you to know I threw the pills out. I'm a little embarrassed about it. Do I need to do anything different with you?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Endo letter",
+              "date": "2022-02-17T07:20",
+              "author": "PCP",
+              "body": "Thanks for telling me, and no need to be embarrassed - I'm glad it's out of the house. Nothing different on our end; keep going with endo's plan and your usual meds. If you're ever feeling pressure about weight or how you look, I'm happy to talk about that any time."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "pharmacy",
+          "start": "2022-06-14T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Albuterol refill",
+              "date": "2022-06-14T09:40",
+              "author": "RN",
+              "body": "Refill request albuterol HFA. Last fill Nov. Pollen season, pt says using a few times a week, no nighttime symptoms. Sent 1 inhaler + 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "conditions": [
+            {
+              "label": "Oligomenorrhea",
+              "action": "resolved",
+              "icd10": "N91.5"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              60
+            ],
+            "hr": 75,
+            "temp_c": 36.2,
+            "spo2": 96,
+            "weight_kg": 52.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:20",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 14.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-09-20T08:05",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2022-09-26T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-20T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-20T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-20T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-20T08:40",
+              "author": "PCP",
+              "body": "Physical + Pap.\n\nFeels much better than last winter. Off the online T3 since February. Endo now calls the pituitary tumor a macroadenoma that makes both prolactin and TSH; plan from them is to stay on cabergoline and methimazole. She saw them in August, says labs were good. Periods regular every 28-30 days since spring. Weight up from the winter. Sleeping. Asthma quiet. No seizures.\n\nShe and her husband are thinking about trying for a pregnancy in the next year - she'll ask endo about the cabergoline and methimazole timing. I mentioned we'd want her on a prenatal vitamin once they start trying.\n\nMeds: phenytoin 300 daily, methimazole 10 daily, cabergoline 0.5 twice weekly, albuterol prn.\n\nExam: vitals reviewed. Thyroid normal size, no nodules. Heart regular. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, cervix without lesions, Pap with HPV collected. Skin fine.\nPHQ-2 0.\n\nA/P\n- Oligomenorrhea resolved; cycles regular.\n- Pituitary macroadenoma / TSH-driven hyperthyroidism / Graves: endo.\n- Epilepsy: level today.\n- HM: Pap/HPV today, flu today, bivalent COVID at pharmacy.\n- Preconception: talk with endo, and with us when ready."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "hr": 74,
+            "weight_kg": 53.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T15:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Pap and labs",
+              "date": "2022-09-27T15:10",
+              "author": "PCP",
+              "body": "Pap normal and HPV negative - next one in 5 years. Labs normal, phenytoin 14.9."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "portal_message",
+          "start": "2022-10-18T17:45",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-15T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Bivalent booster",
+              "date": "2022-10-18T17:45",
+              "author": "patient",
+              "body": "Got the bivalent booster Saturday at the pharmacy."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Bivalent booster",
+              "date": "2022-10-19T08:05",
+              "author": "MA",
+              "body": "Added to your immunizations, thanks!"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-20a",
+          "kind": "telephone",
+          "start": "2023-02-20T16:10",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2023-01-12",
+              "icd10": "Z33.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive pregnancy test",
+              "date": "2023-02-20T16:25",
+              "author": "RN",
+              "body": "Pt called - positive home pregnancy test x2 this weekend. LMP 1/12/23. No bleeding or pain. Hasn't started a prenatal vitamin yet.\n\nReviewed with PCP:\n- Start OTC prenatal vitamin daily (sent to pharmacy as well so it's on her list).\n- Call OB today for intake, and let endocrinology know this week - they will want to see her about cabergoline/methimazole and thyroid labs in pregnancy.\n- Also mention the phenytoin to OB.\nPt verbalized understanding, very excited."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "specialist_visit",
+          "start": "2023-05-08T10:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 16 weeks; palpitations, weight loss",
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (20 mg) by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            },
+            {
+              "drug": "metoprolol tartrate 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thyrotoxic symptoms in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 116,
+            "weight_kg": 49.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-08T10:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-08T10:50",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-08T10:50",
+              "results": [
+                {
+                  "test": "Triiodothyronine, Total",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "value": 270
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-05-08T10:40",
+              "text": "Sinus tachycardia. Normal axis and intervals. No acute ST-T change.",
+              "conclusion": "Sinus tachycardia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "date": "2023-05-19T09:30",
+              "author": "obstetrics",
+              "body": "OB/GYN - Prenatal visit, 16w4d by LMP. Copy to PCP and endocrinology.\n\nG1P0. Followed with endocrinology for a pituitary macroadenoma and Graves disease. Tired, anxious and sleeping poorly. Heart racing much of the day, sweating a lot, loose stools several times daily. Down 5 kg although she is hungrier than usual. Pregnancy otherwise going smoothly. Denies chest pain, dyspnea, visual change. Taking her prenatal vitamin daily.\n\nMeds: phenytoin 300 mg daily, methimazole 10 mg daily, cabergoline 0.5 mg twice weekly, albuterol prn.\nAllergies: seasonal pollen.\n\nP 116, BP 122/76, BMI 18.\nAnxious, restless. Skin warm and damp. Fine tremor of both hands. Thyroid diffusely enlarged, non-tender, no nodules. Fetal heart tones normal. No leg edema.\n\nLabs: TSH <0.01, free T4 4.5 ng/dL, total T3 270 ng/dL.\nECG: sinus tachycardia.\n\nA/P: hyperthyroidism in pregnancy, second trimester.\n- Discussed with endocrinology by phone: methimazole increased to 20 mg daily; they will repeat thyroid labs in 2-4 weeks.\n- Metoprolol tartrate 25 mg BID for symptoms (cardioselective, given her asthma). Review at next visit.\n- Return 2 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 116,
+            "weight_kg": 49.0
+          }
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T20:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Metoprolol and my asthma",
+              "date": "2023-05-22T20:30",
+              "author": "patient",
+              "body": "OB started me on metoprolol for my heart rate and endo upped my methimazole. The pharmacist said beta blockers can be bad with asthma. Is this one ok? My breathing has been fine so far."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Metoprolol and my asthma",
+              "date": "2023-05-23T07:10",
+              "author": "PCP",
+              "body": "Good question. Metoprolol is the 'heart-selective' kind, which is why they picked it - much less likely to tighten your airways than the older ones. Low dose too. If you notice new wheeze, cough at night, or you're reaching for albuterol more, message me and your OB right away. Glad you're keeping us posted."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-03a",
+          "kind": "telephone",
+          "start": "2023-08-03T12:20",
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose lowered by endocrinology"
+            },
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            },
+            {
+              "drug": "metoprolol tartrate 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "symptoms resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication update",
+              "date": "2023-08-03T12:30",
+              "author": "RN",
+              "body": "Pt called to update med list. Endo lowered methimazole back to 10 mg daily in July since her levels came down, and OB stopped the metoprolol - heart rate normal. 29 weeks, doing well. Tdap planned at OB this month. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "portal_message",
+          "start": "2023-08-21T18:00",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Tdap",
+              "date": "2023-08-21T18:00",
+              "author": "patient",
+              "body": "Had my Tdap at OB last Thursday (8/17). Could you add it?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Tdap",
+              "date": "2023-08-22T08:15",
+              "author": "MA",
+              "body": "Added. Hope the third trimester is treating you well!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "hospital_admission",
+          "start": "2023-10-12T06:30",
+          "end": "2023-10-18T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Scheduled Cesarean delivery; postpartum pulmonary embolism",
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 60 mg under the skin every 12 hours",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Pulmonary embolism"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-10-14T07:05",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 115,
+              "rr": 26,
+              "temp_c": 37.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-14T07:15",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 30
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 70
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2023-10-20T15:00",
+              "author": "obstetrics",
+              "body": "DISCHARGE SUMMARY - Obstetrics\nAdmitted 10/12/2023, discharged 10/18/2023.\n\n31 yo G1, pituitary macroadenoma, Graves disease (on methimazole), epilepsy (phenytoin), asthma. Allergies: seasonal pollen.\n\nCourse: uncomplicated scheduled Cesarean delivery 10/12 at 39 weeks, healthy infant. On postoperative day 2, on standing to void, abrupt shortness of breath and pleuritic chest pain. T 98.6 F, BP 120/78, HR 115, RR 26. ABG on room air pH 7.48 / pCO2 30 / pO2 70. V/Q scan and CT pulmonary angiogram both confirmed acute pulmonary embolism. Started on therapeutic enoxaparin; symptoms improved and she was on room air at discharge.\n\nDischarge meds: enoxaparin 60 mg SC every 12 hours (planned 3 months), methimazole 10 mg daily, cabergoline 0.5 mg twice weekly, phenytoin 300 mg daily, prenatal vitamin, albuterol prn.\n\nFollow-up: PCP within 1 week; OB postpartum visit; hematology to advise on duration of anticoagulation."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "office_visit",
+          "start": "2023-10-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, postpartum PE",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            },
+            {
+              "label": "Pulmonary embolism",
+              "action": "diagnosed",
+              "onset": "2023-10-14",
+              "icd10": "I26.99"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              66
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 58.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-24T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-10-24T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-24T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2023-10-24T11:20",
+              "author": "PCP",
+              "body": "TCM visit, 12 days after C-section, 10 days after PE.\n\nBaby came along in the car seat, sleeping through most of it. She's tired in the newborn way. Breathing better each day - winded on the stairs still, no chest pain now. Doing her own enoxaparin shots twice a day, bruising at the injection sites only. Incision sore but healing. Mood ok, sleep broken by feeds.\n\nMeds reconciled with discharge list: enoxaparin 60 q12h, methimazole 10, cabergoline 0.5 twice weekly, phenytoin 300, prenatal vitamin, albuterol prn.\n\nExam: comfortable at rest, vitals as charted, sats fine on RA. Lungs clear. Heart regular. Calves soft, non-tender. Incision clean, dry, intact. Abdomen soft.\n\nA/P\n1. Postpartum PE - provoked. Enoxaparin x3 months per hospital plan; hematology to confirm duration. CBC today for platelets on LMWH.\n2. Postpartum - OB visit scheduled. Watch mood.\n3. Thyroid/pituitary - endo follow-up after delivery, she's booked.\n4. Epilepsy - no seizures; phenytoin unchanged.\nReturn precautions for chest pain, bleeding, leg swelling. Check in in 6-8 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 80,
+            "weight_kg": 58.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "telephone",
+          "start": "2023-11-08T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Fatigue and bruising",
+              "date": "2023-11-08T09:20",
+              "author": "PCP",
+              "body": "Texted this morning, then I called her. For about a week, exhausted beyond what the newborn explains, and new bruises on both arms that aren't at her injection sites. No bleeding gums, no blood in urine or stool, no fever. Still on enoxaparin.\n\nWants to come in - asked her to come to the lab now for a CBC with diff and I'll call with results today."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08b",
+          "kind": "lab_only",
+          "start": "2023-11-08T10:30",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-11-08T10:30",
+              "resulted": "2023-11-08T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 41
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Abnormal CBC",
+              "date": "2023-11-08T15:30",
+              "author": "PCP",
+              "body": "WBC 2.3, Hgb 9.0, plt 41. Lab called with smear review flag: abnormal promyelocytes present. Concerning for acute leukemia, possibly APL, which is an emergency given bleeding risk and she is on enoxaparin.\n\nCalled pt: hold tonight's enoxaparin dose. Spoke with the on-call hematologist at the regional cancer center - direct admission tonight. Pt's sister to drive her; husband staying with the baby. Pt frightened but clear on the plan."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.0,
+              "Platelets": 41,
+              "White Blood Cells": 2.3
+            }
+          }
+        },
+        {
+          "id": "2023-11-08c",
+          "kind": "hospital_admission",
+          "start": "2023-11-08T21:30",
+          "end": "2023-12-07T12:00",
+          "service": "Hematology & Oncology",
+          "reason": "New acute promyelocytic leukemia, induction",
+          "conditions": [
+            {
+              "label": "Acute promyelocytic leukemia with t(15;17)",
+              "action": "diagnosed",
+              "onset": "2023-11-08",
+              "icd10": "C92.40"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "held for leukemia and coagulopathy"
+            },
+            {
+              "drug_text": "tretinoin 10 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 4 capsules (40 mg) by mouth twice daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Acute promyelocytic leukemia"
+            },
+            {
+              "drug_text": "arsenic trioxide 1 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "IV infusion per oncology protocol",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Acute promyelocytic leukemia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-16T05:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 38
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.94
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-11-16T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18.7
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-16T05:30",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 92
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL{FEU}",
+                  "text": ">20"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hematology-Oncology Discharge Summary",
+              "date": "2023-12-12T10:00",
+              "author": "hematology-oncology",
+              "body": "Hematology/Oncology Inpatient Service - Discharge Summary\nAdmitted 11/08/2023 (evening) - Discharged 12/07/2023\n\nDiagnosis: acute promyelocytic leukemia, t(15;17), PML-RARA positive. Complicated by disseminated intravascular coagulation.\n\n31 yo, four weeks postpartum, on enoxaparin for a provoked pulmonary embolism, referred by her PCP with fatigue, arm bruising and pancytopenia with abnormal promyelocytes. Pale and fatigued on arrival. Allergies: seasonal pollen.\n\nCourse: bone marrow confirmed APL with t(15;17); PML-RARA detected. Enoxaparin held on arrival. Induction with tretinoin 40 mg PO BID plus IV arsenic trioxide.\n\nOn 11/16 nursing noted persistent oozing from her peripheral IV and central line sites with repeatedly blood-stained dressings and slow bleeding after venipuncture. Alert, pale, mildly tachycardic. Petechiae on the lower legs, mild arm bruising, no active external hemorrhage, no hepatosplenomegaly. Smear and coagulation studies sent: platelets 38, fibrinogen 92 mg/dL, PT 18.7 s, INR 1.7, D-dimer >20 ug/mL FEU. DIC. Managed with platelet and cryoprecipitate transfusions to targets with daily coags; oozing stopped and coagulation normalized over the following week.\n\nEnd-of-induction marrow: complete remission.\n\nDischarge meds: tretinoin 40 mg PO BID; arsenic trioxide continues as outpatient infusions (consolidation, cancer center infusion suite); enoxaparin 60 mg SC q12h restarted now that counts have recovered, to complete 3 months for the PE; methimazole 10 mg daily; cabergoline 0.5 mg twice weekly; phenytoin 300 mg daily; prenatal vitamin; albuterol prn.\n\nFollow-up: heme/onc clinic weekly during consolidation; PCP 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "office_visit",
+          "start": "2023-12-19T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, APL",
+          "conditions": [
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "diagnosed",
+              "onset": "2023-11-16",
+              "icd10": "D65"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "action": "resolved",
+              "icd10": "D65"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 60 mg under the skin every 12 hours",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Pulmonary embolism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              72
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 53.7
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-12-19T13:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-12-19T13:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-12-19T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2023-12-19T14:05",
+              "author": "PCP",
+              "body": "First visit since her leukemia admission (11/8-12/7). Discharge summary reviewed.\n\nAPL with t(15;17), induction ATRA + arsenic, course complicated by DIC on 11/16 that resolved with transfusion support. End-of-induction marrow in remission. Now in consolidation at the cancer center, arsenic infusions on their schedule and ATRA by mouth; they're drawing her counts weekly so I did not repeat a CBC today. Enoxaparin restarted at discharge for the PE.\n\nShe's tired, appetite coming back, sister and her mom helping with the baby. No bleeding, no fevers, no shortness of breath.\n\nMeds reconciled: tretinoin 40 BID, arsenic trioxide IV per onc, enoxaparin 60 q12h, methimazole 10, cabergoline 0.5 twice weekly, phenytoin 300, prenatal vitamin, albuterol prn.\n\nExam: thin, pale but looks better than I expected. Vitals as charted. Old line sites healed. A few fading bruises on the forearms, no petechiae. Lungs clear. Heart regular. No edema.\n\nA/P\n1. APL in consolidation - onc leads. Flu shot today (inactivated, cleared by onc).\n2. DIC - resolved.\n3. PE - enoxaparin through mid-January, hematology will say when to stop.\n4. Endocrine - stable on methimazole/cabergoline.\n5. Postpartum, coping well with a lot of support. Texting me is fine for anything."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "portal_message",
+          "start": "2024-01-16T17:35",
+          "conditions": [
+            {
+              "label": "Pulmonary embolism",
+              "action": "resolved",
+              "icd10": "I26.99"
+            },
+            {
+              "label": "History of pulmonary embolism",
+              "action": "diagnosed",
+              "onset": "2023-10-14"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "3 months completed"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Done with the shots",
+              "date": "2024-01-16T17:35",
+              "author": "patient",
+              "body": "Hematology said I can stop the enoxaparin as of last Friday - three months done. Celebrated by not stabbing myself tonight. Wanted you to know so it comes off my list."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Done with the shots",
+              "date": "2024-01-17T07:05",
+              "author": "PCP",
+              "body": "Great news - taken off your list. The PE goes into your history now. If you ever have new leg swelling or sudden breathlessness, don't wait on it."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "pharmacy",
+          "start": "2024-03-05T11:15",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Cabergoline prior authorization",
+              "date": "2024-03-05T11:15",
+              "author": "MA",
+              "body": "Pharmacy faxed a PA request for cabergoline 0.5 mg (new plan year formulary). Prescriber is endocrinology - called their office, they will submit. Pt aware, has 10 days of tablets left."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telehealth_visit",
+          "start": "2024-04-16T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in during leukemia consolidation",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-04-16T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-04-16T16:30",
+              "author": "PCP",
+              "body": "Video, she's at home, baby napping.\n\nCheck-in. Consolidation going according to plan per heme/onc - arsenic cycles on and off, ATRA by mouth, counts holding up, ECGs before infusions fine per her. On leave from school this year, plans to go back in the fall. Tired some afternoons. No fevers, no bleeding. Thyroid meds and cabergoline unchanged, endo saw her in March. No seizures. Asthma fine.\n\nMood: some worry before each marrow/PCR check but sleeping and enjoying the baby. PHQ-9 3, GAD-7 4.\n\nPlan: nothing to change from my side. Physical in the fall once consolidation is done. Message any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "outside_records",
+          "start": "2024-07-30T09:50",
+          "medications": [
+            {
+              "drug_text": "tretinoin 10 MG Oral Capsule",
+              "action": "stop",
+              "reason": "consolidation complete"
+            },
+            {
+              "drug_text": "arsenic trioxide 1 MG/ML Injectable Solution",
+              "action": "stop",
+              "reason": "consolidation complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology letter",
+              "date": "2024-07-30T09:50",
+              "author": "hematology-oncology",
+              "body": "Re: Morgan Sheehan - acute promyelocytic leukemia, t(15;17)\n\nDear Doctor,\n\nMs. Sheehan has completed consolidation with tretinoin and arsenic trioxide, last doses in late July. Peripheral blood PML-RARA PCR on 07/23/2024 is negative; she is in molecular remission. Both drugs are now stopped.\n\nWe will see her every 3 months with a CBC for surveillance. Please contact us with any unexplained bruising, bleeding, or fevers.\n\nHematology/Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Acute promyelocytic leukemia with t(15;17)",
+              "action": "resolved",
+              "icd10": "C92.40"
+            },
+            {
+              "label": "Acute promyelocytic leukemia, in remission",
+              "action": "diagnosed",
+              "onset": "2024-07-23",
+              "icd10": "C92.41"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              69
+            ],
+            "hr": 75,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 56.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 96
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 13.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-17T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T16:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T16:25",
+              "author": "PCP",
+              "body": "Annual - after school, first week back teaching.\n\nYear in review: postpartum PE 10/2023 (anticoagulation completed Jan). APL dx 11/2023, induction complicated by DIC, consolidation ATRA/arsenic finished July - PCR negative 7/23, molecular remission per onc letter. Surveillance with them every 3 months.\n\nNow: energy most of the way back. Toddler on the move. No bruising, no fevers. Thyroid/pituitary followed by endo, no changes. No seizures. Asthma: albuterol a handful of times this summer.\n\nMeds: phenytoin 300 daily, methimazole 10 daily, cabergoline 0.5 twice weekly, prenatal vitamin daily, albuterol prn.\nAllergies: seasonal pollen.\n\nExam: vitals reviewed. Well-appearing, color good. Thyroid normal size. Heart regular. Lungs clear. Abdomen soft, no spleen tip. No bruising or petechiae. Calves soft.\nPHQ-2 1.\n\nA/P\n- APL in remission: onc surveillance; CBC with diff today for our records.\n- History of PE.\n- Epilepsy: phenytoin level.\n- Endocrine: endo.\n- HM: flu and updated COVID today. Pap 2022 normal/HPV neg, next 2027.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.0,
+            "labs": {
+              "Hemoglobin": 13.1,
+              "Platelets": 236,
+              "White Blood Cells": 6.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T12:45",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results",
+              "date": "2024-09-19T12:45",
+              "author": "PCP",
+              "body": "Your blood counts are completely normal - hemoglobin back to 13. Chemistry and cholesterol normal, phenytoin 13.6. Good way to start the school year."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "ed_visit",
+          "start": "2025-01-06T18:40",
+          "service": "Emergency Medicine",
+          "reason": "Mouth ulcers, spreading blistering rash, red painful eyes",
+          "conditions": [
+            {
+              "label": "Stevens-Johnson syndrome",
+              "action": "diagnosed",
+              "onset": "2025-01-03",
+              "icd10": "L51.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "phenytoin sodium 100 MG Extended Release Oral Capsule",
+              "action": "stop",
+              "reason": "Stevens-Johnson syndrome"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Phenytoin",
+              "reaction": "Stevens-Johnson syndrome",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-06T18:50",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-06T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-06T19:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-01-06T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "date": "2025-01-08T08:30",
+              "author": "emergency medicine",
+              "body": "ED PROVIDER NOTE (abbreviated)\n\n32F with epilepsy on phenytoin, pituitary macroadenoma, Graves, APL in remission (DIC during induction 2023). Three days of painful mouth sores and a rash that started on the trunk and has spread to the face, arms and legs; some areas blistered and broke open. Eyes red and painful.\n\nAllergies: seasonal pollen. Meds per pt: phenytoin, methimazole, cabergoline, prenatal vitamin, albuterol prn.\n\nT 38.9 C (102 F), BP 100/60, HR 110, RR 22.\nErythematous macules and atypical target lesions with dusky purpuric centers and blistering over trunk, face and extremities. Nikolsky positive. Hemorrhagic crusting of lips, oral erosions, bilateral conjunctival injection.\n\nWBC 15.0, Hgb 13.2, Plt 250, ALT 45, AST 50, BUN 18, Cr 1.0.\n\nImpression: Stevens-Johnson syndrome, phenytoin most likely culprit.\nPlan: phenytoin stopped, added to allergies. IV fluids, analgesia, ophthalmology and dermatology called. Transfer to regional burn unit accepted."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06b",
+          "kind": "hospital_admission",
+          "start": "2025-01-06T23:55",
+          "end": "2025-01-19T11:00",
+          "service": "Burn Surgery",
+          "reason": "Stevens-Johnson syndrome",
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Burn Unit Discharge Summary",
+              "date": "2025-01-24T14:20",
+              "author": "burn surgery",
+              "body": "Burn/Wound ICU - Brief Discharge Summary\nAdmit 01/06/2025 - Discharge 01/19/2025\n\nDx: Stevens-Johnson syndrome attributed to phenytoin.\n\nSupportive care in the burn unit: wound care with non-adherent dressings, fluids, nutrition, pain control, daily ophthalmology lubrication and eye care, oral care. Her tachycardia on arrival settled as fever and fluid losses were controlled. Skin re-epithelializing well at discharge.\n\nNeurology consulted for antiseizure therapy off phenytoin: levetiracetam 500 mg BID started. No seizures during the stay.\n\nDischarge meds: levetiracetam 500 mg BID, methimazole 10 mg daily, cabergoline 0.5 mg twice weekly, prenatal vitamin, albuterol prn, emollients.\nALLERGY: PHENYTOIN - Stevens-Johnson syndrome. Avoid aromatic antiseizure drugs.\n\nFollow-up: PCP 1-2 weeks; ophthalmology and dermatology as outpatient."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, Stevens-Johnson syndrome",
+          "vitals": {
+            "bp": [
+              120,
+              67
+            ],
+            "hr": 80,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 54.7
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-01-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-01-28T11:40",
+              "author": "PCP",
+              "body": "TCM after 2 weeks in the burn unit for SJS from phenytoin (ED 1/6, discharged 1/19). Summaries reviewed.\n\nSkin is new and pink where it peeled, tender, using the emollients. Mouth healed enough to eat normally. Eyes comfortable with drops, has her outpatient eye appointment next week. Switched to levetiracetam by inpatient neurology - no seizures, a little tired on it, no mood change. Lost a little weight.\n\nMeds reconciled: levetiracetam 500 BID, methimazole 10, cabergoline 0.5 twice weekly, prenatal vitamin, albuterol prn. Phenytoin OFF.\nAllergies: phenytoin (SJS) - confirmed on our list in red. Seasonal pollen.\n\nExam: afebrile, vitals as charted. Skin: healing re-epithelialized areas trunk, arms, face, no open erosions, no signs of infection. Lips healed. Conjunctivae quiet. Lungs clear. Heart regular.\n\nA/P\n1. SJS - healing well. Keep eye/derm follow-up.\n2. Epilepsy - on levetiracetam now. Seizure precautions reviewed; she can drive per neurology since no seizures.\n3. Work - back to teaching 2/10; note sent.\n4. Others unchanged.\nSee in 6 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "portal_message",
+          "start": "2025-01-29T08:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Work note",
+              "date": "2025-01-29T08:10",
+              "author": "PCP",
+              "body": "To whom it may concern: Morgan Sheehan was hospitalized and under my care from January 6, 2025. She may return to work on February 10, 2025 without restrictions. Please contact our office with any questions. - Primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, Stevens-Johnson syndrome and seizure medication",
+          "conditions": [
+            {
+              "label": "Stevens-Johnson syndrome",
+              "action": "resolved",
+              "icd10": "L51.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "prescription moved to primary care"
+            },
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              71
+            ],
+            "hr": 77,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 55.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-11T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-11T16:05",
+              "author": "PCP",
+              "body": "Six-week check. Back at school since 2/10, tiring but good. Skin fully healed. Eye doctor released her. Mouth fine.\n\nLevetiracetam: no seizures, the tiredness has worn off, no irritability. Neurology asked us to take over refills.\n\nOnc surveillance in February normal per her. Endo stable.\n\nExam: vitals as charted. Skin healed, no blisters or erosions. Oral mucosa normal. Conjunctivae clear. Lungs clear. Heart regular.\n\nA/P\n- SJS: resolved. Phenytoin allergy on file; avoid related aromatic antiseizure drugs.\n- Epilepsy: levetiracetam 500 BID, now prescribed here, 90-day supply.\n- Rest per endo/onc.\nAnnual in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levetiracetam refill",
+              "date": "2025-06-10T10:05",
+              "author": "RN",
+              "body": "Refill levetiracetam 500 mg BID #180. Seen 3/2025, seizure-free. Approved, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              102,
+              75
+            ],
+            "hr": 83,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 58.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T16:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-23T16:35",
+              "author": "PCP",
+              "body": "Physical. Good year compared with the last two.\n\nAPL: remission, onc every 3 months, last visit August normal per her. Endo: cabergoline and methimazole unchanged. Epilepsy: seizure-free on levetiracetam. Asthma: albuterol in May/June, a few times a week at worst, otherwise rare. SJS healed.\n\nMeds: levetiracetam 500 BID, methimazole 10 daily, cabergoline 0.5 twice weekly, prenatal vitamin, albuterol prn.\nAllergies: PHENYTOIN (SJS); seasonal pollen.\n\nExam: vitals reviewed. Well. Thyroid not enlarged. Heart regular. Lungs clear. Abdomen soft, no organomegaly. Skin normal, no bruising.\nPHQ-9 2.\n\nPlan: flu + COVID today. CBC/CMP. Pap next 2027. RTC 1 yr, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-15a",
+          "kind": "ed_visit",
+          "start": "2026-01-15T09:10",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath and wheezing after pollen exposure",
+          "conditions": [
+            {
+              "label": "Status asthmaticus with impending respiratory failure",
+              "action": "diagnosed",
+              "onset": "2026-01-15",
+              "icd10": "J45.902"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-15T09:15",
+              "bp": [
+                130,
+                75
+              ],
+              "hr": 110,
+              "rr": 28,
+              "temp_c": 37.1,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-15T09:30",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.45
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 32
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 75
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-15T09:10"
+            },
+            {
+              "procedure": "Nebulizer treatment",
+              "performed": "2026-01-15T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "date": "2026-01-20T13:40",
+              "author": "emergency medicine",
+              "body": "ED NOTE - brief\n\n33F, asthma (rescue inhaler only), epilepsy on levetiracetam, pituitary macroadenoma, Graves, APL in remission. Two hours of wheeze and breathlessness that began on a morning walk with pollen around. Albuterol x2 at home, little relief. No fever, chills or recent illness.\n\nAllergies: phenytoin (SJS), seasonal pollen.\nMeds: levetiracetam, methimazole, cabergoline, prenatal vitamin, albuterol.\n\nSpO2 92% RA, T 37.1 C, BP 130/75, HR 110, RR 28.\nAnxious, tachypneic, accessory muscle use. Diffuse expiratory wheeze.\nABG: pH 7.45, PaCO2 32, PaO2 75, HCO3 24.\n\nImpression: status asthmaticus with impending respiratory failure.\nTreatment: continuous albuterol with ipratropium, IV methylprednisolone, IV magnesium, supplemental O2. Admitted to step-down for monitoring."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after asthma admission",
+          "conditions": [
+            {
+              "label": "Status asthmaticus with impending respiratory failure",
+              "action": "resolved",
+              "icd10": "J45.902"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily for 5 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Asthma exacerbation"
+            },
+            {
+              "drug": "120 ACTUAT budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs twice daily; rinse mouth after use",
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Asthma"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              77
+            ],
+            "hr": 84,
+            "rr": 13,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 57.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-01-21T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-01-21T15:55",
+              "author": "PCP",
+              "body": "Seen 6 days after an ED visit and overnight step-down stay for a severe asthma attack (1/15-1/17). ED note not here yet - history from her and her discharge paperwork.\n\nTriggered on a walk. Albuterol didn't touch it. Treated with continuous nebs, IV steroids and magnesium; never needed the ventilator. Discharged 1/17 on prednisone 40 mg x5 days (finishes today) and budesonide-formoterol 160/4.5, 2 puffs twice daily, a new controller. Her inhaler technique looked fine when she showed me.\n\nNow: breathing back to normal, walking without trouble, sleeping through. No fever. Albuterol once since discharge.\n\nMeds: budesonide-formoterol 2 puffs BID, prednisone (last dose today), albuterol prn, levetiracetam 500 BID, methimazole 10, cabergoline 0.5 twice weekly, prenatal vitamin.\nAllergies: phenytoin (SJS); seasonal pollen.\n\nExam: speaking full sentences, vitals as charted, sats normal on RA. Lungs clear, good air entry, no wheeze. Heart regular.\n\nA/P\n1. Status asthmaticus - resolved. That was a dangerous attack for someone on rescue inhaler alone; agree with daily controller going forward. Asthma action plan written with her. Rinse after use.\n2. Steroid burst - finishing. No glucose concerns.\n3. Others unchanged.\nMessage me if she needs albuterol more than twice a week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T14:25",
+          "medications": [
+            {
+              "drug": "120 ACTUAT budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Metered Dose Inhaler",
+              "action": "stop",
+              "reason": "prescription moved to primary care"
+            },
+            {
+              "drug": "120 ACTUAT budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs twice daily; rinse mouth after use",
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Asthma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Budesonide-formoterol prior authorization",
+              "date": "2026-03-10T14:25",
+              "author": "MA",
+              "body": "Hospital script for budesonide-formoterol 160/4.5 ran out; pharmacy says plan needs PA for the brand inhaler. Submitted PA with diagnosis and recent admission for status asthmaticus. New Rx from PCP sent, 3 inhalers/90 days. Approved same day, pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T19:50",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Oncology update",
+              "date": "2026-05-12T19:50",
+              "author": "patient",
+              "body": "Quick update - saw oncology today for my 3-month check and counts were normal again. They said they'll start spacing visits out after this year. Breathing has been good all spring with the daily inhaler, only used the rescue one twice."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Oncology update",
+              "date": "2026-05-13T07:15",
+              "author": "PCP",
+              "body": "Wonderful on both fronts. Keep the controller going through pollen season even when you feel great. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "office_visit",
+          "start": "2026-08-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up before the school year",
+          "vitals": {
+            "bp": [
+              111,
+              73
+            ],
+            "hr": 80,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 57.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-07T10:55",
+              "resulted": "2026-08-07T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 221
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-07T10:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-07T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-07T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-08-07T11:05",
+              "author": "PCP",
+              "body": "Mid-year check before school starts back.\n\nAsthma: on budesonide-formoterol twice daily since January, albuterol twice all summer. No night waking. No ED visits since.\nEpilepsy: levetiracetam 500 BID, no seizures.\nAPL: remission, onc visit in May fine, next in August.\nEndocrine: endo in June, staying on cabergoline 0.5 twice weekly and methimazole 10.\n\nMeds: budesonide-formoterol 160/4.5 2 puffs BID, albuterol prn, levetiracetam 500 BID, methimazole 10 daily, cabergoline 0.5 twice weekly, prenatal vitamin daily.\nAllergies: phenytoin (SJS); seasonal pollen.\n\nExam: vitals as charted. Well. Thyroid not enlarged. Lungs clear, no wheeze. Heart regular. Abdomen soft. Skin normal, no bruising or petechiae.\n\nA/P\n- Asthma, now on daily controller: well controlled. Refilled.\n- Epilepsy: stable.\n- APL in remission: CBC today for our records alongside onc.\n- Endocrine: per endo.\n- HM: flu and COVID at the physical in October; Pap due 2027.\nPhysical booked for 10/6."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results",
+              "date": "2026-08-11T12:20",
+              "author": "PCP",
+              "body": "Morgan - blood counts normal, kidney and liver tests normal. Have a great start to the year."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "pharmacy",
+          "start": "2026-08-19T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levetiracetam refill",
+              "date": "2026-08-19T09:30",
+              "author": "RN",
+              "body": "Pharmacy request levetiracetam 500 mg #180. Seen 8/7, seizure-free. Approved x1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-06a",
+          "kind": "annual_physical",
+          "start": "2026-10-06T15:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute promyelocytic leukemia with t(15;17)|C92.40": {
+        "code": "C92.40",
+        "display": "Acute promyelocytic leukemia, not having achieved remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute promyelocytic leukemia, in remission|C92.41": {
+        "code": "C92.41",
+        "display": "Acute promyelocytic leukemia, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Disseminated intravascular coagulation|D65": {
+        "code": "D65",
+        "display": "Disseminated intravascular coagulation [defibrination syndrome]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Oligomenorrhea|N91.5": {
+        "code": "N91.5",
+        "display": "Oligomenorrhea, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Plurihormonal pituitary macroadenoma (prolactin- and TSH-secreting)|D35.2": {
+        "code": "D35.2",
+        "display": "Benign neoplasm of pituitary gland",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state, incidental|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pulmonary embolism|I26.99": {
+        "code": "I26.99",
+        "display": "Other pulmonary embolism without acute cor pulmonale",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary hyperthyroidism due to TSH-secreting pituitary adenoma|E05.80": {
+        "code": "E05.80",
+        "display": "Other thyrotoxicosis without thyrotoxic crisis or storm",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Status asthmaticus with impending respiratory failure|J45.902": {
+        "code": "J45.902",
+        "display": "Unspecified asthma with status asthmaticus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Stevens-Johnson syndrome|L51.1": {
+        "code": "L51.1",
+        "display": "Stevens-Johnson syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe": {
+        "code": "854238",
+        "display": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "arsenic trioxide 1 MG/ML Injectable Solution": {
+        "code": "829926",
+        "display": "10 ML arsenic trioxide 1 MG/ML Injection",
+        "ingredient": "arsenic",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "cabergoline 0.5 MG Oral Tablet": {
+        "code": "199703",
+        "display": "cabergoline 0.5 MG Oral Tablet",
+        "ingredient": "cabergoline",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "methimazole 10 MG Oral Tablet": {
+        "code": "197941",
+        "display": "methimazole 10 MG Oral Tablet",
+        "ingredient": "methimazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "phenytoin sodium 100 MG Extended Release Oral Capsule": {
+        "code": "855671",
+        "display": "phenytoin sodium 100 MG Extended Release Oral Capsule",
+        "ingredient": "phenytoin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tretinoin 10 MG Oral Capsule": {
+        "code": "199159",
+        "display": "tretinoin 10 MG Oral Capsule",
+        "ingredient": "tretinoin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ug/mL{FEU}",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Phenytoin": {
+        "code": "3968-5",
+        "display": "Phenytoin [Mass/volume] in Serum or Plasma",
+        "unit": "ug/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Triiodothyronine, Total": {
+        "code": "3053-6",
+        "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
+        "unit": "ng/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"Prenatal Vitamins Oral Tablet\""
+    ]
+  }
+}

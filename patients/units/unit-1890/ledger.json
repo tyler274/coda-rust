@@ -1,0 +1,1240 @@
+{
+  "unit": "unit-1890",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001890/2025-12-02a: allergen \"Kiwi\" not in catalog (text only)",
+    "MRN00001890/2025-12-02a: allergen \"Banana\" not in catalog (text only)",
+    "MRN00001890/2025-12-02a: allergen \"Avocado\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001890",
+      "given": "Kayla",
+      "family": "Andrade",
+      "birth_date": "1999-06-26",
+      "address_line": "27 Petticoat Hill Road",
+      "phone": "+1-201-555-0165",
+      "email": "kayla.andrade@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with lifelong atopic disease (eczema, allergic rhinitis, mild persistent asthma) and peanut and tree nut allergy who joins the practice after an ED visit for peanut anaphylaxis in April 2025. Two further ED visits for food anaphylaxis follow (fruit salad in November 2025, cake with possible peanut oil in June 2026); records arrive late and the last one after her June 2026 physical.",
+      "events": [
+        {
+          "id": "2025-04-30a",
+          "kind": "ed_visit",
+          "start": "2025-04-30T20:42",
+          "end": "2025-05-01T02:10",
+          "service": "Emergency Medicine",
+          "reason": "Trouble breathing, facial swelling and hives after eating cake",
+          "conditions": [
+            {
+              "label": "Anaphylaxis due to peanut allergy",
+              "action": "diagnosed",
+              "onset": "2025-04-30",
+              "icd10": "T78.01XA"
+            },
+            {
+              "label": "Peanut allergy",
+              "action": "history",
+              "onset": "2001-06-01"
+            },
+            {
+              "label": "Atopic dermatitis",
+              "action": "history",
+              "onset": "2001-01-01"
+            },
+            {
+              "label": "Allergic rhinitis",
+              "action": "history",
+              "onset": "2008-01-01"
+            },
+            {
+              "label": "Mild persistent asthma",
+              "action": "history",
+              "onset": "2008-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Mild persistent asthma"
+            },
+            {
+              "drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector",
+              "action": "historical",
+              "sig": "Inject 0.3 mg into the outer thigh at the first sign of anaphylaxis; carry two pens at all times",
+              "dose": {
+                "value": 0.3,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Peanut allergy"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Allergic rhinitis"
+            },
+            {
+              "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "2 sprays in each nostril once daily during allergy season",
+              "dose": {
+                "value": 2,
+                "unit": "spray"
+              },
+              "frequency": "DAILY",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Allergic rhinitis"
+            },
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected skin twice daily during eczema flares",
+              "frequency": "BID PRN",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Atopic dermatitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Peanut",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-30T20:48",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "rr": 28,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-30T21:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-30T21:05",
+              "resulted": "2025-04-30T21:52",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-30T21:05",
+              "results": [
+                {
+                  "test": "Tryptase",
+                  "loinc": "21582-2",
+                  "unit": "ug/L",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-30T20:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2025-06-24T10:15",
+              "author": "emergency medicine",
+              "body": "Community hospital emergency department. Visit 04/30/2025, arrived 20:42 by private car.\n\nCC: shortness of breath, swollen face, itchy rash after eating cake.\n\nHPI: 25 y/o F with a peanut allergy she has known about since childhood. Was at a friend's birthday party tonight and had a slice of cake; roughly half an hour later her breathing got tight, her face swelled and she broke out in itchy welts all over. She thinks there may have been nuts in the cake. Uses an albuterol inhaler as needed for asthma. No vomiting, abdominal pain, diarrhea, headache, weakness or confusion.\n\nPMH: atopic dermatitis, allergic rhinitis, mild persistent asthma.\nHome meds: albuterol HFA 90 mcg 2 puffs q4-6h prn; epinephrine auto-injector 0.3 mg IM prn (carries two); cetirizine 10 mg daily prn; fluticasone nasal 2 sprays each nostril daily in season; triamcinolone 0.1% cream bid to flares.\nAllergies: peanut.\nFH: mother allergic rhinitis and eczema; father asthma; younger brother peanut allergy.\nSH: graduate student. Never smoker. Alcohol 1-2 drinks/week socially.\n\nTriage VS: BP 90/60, HR 120, RR 28, SpO2 92% RA.\n\nExam: anxious, speaking in short sentences. Lips swollen. Diffuse urticaria over trunk, arms and face. Expiratory wheeze throughout both lung fields. Tachycardic, regular. Abdomen soft, nontender. Alert and oriented, moves all extremities.\n\nED course: epinephrine 0.3 mg IM to the right lateral thigh on arrival. Diphenhydramine 50 mg IV, famotidine 20 mg IV. Albuterol nebulizer for the wheeze. 1 L normal saline IV bolus for the low pressure. Labs: tryptase elevated; CBC unremarkable; Na, K, Cl, CO2 within normal limits. Over the next several hours swelling and hives receded, wheeze cleared, pressure and heart rate came back to normal range, and she stayed on room air. No recurrence during observation.\n\nImpression: anaphylaxis due to peanut, likely hidden peanut in a baked good.\n\nDisposition: discharged home 01:55 with a friend. Avoid peanut and anything unlabeled at gatherings; keep two epinephrine pens with her and use one first if this happens again, then call 911. Follow up with a primary care physician within 1-2 weeks.\n\nEmergency medicine attending, electronically signed."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "telephone",
+          "start": "2025-05-20T11:02",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2025-05-20T11:02",
+              "author": "front desk",
+              "body": "Caller is a grad student who moved to Williamsburg for school; still on her parent's insurance. Never had a local PCP, was going back to her childhood practice for everything. Had an ER visit for an allergic reaction a few weeks ago and the ER told her to find a primary care doctor. New patient slot 6/11 at 9:00. Asked her to bring the ER discharge papers and her inhalers/pens, and to sign a records release for the old office. Membership agreement emailed."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "establish_care",
+          "start": "2025-06-11T09:00",
+          "end": "2025-06-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, ED follow-up for allergic reaction",
+          "allergies": [
+            {
+              "substance": "Tree nut",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              78
+            ],
+            "hr": 72,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 61.8,
+            "height_cm": 164.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use (1-2 drinks per week)"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-06-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-06-11T10:20",
+              "author": "PCP",
+              "body": "Kayla is a 25 y/o grad student establishing care. Grew up out of state, saw the same family doctor through college, never set up care here until now.\n\nReason for visit: ED visit 4/30 for anaphylaxis after cake at a birthday party. Brought her discharge sheet: treated with IM epi and antihistamines, observed, sent home overnight. Full ED record requested today.\n\nAllergy history: peanut allergy since early childhood (her younger brother has one too). Also avoids almonds and walnuts since childhood; doesn't remember the details of those reactions. This was her first reaction needing the ED as an adult.\n\nOther history: eczema since childhood, mostly hands and elbows, uses triamcinolone when it flares. Seasonal allergic rhinitis, fluticasone and cetirizine in spring and fall. Mild persistent asthma, albuterol as needed.\n\nMeds: albuterol HFA 2 puffs q4-6h prn; epinephrine 0.3 mg auto-injector, carries two; cetirizine 10 mg daily prn; fluticasone nasal 2 sprays each side daily in season; triamcinolone 0.1% cream bid prn.\nAllergies: peanut (anaphylaxis 4/2025), tree nuts (almond, walnut).\nPSH: none.\nFH: mother with allergic rhinitis and eczema, father with asthma, younger brother with peanut allergy.\nSH: PhD student, lives in an apartment in Williamsburg. Never smoker. 1-2 drinks a week, social. Single.\n\nROS: feels back to normal since the ED. No rash now. Breathing fine today.\n\nExam: well appearing, no distress. Vitals as charted. Oropharynx clear, no lip or tongue swelling. Neck supple. Heart RRR without murmur. Lungs clear to auscultation, no wheeze, good air movement. Skin without active eczema or hives. Mood and affect appropriate. PHQ-2 0.\n\nAssessment and plan:\n1. Peanut allergy with anaphylaxis 4/30/2025. Reviewed reading labels and asking about ingredients at parties and restaurants. Her current pens are in date; sent a second two-pack so she can keep one set at home and one in her bag. Reviewed when to use the pen and to call 911 after.\n2. Tree nut allergy. Avoidance.\n3. Mild persistent asthma. Albuterol refill sent.\n4. Allergic rhinitis. Fluticasone and cetirizine refills.\n5. Atopic dermatitis. Triamcinolone refill.\n6. Health maintenance: old office records requested; will review vaccines and Pap history when they come. Flu and COVID vaccines in the fall.\n\nRTC for a physical next year, sooner as needed. She has the practice cell number."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "outside_records",
+          "start": "2025-06-24T10:15",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside ED Record Received",
+              "date": "2025-06-24T10:30",
+              "author": "MA",
+              "body": "ED record for the 4/30/25 visit came in by fax, 6 pages. Attached to the chart and routed to PCP.\n\nPCP addendum 6/24: Read through it. Matches what she told me: peanut anaphylaxis, IM epi, antihistamines, fluids, observed and discharged. Tryptase elevated. Nothing further to do."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "outside_records",
+          "start": "2025-07-09T14:20",
+          "reason": "Prior PCP records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2025-07-09T14:20",
+              "author": "MA",
+              "body": "Records from her childhood family practice received by mail, 31 pages.\n\nSummary for the chart:\n- Peanut allergy since toddlerhood; tree nut avoidance advised as a child. Eczema and seasonal allergies from childhood; asthma, albuterol as needed.\n- Immunizations: childhood series complete. HPV series complete (3 doses as a teen). Tdap 2019. Meningococcal as a teen.\n- Pap 2023: negative for intraepithelial lesion or malignancy.\n- No surgeries.\n\nImmunization history entered. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "portal_message",
+          "start": "2025-08-19T21:37",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill request",
+              "date": "2025-08-19T21:37",
+              "author": "patient",
+              "body": "Hi, ragweed season is about to start and I'm almost out of my Flonase and cetirizine. Could you send refills to the pharmacy on file? Thanks, Kayla"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill request",
+              "date": "2025-08-20T08:44",
+              "author": "RN",
+              "body": "Hi Kayla, both refills are at your pharmacy now, per the doctor. Flu shots arrive in early October; I can put you on the nurse schedule then if you like."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              116,
+              76
+            ],
+            "hr": 73
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T16:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Vaccines",
+              "date": "2025-10-08T16:40",
+              "author": "RN",
+              "body": "Here for seasonal vaccines. Food allergies (peanut, tree nut) reviewed, not a contraindication. Feeling well, no fever.\nFlu vaccine 0.5 mL IM left deltoid. 2025-26 COVID mRNA 0.3 mL IM right deltoid. Lots and expirations in the immunization record. VIS given.\nWaited 15 minutes in the office, no reaction. Reminded to keep her pens on her."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-16a",
+          "kind": "ed_visit",
+          "start": "2025-11-16T15:18",
+          "end": "2025-11-16T21:40",
+          "service": "Emergency Medicine",
+          "reason": "Throat tightness, lip swelling and hives after fruit salad",
+          "conditions": [
+            {
+              "label": "Anaphylaxis due to food",
+              "action": "diagnosed",
+              "onset": "2025-11-16",
+              "icd10": "T78.00XA"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-16T15:22",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 28,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-16T15:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 218
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-16T15:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 81
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-16T15:40",
+              "results": [
+                {
+                  "test": "Tryptase",
+                  "loinc": "21582-2",
+                  "unit": "ug/L",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-11-16T15:18"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2026-01-13T09:05",
+              "author": "emergency medicine",
+              "body": "Community hospital emergency department. Date of service 11/16/2025, 15:18.\n\nChief complaint: throat closing, lips swollen, hives after eating fruit salad.\n\nHistory: 26 y/o woman with longstanding atopic disease and a peanut anaphylaxis episode in April 2025. This afternoon at a friend's birthday party she ate mixed fruit salad and within minutes her throat felt tight and her lips began to swell, followed by difficulty breathing, facial swelling and a diffuse pruritic rash. History notable for mild atopic dermatitis, allergic rhinitis and mild persistent asthma.\n\nMedications: albuterol HFA 90 mcg 2 puffs q4-6h prn wheeze/SOB; epinephrine 0.3 mg auto-injector IM prn (carries two); cetirizine 10 mg po daily prn; fluticasone propionate nasal 2 sprays/nostril daily in season; triamcinolone 0.1% cream bid prn flares.\nAllergies: peanuts; tree nuts (almond, walnut); kiwi; banana; avocado.\nFamily: mother AR/eczema; father asthma; brother peanut allergy.\nSocial: grad student, never smoker, 1-2 drinks weekly.\n\nVitals on arrival: BP 85/50, HR 120, RR 28, SpO2 92% on room air.\n\nExam: anxious woman in moderate respiratory distress. Voice hoarse. Diffuse urticaria. Bilateral expiratory wheezes. Tachycardic, regular rhythm. Abdomen benign. Neuro grossly intact.\n\nCourse: two large-bore IVs placed and normal saline bolus started, 2 L total. Epinephrine 0.3 mg IM, anterolateral thigh. Diphenhydramine 50 mg IV and famotidine 20 mg IV. Albuterol nebulizer x1. Hoarseness and wheeze resolved over the first hour; hives faded; blood pressure and heart rate returned to normal. Observed for 6 hours without rebound.\nLabs: tryptase elevated. CBC within normal limits. Electrolytes within normal limits.\n\nDiagnosis: anaphylaxis due to food (fruit salad; component not identified).\n\nDischarge 21:40: avoid the listed foods, two epinephrine pens at all times, return or call 911 for any recurrence. See PCP this week.\n\nAttending emergency physician."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "portal_message",
+          "start": "2025-11-17T07:52",
+          "reason": "ED visit over the weekend",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the ER",
+              "date": "2025-11-17T07:52",
+              "author": "patient",
+              "body": "Hi, I ended up in the ER again yesterday afternoon. I had fruit salad at a party and my throat and lips swelled up within a few minutes. They gave me epi and fluids and let me go home last night. I'm ok today, just exhausted. They said to make sure I have two pens that are in date and mine expire next month. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back in the ER",
+              "date": "2025-11-17T12:30",
+              "author": "PCP",
+              "body": "Kayla, I'm sorry, that sounds scary, and I'm glad you're ok. I sent a new two-pack of epinephrine pens to your pharmacy so you have two fresh ones. Please make a follow-up with me in the next week or so; the front desk will reach out. Until then, skip anything you didn't see made, and if your throat, breathing or lips act up again, use the pen first and call 911. Can you sign a release for that ER so we can get the record?"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "office_visit",
+          "start": "2025-11-24T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2025-11-24T14:15",
+              "author": "front desk",
+              "body": "No-show for 1:40 ED follow-up. Called and left voicemail. She texted back that she had a seminar that ran over and forgot to cancel. Rebooked for 12/2 at 8:20."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "office_visit",
+          "start": "2025-12-02T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after anaphylaxis",
+          "allergies": [
+            {
+              "substance": "Kiwi",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Banana",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Avocado",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              77
+            ],
+            "hr": 67,
+            "rr": 17,
+            "spo2": 98,
+            "weight_kg": 62.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-02T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-02T09:05",
+              "author": "PCP",
+              "body": "S: Follow-up after the 11/16 ED visit (missed the 11/24 slot). At a friend's birthday party she ate fruit salad and within minutes had throat tightness and lip swelling, then trouble breathing and hives. Treated in the ED with epinephrine, IV fluids and antihistamines and sent home the same evening. The ED record has not arrived; second request faxed today. Her ED discharge paperwork lists kiwi, banana and avocado as allergies along with the nuts; which fruit in the salad set it off is not known. Fully recovered. Has two new pens.\n\nMeds: albuterol prn, epinephrine 0.3 mg auto-injector x2, cetirizine prn, fluticasone nasal in season, triamcinolone cream prn.\n\nO: Vitals as charted. Comfortable. No lip or tongue swelling, posterior pharynx clear. Lungs clear, no wheeze. RRR. Skin clear today.\n\nA/P:\n1. Anaphylaxis due to food, 11/16/2025, fruit salad. Second ED anaphylaxis this year. Added kiwi, banana and avocado to the allergy list as severe. Talked through avoidance of the whole list and having the pens on her at every meal out.\n2. Peanut and tree nut allergy, unchanged.\n3. Asthma and rhinitis, current meds.\n\nRTC for annual physical in late spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "outside_records",
+          "start": "2026-01-13T09:05",
+          "reason": "November ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside ED Record Received",
+              "date": "2026-01-13T09:20",
+              "author": "MA",
+              "body": "ED record from 11/16/25 finally received after the second fax request in December. 5 pages, attached. Routed to PCP.\n\nPCP note 1/13: Reviewed. Food anaphylaxis after fruit salad, epi IM, 2 L saline, antihistamines, discharged after 6 h. Their allergy list matches what we updated in December. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "portal_message",
+          "start": "2026-02-03T18:12",
+          "reason": "Eczema flare, cream refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eczema cream",
+              "date": "2026-02-03T18:12",
+              "author": "patient",
+              "body": "My hands are flaring with the cold and all the hand washing in lab. The triamcinolone is empty. Could I get a refill? Same as before."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eczema cream",
+              "date": "2026-02-04T07:50",
+              "author": "PCP",
+              "body": "Refill is in. Thin layer twice a day on the patches, and a thick fragrance-free moisturizer after every wash. If it isn't settling in two weeks, send me a photo."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-10T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Spring allergies, refills",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-03-10T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2026-03-10T12:25",
+              "author": "PCP",
+              "body": "Video, she is in her office on campus; identity checked by birth date.\n\nWants to get ahead of tree pollen season. Usual pattern is sneezing, itchy eyes and congestion through spring. No new reactions since November, no ED visits. Hands better after the cream.\n\nMeds reviewed. Allergies reviewed: peanut, tree nuts, kiwi, banana, avocado.\n\nAppears well on video, no conjunctival redness, speaking full sentences, no audible wheeze.\n\nA/P:\n- Allergic rhinitis: start fluticasone daily now through June; cetirizine as needed. Refills sent.\n- Mild persistent asthma: albuterol refill sent.\n- Peanut and food allergies: pens in date (checked the label on camera).\n- Physical in early June."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "annual_physical",
+          "start": "2026-06-05T08:00",
+          "end": "2026-06-05T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              79
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 62.8,
+            "height_cm": 164.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-05T08:40",
+              "resulted": "2026-06-05T15:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-05T08:40",
+              "resulted": "2026-06-05T15:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-05T08:40",
+              "resulted": "2026-06-05T15:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 88
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 85
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-05T08:40",
+              "resulted": "2026-06-06T11:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use (1-2 drinks per week)"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2026-06-05T08:30",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2026-06-11T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-05T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-05T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-05T09:30",
+              "author": "PCP",
+              "body": "26 y/o here for her first physical with us.\n\nInterval: no allergic reactions since the November ED visit. Allergy season was manageable on fluticasone and cetirizine. Eczema quiet since February. Asthma: albuterol as needed.\n\nMeds: albuterol HFA prn; epinephrine 0.3 mg auto-injector x2; cetirizine 10 mg prn; fluticasone nasal in season; triamcinolone 0.1% cream prn.\nAllergies: peanut (anaphylaxis), tree nuts, kiwi, banana, avocado (anaphylaxis to fruit salad 11/2025).\nFH: mother allergic rhinitis and eczema; father asthma; brother peanut allergy.\nSH: never smoker, 1-2 drinks/week.\nGyn: periods regular. Last Pap 2023 normal.\n\nROS negative.\n\nExam: vitals as charted. Well. HEENT normal, TMs clear, nasal mucosa unremarkable. Thyroid normal. Heart regular, no murmurs. Lungs clear throughout. Abdomen soft, no masses. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin without active eczema. Neuro grossly normal. Mood good. PHQ-2 0.\n\nA/P:\n- Health maintenance: Pap today. One-time HIV and hepatitis C screening, CBC, CMP and lipids drawn. Vaccines up to date (flu and COVID 10/2025, Tdap 2019, HPV complete).\n- Peanut, tree nut and fruit allergies: pens in date, action plan reviewed again.\n- Mild persistent asthma, allergic rhinitis, eczema: continue current meds.\n\nRTC one year, sooner as needed. Results through the portal."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Low Density Lipoprotein": 86
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "portal_message",
+          "start": "2026-06-08T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2026-06-08T08:15",
+              "author": "PCP",
+              "body": "Hi Kayla, your blood work from Friday is all normal: blood counts, kidney and liver tests, sugar and cholesterol. HIV and hepatitis C screens were negative. The Pap usually takes about a week; I'll message when it's back."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "portal_message",
+          "start": "2026-06-11T13:40",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap Result",
+              "date": "2026-06-11T13:40",
+              "author": "PCP",
+              "body": "Pap is normal. Next one in three years."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap Result",
+              "date": "2026-06-11T19:02",
+              "author": "patient",
+              "body": "Great, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "ed_visit",
+          "start": "2026-06-30T19:55",
+          "end": "2026-07-01T01:30",
+          "service": "Emergency Medicine",
+          "reason": "Trouble breathing, facial swelling and hives after cake",
+          "vitals": [
+            {
+              "time": "2026-06-30T19:58",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 110,
+              "rr": 25,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-30T20:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-30T20:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 125
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-30T20:15",
+              "results": [
+                {
+                  "test": "Tryptase",
+                  "loinc": "21582-2",
+                  "unit": "ug/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Immunoglobulin E",
+                  "loinc": "19113-0",
+                  "unit": "[IU]/mL",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-30T19:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (outside)",
+              "date": "2026-08-14T11:00",
+              "author": "emergency medicine",
+              "body": "Community hospital emergency department, 06/30/2026, triaged 19:55.\n\nCC: difficulty breathing, facial swelling, generalized itchy rash after eating cake.\n\nHPI: 27 y/o F, third ED presentation for suspected anaphylaxis after two episodes in 2025. At a friend's birthday party she had a piece of cake and about 30 min later developed the above. Concerned the cake was made with peanut oil. Background of eczema and allergic rhinitis, also mild persistent asthma.\n\nMeds: albuterol HFA prn; epinephrine auto-injector 0.3 mg x2; cetirizine 10 mg prn; fluticasone nasal seasonal; triamcinolone 0.1% cream prn.\nAllergies: peanut.\nFHx: mother eczema/allergic rhinitis, father asthma, brother peanut allergy.\nSHx: graduate student; never smoker; social alcohol 1-2/wk.\n\nArrival vitals: BP 90/60, HR 110, RR 25, SpO2 92% RA.\n\nExam: lips angioedematous. Urticaria across the trunk and both arms. Bilateral wheezes. Tachycardic, regular. Abdomen soft. Alert, oriented.\n\nED course: epinephrine 0.3 mg IM given immediately on arrival. Diphenhydramine 50 mg IV, famotidine 20 mg IV, albuterol neb, normal saline 1 L IV. Lip swelling and hives improved over 2 hours, wheeze resolved, BP and HR normalized on recheck, saturation normal on room air. No biphasic symptoms during observation.\nLabs: serum tryptase elevated. Total IgE elevated. CBC and BMP within normal limits.\n\nAssessment: anaphylaxis, suspected peanut (peanut oil) exposure.\n\nDisposition: home 01:20 on 7/1. Epinephrine auto-injector 2-pack prescribed. Strict peanut avoidance; follow up with PCP.\n\nEmergency medicine physician."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "pharmacy",
+          "start": "2026-07-02T10:25",
+          "reason": "Pharmacy fill notice",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Fill Notice",
+              "date": "2026-07-02T10:25",
+              "author": "MA",
+              "body": "Pharmacy fill history shows an epinephrine 0.3 mg auto-injector 2-pack filled 7/1, prescribed by an ED provider at the community hospital on 6/30. No ED record or call from the patient yet. Release on file from the prior requests; ED record requested. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "outside_records",
+          "start": "2026-08-14T11:00",
+          "reason": "June ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside ED Record Received",
+              "date": "2026-08-14T11:10",
+              "author": "MA",
+              "body": "ED record for 6/30/26 received by fax, 6 pages. Filed to the chart and sent to the PCP inbox for review."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anaphylaxis due to food|T78.00XA": {
+        "code": "T78.00XA",
+        "display": "Anaphylactic reaction due to unspecified food, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anaphylaxis due to peanut allergy|T78.01XA": {
+        "code": "T78.01XA",
+        "display": "Anaphylactic reaction due to peanuts, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Immunoglobulin E": {
+        "code": "19113-0",
+        "display": "IgE [Units/volume] in Serum or Plasma",
+        "unit": "[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Tryptase": {
+        "code": "21582-2",
+        "display": "Tryptase [Mass/volume] in Serum or Plasma",
+        "unit": "ug/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

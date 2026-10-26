@@ -1,0 +1,855 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002070",
+      "given": "Gregory",
+      "family": "Kearney",
+      "birth_date": "1975-11-11",
+      "address_line": "41 Pine Brook Road",
+      "phone": "+1-978-555-0120",
+      "email": "gregory.kearney@example.test",
+      "marital_status": "divorced",
+      "summary": "Uninsured construction laborer and groundskeeper with severe alcohol use disorder, untreated chronic hepatitis C, alcoholic cirrhosis and asplenia after a 2013 splenectomy, who joins in 2018. Over the years he develops porphyria cutanea tarda, folate deficiency anemia, vitamin D deficiency with secondary hyperparathyroidism and severe malnutrition, and in July 2026 is hospitalized with alcoholic pancreatitis complicated by withdrawal delirium and ARDS.",
+      "events": [
+        {
+          "id": "2018-04-10a",
+          "kind": "establish_care",
+          "start": "2018-04-10T08:40",
+          "end": "2018-04-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Alcohol use disorder, severe",
+              "icd10": "F10.20",
+              "action": "diagnosed",
+              "onset": "2001-06-01",
+              "note": "Heavy daily drinking since his mid-twenties"
+            },
+            {
+              "label": "Chronic hepatitis C",
+              "action": "diagnosed",
+              "onset": "2013-06-01",
+              "note": "Told years ago at another facility; never treated"
+            },
+            {
+              "label": "Acquired absence of spleen",
+              "action": "history",
+              "onset": "2013-08-01",
+              "note": "Splenectomy after motor vehicle accident, 2013"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "thiamine hydrochloride 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Heavy alcohol use"
+            },
+            {
+              "drug_text": "penicillin V potassium 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Asplenia, infection prophylaxis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Aspartate Aminotransferase": 84,
+              "Alanine Aminotransferase": 51,
+              "Alkaline Phosphatase": 108,
+              "Bilirubin, Total": 1.3,
+              "Albumin": 3.6,
+              "Platelets": 136,
+              "Prothrombin Time-International Normalized Ratio": 1.2,
+              "Hemoglobin": 13.3,
+              "Mean Corpuscular Volume": 101,
+              "White Blood Cells": 4.7,
+              "Gamma Glutamyl Transferase": 214
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Heavy daily drinking, mostly vodka, about a bottle a day"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer; part-time groundskeeper"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-04-10T09:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2018-04-10T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2018-04-10T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-04-10T09:35",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "value": 1240000
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2018-04-10T09:30"
+            },
+            {
+              "vaccine": "Haemophilus influenzae type b (PRP-T)",
+              "date": "2018-04-10T09:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2018-04-10T09:30"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2018-04-10T09:30"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2018-04-10T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-abd-2018",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "Chronic hepatitis C, heavy alcohol use"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2018-04-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-04-10T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-04-10T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2018-04-10T10:20",
+              "body": "NEW PATIENT\n42 y/o man here to set up care. Hasn't had a regular doctor in years. Coworker on a job site recommended us.\n\nHPI: Feels okay overall. Came in mostly because his wife pushed him to, and because he knows he has hep C and has never done anything about it. He was told he had it around the time of his accident in 2013, never followed up. No records available, he doesn't remember where the testing was done.\nDrinks every day. Mostly vodka, he estimates close to a bottle a day, beer on weekends on top of that. Has been at this level for well over a decade, started heavy drinking in his mid-20s. No withdrawal seizures that he knows of. Morning shakes some days, settles with a drink. Not interested in treatment today, but willing to talk about it.\nSplenectomy 2013 after a car accident (he was the passenger). Was told afterward he should have shots and 'carry antibiotics' and did neither.\nNo abdominal swelling, no vomiting blood, no black stools, no confusion per his account.\n\nPMH: hep C (untreated), splenectomy 2013.\nMeds: none.\nAllergies: none known.\nFH: father drank heavily and died of liver cirrhosis. Mother has type 2 diabetes. Nobody with blood cancers or porphyria that he knows.\nSH: married. Construction laborer, also mows and does groundskeeping part time in the summer. Never smoked. No drugs. No health insurance.\n\nExam: thin, alert, smells of alcohol, cooperative. No jaundice. No spider angiomata seen. Heart regular, no murmur. Lungs clear. Abdomen soft, well-healed midline scar, liver edge not clearly felt, no fluid wave. No asterixis. Mild fine tremor of outstretched hands. Skin without rash.\n\nA/P:\n1. Alcohol use disorder, severe. AUDIT-C 11. Discussed liver risk plainly, he listened. Not ready for detox or a program. Start thiamine 100 mg daily. Will keep raising it.\n2. Chronic hepatitis C, reported. Checking antibody and viral load, HBV serologies, HIV. Liver panel, INR, CBC, GGT. Abdominal ultrasound to look at the liver.\n3. Asplenia after splenectomy. Penicillin VK 250 mg twice daily for prophylaxis. Starting his vaccines today: PCV13, Hib, MenACWY and MenB first doses, plus Tdap since he can't recall the last one. Polysaccharide pneumococcal in 8 weeks. Told him any fever over 101 means a call to us the same day.\n4. Uninsured: front desk to give him the cash price sheet for labs and imaging.\n\nRTC 6 weeks after ultrasound."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Administration",
+              "author": "RN",
+              "date": "2018-04-10T09:32",
+              "body": "PCV13 L deltoid, Hib R deltoid, MenACWY L deltoid, MenB R deltoid, Tdap L deltoid (separate sites marked). VIS sheets given. Lot numbers in the immunization record. Tolerated, waited 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2018-04-12a",
+          "kind": "telephone",
+          "start": "2018-04-12T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "author": "PCP",
+              "date": "2018-04-12T16:10",
+              "body": "Called pt with results. Hep C antibody reactive and viral load positive at about 1.2 million, so this is active chronic hep C. HBV surface antigen and antibody both negative, so not immune to hep B and will vaccinate. HIV negative. AST higher than ALT, GGT high, platelets a bit low, INR 1.1. Explained these fit liver injury from alcohol plus the virus. Ultrasound is booked for the 24th. He asked what it costs, gave him the front desk number."
+            }
+          ]
+        },
+        {
+          "id": "2018-04-24a",
+          "kind": "imaging",
+          "start": "2018-04-24T13:00",
+          "reason": "Abdominal ultrasound",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2018-04-24T13:00",
+              "text": "EXAM: Ultrasound, complete abdomen.\nHISTORY: Chronic hepatitis C, heavy alcohol use.\nCOMPARISON: None.\nFINDINGS: Liver: normal size, nodular surface contour with coarse heterogeneous echotexture. No focal hepatic lesion. Main portal vein patent with hepatopetal flow. Hepatic veins patent.\nGallbladder: no stones, no wall thickening. No pericholecystic fluid.\nBile ducts: common bile duct 4 mm, not dilated.\nPancreas: visualized portions unremarkable.\nSpleen: surgically absent.\nKidneys: right 10.9 cm, left 11.2 cm, normal echogenicity, no hydronephrosis, no stones.\nAorta: normal caliber.\nNo ascites.",
+              "conclusion": "Nodular, coarsened liver consistent with cirrhosis. No focal liver lesion. No ascites. Patent portal vein. Post-splenectomy."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-abd-2018",
+              "action": "done",
+              "date": "2018-04-24T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2018-05-22a",
+          "kind": "office_visit",
+          "start": "2018-05-22T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up ultrasound and labs",
+          "conditions": [
+            {
+              "label": "Alcoholic cirrhosis of liver",
+              "action": "diagnosed",
+              "onset": "2018-04-24",
+              "note": "Compensated; hepatitis C contributes"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2018-05-22T15:45"
+            },
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2018-05-22T15:45"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2018-05-22T15:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2018-05-22T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-05-22T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2018-05-22T16:05",
+              "body": "S: Back to go over the ultrasound. Still drinking daily, maybe a little less he says. Has taken the thiamine most days. Penicillin: honest that he took it for about a week and stopped, says he forgets the second dose and doesn't see the point when he feels fine.\nNo abdominal swelling, no leg swelling, no bleeding, no confusion.\n\nO: BP and pulse as charted. Thin. No jaundice, no ascites on exam, no asterixis.\n\nUltrasound 4/24: nodular coarse liver c/w cirrhosis, no mass, no ascites, portal vein open. Labs from April reviewed with him again.\n\nA/P:\n1. Alcoholic cirrhosis, compensated. Added to problem list. Hep C a second driver. Spent a good part of the visit on what cirrhosis means and why stopping drinking is the single biggest thing. He said he'd think about it.\n2. Chronic hep C, confirmed with viral load.\n3. Asplenia. Back over why the penicillin matters. MenB #2, hep A #1, hep B #1 today. Nurse visit in 3-4 weeks for the polysaccharide pneumococcal vaccine, MenACWY #2, hep B #2.\n4. AUD, severe. Continue thiamine.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-14a",
+          "kind": "nurse_visit",
+          "start": "2018-06-14T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2018-06-14T07:50"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2018-06-14T07:50"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2018-06-14T07:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-06-14T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2018-06-14T08:05",
+              "body": "In before work, still in work boots. PPSV23 L deltoid, MenACWY #2 R deltoid, hep B #2 L deltoid. No reaction to April or May shots per pt besides a sore arm. Next due: hep A #2 and hep B #3 in November. Reminder card given."
+            }
+          ]
+        },
+        {
+          "id": "2018-07-19a",
+          "kind": "pharmacy",
+          "start": "2018-07-19T11:30",
+          "reason": "Fill history review",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Fill History",
+              "author": "MA",
+              "date": "2018-07-19T11:30",
+              "body": "Pulled outside fill history while prepping for August visit. Thiamine filled 4/10 and 6/12. Penicillin VK filled once, 4/10, 30-day supply, not refilled. Flagged for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-21a",
+          "kind": "office_visit",
+          "start": "2018-08-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2018-08-22a",
+          "kind": "telephone",
+          "start": "2018-08-22T09:15",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Visit Outreach",
+              "author": "front desk",
+              "date": "2018-08-22T09:15",
+              "body": "Called re: missed appt yesterday. Pt says a job ran late, apologized. Rebooked for late October, asked for an early slot. Reminded him of the thiamine refill on file."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-25a",
+          "kind": "office_visit",
+          "start": "2018-10-25T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up cirrhosis and alcohol use",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-10-25T07:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-10-25T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2018-10-25T07:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-10-25T07:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2018-10-25T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-25T07:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-10-25T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2018-10-25T08:20",
+              "body": "S: Rescheduled after August no-show. Busy season over. Drinking unchanged, 'still a bottle most days.' Takes thiamine when he remembers. Penicillin not taking; we talked about it again and he agreed to try to keep the bottle by the coffee maker. No fevers this year. No swelling, no bleeding, no confusion.\nO: vitals as charted, weight stable. No jaundice, no ascites, no asterixis. Fine tremor.\nA/P:\n- Cirrhosis, compensated: CMP, CBC, INR today.\n- AUD severe: AUDIT-C 11. Offered referral to an outpatient program, declined for now. Continue thiamine.\n- Asplenia: penicillin re-sent. Flu shot today. Hep A #2 and hep B #3 due in late November, nurse visit booked.\nRTC 4 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2018-10-26T12:40",
+              "body": "Liver numbers about the same as April. Platelets still mildly low, INR stable. No change in plan. Pt notified by phone, voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-27a",
+          "kind": "nurse_visit",
+          "start": "2018-11-27T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2018-11-27T07:45"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2018-11-27T07:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-11-27T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2018-11-27T07:55",
+              "body": "Hep A #2 R deltoid and hep B #3 L deltoid. Hep A and hep B series now complete. Tolerated well. Asked whether he has been taking the penicillin, he shrugged and said 'some days.' Passed along to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-07a",
+          "kind": "office_visit",
+          "start": "2019-03-07T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up cirrhosis",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-03-07T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-03-07T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2019-03-07T07:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-03-07T07:50",
+              "results": [
+                {
+                  "test": "Gamma Glutamyl Transferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-03-07T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-03-07T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2019-03-07T08:15",
+              "body": "S: Winter is slow at work so he's had more time on his hands and admits drinking has crept up. Wife is frustrated with him. No jaundice he's noticed, no belly swelling, eating 'one real meal a day.' Thiamine yes, penicillin mostly no.\nO: vitals as charted. Thin, no jaundice, no ascites, no asterixis.\nA/P:\n1. AUD severe, AUDIT-C 12. Long talk. Gave him the number for the regional recovery line and a list of meetings in town. He took the paper.\n2. Compensated cirrhosis: labs today.\n3. Asplenia: same counseling on penicillin and fever.\n4. Eat more regularly, protein with each meal.\nRTC 6 months for physical, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-08a",
+          "kind": "portal_message",
+          "start": "2019-03-08T14:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2019-03-08T14:05",
+              "body": "Gregory, your labs look about like last fall. Liver tests are still elevated in the pattern we see with alcohol, and your platelets are a little low, which fits the cirrhosis. Blood counts otherwise okay, kidneys normal. Nothing urgent. The most helpful thing for these numbers is cutting back on drinking. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-20a",
+          "kind": "telephone",
+          "start": "2019-06-20T10:40",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2019-06-20T10:40",
+              "body": "Pt called for thiamine refill, ran out a couple weeks ago. Sent 90-day supply per standing order. Asked about penicillin, he declined a refill, says he has 'plenty left.'"
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "annual_physical",
+          "start": "2019-09-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-17T07:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-09-17T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2019-09-17T07:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-17T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-09-17T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2019-09-17T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-17T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-17T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2019-09-17T08:40",
+              "body": "ANNUAL EXAM\nWorking full days, groundskeeping on weekends through the fall. Drinking the same. Mood okay, PHQ-2 1. Sleeps poorly some nights. Thiamine most days. Penicillin: not taking.\nROS: no chest pain, no shortness of breath, no abdominal swelling, no blood in stool, no dark stool, no vomiting blood, no fevers.\nExam: thin but steady. HEENT normal. Heart regular, no murmur. Lungs clear. Abdomen soft, scar healed, no ascites, liver edge not felt today. No edema. Skin: sun-tanned forearms, no rash. Neuro: fine postural tremor, gait normal.\nHealth maintenance: vaccines for asplenia and hep A/B complete; MenACWY booster due 2023. Tdap 2018. Flu shot today. Colon screening starts at 45, not yet. HIV screen done 2018.\nA/P: compensated alcoholic cirrhosis, chronic hep C, asplenia, severe AUD. Labs today. Same message on alcohol; he isn't ready. RTC 5-6 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2019-09-18T12:15",
+              "body": "Labs from the physical: liver enzymes in his usual range, platelets mildly low, INR 1.2, kidneys and electrolytes normal. Cholesterol fine. Letter mailed."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled"
+        }
+      ]
+    }
+  ]
+}

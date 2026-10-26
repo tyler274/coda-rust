@@ -1,0 +1,803 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002200",
+   "given": "Charles",
+   "family": "Leblanc",
+   "birth_date": "1960-04-22",
+   "address_line": "112 Pelham Road",
+   "phone": "+1-774-555-0154",
+   "email": "charles.leblanc@example.test",
+   "summary": "Retired construction foreman with diabetes, hypertension, hyperlipidemia, PAD and CAD after a 2016 MI and stent, who joins in 2021. New exertional angina in 2024 leads to a stress test, catheterization showing three-vessel disease, and CABG in September 2025; a right total knee arthroplasty follows in July 2026 after his last practice visit.",
+   "events": [
+    {
+     "id": "2021-06-08a",
+     "kind": "establish_care",
+     "start": "2021-06-08T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "onset": "2012-01-01",
+       "note": "on metformin for years per patient"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed",
+       "onset": "2016-01-01",
+       "note": "MI 2016 with stent; outside cardiology follows yearly"
+      },
+      {
+       "label": "Old myocardial infarction",
+       "action": "diagnosed",
+       "onset": "2016-01-01"
+      },
+      {
+       "label": "Presence of coronary artery stent",
+       "action": "diagnosed",
+       "onset": "2016-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Peripheral arterial disease",
+       "action": "diagnosed",
+       "onset": "2019-01-01",
+       "note": "calf claudication after a few blocks"
+      },
+      {
+       "label": "Primary osteoarthritis of right knee",
+       "action": "diagnosed",
+       "onset": "2018-01-01"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "diagnosed",
+       "onset": "2013-01-01",
+       "note": "30 pack-years, quit 2013"
+      },
+      {
+       "label": "Long term (current) use of aspirin",
+       "icd10": "Z79.82",
+       "action": "diagnosed",
+       "onset": "2016-01-01",
+       "note": "secondary prevention since MI"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "coronary artery disease"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia, CAD"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "CAD, hypertension"
+      },
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 to 2 tablets by mouth up to three times daily as needed for knee pain",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "TID PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "right knee osteoarthritis"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       80
+      ],
+      "weight_kg": 90.5,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin A1c": 6.9,
+       "Low Density Lipoprotein": 86,
+       "High Density Lipoprotein": 44,
+       "Triglycerides": 140,
+       "Creatinine": 1.0,
+       "Microalbumin/Creatinine Ratio": 12,
+       "Glucose": 138
+      }
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-06-08T10:05",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-06-08T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-06-08T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 86
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-08T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.9
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired construction foreman"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-06-08T09:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "30 pack-years, quit 2013"
+      },
+      {
+       "id": "records-prior-pcp",
+       "action": "placed",
+       "order": "Request records from prior primary care office",
+       "category": "procedure",
+       "reason": "new patient"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-06-08T09:20",
+       "body": "61M here to set up primary care. Wants a practice where he can reach the doctor directly; a friend from the cafe he walks to every morning sent him our way.\n\nHPI: Long-standing type 2 diabetes on metformin, blood pressure on lisinopril, cholesterol on atorvastatin. Heart attack in 2016, had a stent put in at that time, and has seen an outside cardiology group roughly once a year since; he thinks his next visit there is summer 2023 but is not sure. Takes a baby aspirin every day since the MI. Gets cramping in both calves after walking a few blocks, eases when he stands a minute; has had that a couple of years and was told it is circulation. Right knee aches with stairs and long days; takes Tylenol when it acts up, avoids anti-inflammatories because the cardiologist told him to. No chest pain, no breathlessness, no palpitations, no fainting. No bleeding.\n\nPMH: T2DM, HTN, hyperlipidemia, CAD s/p MI with stent 2016, PAD with claudication, right knee OA.\nPSH: coronary stent 2016.\nMeds: aspirin 81 daily; metformin 1000 BID; lisinopril 20 daily; atorvastatin 40 daily; metoprolol succinate 50 daily; acetaminophen 500 1-2 tabs prn.\nAllergies: none to medications.\nFH: father had a heart attack at 68 and heart surgery around then; mother type 2 diabetes; brother has coronary disease.\nSH: retired construction foreman, ran job sites for years. Smoked about a pack a day for close to 30 years, stopped in 2013. Does not drink. Up early, oatmeal, reads the paper, walks to the cafe to see friends. Plays chess. Has grandchildren nearby.\n\nExam: Vitals as recorded. Comfortable, talkative. Neck supple, no bruits. Heart regular, no murmur. Lungs clear. Abdomen soft. Feet: warm, skin intact, no ulcers; dorsalis pedis and posterior tibial pulses diminished both sides; monofilament sensation intact. Right knee: crepitus, no effusion, full extension, flexion to about 110.\n\nA/P:\n1. T2DM: A1c today. Metformin continued. Needs eye exam - he goes to an optometrist in town, will ask them to send the report.\n2. HTN: 134/80 today, continue lisinopril and metoprolol. CMP.\n3. CAD s/p MI/stent, hyperlipidemia: lipids today; continue atorvastatin 40, aspirin, metoprolol. Will get cardiology notes.\n4. PAD: claudication stable, encouraged walking program as tolerated.\n5. R knee OA: acetaminophen as needed, ok to continue.\n6. Former smoker, 30 pk-yr, quit 8 yrs ago: eligible for yearly low-dose CT; ordered, he is agreeable.\n7. HM: HCV and HIV screen once today, PHQ-2 negative. Colonoscopy 2019 per patient, records requested. Vaccines - will look at records; flu and pneumococcal in the fall.\nRTC 6 months."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       134,
+       80
+      ]
+     }
+    },
+    {
+     "id": "2021-06-11a",
+     "kind": "portal_message",
+     "start": "2021-06-11T14:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent lab results",
+       "author": "PCP",
+       "date": "2021-06-11T14:40",
+       "body": "Hi Charles, good to meet you on Tuesday. Your labs are back. The A1c, which reflects average sugar over about three months, is 6.9 - right about where we want it. Kidney function, potassium and blood counts are normal and there is no protein leaking into the urine. Cholesterol numbers look reasonable on the atorvastatin. Hepatitis C and HIV screens were negative. No changes to your medicines. The radiology office will call to schedule the lung CT."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-06a",
+     "kind": "outside_records",
+     "start": "2021-07-06T11:15",
+     "orders": [
+      {
+       "id": "records-prior-pcp",
+       "action": "done",
+       "date": "2021-07-06T11:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2021-07-06T11:15",
+       "body": "Records received by fax, 23 pages, from the patient's former primary care office (seen there 2014-2021).\n\nContents reviewed and summarized:\n- Problem list: type 2 diabetes, hypertension, hyperlipidemia, CAD with MI 2016 treated with a coronary stent, PAD, right knee osteoarthritis.\n- 2016 hospital summary (abstracted): presented with chest pain, myocardial infarction, coronary stent placed, discharged on aspirin, atorvastatin, metoprolol and lisinopril.\n- Screening colonoscopy, 2019: normal to the cecum, no polyps, repeat in 10 years.\n- Medication list matches what the patient brought in.\n- Allergies: NKDA.\n\nScanned to chart. Routed to PCP for review."
+      }
+     ]
+    },
+    {
+     "id": "2021-07-20a",
+     "kind": "imaging",
+     "start": "2021-07-20T08:30",
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "done",
+       "date": "2021-07-20T08:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2021-07-20T08:30",
+       "text": "Indication: lung cancer screening, former smoker, 30 pack-years, quit 2013. Technique: low-dose helical CT of the chest without contrast. Findings: No pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal; coronary artery calcification is present. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lung screening CT result",
+       "author": "PCP",
+       "date": "2021-07-21T08:10",
+       "body": "Negative screening CT, no nodules. Coronary calcification expected given his known CAD. Repeat in one year. Portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-19a",
+     "kind": "pharmacy",
+     "start": "2021-08-19T10:02",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2021-08-19T10:02",
+       "body": "Pharmacy fax: requesting 90-day supplies of metformin 1000, lisinopril 20, atorvastatin 40 and metoprolol succinate 50 under new prescriber. Pt on all per med list. Sent per protocol, 90 days with 3 refills each."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-28a",
+     "kind": "nurse_visit",
+     "start": "2021-09-28T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-09-28T15:35"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-09-28T15:37"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-09-28T15:39"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-28T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - Immunizations",
+       "author": "RN",
+       "date": "2021-09-28T15:30",
+       "body": "Here for vaccines. Afebrile, feels well, no prior vaccine reactions. VIS given for each. Flu (quadrivalent) L deltoid, PCV20 R deltoid, Shingrix dose 1 L deltoid lower site. Tolerated, waited 15 min, no reaction. Told him the Shingrix can make the arm sore and him tired for a day or two. Dose 2 due in 2-6 months, will give at his December visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-04a",
+     "kind": "outside_records",
+     "start": "2021-11-04T13:20",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2021-11-04T13:20",
+       "body": "Optometry report\nExam date: 2021-10-26\nPatient: Charles Leblanc\nReason: annual diabetic eye exam.\nVisual acuity corrected 20/20 OD, 20/25 OS. Pupils normal. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema.\nImpression: no diabetic retinopathy. Return in 12 months.\nCopy to primary care physician."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-07a",
+     "kind": "office_visit",
+     "start": "2021-12-07T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-12-07T11:10",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-12-07T11:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-12-07T11:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-12-07T10:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-12-07T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Follow-up",
+       "author": "PCP",
+       "date": "2021-12-07T10:40",
+       "body": "S: Six-month check. Doing fine. Walking most mornings, still gets the calf cramps at about the same distance, no worse. Knee grumbles in the cold. No chest discomfort, no shortness of breath with his usual activity. Taking everything, no missed doses. Eye exam done in October, no retinopathy.\n\nO: BP and pulse in vitals. Heart regular rate, no murmur. Lungs clear. No ankle swelling. Feet intact, pulses faint at both ankles as before.\n\nA/P:\n- DM2: A1c drawn today. Metformin same.\n- HTN: at goal, no change.\n- CAD/HLD: stable, no angina. Continue regimen.\n- PAD: stable claudication.\n- Shingrix #2 given today, series complete.\nPhysical in June with fasting labs."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c and BMP",
+       "author": "PCP",
+       "date": "2021-12-08T16:25",
+       "body": "A1c 7.0, BMP normal. Message to pt: steady, no change."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-22a",
+     "kind": "portal_message",
+     "start": "2022-03-22T19:12",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical appointment",
+       "author": "patient",
+       "date": "2022-03-22T19:12",
+       "body": "Hello, I need to book my yearly physical for June and want to know if I should come in without breakfast for the blood work. Also my metformin bottle says no refills left. Thanks, Charlie Leblanc"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Physical appointment",
+       "author": "front desk",
+       "date": "2022-03-23T09:04",
+       "body": "Hi Mr. Leblanc, you are booked for Tuesday June 14 at 8:40. Yes, please skip breakfast that morning - water and your morning pills are fine. I checked with the nurse and your metformin had refills sent in August; the pharmacy may have it under the old prescription. Call us back if they can't find it."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "annual_physical",
+     "start": "2022-06-14T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Low Density Lipoprotein": 80,
+       "High Density Lipoprotein": 45
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-06-14T08:55",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-14T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-14T08:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 80
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Total Cholesterol"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-14T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2022-06-14T09:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-06-14T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-06-14T09:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual lung screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-06-14T08:40",
+       "body": "62 y/o man for yearly exam, fasting.\n\nInterval: no ER visits, no new problems. Babysits the grandkids two afternoons a week now, which he says keeps him moving. Same calf tightness after several blocks. Right knee about the same; Tylenol a few times a week. No chest pain or pressure, no dyspnea, no orthopnea, no bruising beyond the odd mark on his forearms. Bowels regular, no blood. Urinary stream ok, gets up once at night.\n\nMeds reviewed: aspirin 81, metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, acetaminophen prn. NKDA.\n\nExam: Well appearing. HEENT normal, TMs clear. Neck without thyromegaly or bruit. RRR, no murmur or gallop. Lungs clear throughout. Abdomen soft, nontender, no bruit, no mass. No edema. Feet: no lesions, sensation normal to monofilament, DP/PT pulses diminished bilaterally. Skin: a few small ecchymoses on the forearms. Mood bright.\n\nPlan:\n- Fasting labs: CMP, CBC, lipids, A1c, urine microalbumin.\n- Tdap today (last one he can't remember).\n- Lung CT due July, ordered.\n- Colonoscopy 2019 normal - next 2029.\n- Eye exam fall, he will schedule.\n- Continue all meds. Diabetes check in 6 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2022-06-15T12:30",
+       "body": "A1c 7.0, LDL 80, kidney and liver normal, CBC normal, urine microalbumin normal. Portal: all good, keep going."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-09a",
+     "kind": "imaging",
+     "start": "2022-08-09T13:00",
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "done",
+       "date": "2022-08-09T13:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2022-08-09T13:00",
+       "text": "Annual lung cancer screening. Comparison 2021-07-20. Low-dose noncontrast technique. No lung nodule identified. No emphysematous change of note. Lungs otherwise clear without consolidation. No pleural effusion. Coronary artery calcification and stent material are noted. Mediastinum normal. Bones without suspicious lesion.",
+       "conclusion": "Lung-RADS 1. Negative. Annual screening recommended."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 2022",
+       "author": "PCP",
+       "date": "2022-08-10T07:55",
+       "body": "Negative again. Repeat 2023."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T16:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T16:12"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T16:14"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T16:12"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2022-10-18T16:10",
+       "body": "Flu vaccine L arm, bivalent COVID booster R arm. Screening questions negative. Observed 15 minutes, left feeling fine. Had his original COVID series and a booster elsewhere in 2021 - card shown, outside doses entered from card."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-10a",
+     "kind": "outside_records",
+     "start": "2022-11-10T10:45",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2022-11-10T10:45",
+       "body": "Optometry - diabetic eye evaluation\nDate of exam: 2022-11-01\nDilated exam both eyes. Retina: no hemorrhages, exudates or neovascularization. Maculae flat. Optic nerves healthy, cup-to-disc 0.3 both eyes.\nAssessment: diabetes mellitus without retinopathy.\nPlan: annual dilated exam. New reading glasses prescribed."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "office_visit",
+     "start": "2022-12-13T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-13T14:50",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-13T14:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-12-13T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2022-12-13T14:20",
+       "body": "Charles is in for diabetes and BP. Nothing new. Holiday baking is the main threat to his sugars, he says. No hypoglycemia symptoms. No chest symptoms. Calves same. Knee same.\n\nExam: vitals reviewed. Heart regular. Lungs clear. Ankles without swelling.\n\nPlan: A1c and BMP. Same medicines. Refills current. See him for the physical in May; cardiology yearly visit is due next summer - he has their number."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs",
+       "author": "PCP",
+       "date": "2022-12-14T09:40",
+       "body": "A1c 7.0, BMP ok. No change."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

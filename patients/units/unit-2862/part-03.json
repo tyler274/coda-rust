@@ -1,0 +1,784 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002862",
+   "events": [
+    {
+     "id": "2023-01-23a",
+     "kind": "office_visit",
+     "start": "2023-01-23T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Routine follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-01-23T10:00",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-01-23T10:00",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-01-23T10:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-01-23T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-01-23T10:50",
+       "body": "Winter check. She is fine; did not get COVID or flu this season. Using a walking stick on icy days. Breathing at baseline, mild breathlessness on the hill only.\nAllergies: sulfa drugs (rash).\nExam: vitals as charted. Lungs without wheeze. Heart regular. No edema.\nPlan: TSH (6-month check after methimazole), BMP and INR. Back in the spring."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-20a",
+     "kind": "lab_only",
+     "start": "2023-02-20T08:10",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-02-20T08:10",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2023-02-20T14:20",
+       "body": "INR reviewed, at goal. Pt reports diet unchanged. Continue current dose. Reminder card mailed for next draw."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-27a",
+     "kind": "pharmacy",
+     "start": "2023-02-27T11:00",
+     "documents": [
+      {
+       "type": "Pharmacy",
+       "title": "Refill Request",
+       "author": "MA",
+       "date": "2023-02-27T11:00",
+       "body": "Pharmacy refill request: metoprolol succinate ER 50 mg, #90 with 3 refills. Pended for PCP, approved. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-17a",
+     "kind": "office_visit",
+     "start": "2023-03-17T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Nausea, vomiting and halos around lights",
+     "vitals": {
+      "bp": [
+       130,
+       80
+      ],
+      "hr": 60,
+      "rr": 16
+     },
+     "measure": [
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-03-17T11:00",
+       "results": [
+        {
+         "test": "Digoxin",
+         "loinc": "10535-3",
+         "unit": "ng/mL",
+         "value": 2.5
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-17T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium",
+         "value": 4.5
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-03-17T11:00",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.3
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-03-17T11:20",
+       "text": "Normal sinus rhythm with occasional premature ventricular contractions.",
+       "conclusion": "Sinus rhythm with occasional PVCs."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Digoxin toxicity",
+       "icd10": "T46.0X5A",
+       "action": "diagnosed",
+       "onset": "2023-03-15"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "digoxin 0.125 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Digoxin toxicity"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2023-03-17T11:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2023-03-17T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Same-Day Visit",
+       "author": "PCP",
+       "date": "2023-03-17T13:40",
+       "body": "Texted this morning: two days of nausea and vomiting, not eating much, and she is seeing halos around the lights. Seen same day.\n\n70-year-old with paroxysmal AF and HFrEF on digoxin 0.125 mg daily, warfarin, furosemide 40, metoprolol, benztropine. Amiodarone stopped in 2021 (lung toxicity, then thyrotoxicosis). No new medicines. No diarrhea, no abdominal pain, no fever. Keeping fluids down in sips.\nAllergies: sulfa drugs (rash).\n\nExam: BP 130/80, HR 60, RR 16. Looks tired but not toxic. Mucous membranes slightly dry. Heart regular. Lungs clear. Abdomen soft, nontender. Mild pedal edema on both sides. Otherwise unremarkable.\n\nOffice ECG: sinus rhythm with occasional PVCs.\nStat labs (back 1:15 pm): digoxin 2.5 ng/mL, potassium 4.5, creatinine 1.2, INR 2.3.\n\nA/P: Digoxin toxicity: GI symptoms and visual halos with a level of 2.5; creatinine 1.2 likely reduced clearance. Hemodynamically fine, no high-grade block or dangerous arrhythmia, potassium normal, so no antidote needed. Hold digoxin. Repeat digoxin level and BMP Tuesday. Called her cardiologist's office with the results. Strict ED precautions for fainting, slow or racing pulse, or worsening vomiting; she has my cell."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-21a",
+     "kind": "lab_only",
+     "start": "2023-03-21T08:15",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-03-21T08:15",
+       "results": [
+        {
+         "test": "Digoxin",
+         "loinc": "10535-3",
+         "unit": "ng/mL",
+         "value": 0.9
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-21T08:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium",
+         "value": 4.3
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Result Note",
+       "author": "PCP",
+       "date": "2023-03-21T13:00",
+       "body": "Digoxin down to 0.9, K 4.3, Cr 1.1. Called pt: nausea gone, eating normally, no halos since Sunday. Will discuss restart with cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-22a",
+     "kind": "telephone",
+     "start": "2023-03-22T09:40",
+     "conditions": [
+      {
+       "label": "Digoxin toxicity",
+       "icd10": "T46.0X5A",
+       "action": "resolved",
+       "onset": "2023-03-15"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "digoxin 0.125 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 0.125,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Atrial fibrillation rate control"
+      }
+     ],
+     "orders": [
+      {
+       "id": "dig-level-apr23",
+       "action": "placed",
+       "order": "Digoxin level",
+       "category": "lab",
+       "reason": "Digoxin restarted after toxicity"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Digoxin Restart",
+       "author": "PCP",
+       "date": "2023-03-22T09:40",
+       "body": "Spoke with cardiology: resume digoxin 0.125 mg daily today, level in 2 weeks. Called pt with plan; she will restart this evening and come in 4/5 for the level and INR. Toxicity resolved clinically."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-05a",
+     "kind": "lab_only",
+     "start": "2023-04-05T08:20",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-04-05T08:20",
+       "results": [
+        {
+         "test": "Digoxin",
+         "loinc": "10535-3",
+         "unit": "ng/mL",
+         "value": 1.1
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-04-05T08:20",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "dig-level-apr23",
+       "action": "done",
+       "date": "2023-04-05T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2023-04-05T15:00",
+       "body": "Your digoxin level is 1.1, which is right where we want it on the restarted dose, and your INR is fine. No changes. Let me know if the nausea or halos come back."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-08a",
+     "kind": "lab_only",
+     "start": "2023-05-08T08:10",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-05-08T08:10",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2023-06-12a",
+     "kind": "office_visit",
+     "start": "2023-06-12T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Routine follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-06-12T09:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-06-12T09:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-06-12T09:30",
+       "results": [
+        {
+         "test": "Magnesium"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2023-06-12T09:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-06-12T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-06-12T10:15",
+       "body": "Three months after the digoxin episode. No nausea, no visual change. Energy fine. Tremor about the same, neurology visit in August.\nAllergies: sulfa drugs (rash).\nExam: vitals as charted. Lungs clear. Heart regular. Mild ankle edema, both sides.\nPlan: BMP, Mg, INR. First Shingrix today; second in about 3 months at a nurse visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-17a",
+     "kind": "lab_only",
+     "start": "2023-07-17T08:10",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-07-17T08:10",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2023-07-17T14:20",
+       "body": "INR within 2-3. No bleeding. Continue 5 mg daily."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-14a",
+     "kind": "specialist_visit",
+     "start": "2023-08-14T14:00",
+     "service": "Neurology",
+     "reason": "Parkinson disease follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology Follow-up Letter",
+       "author": "neurology",
+       "date": "2023-08-18T10:00",
+       "body": "Outside neurology, visit 2023-08-14.\n\nMs. Walsh's Parkinson's disease is stable. She manages her household and drives. Rest tremor of the right hand, mild, no worse than last year. Gait steady, turns without difficulty.\nMedications: benztropine 1 mg BID; cardiac medicines and warfarin per her other physicians. Allergy: sulfa (rash).\nPlan: continue benztropine. Return in a year."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-11a",
+     "kind": "nurse_visit",
+     "start": "2023-09-11T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix dose 2 and INR",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-09-11T10:00",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2023-09-11T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-11T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit",
+       "author": "RN",
+       "date": "2023-09-11T10:20",
+       "body": "Shingrix #2 IM left deltoid, tolerated. Fingerstick INR sent. Observed briefly, no reaction. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-23a",
+     "kind": "annual_physical",
+     "start": "2023-10-23T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-10-23T09:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-10-23T09:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-10-23T09:00",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-10-23T09:00",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-10-23T09:00",
+       "results": [
+        {
+         "test": "Digoxin",
+         "loinc": "10535-3",
+         "unit": "ng/mL"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2023-10-23T09:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-23T09:40"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-23T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-10-23T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-10-23T10:20",
+       "body": "Subsequent annual wellness visit, 70 years old.\n\nInterval: digoxin toxicity in March, resolved after a short hold; level fine since. Neurology August, no change. No ED visits.\n\nFunction: independent; still drives and teaches her weather class at the library on Tuesday evenings. No falls this year. Hearing fine. Brought her health care proxy, scanned.\nPHQ-2: 0. Cognition screen normal.\n\nMeds: metoprolol succinate 50, digoxin 0.125, furosemide 40, warfarin 5 per INR, benztropine 1 BID. Allergies: sulfa drugs (rash).\n\nExam: vitals as charted. Lungs clear. Heart regular. Trace ankle edema.\n\nPlan: CBC, CMP, TSH, digoxin level, INR. Flu, updated COVID and RSV vaccines given, three sites. Mammogram due spring 2024."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-16a",
+     "kind": "specialist_visit",
+     "start": "2023-11-16T13:30",
+     "service": "Cardiology",
+     "reason": "Yearly follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2023-11-20T09:00",
+       "body": "Outside cardiology, visit 2023-11-16.\n\nSeen for paroxysmal AF and LV dysfunction. Digoxin toxicity in March is noted; level has been in range since restarting 0.125 mg daily. Sinus rhythm today. No heart failure admissions. Allergy: sulfa (rash).\nPlan: no change. Warfarin through primary care. Yearly visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-11a",
+     "kind": "lab_only",
+     "start": "2023-12-11T08:10",
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-12-11T08:10",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        },
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Anticoagulation Note",
+       "author": "RN",
+       "date": "2023-12-11T14:20",
+       "body": "INR in therapeutic range. No missed doses, no bleeding or bruising. Continue warfarin 5 mg daily; next INR in 4 weeks."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

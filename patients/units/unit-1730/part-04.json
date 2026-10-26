@@ -1,0 +1,151 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001730",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "telephone",
+          "start": "2026-01-06T11:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral scheduling", "author": "front desk", "date": "2026-01-06T11:25", "body": "Endocrinology referral processed. Their first opening for her is Tuesday 6/23; pt put on their cancellation list. Pt informed and agrees."}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up",
+          "conditions": [
+            {"label": "Acute postpartum hemorrhage", "icd10": "O72.1", "action": "resolved", "onset": "2025-12-16"},
+            {"label": "Acute posthemorrhagic anemia", "icd10": "D62", "action": "resolved", "onset": "2025-12-16"},
+            {"label": "History of previous cesarean delivery", "icd10": "Z98.891", "action": "diagnosed", "onset": "2025-12-16"},
+            {"label": "Tubal ligation status", "icd10": "Z98.51", "action": "diagnosed", "onset": "2025-12-16"}
+          ],
+          "state": {"weight_kg": 55.0, "bp": [98, 62], "labs": {"Hemoglobin": 10.6, "Ferritin": 8, "Iron": 29, "Transferrin Saturation": 7, "Mean Corpuscular Volume": 80}},
+          "vitals": {"bp": [98, 62]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-10T14:55", "results": [{"test": "Hemoglobin", "value": 10.6}]},
+            {"panel": "Iron Studies", "collected": "2026-02-10T14:55", "results": [{"test": "Ferritin", "value": 8}, {"test": "Iron"}, {"test": "Transferrin Saturation"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-10T14:20"},
+            {"procedure": "Venipuncture", "performed": "2026-02-10T14:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-02-10T14:20", "body": "Postpartum f/u, 8 weeks after cesarean + BTL (12/16), which was complicated by hemorrhage and 2 u PRBC.\n\nS: Still very tired and foggy; the baby is up twice a night but she says it's more than that. Lightheaded on standing most days. No milk ever came in - bottle-feeding. No bleeding since the surgery. Appetite meh. Incision healed. Husband is doing nights on weekends. Endocrinology appointment is 6/23, on their cancellation list. HRT still off since REI stopped it last January; would rather wait for endocrinology's advice.\n\nMeds: ferrous sulfate 325 daily, vitamin D3, desmopressin PRN.\n\nO: BP 98/62, vitals otherwise as recorded. Thin, pale. Heart regular, lungs clear. Abdomen: low transverse scar well healed, nontender. No edema. PHQ-9 6 - mostly tiredness and concentration items; no thoughts of self-harm.\n\nA/P:\n1. Fatigue and orthostatic symptoms after second PPH - endocrinology pending for pituitary evaluation. Return or ED for vomiting, confusion, fainting.\n2. Iron deficiency anemia after blood loss - CBC, iron studies today; continue oral iron.\n3. S/p cesarean and tubal ligation - added to history. Postpartum hemorrhage resolved.\n4. Mood - PHQ-9 6, will rescreen.\nFollow-up after the endocrinology visit."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T12:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs", "author": "PCP", "date": "2026-02-12T12:48", "body": "Hi Maya - hemoglobin is 10.6 and ferritin 8. The iron stores were drained by December's bleeding. Please take the iron every day without skipping; we'll recheck when I see you after endocrinology."}
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "pharmacy",
+          "start": "2026-03-24T09:50",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill - desmopressin nasal", "author": "MA", "date": "2026-03-24T09:50", "body": "Pharmacy request: desmopressin acetate nasal spray 150 mcg/spray, 1 bottle. Last filled 2/2024. Approved by PCP."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T21:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Endocrinology appointment", "author": "patient", "date": "2026-05-12T21:14", "body": "No luck with the cancellation list, still 6/23. Should I book with you the week after? I can do Tuesday afternoons."},
+            {"type": "Patient Message", "title": "RE: Endocrinology appointment", "author": "front desk", "date": "2026-05-13T09:02", "body": "Booked you with your PCP on Tuesday 6/30 at 3:40. See you then!"}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "specialist_visit",
+          "start": "2026-06-23T08:15",
+          "service": "Endocrinology",
+          "reason": "Amenorrhea and failed lactation after second delivery",
+          "conditions": [
+            {"label": "Hypopituitarism", "action": "diagnosed", "onset": "2023-07-01", "note": "Postpartum pituitary insufficiency (Sheehan syndrome) with secondary adrenal insufficiency and central hypothyroidism"}
+          ],
+          "state": {"weight_kg": 51.7},
+          "vitals": {"bp": [90, 60], "weight_kg": 51.7},
+          "measure": ["hr"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-23T08:05", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 5.2}, {"test": "Calcium", "value": 9.0}]},
+            {"panel": null, "collected": "2026-06-23T08:05", "results": [{"test": "Cortisol, AM", "value": 3}]},
+            {"panel": null, "collected": "2026-06-23T08:05", "results": [{"test": "Thyroid Stimulating Hormone", "value": 0.5}]},
+            {"panel": null, "collected": "2026-06-23T08:05", "results": [{"test": "Free Thyroxine", "value": 0.8}]},
+            {"panel": null, "collected": "2026-06-23T08:05", "results": [{"test": "Prolactin", "value": 5}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Consultation", "author": "endocrinology", "date": "2026-06-26T10:10", "body": "ENDOCRINOLOGY - CONSULTATION LETTER\nDate of visit: 2026-06-23\nReferred by: primary care\n\nDear colleague,\n\nI saw Ms. Klein, 35, whom our group last followed years ago for her Kallmann syndrome. She delivered her second child by cesarean six months ago; that delivery was complicated by hemorrhage and transfusion, as was her first in 2023 (uterine inversion, then retained placenta). Since December she has not had a period and never produced milk. She is tired all the time and has noticed thinning of her pubic and axillary hair. Her estradiol/norethindrone has been off since January 2025 for fertility treatment.\n\nOther history: type 1 von Willebrand disease; iron deficiency anemia; tubal ligation at the cesarean. Medications: ferrous sulfate, vitamin D3, desmopressin nasal as needed. Allergy: latex.\n\nExam: BP 90/60. BMI 19. Pale. No galactorrhea on breast exam.\n\nLabs this morning (08:05): sodium 130, potassium 5.2, calcium 9.0; cortisol 3 mcg/dL; TSH 0.5 with free T4 0.8; prolactin 5.\n\nAssessment: hypopituitarism following postpartum hemorrhage (Sheehan syndrome), with secondary adrenal insufficiency and central hypothyroidism. Low prolactin explains the failed lactation. The underlying Kallmann syndrome means her gonadotropin deficiency predates this.\n\nPlan:\n1. Hydrocortisone 10 mg on waking and 5 mg at about 2 PM, started today. Sick-day rules reviewed: double the doses for fever or illness, and seek care for vomiting. A medical alert ID and an emergency steroid letter given.\n2. Levothyroxine 50 mcg daily, starting four days after the hydrocortisone. Dose by free T4, not TSH.\n3. Resume ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily for estrogen replacement.\n4. Desmopressin only for bleeding; with her low sodium, limit fluids that day.\n5. Labs and visit here in 6 weeks.\n\nThank you for the referral."}
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "outside_records",
+          "start": "2026-06-26T10:20",
+          "reason": "Endocrinology letter received",
+          "orders": [
+            {"id": "endo-ref-2025", "action": "done", "date": "2026-06-26T10:20"}
+          ],
+          "documents": [
+            {"type": "Administrative Note", "title": "Consult Letter Received", "author": "front desk", "date": "2026-06-26T10:20", "body": "Endocrinology consult letter (visit 6/23) received by fax, filed, routed to PCP ahead of pt's 6/30 appointment. Referral closed as completed."}
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "office_visit",
+          "start": "2026-06-30T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after endocrinology",
+          "state": {"weight_kg": 51.7, "bp": [94, 62]},
+          "vitals": {"bp": [94, 62], "weight_kg": 51.7},
+          "measure": ["hr", "spo2"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "medications": [
+            {"drug_text": "hydrocortisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (10 mg) on waking and 1/2 tablet (5 mg) at about 2 PM; double doses when ill", "dose": {"value": 10, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Secondary adrenal insufficiency"},
+            {"drug": "levothyroxine sodium 0.05 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily on an empty stomach", "dose": {"value": 50, "unit": "mcg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Central hypothyroidism"},
+            {"drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily, continuously", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hormone replacement for hypogonadism"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-30T15:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-06-30T15:40", "body": "F/u after endocrinology (letter 6/23 reviewed).\n\nS: Endocrinology diagnosed postpartum hypopituitarism - Sheehan's - with secondary adrenal insufficiency and central hypothyroidism. Started hydrocortisone 10 mg on waking / 5 mg early afternoon on 6/23; levothyroxine 50 mcg began 6/27; back on her estradiol/norethindrone. After a week she already feels steadier on her feet and a bit less flat in the afternoons. No vomiting, no fevers. Has her alert bracelet ordered and the emergency letter in her bag.\n\nMeds: hydrocortisone 10 mg AM / 5 mg PM, levothyroxine 50 mcg daily, ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily, ferrous sulfate 325 daily, vitamin D3 2000 IU, desmopressin nasal PRN.\n\nO: BP 94/62. Weight 51.7 kg. Thin, pale. Heart regular, lungs clear. No edema. PHQ-2 1.\n\nA/P:\n1. Hypopituitarism after postpartum hemorrhage - added to problem list; replacement per endocrinology. Reviewed sick-day doubling and when to go to the ED. Flagged chart: stress-dose steroids for any procedure or acute illness.\n2. Hyponatremia - expect improvement on hydrocortisone; endocrinology rechecks in 6 weeks.\n3. Kallmann syndrome - HRT resumed.\n4. Iron deficiency - continue iron.\n5. vWD - desmopressin sparingly, fluids limited that day.\nRTC September."}
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T20:02",
+          "documents": [
+            {"type": "Patient Message", "title": "Two weeks in", "author": "patient", "date": "2026-07-09T20:02", "body": "Just a note - two weeks on the hydrocortisone and I'm noticeably better. I took the stairs at work today without having to stop. My husband says I'm talking more. The bracelet came. Thank you."},
+            {"type": "Patient Message", "title": "RE: Two weeks in", "author": "PCP", "date": "2026-07-10T07:50", "body": "That is so good to hear. Keep everything as endocrinology set it, and remember to double the hydrocortisone if you get sick. See you in September."}
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T10:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill - hydrocortisone", "author": "MA", "date": "2026-08-04T10:30", "body": "Pharmacy faxed request for hydrocortisone 10 mg tablets (endocrinology prescription, first fill 6/23). Pt has an endocrinology visit this week; routed to endocrinology to renew. Pt notified she has enough tablets until then."}
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T15:40",
+          "appointment": "booked",
+          "reason": "Follow-up on pituitary hormone replacement"
+        }
+      ]
+    }
+  ]
+}

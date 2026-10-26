@@ -1,0 +1,2197 @@
+{
+  "unit": "unit-2150",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002150",
+      "given": "Douglas",
+      "family": "Doyle",
+      "birth_date": "1968-10-08",
+      "address_line": "41 Woodbridge Lane",
+      "phone": "+1-603-555-0106",
+      "email": "douglas.doyle@example.test",
+      "marital_status": "married",
+      "summary": "Warehouse loader with cervical spondylosis and multilevel disc disease, treated hypertension, post-laminectomy mechanical low back pain and knee osteoarthritis, who joined in 2022. A left cervical radiculopathy in 2024 settled with therapy; a right C7 radiculopathy after overhead lifting in late 2025 was improving at his last visit.",
+      "events": [
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "note": "on lisinopril per prior PCP"
+            },
+            {
+              "label": "Cervical spondylosis with multilevel degenerative disc disease (C5-C6, C6-C7)",
+              "action": "diagnosed",
+              "note": "known from prior care",
+              "icd10": "M47.812"
+            },
+            {
+              "label": "Mechanical low back pain",
+              "action": "diagnosed",
+              "note": "after L4-L5 laminectomy 2022",
+              "icd10": "M54.50"
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "diagnosed"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "note": "20 pack-years, quit 2019"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "TID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pain"
+            },
+            {
+              "drug": "cyclobenzaprine hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime as needed for muscle spasm",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "QHS PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "muscle spasm"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for headache",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "headache"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Shellfish",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              87
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 98.1,
+            "height_cm": 179.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-14T08:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-14T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-14T08:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 86
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T08:55",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T08:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Warehouse loader"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 beers on weekends"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-14T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-14T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-14T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-14T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "former smoker, 20 pack-years, quit 2019"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-14T09:40",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n53M transferring from another primary care office closer to his old address. Wants one place to call. Main issues are his neck, his back and his knees, and BP which he says has been fine on lisinopril.\n\nHTN: lisinopril 10 daily for years per his account, takes it in the morning, no home cuff. No headaches beyond the usual, no chest symptoms.\nNeck: told years ago he has arthritis and disc wear in the neck at two levels (C5-6, C6-7). Stiff after a long shift, no arm symptoms now.\nLow back: L4-5 laminectomy this past spring at an outside spine group for leg pain, that's gone. Still gets a mechanical ache across the low back with bending and lifting. Back at work full duty since early summer.\nKnees: both ache on stairs and after a day on the dock floor. No locking.\nUses ibuprofen 600 up to three times a day on bad days, cyclobenzaprine 5 at night now and then for spasm, Tylenol 500 for a headache.\n\nPSH: L rotator cuff repair 2016; L4-L5 laminectomy 2022.\nAllergies: sulfa (hives); shellfish, doesn't know what happened, was told as a kid to avoid it.\nFH: father had neck arthritis that went on to myelopathy, and HTN. Mother with OA and osteoporosis. Older brother had a neck fusion for a pinched nerve.\nSH: loads trucks at a distribution warehouse, 30+ years of lifting. Quit cigarettes 2019 after about 20 pack-years. A beer or two on weekends.\n\nExam: well-appearing, large frame. BP as charted. Heart RRR without murmur. Lungs clear. Neck: reduced rotation both ways, no tenderness, Spurling negative bilaterally. Upper extremity strength, sensation and reflexes symmetric. Low back: healed midline scar, paraspinal tightness, straight leg raise negative. Knees: crepitus both, no effusion, stable.\n\nA/P\n1. HTN, at goal on lisinopril 10. Continue.\n2. Cervical spondylosis with DDD, quiet. Lifting technique, keep moving.\n3. Mechanical LBP after laminectomy, OA knees. As-needed meds as he has them.\n4. Former smoker, qualifies for annual lung screening CT. Discussed what it is and what a false alarm looks like; he wants it. Ordered.\n5. Tdap today. Baseline labs, HCV and HIV screening today.\n6. Records release signed for prior PCP.\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 97.6,
+            "height_cm": 180.3,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Low Density Lipoprotein": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T13:12",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2022-09-16T13:12",
+              "author": "PCP",
+              "body": "Hi Douglas, your blood work from Wednesday is all normal: kidney function, liver tests, blood counts, cholesterol and sugar. Hepatitis C and HIV screens were negative. Nothing to change. Watch for a call to schedule the lung CT."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "outside_records",
+          "start": "2022-09-28T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-28T10:30",
+              "author": "front desk",
+              "body": "Received from prior primary care office, 38 pages. Indexed:\n- Problem list: hypertension; cervical spondylosis with degenerative disc disease C5-C6 and C6-C7; low back pain; osteoarthritis of both knees.\n- Medication list: lisinopril 10 mg daily; ibuprofen 600 mg TID PRN; cyclobenzaprine 5 mg QHS PRN; acetaminophen 500 mg PRN.\n- Allergies: sulfa (hives), shellfish.\n- Spine surgery discharge summary, spring 2022: L4-L5 laminectomy, uncomplicated, discharged home day 1.\n- Screening colonoscopy report, 2019: complete exam, no polyps found, 10-year interval advised.\n- Office notes and lab reports 2019-2022.\nRouted to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "date": "2022-09-29T17:05",
+              "author": "PCP",
+              "body": "Reviewed prior office packet. Matches his history. Colonoscopy 2019 clean, next due 2029. BP readings there mostly 130s/80s. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2022-10-19T16:55",
+              "author": "RN",
+              "body": "Came after his shift for flu vaccine. Screening questions negative, no egg or vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid. Tolerated, waited without problems, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "imaging",
+          "start": "2022-11-09T07:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-11-09T07:30",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING, BASELINE\nIndication: former smoker, 20 pack-years, quit 2019.\nTechnique: low-dose helical CT of the chest without contrast.\nComparison: none.\nFindings: No pulmonary nodules. Lungs clear without consolidation or emphysema. Airways patent. No pleural effusion. Heart normal in size, no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. Visualized upper abdomen unremarkable. Mild degenerative change in the thoracic spine.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months.",
+              "issued": "2022-11-09T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-11-09T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lung screening result",
+              "date": "2022-11-10T08:15",
+              "author": "PCP",
+              "body": "Your lung screening CT was clear, no nodules. We'll repeat it each November while you qualify."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "office_visit",
+          "start": "2023-03-22T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 84,
+            "spo2": 98,
+            "weight_kg": 96.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-22T15:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-22T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-22T15:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-22T15:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-03-22T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-22T16:10",
+              "author": "PCP",
+              "body": "BP check. Feels fine. Taking lisinopril every day. Busy season at the warehouse, back and knees sore at the end of the week, ibuprofen a few days a week, cyclobenzaprine once or twice a month. Neck stiff but no arm symptoms.\n\nExam: BP as charted, at goal. Heart regular. Lungs clear. No edema.\n\nA/P: HTN controlled on lisinopril 10, continue. BMP today. First Shingrix today, second in 6 months, he'll do it at his physical. Physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-24a",
+          "kind": "portal_message",
+          "start": "2023-03-24T09:02",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "BMP result",
+              "date": "2023-03-24T09:02",
+              "author": "PCP",
+              "body": "Kidney function and potassium normal on the lisinopril. All good."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: shingles shot",
+              "date": "2023-03-24T19:40",
+              "author": "patient",
+              "body": "thanks. arm was sore and i felt run down the next day, fine now. is that normal"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: shingles shot",
+              "date": "2023-03-25T08:30",
+              "author": "RN",
+              "body": "Yes, a sore arm and a day of feeling tired or achy is common after Shingrix. Glad it passed. The second dose is due in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "pharmacy",
+          "start": "2023-06-12T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2023-06-12T11:20",
+              "author": "MA",
+              "body": "Pharmacy fax for lisinopril 10 mg, 90-day supply. Last BMP 3/2023 normal, BP at goal 3/22. Pended to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2023-06-12T12:45",
+              "author": "PCP",
+              "body": "Lisinopril 10 mg #90 with 3 refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "annual_physical",
+          "start": "2023-09-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              81
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 96.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-20T08:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-20T08:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 127
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-20T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-20T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-20T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-09-20T08:40"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-20T08:42"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-20T09:15",
+              "author": "PCP",
+              "body": "PHYSICAL, 54M\n\nDoing well. Same job, same aches. Knees worst on the loading ramp; low back ache most evenings, eases with stretching he learned after surgery. Neck stiff turning to back up the forklift, no arm pain or numbness. Ibuprofen most workdays lately, he says. No GI upset, no dark stools.\n\nROS otherwise negative. PHQ-2 0.\n\nExam: BP as charted. HEENT clear. Neck reduced rotation, no tenderness. Heart RRR. Lungs clear. Abdomen soft, nontender. Knees with crepitus, no effusion. Neuro: strength 5/5 and reflexes 2+ symmetric in the arms and legs.\n\nA/P\n- HTN controlled on lisinopril 10.\n- Neck, back, knees: stable on his PRNs. Reviewed lifting mechanics.\n- Prevention: Shingrix #2 and flu today. Colonoscopy 2019 normal, next 2029. Lung CT due in November, ordered. CMP and lipids today.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-22a",
+          "kind": "portal_message",
+          "start": "2023-09-22T10:18",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Physical labs",
+              "date": "2023-09-22T10:18",
+              "author": "PCP",
+              "body": "Labs from your physical look good. Cholesterol is in a fine range, kidney and liver numbers normal."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-14a",
+          "kind": "pharmacy",
+          "start": "2023-10-14T10:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "date": "2023-10-17T14:10",
+              "author": "MA",
+              "body": "State registry update: updated COVID-19 vaccine given at a community pharmacy 10/14/2023. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T07:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-11-08T07:45",
+              "text": "LOW-DOSE CT CHEST, ANNUAL SCREENING\nComparison: 11/9/2022.\nFindings: No pulmonary nodules. No consolidation, no emphysema. Central airways clear. No pleural or pericardial effusion. Heart size normal. No adenopathy. Upper abdomen unremarkable. Stable mild thoracic spondylosis.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months.",
+              "issued": "2023-11-08T13:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-11-08T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lung CT",
+              "date": "2023-11-09T07:55",
+              "author": "PCP",
+              "body": "Lung CT clear again. Next one in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-20T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-03-20T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-03-20T12:40",
+              "author": "PCP",
+              "body": "Video visit on his lunch break from the break room at work. Overdue 6-month BP check was rescheduled twice for shifts, so doing it by video.\n\nHe bought a cuff at the pharmacy in January, readings mostly 128-136 over 78-84 mornings. Taking lisinopril daily. No headaches or lightheadedness. Back and knees about the same; neck fine.\n\nA/P: HTN controlled by home readings, continue lisinopril 10. Next in-person at the September physical with labs. Send me readings through the portal if they run over 140."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "portal_message",
+          "start": "2024-06-14T21:06",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "neck and arm",
+              "date": "2024-06-14T21:06",
+              "author": "patient",
+              "body": "my neck has been killing me for about 10 days and now it goes down my left arm. thumb and pointer finger feel numb half the time. didnt hurt it that i know of. can i get in next week"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: neck and arm",
+              "date": "2024-06-15T08:20",
+              "author": "RN",
+              "body": "Sorry to hear it. Any weakness where you're dropping things, trouble walking, or trouble with bladder or bowels? If yes, go to the ED. Otherwise I've put you in Monday at 7:40 with the doctor."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: neck and arm",
+              "date": "2024-06-15T09:02",
+              "author": "patient",
+              "body": "none of that. monday works"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "office_visit",
+          "start": "2024-06-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck pain radiating to left arm",
+          "vitals": {
+            "bp": [
+              127,
+              80
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 97.8
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-17T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-c-2024",
+              "action": "placed",
+              "order": "MRI cervical spine without contrast",
+              "category": "imaging",
+              "reason": "left arm radicular symptoms with weakness"
+            },
+            {
+              "id": "pmr-ref-2024",
+              "action": "placed",
+              "order": "Physical medicine and rehabilitation referral",
+              "category": "referral",
+              "to": "Physical Medicine & Rehabilitation",
+              "reason": "left cervical radicular symptoms"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-17T08:30",
+              "author": "PCP",
+              "body": "S: About 2 weeks of left-sided neck pain, now running into the left arm, with numbness of the thumb and index finger that comes and goes. No injury he can name, but 30-odd years of lifting. Ibuprofen takes the edge off; cyclobenzaprine helps him sleep. No gait trouble, no bowel or bladder change, right arm fine. Pain 6/10.\n\nO: BP as charted. Neck: limited extension, left paraspinal tenderness. Left wrist extension slightly weak, 4+/5; grip and the rest of the arm full strength. Light touch reduced over the left thumb and index finger. Reflexes symmetric to my exam. Right arm normal. Gait normal.\n\nA/P: Left cervical radicular symptoms on known C5-C7 spondylosis, with a mild motor finding. MRI C-spine ordered and PM&R referral placed. Continue ibuprofen and cyclobenzaprine as needed, no overhead lifting for now. Return or ED for spreading weakness, gait change, bladder or bowel symptoms."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "imaging",
+          "start": "2024-06-26T18:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "MRI cervical spine without contrast",
+              "loinc": "30667-0",
+              "performed": "2024-06-26T18:30",
+              "text": "MRI CERVICAL SPINE WITHOUT CONTRAST\nIndication: left neck and arm pain with thumb and index numbness.\nTechnique: multiplanar multisequence imaging without contrast.\nComparison: none.\nFindings: Alignment maintained. Vertebral body heights preserved; no fracture or marrow lesion. Cord normal in caliber and signal. Craniocervical junction normal.\nC2-C3 through C4-C5: no significant disc bulge or stenosis.\nC5-C6: disc desiccation and disc height loss with a broad degenerative bulge; canal and foramina adequate, no root compression.\nC6-C7: disc desiccation and height loss. Left-sided disc herniation compresses the exiting left nerve root. No cord compression. Right foramen patent.\nC7-T1: unremarkable.\nParaspinal soft tissues normal.",
+              "conclusion": "1. Multilevel degenerative disc disease at C5-C6 and C6-C7.\n2. Left-sided C6-C7 disc herniation with compression of the left exiting nerve root.\n3. No cord compression.",
+              "issued": "2024-06-27T11:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-c-2024",
+              "action": "done",
+              "date": "2024-06-27T11:05"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-28a",
+          "kind": "portal_message",
+          "start": "2024-06-28T07:50",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "MRI result",
+              "date": "2024-06-28T07:50",
+              "author": "PCP",
+              "body": "Douglas, the MRI shows a disc bulging out at C6-C7 on the left and pressing on the nerve root there, on top of the wear-and-tear changes you already knew about. The spinal cord itself is fine. That fits your arm symptoms. You're on the books with PM&R next Wednesday and they'll go over treatment. Keep avoiding overhead lifting until then."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: MRI result",
+              "date": "2024-06-28T12:31",
+              "author": "patient",
+              "body": "ok thanks. my brother had surgery for this, hoping i dont need that"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: MRI result",
+              "date": "2024-06-28T16:02",
+              "author": "PCP",
+              "body": "Most people with this improve without surgery, usually with therapy and time. Let's see what PM&R thinks."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "specialist_visit",
+          "start": "2024-07-03T10:00",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Left cervical radicular pain",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy",
+              "action": "diagnosed",
+              "onset": "2024-06-05",
+              "note": "left"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pmr-ref-2024",
+              "action": "done",
+              "date": "2024-07-03T10:00"
+            },
+            {
+              "id": "pt-2024",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "left cervical radiculopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical Medicine & Rehabilitation Consultation",
+              "date": "2024-07-05T09:15",
+              "author": "physiatry",
+              "body": "OUTPATIENT PHYSICAL MEDICINE & REHABILITATION CONSULTATION\nDate of visit: 07/03/2024\nReason for referral: neck pain with left arm symptoms.\n\nHistory: 55-year-old warehouse loader with four weeks of neck pain that has steadily worsened and now travels into the left arm, with numbness in the thumb and index finger. He recalls no injury. Long history of heavy manual work. Known cervical spondylosis with disc degeneration at C5-C6 and C6-C7. Hypertension. Mechanical low back pain after L4-L5 laminectomy in 2022. Osteoarthritis of both knees. Left rotator cuff repair 2016.\n\nMedications: lisinopril 10 mg daily; ibuprofen 600 mg TID PRN; cyclobenzaprine 5 mg QHS PRN; acetaminophen 500 mg PRN.\nAllergies: sulfa (urticaria); shellfish (reaction unknown).\nFamily history: father with cervical spondylosis and myelopathy, hypertension; mother with osteoarthritis and osteoporosis; older brother with cervical radiculopathy treated with ACDF.\nSocial: former smoker, 20 pack-years, quit 5 years ago; 1-2 beers on weekends.\n\nExamination: Alert, comfortable seated. Weakness of the left biceps and left wrist extensors. Sensation reduced over the lateral left forearm and the thumb and index finger. Left brachioradialis reflex diminished; other upper limb reflexes symmetric. Right arm normal. No Hoffmann sign, gait steady.\n\nImaging: MRI of the cervical spine 6/26/2024 reviewed: C6-C7 disc herniation with nerve root compression, on multilevel degenerative disc disease.\n\nImpression: Left cervical radiculopathy, on a background of multilevel cervical spondylosis.\n\nPlan:\n- Physical therapy for cervical traction, mobility and scapular strengthening; referral sent.\n- Continue ibuprofen and cyclobenzaprine as needed.\n- Avoid heavy overhead lifting for the time being.\n- Follow up here in 6 to 8 weeks.\n\nThank you for the referral.\nPhysical Medicine & Rehabilitation"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "specialist_visit",
+          "start": "2024-07-10T16:00",
+          "service": "Physical Therapy",
+          "reason": "Cervical radiculopathy, initial evaluation",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, moderate complexity",
+              "performed": "2024-07-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2024-07-12T11:40",
+              "author": "physical therapy",
+              "body": "PHYSICAL THERAPY INITIAL EVALUATION, 7/10/2024\nDx: left cervical radiculopathy.\nSubjective: neck pain into the left arm, thumb and index numb intermittently, worse end of shift.\nObjective: cervical extension and left rotation limited. Left wrist extension 4/5, elbow flexion 4/5. Reduced light touch left thumb and index.\nAssessment: good rehab candidate.\nPlan: 2x/week for 8 weeks: mechanical traction trial, deep neck flexor and scapular work, nerve glides, lifting mechanics for his job, home program."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "specialist_visit",
+          "start": "2024-08-21T09:30",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Follow-up, left cervical radiculopathy",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical Medicine & Rehabilitation Follow-up",
+              "date": "2024-08-23T10:00",
+              "author": "physiatry",
+              "body": "PM&R FOLLOW-UP\nDate of visit: 08/21/2024\n\nSeven weeks into therapy he reports the left arm numbness is nearly gone and the neck pain is a background ache. Back to regular duties with better lifting habits.\n\nExam: left biceps and wrist extensor strength full and symmetric. Sensation intact in the left arm and hand. Reflexes symmetric. Neck motion improved.\n\nImpression: left cervical radiculopathy, largely resolved with conservative care.\nPlan: finish the remaining therapy sessions, then the home exercise program. Ibuprofen and cyclobenzaprine as needed. Return as needed if symptoms recur."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "specialist_visit",
+          "start": "2024-09-04T16:00",
+          "service": "Physical Therapy",
+          "reason": "Discharge visit",
+          "procedures": [
+            {
+              "procedure": "Physical therapy, therapeutic exercise",
+              "performed": "2024-09-04T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-2024",
+              "action": "done",
+              "date": "2024-09-04T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Discharge Summary",
+              "date": "2024-09-06T13:25",
+              "author": "physical therapy",
+              "body": "PT DISCHARGE SUMMARY\nVisits attended: 15 of 16, 7/10/2024 to 9/4/2024.\nStatus: arm symptoms resolved, neck pain 1-2/10 at worst. Cervical motion full but end-range stiffness in extension. Left upper extremity strength 5/5 throughout.\nGoals met. Discharged to home exercise program."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-25a",
+          "kind": "annual_physical",
+          "start": "2024-09-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy",
+              "action": "resolved",
+              "note": "left, resolved after PT"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              80
+            ],
+            "hr": 81,
+            "spo2": 98,
+            "weight_kg": 98.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-25T08:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-25T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-25T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 159
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 122
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-25T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-25T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-25T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-25T08:55",
+              "author": "PCP",
+              "body": "ANNUAL, 55M\n\nInterval: left cervical radiculopathy this summer (MRI 6/26, C6-7 herniation on the left), treated by PM&R with PT, finished 9/4. Arm numbness and weakness gone. Does his neck exercises most nights. Back and knees unchanged, ibuprofen on heavy days.\nBP fine on his home cuff. PHQ-2 0. No other complaints.\n\nExam: BP as charted. Heart RRR, no murmur. Lungs clear. Neck: mild end-range stiffness, Spurling negative both sides. Arms: strength 5/5, sensation and reflexes symmetric. Knees crepitus, no effusion.\n\nA/P\n- Left cervical radiculopathy: resolved. Off the active list.\n- Cervical spondylosis/DDD: home program.\n- HTN controlled, lisinopril 10.\n- LBP and knee OA stable.\n- Labs today (CMP, CBC, lipids, A1c). Lung CT November, ordered. Flu and COVID at the pharmacy, he prefers it near home.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T11:44",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results",
+              "date": "2024-09-27T11:44",
+              "author": "PCP",
+              "body": "Everything from Wednesday came back normal, including the sugar test (A1c) and blood counts. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-12a",
+          "kind": "pharmacy",
+          "start": "2024-10-12T09:30",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-12T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-12T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunizations",
+              "date": "2024-10-15T15:00",
+              "author": "MA",
+              "body": "Registry shows influenza (trivalent) and updated COVID-19 vaccines given 10/12/2024 at a community pharmacy. Added to the record."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "imaging",
+          "start": "2024-11-13T07:15",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-11-13T07:15",
+              "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING\nComparison: 11/8/2023 and 11/9/2022.\nFindings: Lungs clear. No nodule, mass or consolidation. No emphysema. No effusion. Normal heart size. Mediastinum without adenopathy. Unchanged mild degenerative thoracic spine changes.",
+              "conclusion": "Lung-RADS 1. Negative. Continue annual low-dose CT.",
+              "issued": "2024-11-13T14:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-11-13T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lung CT",
+              "date": "2024-11-14T08:05",
+              "author": "PCP",
+              "body": "Third year in a row the screening CT is clear. Good news."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-11b",
+          "kind": "telephone",
+          "start": "2025-03-11T17:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-03-11T17:05",
+              "author": "front desk",
+              "body": "Pt missed 4:20 BP visit. Reached him on cell, got held over on a late truck and forgot to call. Rebooked Tue 4/1 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-01a",
+          "kind": "office_visit",
+          "start": "2025-04-01T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              84
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 97.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-01T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-01T16:35",
+              "author": "PCP",
+              "body": "Rescheduled BP visit. Home cuff still running in the low 130s. On lisinopril daily, no side effects. Neck quiet since PT last summer, keeps up his stretches. Low back sore after a heavy week; knees as usual. Ibuprofen and the occasional cyclobenzaprine.\n\nBP as charted. Heart regular, lungs clear, ankles without swelling.\n\nHTN controlled, same dose. Physical in the fall with labs."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "pharmacy",
+          "start": "2025-07-09T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill requests",
+              "date": "2025-07-09T10:40",
+              "author": "MA",
+              "body": "Electronic requests from pharmacy: lisinopril 10 mg #90, cyclobenzaprine 5 mg #30. Last visit 4/1/25. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills sent",
+              "date": "2025-07-09T13:15",
+              "author": "PCP",
+              "body": "Both sent. Lisinopril with 3 refills, cyclobenzaprine no refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 74,
+            "spo2": 99,
+            "weight_kg": 97.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-24T08:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-24T08:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-24T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-24T07:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-24T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-24T08:40",
+              "author": "PCP",
+              "body": "YEARLY PHYSICAL - 56M\n\nNo new problems. Neck stiff mornings, no arm symptoms since 2024. Low back and knees: same pattern, worse after double shifts. Ibuprofen on work days. Sleeps OK. PHQ-2 1, a tired week, nothing more.\n\nExam: BP as charted. Heart RRR. Lungs clear. Abd benign. Neck: rotation mildly limited, Spurling negative. Arms 5/5, reflexes symmetric. Knees crepitus, no effusion. Back: well-healed scar, nontender.\n\nPlan\n- HTN: controlled on lisinopril 10.\n- Spine and knees: stable, home exercises.\n- CMP and lipids today. Flu today; he'll get his COVID booster at the pharmacy. Lung CT in November, ordered. Colonoscopy due 2029.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T12:20",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab results",
+              "date": "2025-09-26T12:20",
+              "author": "PCP",
+              "body": "Labs normal this year too. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-18a",
+          "kind": "pharmacy",
+          "start": "2025-10-18T11:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-18T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "date": "2025-10-21T09:40",
+              "author": "MA",
+              "body": "COVID-19 vaccine (2025-26 formula) 10/18/2025 at a retail pharmacy per state registry. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "imaging",
+          "start": "2025-11-12T07:20",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-11-12T07:20",
+              "text": "LDCT CHEST, ANNUAL LUNG SCREENING\nComparison: 11/13/2024.\nFindings: No pulmonary nodules. Lungs otherwise clear without emphysema or consolidation. No pleural effusion. Heart and mediastinum normal. No adenopathy. Imaged upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Return to annual screening in 12 months.",
+              "issued": "2025-11-12T16:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-11-12T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lung CT",
+              "date": "2025-11-13T08:10",
+              "author": "PCP",
+              "body": "Screening CT clear again, no nodules. Next November."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-28a",
+          "kind": "ed_visit",
+          "start": "2025-12-28T10:40",
+          "end": "2025-12-28T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Right arm weakness and numbness",
+          "conditions": [
+            {
+              "label": "Cervical radiculopathy",
+              "action": "diagnosed",
+              "onset": "2025-12-14",
+              "note": "right C7 nerve root compression"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              87
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 37.2,
+            "spo2": 96
+          },
+          "reports": [
+            {
+              "study": "Cervical spine X-ray",
+              "loinc": "24946-6",
+              "performed": "2025-12-28T11:35",
+              "text": "CERVICAL SPINE RADIOGRAPHS\nIndication: right arm weakness and numbness after lifting.\nFindings: Alignment normal, no listhesis. No fracture. Degenerative changes with disc space narrowing and osteophyte formation in the lower cervical spine. Prevertebral soft tissues normal.",
+              "conclusion": "Degenerative changes of the cervical spine with disc space narrowing and osteophytes. No acute osseous abnormality.",
+              "issued": "2025-12-28T12:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-12-28T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-12-30T08:45",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival: 12/28/2025 10:40\n\nCC: right arm weakness and numbness x 2 weeks.\n\nHPI: 57M, warehouse loader, symptoms in the right arm since lifting a run of heavy boxes overhead at work about two weeks ago. Hard to grip; weakness worse squeezing hard or shoving doors open. Tingling runs from the shoulder along the back of the arm and forearm into the middle finger. Turning his head to the right or looking up for a while brings it on. Had a similar problem on the left side in July 2024, seen by PM&R and treated with therapy. Came today because he could not hold a coffee mug steady this morning. No bowel or bladder change, no leg symptoms, no fever.\n\nPMH: cervical spondylosis with multilevel DDD C5-C6, C6-C7; cervical radiculopathy; hypertension; mechanical low back pain; bilateral knee OA.\nPSH: L4-L5 lumbar laminectomy 2022; left rotator cuff repair 2016.\nMeds: ibuprofen 600 mg TID PRN; cyclobenzaprine 5 mg QHS PRN; lisinopril 10 mg daily; acetaminophen 500 mg PRN.\nAllergies: sulfa (urticaria), shellfish.\nFH: father cervical spondylosis with myelopathy, HTN; mother OA, osteoporosis; brother cervical radiculopathy s/p ACDF.\nSH: former smoker, 20 pack-years, quit 2019. Weekend beers.\n\nExam: vitals per flowsheet. Uncomfortable but nontoxic. Neck: Spurling's maneuver reproduces the right arm symptoms. Triceps reflex decreased on the right compared with the left; biceps and brachioradialis symmetric. Strength reduced in right wrist extension and elbow extension; shoulder abduction and finger abduction full. Pinprick diminished over the right posterior forearm and the back of the third finger. Left arm normal. Legs: strength, sensation and reflexes normal, no clonus, gait normal.\n\nImaging: C-spine x-ray with degenerative narrowing and osteophytes, nothing acute.\n\nMDM: radicular deficit in a right C7 distribution without myelopathic signs or red flags. Outpatient MRI appropriate.\n\nDiagnosis: compression of the right C7 nerve root; cervical radiculopathy.\n\nDisposition: discharged home 14:10. Continue home ibuprofen and cyclobenzaprine as needed. Avoid overhead lifting. Follow up with primary care within one week for outpatient MRI and specialist referral. Return for worsening weakness, leg symptoms, or bladder or bowel problems."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "telephone",
+          "start": "2025-12-30T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED follow-up call",
+              "date": "2025-12-30T09:30",
+              "author": "RN",
+              "body": "ED record from 12/28 received. Called pt. Right arm about the same, a bit less tingling. No new weakness, no leg or bladder symptoms. Out of work this week. Booked Mon 1/5 8:00 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "office_visit",
+          "start": "2026-01-05T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, right arm weakness",
+          "vitals": {
+            "bp": [
+              123,
+              80
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 97.4
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-05T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-c-2026",
+              "action": "placed",
+              "order": "MRI cervical spine without contrast",
+              "category": "imaging",
+              "reason": "right C7 radiculopathy with motor deficit"
+            },
+            {
+              "id": "pmr-ref-2026",
+              "action": "placed",
+              "order": "Physical medicine and rehabilitation referral",
+              "category": "referral",
+              "to": "Physical Medicine & Rehabilitation",
+              "reason": "right C7 radiculopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-05T08:45",
+              "author": "PCP",
+              "body": "Post-ED visit. Seen 12/28 for right arm weakness and numbness after overhead lifting mid-December; ED found a right C7 picture, x-ray degenerative only, sent home on his usual meds.\n\nSince then: tingling down the back of the right arm into the middle finger a little less constant. Grip still weak, drops things now and then. Neck sore looking up. No left arm or leg symptoms, bladder and bowels normal. Ibuprofen twice a day, cyclobenzaprine at night. Pain 5/10.\n\nExam: BP as charted. Right triceps reflex reduced vs left. Right elbow and wrist extension 4/5. Shoulder abduction and finger abduction 5/5. Pinprick reduced on the back of the right forearm and third finger. Spurling positive on the right. Left arm and legs normal, gait normal.\n\nA/P: Right C7 radiculopathy, motor deficit present but not worse. MRI C-spine ordered and PM&R referral (same group as 2024). Same PRN meds. Work note: no overhead lifting and nothing over 20 lb for 4 weeks. ED precautions reviewed."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Restriction",
+              "date": "2026-01-05T08:50",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nMy patient Douglas Doyle was seen in this office today for a medical condition affecting his right arm. He may return to work on modified duty effective 1/6/2026: no overhead lifting and no lifting over 20 pounds, for 4 weeks pending specialist evaluation. Please contact the office with questions.\n\nPrimary Care Physician"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "imaging",
+          "start": "2026-01-12T19:10",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "MRI cervical spine without contrast",
+              "loinc": "30667-0",
+              "performed": "2026-01-12T19:10",
+              "text": "MRI CERVICAL SPINE WITHOUT CONTRAST\nIndication: right arm weakness and paresthesias in a C7 distribution.\nComparison: 6/26/2024.\nFindings: Alignment maintained. No fracture or marrow abnormality. Cord normal in caliber and signal throughout.\nC5-C6: disc desiccation and height loss with degenerative bulge, without canal or foraminal compromise. Unchanged.\nC6-C7: disc desiccation and height loss. Right foraminal disc herniation compresses the exiting right C7 nerve root. Left foramen patent. No cord compression.\nOther levels without significant stenosis.",
+              "conclusion": "1. Right foraminal C6-C7 disc herniation compressing the right C7 nerve root.\n2. Known multilevel degenerative disc disease at C5-C6 and C6-C7.\n3. No cord compression.",
+              "issued": "2026-01-13T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-c-2026",
+              "action": "done",
+              "date": "2026-01-13T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T14:25",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "MRI",
+              "date": "2026-01-13T14:25",
+              "author": "PCP",
+              "body": "The MRI shows a disc at C6-C7 pushing on the right-side nerve root, which matches your symptoms. The left side that bothered you in 2024 looks open now, and the spinal cord is fine. PM&R has you on 1/21. Keep the work restrictions until then."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "specialist_visit",
+          "start": "2026-01-21T13:30",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Right cervical radiculopathy",
+          "orders": [
+            {
+              "id": "pmr-ref-2026",
+              "action": "done",
+              "date": "2026-01-21T13:30"
+            },
+            {
+              "id": "pt-2026",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "right C7 radiculopathy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical Medicine & Rehabilitation Consultation",
+              "date": "2026-01-23T09:00",
+              "author": "physiatry",
+              "body": "PM&R CONSULTATION\nDate of visit: 01/21/2026\nReferred for: right arm weakness and paresthesias.\n\nKnown to this clinic from 2024 for left cervical radiculopathy that resolved with therapy. Since mid-December, after overhead lifting at work, weakness and tingling in the right arm along the back of the arm into the middle finger. ED 12/28. Slowly improving, on modified duty.\n\nMeds: lisinopril 10 mg daily; ibuprofen 600 mg TID PRN; cyclobenzaprine 5 mg QHS PRN; acetaminophen 500 mg PRN. Allergies: sulfa, shellfish.\n\nExam: Right triceps reflex reduced. Right elbow extension and wrist extension 4/5, otherwise full strength. Pinprick decreased over the dorsal right forearm and third digit. Spurling positive right. No Hoffmann sign, gait normal. Left arm normal.\n\nMRI 1/12/2026: right foraminal C6-C7 herniation compressing the right C7 root.\n\nImpression: right C7 radiculopathy from C6-C7 foraminal disc herniation, on multilevel cervical spondylosis.\n\nPlan:\n- Physical therapy, referral placed.\n- Continue light duty: no overhead work, 20 lb limit.\n- Ibuprofen and cyclobenzaprine as needed.\n- If not clearly better in 6 to 8 weeks, consider a cervical epidural steroid injection or a spine surgery opinion.\n- Follow-up in about 10 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "specialist_visit",
+          "start": "2026-01-27T16:30",
+          "service": "Physical Therapy",
+          "reason": "Cervical radiculopathy, initial evaluation",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, moderate complexity",
+              "performed": "2026-01-27T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Physical Therapy Initial Evaluation",
+              "date": "2026-01-29T12:10",
+              "author": "physical therapy",
+              "body": "PT EVALUATION 1/27/2026\nDx: right C7 radiculopathy.\nReturning patient (left-sided episode 2024). Right arm tingling to the middle finger, weak grip at work.\nObjective: cervical extension and right rotation limited and reproduce arm symptoms. Right triceps 4/5, wrist extensors 4/5. Pinprick reduced dorsal forearm and third finger.\nPlan: 2x/week x 8 weeks: traction trial, nerve mobility, deep neck flexor and scapular strengthening, return-to-lift progression, home program."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "portal_message",
+          "start": "2026-02-02T18:50",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "work note",
+              "date": "2026-02-02T18:50",
+              "author": "patient",
+              "body": "my restrictions run out thursday. pm&r said keep light duty. do i need a new note from you or them"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: work note",
+              "date": "2026-02-03T07:40",
+              "author": "PCP",
+              "body": "I'll extend it through your next visit with me on 2/24, same limits. It's in your documents tab now. PM&R can take over after that."
+            },
+            {
+              "type": "Letter",
+              "title": "Work Restriction, extended",
+              "date": "2026-02-03T07:35",
+              "author": "PCP",
+              "body": "To whom it may concern:\n\nDouglas Doyle remains under care for a condition affecting his right arm. Please continue modified duty through 2/24/2026: no overhead lifting and no lifting over 20 pounds. He will be reassessed at that visit.\n\nPrimary Care Physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, right arm and blood pressure",
+          "vitals": {
+            "bp": [
+              132,
+              85
+            ],
+            "hr": 81,
+            "spo2": 98,
+            "weight_kg": 97.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-24T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-24T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-24T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-24T16:50",
+              "author": "PCP",
+              "body": "F/u right C7 radiculopathy and BP.\n\nFour weeks into PT. Tingling down the right arm now only with long overhead looks, grip noticeably better, no dropped objects in two weeks. On light duty at work. Ibuprofen most days, cyclobenzaprine a few nights a week. Pain 2/10. Home BPs 120s-130s.\n\nExam: BP as charted. Heart regular, lungs clear. Right triceps 4+/5, wrist extension 4+/5. Triceps reflex still a bit reduced on the right. Pinprick nearly symmetric. Spurling mildly positive right. Gait normal.\n\nA/P\n1. Right C7 radiculopathy, improving with PT. PM&R follow-up in April; they'll decide on light duty from here. Return sooner if strength slips.\n2. HTN controlled, lisinopril 10. BMP today.\n3. Due for physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "portal_message",
+          "start": "2026-02-26T10:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "BMP",
+              "date": "2026-02-26T10:05",
+              "author": "PCP",
+              "body": "Kidney function and potassium normal. Keep going with the therapy."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "specialist_visit",
+          "start": "2026-04-08T14:00",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Follow-up, right cervical radiculopathy",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical Medicine & Rehabilitation Follow-up",
+              "date": "2026-04-10T11:20",
+              "author": "physiatry",
+              "body": "PM&R FOLLOW-UP\nDate of visit: 04/08/2026\n\nRight arm tingling resolved about three weeks ago. Grip and pushing strength back to normal per patient. Finishing the last therapy visits.\n\nExam: right triceps and wrist extensor strength 5/5, symmetric with the left. Sensation intact. Reflexes symmetric. Spurling negative.\n\nImpression: right C7 radiculopathy, resolved with conservative care. No epidural injection or surgical referral needed.\nPlan: home exercise program, full duty from 4/13/2026 with attention to overhead lifting technique. Return as needed."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside note filed",
+              "date": "2026-04-13T07:30",
+              "author": "PCP",
+              "body": "PM&R note received and reviewed. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "pharmacy",
+          "start": "2026-06-03T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-06-03T09:15",
+              "author": "MA",
+              "body": "Pharmacy request lisinopril 10 mg #90. Seen 2/24/26, BMP normal. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2026-06-03T11:50",
+              "author": "PCP",
+              "body": "Sent with 1 refill. Physical due in September."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cervical spondylosis with multilevel degenerative disc disease (C5-C6, C6-C7)|M47.812": {
+        "code": "M47.812",
+        "display": "Spondylosis without myelopathy or radiculopathy, cervical region",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Mechanical low back pain|M54.50": {
+        "code": "M54.50",
+        "display": "Low back pain, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "reports": {
+      "Cervical spine X-ray": {
+        "code": "24946-6",
+        "display": "XR Cervical spine Views",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI cervical spine without contrast": {
+        "code": "30667-0",
+        "display": "MR Cervical spine WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

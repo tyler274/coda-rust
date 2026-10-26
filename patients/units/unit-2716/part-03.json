@@ -1,0 +1,178 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002716",
+      "events": [
+        {
+          "id": "2025-01-30a",
+          "kind": "specialist_visit",
+          "start": "2025-01-30T10:00",
+          "service": "Neurology",
+          "reason": "Positional vertigo",
+          "conditions": [
+            {"label": "Benign paroxysmal positional vertigo", "action": "diagnosed", "onset": "2024-11-15"}
+          ],
+          "vitals": {"bp": [135, 85], "hr": 78},
+          "orders": [
+            {"id": "neuro-2024", "action": "done", "date": "2025-01-30T10:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation", "author": "neurology", "date": "2025-02-10T11:00", "body": "Outside neurology clinic. Seen 01/30/2025.\n\n58-year-old woman with dermatomyositis and osteoporosis, referred for spells of spinning brought on by head position: tilting her head up, turning in bed. She has no hearing loss, ringing or sense of fullness in either ear.\nBP 135/85. HR 78, regular.\nNeurological examination normal apart from the Dix-Hallpike test, which brought on her vertigo with nystagmus that settled within 60 seconds. No carotid bruit. No JVD. No cardiac murmur.\n\nImpression: benign paroxysmal positional vertigo.\nCanalith repositioning (Epley) performed in clinic and tolerated. Taught home repositioning exercises. No imaging needed. Follow up as needed if spells persist after several weeks of exercises."}
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "annual_physical",
+          "start": "2025-03-18T09:00",
+          "end": "2025-03-18T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "dose": {"value": 20, "unit": "mg"}, "reason": "taper completed per rheumatology"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-03-18T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-03-18T09:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-03-18T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-03-18T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2025-03-18T09:30", "text": "Liquid-based cervical cytology, specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-03-18T09:00"},
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-18T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-03-18T09:45"}
+          ],
+          "orders": [
+            {"id": "dxa-2025", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "osteoporosis on raloxifene, after steroid course"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-03-18T09:50", "body": "Annual visit.\nSince last year: dermatomyositis diagnosed by rheum in August, treated with prednisone and methotrexate. Finished the last prednisone at the start of this month per their taper; stays on MTX 15 weekly + folic acid. Strength nearly back, rash gone. Neurology in January called the spinning spells BPPV and did a repositioning maneuver; she's had maybe one brief spell since and does the exercises. Swallowing about the same, manageable. Hip same.\nPsych: stable, sees psychiatry every 3 months, same meds.\nNo falls. PHQ-9 2.\nMeds: HCTZ 25, haloperidol 5, benztropine 1, raloxifene 60, D3 1000, methotrexate 15 mg weekly, folic acid 1, acetaminophen prn. Prednisone off.\nExam: BP at goal. Eyelids and knuckles without rash. Heart regular, lungs clear. Proximal strength 5-/5. No edema. Pelvic: normal external genitalia, cervix normal; Pap/HPV collected.\nA/P\n- Dermatomyositis, improving: per rheumatology. CBC and CMP today double as MTX monitoring; will fax to rheum.\n- Osteoporosis: two years on raloxifene plus a 7-month steroid course. Repeat DXA ordered.\n- BPPV: improved.\n- HTN controlled. Esophageal dysmotility, severe R hip OA: stable.\n- Schizophrenia: psychiatry; metabolic labs today.\n- HCM: mammogram 12/24 negative; Pap/HPV today; colonoscopy 2019."},
+            {"type": "Result Note", "title": "Labs and Pap", "author": "PCP", "date": "2025-03-21T13:00", "body": "CBC, CMP (liver tests normal on MTX), lipids, A1c all normal. Pap negative, HPV negative. Results to patient; CBC/CMP faxed to rheumatology."}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "imaging",
+          "start": "2025-03-25T10:30",
+          "reports": [
+            {"study": "DXA bone density, hip and spine", "performed": "2025-03-25T10:30", "text": "Comparison: 01/24/2023, same scanner. Lumbar spine L1-L4: T-score -2.5. Left femoral neck: T-score -0.9. Left total hip: T-score -0.7. No significant change from prior at any site.", "conclusion": "Osteoporosis at the lumbar spine, stable. Hip density normal, stable."}
+          ],
+          "orders": [
+            {"id": "dxa-2025", "action": "done", "date": "2025-03-25T10:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Bone density", "author": "PCP", "date": "2025-03-26T09:20", "body": "Your bone scan is unchanged from two years ago, which is a good result, especially with the prednisone in between. Keep the raloxifene and vitamin D going."}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "pharmacy",
+          "start": "2025-05-20T10:00",
+          "documents": [
+            {"type": "Pharmacy", "title": "Refills", "author": "MA", "date": "2025-05-20T10:00", "body": "Refill requests for HCTZ 25 mg and raloxifene 60 mg, 90 days each, approved per protocol. Raloxifene PA renewal resubmitted to MassHealth with the 3/25 DXA; approved."}
+          ]
+        },
+        {
+          "id": "2025-08-07a",
+          "kind": "office_visit",
+          "start": "2025-08-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-08-07T10:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-07T10:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-08-07T10:20"},
+            {"procedure": "Venipuncture", "performed": "2025-08-07T10:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up - HTN", "author": "PCP", "date": "2025-08-07T10:50", "body": "BP check, routine.\nTaking HCTZ daily. No headaches, no lightheadedness. Rheum saw her in spring, dermatomyositis quiet on methotrexate. Vertigo hasn't come back. Psych unchanged.\nShe brought a flyer about a research study of a new blood pressure pill and asked whether she should sign up. We went over what a trial like that involves: she'd be assigned by chance to the new drug or a placebo, neither she nor the study doctors would know which, and the study would probably ask her to stop or adjust her HCTZ, with extra visits and BP checks. Her BP is well controlled on a cheap, familiar drug, which matters in weighing it. She's free to call the study team with questions; no decision needed from me. She took the flyer home to think it over.\nMeds unchanged: HCTZ 25, haloperidol 5, benztropine 1, raloxifene 60, D3, methotrexate 15 weekly, folic acid, acetaminophen prn.\nExam: BP and HR as charted, at goal. Heart regular, lungs clear, no edema.\nA/P: HTN controlled, continue. CBC/CMP today (MTX monitoring too, copy to rheum). Annual visit due March. Flu/COVID in the fall."}
+          ]
+        },
+        {
+          "id": "2025-08-08a",
+          "kind": "portal_message",
+          "start": "2025-08-08T15:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from yesterday", "author": "PCP", "date": "2025-08-08T15:40", "body": "Blood counts, kidney and liver tests are all normal. Copy faxed to rheumatology. No changes."}
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "pharmacy",
+          "start": "2025-11-04T09:30",
+          "documents": [
+            {"type": "Pharmacy", "title": "Refills", "author": "MA", "date": "2025-11-04T09:30", "body": "HCTZ 25 and raloxifene 60, 90-day refills sent. Reminded pt by phone that her annual visit is due in March; she'll call to book. She says she had her flu shot at the pharmacy."}
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "ed_visit",
+          "start": "2026-01-28T15:10",
+          "end": "2026-01-28T20:40",
+          "service": "Emergency Medicine",
+          "reason": "Involuntary head turning",
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department note", "author": "emergency medicine", "date": "2026-02-03T09:00", "body": "Outside emergency department, 01/28/2026. Abbreviated record.\n59F, schizophrenia stable on haloperidol and benztropine, here with three weeks of her head pulling to one side and episodes of her eyes rolling up. Painless but upsetting and getting in the way of her day.\nMeds per pt: haloperidol, benztropine, HCTZ, raloxifene, methotrexate weekly, folic acid, acetaminophen. NKDA.\nExam: sustained neck muscle contraction tilting the head to one side, chin turned toward the opposite shoulder. No fever, no signs of infection or injury.\nCBC, CMP, TSH: within normal limits.\nImpression: oculogyric crisis / acute dystonia due to antipsychotic.\nTreatment: diphenhydramine 50 mg IV with improvement.\nDisposition: discharged home with her partner. Contact psychiatrist within the next few days to review haloperidol. Follow up with PCP."}
+          ]
+        },
+        {
+          "id": "2026-02-02a",
+          "kind": "portal_message",
+          "start": "2026-02-02T11:15",
+          "documents": [
+            {"type": "Patient Message", "title": "ER visit", "author": "patient", "date": "2026-02-02T11:15", "body": "I went to the emergency room last week because my neck kept twisting and my eyes were going up. They gave me something in the IV and it calmed down. They said it's from the haloperidol. I have a call in to my psychiatrist."},
+            {"type": "Patient Message", "title": "Re: ER visit", "author": "PCP", "date": "2026-02-03T08:50", "body": "Sorry you went through that, Bernice. I'm glad it settled. Yes, please keep after your psychiatrist this week, since the medicine question is theirs to sort out. If it comes back, go back to the ED. I'd like to see you too; the front desk will reach out to set up a visit."},
+            {"type": "Telephone Encounter", "title": "Scheduling attempt", "author": "front desk", "date": "2026-02-04T10:05", "body": "Called pt to book PCP follow-up after ED visit. No answer, voicemail left with callback number. Portal message sent as well."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T09:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Annual visit reminder", "author": "front desk", "date": "2026-03-10T09:00", "body": "Hi Bernice, our records show you're due for your annual wellness visit. Please call or reply here to pick a time."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T14:20",
+          "documents": [
+            {"type": "Pharmacy", "title": "Refill request", "author": "MA", "date": "2026-04-14T14:20", "body": "Refill requests for HCTZ 25 and raloxifene 60. Not seen since 8/2025; PCP approved 90 days each with a note that she needs a visit before further refills. Message left for pt."}
+          ]
+        },
+        {
+          "id": "2026-07-25a",
+          "kind": "hospital_admission",
+          "start": "2026-07-25T21:30",
+          "service": "Emergency Medicine",
+          "reason": "Collapse after sudden severe headache",
+          "vitals": [
+            {"time": "2026-07-25T21:35", "bp": [160, 95], "hr": 55}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department and admission note", "author": "emergency medicine", "date": "2026-07-30T08:30", "body": "Outside hospital, ED and neuro ICU. Date of arrival: 07/25/2026. Abbreviated record sent at PCP request.\nBrought in by ambulance after collapsing at home. Partner states she complained of the worst headache of her life moments before she lost consciousness. On arrival somnolent, rousable to voice.\nHistory: schizophrenia, hypertension, dermatomyositis, osteoporosis, esophageal dysmotility, BPPV, oculogyric crisis on antipsychotic in January.\nHome meds: HCTZ 25 mg, haloperidol 5 mg, benztropine 1 mg, acetaminophen 500 mg prn (per partner; list incomplete).\nNKDA.\nBP 160/95, HR 55.\nNeuro: right pupil dilated and unreactive to light, right upper lid ptosis.\nCT head without contrast: hyperdense blood in the basal cisterns, consistent with subarachnoid hemorrhage.\nCT angiography head: aneurysm of the right posterior communicating artery.\nAssessment: subarachnoid hemorrhage from ruptured right posterior communicating artery aneurysm.\nPlan: neurosurgery consulted; admitted to the neuro ICU for securing of the aneurysm and monitoring."}
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "telephone",
+          "start": "2026-07-28T13:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from partner", "author": "RN", "date": "2026-07-28T13:40", "body": "Pt's partner called (listed contact, verbal HIPAA authorization on file). Bernice collapsed at home Saturday night with a sudden severe headache; taken to the hospital and found to have bleeding around the brain from a ruptured aneurysm. Partner says the neurosurgeons sealed the aneurysm with coils on Sunday and she is still in the neuro ICU. Wanted us to know. Asked the hospital's HIM department by fax for her records. PCP notified."},
+            {"type": "Progress Notes", "title": "PCP note", "author": "PCP", "date": "2026-07-28T17:05", "body": "Informed by partner of SAH from a ruptured R PComm aneurysm, coiled, in neuro ICU at an outside hospital. Records requested. Will reach out to the family once she is closer to discharge."}
+          ]
+        }
+      ]
+    }
+  ]
+}

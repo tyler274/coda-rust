@@ -1,0 +1,147 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001950",
+      "events": [
+        {
+          "id": "2025-06-03a",
+          "kind": "pharmacy",
+          "start": "2025-06-03T10:05",
+          "reason": "refill request clindamycin gel",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2025-06-03T10:05", "body": "E-request from pharmacy for clindamycin 1% gel, last filled in February. Last visit 12/2024. Routed."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2025-06-03T12:40", "body": "Approved, 60 g with 2 refills. Due for physical in August."}
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "portal_message",
+          "start": "2025-08-12T09:15",
+          "reason": "physical reminder",
+          "documents": [
+            {"type": "Patient Message", "title": "Time for your physical", "author": "front desk", "date": "2025-08-12T09:15", "body": "Hi Yolanda, our records show you are due for your yearly physical. Reply here or call to schedule."},
+            {"type": "Patient Message", "title": "RE: Time for your physical", "author": "patient", "date": "2025-08-14T22:51", "body": "Thanks. I'm working a lot of hours this summer and classes start again soon. I'll call in the fall when my schedule settles."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T08:45",
+          "reason": "refill request contraceptive",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2025-12-09T08:45", "body": "Pharmacy requesting renewal of drospirenone/ethinyl estradiol, prior 12-month Rx used up. Not seen since 12/13/2024. No physical in 2025."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2025-12-09T11:30", "body": "3 months sent. She needs a visit with a BP check before the next one. Please reach out to schedule."},
+            {"type": "Telephone Encounter", "title": "Scheduling call", "author": "front desk", "date": "2025-12-10T14:20", "body": "Called mobile to schedule, no answer, left voicemail with our number. Portal message sent as well."}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "ed_visit",
+          "start": "2026-02-10T21:40",
+          "end": "2026-02-11T03:25",
+          "service": "Emergency Medicine",
+          "reason": "strange behavior, withdrawal, hearing voices",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-10T22:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-10T22:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-02-10T22:15", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.84}]},
+            {"panel": null, "collected": "2026-02-10T22:30", "results": [{"test": "Drug screen, urine", "loinc": "54247-2", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-02-10T21:40"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-02-13T10:30", "body": "OUTSIDE EMERGENCY DEPARTMENT RECORD\nRegional hospital emergency department. Visit 02/10/2026, arrived 21:40.\n\nCC: roommate concerned about odd behavior.\n\nHPI: 23-year-old woman brought in by her roommate. For the past several weeks she has kept to her room and rarely comes out. She tells us she believes her thoughts are going out over the radio where other people can hear them, and that she hears voices that talk about what she is doing. Patient is guarded and answers briefly; roommate supplies most of the history. No prior psychiatric diagnosis or treatment. Denies drug use.\n\nPMH: seasonal allergic rhinitis, acne.\nPSH: tonsillectomy as a child; wisdom teeth extraction.\nHome meds: cetirizine 10 mg daily; drospirenone/ethinyl estradiol daily; clindamycin 1% gel to face twice daily.\nAllergies: penicillin; dust mites.\nFamily history: no family psychiatric history obtained at this visit.\nSocial: never smoker, alcohol on weekends, 1-2 drinks. College student, works part time at a coffee shop.\n\nVitals: within normal limits, see flowsheet.\nExam: Unkempt hair and clothing. Appears to be attending to internal stimuli, glancing to the side and pausing mid-answer. Alert and oriented x3. Recall intact. Speech coherent, slowed and soft. Cardiopulmonary and abdominal exams unremarkable.\n\nResults: CBC normal. BMP normal. TSH normal. Urine toxicology negative.\n\nAssessment: new-onset psychotic symptoms with thought broadcasting and auditory hallucinations; medical and substance causes not supported by today's workup. Schizophreniform disorder.\n\nDisposition: discharged home in the care of her roommate. Outpatient psychiatry referral information provided. No medications started. Return for any thoughts of harming self or others or worsening symptoms.\n\nRecord received by fax 02/13/2026."},
+            {"type": "Outside Records", "title": "ED record filed", "author": "front desk", "date": "2026-02-13T10:35", "body": "Outside ED record (02/10/2026 visit) received by fax, 6 pages. Filed to chart and sent to PCP inbox."},
+            {"type": "Progress Notes", "title": "Outside record review", "author": "PCP", "date": "2026-02-13T17:10", "body": "Reviewed outside ED record from 2/10. Not seen here since 12/2024. Front desk to reach out and offer a visit."}
+          ]
+        },
+        {
+          "id": "2026-02-16a",
+          "kind": "telephone",
+          "start": "2026-02-16T11:05",
+          "reason": "outreach after ED visit",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Outreach call", "author": "front desk", "date": "2026-02-16T11:05", "body": "Called patient's mobile per PCP to offer an appointment after her ED visit. No answer, voicemail full. Portal message sent asking her to call."}
+          ]
+        },
+        {
+          "id": "2026-03-21a",
+          "kind": "ed_visit",
+          "start": "2026-03-21T14:15",
+          "end": "2026-03-21T20:40",
+          "service": "Emergency Medicine",
+          "reason": "worsening behavior, paranoid beliefs",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2026-03-21T15:00", "results": [{"test": "Drug screen, urine", "loinc": "54247-2", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-03-21T14:15"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-03-25T09:15", "body": "OUTSIDE EMERGENCY DEPARTMENT RECORD\nRegional hospital ED. Date of service 03/21/2026.\n\nCC: behavior getting worse; not going to school or work.\n\nHPI: 23F with allergic rhinitis and acne, seen here about a month ago for new psychotic symptoms. Brought back today by the same roommate. Since then she has pulled away further and is often heard talking to herself. She has told the roommate that the government put a chip in her brain. She stopped going to her classes and recently quit her coffee shop job, convinced her coworkers were in on a plan to keep watch on her. This is her first psychiatric illness; she has not connected with outpatient psychiatry.\n\nProblems: schizophreniform disorder (this ED, 02/2026); seasonal allergic rhinitis; acne vulgaris.\nPSH: tonsillectomy, wisdom teeth.\nHome meds: cetirizine 10 mg daily; drospirenone/ethinyl estradiol daily; clindamycin 1% gel BID.\nAllergies: penicillin; dust mites.\nFH: maternal uncle with schizophrenia; paternal grandmother with bipolar I; mother with generalized anxiety disorder.\nSocial: never smoker; weekend alcohol 1-2 drinks.\n\nMSE: disheveled, visibly anxious, looks away throughout. Preoccupied, mumbles under her breath while being interviewed. Speech disorganized. Expresses fixed paranoid beliefs about being monitored.\n\nResults: urine toxicology negative.\n\nImpression: schizophreniform disorder, worsening.\nDisposition: discharged home with roommate; outpatient psychiatry referral renewed with contact numbers. No medications started.\n\nReceived by fax 03/25/2026."},
+            {"type": "Outside Records", "title": "ED record filed", "author": "front desk", "date": "2026-03-25T09:20", "body": "Second outside ED record (03/21/2026) received, 5 pages. Filed and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-05-23a",
+          "kind": "ed_visit",
+          "start": "2026-05-23T11:50",
+          "end": "2026-05-23T18:05",
+          "service": "Emergency Medicine",
+          "reason": "unusual behavior, muttering, not keeping up with responsibilities",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-23T12:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-05-23T12:45", "results": [{"test": "Drug screen, urine", "loinc": "54247-2", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-05-23T11:50"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-05-27T13:40", "body": "OUTSIDE EMERGENCY DEPARTMENT RECORD\nRegional hospital ED, 05/23/2026.\n\nCC: increasingly unusual behavior.\n\nHPI: 23-year-old woman, third ED visit since February for progressive psychotic symptoms (social withdrawal, thought broadcasting, hearing voices, persecutory beliefs). Roommate brought her in. Over roughly three months she has become more isolated and mutters to herself in her room for hours. She let her work responsibilities slide and then stopped going in at all. Roommate describes laughing at odd moments and reacting to things no one else sees. It is hard to hold a conversation with her; she skips from one unrelated subject to another. She has stopped showering, and her hair and clothes are unwashed.\n\nProblems: schizophreniform disorder; seasonal allergic rhinitis; acne vulgaris.\nHome meds (as reported): cetirizine, drospirenone/ethinyl estradiol, clindamycin gel.\nAllergies: penicillin; dust mites.\nFH: maternal uncle schizophrenia; paternal grandmother bipolar I; mother GAD.\nSocial: never smoker; alcohol 1-2 drinks on weekends.\n\nExam: minimal eye contact, flat affect, speech mumbled with loose associations. Neuro: cranial nerves intact, strength and sensation normal, gait steady; nonfocal.\n\nResults: urine drug screen negative. BMP within normal limits.\n\nImpression: schizophreniform disorder, progressive.\nDisposition: discharged home with roommate. Outpatient psychiatry intake appointment arranged for early June. No medications started.\n\nReceived 05/27/2026."},
+            {"type": "Outside Records", "title": "ED record filed", "author": "front desk", "date": "2026-05-27T13:45", "body": "Third outside ED record (05/23/2026) received and filed. PCP notified."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T10:00",
+          "service": "Psychiatry",
+          "reason": "initial psychiatric evaluation",
+          "procedures": [{"procedure": "Psychiatric diagnostic evaluation with medical services", "performed": "2026-06-09T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Initial Evaluation", "author": "psychiatry", "date": "2026-06-12T15:20", "body": "OUTPATIENT PSYCHIATRY\nInitial evaluation, seen 06/09/2026.\n\nReason for referral: first-episode psychosis after three ED visits (February, March and May 2026).\n\nHistory: 23-year-old woman, undergraduate biology student, until this winter also working part time as a barista; she has stopped attending classes. Over the past several months she has withdrawn from friends, stopped working and spends most of the day in her room. She endorses hearing voices that remark on what she does and a belief that others can hear her thoughts; she still feels she is being watched. Workup in the ED, including blood counts, chemistries, TSH and repeated urine drug screens, was unrevealing. No prior psychiatric treatment. Denies substance use; weekend alcohol only, never smoker. Lives with her roommate; her mother came to today's appointment and is involved.\n\nFamily psychiatric history: maternal uncle with schizophrenia; paternal grandmother with bipolar I disorder; mother with generalized anxiety disorder.\n\nMedical: seasonal allergic rhinitis, acne. Meds: cetirizine 10 mg daily, drospirenone/ethinyl estradiol daily, clindamycin 1% gel. Allergies: penicillin; dust mites.\n\nMSE: poorly groomed, limited eye contact, flat affect, speech soft with tangential stretches, perceptual disturbances endorsed, persecutory content, no suicidal or homicidal ideation, insight limited.\n\nDiagnosis: schizophreniform disorder.\n\nPlan:\n1. Start aripiprazole 5 mg by mouth once daily. Reviewed common side effects including restlessness, and the reason for an antipsychotic. Patient and mother agree.\n2. Weight and metabolic monitoring will be followed here.\n3. Return in 6 weeks, sooner if worse. Crisis line numbers given.\n\nPlease contact our office with any concerns. cc: primary care physician."},
+            {"type": "Outside Records", "title": "Psychiatry letter filed", "author": "front desk", "date": "2026-06-12T15:25", "body": "Outpatient psychiatry initial evaluation letter received and filed. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "specialist_visit",
+          "start": "2026-07-21T14:30",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Follow-up", "author": "psychiatry", "date": "2026-07-24T11:00", "body": "OUTPATIENT PSYCHIATRY\nFollow-up, seen 07/21/2026.\n\nYolanda returns six weeks after starting aripiprazole 5 mg daily, with her mother. Taking it every evening; her mother has been helping her keep track. Voices come less often now and bother her less when they do. No restlessness, no stiffness or tremor. Weight unchanged from the first visit.\n\nMSE: casually dressed, better groomed than at intake, eye contact improved but still brief, affect restricted, speech more organized, no suicidal ideation.\n\nAssessment: schizophreniform disorder, partial response to aripiprazole, tolerating well.\nPlan: continue aripiprazole 5 mg daily. Return in about 6 weeks.\n\ncc: primary care physician."},
+            {"type": "Outside Records", "title": "Psychiatry letter filed", "author": "front desk", "date": "2026-07-24T11:05", "body": "Psychiatry follow-up letter received and filed."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T18:22",
+          "reason": "wants appointment, contraceptive refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Appointment and refill", "author": "patient", "date": "2026-08-11T18:22", "body": "Hi, it's been a long time. I've been having a hard year and I'm seeing a psychiatrist now. My mom says I should come back in and see you. Also I'm almost out of my birth control. Can I make an appointment?"},
+            {"type": "Patient Message", "title": "RE: Appointment and refill", "author": "PCP", "date": "2026-08-11T20:05", "body": "Hi Yolanda, I'm really glad you wrote. I've received the records from your hospital visits and your psychiatrist's letters. I sent 3 months of your birth control to your pharmacy tonight so you won't run out. Our front desk will reach out to set up a visit with me in the next few weeks; bring your current medicines with you."},
+            {"type": "Patient Message", "title": "Visit scheduled", "author": "front desk", "date": "2026-08-12T09:30", "body": "You're scheduled for Thursday, September 17 at 10:40. Reply here if you need a different time."}
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visits and psychiatric care, medication review",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

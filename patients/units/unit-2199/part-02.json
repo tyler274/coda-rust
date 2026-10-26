@@ -1,0 +1,191 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002199",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-21T13:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2025-01-21T13:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-01-21T13:45"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-21T13:20"},
+            {"procedure": "Immunization administration", "performed": "2025-01-21T13:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2025-01-21T14:00", "body": "Winter check-in. Holidays were quiet. Took the first shingles shot hard, sore and wiped out about a day, game for #2 anyway. Smoking unchanged. No chest discomfort, breathing ok on stairs, legs fine walking.\nExam: BP/HR flowsheet. Cor regular, lungs clear. Feet warm, no breaks in skin, pulses diminished both, monofilament intact.\nPlan: A1c + BMP. Shingrix #2 today, series done. Continue amlodipine, metformin, atorvastatin 40, ASA. Eye exam due in Feb - reminded. RTC spring."}
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "outside_records",
+          "start": "2025-03-04T10:10",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic eye examination", "author": "optometry", "date": "2025-03-04T10:10", "body": "Annual diabetic eye exam, 02/26/2025.\nBest corrected acuity 20/25 right, 20/20 left. Pressures normal. Dilated exam both eyes: no diabetic retinopathy, maculae flat and dry, optic nerves healthy.\nNo known drug allergies.\nRecommend dilated exam yearly."}
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "portal_message",
+          "start": "2025-04-29T07:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Right eye going dark", "author": "patient", "date": "2025-04-29T07:48", "body": "Morning. Something odd the last week or so. A few times my right eye goes black from the top down like a shade, stays that way a couple minutes, then it's back like nothing happened. Feel fine otherwise. Is this something or nothing?"}
+          ]
+        },
+        {
+          "id": "2025-04-29b",
+          "kind": "telephone",
+          "start": "2025-04-29T08:35",
+          "orders": [{"id": "cards-amaurosis", "action": "placed", "order": "Cardiology referral, urgent", "category": "referral", "to": "Cardiology", "reason": "transient monocular vision loss, right eye"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call re: transient vision loss", "author": "PCP", "date": "2025-04-29T08:50", "body": "Called him after his message. Episodes of right-eye blackout lasting minutes, several over about a week, full recovery each time. None now. Denies double vision, weakness, numbness, trouble speaking or facial droop.\nDiscussed that this can be a warning sign of a stroke. Offered ED evaluation today; he prefers not unless it happens again. The vascular clinic at the outside cardiology group that does our PAD patients can see him Monday 5/5 - urgent referral sent and call placed to their scheduler. Told him to take his aspirin every day and to call 911 for any episode with weakness, speech change or one that doesn't clear. He repeated that back."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology visit",
+          "conditions": [{"label": "Transient ischemic attack", "action": "diagnosed", "onset": "2025-04-21", "note": "amaurosis fugax, right eye; per outside cardiology, letter pending"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-10T10:40"}],
+          "orders": [
+            {"id": "cards-amaurosis", "action": "done", "date": "2025-06-10T10:40"},
+            {"id": "records-cards-2025", "action": "placed", "order": "Records request, outside cardiology", "category": "procedure", "reason": "consult letter 5/5/25 not received"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2025-06-10T11:10", "body": "Saw cardiology vascular clinic 5/5. We do not have their note yet. Per Walter: they told him the eye spells were a mini-stroke affecting the eye, his eye exam there was normal, and to keep taking the baby aspirin every day, no new pills. He hasn't had more since. Also mentions they said his cholesterol and sugar were up on their bloodwork.\nNo weakness, numbness or speech trouble.\nExam: BP/HR flowsheet. Alert, speech fluent, face symmetric, strength full and equal, gait normal. Cor RRR. Lungs clear.\nA/P\n1. TIA, amaurosis fugax R eye - per cardiology, continue aspirin 81. Added to problem list. Will review their plan when the letter comes. Records request sent.\n2. Tobacco - this is the conversation to have. Strong advice to quit; offered varenicline or patches again. He says he'll cut down on his own.\n3. DM2/HTN/HLD - their labs pending to us.\nRTC Sept for wellness visit."}
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "outside_records",
+          "start": "2025-06-23T14:30",
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-05-05T11:40", "results": [{"test": "Low Density Lipoprotein", "value": 112}]},
+            {"panel": null, "collected": "2025-05-05T11:40", "results": [{"test": "Hemoglobin A1c", "value": 8.2}]}
+          ],
+          "orders": [{"id": "records-cards-2025", "action": "done", "date": "2025-06-23T14:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Outside cardiology consultation (vascular clinic)", "author": "cardiology", "date": "2025-06-23T14:30", "body": "OUTSIDE CARDIOLOGY - VASCULAR CLINIC CONSULTATION\nDate of service: 05/05/2025\nReferring: primary care\nReason: transient monocular visual loss, right eye\n\nHPI: 66-year-old man with PAD (prior right fem-pop bypass), hypertension, type 2 diabetes and hyperlipidemia. Over about two weeks he has had several spells in which vision in the right eye is lost as if a curtain is lowered, each lasting a few minutes, with complete recovery. He also notes occasional lightheadedness and mild headaches. No double vision, fainting, or arm or leg weakness.\nMeds: amlodipine, metformin; atorvastatin 40 mg nightly; aspirin 81 mg daily.\nAllergies: NKDA.\nFamily: father MI age 54, sudden cardiac death age 61; mother ischemic stroke age 74, hypertension; older brother diabetes and hypertension.\nSocial: smokes 1 pack daily; social alcohol.\n\nExam: BP 158/92, pulse 76. Fundi normal between episodes. Neurologic examination nonfocal.\nLabs (drawn today): LDL 112 mg/dL, above goal. HbA1c 8.2%, above target.\n\nImpression: Transient ischemic attack manifesting as amaurosis fugax, right eye.\nPlan: antiplatelet therapy - continue aspirin 81 mg daily; no additional agent. Smoking cessation strongly advised. Risk factors to be addressed with primary care. Return as needed.\n\nThank you for this referral."},
+            {"type": "Progress Notes", "title": "Outside records review", "author": "PCP", "date": "2025-06-24T08:05", "body": "Cardiology letter from 5/5 reviewed, finally in. TIA (amaurosis fugax R) confirmed, aspirin alone. LDL 112, A1c 8.2 on their draw. BP 158/92 there; ours 6/10 was fine. Will go over at September visit."}
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "pharmacy",
+          "start": "2025-08-05T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2025-08-05T09:15", "body": "Mail-order pharmacy renewal request for metformin 1000 BID and atorvastatin 40 nightly, 90 days. Seen 6/10. Approved per refill protocol, 1 refill each."}
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Low Density Lipoprotein": 104}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T09:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-16T09:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-09-16T09:45", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-16T09:40"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-09-16T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-09-16T09:00"},
+            {"procedure": "Immunization administration", "performed": "2025-09-16T09:40"}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung cancer screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-09-16T10:00", "body": "Subsequent AWV.\nInterval: TIA (R amaurosis fugax) in spring, cardiology kept him on aspirin. No further eye spells. No falls. Still driving short distances, independent at home. Mood good, PHQ-2 0. Recall 3/3.\nTobacco: still about a pack a day. We talked about the eye spell being a warning; he says he knows. Declines medication again.\nAdvance directive: still hasn't filled out the forms.\nPrevention: flu high-dose and 2025-26 COVID today. Lung CT due - ordered. Colonoscopy due 2028. Vaccines otherwise up to date (PCV20, Tdap 2017, Shingrix x2, RSV).\nExam: vitals charted. Heart regular, no murmur. Lungs clear. Neuro grossly nonfocal. Feet warm, intact, pulses diminished as before.\nLabs: CMP, lipids, urine microalbumin. A1c at next visit.\nPersonalized prevention plan printed."}
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "telephone",
+          "start": "2025-10-13T10:05",
+          "orders": [{"id": "records-hosp-2025", "action": "placed", "order": "Records request, outside hospital", "category": "procedure", "reason": "ED and inpatient records 10/8-10/11/25"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pt call - recent hospitalization", "author": "RN", "date": "2025-10-13T10:20", "body": "Pt called to let us know he was admitted 10/8 through Saturday 10/11 at an outside hospital for a heart attack. Says they did a heart cath and put in a stent. Came home with new pills, reading off bottles: clopidogrel 75 daily, metoprolol succinate 25 daily, atorvastatin 80 (told to stop the 40s), nitroglycerin under the tongue as needed. Still on amlodipine, metformin, aspirin. Has not needed the nitro. No chest pain today. Feels tired.\nWe have no records - request sent to hospital. Post-hospital visit booked with PCP 10/21. Advised to bring all bottles. Reviewed 911 for chest pain not relieved by 1 nitro in 5 min."},
+            {"type": "Telephone Encounter", "title": "PCP review", "author": "PCP", "date": "2025-10-13T12:10", "body": "Noted. Agree with plan. Will reconcile meds at the visit next week."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "office_visit",
+          "start": "2025-10-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, heart attack",
+          "conditions": [{"label": "Non-ST elevation (NSTEMI) myocardial infarction", "icd10": "I21.4", "action": "diagnosed", "onset": "2025-10-08", "note": "outside admission 10/8-10/11/25; stent per patient"}],
+          "medications": [
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "stop", "reason": "increased to 80 mg in hospital"},
+            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary disease after NSTEMI"},
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 75, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "after coronary stent"},
+            {"drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "after NSTEMI"},
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "historical", "sig": "Dissolve 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "chest pain"}
+          ],
+          "state": {"bp": [128, 78], "weight_kg": 90.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-10-21T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-10-21T09:45", "body": "TCM visit. RN contact 10/13 (within 2 business days of discharge).\nHospital records not yet received. History from patient: on 10/8 he had several hours of a pressing, tight feeling in the middle of his chest that went into his left shoulder at times; drove himself to the ED (we discussed that). Told he had a heart attack without the full ST elevation type, kept in the cardiac unit on a heparin drip, then cath the next day with one stent. Home Saturday.\nSince: tired, no chest pain, hasn't used nitro, no breathlessness, no bleeding or black stools. Cardiac rehab is calling him to set up. Cardiology follow-up 11/12.\nMeds reconciled from bottles:\n- aspirin 81 daily\n- clopidogrel 75 daily\n- atorvastatin 80 nightly (40 stopped)\n- metoprolol succinate 25 daily\n- amlodipine 10 daily\n- metformin 1000 BID\n- nitroglycerin 0.4 SL prn\nExam: BP/HR flowsheet, pulse slower on the beta blocker. Comfortable. Right radial site healed. Cor RRR, no murmur or rub. Lungs clear. No edema.\nA/P\n1. NSTEMI s/p stent - DAPT, high-intensity statin, BB per cardiology. Don't stop clopidogrel without talking to cardiology. Nitro use reviewed. Rehab - encouraged to go.\n2. Tobacco - discussed plainly that this is the single biggest thing he can change. Offered varenicline, patch, quitline. Declines meds, says he'll cut back. Will keep asking.\n3. HTN - lower now with metoprolol added.\n4. DM2 - A1c in January.\nHospital records re-requested."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T15:00",
+          "labs": [
+            {"panel": null, "collected": "2025-10-08T14:25", "results": [{"test": "Troponin I, High Sensitivity", "value": 1240}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-10-08T14:15", "text": "Sinus rhythm. Normal axis. ST-segment depression in the lateral leads. No ST elevation. No prior tracing for comparison.", "conclusion": "Lateral ST depression, consistent with ischemia in the clinical setting."},
+            {"study": "Transthoracic echocardiogram", "performed": "2025-10-09T15:30", "text": "Left ventricle normal in size and wall thickness. Left ventricular ejection fraction 55%. Right ventricle normal in size and function. Valves without significant stenosis or regurgitation. No pericardial effusion.", "conclusion": "Normal biventricular function, LVEF 55%."}
+          ],
+          "procedures": [{"procedure": "Coronary stent placement, single vessel", "performed": "2025-10-09T11:20"}],
+          "orders": [{"id": "records-hosp-2025", "action": "done", "date": "2025-11-18T15:00"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Outside emergency department record", "author": "emergency medicine", "date": "2025-11-18T15:00", "body": "EMERGENCY DEPARTMENT NOTE - outside hospital\nVisit date: 10/08/2025, arrival 14:05\nCC: chest discomfort\nHPI: 66 y/o M with PAD, HTN, DM2, HLD and a TIA this spring. Several hours of a tight, squeezing pressure behind the breastbone, at times spreading to the left shoulder.\nHome meds: amlodipine 10 mg daily, metformin 1000 mg BID with meals, atorvastatin 40 mg at bedtime, aspirin 81 mg daily.\nAllergies: NKDA.\nFH: father MI at 54, died suddenly at 61; mother stroke at 74, HTN; brother DM2, HTN.\nSH: tobacco use.\nData: high-sensitivity troponin I 1,240 ng/L. ECG with ST depressions laterally.\nMDM: Non-ST-elevation MI. Aspirin given, clopidogrel load, heparin infusion started, cardiology consulted.\nDisposition: admitted to CCU."},
+            {"type": "Discharge Summary", "title": "Outside hospital discharge summary", "author": "cardiology", "date": "2025-11-18T15:00", "body": "DISCHARGE SUMMARY - outside hospital\nAdmitted 10/08/2025, discharged 10/11/2025.\nDiagnosis: NSTEMI.\nCourse: Admitted to the CCU on dual antiplatelet therapy (aspirin plus clopidogrel 600 mg load, then 75 mg daily), atorvastatin 80 mg, beta-blocker, and IV unfractionated heparin by weight-based protocol. aPTT the next morning was in the therapeutic range. Coronary angiography 10/09 via right radial access: 90% stenosis of the mid left circumflex, treated with one drug-eluting stent with an excellent result; no other flow-limiting stenosis. Heparin stopped after the procedure. Echocardiogram LVEF 55%. Telemetry without arrhythmia. Ambulating without symptoms by day 3.\nDischarge medications: aspirin 81 mg daily; clopidogrel 75 mg daily for 12 months, do not interrupt without cardiology input; atorvastatin 80 mg daily; metoprolol succinate 25 mg daily; nitroglycerin 0.4 mg SL PRN chest pain; amlodipine 10 mg daily; metformin 1000 mg BID.\nAllergies: NKDA.\nFollow-up: cardiology 4-6 weeks; PCP 1-2 weeks; cardiac rehabilitation referral placed. Smoking cessation counseled."},
+            {"type": "Progress Notes", "title": "Outside records review", "author": "PCP", "date": "2025-11-19T08:30", "body": "Hospital records 10/8-10/11 reviewed. Mid LCx DES. EF 55%. Discharge meds match what we reconciled 10/21. Clopidogrel planned 12 months (to ~10/2026)."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "imaging",
+          "start": "2025-12-09T12:50",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-12-09T12:50", "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (annual)\nComparison: 11/13/2024 and 11/08/2023.\nFindings: No pulmonary nodule. Lungs clear. No effusion. Heart size normal; coronary stent noted. No adenopathy.", "conclusion": "Lung-RADS 1: negative. Continue annual screening."}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-12-09T12:50"}]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "outside_records",
+          "start": "2025-12-19T11:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiac rehabilitation progress report", "author": "cardiac rehabilitation", "date": "2025-12-19T11:30", "body": "CARDIAC REHABILITATION - 30-day progress report\nDiagnosis: NSTEMI with PCI to LCx, 10/2025.\nEnrolled 11/2025, attending most scheduled sessions (missed a few for snow). Treadmill and bike, gradually increased workload. No angina, arrhythmia or abnormal BP response during exercise. Allergies: NKDA.\nRisk factors: continues to smoke; referred to our cessation counselor, declined.\nPlan: continue program, reassess at 60 days."}
+          ]
+        }
+      ]
+    }
+  ]
+}

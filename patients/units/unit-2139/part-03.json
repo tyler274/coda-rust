@@ -1,0 +1,295 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002139",
+      "events": [
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology",
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Valve-related hemolysis; started by cardiology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.6,
+              "Hematocrit": 32.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-21T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-21T11:00",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 318
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-21T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-01-21T11:25",
+              "body": "F/u hemolysis. Cardiology letter not received; per pt, December echo showed the mechanical aortic valve functioning normally without paravalvular leak, and they attributed the hemolysis to the valve itself, mild. Started folic acid 1 mg daily, added to our list as an outside start. Requested the cardiology note.\n\nEnergy better. No dark urine since November. Stairs fine again. No bleeding.\n\nExam: BP/HR charted. Color better. Valve click, irregular rhythm at a controlled rate. Lungs clear. No edema.\n\nA/P: valve-related hemolytic anemia, improving. CBC and LDH today. Other problems stable, meds unchanged. See in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "portal_message",
+          "start": "2026-01-23T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "author": "PCP",
+              "date": "2026-01-23T09:30",
+              "body": "Hemoglobin up to 10.6 and LDH down to 318. Heading the right way. Keep taking the folic acid."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "pharmacy",
+          "start": "2026-02-18T14:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Atorvastatin refill",
+              "author": "MA",
+              "date": "2026-02-18T14:45",
+              "body": "Pharmacy requested atorvastatin 40 mg #90. Last lipids 9/2025 at goal. Refilled x1."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "portal_message",
+          "start": "2026-04-06T12:15",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Moving my appointment",
+              "author": "patient",
+              "date": "2026-04-06T12:15",
+              "body": "Can I push my April 15 appointment back a week or so? Work audit that week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Moving my appointment",
+              "author": "front desk",
+              "date": "2026-04-06T15:00",
+              "body": "Done, you are now Friday April 24 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "office_visit",
+          "start": "2026-04-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.1,
+              "Hematocrit": 33.6,
+              "Prothrombin Time-International Normalized Ratio": 2.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-24T09:40",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 296
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-24T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-04-24T10:05",
+              "body": "3-mo f/u.\n\nFeels like himself. Back to daily walks. Urine normal color. No bruising, no nosebleeds. Anticoag clinic visits every 4 weeks now, in range. Taking folic acid. Cardiology note still not in; he has a cardiology visit planned for the summer.\n\nMeds: warfarin per clinic, metoprolol succinate 100, ASA 81, atorvastatin 40, lisinopril 20, pantoprazole 40, folic acid 1.\n\nExam: vitals as charted, BP at goal. Valve click crisp, irregularly irregular, rate 70s. Lungs clear. Abdomen soft. No edema.\n\nA/P\n- Valve-related hemolytic anemia: CBC, LDH today.\n- Mechanical AVR/AF on warfarin: INR today as well, clinic continues.\n- HTN/CAD/HLD: stable, BMP today; lipids at the fall physical.\n- GERD: stable.\nNext visit September; LDCT due in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T08:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Friday's labs",
+              "author": "PCP",
+              "date": "2026-04-27T08:20",
+              "body": "Hemoglobin 11.1, better again. LDH 296, only slightly above normal now. INR 2.5 and kidney labs normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "pharmacy",
+          "start": "2026-06-10T11:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Metoprolol and lisinopril refill",
+              "author": "MA",
+              "date": "2026-06-10T11:05",
+              "body": "90-day metoprolol succinate 100 mg and lisinopril 20 mg requested. Seen 4/24. Approved x1 each."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T18:35",
+          "reason": "Vaccine question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall shots",
+              "author": "patient",
+              "date": "2026-08-12T18:35",
+              "body": "Should I get the flu shot at my September appointment or at the pharmacy? Also still on for the 14th?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall shots",
+              "author": "RN",
+              "date": "2026-08-12T20:00",
+              "body": "Hi Norman, you are confirmed for September 14 at 9:30. We should have this season's flu vaccine by then, so we can give it at that visit. The COVID shot can be done at the pharmacy whenever it is out."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T09:30",
+          "appointment": "booked",
+          "reason": "Routine follow-up"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001730",
+      "given": "Maya",
+      "family": "Klein",
+      "birth_date": "1991-02-23",
+      "address_line": "212 Cape Street",
+      "phone": "+1-413-555-0122",
+      "email": "maya.klein@example.test",
+      "marital_status": "married",
+      "summary": "Librarian in her thirties with type 1 von Willebrand disease, Kallmann syndrome on hormone replacement, and chronic iron deficiency, who conceives twice through ovulation induction. Her first vaginal birth in 2023 brings a uterine inversion, two hemorrhages and a D&C; a 2025 cesarean bleeds again. The low cortisol and free T4 flagged in 2023 go unpursued until endocrinology names postpartum hypopituitarism in June 2026.",
+      "events": [
+        {
+          "id": "2022-05-10a",
+          "kind": "establish_care",
+          "start": "2022-05-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {"label": "Von Willebrand disease", "action": "diagnosed", "onset": "2004-06-01", "note": "Type 1; lifelong easy bruising and nosebleeds"},
+            {"label": "Kallmann syndrome", "icd10": "E23.0", "action": "diagnosed", "onset": "2008-03-01", "note": "Isolated hypogonadotropic hypogonadism with anosmia; on estrogen-progestin replacement"},
+            {"label": "Iron deficiency anemia", "action": "diagnosed", "onset": "2015-01-01", "note": "Chronic, on oral iron"},
+            {"label": "Female infertility", "action": "diagnosed", "onset": "2008-03-01", "note": "Due to hypogonadotropic hypogonadism; needs ovulation induction"}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Iron deficiency anemia"},
+            {"drug_text": "desmopressin acetate 0.15 MG/ACTUAT Metered Dose Nasal Spray", "action": "historical", "sig": "1 spray (150 mcg) in one nostril as needed for bleeding episodes", "dose": {"value": 150, "unit": "mcg"}, "frequency": "PRN", "route": "Nasal", "course": "chronic", "reason": "Von Willebrand disease"},
+            {"drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily, continuously", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hormone replacement for hypogonadism"},
+            {"drug_text": "cholecalciferol 0.05 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 2000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "Latex", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 57.0, "height_cm": 165.0, "bp": [104, 64], "labs": {"Hemoglobin": 11.4, "Ferritin": 9, "Iron": 34, "Transferrin Saturation": 8, "Total Iron-Binding Capacity": 425, "Mean Corpuscular Volume": 79}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink alcohol"},
+            {"item": "Occupation", "value": "Librarian"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-05-10T10:05", "results": [{"test": "Hemoglobin", "value": 11.4}, {"test": "Platelets"}]},
+            {"panel": "Iron Studies", "collected": "2022-05-10T10:05", "results": [{"test": "Ferritin", "value": 9}, {"test": "Iron"}, {"test": "Transferrin Saturation"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-05-10T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-05-10T10:05", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.8}]},
+            {"panel": "Lipid Panel", "collected": "2022-05-10T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-05-10T10:05", "results": [{"test": "25-hydroxy Vitamin D", "value": 31}]},
+            {"panel": null, "collected": "2022-05-10T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-05-10T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-05-10T09:20"},
+            {"procedure": "Venipuncture", "performed": "2022-05-10T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-05-10T09:20", "body": "NEW PATIENT VISIT\n\nMs. Klein is a 31-year-old librarian moving her care here; her old office was an hour's drive and she wanted one closer to home in Goshen. She and her husband would like to start a family this year and she already has a reproductive endocrinology consult on the calendar for next month.\n\nHISTORY\n- Von Willebrand disease, type 1. Bruised easily and had a lot of nosebleeds as a child; worked up and diagnosed around age 13. Follows with a hematologist who prescribes nasal desmopressin. She uses it a few times a year for nosebleeds that won't stop. Never needed a transfusion.\n- Kallmann syndrome. No puberty by 17 and has never been able to smell much; diagnosed then with hypogonadotropic hypogonadism. Has been on continuous estrogen-progestin replacement since. Understands she will need ovulation induction to conceive.\n- Iron deficiency anemia for years, on ferrous sulfate daily. Tolerates it with some constipation.\n- Surgical: none.\n\nMEDICATIONS: ferrous sulfate 325 mg daily; desmopressin nasal 150 mcg PRN bleeding; ethinyl estradiol 5 mcg / norethindrone acetate 1 mg one tab daily; vitamin D3 2000 IU daily.\nALLERGIES: latex causes a contact rash. No drug allergies.\n\nFAMILY HISTORY: Mother has type 1 vWD too, with heavy periods that ended in a hysterectomy at 42. Father went through puberty late (about 16) and has a poor sense of smell; his doctors thought he probably carries a milder form of the same condition. One sister has primary infertility and lost her periods.\n\nSOCIAL: Married. Works at a public library. Never smoked, does not drink.\n\nROS: Energy fair. Occasional nosebleeds. No melena. Otherwise negative.\n\nEXAM: Thin, well appearing. Vitals as recorded. HEENT unremarkable. Neck supple, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: a couple of small bruises on the shins, no petechiae. Neuro grossly intact.\n\nASSESSMENT / PLAN\n1. Iron deficiency anemia, chronic - CBC, iron studies today. Continue iron.\n2. vWD type 1 - stable. Will need a delivery plan with obstetrics and her hematologist once pregnant. Requesting hematology records.\n3. Kallmann syndrome / infertility - REI consult next month. Continue hormone replacement until they say otherwise.\n4. Health maintenance - CMP, TSH, lipids, vitamin D; HIV and hep C screening once, she agrees. Pap last year at old practice, normal per patient; records requested. PHQ-2 0.\n\nReturn after the REI visit or sooner as needed."}
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "portal_message",
+          "start": "2022-05-12T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent labs", "author": "PCP", "date": "2022-05-12T16:40", "body": "Hi Maya, your labs are back. Hemoglobin is 11.4, a little low, and your ferritin (iron stores) is 9, which is low - consistent with the iron deficiency you've had for years. Please keep taking the iron every day; taking it with a little orange juice and away from tea or coffee helps it absorb. Kidney, liver, thyroid, cholesterol and vitamin D are all fine, and the HIV and hepatitis C screens are negative. Good luck at your REI appointment."}
+          ]
+        },
+        {
+          "id": "2022-05-18a",
+          "kind": "outside_records",
+          "start": "2022-05-18T11:10",
+          "reason": "Records from prior primary care and hematology",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2022-05-18T11:10", "body": "RECORDS FROM PRIOR PRIMARY CARE OFFICE (summary sheet and last two visit notes)\n\nProblem list: von Willebrand disease type 1 (hematology follows); Kallmann syndrome on HRT; iron deficiency anemia.\nMedications: ferrous sulfate 325 mg daily, desmopressin nasal spray PRN bleeding, ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily, vitamin D3 2000 IU daily.\nAllergy: latex (contact dermatitis).\nScreening: cervical cytology 2021, negative for intraepithelial lesion. Immunizations per state registry, COVID primary series complete.\nLast visit note: routine follow-up, hemoglobin in the low 11s on iron, no changes made."},
+            {"type": "Outside Records", "title": "Hematology Summary Letter", "author": "hematology", "date": "2022-05-18T11:10", "body": "Outside hematology - summary for new primary care physician\n\nThis 31-year-old woman has been followed here for type 1 von Willebrand disease since her early teens. Her bleeding history has been mucocutaneous: easy bruising and recurrent epistaxis. She responds to desmopressin and keeps an intranasal spray at home for nosebleeds that do not settle with pressure. She has not needed factor concentrate or transfusion.\n\nShe has told us she plans a pregnancy through reproductive endocrinology. When she is pregnant, her obstetric team should contact us so a delivery plan can be made. Avoid NSAIDs and aspirin. Latex allergy noted.\n\nPlease contact our office with questions."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-24T09:30",
+          "reason": "Reproductive endocrinology consultation",
+          "documents": [
+            {"type": "Consult Note", "title": "Reproductive Endocrinology Consultation", "author": "reproductive endocrinology", "date": "2022-06-24T09:30", "body": "REPRODUCTIVE ENDOCRINOLOGY - NEW CONSULTATION\nDate of visit: 2022-06-21\n\nReason: desires conception; known Kallmann syndrome.\n\nMs. Klein, 31, has isolated hypogonadotropic hypogonadism with anosmia, diagnosed at 17, maintained on continuous ethinyl estradiol/norethindrone. She has never ovulated spontaneously. Her husband's evaluation is pending. Type 1 von Willebrand disease is followed by hematology. Iron deficiency on oral iron. Latex allergy - our procedure rooms are latex-free.\n\nImpression: hypogonadotropic infertility, a good candidate for gonadotropin ovulation induction.\n\nPlan:\n- Gonadotropin ovulation induction with ultrasound and estradiol monitoring here, then an hCG trigger.\n- Stop the hormone replacement once we schedule the first stimulation cycle; we will tell her when.\n- We will keep her primary care physician updated."}
+          ]
+        },
+        {
+          "id": "2022-07-28a",
+          "kind": "telephone",
+          "start": "2022-07-28T13:15",
+          "medications": [
+            {"drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet", "action": "stop", "reason": "Held for ovulation induction cycle"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Medication update - REI cycle", "author": "RN", "date": "2022-07-28T13:15", "body": "Pt called to update her med list. REI is starting her first stimulation cycle next week and told her to stop the estradiol/norethindrone tablet as of today. Taken off active list. Iron and vit D continue. Pt aware to call with any bleeding concerns since desmopressin is still at home."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "portal_message",
+          "start": "2022-10-11T19:52",
+          "conditions": [
+            {"label": "Supervision of high risk pregnancy", "icd10": "O09.90", "action": "diagnosed", "onset": "2022-10-08", "note": "Conceived with gonadotropin ovulation induction; von Willebrand disease"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Good news", "author": "patient", "date": "2022-10-11T19:52", "body": "Hi - just wanted you to know the REI office called today and my blood test is positive! We're over the moon. They'll do an ultrasound in a couple of weeks. Is there anything I should stop taking? I'm on iron and vitamin D. Also do I still get a flu shot?"},
+            {"type": "Patient Message", "title": "RE: Good news", "author": "PCP", "date": "2022-10-12T08:10", "body": "Congratulations to you both! Keep the iron and vitamin D. Use the desmopressin only if you have a bleed that won't stop, and let us or your OB know if you do. Yes - the flu shot is recommended in pregnancy and so is the updated COVID booster. The nurse can give both; the front desk will reach out to schedule."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T15:30",
+          "reason": "Influenza and COVID vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T15:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-20T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2022-10-20T15:30", "body": "About 5 weeks pregnant per pt. Latex allergy - non-latex gloves and bandage used. Flu (quadrivalent) L deltoid and bivalent COVID R deltoid. Pressure held 2 minutes at each site given vWD; no bleeding. Observed 15 min, felt fine, left with husband."}
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "outside_records",
+          "start": "2022-10-31T10:20",
+          "reason": "Reproductive endocrinology update",
+          "documents": [
+            {"type": "Outside Records", "title": "Reproductive Endocrinology Early Pregnancy Note", "author": "reproductive endocrinology", "date": "2022-10-31T10:20", "body": "REPRODUCTIVE ENDOCRINOLOGY\nDate of visit: 2022-10-27\n\nTransvaginal ultrasound today: single intrauterine pregnancy with cardiac activity, size consistent with dates. Conceived on her second stimulation cycle with gonadotropins and an hCG trigger.\n\nShe is released from our care to obstetrics; records sent. We recommended that obstetrics coordinate a delivery plan with her hematologist given von Willebrand disease. Continue iron.\n\nThank you for allowing us to share in her care."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "telehealth_visit",
+          "start": "2022-11-29T12:10",
+          "reason": "Pregnancy check-in, medication review",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2022-11-29T12:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2022-11-29T12:10", "body": "Video visit from her car during her lunch break; identity verified.\n\nAbout 11 weeks along. First OB visit went well. Some nausea, now easing. One nosebleed two weeks ago that stopped with pressure; did not need desmopressin. Bowels a little slow on iron - drinking more water.\n\nMeds reviewed: ferrous sulfate daily, vitamin D3, desmopressin spray PRN. Hormone replacement stopped in July.\n\nA/P:\n- Pregnancy, early, under OB care. Asked her to make sure OB has the hematology letter; she will bring a copy.\n- Iron deficiency - continue iron; OB will follow CBC.\n- vWD - avoid NSAIDs and aspirin.\nWe'll see her again after delivery, or sooner for anything non-obstetric."}
+          ]
+        }
+      ]
+    }
+  ]
+}

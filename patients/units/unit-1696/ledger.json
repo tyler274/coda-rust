@@ -1,0 +1,2944 @@
+{
+  "unit": "unit-1696",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001696",
+      "given": "Maya",
+      "family": "Pereira",
+      "birth_date": "1996-05-22",
+      "address_line": "18 Lyman Hill Road",
+      "phone": "+1-347-555-0171",
+      "email": "maya.pereira@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher who joined in 2021 with autoimmune hypothyroidism, developed type 1 diabetes in May 2022 managed by endocrinology, and had three pregnancies with outside obstetrics: two vaginal deliveries (the second with a macrosomic infant and neonatal hypoglycemia) and a third ending in cord prolapse and emergency cesarean after her last practice visit.",
+      "events": [
+        {
+          "id": "2021-05-18a",
+          "kind": "telephone",
+          "start": "2021-05-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-05-18T15:40",
+              "author": "front desk",
+              "body": "Caller wants to join the practice. Teaches math at the high school, can only come in after 3 pm or during summer break. Currently on thyroid medication through her old doctor, about 3 refills left. Explained membership and that insurance still covers labs and specialists. New patient slot given for 6/8 at 3:30. Release of information form emailed; she returned it signed the same afternoon and it was sent to her prior office."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-01a",
+          "kind": "outside_records",
+          "start": "2021-06-01T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior primary care records received",
+          "conditions": [
+            {
+              "label": "Hypothyroidism",
+              "action": "history",
+              "onset": "2018-03-01",
+              "note": "Autoimmune; thyroid peroxidase antibodies positive at prior practice"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.075 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 75,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2021-06-01T10:15",
+              "author": "outside primary care",
+              "body": "Pages from her previous primary care office, scanned.\n\nProblems: hypothyroidism, autoimmune, first found in March 2018; thyroid peroxidase antibodies positive. Started levothyroxine and settled at 75 mcg daily; TSH in range on that dose at the last two checks.\nMedications: levothyroxine 75 mcg daily.\nAllergies: none known.\nSurgeries: none.\nFamily history: father type 1 diabetes, mother hypothyroidism (autoimmune), sister celiac disease.\nHealth maintenance: Pap smear 2020, negative for intraepithelial lesion. HPV vaccine series completed as a teenager. COVID-19 vaccine (Pfizer) 4/9/2021 and 4/30/2021 per state registry printout.\n\nReviewed and abstracted by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "vitals": {
+            "bp": [
+              109,
+              79
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 63.2,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-06-08T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T16:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-06-08T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 88
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T16:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T16:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T16:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, a glass of wine some weekends"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-06-08T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-08T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-06-08T15:30",
+              "author": "PCP",
+              "body": "25F joining the practice, teaches high school math. Came straight from school.\n\nHPI: Feels well. Hypothyroid since 2018 (antibody positive per old records), on levothyroxine 75 mcg each morning, takes it before coffee, rarely misses. No palpitations, weight stable, energy fine now that the school year is ending.\n\nPMH: hypothyroidism. PSH: none. Meds: levothyroxine 75 mcg daily. Allergies: none known.\nFH: dad has type 1 diabetes, mom hypothyroid, sister has celiac.\nSH: married, no kids yet. Never smoked. Wine on some weekends, a glass or two. No drugs. Runs a couple of times a week.\nGyn: regular cycles. Pap 2020 normal at prior office. HPV series done as a teen.\nImm: COVID x2 this spring.\n\nROS otherwise negative.\n\nExam: vitals as recorded. Well appearing. Thyroid not enlarged, no nodules felt. Heart RRR without murmur. Lungs clear. Abdomen soft. Skin normal. No edema.\nPHQ-9: 2.\n\nA/P\n1. Hypothyroidism, autoimmune: continue 75 mcg. TSH today.\n2. Health maintenance: CBC, CMP, lipids; one-time HIV and hep C screens discussed and drawn. Pap due 2023. Flu shot in the fall.\n3. Given the family history of type 1 diabetes and celiac, reviewed symptoms worth calling about (thirst, urinating a lot, weight loss).\n\nRTC 9 months for a physical, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T07:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-06-10T07:55",
+              "author": "PCP",
+              "body": "Hi Maya, good to meet you on Tuesday. Everything came back normal: thyroid level right where we want it on the 75 mcg, blood counts, kidney and liver tests, cholesterol, and both screening tests (HIV and hepatitis C) negative. No changes. I'll send your levothyroxine to the pharmacy with a year of refills."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-12T15:20",
+              "author": "RN",
+              "body": "Here after school for flu shot. No fever today, no prior reactions. VIS given. Quadrivalent flu 0.5 mL IM left deltoid. Waited 15 minutes, fine, left for parent-teacher night."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-19a",
+          "kind": "pharmacy",
+          "start": "2021-11-19T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside vaccine report",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-17T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2021-11-19T11:05",
+              "author": "pharmacy",
+              "body": "Notification from community pharmacy: Pfizer-BioNTech COVID-19 booster dose administered 11/17/2021, right deltoid. Entered into the immunization record by MA."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "annual_physical",
+          "start": "2022-03-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              83
+            ],
+            "hr": 75,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 63.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-08T16:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-08T16:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-08T16:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-03-08T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-08T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-03-08T15:30",
+              "author": "PCP",
+              "body": "Physical. 25F. No complaints. Busy with a calculus section added this year, sleeping 7 hours. Running less over the winter.\nThyroid: no missed doses, no symptoms.\nMeds: levothyroxine 75 mcg. NKDA.\nSH unchanged: never smoker, occasional wine. FH: father T1DM, mother autoimmune hypothyroid, sister celiac.\nROS negative including thirst, urination, weight change.\n\nExam: vitals reviewed. Well. HEENT normal, thyroid smooth and normal size. Heart regular, no murmur. Lungs clear bilaterally. Abd benign. Ext without swelling. Skin no rashes.\nPHQ-9 1.\n\nA/P: healthy adult with treated hypothyroidism.\n- TSH, CMP, lipids.\n- Pap next year.\n- Flu and COVID up to date for this season.\nFollow up in a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thirst, frequent urination, weight loss",
+          "vitals": {
+            "bp": [
+              115,
+              89
+            ],
+            "hr": 72,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 59.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-10T15:50",
+              "resulted": "2022-05-10T18:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 287
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T15:50",
+              "resulted": "2022-05-10T18:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 10.4
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-05-10T15:45",
+              "resulted": "2022-05-10T16:30",
+              "results": [
+                {
+                  "test": "Urine Glucose",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.021
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2022-05-10T15:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-10T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "New hyperglycemia, suspected autoimmune diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "date": "2022-05-10T15:15",
+              "author": "PCP",
+              "body": "Texted this morning asking to be seen.\n\nS: About 3 weeks of being thirsty all the time, getting up twice a night to pee, and keeping a water bottle on her desk she refills between classes. Pants looser; down about 4 kg from March on our scale. Appetite normal to increased. Some blurry vision at the end of the day. No nausea, vomiting, belly pain or shortness of breath. No fevers. Thyroid pill taken daily.\nFather was diagnosed with type 1 diabetes as an adult, so she recognized the pattern.\n\nO: Vitals as charted, weight 59.4 kg. Looks well, not ill or dry. Breathing comfortable, no fruity odor. Heart regular. Lungs clear. Abdomen soft, nontender.\nUrine dip in office: glucose positive, ketones negative, protein negative.\n\nA/P: new hyperglycemia in a lean 25-year-old with weight loss and a strong autoimmune family history. Type 1 (autoimmune) diabetes is most likely.\n- BMP and A1c sent stat.\n- Called endocrinology directly; they will see her Friday 5/13.\n- Reviewed when to go to the ED: vomiting, abdominal pain, fast breathing, confusion.\n- Plenty of water, avoid sugary drinks.\n\nAddendum 18:55: glucose 287, bicarbonate normal, A1c 10.4%. Called her with results. She is feeling the same, no vomiting. Plan unchanged, keep Friday appointment."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.4,
+            "labs": {
+              "Hemoglobin A1c": 10.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "telephone",
+          "start": "2022-05-11T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in before endocrinology",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse check-in",
+              "date": "2022-05-11T12:10",
+              "author": "RN",
+              "body": "Called pt on her lunch break per PCP. Still thirsty, no vomiting, eating and drinking fine. Confirmed endocrinology Friday 5/13 at 9:00, she has a sub arranged for her morning classes. Faxed yesterday's labs and visit note to endocrinology. ED precautions repeated, she verbalized them back."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "outside_records",
+          "start": "2022-05-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology consult letter",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2022-05-13",
+              "note": "GAD65 antibody positive, low C-peptide; managed by endocrinology"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 16 units under the skin at bedtime",
+              "dose": {
+                "value": 16,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals, 1 unit per 10 grams of carbohydrate",
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-05-16T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology consultation",
+              "date": "2022-05-16T09:20",
+              "author": "endocrinology",
+              "body": "Outside endocrinology, consultation of 05/13/2022, received by fax.\n\nReason for referral: new hyperglycemia (glucose 287 mg/dL, HbA1c 10.4%), referred by her primary care physician.\n\nMs. Pereira is a 25-year-old teacher with three weeks of polyuria, polydipsia and weight loss. Her father has type 1 diabetes; she has autoimmune hypothyroidism on levothyroxine 75 mcg. No ketosis on her office urine.\n\nExam: lean build. No acanthosis. Thyroid normal. No signs of dehydration.\n\nLabs drawn here: GAD65 antibody 48 U/mL (reference <5), positive. C-peptide 0.4 ng/mL with a simultaneous glucose of 241 mg/dL. Tissue transglutaminase IgA negative (screened given her sister's celiac disease).\n\nImpression: type 1 diabetes mellitus, new onset, autoimmune.\n\nPlan:\n1. Insulin glargine 16 units subcutaneously at bedtime.\n2. Insulin lispro with meals, 1 unit per 10 g carbohydrate. Carbohydrate counting session with our diabetes educator completed today.\n3. Fingerstick glucose before meals and at bedtime; log reviewed by phone weekly for now.\n4. Hypoglycemia recognition and treatment taught.\n5. Return in 3 months; A1c through your office is fine.\n6. Annual dilated eye exam recommended.\n\nAllergies: NKDA.\nMedications on our list: levothyroxine 75 mcg daily, insulin glargine, insulin lispro.\n\nThank you for this referral.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "office_visit",
+          "start": "2022-05-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up new type 1 diabetes",
+          "vitals": {
+            "bp": [
+              105,
+              73
+            ],
+            "hr": 84,
+            "spo2": 97,
+            "weight_kg": 61.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-24T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-24T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-05-24T16:05"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-05-24T16:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral-2022",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "Baseline diabetic eye exam"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2022-05-24T15:30",
+              "author": "PCP",
+              "body": "F/u 2 weeks after new type 1 diabetes. Endocrinology letter reviewed (GAD65 positive, C-peptide low; on glargine 16 at bedtime and lispro 1 unit/10 g with meals).\n\nS: Thirst gone within a few days of starting insulin. Fasting sugars still above goal, daytime readings closer. One mild low before lunch after a fire drill made her late to eat; treated with juice, felt fine. Learning to count carbs, using an app. Emotionally \"a lot to absorb\", but her dad has been a good coach. Keeping glucose tabs in her desk.\n\nO: Weight 60.6 kg, up from 59.4. BP and HR as charted. Feet: skin intact, monofilament normal, pulses 2+.\n\nA/P\n1. Type 1 diabetes, new: per endocrinology. Weekly log calls with their educator. Will draw A1c in August before her endo follow-up.\n2. Vaccines indicated with diabetes: PCV20 and hepatitis B (first of three) given today.\n3. Referral for a dilated eye exam this summer.\n4. Hypothyroidism: levothyroxine 75 mcg, stable.\n5. Letter for school nurse to allow snacks/glucose checks in class: done."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "nurse_visit",
+          "start": "2022-06-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-06-24T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-06-24T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hepatitis B dose 2",
+              "date": "2022-06-24T10:30",
+              "author": "MA",
+              "body": "Second hepatitis B vaccine, IM right deltoid. Tolerated the first dose without problems. Third dose due in November, reminder set."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "outside_records",
+          "start": "2022-07-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eye exam report",
+          "orders": [
+            {
+              "id": "ophtho-referral-2022",
+              "action": "done",
+              "date": "2022-07-19T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology eye examination",
+              "date": "2022-07-19T14:00",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology, exam of 07/14/2022.\nIndication: type 1 diabetes, diagnosed 05/2022; baseline exam.\nVisual acuity 20/20 OD, 20/20 OS. Pressures normal. Dilated fundus exam: no diabetic retinopathy either eye; macula flat, no edema. Optic nerves healthy.\nImpression: no diabetic retinopathy.\nPlan: repeat dilated exam in 12 months.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "lab_only",
+          "start": "2022-08-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "A1c before endocrinology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-08-16T07:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-16T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2022-08-16T17:10",
+              "author": "PCP",
+              "body": "Maya, your A1c is down a long way from May. Real progress in three months. I've forwarded it to endocrinology for your visit next week."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.6
+            }
+          }
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "outside_records",
+          "start": "2022-08-24T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology follow-up letter",
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "stop",
+              "reason": "Dose increased by endocrinology"
+            },
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 22 units under the skin at bedtime",
+              "dose": {
+                "value": 22,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology follow-up",
+              "date": "2022-08-24T11:40",
+              "author": "endocrinology",
+              "body": "Endocrinology follow-up, 08/22/2022.\nType 1 diabetes, diagnosed 05/2022. Recent A1c from her primary care office reviewed and much improved.\nMeter download: pre-meal readings in range most of the day, but fasting values persistently above target. Two mild lows in July, both explained by exercise.\nPlan: increase glargine to 22 units at bedtime. Continue lispro 1 unit per 10 g carbohydrate. Discussed continuing to log. Follow-up 6 months.\nAllergies: NKDA. Other meds: levothyroxine 75 mcg daily."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "pharmacy",
+          "start": "2022-09-06T13:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization, insulin pens",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Prior authorization request",
+              "date": "2022-09-06T13:25",
+              "author": "MA",
+              "body": "Pharmacy fax: insurer requires prior authorization for the insulin lispro pens at the new quantity after the dose change. Endocrinology is the prescriber; called their office, they will submit. Pt informed by portal that she has enough pens for about 10 days. 9/8: endo office confirms approval through 9/2023."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2022-10-18T15:20",
+              "author": "RN",
+              "body": "Flu (quadrivalent) left arm and bivalent Pfizer COVID booster right arm. Feeling well, no fever. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "nurse_visit",
+          "start": "2022-11-22T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B dose 3 and A1c",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-11-22T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-22T15:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-22T15:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-11-22T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hepatitis B dose 3, lab draw",
+              "date": "2022-11-22T15:10",
+              "author": "RN",
+              "body": "Third and final hepatitis B dose IM left deltoid; series complete. A1c drawn per PCP standing order. Pt says fasting numbers are better since the glargine increase. No lows needing help from anyone."
+            },
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2022-11-23T08:05",
+              "author": "PCP",
+              "body": "A1c improved again, close to 7 now. Nice work. Copy to endocrinology. Your hepatitis B series is done."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          }
+        },
+        {
+          "id": "2023-02-17a",
+          "kind": "outside_records",
+          "start": "2023-02-17T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology follow-up",
+              "date": "2023-02-17T10:05",
+              "author": "endocrinology",
+              "body": "Endocrinology, visit 02/14/2023.\nType 1 diabetes, about 9 months from diagnosis. A1c from November near goal. Log shows steady fasting values on glargine 22 units at bedtime; meal doses at 1 unit per 10 g carbohydrate working well. Occasional mild lows after afternoon walks, self-treated. No severe hypoglycemia.\nFeet normal. No change in insulin.\nAllergies: NKDA. Meds: insulin glargine 22 units qHS, insulin lispro 1:10 with meals, levothyroxine 75 mcg daily.\nReturn 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "annual_physical",
+          "start": "2023-03-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical and Pap",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 77,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 61.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-14T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-14T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-14T16:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-14T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-14T16:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-14T16:10",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-03-14T15:55",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2023-03-20T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-03-14T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-14T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-14T15:30",
+              "author": "PCP",
+              "body": "Yearly physical, first since her diabetes diagnosis last May.\n\nInterval: type 1 diabetes, followed by endocrinology (glargine 22 at night, lispro by carb ratio). Doing well, no severe lows, feels like it's part of the routine now. Thyroid stable on 75 mcg.\nMeds: insulin glargine 22 units qHS; insulin lispro 1 unit/10 g with meals; levothyroxine 75 mcg daily. NKDA.\nSH: still teaching, coaching math team this spring. Never smoker. Rare wine. Exercise: walks after school.\nGyn: LMP 2 weeks ago, regular. Pap due.\nROS: no vision change, no numbness in feet, no chest symptoms.\n\nExam: vitals as charted. Well. Fundi not examined, has outside eye exams. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft. Feet: skin intact, no calluses, monofilament intact, DP pulses 2+ bilaterally. Insulin sites without lipohypertrophy. Pelvic: normal external genitalia, cervix normal appearing, Pap collected.\nPHQ-9: 2.\n\nA/P\n1. Type 1 diabetes: A1c, urine microalbumin, CMP, lipids today. Eye exam due July.\n2. Hypothyroidism: TSH.\n3. Cervical screening: Pap today.\n4. Imms: flu/COVID current; PCV20 and hep B series done.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.8,
+            "labs": {
+              "Hemoglobin A1c": 6.9,
+              "Microalbumin/Creatinine Ratio": 7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "portal_message",
+          "start": "2023-03-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2023-03-21T07:40",
+              "author": "PCP",
+              "body": "Hi Maya. Pap is normal. A1c is under 7, kidney screen for protein is normal, cholesterol, thyroid, blood counts and chemistries all fine. Next Pap in 3 years. I'll copy endocrinology."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical results",
+              "date": "2023-03-21T19:12",
+              "author": "patient",
+              "body": "Thank you! Happy to finally see a 6 in front of that A1c."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and thyroid follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-06-13T16:05",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:30. Called, voicemail. She texted back at 4:50: finals week, lost track of the day, apologized. Rescheduled to September after school starts."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "outside_records",
+          "start": "2023-07-25T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology eye examination",
+              "date": "2023-07-25T09:30",
+              "author": "ophthalmology",
+              "body": "Ophthalmology annual diabetic exam, 07/20/2023.\nAcuity 20/20 each eye. Anterior segment normal. Dilated exam: retina without hemorrhages, exudates or neovascularization; no macular edema.\nAssessment: type 1 diabetes without retinopathy.\nReturn 1 year. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and thyroid follow-up; planning pregnancy",
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Planning pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              72
+            ],
+            "hr": 87,
+            "spo2": 96,
+            "weight_kg": 63.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-12T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-09-12T15:30",
+              "author": "PCP",
+              "body": "F/u T1DM and hypothyroidism (rescheduled from June).\n\nS: She wants to start trying for a baby this winter. Asking what she should do first. Sugars steady per her, no lows needing help. Thyroid symptoms none.\nMeds: glargine 22 u qHS, lispro 1 u/10 g carbs, levothyroxine 75 mcg. NKDA.\n\nO: vitals as charted. Well appearing. Heart and lungs normal. Feet intact.\n\nA/P\n1. Preconception, with type 1 diabetes and hypothyroidism: start a prenatal vitamin with iron daily now. A1c and TSH today. Asked her to see endocrinology before trying, since tight control before conception matters; she will call them this week. Once pregnant, call us and we'll get her to obstetrics early.\n2. T1DM: per endocrinology.\n3. Hypothyroidism: 75 mcg.\nFlu/COVID next month. RTC after she hears from endocrinology or with a positive test."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.2,
+            "labs": {
+              "Hemoglobin A1c": 6.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "outside_records",
+          "start": "2023-09-28T14:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology preconception letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology preconception visit",
+              "date": "2023-09-28T14:15",
+              "author": "endocrinology",
+              "body": "Endocrinology, 09/26/2023.\nSeen for planning before pregnancy. Type 1 diabetes since 05/2022; your recent A1c is at target for conception. Hypothyroidism on levothyroxine 75 mcg; TSH in range.\nReviewed glucose goals in pregnancy, more frequent checks, earlier and more frequent visits with us once pregnant, and how low blood sugars can become more common in the first trimester.\nNo insulin changes: glargine 22 units at bedtime, lispro 1 unit per 10 g carbohydrate. Already taking a prenatal vitamin.\nAllergies: NKDA.\nPlease have her call when she has a positive test."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T15:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T15:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T15:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2023-10-17T15:15",
+              "author": "MA",
+              "body": "Flu shot left deltoid, updated Pfizer COVID right deltoid. Not pregnant per pt, trying. Both safe either way, reviewed. Left after 15 minutes without issue."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "portal_message",
+          "start": "2023-12-12T06:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2023-12-12T06:48",
+              "author": "patient",
+              "body": "Good morning! Two positive home pregnancy tests this weekend. Last period started November 16. I already messaged endocrinology. What do I do next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Positive test",
+              "date": "2023-12-12T12:20",
+              "author": "PCP",
+              "body": "Congratulations! Come in next week so we can confirm it, check your thyroid, and get you set up with obstetrics. Keep taking the prenatal vitamin. If you have trouble with low sugars before then, call endocrinology the same day."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "office_visit",
+          "start": "2023-12-19T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {
+              "label": "Pre-existing type 1 diabetes mellitus in pregnancy",
+              "action": "diagnosed",
+              "onset": "2023-11-16",
+              "note": "First pregnancy; LMP 2023-11-16",
+              "icd10": "O24.019"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              81
+            ],
+            "hr": 76,
+            "weight_kg": 63.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-19T15:40",
+              "resulted": "2023-12-19T15:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-19T16:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-19T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-19T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-19T16:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Pregnancy with pre-existing type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pregnancy Confirmation",
+              "date": "2023-12-19T15:30",
+              "author": "PCP",
+              "body": "S: LMP 11/16/2023, about 4.5 weeks. Positive home tests. Mild nausea in the evenings, no vomiting, no bleeding or cramping. Sugars running a little lower; she has cut her lunch lispro slightly on endocrinology's advice. Taking prenatal vitamin and levothyroxine daily.\nMeds: glargine 22 u qHS, lispro 1:10 with meals, levothyroxine 75 mcg, prenatal vitamin. NKDA.\n\nO: vitals as charted. Well. Urine hCG positive in office.\n\nA/P\n1. Early intrauterine pregnancy presumed, G1, with pre-existing type 1 diabetes: referral to obstetrics (high-risk practice) placed today. Endocrinology aware.\n2. Hypothyroidism: TSH today. Continue 75 mcg.\n3. A1c today for obstetrics and endocrinology.\nReviewed nausea measures and to keep glucose tabs close."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-12a",
+          "kind": "outside_records",
+          "start": "2024-01-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics intake summary",
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "done",
+              "date": "2024-01-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics new prenatal visit",
+              "date": "2024-01-12T10:00",
+              "author": "obstetrics",
+              "body": "Maternal-fetal medicine / obstetrics, new OB visit 01/09/2024.\nG1P0 at 7 weeks 5 days by LMP; dating ultrasound concordant, single live intrauterine pregnancy. EDD 08/22/2024.\nHistory: type 1 diabetes (endocrinology co-managing), autoimmune hypothyroidism on levothyroxine 75 mcg. No surgeries. NKDA.\nPrenatal labs: blood type, antibody screen, CBC, rubella, syphilis, hepatitis B, HIV and urine culture all unremarkable.\nPlan: routine prenatal care with closer diabetes surveillance in partnership with endocrinology. Visits every 4 weeks for now."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "outside_records",
+          "start": "2024-02-20T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eye exam in pregnancy",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology eye examination",
+              "date": "2024-02-20T13:30",
+              "author": "ophthalmology",
+              "body": "Ophthalmology, 02/15/2024. First-trimester dilated exam for a patient with type 1 diabetes, now pregnant. Acuity 20/20 OU. Fundus: no retinopathy, no macular edema either eye.\nPlan: repeat in the third trimester only if symptoms; otherwise routine annual exam. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-22a",
+          "kind": "outside_records",
+          "start": "2024-03-22T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology pregnancy letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology visit in pregnancy",
+              "date": "2024-03-22T11:10",
+              "author": "endocrinology",
+              "body": "Endocrinology, 03/19/2024. Type 1 diabetes in pregnancy, 17-18 weeks. Doing well; glucose log largely in the pregnancy targets. Nausea settled. No severe hypoglycemia.\nInsulin: glargine 22 units at bedtime, lispro 1 unit per 10 g carbohydrate; we expect needs to rise in the second half and will see her every 2-4 weeks.\nAlso on levothyroxine 75 mcg and a prenatal vitamin. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid check in pregnancy",
+          "vitals": {
+            "bp": [
+              108,
+              77
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 67.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-16T16:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-16T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-16T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-16T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-04-16T15:30",
+              "author": "PCP",
+              "body": "About 21-22 weeks, G1. Feeling movement. OB visits on schedule. Seeing endocrinology every few weeks; no insulin dose changes on the list so far.\nNo headaches, no swelling, no vision change. Taking levothyroxine apart from the prenatal.\nMeds: glargine 22 u qHS, lispro 1:10, levothyroxine 75 mcg, prenatal vitamin. NKDA.\n\nExam: BP as charted, normal. Gravid abdomen. No edema.\n\nA/P\n1. Hypothyroidism in pregnancy: TSH today.\n2. T1DM in pregnancy: A1c today, results to OB and endo.\n3. Tdap will be done at obstetrics in the third trimester.\nSee her after delivery."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.9,
+            "labs": {
+              "Hemoglobin A1c": 6.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "outside_records",
+          "start": "2024-06-04T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-05-31T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics visit note",
+              "date": "2024-06-04T09:50",
+              "author": "obstetrics",
+              "body": "Obstetrics prenatal visit 05/31/2024, 28 weeks. Tdap given, left deltoid. Fundal height appropriate. Fetal heart tones normal. Continue routine visits and diabetes co-management with endocrinology. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Levothyroxine refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2024-07-09T08:35",
+              "author": "MA",
+              "body": "Electronic refill request, levothyroxine 75 mcg #90. Last TSH April, in range. Approved per PCP protocol, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "outside_records",
+          "start": "2024-08-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital discharge summary, delivery",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetric discharge summary",
+              "date": "2024-08-27T10:20",
+              "author": "hospital obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 08/23/2024, discharged 08/25/2024.\n\nPatient: 28-year-old G1P0 at 40 weeks 1 day.\nPresentation: contractions about every 5 minutes for six hours; membranes ruptured spontaneously two hours before she arrived. Prenatal course uncomplicated and prenatal labs unremarkable.\nHistory: type 1 diabetes; autoimmune hypothyroidism. No surgeries. Allergies: NKDA.\nHome medications: insulin glargine 22 units subcut at bedtime; insulin lispro with meals at 1 unit per 10 g carbohydrate; levothyroxine 75 mcg by mouth daily; prenatal vitamin with iron daily.\nSocial: never smoker; no alcohol in pregnancy. Teaches mathematics.\n\nAdmission findings: BP 120/78, HR 88, temperature 37.2 C (99.0 F). Fetal heart rate tracing reassuring. Sterile speculum exam: clear fluid. Cervix 6 cm, 90% effaced, vertex at -1 station. Recheck four hours later: 7 cm, 100% effaced.\nLabor progressed and she had a normal spontaneous vaginal delivery of a healthy liveborn infant. Insulin per the inpatient protocol during labor, with endocrinology input; home doses resumed after delivery.\n\nPostpartum course uncomplicated. Breastfeeding. Discharged home postpartum day 2.\n\nDiagnoses: term pregnancy, delivered; normal spontaneous vaginal delivery; type 1 diabetes; hypothyroidism.\nDischarge medications: as above.\nFollow-up: obstetrics 6 weeks; endocrinology 2-3 weeks; primary care as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check",
+          "conditions": [
+            {
+              "label": "Pre-existing type 1 diabetes mellitus in pregnancy",
+              "action": "resolved",
+              "onset": "2023-11-16",
+              "note": "Delivered 2024-08-23, vaginal delivery",
+              "icd10": "O24.019"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              82
+            ],
+            "hr": 77,
+            "spo2": 99,
+            "weight_kg": 66.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-10T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T15:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-10T14:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Visit",
+              "date": "2024-09-10T14:30",
+              "author": "PCP",
+              "body": "2.5 weeks after an uncomplicated vaginal delivery (8/23, discharge summary reviewed). Baby with her in the car seat, sleeping. On maternity leave until November.\n\nS: Breastfeeding going well. Bleeding light. Sleeping in short stretches. Sugars \"all over the place for a week\" after delivery, now steadier; endocrinology saw her last week and kept her on the usual glargine 22 and lispro by carbs. No lows needing help. Mood good, tired.\nMeds: glargine 22 u qHS, lispro 1:10, levothyroxine 75 mcg, prenatal vitamin (continuing while nursing). NKDA.\n\nO: vitals as charted. Well, tired. Thyroid normal. Heart regular, lungs clear. Abdomen soft, uterus not palpable. No calf tenderness or edema.\nPHQ-9: 4.\n\nA/P\n1. Postpartum, vaginal delivery: recovering well. OB visit at 6 weeks.\n2. T1DM: A1c today; endocrinology follows.\n3. Hypothyroidism: TSH today, continue 75 mcg.\n4. CBC for postpartum blood count.\n5. Mood screen low; reviewed postpartum mood warning signs, she knows to text me.\nFlu and COVID in October."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0,
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-15T10:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-15T10:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-15T10:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2024-10-15T10:40",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid and 2024-25 COVID vaccine R deltoid. Breastfeeding, both fine with nursing, reviewed. Baby along for the visit. No reaction during 15-minute wait."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "outside_records",
+          "start": "2024-11-19T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology postpartum letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology follow-up",
+              "date": "2024-11-19T12:30",
+              "author": "endocrinology",
+              "body": "Endocrinology, 11/15/2024. Three months after vaginal delivery, breastfeeding. Glucose control back to her pre-pregnancy pattern; occasional mild lows after night feeds, managed with a bedtime snack. No severe hypoglycemia.\nPlan: glargine 22 units qHS and lispro 1 unit per 10 g carbohydrate, unchanged. Levothyroxine 75 mcg. Return 3 months; earlier if planning another pregnancy.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "office_visit",
+          "start": "2024-12-03T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and thyroid follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled visit",
+              "date": "2024-12-02T17:45",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow, childcare fell through. Will message to rebook after the holidays."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "portal_message",
+          "start": "2024-12-30T21:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surprise",
+              "date": "2024-12-30T21:10",
+              "author": "patient",
+              "body": "So... positive pregnancy test tonight. Wasn't exactly the plan this soon! Last period was November 29. Still nursing. Can I use the appointment I cancelled to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Surprise",
+              "date": "2024-12-31T08:30",
+              "author": "PCP",
+              "body": "Thanks for telling me. Front desk will call you with a time next week. Keep the prenatal vitamin going, let endocrinology know today, and call them if lows become more frequent."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "office_visit",
+          "start": "2025-01-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {
+              "label": "Pre-existing type 1 diabetes mellitus in pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-11-29",
+              "note": "Second pregnancy; LMP 2024-11-29",
+              "icd10": "O24.019"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              71
+            ],
+            "hr": 83,
+            "spo2": 99,
+            "weight_kg": 66.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-07T15:35",
+              "resulted": "2025-01-07T15:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-07T16:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-07T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-07T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-07T16:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Second pregnancy with type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pregnancy Confirmation",
+              "date": "2025-01-07T15:30",
+              "author": "PCP",
+              "body": "G2P1, LMP 11/29/2024, about 5.5 weeks. First baby 4.5 months old, weaning now. Unplanned but welcome. Some nausea mornings. No bleeding.\nSugars less predictable over the holidays; already talked to endocrinology, appointment later this month.\nMeds: glargine 22 u qHS, lispro 1:10, levothyroxine 75 mcg, prenatal vitamin. NKDA.\n\nExam: vitals as charted, well. Urine hCG positive.\n\nA/P\n1. Pregnancy, second, with pre-existing T1DM: referral back to her obstetrics group placed.\n2. A1c and TSH today.\n3. Continue prenatal vitamin and levothyroxine 75 mcg.\nCall with any severe lows or vomiting."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.8,
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-24a",
+          "kind": "outside_records",
+          "start": "2025-01-24T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics intake",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-01-24T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics new prenatal visit",
+              "date": "2025-01-24T09:15",
+              "author": "obstetrics",
+              "body": "Obstetrics, new OB visit 01/21/2025.\nG2P1001 at 7 weeks 4 days; prior term vaginal delivery 08/2024. Single live intrauterine pregnancy on ultrasound, dates agree. EDD 09/05/2025.\nType 1 diabetes and hypothyroidism as known. NKDA.\nPrenatal labs unremarkable.\nShort interval since last delivery noted; routine care with diabetes co-management."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "outside_records",
+          "start": "2025-03-11T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology eye examination",
+              "date": "2025-03-11T14:40",
+              "author": "ophthalmology",
+              "body": "Ophthalmology, 03/06/2025. Pregnant (about 14 weeks), type 1 diabetes. Vision 20/20 right, 20/20 left. Dilated fundus: no retinopathy, no edema. Plan routine annual follow-up. Allergies: none known."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-11a",
+          "kind": "outside_records",
+          "start": "2025-04-11T11:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology pregnancy letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology visit in pregnancy",
+              "date": "2025-04-11T11:25",
+              "author": "endocrinology",
+              "body": "Endocrinology, 04/08/2025, about 19 weeks.\nThis pregnancy has been harder than her first. Her log shows frequent high readings after meals and frequent lows, including two overnight lows that woke her. Adherent to insulin and to prenatal care; caring for an infant and teaching full time.\nInsulin on the list unchanged: glargine 22 units at bedtime, lispro 1 unit per 10 g carbohydrate; reviewed timing of meal doses, pre-bolusing and bedtime snack.\nWeekly glucose reviews with our educator. NKDA. Levothyroxine 75 mcg, prenatal vitamin."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "office_visit",
+          "start": "2025-05-06T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up in pregnancy, glucose swings",
+          "vitals": {
+            "bp": [
+              112,
+              77
+            ],
+            "hr": 89,
+            "spo2": 96,
+            "weight_kg": 69.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-06T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-06T16:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-06T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-06T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-05-06T15:30",
+              "author": "PCP",
+              "body": "~22.5 weeks, G2. Here mostly for thyroid and to touch base.\n\nS: Sugars swinging both ways: highs after lunch at school, lows overnight and late afternoon. Endocrinology reviewing her log weekly; she is taking every dose and going to every OB visit. Exhausted with a 9-month-old. No vision change, no headaches, no swelling. Baby moving.\nMeds: glargine 22 u qHS, lispro 1:10 with meals, levothyroxine 75 mcg, prenatal vitamin. NKDA.\n\nO: BP normal, vitals as charted. Gravid. No edema.\n\nA/P\n1. T1DM in pregnancy with labile glucose: managed by endocrinology and OB; A1c today, copy to both. Made sure she has glucose tabs at school and by the bed.\n2. Hypothyroidism: TSH today, 75 mcg.\n3. Tdap at OB around 28 weeks.\nText me if things get harder."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.1,
+            "labs": {
+              "Hemoglobin A1c": 7.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "outside_records",
+          "start": "2025-06-24T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-06-20T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics visit note",
+              "date": "2025-06-20T09:45",
+              "author": "obstetrics",
+              "body": "Obstetrics prenatal visit 06/20/2025, 29 weeks. Tdap administered, right deltoid. Fetal heart tones normal. Glucose control remains difficult per endocrinology; continued co-management. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "outside_records",
+          "start": "2025-09-03T13:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital discharge summary, delivery",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetric discharge summary",
+              "date": "2025-09-03T13:05",
+              "author": "hospital obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 08/30/2025, discharged 09/01/2025.\n\n29-year-old G2P1 at 39 weeks 1 day in active labor, a year after her first vaginal delivery. Type 1 diabetes and autoimmune hypothyroidism. Glucose was difficult to control throughout this pregnancy, with frequent hyperglycemia and frequent hypoglycemia, despite consistent insulin use and full attendance at prenatal care. Prenatal course otherwise unremarkable.\nAllergies: NKDA. Surgical history: none.\nHome medications: insulin glargine 22 units subcut at bedtime; insulin lispro with meals, 1 unit per 10 g carbohydrate; levothyroxine 75 mcg by mouth daily; prenatal vitamin with iron daily.\n\nOn arrival: uncomfortable with contractions, in moderate distress during them. Vital signs stable. Fetal tracing reassuring. Cervix 6 cm, 90% effaced.\nCourse: delivered by normal spontaneous vaginal delivery two hours after admission. Male infant, 4,500 g (macrosomic). Apgar 8 at 1 minute and 9 at 5 minutes.\nNewborn: jittery and irritable at 30 minutes of life. Infant glucose 25 mg/dL; infant hemoglobin 17 g/dL; calcium 9.2 mg/dL; magnesium 2.1 mg/dL; CBC otherwise unremarkable. Neonatal hypoglycemia, managed by the newborn team.\nMother: postpartum course uncomplicated; insulin back to home doses with endocrinology input.\n\nDiagnoses (maternal): term pregnancy, delivered; normal spontaneous vaginal delivery; type 1 diabetes with poor control during pregnancy; hypothyroidism.\nDischarge medications: unchanged from home.\nFollow-up: obstetrics 6 weeks, endocrinology 1-2 weeks, primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T14:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check",
+          "conditions": [
+            {
+              "label": "Pre-existing type 1 diabetes mellitus in pregnancy",
+              "action": "resolved",
+              "onset": "2024-11-29",
+              "note": "Delivered 2025-08-30, vaginal delivery",
+              "icd10": "O24.019"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              77
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 68.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-16T14:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T14:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T14:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T14:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T14:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-16T14:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T14:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Visit",
+              "date": "2025-09-16T14:15",
+              "author": "PCP",
+              "body": "2.5 weeks after second vaginal delivery (8/30). Summary reviewed: big baby boy, 4,500 g, low blood sugar after birth handled by the newborn team; he is home and feeding well now per mom.\n\nS: She is sore but recovering, bleeding tapering. Breastfeeding. Two under 13 months, tired. Sugars settled within days of delivery; endocrinology saw her and kept the usual doses. Mood: \"overwhelmed some days, not sad.\" Has help from her mother.\nMeds: glargine 22 u qHS, lispro 1:10, levothyroxine 75 mcg, prenatal vitamin. NKDA.\n\nO: vitals as charted. Tired, appropriate. Heart regular, lungs clear. Abdomen soft, fundus not felt. Legs without swelling or tenderness.\nPHQ-9: 5.\n\nA/P\n1. Postpartum, uncomplicated maternal course: OB at 6 weeks.\n2. T1DM: A1c, urine microalbumin, CMP, lipids today (yearly labs due).\n3. Hypothyroidism: TSH.\n4. Mood: mild, normal-range screen; reviewed warning signs. Will recheck at next visit.\nFlu/COVID next month."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.9,
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2025-10-14T15:20",
+              "author": "MA",
+              "body": "Flu vaccine and 2025-26 COVID vaccine, one in each arm. Back at school this week after leave. Nursing; reviewed both are fine. Waited 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "outside_records",
+          "start": "2025-11-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology follow-up",
+              "date": "2025-11-14T09:40",
+              "author": "endocrinology",
+              "body": "Endocrinology, 11/11/2025. About 10 weeks postpartum. Lability much less than in pregnancy. Mild lows a few times a week in the afternoon, self-treated.\nContinue glargine 22 units at bedtime and lispro 1 unit per 10 g carbohydrate. Levothyroxine 75 mcg. Discussed planning ahead of any further pregnancy.\nNKDA. Follow-up 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T20:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive again",
+              "date": "2025-12-09T20:35",
+              "author": "patient",
+              "body": "Positive test again. LMP October 27. I know. Can I come in next week? Already emailed endo."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Positive again",
+              "date": "2025-12-10T07:15",
+              "author": "PCP",
+              "body": "Of course. You're booked Tuesday the 16th after school. Prenatal vitamin daily, and call endocrinology if the lows pick up."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "office_visit",
+          "start": "2025-12-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pregnancy confirmation",
+          "conditions": [
+            {
+              "label": "Pre-existing type 1 diabetes mellitus in pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-10-27",
+              "note": "Third pregnancy; LMP 2025-10-27",
+              "icd10": "O24.019"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 87,
+            "spo2": 97,
+            "weight_kg": 67.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-16T15:35",
+              "resulted": "2025-12-16T15:45",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-16T16:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-16T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-16T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-16T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2026",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "Third pregnancy with type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pregnancy Confirmation",
+              "date": "2025-12-16T15:30",
+              "author": "PCP",
+              "body": "G3P2, LMP 10/27/2025, ~7 weeks. Son is 3.5 months. Nausea, no bleeding. Stopped nursing last month.\nGlucose steadier than last pregnancy so far; endocrinology appointment set for January.\nMeds: glargine 22 u qHS, lispro 1:10 with meals, levothyroxine 75 mcg, prenatal vitamin. NKDA.\n\nExam: vitals as charted. Well. Urine hCG positive.\nPHQ (verbal): mood ok, busy.\n\nA/P\n1. Third pregnancy with pre-existing T1DM: obstetrics referral placed; endocrinology notified.\n2. Labs: A1c, TSH.\n3. Continue current medications.\nShe asked for the January visit to be after school; done."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.2,
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "outside_records",
+          "start": "2026-01-09T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics intake",
+          "orders": [
+            {
+              "id": "ob-referral-2026",
+              "action": "done",
+              "date": "2026-01-09T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics new prenatal visit",
+              "date": "2026-01-09T10:30",
+              "author": "obstetrics",
+              "body": "Obstetrics, new OB visit 01/06/2026.\nG3P2002 at 10 weeks 1 day. Prior vaginal deliveries 08/2024 and 08/2025; the second with difficult glucose control, a 4,500 g infant and neonatal hypoglycemia.\nSingle live intrauterine pregnancy; EDD 08/03/2026.\nType 1 diabetes; autoimmune hypothyroidism on levothyroxine 75 mcg. NKDA.\nPrenatal labs unremarkable.\nPlan: routine prenatal visits with close diabetes co-management."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "outside_records",
+          "start": "2026-01-27T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ophthalmology eye examination",
+              "date": "2026-01-27T15:00",
+              "author": "ophthalmology",
+              "body": "Ophthalmology, 01/22/2026. Type 1 diabetes, early pregnancy. Acuity 20/20 both eyes. Dilated fundus exam normal; no diabetic retinopathy, no macular edema. Annual follow-up. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "pharmacy",
+          "start": "2026-02-24T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Insulin pen supply",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Insulin lispro pens",
+              "date": "2026-02-24T09:05",
+              "author": "MA",
+              "body": "Pharmacy asked us for a new lispro pen prescription; prescriber on file is endocrinology. Forwarded to their office, which sent it the same day. Pt notified by text."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "outside_records",
+          "start": "2026-03-20T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Endocrinology pregnancy letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology visit in pregnancy",
+              "date": "2026-03-20T12:15",
+              "author": "endocrinology",
+              "body": "Endocrinology, 03/17/2026, about 20 weeks. Third pregnancy. Glucose more stable than in 2025; occasional mild lows, no severe events. Insulin unchanged on her list: glargine 22 units qHS, lispro 1 unit per 10 g carbohydrate. Levothyroxine 75 mcg and prenatal vitamin. NKDA. Seen every 2-4 weeks through delivery."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "outside_records",
+          "start": "2026-05-15T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Obstetrics immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-05-12T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics visit note",
+              "date": "2026-05-15T11:20",
+              "author": "obstetrics",
+              "body": "Obstetrics prenatal visit 05/12/2026 at 28 weeks 1 day. Tdap given, left deltoid. Fetal heart tones normal. Fundal height consistent with dates. Diabetes co-managed with endocrinology. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "office_visit",
+          "start": "2026-06-02T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Thyroid and diabetes check in pregnancy",
+          "vitals": {
+            "bp": [
+              107,
+              76
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 74.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-02T16:00",
+              "resulted": "2026-06-03T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-02T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-02T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-06-02T15:30",
+              "author": "PCP",
+              "body": "31 weeks, G3P2. Last week of classes before summer.\n\nS: Feels well for the third trimester. Sugars steadier than last time; endocrinology every 2-3 weeks, no list changes. Baby active. Tdap done at OB last month. No headaches, visual change or swelling.\nMeds: insulin glargine 22 u qHS, insulin lispro 1 u/10 g carb with meals, levothyroxine 75 mcg daily, prenatal vitamin with iron. NKDA.\n\nO: vitals as charted, BP normal. Gravid, fundus above umbilicus. No edema. Mood bright.\nPHQ-9: 3.\n\nA/P\n1. Hypothyroidism in pregnancy: TSH and free T4 today.\n2. T1DM in pregnancy: A1c today, copies to OB and endo.\n3. Delivery plan per obstetrics; she'll message after the baby comes and we will see her postpartum."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.6,
+            "labs": {
+              "Free Thyroxine": 1.1,
+              "Hemoglobin A1c": 6.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "portal_message",
+          "start": "2026-06-03T12:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-06-03T12:40",
+              "author": "PCP",
+              "body": "Maya, thyroid tests are in range, so the 75 mcg stays. A1c is in a good place for this point in pregnancy. Sent to obstetrics and endocrinology. Enjoy the start of summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "pharmacy",
+          "start": "2026-07-01T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Levothyroxine refill",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levothyroxine refill",
+              "date": "2026-07-01T08:20",
+              "author": "MA",
+              "body": "Refill request levothyroxine 75 mcg, 90-day supply. TSH 6/2 in range. Approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "outside_records",
+          "start": "2026-07-29T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital discharge summary, cesarean delivery",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetric discharge summary",
+              "date": "2026-07-29T14:30",
+              "author": "hospital obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 07/24/2026, discharged 07/27/2026.\n\n30-year-old G3P2 at 38 weeks 4 days with type 1 diabetes and autoimmune hypothyroidism, admitted in labor. Prior vaginal deliveries in August 2024 and August 2025; the 2025 pregnancy had difficult glucose control and the infant had neonatal hypoglycemia.\nAllergies: NKDA. Surgical history before this admission: none.\nHome medications: insulin glargine 22 units at bedtime; insulin lispro with meals at 1 unit per 10 g carbohydrate; levothyroxine 75 mcg daily; prenatal vitamin with iron daily.\n\nCourse: membranes ruptured spontaneously shortly after admission with a large amount of clear fluid. About 15 minutes later she felt something suddenly between her legs, became very anxious and noticed less fetal movement. Nursing noted the fetal heart rate, normal until then, fall to 70 beats per minute and stay there for more than a minute despite position changes and oxygen. Cervix 7 cm; a firm, pulsating cord felt alongside the presenting part, with the head high and poorly applied to the cervix.\nDiagnosis: umbilical cord prolapse.\nEmergency low transverse cesarean delivery under general anesthesia. Liveborn girl, Apgar 6 at 1 minute and 8 at 5 minutes, admitted to the NICU for observation.\nPostoperative course uncomplicated. Insulin per inpatient protocol, back to home doses with endocrinology. Discharged postoperative day 3.\n\nDiagnoses: term pregnancy, delivered; umbilical cord prolapse; emergency cesarean delivery; type 1 diabetes; hypothyroidism.\nDischarge medications: home medications as above.\nFollow-up: obstetrics wound check 1-2 weeks; endocrinology 1-2 weeks; primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T21:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update after delivery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby update",
+              "date": "2026-08-11T21:50",
+              "author": "patient",
+              "body": "Wanted you to know she came by emergency C-section on the 24th, it was terrifying but we're both ok. She's home with us now. Incision healing, OB checked it last week. Sugars bouncing a bit, endo is on it. I'll set up a postpartum visit once I can drive."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Baby update",
+              "date": "2026-08-12T07:30",
+              "author": "PCP",
+              "body": "I'm so glad you're both okay. I read the hospital summary; that sounds frightening. Message whenever you're ready and we'll find a time. If you notice any mood changes, pain or redness at the incision, or leg swelling, reach out right away."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Pre-existing type 1 diabetes mellitus in pregnancy|O24.019": {
+        "code": "O24.019",
+        "display": "Pre-existing type 1 diabetes mellitus, in pregnancy, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin with iron Oral Tablet\""
+    ]
+  }
+}

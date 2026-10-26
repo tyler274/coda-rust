@@ -1,0 +1,267 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002219",
+      "events": [
+        {
+          "id": "2023-03-21a",
+          "kind": "outside_records",
+          "start": "2023-03-21T10:10",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry report", "author": "optometry", "date": "2023-03-21T10:10", "body": "Annual diabetic eye exam, dilated, done 2023-03-07. Allergy: sulfa. Corrected vision 20/25 each eye. Pressures normal. Retina: no microaneurysms, hemorrhages or exudates in either eye; discs and maculae normal. No diabetic retinopathy. See again in 12 months."}
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "office_visit",
+          "start": "2023-05-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.5}, "bp": [140, 86]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-05-22T09:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-05-22T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-05-22T09:00", "body": "Back to walking the river path since April. Cut out the evening snacks. No hypoglycemia symptoms (not on anything that would cause it). BP at the pharmacy machine reads in the 130s.\nExam: vitals as charted. RRR, lungs clear, no edema.\nPlan: point-of-care A1c drawn, will message. Same meds. Physical in July."}
+          ]
+        },
+        {
+          "id": "2023-07-13a",
+          "kind": "annual_physical",
+          "start": "2023-07-13T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.4, "Low Density Lipoprotein": 139}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-07-13T09:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-07-13T09:15", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-07-13T09:15", "results": [{"test": "Hemoglobin A1c", "value": 7.4}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-07-13T09:20"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-07-13T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-07-13T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-07-13T08:40", "body": "AWV, first since his IPPE last June.\nHealth risk assessment reviewed: lives alone in a ground-floor apartment, no stairs to manage, no falls, no trouble with bills or meds. Hearing and vision fine for him. Eye exam March, no retinopathy.\nPHQ-2 negative. Recall intact.\nHealth care proxy: still hasn't filled it out.\nTobacco: none since 2016. Alcohol: rare.\nExam: BP as charted. Heart regular. Lungs clear. Abdomen benign. No edema. Feet: sensation normal to monofilament, pulses present.\nScreening: LDCT due next month, ordered. Colonoscopy due 2027. Tdap last given he thinks more than ten years ago; given today.\nLabs as ordered. Continue current meds."}
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "imaging",
+          "start": "2023-08-08T07:45",
+          "service": "Radiology",
+          "reason": "Lung cancer screening, annual",
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"},
+            {"id": "ldct-2023", "action": "done", "date": "2023-08-08T07:45"}
+          ],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-08-08T07:45", "text": "Annual lung cancer screening, low-dose technique, no contrast. Compared with 2022-07-12. No lung nodules. No consolidation. No effusion. Normal heart size. Mediastinum unremarkable.", "conclusion": "Lung-RADS 1. Negative screen; annual follow-up."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2023-08-09T11:20", "body": "Third negative LDCT. Message sent to patient."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-17T15:12"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T15:14"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T15:12"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2023-10-17T15:10", "body": "High-dose flu given left arm, 2023-24 Pfizer COVID right arm. No prior reactions apart from a sore arm. Tolerated well, left after observation."}
+          ]
+        },
+        {
+          "id": "2024-01-24a",
+          "kind": "office_visit",
+          "start": "2024-01-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "No-show", "author": "front desk", "date": "2024-01-24T11:30", "body": "Pt did not arrive for 11:00. Left voicemail to reschedule."}
+          ]
+        },
+        {
+          "id": "2024-01-25a",
+          "kind": "telephone",
+          "start": "2024-01-25T09:05",
+          "reason": "Reschedule",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call back", "author": "front desk", "date": "2024-01-25T09:05", "body": "Pt called back, apologized, had the date wrong on his calendar. Rebooked 2/6 at 10:20."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-02-06T10:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-06T10:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-06T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-02-06T10:20", "body": "Rescheduled from last month. Doing okay through the winter, mostly indoors, uses the mall for walking a couple of days a week. No new complaints. Taking metformin with breakfast and supper, lisinopril and HCTZ in the morning.\nVitals as charted. Lungs clear, heart regular, no peripheral edema.\nT2DM: A1c and BMP today. HTN: stable. Continue. AWV in June."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "outside_records",
+          "start": "2024-03-19T14:00",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry report", "author": "optometry", "date": "2024-03-19T14:00", "body": "Diabetic eye evaluation 2024-03-05 with dilation. Known allergy: sulfa. VA cc 20/25 OU. No retinopathy either eye, no macular edema. Mild lens changes, not visually significant. Recheck in one year."}
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "annual_physical",
+          "start": "2024-06-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.7, "Low Density Lipoprotein": 134, "Creatinine": 1.08}, "weight_kg": 110.5},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-13T08:55", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-13T08:55", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-06-13T08:55", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-13T08:55", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-06-13T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-06-13T08:20", "body": "Subsequent AWV.\nHRA: no falls, independent, still driving. Says he sleeps fine. PHQ-2 1 (some low-energy days in winter), no further concern.\nEye exam March, clean. Last LDCT August, due again this summer - ordered.\nNo exertional symptoms. Can walk his usual 2 miles.\nExam: BP as charted, BMI about 35. Heart RRR without gallop. Lungs clear. No edema. Diabetic foot exam normal.\nLabs today. Meds unchanged: metformin 1000 BID, lisinopril 20, HCTZ 25.\nFlu/COVID/RSV in the fall."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "imaging",
+          "start": "2024-07-16T08:30",
+          "service": "Radiology",
+          "reason": "Lung cancer screening, annual",
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"},
+            {"id": "ldct-2024", "action": "done", "date": "2024-07-16T08:30"}
+          ],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-07-16T08:30", "text": "Low-dose CT chest for annual screening. Prior 2023-08-08. Lungs clear without nodule. Airways normal. No pleural fluid. Cardiac silhouette normal size. No adenopathy.", "conclusion": "Lung-RADS 1, negative."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2024-07-17T10:00", "body": "Negative. Next due July 2025."}
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-10T10:17"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-10T10:19"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-10-10T10:21"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-10T10:17"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2024-10-10T10:15", "body": "Flu HD trivalent L deltoid, COVID 2024-25 R deltoid, RSV (Arexvy) L deltoid 1 inch below flu site; eligible given diabetes. Discussed possible soreness and fatigue. No reaction during observation."}
+          ]
+        },
+        {
+          "id": "2024-12-05a",
+          "kind": "ed_visit",
+          "start": "2024-12-05T16:40",
+          "end": "2024-12-06T01:10",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath and leg swelling",
+          "conditions": [
+            {"label": "Acute decompensated heart failure", "icd10": "I50.9", "action": "diagnosed", "onset": "2024-10-05"}
+          ],
+          "vitals": [
+            {"time": "2024-12-05T16:45", "bp": [145, 90], "hr": 88, "rr": 20}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2024-12-05T19:30", "resulted": "2024-12-05T21:00", "results": [
+              {"test": "Pleural fluid protein", "loinc": "2882-9", "unit": "g/dL", "value": 1.5},
+              {"test": "Pleural fluid lactate dehydrogenase", "loinc": "2529-6", "unit": "U/L", "value": 110},
+              {"test": "Pleural fluid pH", "loinc": "2748-2", "unit": "[pH]", "value": 7.45}
+            ]},
+            {"panel": null, "collected": "2024-12-05T19:35", "resulted": "2024-12-05T20:40", "results": [
+              {"test": "Total Protein", "value": 6.8},
+              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 200}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2024-12-05T17:20", "text": "Portable AP chest. Small bilateral pleural effusions with blunting of both costophrenic angles. No focal consolidation. No pneumothorax.", "conclusion": "Small bilateral pleural effusions."}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department record", "author": "emergency medicine", "date": "2024-12-09T10:30", "body": "EMERGENCY DEPARTMENT, area community hospital. Visit 2024-12-05.\nAllergies: sulfa drugs (rash).\nCC: short of breath walking, both legs swollen.\nHPI: 68-year-old man, retired mail carrier, reports roughly two months of slowly worsening breathlessness with exertion and swelling of both lower legs. Denies chest pain, fevers and cough.\nHx: hypertension, type 2 diabetes, obesity, hyperlipidemia. Appendectomy, R knee arthroscopy. Ex-smoker, 25 pack-years, quit 2016. Rare alcohol.\nHome meds: metformin, lisinopril, hydrochlorothiazide.\nFamily: father MI at 70; mother diabetes and heart failure; brother HTN and CAD.\nTriage vitals: BP 145/90, HR 88, RR 20.\nExam: JVD present. S3 gallop. Breath sounds reduced at both bases, no crackles. 2+ pitting edema to mid-shin bilaterally.\nCXR: small effusions on both sides.\nProcedure: diagnostic thoracentesis performed in the department after consent, ultrasound guidance, without complication.\nPleural fluid: protein 1.5 g/dL (serum 6.8), LDH 110 U/L (serum 200), pH 7.45. Ratios consistent with a transudate.\nED impression: acute decompensated heart failure.\nDisposition: discharged home, home medications unchanged. Follow up with primary care within one week; return for worsening breathing."},
+            {"type": "Outside Records", "title": "ED record received", "author": "front desk", "date": "2024-12-09T10:30", "body": "ED record from 12/5 received by fax, 6 pages. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-12-06a",
+          "kind": "telephone",
+          "start": "2024-12-06T09:15",
+          "reason": "ED follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Patient call", "author": "RN", "date": "2024-12-06T09:15", "body": "Pt calls: was in the ER last night for trouble breathing and swollen legs, they took fluid off his lung and sent him home late. Told it was his heart. Breathing a little easier this morning, no chest pain. Booked with PCP Tuesday 12/10. Advised 911 if worse."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED visit, heart failure",
+          "state": {"bp": [140, 86], "weight_kg": 111.0},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-10T14:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-12-10T13:40"}],
+          "orders": [
+            {"id": "echo-2024", "action": "placed", "order": "Transthoracic echocardiogram", "category": "imaging", "reason": "New heart failure presentation"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2024-12-10T13:40", "body": "S: Seen in ED 12/5 with two months of exertional dyspnea and leg edema; I have the ED record. Small bilateral effusions, tap in the ED was transudative, impression decompensated HF. No new meds given. Since then: breathing better than that night, can do the stairs to the car slowly. Ankles still swell by evening. Sleeping flat. No chest pain.\nO: Vitals as charted. No JVD visible sitting up. Heart regular, no gallop heard today. Lungs clear to bases. Trace to 1+ edema at the ankles bilaterally.\nA/P:\n1. Heart failure, new presentation. Need the EF - transthoracic echo ordered. BMP today.\n2. HTN on lisinopril + HCTZ, continue.\n3. T2DM on metformin, continue.\nDaily weights; call for gain of more than 3 lb in a day or 5 in a week, or worse breathing. Back after the echo."}
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "imaging",
+          "start": "2024-12-19T09:30",
+          "service": "Cardiology",
+          "reason": "Echocardiogram",
+          "conditions": [
+            {"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2024-10-05"}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2024-12-19T09:30", "text": "Outpatient echo laboratory, outside cardiology group. Indication: heart failure. Allergies: sulfa. Complete 2D study with color flow and spectral analysis. Technically adequate images. Left ventricle mildly dilated with global hypokinesis; LVEF 35% by biplane method. Right ventricle normal in size and function. Atria normal in size. Aortic, mitral, tricuspid and pulmonic valves without significant stenosis or regurgitation. No pericardial effusion. IVC normal size.", "conclusion": "Mildly dilated left ventricle with global hypokinesis, LVEF 35%. No significant valve disease. No pericardial effusion."}
+          ],
+          "orders": [{"id": "echo-2024", "action": "done", "date": "2024-12-19T09:30"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Echo result call", "author": "PCP", "date": "2024-12-20T12:10", "body": "Called pt with echo: pumping function reduced, EF 35%, valves fine. Added HFrEF to his problem list. He asked if this is what his mother had; told him it sounds similar. Keep the daily weights going and come in mid-January. Questions answered."}
+          ]
+        }
+      ]
+    }
+  ]
+}

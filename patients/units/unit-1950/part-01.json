@@ -1,0 +1,219 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001950",
+      "given": "Yolanda",
+      "family": "Soto",
+      "birth_date": "2003-01-02",
+      "address_line": "38 Langevin Avenue",
+      "phone": "+1-508-555-0130",
+      "email": "yolanda.soto@example.test",
+      "marital_status": "single",
+      "summary": "Healthy college biology student and barista who joined in 2023 with seasonal allergic rhinitis and acne on a combined pill, clindamycin gel and cetirizine. Last seen December 2024; in 2026 three outside ED visits for first-episode psychosis (schizophreniform disorder) and outpatient psychiatry starting aripiprazole reach the chart as records only.",
+      "events": [
+        {
+          "id": "2023-08-14a",
+          "kind": "portal_message",
+          "start": "2023-08-14T19:42",
+          "reason": "new patient paperwork",
+          "documents": [
+            {"type": "Patient Message", "title": "New patient forms", "author": "patient", "date": "2023-08-14T19:42", "body": "Hi, I'm scheduled as a new patient on the 22nd. I filled out the health history online and signed the release so you can get my records from my old pediatrician's office. I'm turning 21 in January and they said I should find an adult doctor. Is there anything else I need to bring? My insurance is through my dad's work."},
+            {"type": "Patient Message", "title": "RE: New patient forms", "author": "front desk", "date": "2023-08-15T09:05", "body": "Hi Yolanda, thanks, we have your forms and the release. We'll fax the request to your pediatric office today. Please bring your insurance card and whatever you take every day, including anything over the counter. See you on the 22nd."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T10:20",
+          "end": "2023-08-22T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {"label": "Seasonal allergic rhinitis", "icd10": "J30.2", "action": "diagnosed", "onset": "2015-04-01", "note": "spring and fall symptoms since middle school, followed at prior pediatric practice"},
+            {"label": "Acne vulgaris", "action": "diagnosed", "onset": "2018-09-01", "note": "facial, on topical clindamycin and combined pill"}
+          ],
+          "medications": [
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Seasonal allergic rhinitis"},
+            {"drug": "drospirenone 3 MG / ethinyl estradiol 0.02 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Contraception and acne"},
+            {"drug_text": "clindamycin phosphate 10 MG/ML Topical Gel", "action": "historical", "sig": "Apply a thin layer to the face twice daily", "frequency": "BID", "route": "Topical", "course": "chronic", "reason": "Acne vulgaris"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "type": "allergy", "criticality": "low"},
+            {"substance": "Dust mites", "type": "allergy", "criticality": "low"}
+          ],
+          "state": {"weight_kg": 59.0, "height_cm": 163.0, "bp": [110, 70]},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks on weekends"},
+            {"item": "Occupation", "value": "Undergraduate student (biology) and part-time barista"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, low MDM", "performed": "2023-08-22T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-08-22T11:05", "body": "20F here to establish care. Aging out of her pediatric and adolescent practice; records requested. Biology major at a local university, taking a reduced course load while she works; lives off campus with a roommate. Works part time as a barista, mostly weekend mornings.\n\nPMH\n- Seasonal allergic rhinitis since middle school. Sneezing, itchy eyes and congestion spring and fall, also worse when she dusts or changes the bedding. Was told she reacts to dust mites. Takes cetirizine 10 mg every day, which keeps it quiet.\n- Acne, face, since about 15. Uses clindamycin 1% gel morning and night. On a combined pill (drospirenone 3 mg / ethinyl estradiol 0.02 mg) for a few years, started for contraception and the skin; she feels the skin is the best it has been.\nPSH: tonsils out at 7. Wisdom teeth out at 18.\nAllergies: penicillin (told as a child, she doesn't know what happened). Dust mites.\nMeds: as above.\nFH: mother with generalized anxiety. Maternal uncle has schizophrenia. Paternal grandmother with bipolar I disorder. No early heart disease or cancers she knows of.\nSocial: never smoked, no vaping. Alcohol socially, 1-2 drinks on weekends. No drugs. Sexually active, uses the pill.\n\nROS: no headaches, no leg pain or swelling, no chest pain. Periods regular and light on the pill. Mood good, sleeping fine. PHQ-2 0.\n\nExam: well appearing, pleasant. BP and HR as charted. Nasal turbinates mildly pale, no polyps. Oropharynx clear, tonsils absent. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Skin: a few closed comedones on the forehead and chin, no cysts or scarring. Mood and affect normal.\n\nA/P\n1. Seasonal allergic rhinitis, controlled. Continue cetirizine. Dust-mite covers for the mattress and pillows discussed.\n2. Acne vulgaris, mild and controlled. Continue clindamycin gel and the pill. Will take over the refills.\n3. Contraception. Combined pill, normal BP, nonsmoker, no migraine with aura, no clotting history. OK to continue.\n4. Health maintenance: flu and COVID in October. Pap due after she turns 21; plan at a physical next summer. Will review vaccine history when records arrive.\nRTC about 6 months."}
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "outside_records",
+          "start": "2023-09-06T14:10",
+          "reason": "records from prior pediatric practice",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2014-03-11T10:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2014-03-11T10:05"},
+            {"vaccine": "HPV, 9-valent", "date": "2014-03-11T10:10"},
+            {"vaccine": "HPV, 9-valent", "date": "2014-10-07T15:30"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2019-02-19T16:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior pediatric practice records", "author": "front desk", "date": "2023-09-06T14:10", "body": "41 pages from the patient's former pediatric and adolescent practice, covering 2008 through June 2023.\n\nContents: well visits yearly through age 20; immunization record (childhood series complete; Tdap, MenACWY and HPV at 11, second HPV later that year, MenACWY booster at 16); tonsillectomy in 2010 by an outside ENT, uncomplicated; allergic rhinitis managed with cetirizine; acne managed with topical clindamycin, combined oral contraceptive started 2020 by the adolescent medicine clinician; penicillin listed as an allergy since early childhood, reaction not documented. Adolescent depression screens negative each year. Dental office letter 2021 noting third molar extraction.\n\nImmunizations entered into the chart from the record. Original filed under media."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2023-09-08T07:50", "body": "Pediatric records reviewed. Vaccines up to date except seasonal. Two-dose HPV series done before 15, so complete. Penicillin reaction never documented there either; leave as listed. Nothing else to act on."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T16:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2023-10-17T16:55", "body": "In after class for vaccines. Afebrile, feels well, no prior vaccine reactions. Allergies reviewed: penicillin, dust mites. Flu vaccine IM left deltoid. COVID 2023-24 formula IM right deltoid. VIS given. Waited 15 minutes, fine, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2024-01-29a",
+          "kind": "pharmacy",
+          "start": "2024-01-29T11:20",
+          "reason": "refill request clindamycin gel",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2024-01-29T11:20", "body": "Pharmacy fax requesting a new prescription for clindamycin 1% gel, prior Rx was from the pediatric office and is out of refills. Pt has a visit next week. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2024-01-29T13:02", "body": "Clindamycin 1% gel, 60 g, apply to face twice daily, 2 refills. Sent."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, acne and contraception",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-02-06T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-02-06T16:15", "body": "S: Six-month check. Turned 21 last month. Spring semester started, heavy lab schedule this term. Skin is about the same: a few small bumps around the chin before her period, nothing painful. Using the gel twice a day most days. Pill going fine, no missed pills she can remember, no headaches, no breakthrough bleeding. Allergies quiet over the winter, still on cetirizine.\n\nO: BP and HR as charted. Skin: scattered closed comedones on the chin, two small papules, no nodules. Rest deferred.\n\nA/P: Acne vulgaris, mild, stable on clindamycin gel and the combined pill; no change. Contraception: normotensive on an estrogen pill, continue, refilled for a year. Seasonal allergic rhinitis, continue cetirizine. Physical with Pap this summer. RTC for the physical."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "portal_message",
+          "start": "2024-04-16T21:08",
+          "reason": "allergy question",
+          "documents": [
+            {"type": "Patient Message", "title": "Allergies", "author": "patient", "date": "2024-04-16T21:08", "body": "My allergies are kicking in with everything blooming. Eyes itchy, sneezing on the walk to campus. I'm still taking the cetirizine every day, is it ok to keep doing that all spring or should I be taking a break from it?"},
+            {"type": "Patient Message", "title": "RE: Allergies", "author": "PCP", "date": "2024-04-17T08:12", "body": "Hi Yolanda, yes, it's fine to take cetirizine every day through the season, no break needed. Showering and changing clothes after being outside and keeping windows closed on high-pollen days help too. If it stops working let me know and we can talk about other options."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "portal_message",
+          "start": "2024-06-19T10:30",
+          "reason": "missed appointment",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed appointment", "author": "front desk", "date": "2024-06-19T10:30", "body": "Hi Yolanda, we missed you for your physical yesterday morning. Please call or reply here to pick a new time."},
+            {"type": "Patient Message", "title": "RE: Missed appointment", "author": "patient", "date": "2024-06-19T12:47", "body": "So sorry, I picked up an extra shift and completely forgot. Could I come in August before classes start? Mornings are best."},
+            {"type": "Patient Message", "title": "RE: Missed appointment", "author": "front desk", "date": "2024-06-19T13:15", "body": "You're booked Tuesday August 20 at 8:45. Please come fasting, it makes the bloodwork easier."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:45",
+          "end": "2024-08-20T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "GAD-7 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-20T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-08-20T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-08-20T09:15", "resulted": "2024-08-22T14:00", "results": [{"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}, {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2024-08-20T09:15", "issued": "2024-08-27T16:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-20T08:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-08-20T09:40", "body": "21F for her physical. Fall semester starts in two weeks; she has two organic chemistry labs this term. Still at the coffee shop on weekends. Feels well.\n\nInterval: no ED or urgent care visits. Skin calm over the summer. Allergies were bad for about three weeks in May, cetirizine was enough. Pill fine.\n\nMeds: cetirizine 10 mg daily; drospirenone/ethinyl estradiol 1 tab daily; clindamycin 1% gel BID.\nAllergies: penicillin (reaction unknown); dust mites.\nSocial: never smoker. Weekend drinks, 1-2. No drugs. Sexually active, on the pill.\nScreens: PHQ-9 2 (a little tired around exams), GAD-7 3. No SI.\n\nROS otherwise negative: no headaches or vision change, no chest pain, no calf pain, no abdominal pain, periods light and regular.\n\nExam: BP, HR and BMI as charted. Alert, well groomed, conversational. HEENT: TMs clear, mild turbinate pallor. Neck no thyromegaly. Heart regular, no murmurs. Lungs clear throughout. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap and NAAT swab obtained, no discharge. Skin: a few comedones on the chin. Extremities without edema. Mood and affect bright.\n\nA/P\n- Preventive: first Pap today. CT/GC NAAT. One-time HIV and hep C screening. Baseline CBC, CMP and fasting lipids. Flu and COVID in October.\n- Acne, rhinitis, contraception: all stable, continue as is.\n- RTC in about 4 months for a check-in, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T07:55",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2024-08-23T07:55", "body": "Hi Yolanda, all of your bloodwork from Tuesday is normal: blood counts, kidney and liver tests, sugar and cholesterol. HIV and hepatitis C screens are negative, and the chlamydia and gonorrhea tests were negative. The Pap smear takes about a week; I'll message you when it's back."}
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "portal_message",
+          "start": "2024-08-28T08:20",
+          "reason": "Pap result",
+          "documents": [
+            {"type": "Result Note", "title": "Pap result", "author": "PCP", "date": "2024-08-28T08:20", "body": "Your Pap came back normal, no abnormal cells. At your age the next one is due in 3 years."},
+            {"type": "Patient Message", "title": "RE: Pap result", "author": "patient", "date": "2024-08-28T12:34", "body": "Great, thank you!"}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T16:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T16:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T16:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "MA", "date": "2024-10-22T16:35", "body": "Pt here for seasonal vaccines. Denies fever or illness today. Last year's shots: sore arm only. Flu (2024-25 trivalent) L deltoid IM, COVID 2024-25 R deltoid IM, lots and expirations logged. Observed 15 min, no reaction."}
+          ]
+        },
+        {
+          "id": "2024-12-13a",
+          "kind": "office_visit",
+          "start": "2024-12-13T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, contraception, acne, allergies",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-12-13T13:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-12-13T13:50", "body": "S: Check-in between finals. Last exam is Tuesday. Busy semester with a genetics lab and more hours at the cafe, but she says she is doing well. Sleeping 6-7 hours. PHQ-2 0. Skin good, uses the gel most nights now rather than twice a day. Pill without problems. Allergies quiet since September.\n\nO: BP and HR as charted, weight stable. Calm, organized, good eye contact, laughing about the semester. Skin: faint comedones on the chin only.\n\nA/P\n1. Contraception: normotensive, continue drospirenone/EE; 12 months sent.\n2. Acne vulgaris: controlled; clindamycin gel refilled. Twice daily is the instruction but once nightly seems to be holding.\n3. Seasonal allergic rhinitis: continue cetirizine as needed or daily in season.\n4. HM: flu and COVID done in October. Pap 2024 normal.\nPhysical next August. Good luck with finals."}
+          ]
+        }
+      ]
+    }
+  ]
+}

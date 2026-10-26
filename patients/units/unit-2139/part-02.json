@@ -1,0 +1,750 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002139",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2025-01-14T09:10",
+              "body": "Electronic request from pharmacy for metoprolol succinate 100 mg and lisinopril 20 mg, 90-day supply. On current med list, seen 12/11. Sent per protocol, 1 refill each."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-17a",
+          "kind": "office_visit",
+          "start": "2025-02-17T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diarrhea for one week",
+          "conditions": [
+            {
+              "label": "Diarrhea, unspecified",
+              "icd10": "R19.7",
+              "action": "diagnosed",
+              "onset": "2025-02-10"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Diarrheal illness"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-17T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "author": "PCP",
+              "date": "2025-02-17T12:05",
+              "body": "Same-day visit. Stomach bug about a week ago with cramping and loose watery stools that have not let up, 4-6 a day. Not eating much, mostly toast and broth. No blood in the stool, no vomiting now. Nobody else at home sick.\n\nExam: afebrile, vitals as charted. Mucous membranes slightly dry. Abdomen soft, mildly tender diffusely, active bowel sounds, no guarding.\n\nA/P: prolonged diarrheal illness. Given duration, starting ciprofloxacin 500 bid x 10 days (PCN anaphylaxis). Oral fluids, advance diet as tolerated. He will let the anticoag clinic know he is on an antibiotic. Call if blood in stool, fever, or not improving in a few days."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "portal_message",
+          "start": "2025-02-20T19:40",
+          "reason": "Still having loose stools",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Still not right",
+              "author": "patient",
+              "date": "2025-02-20T19:40",
+              "body": "Day 3 on the antibiotic. Stools a little less often but still loose and I have zero appetite. Should I keep taking it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Still not right",
+              "author": "RN",
+              "date": "2025-02-21T08:25",
+              "body": "Good morning Mr. Hale. Yes, please finish the full course. Keep sipping fluids with some salt and sugar in them and small bland meals. If you see blood, run a fever, or feel lightheaded, call us right away and we will see you today."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "hospital_admission",
+          "start": "2025-02-26T14:50",
+          "end": "2025-03-01T11:30",
+          "service": "Internal Medicine",
+          "reason": "Worsening shortness of breath and fatigue",
+          "conditions": [
+            {
+              "label": "Coagulopathy due to vitamin K deficiency",
+              "icd10": "D68.4",
+              "action": "diagnosed",
+              "onset": "2025-02-26"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped on admission"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-26T15:30",
+              "results": [
+                {
+                  "test": "Prothrombin time",
+                  "loinc": "5902-2",
+                  "unit": "s",
+                  "value": 29
+                },
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 48
+                },
+                {
+                  "test": "Platelet count",
+                  "loinc": "777-3",
+                  "unit": "10*3/uL",
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospitalist",
+              "date": "2025-03-03T10:15",
+              "body": "Regional hospital, Internal Medicine. Admitted 2/26/2025, discharged 3/1/2025.\n\nReason for admission: progressive dyspnea and tiredness.\n\nBrief history: 57-year-old man with AF (listed by cardiology as nonvalvular), CAD, HTN, HLD, GERD and a mechanical aortic valve (6/2024) on warfarin. Roughly two weeks of very poor intake after a GI illness with ongoing diarrhea, and on an outpatient antibiotic course from his primary care physician.\n\nExam on admission: numerous bruises on both arms and legs; scattered petechiae on the oral mucosa.\n\nKey labs: PT 29 s, PTT 48 s, platelet count 210,000/mm3.\n\nDiagnosis: coagulopathy from vitamin K deficiency (poor intake, diarrhea, antibiotic exposure) on warfarin.\n\nHospital course: warfarin held, vitamin K 2.5 mg given by mouth once, antibiotic discontinued. Diet resumed and tolerated. Warfarin restarted before discharge; anticoagulation clinic to resume management.\n\nDischarge medications: warfarin per anticoagulation clinic, metoprolol succinate 100 mg daily, aspirin 81 mg daily, atorvastatin 40 mg daily, lisinopril 20 mg daily, pantoprazole 40 mg daily. Ciprofloxacin stopped.\nAllergies: penicillin (anaphylaxis), shellfish (pruritus).\nFollow-up: PCP within 1 week; INR check per anticoagulation clinic in 2-3 days."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "office_visit",
+          "start": "2025-03-05T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Coagulopathy due to vitamin K deficiency",
+              "icd10": "D68.4",
+              "action": "resolved",
+              "onset": "2025-02-26"
+            },
+            {
+              "label": "Diarrhea, unspecified",
+              "icd10": "R19.7",
+              "action": "resolved",
+              "onset": "2025-02-10"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-05T10:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-05T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-05T10:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-05T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-03-05T11:00",
+              "body": "Seen after 2/26-3/1 admission (summary received 3/3). Admitted short of breath and wiped out, with bruising and mouth petechiae; PT 29, PTT 48, platelets normal. Treated as vitamin K deficiency from poor intake/diarrhea/antibiotic while on warfarin: vit K, cipro stopped, warfarin back on before discharge.\n\nToday feels much better, breathing back to normal, eating normally since the weekend, stools formed. Bruises yellowing. Anticoag clinic checked him Monday and adjusted his dose.\n\nExam: vitals as charted. Fading ecchymoses forearms and shins, none new. Mouth clear. Valve click crisp, rate controlled. Lungs clear.\n\nA/P: coagulopathy resolved; diarrhea resolved. INR and CBC today. Continue warfarin per clinic and remaining meds unchanged. Reviewed again: any new antibiotic, and any stretch of not eating, should go through the clinic for an extra INR. RTC June."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "portal_message",
+          "start": "2025-03-06T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from yesterday",
+              "author": "PCP",
+              "date": "2025-03-06T13:15",
+              "body": "Norman, INR 2.6, right where it should be. Blood count and kidney labs normal. I sent a copy to the anticoagulation clinic."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "office_visit",
+          "start": "2025-06-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-06-11T14:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-11T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-06-11T15:10",
+              "body": "Routine f/u. No problems since spring. Clinic INRs in range per him, dose steady. No bleeding. BP good at home. Doing yard work without trouble.\nExam: vitals reviewed, comfortable, valve click present, irregular rhythm, lungs clear, no edema.\nPlan: continue meds. Shingrix #2 today (series complete). Physical in the fall with labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "pharmacy",
+          "start": "2025-07-09T10:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pantoprazole refill",
+              "author": "MA",
+              "date": "2025-07-09T10:30",
+              "body": "Pantoprazole 40 mg 90-day refill requested by pharmacy. Approved, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "office_visit",
+          "start": "2025-08-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2025-08-20T10:30",
+              "body": "No-show for 10:00. Voicemail left. Patient called back at noon, mixed up the date with the physical; kept the September physical, this one closed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c",
+            "rr"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-24T08:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-24T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-24T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening, former smoker 25 pack-years"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-24T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-24T09:45",
+              "body": "Annual exam, 57M.\n\nInterval: feels well. No recurrence of the bleeding problem from February. Clinic INRs in range by his report. Walks 30-40 minutes most days. Not smoking. A couple of beers on weekends. Sleeping fine, mood good.\n\nMeds reviewed, unchanged: warfarin per clinic, metoprolol succinate 100, ASA 81, atorvastatin 40, lisinopril 20, pantoprazole 40. Allergies PCN (anaphylaxis), shellfish (itching).\n\nROS negative across systems.\n\nExam: vitals as charted. Well appearing. HEENT normal, dentition fair. Neck supple, no thyroid enlargement. Mechanical valve click, irregularly irregular, controlled. Lungs clear throughout. Abdomen soft, healed lap scars. No edema, pulses 2+ distally. Skin: no bruising. Neuro grossly intact. PHQ-9 1.\n\nAssessment/plan:\n- Mechanical AVR, AF on warfarin: stable, clinic manages.\n- CAD, HTN, HLD: BP at goal, lipids drawn today.\n- GERD: stable.\n- Prevention: colonoscopy 2018 normal, next 2028. Lung screening due, LDCT ordered. Flu today; updated COVID at pharmacy when available. Shingrix and PCV20 complete. Tdap 2019.\nCMP, CBC, lipids today. RTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T08:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-09-26T08:05",
+              "body": "Everything from Wednesday's labs is normal, including the cholesterol numbers. Keep it up."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "imaging",
+          "start": "2025-10-07T15:45",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-10-07T15:45",
+              "text": "Indication: annual screening, former smoker. Comparison: 2024-10-08. Technique: low-dose noncontrast CT chest. Findings: Sternotomy wires and mechanical aortic valve again seen. Normal heart size. Lungs clear without nodule, mass or consolidation. No pleural effusion. Mediastinal and hilar nodes not enlarged. Visualized upper abdomen unremarkable apart from surgical clips in the gallbladder fossa.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-10-07T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Screening CT result",
+              "author": "PCP",
+              "date": "2025-10-08T07:30",
+              "body": "Second annual LDCT negative, Lung-RADS 1. Patient informed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "pharmacy",
+          "start": "2025-10-17T12:00",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine entered",
+              "author": "MA",
+              "date": "2025-10-17T12:00",
+              "body": "State registry shows 2025-26 COVID vaccine on 10/14 at a retail pharmacy. Added to history."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "ed_visit",
+          "start": "2025-11-07T18:40",
+          "end": "2025-11-07T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue and dark urine for 3 days",
+          "conditions": [
+            {
+              "label": "Hemolytic anemia due to mechanical heart valve",
+              "icd10": "D59.4",
+              "action": "diagnosed",
+              "onset": "2025-11-04"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-07T18:55",
+              "temp_c": 37.2,
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 90,
+              "rr": 16
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Red-brown"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-07T19:20",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "text": "Decreased"
+                },
+                {
+                  "test": "Direct antiglobulin test",
+                  "loinc": "1007-4",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-11-10T09:00",
+              "body": "Regional hospital ED, seen 11/7/2025.\n\nCC: tired and dark urine x3 days.\nHPI: 57M with AF (nonvalvular per his cardiology list), mechanical aortic valve on warfarin, and a prior coagulopathy admission, presenting with three days of fatigue and tea-colored urine. No injury, no new medicines, no recent infection.\nMeds: warfarin, aspirin 81, metoprolol succinate 100, atorvastatin 40, lisinopril 20, pantoprazole 40. Allergies: PCN (anaphylaxis), shellfish (pruritus).\nVitals: T 37.2 C, BP 130/80, HR 90, RR 16.\nExam: not jaundiced, sclerae white. Mechanical valve click; no murmur, rub or gallop. Abdomen benign.\nLabs: UA red-brown, heme positive, no RBCs on microscopy. Hgb 9.2, Hct 27.8, plt 250K. LDH elevated, haptoglobin low, DAT negative. INR 3.5.\nImpression: DAT-negative intravascular hemolysis, likely related to the mechanical valve. INR above goal.\nDisposition: hemodynamically stable, discharged home. Hold tonight's warfarin; anticoagulation clinic INR recheck early next week. Cardiology notified for outpatient echo. PCP follow-up this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "telephone",
+          "start": "2025-11-10T11:30",
+          "reason": "ED follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2025-11-10T11:30",
+              "body": "ED note from Friday received. Called pt: urine is lighter today, still tired. Held one warfarin dose as told, clinic rechecks INR tomorrow. Cardiology office already called him about an echo. Booked with PCP Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "office_visit",
+          "start": "2025-11-12T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, dark urine",
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.6,
+              "Hematocrit": 29.1,
+              "Prothrombin Time-International Normalized Ratio": 2.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-12T14:15",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 412
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-12T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "author": "PCP",
+              "date": "2025-11-12T14:50",
+              "body": "Seen after ED visit 11/7 for fatigue and dark urine: Hgb 9.2, LDH up, haptoglobin low, DAT neg, UA heme+ without RBCs. INR 3.5 there. ED read it as valve-related hemolysis.\n\nNow: urine back to normal color since the weekend. Still more tired than usual, short of wind on stairs at the end of the day. No chest pain, no fevers. Clinic INR yesterday in range per pt. Echo with cardiology set for December.\n\nExam: vitals as charted. Mildly pale conjunctivae, no scleral icterus. Valve click crisp, irregular rhythm. Lungs clear. No edema.\n\nA/P: hemolytic anemia related to mechanical AVR, DAT negative. Repeat CBC, LDH, INR today. Cardiology to evaluate valve with echo. Return precautions: dark urine again, worsening breathlessness, chest pain. F/u after echo, January."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-13a",
+          "kind": "portal_message",
+          "start": "2025-11-13T16:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Yesterday's blood work",
+              "author": "PCP",
+              "date": "2025-11-13T16:20",
+              "body": "Hi Norman, hemoglobin 9.6, a bit better than in the ED. LDH, the marker of red cells breaking down, is still high at 412, which fits what is going on. INR 2.7. Nothing to change before the echo. Call if the dark urine comes back."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "portal_message",
+          "start": "2025-12-19T20:10",
+          "reason": "Update after cardiology",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Echo done",
+              "author": "patient",
+              "date": "2025-12-19T20:10",
+              "body": "Had the echo and saw cardiology this week. They said the new valve is working fine and there is no leak around it. Said a little red cell breakdown happens with this kind of valve. They started me on folic acid 1 mg once a day. Wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Echo done",
+              "author": "PCP",
+              "date": "2025-12-22T08:40",
+              "body": "Good news, thanks for letting me know. I will add the folic acid to your list. We will recheck your blood count when I see you in January. Happy holidays."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

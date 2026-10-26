@@ -1,0 +1,515 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001881",
+      "events": [
+        {
+          "id": "2025-02-18a",
+          "kind": "portal_message",
+          "start": "2025-02-18T07:12",
+          "reason": "new bump",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question",
+              "author": "patient",
+              "date": "2025-02-18T07:12",
+              "body": "Hi, a little embarrassing but I noticed a bump near the opening of my vagina a couple of months ago in the shower and I think it's gotten a bit bigger. It doesn't hurt at all, no bleeding or anything coming out of it. Should someone look at it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question",
+              "author": "PCP",
+              "date": "2025-02-18T08:05",
+              "body": "Not embarrassing at all, and good that you wrote. It's very likely something simple, but I'd like to take a look. Front desk will get you in this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "office_visit",
+          "start": "2025-02-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vulvar swelling",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-20T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2025",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "probable Bartholin gland cyst"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-02-20T11:30",
+              "body": "Painless swelling near the vaginal opening, first felt in the shower about two months ago, slowly larger since. No pain, bleeding or drainage. No fever, no dysuria. Still using condoms with the same partner.\n\nExam: afebrile, vitals as charted. Chaperone present. Soft, smooth swelling at the lower vestibule beside the introitus, not tender, skin over it normal, no redness. No other vulvar lesions.\n\nAssessment: most consistent with a Bartholin gland cyst.\nPlan: reviewed that these are common and often left alone when painless. Given it has been growing, referring to gynecology to confirm and advise. Warm soaks if it becomes sore; call right away for pain, redness or fever."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "telephone",
+          "start": "2025-02-25T14:20",
+          "reason": "referral scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral update",
+              "author": "front desk",
+              "date": "2025-02-25T14:20",
+              "body": "Gynecology referral accepted by the outside women's health group. Pt confirmed appt Tue 3/11 in the morning. Insurance does not need a separate authorization."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "specialist_visit",
+          "start": "2025-03-11T09:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "painless vulvar swelling",
+          "conditions": [
+            {
+              "label": "Bartholin's gland cyst",
+              "icd10": "N75.0",
+              "action": "diagnosed",
+              "onset": "2024-12-11"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2025",
+              "action": "done",
+              "date": "2025-03-11T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2025-03-14T10:30",
+              "body": "OUTSIDE GYNECOLOGY - CONSULTATION LETTER\nDate of service: 03/11/2025\nReason for referral: vulvar swelling, from primary care\n\nThank you for sending this 27-year-old. Three months ago she first felt a lump at the vaginal opening while showering. It has grown slowly. She has had no pain, no bleeding and no drainage from it, and denies fever, urinary burning or feeling unwell. Primary care counseled her on contraception in December.\n\nAllergies: NKDA. Medications: none. Family history: noncontributory.\nSexual history: one male partner; condom use is not consistent.\n\nExamination: At the posterior vestibule, lateral to the vaginal orifice, there is a 3 cm soft, fluctuant mass that is not tender. The mucosa over it is intact without redness or induration. Labia majora and minora otherwise without lesions. No inguinal adenopathy. Vagina, cervix, uterus and adnexa normal on the rest of the pelvic exam.\n\nImpression: Bartholin's gland cyst, asymptomatic.\n\nRecommendations: No drainage or procedure is needed for a painless cyst at her age. Warm sitz baths if it becomes uncomfortable. She should return or contact primary care if it becomes painful, red, rapidly larger, or drains. Happy to see her again as needed.\n\nOutside obstetrics and gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-17a",
+          "kind": "portal_message",
+          "start": "2025-03-17T12:50",
+          "reason": "gynecology letter",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gynecology visit",
+              "author": "PCP",
+              "date": "2025-03-17T12:50",
+              "body": "Hi Christine, I got the gynecology letter. They agree it's a Bartholin cyst and that nothing needs to be done while it isn't bothering you. Sitz baths if it gets uncomfortable, and let us know if it becomes painful or red."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gynecology visit",
+              "author": "patient",
+              "date": "2025-03-17T18:22",
+              "body": "Thanks, that's what she told me too. Relieved!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-29a",
+          "kind": "portal_message",
+          "start": "2025-10-29T20:14",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical + flu",
+              "author": "patient",
+              "date": "2025-10-29T20:14",
+              "body": "Can I do my physical and the flu shot together this year? I know the Pap is due too. Fridays are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical + flu",
+              "author": "front desk",
+              "date": "2025-10-30T09:12",
+              "body": "Yes! Friday 11/14 at 8:15 for the physical, and we'll give the flu vaccine at the same visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "annual_physical",
+          "start": "2025-11-14T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, Pap, flu vaccine",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-14T08:45",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-14T08:45",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-11-14T08:45",
+              "issued": "2025-11-18T14:00",
+              "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory; transformation zone sampled. Interpretation: negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-14T09:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-14T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-11-14T09:10",
+              "body": "Annual exam, Pap due. Feels well. The Bartholin cyst gyn saw in March is still there per her, never painful, hasn't changed much, not bothering her.\n\nNo medications. NKDA. Menses regular. Sexually active; condoms some of the time. Agrees to GC/CT with the Pap. No discharge or pelvic pain.\nNo tobacco or alcohol.\n\nExam: vitals as charted. Well appearing. Neck without nodes. Heart regular, no murmur. Lungs clear throughout. Abdomen soft. Pelvic with chaperone: small soft nontender cystic swelling at the lower vestibule as gyn described, no redness; vagina and cervix normal, Pap and swabs taken; bimanual unremarkable.\n\nPHQ-9: 1.\n\nPlan:\n- Pap (cytology) and GC/CT sent.\n- Bartholin cyst: continue to watch. Soaks if sore.\n- Contraception: talked again about pairing condoms with another method; she will think about it.\n- Flu vaccine given today. COVID optional, she declines this year.\n- Next physical in a year."
+            },
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2025-11-14T09:05",
+              "body": "Trivalent influenza 0.5 mL IM right deltoid at the end of the physical. No reaction during 15 min observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "portal_message",
+          "start": "2025-11-19T13:35",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and swabs",
+              "author": "PCP",
+              "date": "2025-11-19T13:35",
+              "body": "Christine, the Pap was normal, and chlamydia and gonorrhea were negative. Next Pap in 2028. See you next year."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "ed_visit",
+          "start": "2026-03-03T10:40",
+          "end": "2026-03-03T17:30",
+          "service": "Emergency Medicine",
+          "reason": "fever, painful swollen right knee, pustular skin lesions",
+          "vitals": [
+            {
+              "time": "2026-03-03T10:52",
+              "temp_c": 38.7,
+              "hr": 102,
+              "bp": [
+                120,
+                78
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-03T11:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                }
+              ],
+              "resulted": "2026-03-03T12:10"
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T11:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 50
+                }
+              ],
+              "resulted": "2026-03-03T12:10"
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T11:20",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 25,
+                  "unit": "mg/L"
+                }
+              ],
+              "resulted": "2026-03-03T12:10"
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T11:25",
+              "resulted": "2026-03-08T11:25",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T12:40",
+              "resulted": "2026-03-03T14:10",
+              "results": [
+                {
+                  "test": "Synovial fluid leukocytes",
+                  "loinc": "26469-7",
+                  "unit": "/uL",
+                  "value": 25000
+                },
+                {
+                  "test": "Synovial fluid neutrophils",
+                  "loinc": "17836-8",
+                  "unit": "%",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T12:40",
+              "resulted": "2026-03-03T13:50",
+              "results": [
+                {
+                  "test": "Synovial fluid Gram stain",
+                  "loinc": "664-3",
+                  "text": "No organisms seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-03T10:40"
+            },
+            {
+              "procedure": "Arthrocentesis or injection, major joint",
+              "performed": "2026-03-03T12:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-03-12T09:20",
+              "body": "COMMUNITY HOSPITAL - EMERGENCY SERVICES\nArrival 03/03/2026 10:40\n\nCC: fever x3 days, R knee pain and swelling, spots on arms and legs\n\nHPI: 28F, previously healthy, history of a Bartholin's gland cyst and past contraceptive counseling with her PCP. Three days of fevers with aching in several joints, now mostly the right knee, which is swollen and hurts enough that she is limping. Noticed several small pus-filled bumps on her arms and legs. No fall or injury.\n\nMeds: none. Allergies: NKDA. FH noncontributory.\nSocial: sexual activity with more than one partner recently; condoms not used every time.\n\nTriage: T 38.7 C (101.7 F), HR 102, BP 120/78.\n\nExam: febrile, uncomfortable. R knee swollen, red, warm and tender with limited flexion and extension. Scattered small pustules on the extremities. No urethral discharge.\n\nProcedure: R knee arthrocentesis under sterile technique, fluid sent for cell count, Gram stain and culture. Tolerated well.\n\nResults: WBC 12.0 K/uL. ESR 50 mm/hr. CRP 25 mg/L. Synovial fluid WBC 25,000/uL, 90% neutrophils; Gram stain without organisms. Blood cultures drawn x2. Urine NAAT for gonorrhea sent, pending at time of admission.\n\nMDM: febrile inflammatory monoarthritis with pustular skin lesions and polyarthralgia in a sexually active young woman; disseminated gonococcal infection is the leading concern, septic arthritis of the knee on the differential. Ceftriaxone 1 g IV given after cultures. Admitted to medicine.\n\nDisposition: admitted."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03b",
+          "kind": "hospital_admission",
+          "start": "2026-03-03T17:30",
+          "end": "2026-03-09T12:00",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "suspected disseminated gonococcal infection",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-03T18:10",
+              "resulted": "2026-03-03T18:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T11:30",
+              "resulted": "2026-03-04T09:15",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T11:30",
+              "resulted": "2026-03-04T09:15",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-04T06:00",
+              "resulted": "2026-03-04T15:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-04T06:00",
+              "resulted": "2026-03-04T15:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T12:40",
+              "resulted": "2026-03-07T10:00",
+              "results": [
+                {
+                  "test": "Synovial fluid culture",
+                  "loinc": "6463-4",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-03T19:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-09T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2026-03-12T09:25",
+              "body": "COMMUNITY HOSPITAL - DISCHARGE SUMMARY\nAdmitted 03/03/2026 via the ED. Discharged 03/09/2026.\n\nDischarge diagnosis: disseminated gonococcal infection with right knee arthritis and pustular skin lesions.\nOther: high-risk sexual behavior (multiple partners, inconsistent condom use).\n\nHospital course: 28-year-old woman admitted with three days of fever, polyarthralgia, an inflamed right knee and pustules on the extremities. Knee aspirate in the ED was inflammatory (25,000 WBC/uL, 90% neutrophils) with a negative Gram stain. Started on ceftriaxone 1 g IV every 24 hours. Urine gonorrhea NAAT returned positive on 03/04; chlamydia NAAT negative. Urine pregnancy test negative. HIV antigen/antibody and RPR nonreactive. Blood cultures no growth at 5 days and synovial fluid culture no growth. Fever resolved by the second hospital day. Knee swelling and pain steadily improved and she was walking comfortably by discharge. Skin lesions faded. She completed a 7-day course of ceftriaxone before discharge. Acetaminophen as needed for discomfort.\n\nAllergies: NKDA.\nDischarge medications: acetaminophen 1000 mg by mouth every 6 hours as needed. No antibiotics at discharge; course complete.\n\nCounseling: all partners from the past 60 days should be told, tested and treated; patient given partner notification information. No sexual contact until 7 days after her treatment and until partners are treated. Condoms with every partner.\n\nFollow-up: primary care in 1 to 2 weeks. Repeat gonorrhea testing in 3 months.\n\nHospital medicine service"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "author": "MA",
+              "date": "2026-03-12T09:30",
+              "body": "ED record and discharge summary from the 3/3 to 3/9 admission arrived by fax this morning, filed under outside records and routed to the PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-13a",
+          "kind": "telephone",
+          "start": "2026-03-13T10:15",
+          "reason": "post-hospital follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up call after hospital stay",
+              "author": "front desk",
+              "date": "2026-03-13T10:15",
+              "body": "Called per PCP to schedule the follow-up recommended in her discharge paperwork. Pt says she's feeling a lot better and back at work. Didn't want to pick a day yet because of her work calendar, will call or message us. Reminded her the hospital asked for a repeat test in about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T18:48",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "author": "patient",
+              "date": "2026-08-19T18:48",
+              "body": "Hi, sorry it took me so long. I never came in after the hospital in March. I feel totally fine, knee is back to normal. I'd like to come in for the follow up and the repeat testing they mentioned. Any time in early September?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "author": "front desk",
+              "date": "2026-08-20T08:55",
+              "body": "No problem. You're booked Thursday 9/10 at 8:30 with your doctor. We can do the testing at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T08:30",
+          "reason": "follow-up after March hospitalization and repeat STI testing",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

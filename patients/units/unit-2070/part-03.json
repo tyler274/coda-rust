@@ -1,0 +1,991 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002070",
+      "events": [
+        {
+          "id": "2022-01-06a",
+          "kind": "specialist_visit",
+          "start": "2022-01-06T13:40",
+          "service": "Hematology & Oncology",
+          "reason": "Macrocytic anemia",
+          "conditions": [
+            {
+              "label": "Folate deficiency anemia",
+              "icd10": "D52.9",
+              "action": "diagnosed",
+              "onset": "2021-11-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Folate deficiency anemia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-01-06T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 110
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-01-06T14:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-01-06T14:20",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 2
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-ref-2022",
+              "action": "done",
+              "date": "2022-01-06T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "author": "hematology",
+              "date": "2022-01-14T10:30",
+              "body": "HEMATOLOGY & ONCOLOGY - NEW CONSULT\nDate of service: 01/06/2022\nPatient: Gregory Kearney, DOB 11/11/1975\nReason for referral: macrocytic anemia, low WBC\n\nHPI: 46-year-old man referred by his PCP. For about two months he has been increasingly tired and short of breath with exertion, and his tongue has been sore. He says his drinking has gone up over the last year since his divorce. No tobacco, no drugs. He tells me he is not actually taking any of his prescribed medicines right now.\n\nPMH: alcohol use disorder, alcoholic cirrhosis, chronic hepatitis C (untreated), porphyria cutanea tarda (dermatology 2021), splenectomy after MVA ~2013.\nMeds (prescribed, not taking): thiamine, penicillin VK, hydroxychloroquine.\nAllergies: NKDA.\nFH: father alcohol use disorder and cirrhosis, mother T2DM. No hematologic malignancy.\n\nExam: pale, mild scleral icterus. Tongue smooth and beefy red. Grade 2/6 systolic flow murmur at the left sternal border. Lungs clear. No lymphadenopathy. Abdomen without ascites.\n\nData: Hgb 9.2 g/dL, MCV 110 fL, WBC 3.8, platelets 150. Serum folate 2 ng/mL (low). B12 400 pg/mL (normal). AST and ALT mildly elevated.\n\nAssessment: macrocytic anemia due to folate deficiency, from poor intake and heavy alcohol use, with mild leukopenia and low-normal platelets in a patient with cirrhosis.\n\nPlan:\n1. Folic acid 1 mg daily, sent to his pharmacy.\n2. Diet and alcohol counseling given.\n3. Thiamine should be resumed.\n4. Repeat CBC with PCP in 4-6 weeks; we are glad to see him again if counts do not recover.\n\nThank you for the referral.\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2022-02-17a",
+          "kind": "office_visit",
+          "start": "2022-02-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anemia",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Mean Corpuscular Volume": 103,
+              "White Blood Cells": 4.3,
+              "Platelets": 141
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-02-17T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-17T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-17T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-02-17T08:05",
+              "body": "S: Hematology letter reviewed: folate deficiency anemia, folate 2, B12 fine. On folic acid daily since early January, actually taking it, and restarted thiamine. Tongue better, less winded. Drinking unchanged.\nO: less pale. Tongue normal. Soft flow murmur still there. No ascites.\nCBC today: hemoglobin up into the 11s; MCV still large, which lags behind.\nA/P:\n1. Folate deficiency anemia, responding. Continue folic acid 1 mg daily. CBC in a few months.\n2. AUD severe: counseled; declined.\n3. Penicillin: still not taking it. Re-sent.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, leg cramps",
+          "state": {
+            "weight_kg": 63.0,
+            "labs": {
+              "25-hydroxy Vitamin D": 9,
+              "Parathyroid Hormone, Intact": 112,
+              "Calcium": 8.5,
+              "Phosphorus": 2.6,
+              "Alkaline Phosphatase": 146,
+              "Albumin": 3.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-10T16:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.5
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T16:35",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 9
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 112
+                },
+                {
+                  "test": "Phosphorus",
+                  "value": 2.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-10T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-10T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-10T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-05-10T16:50",
+              "body": "S: Still tired even with the blood count better. Hard to focus at work, forgets measurements. Cramps in both calves and thighs most nights. Says he eats plenty of canned fish and milk so 'it can't be calcium.' Folic acid most days.\nO: vitals as charted. Mild weakness getting up from a squat. No ascites, no jaundice.\nA/P:\n1. Fatigue, cramps, proximal weakness in a man with cirrhosis and poor intake. Checking calcium, phosphorus, vitamin D, PTH, CMP, CBC.\n2. Folate deficiency anemia: CBC.\n3. AUD: same.\nWill call with results."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-05-11T17:20",
+              "body": "25-OH vitamin D 9, very low. PTH 112, high. Calcium 8.5, phosphorus 2.6, both low-normal to low. Alk phos up a bit. Pattern fits vitamin D deficiency with a secondary PTH rise; liver disease and diet likely. Given the PTH and his bones, referring to endocrinology rather than just dosing on my own. Hemoglobin holding in the 11s."
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-ref-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Vitamin D deficiency with elevated PTH"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "portal_message",
+          "start": "2022-05-12T08:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2022-05-12T08:45",
+              "body": "Gregory, your vitamin D is very low and your parathyroid hormone, which controls calcium, is running high to make up for it. That can explain the cramps, weakness and tiredness. I'm sending you to endocrinology to sort out the right treatment. They will call you to schedule. Your blood count is holding steady."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your Lab Results",
+              "author": "patient",
+              "date": "2022-05-12T19:30",
+              "body": "ok. is it going to cost a lot, i dont have insurance"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your Lab Results",
+              "author": "front desk",
+              "date": "2022-05-13T09:10",
+              "body": "Hi Gregory, the endocrinology office offers a self-pay rate and a payment plan. Their number is on the referral paperwork we mailed you."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-05a",
+          "kind": "specialist_visit",
+          "start": "2022-07-05T09:20",
+          "service": "Endocrinology",
+          "reason": "Vitamin D deficiency, elevated PTH",
+          "conditions": [
+            {
+              "label": "Vitamin D deficiency",
+              "action": "diagnosed",
+              "onset": "2022-05-10"
+            },
+            {
+              "label": "Secondary hyperparathyroidism",
+              "icd10": "E21.1",
+              "action": "diagnosed",
+              "onset": "2022-05-10",
+              "note": "Due to vitamin D deficiency with alcoholic liver disease"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin D deficiency"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-ref-2022",
+              "action": "done",
+              "date": "2022-07-05T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2022-07-19T14:00",
+              "body": "ENDOCRINOLOGY CONSULTATION\nDate of service: 07/05/2022\nPatient: Gregory Kearney, DOB 11/11/1975\nReferring: primary care\n\nReason: low vitamin D, elevated PTH.\n\nHPI: 46-year-old man with alcoholic cirrhosis, porphyria cutanea tarda and folate deficiency anemia who has had ongoing tiredness, trouble concentrating and frequent cramps in his legs. He eats a lot of canned salmon, sardines and fortified dairy and was surprised his calcium axis could be off. He works construction and grounds jobs outside nearly every day and does not wear sunscreen. Drinks about a bottle of vodka a day. No recent illness, infection or injury.\n\nMeds: folic acid 1 mg daily, thiamine 100 mg daily; penicillin VK and hydroxychloroquine prescribed but not being taken.\nAllergies: NKDA.\n\nExam: thin. Strength 4+/5 in hip flexors bilaterally, otherwise full. Reflexes and sensation normal. Thyroid normal. Rest of exam unremarkable.\n\nLabs (5/10/2022, PCP): 25-OH D 9 ng/mL, intact PTH 112 pg/mL, calcium 8.5 mg/dL, phosphorus 2.6 mg/dL.\n\nAssessment: vitamin D deficiency with secondary hyperparathyroidism, in the setting of alcoholic liver disease (reduced hepatic hydroxylation and poor absorption from heavy drinking). His sun exposure does not protect him here. Symptoms of fatigue, cramps and mild proximal weakness fit.\n\nPlan:\n1. Cholecalciferol 2000 units daily.\n2. Continue dietary calcium as he is doing.\n3. Repeat 25-OH D, PTH, calcium and phosphorus in about 4 months through his PCP.\n4. Alcohol cessation strongly advised.\nNo routine follow-up needed here unless PTH stays high once vitamin D is replete.\n\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "office_visit",
+          "start": "2022-08-16T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after endocrinology",
+          "conditions": [
+            {
+              "label": "Severe malnutrition with multiple micronutrient deficiencies",
+              "icd10": "E43",
+              "action": "diagnosed",
+              "onset": "2022-01-06"
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "labs": {
+              "Albumin": 3.2,
+              "Hemoglobin": 12.2,
+              "Mean Corpuscular Volume": 100
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-16T07:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-08-16T07:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-08-16T07:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-16T07:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-16T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-08-16T08:00",
+              "body": "S: Endocrinology letter reviewed: vitamin D deficiency with secondary hyperparathyroidism from his liver disease, started on D3 2000 units daily. He has been taking it with the folic acid in the mornings. Cramps a little less. Still drinking a bottle most days. One meal a day plus snacks.\nO: weight 62 kg, down from 67 when he joined. Temporal wasting. No jaundice, no ascites.\nA/P:\n1. Severe malnutrition with multiple micronutrient deficiencies: folate and vitamin D deficient, albumin falling, steady weight loss, all driven by heavy drinking and poor intake. Added to problem list. Talked through cheap protein: eggs, peanut butter, canned fish, milk. Continue folic acid, thiamine, D3.\n2. Vitamin D deficiency / secondary hyperparathyroidism: recheck labs in November as endocrine asked.\n3. Cirrhosis, hep C: labs today.\n4. AUD severe: AUDIT-C 12, declined referral.\nRTC 3 months with labs."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-08-17T12:05",
+              "body": "Albumin 3.3, lower than when he joined. Hemoglobin about 12 on folic acid. INR stable. Messaged pt to keep up the folic acid and protein."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "nurse_visit",
+          "start": "2022-10-27T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-27T07:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, bivalent",
+              "date": "2022-10-27T07:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-27T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2022-10-27T07:30",
+              "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Tolerated. He asked to have the November lab draw the same day as his visit to save a trip; scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "lab_only",
+          "start": "2022-11-29T07:10",
+          "reason": "Vitamin D and PTH recheck",
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 23,
+              "Parathyroid Hormone, Intact": 71,
+              "Calcium": 8.9,
+              "Phosphorus": 3.1
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-29T07:15",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T07:15",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact"
+                },
+                {
+                  "test": "Phosphorus"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-29T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-11-30T12:30",
+              "body": "Vitamin D up into the low 20s on 2000 units, PTH coming down toward normal, calcium and phosphorus normal. Going the right way. Keep D3 at the same dose. He did not come for the office visit he'd planned the same morning, only the lab; front desk to rebook."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "office_visit",
+          "start": "2023-03-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, medication review",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.1,
+              "Mean Corpuscular Volume": 104
+            }
+          },
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Patient stopped taking it months ago"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-16T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-16T07:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-03-16T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-16T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-16T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-16T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-03-16T08:20",
+              "body": "S: First visit since August (missed the November slot). He went back to dermatology in January on his own: hands had been worse through the fall, new blisters on the backs of both hands, and his urine has been dark like tea for several weeks. No belly pain, no numbness or weakness. They told him the skin condition is acting up, his liver tests were high again, and to start the hydroxychloroquine and quit drinking. He still has not started it. We never got a note from that visit.\nMed review with his bottles: taking thiamine and the D3 most days. Folic acid ran out before Christmas and he didn't refill it. Penicillin not taking.\nO: vitals as charted. Dorsal hands with erosions, fragile skin and dark patches. No jaundice, no ascites.\nA/P:\n1. PCT, flaring per his account. Encouraged him to start the hydroxychloroquine, gloves and sleeves. Requesting the January dermatology note.\n2. Folic acid: not taking for months; off the list. CBC today, will restart if the anemia is back.\n3. Vitamin D: continue D3.\n4. Asplenia: MenACWY booster today (5 years from the 2018 series).\n5. Colon screening: FIT kit.\n6. AUD severe: AUDIT-C 12.\nRTC 3-4 months."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records Request",
+              "author": "front desk",
+              "date": "2023-03-16T11:15",
+              "body": "Requested January 2023 dermatology office note by fax. Office said they would send it."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-03-17T09:40",
+              "body": "Hemoglobin drifting down to about 11 and MCV back up off folic acid. He was told at the visit; will see what July looks like if he won't restart now. Messaged him to call if more tired."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "lab_only",
+          "start": "2023-04-11T10:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-10T07:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-04-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "author": "MA",
+              "date": "2023-04-11T14:00",
+              "body": "FIT negative, routed to PCP. Letter mailed. Still no dermatology note from January; second request faxed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-10a",
+          "kind": "office_visit",
+          "start": "2023-07-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, lightheadedness, palpitations",
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.1,
+              "Mean Corpuscular Volume": 108,
+              "White Blood Cells": 3.9,
+              "Platelets": 132
+            }
+          },
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Recurrent folate deficiency anemia"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-07-10T16:25",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 108
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-10T16:25",
+              "resulted": "2023-07-11T15:30",
+              "results": [
+                {
+                  "test": "Reticulocytes",
+                  "loinc": "4679-7",
+                  "unit": "%",
+                  "value": 0.4
+                },
+                {
+                  "test": "Peripheral blood smear",
+                  "loinc": "6742-1",
+                  "text": "Macrocytic red cells. Howell-Jolly bodies present, consistent with asplenia. No blasts."
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-07-10T16:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-10T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-10T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-07-10T16:45",
+              "body": "S: Two months of steadily worse tiredness; can't keep up on the crew. Lightheaded at times when he stands up quickly or climbs a ladder, and his heart races with light work. Similar run-down spells last year with the anemia and then the vitamin D. No blood in stool, no black stool, no vomiting blood, no recent illness. Not following any diet. Says beer most days on top of the liquor.\nStill off folic acid.\nO: vitals as charted. Pale. No scleral icterus. No lymph nodes in the neck, axillae or groin. Abdomen soft, no hepatomegaly or splenomegaly felt (post-splenectomy), no ascites. Neuro nonfocal.\nCBC today: hemoglobin 9.1, MCV 108. Reticulocyte count 0.4%, low. Smear sent.\nA/P:\n1. Macrocytic anemia with a low retic, recurrent, off folate for over six months while drinking heavily: most likely recurrent folate deficiency anemia. Restart folic acid 1 mg daily. Smear to look for anything else. Recheck CBC in 6-8 weeks; back to hematology if not recovering.\n2. Symptoms: no syncope; ok to keep working but no ladders until the count is up.\n3. AUD severe: same talk, harder this time about where this is heading. He listened.\nRTC 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-13a",
+          "kind": "portal_message",
+          "start": "2023-07-13T12:15",
+          "reason": "Smear result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood smear result",
+              "author": "PCP",
+              "date": "2023-07-13T12:15",
+              "body": "Gregory, the blood smear shows large red cells, which fits folate deficiency, and small fragments inside some red cells called Howell-Jolly bodies that are expected in anyone without a spleen. Nothing to suggest a blood cancer. Please take the folic acid every day and come back in about 6 weeks for a recheck."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "office_visit",
+          "start": "2023-09-26T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up anemia",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.8,
+              "Mean Corpuscular Volume": 101,
+              "White Blood Cells": 4.2,
+              "Platelets": 138
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-26T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-09-26T07:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-26T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-09-26T08:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-26T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-26T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-26T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-09-26T08:15",
+              "body": "S: Taking the folic acid, pill box by the coffee pot. More energy, palpitations gone. Back up ladders. Drinking a little less on work nights, he says. PHQ-9 5, mostly sleep and energy.\nO: color better. Vitals as charted.\nCBC: hemoglobin back up to 11.5, MCV down to about 100.\nA/P:\n1. Folate deficiency anemia, responding again. Continue folic acid indefinitely, explained why.\n2. AUD severe, AUDIT-C 11. Offered referral again; not yet.\n3. Flu and updated COVID today.\nRTC 4-5 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "telephone",
+          "start": "2023-12-19T11:00",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "RN",
+              "date": "2023-12-19T11:00",
+              "body": "Pharmacy fax for folic acid, thiamine and D3 refills; all sent for 90 days. Pharmacy notes penicillin last filled in February. Message left for pt to call if he wants it filled."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

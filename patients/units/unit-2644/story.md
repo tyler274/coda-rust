@@ -1,0 +1,21 @@
+# unit-2644 story (Asher Brennan, MRN00002644)
+
+- 2024-02-20 new-patient preventive visit; screening labs; pediatric records requested (A1, P)
+- 2024-02-22 portal: lab results normal (P)
+- 2024-03-05 pediatric records received; vaccines complete; neonatal HSV exposure (A1, R4, R5)
+- 2024-10-08 nurse visit: flu and updated COVID vaccines (P)
+- 2025-05-19 portal: asks for a physical and the university health form (P)
+- 2025-06-10 preventive visit before college; form completed (P)
+- 2025-07-25 student health services: infectious mononucleosis, amoxicillin rash (S, R1, R6); letter filed 2025-09-30
+- 2025-07-28 portal: patient reports mono and rash; amoxicillin allergy recorded; PCP reply with spleen precautions (S, R2, A3)
+- 2025-08-19 post-mono office visit; hepatic panel; student health records requested (A2)
+- 2025-08-20 portal: liver tests back to normal (A2)
+- 2025-09-30 student health letter received (S)
+- 2026-01-12 ED: enteroviral meningitis; LP, head CT, CSF PCR and culture (S, R3, A4); record filed 2026-02-09
+- 2026-01-13 portal: patient reports ED visit; PCP reply (P)
+- 2026-01-23 post-ED office visit; meningitis resolved; ED records requested; campus flu shot by report (A5, P)
+- 2026-02-09 ED record received and reviewed (S, A4)
+- 2026-06-12 preventive visit cancelled (P)
+- 2026-06-26 preventive visit, last seen; mono resolved on the list (P)
+- 2026-08-11 portal: immunization record request; front desk sends (P)
+- 2026-12-22 booked winter-break visit (P)

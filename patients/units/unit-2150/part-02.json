@@ -1,0 +1,178 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002150",
+      "events": [
+        {
+          "id": "2024-03-20a",
+          "kind": "telehealth_visit",
+          "start": "2024-03-20T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-03-20T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2024-03-20T12:40", "body": "Video visit on his lunch break from the break room at work. Overdue 6-month BP check was rescheduled twice for shifts, so doing it by video.\n\nHe bought a cuff at the pharmacy in January, readings mostly 128-136 over 78-84 mornings. Taking lisinopril daily. No headaches or lightheadedness. Back and knees about the same; neck fine.\n\nA/P: HTN controlled by home readings, continue lisinopril 10. Next in-person at the September physical with labs. Send me readings through the portal if they run over 140."}
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "portal_message",
+          "start": "2024-06-14T21:06",
+          "documents": [
+            {"type": "Patient Communication", "title": "neck and arm", "author": "patient", "date": "2024-06-14T21:06", "body": "my neck has been killing me for about 10 days and now it goes down my left arm. thumb and pointer finger feel numb half the time. didnt hurt it that i know of. can i get in next week"},
+            {"type": "Patient Communication", "title": "RE: neck and arm", "author": "RN", "date": "2024-06-15T08:20", "body": "Sorry to hear it. Any weakness where you're dropping things, trouble walking, or trouble with bladder or bowels? If yes, go to the ED. Otherwise I've put you in Monday at 7:40 with the doctor."},
+            {"type": "Patient Communication", "title": "RE: neck and arm", "author": "patient", "date": "2024-06-15T09:02", "body": "none of that. monday works"}
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "office_visit",
+          "start": "2024-06-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck pain radiating to left arm",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-17T07:40"}],
+          "orders": [
+            {"id": "mri-c-2024", "action": "placed", "order": "MRI cervical spine without contrast", "category": "imaging", "reason": "left arm radicular symptoms with weakness"},
+            {"id": "pmr-ref-2024", "action": "placed", "order": "Physical medicine and rehabilitation referral", "category": "referral", "to": "Physical Medicine & Rehabilitation", "reason": "left cervical radicular symptoms"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-06-17T08:30", "body": "S: About 2 weeks of left-sided neck pain, now running into the left arm, with numbness of the thumb and index finger that comes and goes. No injury he can name, but 30-odd years of lifting. Ibuprofen takes the edge off; cyclobenzaprine helps him sleep. No gait trouble, no bowel or bladder change, right arm fine. Pain 6/10.\n\nO: BP as charted. Neck: limited extension, left paraspinal tenderness. Left wrist extension slightly weak, 4+/5; grip and the rest of the arm full strength. Light touch reduced over the left thumb and index finger. Reflexes symmetric to my exam. Right arm normal. Gait normal.\n\nA/P: Left cervical radicular symptoms on known C5-C7 spondylosis, with a mild motor finding. MRI C-spine ordered and PM&R referral placed. Continue ibuprofen and cyclobenzaprine as needed, no overhead lifting for now. Return or ED for spreading weakness, gait change, bladder or bowel symptoms."}
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "imaging",
+          "start": "2024-06-26T18:30",
+          "service": "Radiology",
+          "reports": [
+            {"study": "MRI cervical spine without contrast", "loinc": "30667-0", "performed": "2024-06-26T18:30", "issued": "2024-06-27T11:05", "text": "MRI CERVICAL SPINE WITHOUT CONTRAST\nIndication: left neck and arm pain with thumb and index numbness.\nTechnique: multiplanar multisequence imaging without contrast.\nComparison: none.\nFindings: Alignment maintained. Vertebral body heights preserved; no fracture or marrow lesion. Cord normal in caliber and signal. Craniocervical junction normal.\nC2-C3 through C4-C5: no significant disc bulge or stenosis.\nC5-C6: disc desiccation and disc height loss with a broad degenerative bulge; canal and foramina adequate, no root compression.\nC6-C7: disc desiccation and height loss. Left-sided disc herniation compresses the exiting left nerve root. No cord compression. Right foramen patent.\nC7-T1: unremarkable.\nParaspinal soft tissues normal.", "conclusion": "1. Multilevel degenerative disc disease at C5-C6 and C6-C7.\n2. Left-sided C6-C7 disc herniation with compression of the left exiting nerve root.\n3. No cord compression."}
+          ],
+          "orders": [{"id": "mri-c-2024", "action": "done", "date": "2024-06-27T11:05"}]
+        },
+        {
+          "id": "2024-06-28a",
+          "kind": "portal_message",
+          "start": "2024-06-28T07:50",
+          "documents": [
+            {"type": "Patient Communication", "title": "MRI result", "author": "PCP", "date": "2024-06-28T07:50", "body": "Douglas, the MRI shows a disc bulging out at C6-C7 on the left and pressing on the nerve root there, on top of the wear-and-tear changes you already knew about. The spinal cord itself is fine. That fits your arm symptoms. You're on the books with PM&R next Wednesday and they'll go over treatment. Keep avoiding overhead lifting until then."},
+            {"type": "Patient Communication", "title": "RE: MRI result", "author": "patient", "date": "2024-06-28T12:31", "body": "ok thanks. my brother had surgery for this, hoping i dont need that"},
+            {"type": "Patient Communication", "title": "RE: MRI result", "author": "PCP", "date": "2024-06-28T16:02", "body": "Most people with this improve without surgery, usually with therapy and time. Let's see what PM&R thinks."}
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "specialist_visit",
+          "start": "2024-07-03T10:00",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Left cervical radicular pain",
+          "conditions": [
+            {"label": "Cervical radiculopathy", "action": "diagnosed", "onset": "2024-06-05", "note": "left"}
+          ],
+          "orders": [
+            {"id": "pmr-ref-2024", "action": "done", "date": "2024-07-03T10:00"},
+            {"id": "pt-2024", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "left cervical radiculopathy"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Physical Medicine & Rehabilitation Consultation", "author": "physiatry", "date": "2024-07-05T09:15", "body": "OUTPATIENT PHYSICAL MEDICINE & REHABILITATION CONSULTATION\nDate of visit: 07/03/2024\nReason for referral: neck pain with left arm symptoms.\n\nHistory: 55-year-old warehouse loader with four weeks of neck pain that has steadily worsened and now travels into the left arm, with numbness in the thumb and index finger. He recalls no injury. Long history of heavy manual work. Known cervical spondylosis with disc degeneration at C5-C6 and C6-C7. Hypertension. Mechanical low back pain after L4-L5 laminectomy in 2022. Osteoarthritis of both knees. Left rotator cuff repair 2016.\n\nMedications: lisinopril 10 mg daily; ibuprofen 600 mg TID PRN; cyclobenzaprine 5 mg QHS PRN; acetaminophen 500 mg PRN.\nAllergies: sulfa (urticaria); shellfish (reaction unknown).\nFamily history: father with cervical spondylosis and myelopathy, hypertension; mother with osteoarthritis and osteoporosis; older brother with cervical radiculopathy treated with ACDF.\nSocial: former smoker, 20 pack-years, quit 5 years ago; 1-2 beers on weekends.\n\nExamination: Alert, comfortable seated. Weakness of the left biceps and left wrist extensors. Sensation reduced over the lateral left forearm and the thumb and index finger. Left brachioradialis reflex diminished; other upper limb reflexes symmetric. Right arm normal. No Hoffmann sign, gait steady.\n\nImaging: MRI of the cervical spine 6/26/2024 reviewed: C6-C7 disc herniation with nerve root compression, on multilevel degenerative disc disease.\n\nImpression: Left cervical radiculopathy, on a background of multilevel cervical spondylosis.\n\nPlan:\n- Physical therapy for cervical traction, mobility and scapular strengthening; referral sent.\n- Continue ibuprofen and cyclobenzaprine as needed.\n- Avoid heavy overhead lifting for the time being.\n- Follow up here in 6 to 8 weeks.\n\nThank you for the referral.\nPhysical Medicine & Rehabilitation"}
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "specialist_visit",
+          "start": "2024-07-10T16:00",
+          "service": "Physical Therapy",
+          "reason": "Cervical radiculopathy, initial evaluation",
+          "procedures": [{"procedure": "Physical therapy evaluation, moderate complexity", "performed": "2024-07-10T16:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Physical Therapy Initial Evaluation", "author": "physical therapy", "date": "2024-07-12T11:40", "body": "PHYSICAL THERAPY INITIAL EVALUATION, 7/10/2024\nDx: left cervical radiculopathy.\nSubjective: neck pain into the left arm, thumb and index numb intermittently, worse end of shift.\nObjective: cervical extension and left rotation limited. Left wrist extension 4/5, elbow flexion 4/5. Reduced light touch left thumb and index.\nAssessment: good rehab candidate.\nPlan: 2x/week for 8 weeks: mechanical traction trial, deep neck flexor and scapular work, nerve glides, lifting mechanics for his job, home program."}
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "specialist_visit",
+          "start": "2024-08-21T09:30",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Follow-up, left cervical radiculopathy",
+          "documents": [
+            {"type": "Consult Note", "title": "Physical Medicine & Rehabilitation Follow-up", "author": "physiatry", "date": "2024-08-23T10:00", "body": "PM&R FOLLOW-UP\nDate of visit: 08/21/2024\n\nSeven weeks into therapy he reports the left arm numbness is nearly gone and the neck pain is a background ache. Back to regular duties with better lifting habits.\n\nExam: left biceps and wrist extensor strength full and symmetric. Sensation intact in the left arm and hand. Reflexes symmetric. Neck motion improved.\n\nImpression: left cervical radiculopathy, largely resolved with conservative care.\nPlan: finish the remaining therapy sessions, then the home exercise program. Ibuprofen and cyclobenzaprine as needed. Return as needed if symptoms recur."}
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "specialist_visit",
+          "start": "2024-09-04T16:00",
+          "service": "Physical Therapy",
+          "reason": "Discharge visit",
+          "procedures": [{"procedure": "Physical therapy, therapeutic exercise", "performed": "2024-09-04T16:00"}],
+          "orders": [{"id": "pt-2024", "action": "done", "date": "2024-09-04T16:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Physical Therapy Discharge Summary", "author": "physical therapy", "date": "2024-09-06T13:25", "body": "PT DISCHARGE SUMMARY\nVisits attended: 15 of 16, 7/10/2024 to 9/4/2024.\nStatus: arm symptoms resolved, neck pain 1-2/10 at worst. Cervical motion full but end-range stiffness in extension. Left upper extremity strength 5/5 throughout.\nGoals met. Discharged to home exercise program."}
+          ]
+        },
+        {
+          "id": "2024-09-25a",
+          "kind": "annual_physical",
+          "start": "2024-09-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {"label": "Cervical radiculopathy", "action": "resolved", "note": "left, resolved after PT"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-25T08:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-25T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-25T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-25T08:30", "results": [{"test": "Hemoglobin A1c", "value": 5.5}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-25T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-25T08:30"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-25T08:55", "body": "ANNUAL, 55M\n\nInterval: left cervical radiculopathy this summer (MRI 6/26, C6-7 herniation on the left), treated by PM&R with PT, finished 9/4. Arm numbness and weakness gone. Does his neck exercises most nights. Back and knees unchanged, ibuprofen on heavy days.\nBP fine on his home cuff. PHQ-2 0. No other complaints.\n\nExam: BP as charted. Heart RRR, no murmur. Lungs clear. Neck: mild end-range stiffness, Spurling negative both sides. Arms: strength 5/5, sensation and reflexes symmetric. Knees crepitus, no effusion.\n\nA/P\n- Left cervical radiculopathy: resolved. Off the active list.\n- Cervical spondylosis/DDD: home program.\n- HTN controlled, lisinopril 10.\n- LBP and knee OA stable.\n- Labs today (CMP, CBC, lipids, A1c). Lung CT November, ordered. Flu and COVID at the pharmacy, he prefers it near home.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T11:44",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results", "author": "PCP", "date": "2024-09-27T11:44", "body": "Everything from Wednesday came back normal, including the sugar test (A1c) and blood counts. See you in the spring."}
+          ]
+        },
+        {
+          "id": "2024-10-12a",
+          "kind": "pharmacy",
+          "start": "2024-10-12T09:30",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-12T09:30"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-12T09:35"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside immunizations", "author": "MA", "date": "2024-10-15T15:00", "body": "Registry shows influenza (trivalent) and updated COVID-19 vaccines given 10/12/2024 at a community pharmacy. Added to the record."}
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "imaging",
+          "start": "2024-11-13T07:15",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-11-13T07:15", "issued": "2024-11-13T14:40", "text": "LOW-DOSE CT CHEST FOR LUNG CANCER SCREENING\nComparison: 11/8/2023 and 11/9/2022.\nFindings: Lungs clear. No nodule, mass or consolidation. No emphysema. No effusion. Normal heart size. Mediastinum without adenopathy. Unchanged mild degenerative thoracic spine changes.", "conclusion": "Lung-RADS 1. Negative. Continue annual low-dose CT."}
+          ],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-11-13T14:40"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "Lung CT", "author": "PCP", "date": "2024-11-14T08:05", "body": "Third year in a row the screening CT is clear. Good news."}
+          ]
+        }
+      ]
+    }
+  ]
+}

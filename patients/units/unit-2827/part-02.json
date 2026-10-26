@@ -1,0 +1,1062 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002827",
+   "events": [
+    {
+     "id": "2022-03-01a",
+     "kind": "office_visit",
+     "start": "2022-03-01T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-01T10:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-01T10:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-03-01T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-03-01T11:30",
+       "body": "Winter check. Says she's been eating more starch since the holidays and moving less with the ice. Fasting 140s-170s. No lows. Breathing at her usual, weight up a pound.\n\nExam: BP okay. Murmur LLSB as before, JVP up. Trace edema. Feet: intact sensation, no wounds.\n\nA1c a touch higher than fall. Discussed walking indoors at the mall, cutting back on bread and rice. Not changing glargine yet - would rather she not have more lows like November.\n\nRTC 4 months, sooner if sugars climb."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-27a",
+     "kind": "ed_visit",
+     "start": "2022-03-27T11:05",
+     "end": "2022-03-27T17:20",
+     "service": "Emergency Medicine",
+     "reason": "Painful swollen left knee",
+     "conditions": [
+      {
+       "label": "Pseudogout (calcium pyrophosphate crystal arthritis), left knee",
+       "icd10": "M11.262",
+       "action": "diagnosed",
+       "onset": "2022-03-25"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "colchicine 0.6 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth once daily for 7 days",
+       "dose": {
+        "value": 0.6,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute pseudogout, left knee"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2022-03-27T11:15",
+       "bp": [
+        142,
+        82
+       ],
+       "hr": 90,
+       "rr": 16,
+       "temp_c": 37.2,
+       "spo2": 97
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-03-27T12:40",
+       "results": [
+        {
+         "test": "Synovial fluid leukocytes",
+         "loinc": "99998-3",
+         "unit": "/uL",
+         "value": 18000
+        },
+        {
+         "test": "Synovial fluid neutrophils",
+         "loinc": "17836-8",
+         "unit": "%",
+         "value": 75
+        },
+        {
+         "test": "Synovial fluid crystals",
+         "loinc": "5781-0",
+         "text": "Rhomboid, weakly positively birefringent crystals (calcium pyrophosphate)"
+        },
+        {
+         "test": "Synovial fluid Gram stain",
+         "loinc": "664-3",
+         "text": "No organisms seen"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Knee X-ray",
+       "performed": "2022-03-27T12:10",
+       "text": "Left knee, three views. Linear calcification within the menisci and articular cartilage (chondrocalcinosis). Joint effusion. No fracture or dislocation. Joint spaces relatively preserved for age.",
+       "conclusion": "Chondrocalcinosis of the left knee with effusion. No fracture."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Arthrocentesis or injection, major joint",
+       "performed": "2022-03-27T12:35"
+      },
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2022-03-27T17:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Provider Note",
+       "author": "emergency medicine",
+       "date": "2022-03-27T17:15",
+       "body": "Regional hospital ED, Sunday.\n\n66F with knee OA (L scope ~2010), DM2 on insulin, CKD 3b. Two days ago her left knee became very painful out of nowhere and has gotten steadily worse - now red, hot, swollen, she can barely bend it. No fall, no twist, no injury. No fevers at home.\n\nMeds per pt list. NKDA.\n\nExam: T 37.2. L knee warm, red, tense effusion, ROM limited by pain to about 30 degrees. R knee cool with crepitus only. No skin break.\n\nArthrocentesis L knee, sterile prep, lateral approach: 35 mL yellow cloudy fluid. WBC 18,000, 75% PMNs. Polarized microscopy: rhomboid weakly positive birefringent crystals. Gram stain no organisms. Culture sent.\nXR: chondrocalcinosis, effusion.\n\nImpression: acute CPPD (pseudogout) flare of the L knee. Gram stain negative; septic joint felt unlikely but culture pending.\n\nPlan: NSAIDs avoided with her kidneys. Colchicine 0.6 mg once daily x 7 days (renal dosing). Ice, rest, acetaminophen. Will call if culture grows. PCP follow-up this week; return for fever or worsening."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-28a",
+     "kind": "telephone",
+     "start": "2022-03-28T09:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up scheduling",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call re: ED visit",
+       "author": "RN",
+       "date": "2022-03-28T09:20",
+       "body": "Pt called, was in ED yesterday for her L knee, crystals found, sent home on colchicine. Pain a bit better this morning, no fever. Booked with PCP Wed 3/30. Advised to call if fever, chills or the knee gets worse."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-30a",
+     "kind": "office_visit",
+     "start": "2022-03-30T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, left knee",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-03-27T12:40",
+       "resulted": "2022-03-29T16:00",
+       "results": [
+        {
+         "test": "Synovial fluid culture",
+         "loinc": "6463-4",
+         "text": "No growth at 48 hours, final"
+        }
+       ]
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-03-30T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-03-30T16:10",
+       "body": "ED f/u for L knee pseudogout (Sunday). ED note and fluid results reviewed: CPP crystals, Gram stain neg. Culture finalized yesterday, no growth.\n\nKnee much better, maybe 70% - walking with a cane around the house. Day 4 of colchicine, a little loose stool, no diarrhea.\n\nExam: afebrile. L knee mild warmth, small effusion, flexes to ~90. R knee baseline.\n\nA/P: acute CPPD flare, improving. Finish 7 days of colchicine, stop sooner if diarrhea. Back to acetaminophen. Told her the crystals can flare again in the same joint; if so call early. Sugars ran a bit high in the ED, fine now."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-12a",
+     "kind": "specialist_visit",
+     "start": "2022-04-12T10:15",
+     "service": "Cardiology",
+     "reason": "Tricuspid regurgitation follow-up",
+     "vitals": {
+      "bp": [
+       132,
+       78
+      ],
+      "hr": 84
+     },
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2022-04-12T09:20",
+       "text": "Compared with 3/2021. LV normal size and function, LVEF 55-60%. RV remains dilated with mildly reduced function. RA dilated. Severe tricuspid regurgitation, unchanged. Estimated RVSP 38 mmHg. Other valves without significant disease. No effusion.",
+       "conclusion": "Severe TR, unchanged from 2021. LVEF 55-60%."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2022-04-14T15:30",
+       "body": "Outside Cardiology Group\n\nRe: Joan Hughes, seen 4/12/2022\n\nOne-year follow-up for severe TR. Breathing is stable at a flight of stairs; ankle swelling modest with salt restriction. Recent pseudogout flare of the left knee, treated. Weights stable.\n\nMeds: lisinopril 20, amlodipine 5, furosemide 40, metformin 1000 BID, glargine 18 u, atorvastatin 40, cholecalciferol, acetaminophen. NKDA.\n\nBP 132/78, HR 84. JVP elevated, holosystolic LLSB murmur, trace edema.\n\nEcho today: unchanged from last year.\n\nPlan: no change. Next echo in 2 years if she stays stable; clinic yearly.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2022-06-21a",
+     "kind": "outside_records",
+     "start": "2022-06-23T09:00",
+     "service": "Optometry",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2022-06-23T09:00",
+       "body": "Community optometry practice. Dilated exam 6/21/2022. Corrected 20/25 OD, 20/25 OS. No diabetic retinopathy OU. Glasses Rx updated. Recall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "office_visit",
+     "start": "2022-07-12T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-07-12T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-07-12T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-07-12T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-07-12T10:45",
+       "body": "Knee: no further flares since March. Walking more now it's warm, laps around her building in the mornings. Sugars better, mostly 110s-140s.\n\nExam: BP at goal. Unchanged murmur. Trace edema. L knee cool, no effusion.\n\nA1c back down. Good. Same plan. Cardiology letter in: echo unchanged.\nRTC 6 wks for AWV."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-23a",
+     "kind": "annual_physical",
+     "start": "2022-08-23T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-08-23T08:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-08-23T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-08-23T08:35",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-08-23T08:35",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-08-23T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-08-23T11:20",
+       "body": "Subsequent AWV.\n\nHRA reviewed: no falls, no new hearing or vision trouble (new glasses in June). Pillbox, no missed doses she can recall. Lives alone; friends from church check in. Drives days only.\nMood fine, PHQ-2 0.\nHealth care proxy copy now scanned.\n\nInterval: L knee pseudogout 3/2022, settled. TR stable on echo. Nephrology yearly.\n\nExam: BP as charted. JVP up, LLSB murmur, lungs clear, trace edema. Feet: monofilament intact, pulses palpable, nails fine.\n\nPrevention: mammogram due 9/2023 (biennial). DXA normal 2021. Colonoscopy 2028. PCV20, Tdap done 2021. Flu + bivalent COVID in October.\n\nLabs: CMP, CBC, lipids, urine albumin."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T09:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-11T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "MA",
+       "date": "2022-10-11T09:45",
+       "body": "Fluzone HD to L deltoid, Pfizer bivalent to R deltoid. 15 minute wait, fine. Reminded about Nov DM appt."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-29a",
+     "kind": "office_visit",
+     "start": "2022-11-29T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-11-29T14:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-11-29T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-11-29T14:30",
+       "body": "Short visit. Feeling well. No knee flares. Breathing unchanged. Nephrology in 2 weeks, they'll do her BMP and PTH so only A1c here.\n\nBP fine. Exam unchanged: LLSB murmur, trace ankle edema.\n\nPlan same. 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-12a",
+     "kind": "specialist_visit",
+     "start": "2022-12-12T09:30",
+     "service": "Nephrology",
+     "reason": "Annual CKD follow-up",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-12T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-12T10:05",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 124
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Clinic Letter",
+       "author": "nephrology",
+       "date": "2022-12-14T08:00",
+       "body": "Outside Nephrology Group\n\nRe: Joan Hughes, visit 12/12/2022\n\nWell this year apart from a pseudogout flare of the left knee in March, which the ED treated with renally dosed colchicine. Glad NSAIDs were avoided.\n\nCreatinine stable in stage 3b. Calcium, phosphorus normal. PTH 124, lower again on the supplement.\n\nNo changes. Annual visit. Allergies: NKDA.\n\nNephrology"
+      }
+     ]
+    },
+    {
+     "id": "2023-01-17a",
+     "kind": "pharmacy",
+     "start": "2023-01-17T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Glargine pen refill",
+       "author": "MA",
+       "date": "2023-01-17T10:30",
+       "body": "Pharmacy fax: insulin glargine pens 3 mL, 18 units nightly, request 90-day supply with pen needles. Last A1c 11/29/22. Pended to PCP, approved x 4 refills. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-14a",
+     "kind": "office_visit",
+     "start": "2023-03-14T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-14T10:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-03-14T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-14T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-03-14T11:50",
+       "body": "Routine. Sugars steady. Has kept walking the halls of her building through the winter. Knees achy in the cold, acetaminophen twice a day helps.\n\nExam: BP at goal. Wt stable. Holosystolic murmur unchanged. Trace edema. Feet normal.\n\nA1c about the same. Kidney numbers steady.\n\nNo changes. Due for shingles vaccine - will order once supply in, she wants to wait until after spring.\nRTC 3-4 mo."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-27a",
+     "kind": "telephone",
+     "start": "2023-03-27T08:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Rash around right eye",
+     "orders": [
+      {
+       "id": "ophtho-2023",
+       "action": "placed",
+       "order": "Ophthalmology referral, same day",
+       "category": "referral",
+       "to": "Ophthalmology",
+       "reason": "Vesicular rash right forehead and eyelid, eye pain"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Phone Call with PCP",
+       "author": "PCP",
+       "date": "2023-03-27T08:25",
+       "body": "Pt called first thing. Since about Wednesday a burning, stinging pain on the R side of her forehead; yesterday blisters came up over the forehead and around the R eye, and this morning the eye is red, watery and blurry. Sent a photo by portal - grouped vesicles R forehead to upper lid, stops at midline.\n\nThis is zoster in the ophthalmic distribution with eye symptoms. Called the on-call ophthalmology office and got her seen this morning. Her neighbor is driving her. They will start the antiviral and renally dose it; I sent a note with her eGFR. Pt agreeable."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-27b",
+     "kind": "specialist_visit",
+     "start": "2023-03-27T10:30",
+     "service": "Ophthalmology",
+     "reason": "Herpes zoster, right eye",
+     "conditions": [
+      {
+       "label": "Herpes zoster ophthalmicus with keratitis, right eye",
+       "icd10": "B02.33",
+       "action": "diagnosed",
+       "onset": "2023-03-22"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "valacyclovir 1000 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every 12 hours for 7 days",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "Q12H",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Herpes zoster ophthalmicus"
+      },
+      {
+       "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+       "action": "start",
+       "sig": "1 drop in the right eye 4 times daily, preservative-free",
+       "dose": {
+        "value": 1,
+        "unit": "drop"
+       },
+       "frequency": "QID",
+       "route": "Ophthalmic",
+       "course": "short",
+       "reason": "Ocular surface lubrication"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ophtho-2023",
+       "action": "done",
+       "date": "2023-03-27T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Consultation",
+       "author": "ophthalmology",
+       "date": "2023-03-27T16:00",
+       "body": "Outside Ophthalmology Practice\n\nRe: Joan Hughes, 67 y/o, seen 3/27/2023 at the request of her PCP.\n\nHistory: burning pain over the right forehead starting 5 days ago, followed by a blistering rash. No similar episode before, no recent illness or injury. Diabetes and hypertension controlled. Takes metformin and lisinopril among others; NKDA.\n\nExam: vesicular eruption confined to the right V1 dermatome (forehead, upper lid). Visual acuity 20/60 OD, 20/25 OS. Right conjunctiva injected. Fluorescein: dendriform epithelial lesions of the right cornea. Anterior chamber quiet. Left eye normal.\n\nAssessment: herpes zoster ophthalmicus, right, with epithelial keratitis.\n\nPlan: valacyclovir 1 g every 12 hours for 7 days (adjusted for her kidney function). Preservative-free artificial tears four times daily. Cool compresses to the skin. Return 1 week, sooner with worse pain or vision.\n\nOphthalmology"
+      }
+     ]
+    },
+    {
+     "id": "2023-03-29a",
+     "kind": "telephone",
+     "start": "2023-03-29T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingles check-in",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Check-in after ophthalmology",
+       "author": "RN",
+       "date": "2023-03-29T14:15",
+       "body": "Called to check on pt. Taking valacyclovir twice daily as the eye doctor prescribed and the drops. Pain about the same, blisters starting to dry. Vision in R eye still a little blurry. No new spots elsewhere. Eye f/u booked 4/3. Reminded her to call if vision gets worse or she gets confused or dizzy on the antiviral."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-03a",
+     "kind": "specialist_visit",
+     "start": "2023-04-03T11:00",
+     "service": "Ophthalmology",
+     "reason": "HZO follow-up",
+     "conditions": [
+      {
+       "label": "Herpes zoster ophthalmicus with keratitis, right eye",
+       "icd10": "B02.33",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+       "action": "stop",
+       "reason": "Cornea healed"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Follow-up Letter",
+       "author": "ophthalmology",
+       "date": "2023-04-04T09:30",
+       "body": "Outside Ophthalmology Practice\n\nRe: Joan Hughes, follow-up 4/3/2023\n\nCompleted valacyclovir. Skin lesions crusted. Pain much reduced.\nVA 20/30 OD. Cornea: epithelial lesions healed, no stromal involvement. Anterior chamber quiet. Pressure normal.\n\nZoster ophthalmicus resolving well. Tears as needed only. No further follow-up needed here unless symptoms return; her routine optometry exam can continue. A zoster vaccine series is reasonable once the rash has fully cleared.\n\nOphthalmology"
+      }
+     ]
+    },
+    {
+     "id": "2023-04-12a",
+     "kind": "office_visit",
+     "start": "2023-04-12T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after shingles",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-04-12T14:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-04-12T15:30",
+       "body": "Here to check in after the right-sided zoster. Ophthalmology notes reviewed (keratitis healed, vision 20/30 R on 4/3). Still some tenderness of the R scalp when she brushes her hair, mild, fading. Sleeping fine. Eye feels normal.\n\nExam: R forehead healed crusts, a few pink macules, no vesicles. R eye white.\n\nA/P: HZO resolved. Shingrix series in summer once fully healed - she's in. Will schedule nurse visit in July."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-09a",
+     "kind": "specialist_visit",
+     "start": "2023-05-09T10:00",
+     "service": "Cardiology",
+     "reason": "Tricuspid regurgitation follow-up",
+     "vitals": {
+      "bp": [
+       128,
+       76
+      ],
+      "hr": 82
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2023-05-11T13:00",
+       "body": "Outside Cardiology Group\n\nRe: Joan Hughes, seen 5/9/2023\n\nStable year. Shingles of the right eye this spring, recovered. Breathing at her usual, no orthopnea. Weights flat.\n\nBP 128/76, HR 82. Exam unchanged: elevated JVP, LLSB holosystolic murmur, trace edema.\n\nNo echo this year. Continue current medicines. Echo and visit in 12 months.\nNKDA.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "outside_records",
+     "start": "2023-06-22T09:00",
+     "service": "Optometry",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2023-06-22T09:00",
+       "body": "Community optometry practice. Dilated exam 6/20/2023. Corrected 20/25 OD, 20/25 OS - right eye back to its prior level after zoster this spring; faint healed epithelial irregularity right cornea, clear axis. No diabetic retinopathy OU. Recall 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-19a",
+     "kind": "nurse_visit",
+     "start": "2023-07-19T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix dose 1",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2023-07-19T10:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-07-19T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "RN",
+       "date": "2023-07-19T10:20",
+       "body": "Shingrix #1, 0.5 mL IM L deltoid. Rash fully healed per pt and on look. Warned about sore arm and a day of feeling run down. #2 due in 2-6 months, will pair with flu in October."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "annual_physical",
+     "start": "2023-08-22T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "state": {
+      "labs": {
+       "Low Density Lipoprotein": 82
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-08-22T08:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-08-22T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-08-22T08:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-08-22T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2023",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-08-22T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-08-22T11:45",
+       "body": "AWV. Turns 68 next month.\n\nHRA: no falls. Uses a cane on bad knee days. Pillbox. Independent. Friends and church group. Mood good, PHQ-9 1.\n\nInterval: R HZO in March, resolved, Shingrix #1 in July. Cardiology May, stable. Nephrology Dec.\n\nExam: BP okay. Weight stable, BMI ~37. JVP up, LLSB murmur, lungs clear, trace edema. Feet: sensation intact, no lesions.\n\nPrevention: mammogram ordered. Shingrix #2 + flu in Oct, updated COVID at pharmacy. Colonoscopy 2028.\n\nLabs: CMP, CBC, lipids, A1c, UACR."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "imaging",
+     "start": "2023-09-12T14:00",
+     "service": "Radiology",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2023",
+       "action": "done",
+       "date": "2023-09-12T14:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2023-09-12T14:00",
+       "text": "Bilateral screening tomosynthesis, compared with 9/14/2021. Scattered areas of fibroglandular density. No new mass, suspicious calcifications or distortion.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "pharmacy",
+     "start": "2023-10-10T15:00",
+     "service": "Community Pharmacy",
+     "reason": "COVID-19 vaccine",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-10-10T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy Vaccine Administration Record",
+       "author": "pharmacist",
+       "date": "2023-10-10T15:15",
+       "body": "Moderna 2023-2024 formula COVID-19 vaccine, 0.5 mL IM L deltoid. No reaction. Faxed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "nurse_visit",
+     "start": "2023-10-17T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and Shingrix dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-17T09:35"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2023-10-17T09:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-17T09:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "RN",
+       "date": "2023-10-17T09:50",
+       "body": "Flu HD R deltoid. Shingrix #2 L deltoid - series complete. Pt got updated COVID at her pharmacy last week, will send record. No reactions to dose 1 other than a sore arm."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-28a",
+     "kind": "office_visit",
+     "start": "2023-11-28T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-11-28T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-11-28T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-11-28T11:30",
+       "body": "Doing well. Planning a long trip abroad in the spring to see old friends, excited. Sugars fine. Knees okay. No zoster pain left.\n\nExam: BP at goal. Murmur same. Trace edema.\n\nA1c today; BMP and PTH at nephrology 12/11. Continue all.\nRTC March."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-11a",
+     "kind": "specialist_visit",
+     "start": "2023-12-11T09:30",
+     "service": "Nephrology",
+     "reason": "Annual CKD follow-up",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-12-11T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-12-11T10:10",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 137
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Clinic Letter",
+       "author": "nephrology",
+       "date": "2023-12-13T08:20",
+       "body": "Outside Nephrology Group\n\nRe: Joan Hughes, visit 12/11/2023\n\nAnother steady year. Zoster ophthalmicus in the spring was treated with renally adjusted valacyclovir. No hospital stays.\n\nCreatinine unchanged, stage 3b. Calcium and phosphorus within range. PTH 137, within the band we've seen since 2020.\n\nContinue cholecalciferol 2,000 units. Return in a year. NKDA.\n\nNephrology"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,452 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002139",
+      "given": "Norman",
+      "family": "Hale",
+      "birth_date": "1967-11-28",
+      "address_line": "41 Straits Road",
+      "phone": "+1-413-555-0189",
+      "email": "norman.hale@example.test",
+      "marital_status": "married",
+      "summary": "58-year-old civil service administrator with atrial fibrillation, CAD and a mechanical aortic valve on warfarin, who joined in 2024 after a catheterization complicated by a retroperitoneal hematoma. In 2025 a ciprofloxacin course with poor intake led to a vitamin K deficiency coagulopathy admission, and later an ED visit found Coombs-negative valve-related hemolysis.",
+      "events": [
+        {
+          "id": "2024-09-06a",
+          "kind": "telephone",
+          "start": "2024-09-06T10:15",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "author": "front desk",
+              "date": "2024-09-06T10:15",
+              "body": "Caller wants to transfer care, previous PCP retired over the summer. Booked new patient visit 9/18, 60 min slot. Says he had heart valve surgery in June and is on warfarin, INRs are done through the cardiology anticoag clinic. Release for prior PCP office signed electronically, request sent. Asked him to bring all med bottles and his anticoag clinic card."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "establish_care",
+          "start": "2024-09-18T08:30",
+          "end": "2024-09-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Atrial fibrillation, unspecified",
+              "icd10": "I48.91",
+              "action": "history",
+              "onset": "2019-01-01",
+              "note": "Predates valve surgery; anticoagulated with warfarin"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "history",
+              "onset": "2024-05-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2015-01-01"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Presence of prosthetic heart valve",
+              "icd10": "Z95.2",
+              "action": "history",
+              "onset": "2024-06-01",
+              "note": "Mechanical aortic valve replacement, June 2024"
+            },
+            {
+              "label": "Postprocedural hematoma following cardiac catheterization",
+              "icd10": "I97.630",
+              "action": "history",
+              "onset": "2024-05-01",
+              "note": "Retroperitoneal hematoma after femoral-access coronary angiography, May 2024"
+            },
+            {
+              "label": "Long-term current use of anticoagulants",
+              "action": "history",
+              "onset": "2024-06-01"
+            },
+            {
+              "label": "Postprocedural hematoma following cardiac catheterization",
+              "icd10": "I97.630",
+              "action": "resolved",
+              "onset": "2024-05-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take as directed by anticoagulation clinic; dose varies, goal INR 2.0-3.0",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Mechanical aortic valve, atrial fibrillation"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 100 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            },
+            {
+              "substance": "Shellfish",
+              "reaction": "Itching",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              78
+            ],
+            "weight_kg": 92.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 82,
+              "Prothrombin Time-International Normalized Ratio": 2.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-18T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Civil service administrator"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 beers on weekends"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-18T09:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Former smoker, 25 pack-years, quit 2022"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2024-09-18T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-18T10:40",
+              "body": "56M here to establish. Prior PCP retired; records requested.\n\nCardiac history, his account (no outside records in hand yet): AF for a number of years, rate controlled on metoprolol. Known CAD followed by an outside cardiology group. In May had a coronary angiogram through the right groin ahead of valve surgery and developed a retroperitoneal bleed afterward, managed at that hospital. June: mechanical aortic valve replacement at an outside cardiac surgery program. Recovered well, back at work in August. Warfarin since surgery, dosed by the cardiology anticoag clinic, goal 2.0-3.0, last check 'in range' per him. BP and cholesterol treated for about a decade. Reflux controlled on pantoprazole.\n\nPSH: lap chole around age 45; cath and AVR as above.\nMeds: warfarin per clinic, metoprolol succinate 100, ASA 81, atorvastatin 40, lisinopril 20, pantoprazole 40.\nAllergies: PCN (anaphylaxis), shellfish (itching).\nFH: father MI at 62, also HTN. Mother AF and T2DM. Older brother CAD.\nSH: civil service administrator. Smoked 25 pk-yr, stopped in 2022. Beer 1-2 on weekends. \n\nROS: no exertional chest discomfort, no palpitations he notices, no bleeding gums, no blood in urine or stool, no orthopnea.\n\nExam: BP and pulse as charted. NAD. Sternotomy scar well healed. Crisp mechanical valve click, irregularly irregular at a controlled rate, no added murmur. Lungs clear. Right groin without mass or bruit. Abdomen soft. Legs without swelling. PHQ-2 0.\n\nA/P\n1. Mechanical AVR (6/2024) on warfarin, AF: anticoag clinic continues to dose; INR drawn today with labs so we have one on file. Asked him to tell us and the clinic before any new antibiotic or OTC pain reliever.\n2. CAD, HTN, HLD: at goal by today's BP, lipids pending. Continue current regimen.\n3. Hx RP hematoma post-cath: noted.\n4. GERD: stable on PPI.\n5. Health maintenance: hep C, HIV, hep B screening today. Flu vaccine today. Meets criteria for annual lung screening, low-dose CT ordered. Colonoscopy history to be confirmed from old records. Will plan shingles and pneumococcal at next visit.\nF/u 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "outside_records",
+          "start": "2024-09-20T14:05",
+          "reason": "Records from prior primary care practice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "MA",
+              "date": "2024-09-20T14:05",
+              "body": "11 pages from the prior primary care office arrived and were indexed. Contents: medication list matching what patient reported, office notes through spring 2024 for blood pressure and lipids, colonoscopy summary from 2018 (age 50) normal with 10-year repeat, Tdap given 2019. No cardiac surgery or anticoagulation clinic records in the packet; those were managed elsewhere."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "portal_message",
+          "start": "2024-09-23T07:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2024-09-23T07:50",
+              "body": "Hi Norman, your labs from the 18th look good. Kidney and liver function normal, blood counts normal, LDL cholesterol is at goal on the atorvastatin. INR came back in your target range. Hepatitis and HIV screens were negative. Radiology will call to schedule the lung screening CT. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T13:20",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2024-10-08T13:20",
+              "text": "Indication: annual lung cancer screening, former smoker, 25 pack-years, quit 2022. Technique: low-dose helical CT of the chest without contrast. Findings: Median sternotomy wires intact. Mechanical aortic valve prosthesis. Heart size normal, no pericardial effusion. No pulmonary nodules. No consolidation or effusion. Airways patent. No lymphadenopathy. Upper abdomen: cholecystectomy clips.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2024",
+              "action": "done",
+              "date": "2024-10-08T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lung screening CT result",
+              "author": "PCP",
+              "date": "2024-10-09T12:10",
+              "body": "LDCT negative, Lung-RADS 1. Next one fall 2025. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "pharmacy",
+          "start": "2024-10-22T16:30",
+          "reason": "Vaccine given at pharmacy",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-19T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside vaccine entered",
+              "author": "MA",
+              "date": "2024-10-22T16:30",
+              "body": "Patient messaged a photo of his vaccine card: 2024-25 COVID vaccine given 10/19 at a retail pharmacy. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "office_visit",
+          "start": "2024-12-11T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-12-11T15:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-12-11T15:36"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-11T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-12-11T16:05",
+              "body": "Follow-up, valve/AF/BP.\n\nDoing well. Saw cardiology in November, no changes made. Anticoag clinic checks him every few weeks, says they have been in range. Walking at lunch most days. No bruising beyond the usual small ones, no nosebleeds, no dark stools. Reflux quiet.\n\nExam: vitals reviewed. Comfortable. Valve click crisp, rhythm irregular, rate fine. Chest clear. No ankle swelling.\n\nImpression/plan: stable on current meds, no changes. First Shingrix and PCV20 given today, R and L deltoid. Second Shingrix due in 2-6 months. RTC 3 months, sooner if needed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

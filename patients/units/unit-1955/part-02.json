@@ -1,0 +1,221 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001955",
+      "events": [
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2024-09-09T17:05", "body": "Pt called to cancel tomorrow's physical, client deadline moved up. Will call back to reschedule once the project wraps."}
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T12:15",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-17T12:18"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-17T12:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-17T12:18"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2024-10-17T12:15", "body": "Seasonal flu and 2024-25 COVID given on her lunch break. Afebrile, no contraindications. Flu L deltoid, COVID R deltoid, both IM. Tolerated well. Reminded her the physical still needs rebooking; she would rather come in for a separate problem first and asked for the next open visit."}
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "office_visit",
+          "start": "2024-11-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tingling and numbness in hands and arms",
+          "state": {"labs": {"Vitamin B12": 520, "Hemoglobin A1c": 5.1}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-04T14:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-11-04T14:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2024-11-04T14:45", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Vitamin B12"}, {"test": "Hemoglobin A1c"}]}
+          ],
+          "orders": [
+            {"id": "neuro-referral", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Bilateral arm paresthesias with shawl-distribution burning and reduced pinprick"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-04T14:00"},
+            {"procedure": "Venipuncture", "performed": "2024-11-04T14:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-11-04T14:00", "body": "CC: hands and arms going numb on and off.\n\nHPI: 33F. Since roughly July she has spells of tingling and numbness in both hands running up the forearms, both sides about equally, coming and going over the day. Along with it a burning feeling that drapes over the tops of the shoulders and across the upper back, \"like wearing a heavy wrap,\" her words. Not positional that she can tell; not worse at the keyboard specifically. No neck injury, no fall, no whiplash. No neck pain beyond her usual upper back stiffness. No leg symptoms, no bladder or bowel change, no headache, no visual change, no trouble walking. Thought it was posture and bought a new chair; no difference.\n\nNo meds, NKDA. FH as before (mother scoliosis, maternal cousin with Chiari type I, father HTN).\n\nExam: vitals as charted. Neck: full range, no tenderness, foraminal compression not reproducing symptoms. Spine: mild thoracic curve as before. Neuro: pinprick reduced over both arms and hands compared with the chest and legs; light touch intact. Grip mildly reduced on both sides, otherwise arm strength good; legs full strength. Reflexes 2+ and symmetric at biceps, triceps, brachioradialis, knees and ankles. Toes downgoing. Gait and tandem normal.\n\nA/P: Bilateral upper limb paresthesias with a shoulder-and-upper-back burning pattern and reduced pinprick in both arms; not a carpal tunnel or single-root picture given the distribution and bilateral findings. Want neurology to see her.\n- Labs today: CBC, CMP, TSH, B12, A1c.\n- Neurology referral placed.\n- Call for new weakness, gait trouble, or bladder change.\nPhysical to be rebooked after this settles."}
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "portal_message",
+          "start": "2024-11-05T17:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results from Monday", "author": "PCP", "date": "2024-11-05T17:25", "body": "Laura, all of yesterday's tests are normal, including B12, thyroid, sugar (A1c) and the blood counts and chemistries. That rules out the common blood-test causes of tingling, which is useful but doesn't explain it, so the neurology visit is still the right next step. The referral coordinator will reach out about a date."}
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "telephone",
+          "start": "2024-11-20T10:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral scheduled", "author": "front desk", "date": "2024-11-20T10:40", "body": "Neurology referral accepted by outside neurology group. First available new patient slot Monday 1/20/2025, 1:30 pm. Pt notified by phone and agrees. Referral notes and Nov labs faxed over."}
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "portal_message",
+          "start": "2025-01-23T20:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Saw the neurologist", "author": "patient", "date": "2025-01-23T20:12", "body": "Hi, update from Monday. The neurologist did a long exam and had me get an MRI of my neck the same afternoon. She called it a syrinx, a fluid pocket inside the spinal cord. She said for now it's watch and wait with another scan in a year or so. Honestly a little freaked out. Did they send you anything? I'd like you to see it."},
+            {"type": "Patient Message", "title": "RE: Saw the neurologist", "author": "PCP", "date": "2025-01-24T08:30", "body": "Thanks for telling me, Laura, and I'm sorry it was a stressful week. Nothing has come in from them yet. We're requesting the consult note and the MRI today. Once I have it, let's sit down together and go through it; the front desk will set that up."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "telephone",
+          "start": "2025-02-11T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request, second", "author": "MA", "date": "2025-02-11T09:15", "body": "Consult note from 1/20 neurology visit still not received after request on 1/24. Called neurology office; staff say note was signed but not routed. Second request faxed with signed release. MRI report requested from imaging center as well."}
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "outside_records",
+          "start": "2025-03-04T13:50",
+          "conditions": [
+            {"label": "Syringomyelia", "icd10": "G95.0", "action": "diagnosed", "onset": "2025-01-20"}
+          ],
+          "orders": [
+            {"id": "neuro-referral", "action": "done", "date": "2025-01-20T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation (outside)", "author": "neurology", "date": "2025-03-04T13:50", "body": "OUTSIDE NEUROLOGY GROUP — NEW PATIENT CONSULTATION\nDate of service: 01/20/2025\nReferred by: primary care, for bilateral arm paresthesias\n\nHistory: 33-year-old right-handed woman with six months of on-and-off tingling and numbness in both hands and arms. Describes an associated burning discomfort spreading over the shoulders and upper back in a shawl distribution. Denies neck trauma or injury. No leg, bowel or bladder symptoms.\n\nPast history: mild adolescent idiopathic scoliosis, never progressive; seasonal allergic rhinitis. Wisdom teeth removed at 18.\nMedications: none.\nAllergies: NKDA.\nFamily history: mother, adolescent idiopathic scoliosis. Maternal first cousin, Chiari I malformation. Father, hypertension.\nSocial: graphic designer. Never smoker. Alcohol 1-2 drinks per month.\n\nExamination: Alert, fluent, cranial nerves intact. Sensory: pain and temperature lost over both upper limbs; vibration and joint position sense preserved. Motor: 4/5 in the upper extremities, 5/5 in the lower extremities. Reflexes normal and symmetric throughout. Gait normal.\n\nImaging: MRI cervical spine obtained today shows a cystic dilation in the center of the cervical spinal cord.\n\nImpression: Syringomyelia, cervical. Dissociated sensory loss in the arms with mild proximal weakness fits a central cord cavity.\n\nPlan: No intervention now. Observation. Repeat MRI of the spine and clinic follow-up in 12 to 18 months, sooner for new weakness, worsening numbness, or gait change. Avoid heavy straining and lifting in the meantime.\n\nNeurology"},
+            {"type": "Outside Records", "title": "Neurology note filed", "author": "MA", "date": "2025-03-04T14:05", "body": "Neurology consult from 1/20/25 received by fax after second request. MRI report itself not included; imaging center has not responded. Problem list updated per PCP. Pt to be scheduled to review."}
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "office_visit",
+          "start": "2025-03-19T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review neurology consult",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-19T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-03-19T11:20", "body": "Here to go over the neurology letter, which finally came in this month.\n\nSince January: tingling and the shoulder burning about the same, not better, not worse. Working full days. No new weakness, still no leg or bladder symptoms. Some worry, sleeping OK.\n\nReviewed the consult together: central cavity in the cervical cord on MRI, loss of pain and temperature in both arms with vibration and position sense spared, 4/5 arm strength, normal reflexes. Diagnosis syringomyelia. Their plan is watchful waiting with a repeat scan and visit in a year to a year and a half, and to avoid heavy straining.\n\nExam: vitals as charted. Gait normal. Did not repeat the full neuro exam today.\n\nA/P: Syringomyelia, cervical, new this year, followed by neurology. Explained what the cavity is and why they are watching rather than operating. She knows what should prompt a call: weakness, falls, trouble walking, bladder change. We'll keep an eye on whether the follow-up gets booked; neurology said they'd send a reminder. Physical in the fall, Pap due."}
+          ]
+        },
+        {
+          "id": "2025-09-12a",
+          "kind": "annual_physical",
+          "start": "2025-09-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap due",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-09-12T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Neutrophils %"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-12T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-09-12T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2025-09-12T09:30", "issued": "2025-09-18T15:00", "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.", "conclusion": "NILM, high-risk HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-12T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-09-12T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-09-12T09:00", "body": "Physical, a year late after last fall's cancellation. Arm tingling and the burning across her shoulders continue in the background most days, roughly where they were in March. Neurology follow-up not yet scheduled; she hasn't heard from them.\n\nMeds none. NKDA. Never smoker, alcohol a couple of times a month. PHQ-9 2, mostly sleep on busy weeks.\n\nROS: no leg numbness, no weakness, no falls, no bladder or bowel change, no headaches. Spring pollen season was mild.\n\nExam: vitals as charted, weight steady. Well appearing. HEENT unremarkable. Thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Breasts deferred per age and preference. Pelvic: normal external genitalia, cervix without lesions, Pap and HPV collected. Back: mild thoracic curve, unchanged. Neuro: walks normally. Ext: no edema.\n\nA/P: 34F.\n- Pap/HPV co-test today.\n- CBC, CMP, lipids.\n- Syringomyelia: stable symptoms; neurology follow-up due by about July 2026. Front desk to nudge them.\n- Scoliosis, rhinitis: no change.\n- Flu and COVID at a nurse visit in October."}
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "portal_message",
+          "start": "2025-09-19T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap and blood work", "author": "PCP", "date": "2025-09-19T12:10", "body": "Hi Laura, your Pap was normal and the HPV test negative, so the next one is in five years. Blood counts, chemistries and cholesterol all look good."}
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "nurse_visit",
+          "start": "2025-10-23T08:15",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-23T08:18"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-23T08:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-23T08:18"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "MA", "date": "2025-10-23T08:15", "body": "Early appt before work. Flu (2025-26) IM left arm, COVID 2025-26 IM right arm. No acute illness, no allergies. Fine after observation."}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T13:02",
+          "documents": [
+            {"type": "Patient Message", "title": "Neurology follow-up?", "author": "patient", "date": "2026-02-10T13:02", "body": "Hi, I still haven't gotten a call from neurology about my repeat scan and follow-up. Is that something you set up or do I call them? It's been a year."},
+            {"type": "Patient Message", "title": "RE: Neurology follow-up?", "author": "front desk", "date": "2026-02-10T16:45", "body": "Hi Laura, we called the neurology office for you. You're booked with them Monday, July 13, and they'll do the MRI around the same visit. They're mailing a confirmation. Let us know if the date doesn't work."}
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "office_visit",
+          "start": "2026-06-05T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worsening numbness and burning",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-05T15:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-06-05T15:40", "body": "S: 34F with cervical syringomyelia, came in because things have changed this spring. The burning is no longer just the shoulders and upper back; she gets episodes in both arms and now in both legs, with nothing she did to bring them on. Numbness and pins-and-needles in the hands, and lately the feet too. Dropping things more, a coffee mug last week, and buttons on a work blouse took her several tries. No falls. Walking feels normal to her. No bladder or bowel change. No headache. Neurology visit and MRI are booked for 7/13.\n\nO: Vitals as charted. Alert, mildly anxious. Strength 5/5 in shoulders, elbows, wrists, grip, hips, knees, ankles. Did not do detailed sensory mapping today; neurology will do the full exam in five weeks. Gait normal, tandem normal.\n\nA/P: Syringomyelia with new spread of symptoms to the legs and hand clumsiness. Strength full and walking intact today. Neurology is the right owner and is already set for July; we'll ask them for an earlier opening given the change. Reviewed again when to go to the ED: new weakness, falls, trouble walking, loss of bladder or bowel control. She'd like to hear from us either way about an earlier slot."}
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "telephone",
+          "start": "2026-06-08T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Neurology access request", "author": "RN", "date": "2026-06-08T11:30", "body": "Called neurology re earlier appointment per PCP, symptom progression described. Their scheduler has nothing before 7/13 with her neurologist; added her to the cancellation list. Called pt, left a detailed message on her cell (ok per chart). Kept 7/13."}
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "portal_message",
+          "start": "2026-07-16T21:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Neurology visit Monday", "author": "patient", "date": "2026-07-16T21:48", "body": "Saw neurology on Monday and had the MRI. She says the cavity is longer now, from C2 down to C6. My reflexes in my arms are weaker than last time but strength was okay. She's sending me to a neurosurgeon to talk about whether something should be done. I don't have a date yet. Just wanted you to know."},
+            {"type": "Patient Message", "title": "RE: Neurology visit Monday", "author": "PCP", "date": "2026-07-17T07:55", "body": "Thank you for the update, Laura. A neurosurgery opinion makes sense with the change. We'll ask neurology for their note so it's in your chart. If you don't hear about a neurosurgery date in a few weeks, send me a message and we'll help chase it."}
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "outside_records",
+          "start": "2026-08-18T10:05",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology follow-up (outside)", "author": "neurology", "date": "2026-08-18T10:05", "body": "OUTSIDE NEUROLOGY GROUP — FOLLOW-UP VISIT\nDate of service: 07/13/2026\n\nReason: follow-up of syringomyelia, first evaluated here January 2025.\n\nInterval history: 34-year-old woman with mild adolescent scoliosis and seasonal allergic rhinitis. Since last visit, unprovoked episodes of burning pain in both arms and both legs, not tied to injury or exertion. Numbness and pins-and-needles in the hands and feet. Some trouble with buttons and with keeping hold of objects. No falls, no sphincter symptoms.\n\nMedications: none. Allergies: NKDA.\nFamily history: mother with adolescent idiopathic scoliosis; maternal first cousin with Chiari I malformation; father with hypertension.\nSocial: graphic designer; never smoker; alcohol 1-2 drinks monthly.\n\nExamination: Pain and temperature sensation absent in a cape over the shoulders and upper back. Light touch, vibration and proprioception preserved. Strength 5/5 in all four limbs. Deep tendon reflexes diminished in both upper limbs; lower limb reflexes normal. Gait normal.\n\nMRI spine: central cord cyst spanning C2 through C6.\n\nAssessment: Cervical syringomyelia, clinically progressive with new upper limb hyporeflexia and wider sensory symptoms.\n\nPlan: Referral to neurosurgery for surgical opinion. Return to neurology after that evaluation. Patient to seek urgent care for new weakness, gait disturbance or bladder change.\n\nNeurology"},
+            {"type": "Outside Records", "title": "Neurology note filed", "author": "MA", "date": "2026-08-18T10:20", "body": "Neurology follow-up note dated 7/13/26 received by fax and scanned. Routed to PCP for review."}
+          ]
+        }
+      ]
+    }
+  ]
+}
