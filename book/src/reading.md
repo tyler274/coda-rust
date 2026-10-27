@@ -32,6 +32,29 @@ describes maintained source owners, implemented behavior and operating procedure
 it does not mirror the backlog. Product and runtime changes follow the agreed
 design and verification workflow.
 
+## Read the physician product as one workflow
+
+Start with what the physician should experience, then follow that promise through
+the app and its runtime. These documents answer different questions:
+
+| Read in order | What it establishes |
+| --- | --- |
+| <a href="/verification/physician-experience/README%2Emd">Physician experience</a> and its graph and decisions | The agreed behavior: Today, the patient page, conversations, readings, work and communication. The graph describes the intended product, including capabilities not built yet. |
+| <a href="/verification/physician-experience/coverage%2Emd">Physician app coverage</a> | The state-by-state implementation map: what is built, partial, missing or correctly not shown, and which states still need server data. A mapped state is not a running-app proof. |
+| <a href="/verification/physician-experience/infrastructure-gaps%2Emd">Runtime guarantees</a> and [physician site](physician-site.md) | The guarantees the graph leaves to execution, then the Rust owners and execution paths that implement parts of them. Recovery and scaling support the experience; they do not establish coverage of every product workflow. |
+| <a href="/verification/README%2Emd">Verification</a> and the <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">physician verification recipe</a> | The boundary between graph/model checks, implementation checks and running-app readback. The current physician recipe exercises chat across a local scale stack with a fixed provider. |
+| [GCP staging](gcp.md#rust-staging-bootstrap-and-deployment-gate) and [release](release.md) | Deployment and the hosted checks still needed for real identity, delivery, providers and recovery. A deployed revision is not itself an accepted physician journey. |
+
+For the next implementation slice, use Linear's current outcome and the coverage
+rows together: choose a complete physician journey, identify missing server data
+and runtime guarantees, then verify the result through the app. Update affected
+coverage rows with the implementation. Do not infer the next product priority
+from the latest infrastructure merge or treat the counts as a completion score.
+
+Connected-care behavior belongs to the
+<a href="/verification/connected-care/README%2Emd">composition of the physician and
+Duet graphs</a>. It does not merge their accounts, clinical state or runtime owners.
+
 ## Retained references
 
 The original repositories remain read-only comparison material. Their pinned
