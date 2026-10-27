@@ -24,6 +24,8 @@ use uuid::Uuid;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
+/// Command receipts and their 90-day reduction to a salted digest.
+pub mod receipt;
 /// Explicit bounded restart activation, separate from construction.
 pub mod recovery;
 /// Hosted physician reply drafts and their revision work.
@@ -270,6 +272,19 @@ impl Store {
             index.if_not_exists();
             tx.execute(&index).await?;
         }
+        // Receipts older than this column get the migration's time, so the
+        // 90-day reduction counts from when it could first see them. `now()`
+        // is stable, so Postgres stores it once instead of rewriting rows.
+        let accepted_at = sea_orm::sea_query::Table::alter()
+            .table(command::Entity)
+            .add_column_if_not_exists(
+                sea_orm::sea_query::ColumnDef::new(command::Column::AcceptedAt)
+                    .big_integer()
+                    .not_null()
+                    .default(Expr::cust("floor(extract(epoch FROM now()))::bigint")),
+            )
+            .to_owned();
+        tx.execute(&accepted_at).await?;
         tx.commit().await
     }
 
@@ -357,30 +372,13 @@ impl Store {
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
-        let inserted = command::Entity::insert(command::ActiveModel {
-            practice: Set(scope.practice.clone()),
-            physician: Set(scope.physician.clone()),
-            key: Set(input.key.clone()),
-            command: Set(command.clone()),
-        })
-        .on_conflict(OnConflict::new().do_nothing().to_owned())
-        .exec_without_returning(&tx)
-        .await?;
-        if inserted == 0 {
-            let previous = command::Entity::find_by_id((
-                scope.practice.clone(),
-                scope.physician.clone(),
-                input.key.clone(),
-            ))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing command receipt"))?
-            .command;
-            if previous != command {
-                return Err(error("idempotency collision"));
+        match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Accepted::Duplicate);
             }
-            tx.commit().await?;
-            return Ok(Accepted::Duplicate);
+            receipt::Receipt::Different => return Err(error("idempotency collision")),
         }
         conversation::Entity::insert(conversation_model(
             scope,
@@ -683,31 +681,16 @@ impl Store {
             "scope": scope,
             "resume": {"work_item_id": work_item_id, "expected_run_id": expected_run_id},
         });
-        let inserted = command::Entity::insert(command::ActiveModel {
-            practice: Set(scope.practice.clone()),
-            physician: Set(scope.physician.clone()),
-            key: Set(key.to_owned()),
-            command: Set(command.clone()),
-        })
-        .on_conflict(OnConflict::new().do_nothing().to_owned())
-        .exec_without_returning(&tx)
-        .await?;
-        if inserted == 0 {
-            let previous = command::Entity::find_by_id((
-                scope.practice.clone(),
-                scope.physician.clone(),
-                key.to_owned(),
-            ))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing command receipt"))?
-            .command;
-            tx.commit().await?;
-            return Ok(if previous == command {
-                Resumed::Duplicate
-            } else {
-                Resumed::Refused
-            });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Resumed::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(Resumed::Refused);
+            }
         }
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()

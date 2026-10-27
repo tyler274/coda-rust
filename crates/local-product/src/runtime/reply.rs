@@ -19,7 +19,8 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use super::delivery::{Delivery, DeliveryKind, DeliveryState, DispatchPage};
-use super::entities::{command, reply_draft, reply_revision};
+use super::entities::{reply_draft, reply_revision};
+use super::receipt::{self, Receipt};
 use super::{Authority, MAX_FAILED_ATTEMPTS, Scope, Store, database_clock, error, keys, now};
 use crate::physician_sources::SourceRevision;
 
@@ -415,31 +416,14 @@ impl Store {
             }
         }
         let tx = self.db.begin().await?;
-        let receipt = serde_json::json!({"scope": scope, "revise": input});
-        let inserted = command::Entity::insert(command::ActiveModel {
-            practice: Set(scope.practice.clone()),
-            physician: Set(scope.physician.clone()),
-            key: Set(input.key.clone()),
-            command: Set(receipt.clone()),
-        })
-        .on_conflict(OnConflict::new().do_nothing().to_owned())
-        .exec_without_returning(&tx)
-        .await?;
-        if inserted == 0 {
-            let previous = command::Entity::find_by_id((
-                scope.practice.clone(),
-                scope.physician.clone(),
-                input.key.clone(),
-            ))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing command receipt"))?
-            .command;
-            if previous != receipt {
-                return Err(error("idempotency collision"));
+        let command = serde_json::json!({"scope": scope, "revise": input});
+        match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
+            Receipt::New => {}
+            Receipt::Same => {
+                tx.commit().await?;
+                return Ok(RevisionAccepted::Duplicate);
             }
-            tx.commit().await?;
-            return Ok(RevisionAccepted::Duplicate);
+            Receipt::Different => return Err(error("idempotency collision")),
         }
         let Some(row) = reply_draft::Entity::find_by_id(keys(scope))
             .lock_exclusive()

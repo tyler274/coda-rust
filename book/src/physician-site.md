@@ -85,6 +85,31 @@ The local worker can fail chosen messages. With `PHYSICIAN_WORKER_FIXED_TEXT` se
 - <a href="/submodules/coda-agents/docs/testing%2Emd#proof-by-boundary">Testing: proof by boundary</a>
 - <a href="/submodules/coda-agents/README%2Emd#run-and-verify">Run and verify</a>
 
+## Retention
+
+The physician runtime keeps clinical history and the evidence Coda can learn from; only disposable copies expire, after 90 days. HIPAA sets no single record period, so clinical history follows the practice's own record schedule. No automatic deletion runs until that schedule exists. The rows below are the hosted Postgres copies, plus the copies kept outside the runtime.
+
+| Copy | Owner | Purpose | Rule |
+| --- | --- | --- | --- |
+| Conversations (`physician_runtime_conversations`) | [`runtime::Store`](/crates/local-product/src/runtime.rs) | Clinical history: what the physician asked and what Coda answered | Kept under the practice's record schedule. No automatic deletion. |
+| Reply drafts (`physician_runtime_reply_drafts`) | [`reply.rs`](/crates/local-product/src/runtime/reply.rs) | The physician's unsent reply text and the current revision with its instruction, base text, pinned sources and attempts | Kept under the practice's record schedule, including a reply's last revision when no later one replaces it. |
+| Earlier reply revisions (`physician_runtime_reply_revisions`) | [`reply.rs`](/crates/local-product/src/runtime/reply.rs) | Learning evidence: what Coda could read, what it read and produced, and what the physician changed | Append-only: a superseded attempt's late records are added, nothing is rewritten; kept with clinical history until the de-identified learning export exists. |
+| Execution records (attempt records on conversations and drafts) | [`runtime::Store`](/crates/local-product/src/runtime.rs) | Model requests and responses, tool reads, failures, and the evidence retries and recovery replay | Kept with the record they belong to. |
+| Command receipts (`physician_runtime_commands`) | [`receipt.rs`](/crates/local-product/src/runtime/receipt.rs) | Idempotency: a repeated command id returns the same answer; a different command under that id is refused | Full command for 90 days from `accepted_at`, then reduced to a salted digest. |
+| De-identified learning episodes | Not built | Long-term learning from whole episodes | Blocked until agreements grant the source rights and a validated de-identification process exists. |
+| Langfuse traces | [Observability](observability.md) | Debugging model runs | The self-hosted deployment keeps them for 90 days. |
+
+Command receipts duplicate input the runtime already keeps: a chat message lives in its conversation, and a reply instruction lives in its draft or archived revision. After 90 days, `Store::compact_receipts` replaces the stored command with `{"salt", "sha256"}`: a random salt kept on the row, and the SHA-256 of that salt followed by the command's canonical JSON (keys sorted). A repeated command still gets its original answer, and a different command under the same key is still refused. Rows that existed before `accepted_at` was added count their 90 days from the migration. The hosted site's recovery sweep runs compaction on start and then hourly, in batches of 100 receipts, at most 2,000 per run.
+
+Sources carry their own limits. Under Google's Workspace user-data policy, Gmail-derived content cannot train shared models, even when it is de-identified or rewritten. Duet's data stays with Duet's owners; its separate consent rules apply, and nothing here reads it.
+
+Not yet built:
+
+- **Learning export.** Without it, nothing de-identified exists to keep after a clinical deletion. A failed export cannot justify keeping PHI indefinitely.
+- **Per-practice record schedule and deletion.** No scoped deletion, withdrawal or offboarding path exists for runtime rows.
+- **Backups and restores.** Cloud SQL backup expiry is not set from this policy, and a restore could bring back rows deleted after the backup was taken.
+- **Diagnostic copies elsewhere.** Datadog logs and traces, and other operational stores, follow their own owners' schedules.
+
 ## Remaining gaps
 
 - **Opening the first reply draft.** Neither the inline session nor the Postgres draft store creates a draft from a site request; the physician reply owner opens it. Today only tests call `Store::open_draft`, so a hosted physician can revise only a draft that owner has already opened. The page has no hosted revision UI change in this slice.
