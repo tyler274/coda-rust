@@ -208,7 +208,7 @@ async fn push(
         Some(_)
             if endpoint
                 .refuse
-                .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |n| n.checked_sub(1))
+                .try_update(Ordering::SeqCst, Ordering::SeqCst, |n| n.checked_sub(1))
                 .is_ok() =>
         {
             StatusCode::INTERNAL_SERVER_ERROR

@@ -80,9 +80,11 @@ real Pub/Sub emulator, driving the real `gmail::push` router and
 ([`crates/gmail/tests/push_wake.rs`](../../crates/gmail/tests/push_wake.rs)).
 It shows that a push is a wake only: state changes only through
 `history.list` from the stored cursor, and an unknown mailbox or malformed
-payload is acked without a read. Duplicate and reordered wakes apply each
-message once and never move the cursor back. A refused push, a crash before the
-cursor commits, and a nacked pull are redelivered without repeating effects.
+payload is acked without a read. With a test-owned cursor and seen-message set,
+duplicate and reordered wakes apply each message once and never move the cursor
+back. A refused push, a crash before the cursor commits, and a nacked pull are
+redelivered without repeating effects in that stand-in. This is not evidence of
+production durable deduplication or atomic cursor/effect commits.
 A poison wake dead-letters after five attempts while healthy wakes complete.
 One ordering key keeps publish order, and an expired cursor surfaces instead of
 reading past it. Still unproven: push OIDC (the emulator has no IAM), real
