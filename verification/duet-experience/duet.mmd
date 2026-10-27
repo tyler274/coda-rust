@@ -161,9 +161,9 @@ stateDiagram-v2
 %% event Duet finishes its own work with something to tell you | by Duet's AI | needs OwRun | reason: only running work finishes | Duet posts what it noticed in the thread as one message, and Today pins it: insights (at most three current across all of Duet's work, E1), a proposed update for your doctor, or whatever it judges worth saying. Only what reached Duet's AI counts as reviewed (D5); published insights never change (E5).
 %% event Duet finishes its own work quietly | by Duet's AI | needs OwRun | reason: only running work finishes | Duet decided nothing needs saying; silence is success. No message is owed, Today says Quiet, and current insights stay (E3; Dev 2026-10-26).
 %% event Duet's own work can't finish | by Duet's runtime | needs OwRun | reason: only running work fails | The work ends without a decision and is never shown as quiet: Today says Duet couldn't check, with Retry (E3). No message is owed; Duet may still mention it (Dev 2026-10-26).
-%% event retry the check | by you | needs DIn, TdCouldnt, OwIdle, PAllowed, SwOn, TCur, PwOn | reason: Retry runs under the same consent, AI switch, Terms and proactive work as any of Duet's work (Dev 2026-10-26) | From Today's Couldn't check, Duet looks again now.
-%% event the insights' time passes | by the clock | needs TdInsights | reason: only current insights leave | The current insights leave Today and stay in Earlier insights (north-star.md, Today).
-%% event the decision's time passes | by the clock | needs TdQuiet, TdCouldnt | reason: only a quiet or failed decision goes stale | Its time is over; Today no longer says Quiet or Couldn't check.
+%% event retry the check | by you | needs DIn, TsCouldnt, OwIdle, PAllowed, SwOn, TCur, PwOn | reason: Retry runs under the same consent, AI switch, Terms and proactive work as any of Duet's work (Dev 2026-10-26) | From Today's Couldn't check, Duet looks again now.
+%% event the pinned message's time passes | by the clock | needs TpPinned | reason: only something pinned leaves | What Today pinned leaves; its insights stay in Earlier insights and the message stays in the conversation (north-star.md, Today).
+%% event the decision's time passes | by the clock | needs TsQuiet, TsCouldnt | reason: only a quiet or failed decision goes stale | Its time is over; Today no longer says Quiet or Couldn't check.
 %% event mark an insight not accurate | by you | command on the insight: Not accurate, clicked while DIn | needs TCur | reason: an insight on Today, in Earlier insights or on a source can be marked; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The insight is marked corrected and stays as written; Duet never replaces it on its own (E5).
 %% events you change your follow-through = Duet saves the Reminder you asked for | Duet saves the Check-in you asked for | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in | Duet changes the Reminder as you asked | Duet changes the Check-in as you asked | Duet pauses the Reminder as you asked | Duet pauses the Check-in as you asked | Duet cancels the Reminder as you asked | Duet cancels the Check-in as you asked | Duet links the Reminder to your Plan as you asked | Duet links the Check-in to your Plan as you asked | Duet unlinks the Reminder from your Plan as you asked | Duet unlinks the Check-in from your Plan as you asked
 %%
@@ -251,7 +251,7 @@ stateDiagram-v2
 %% event go to Duet | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The conversation, where you left it.
 %% event go to Today | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Insights and your current care: Plans, Reminders, Check-ins, For my doctor and your doctor's plan (ENG-34).
 %% event go to You | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Your health library, your sources and settings (north-star.md, You).
-%% event open an insight | by you | needs TabToday, TdInsights, TCur | reason: only an insight on Today opens from Today; newer Terms wait first | Its detail: the explanation, its exact support and recording limits, Ask about this and Not accurate (ui-surface-map.md, Insight detail).
+%% event open an insight | by you | needs TabToday, TpPinned, TCur | reason: only what Today pins opens from Today; newer Terms wait first | Its detail: the explanation, its exact support and recording limits, Ask about this and Not accurate (ui-surface-map.md, Insight detail).
 %% event open a measurement on Today | by you | needs TabToday, TCur | reason: Today shows only measurements you chose; newer Terms wait first | The measurement's chart, with its source and any estimate marked as one.
 %% event choose Today's measurements | by you | needs TabToday, TCur | reason: the choice is yours; newer Terms wait first | Up to three measurements to show on Today; choosing is not a second health library (ui-surface-map.md, At a glance picker).
 %% event save Today's measurements | by you | needs ToPick, TCur | reason: only an open choice is saved; newer Terms wait first | Today shows the measurements you chose.
@@ -757,31 +757,39 @@ stateDiagram-v2
           %% never OwnWorkNeedsProactiveOn: Duet's own work running & Proactive work paused -- The proactive-work control pauses Duet's own work.
         }
         --
-        %% Today pins what Duet told you from its own work (Dev 2026-10-26): at most three insights, or
-        %% silence. Its status speaks for Duet's latest work, whatever prompted it: Quiet appears only after
-        %% Duet actually decided; a failure says Duet couldn't check, with Retry (E3). A quiet decision never erases current insights, and once a decision's time passes
-        %% Today says nothing it no longer knows. Quiet and Couldn't check are Today's own status, not messages.
-        state "What Duet noticed on Today" as Today {
-          [*] --> TdBuilding
-          state "Still building context" as TdBuilding
-          state "Insights on Today" as TdInsights
-          state "Quiet" as TdQuiet
-          state "Couldn't check" as TdCouldnt
-          state "No current insights" as TdNothing
-          TdBuilding --> TdInsights : Duet finishes its own work with something to tell you
-          TdQuiet --> TdInsights : Duet finishes its own work with something to tell you
-          TdCouldnt --> TdInsights : Duet finishes its own work with something to tell you
-          TdInsights --> TdInsights : Duet finishes its own work with something to tell you
-          TdNothing --> TdInsights : Duet finishes its own work with something to tell you
-          TdBuilding --> TdQuiet : Duet finishes its own work quietly
-          TdCouldnt --> TdQuiet : Duet finishes its own work quietly
-          TdNothing --> TdQuiet : Duet finishes its own work quietly
-          TdBuilding --> TdCouldnt : Duet's own work can't finish
-          TdQuiet --> TdCouldnt : Duet's own work can't finish
-          TdNothing --> TdCouldnt : Duet's own work can't finish
-          TdInsights --> TdNothing : the insights' time passes
-          TdQuiet --> TdNothing : the decision's time passes
-          TdCouldnt --> TdNothing : the decision's time passes
+        %% Today pins what Duet told you from its own work (Dev 2026-10-26): at most three insights, a
+        %% proposed update for your doctor, or whatever it said, until its time passes. A quiet decision or
+        %% a failure never erases what is pinned.
+        state "What Duet pinned on Today" as Today {
+          [*] --> TpNone
+          state "Nothing pinned" as TpNone
+          state "Duet's latest message pinned" as TpPinned
+          TpNone --> TpPinned : Duet finishes its own work with something to tell you
+          TpPinned --> TpPinned : Duet finishes its own work with something to tell you
+          TpPinned --> TpNone : the pinned message's time passes
+        }
+        --
+        %% Today's own status speaks for Duet's latest work, whatever prompted it: Still building context
+        %% before any decision, Quiet only after Duet actually decided, Couldn't check with Retry when it
+        %% failed (E3). Once a decision's time passes Today says nothing it no longer knows. The status is
+        %% Today's own, not a message (Dev 2026-10-26).
+        state "Duet's latest work on Today" as TodayStatus {
+          [*] --> TsBuilding
+          state "Still building context" as TsBuilding
+          state "No status line" as TsNone
+          state "Quiet" as TsQuiet
+          state "Couldn't check, with Retry" as TsCouldnt
+          TsBuilding --> TsNone : Duet finishes its own work with something to tell you
+          TsQuiet --> TsNone : Duet finishes its own work with something to tell you
+          TsCouldnt --> TsNone : Duet finishes its own work with something to tell you
+          TsBuilding --> TsQuiet : Duet finishes its own work quietly
+          TsNone --> TsQuiet : Duet finishes its own work quietly
+          TsCouldnt --> TsQuiet : Duet finishes its own work quietly
+          TsBuilding --> TsCouldnt : Duet's own work can't finish
+          TsNone --> TsCouldnt : Duet's own work can't finish
+          TsQuiet --> TsCouldnt : Duet's own work can't finish
+          TsQuiet --> TsNone : the decision's time passes
+          TsCouldnt --> TsNone : the decision's time passes
         }
         --
         %% For my doctor: your workspace, Duet's proposed update, and your appointment (ENG-169).

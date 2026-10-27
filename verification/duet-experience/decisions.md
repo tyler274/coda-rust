@@ -219,10 +219,12 @@ Linear wins.
 - Today's status speaks for Duet's latest work, whatever prompted it (Dev
   2026-10-26). Today says Still building context before any decision, Quiet
   only after a real decision, and Couldn't check when that work fails, with
-  Retry; a quiet later
-  decision never erases insights that are still current (E3; north-star.md).
-  Once insights or a decision go stale, Today shows no current insights rather
-  than a Quiet nobody decided. Not accurate works wherever an insight shows.
+  Retry. What Today pins (insights, a proposed update for your doctor, or
+  whatever Duet said) is kept apart from that status: a quiet decision or a
+  failure never erases what is still pinned, and a failure adds Couldn't check
+  beside it (E3; north-star.md; Astra review of #147). Once a pin or a decision
+  goes stale, Today shows nothing it no longer knows rather than a Quiet nobody
+  decided. Not accurate works wherever an insight shows.
 - Duet's own work is AI work and proactive work: it needs your permission, the
   AI switch on, current Terms and proactive work on. A pause or a withdrawal
   stops it; Duet may take it on again once it may work.
