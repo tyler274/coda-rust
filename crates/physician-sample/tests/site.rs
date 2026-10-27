@@ -211,33 +211,23 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     );
 
     let message = "Review the discharge summary before the follow-up visit";
-    // Save confirms itself beside the composer, and an edit clears the mark.
+    // There is no Save button: typing saves itself once the physician
+    // pauses, confirms beside the composer, and an edit clears the mark.
     let notice =
         r#"document.querySelector('.composer-actions .composer-notice')?.textContent ?? ''"#;
-    let saved = browser
-        .eval(&format!(
-            r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
-            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
-            box.dispatchEvent(new Event('input', {{bubbles: true}}));
-            setTimeout(() => {{
-                [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click();
-                const started = Date.now();
-                const poll = () => {{
-                    const text = {notice};
-                    if (text === 'Saved' || text === 'Not saved' || Date.now() - started > 10000) resolve(text);
-                    else setTimeout(poll, 50);
-                }};
-                poll();
-            }}, 100);
-        }})"#,
-            serde_json::to_string(message).unwrap()
-        ))
+    let buttons = browser
+        .eval("[...document.querySelectorAll('.composer-actions button')].map(b => b.textContent.trim())")
         .await;
     assert_eq!(
-        saved.pointer("/result/result/value"),
-        Some(&serde_json::json!("Saved")),
-        "Save gave no confirmation: {saved}"
+        buttons.pointer("/result/result/value"),
+        Some(&serde_json::json!(["Send", "Dictate"])),
+        "the composer still offers a manual Save: {buttons}"
+    );
+    browser.type_composer(message).await;
+    assert_eq!(
+        browser.settled_mark().await,
+        "Saved",
+        "autosave gave no confirmation"
     );
     let edited = browser
         .eval(&format!(
@@ -383,9 +373,12 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         .await;
 }
 
-/// Two tabs on one chat: a tab holding older text than the other tab's save
-/// is fenced (Not saved, the server keeps the newer text), a reopened chat
-/// shows its saved draft, and a save still running when the physician opens
+/// Two tabs on one chat with debounced autosave: a tab whose save names an
+/// older revision is fenced (nothing written, its text kept, autosave paused)
+/// and offered Retry or Use newer text. Use newer text discards the edit;
+/// Retry names exactly the revision shown, so a draft that moved again shows
+/// another conflict instead of being overwritten. Typing during a long save
+/// gets a trailing save, and a save still running when the physician opens
 /// another chat never marks that chat.
 #[tokio::test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
@@ -428,63 +421,139 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
         .await;
     }
 
-    // A types first, so whenever its read of the (empty) draft lands, A's
-    // text stays the edit of revision 0.
+    // Both tabs read the empty draft (revision 0). A's autosave lands first.
     tab_a.type_composer("Older text from tab A").await;
+    assert_eq!(tab_a.settled_mark().await, "Saved");
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 1, "text": "Older text from tab A"})
+    );
+    // B still names revision 0: its autosave is refused, nothing is written,
+    // B keeps its text and is shown the newer draft with both choices.
     tab_b.type_composer("Newer text from tab B").await;
-    assert_eq!(tab_b.save_composer().await, "Saved");
+    let conflict = tab_b.wait_conflict().await;
     assert_eq!(
-        server_draft().await,
-        serde_json::json!({"revision": 1, "text": "Newer text from tab B"})
-    );
-    assert_eq!(
-        tab_a.save_composer().await,
-        "Not saved",
-        "the stale tab overwrote the newer save"
+        conflict,
+        (1, "Older text from tab A".to_owned()),
+        "the stale tab showed no conflict naming the newer draft"
     );
     assert_eq!(
         server_draft().await,
-        serde_json::json!({"revision": 1, "text": "Newer text from tab B"}),
+        serde_json::json!({"revision": 1, "text": "Older text from tab A"}),
         "a refused save wrote the stale text"
     );
     assert_eq!(
-        tab_a.composer().await.0,
-        "Older text from tab A",
+        tab_b.composer().await.0,
+        "Newer text from tab B",
         "a refused save dropped the stale tab's text"
     );
-    drop(tab_b);
+    // Autosave stays paused while the choice waits: more typing writes nothing.
+    tab_b
+        .type_composer("Newer text from tab B, still mine")
+        .await;
+    tokio::time::sleep(Duration::from_millis(1_500)).await;
+    assert_eq!(server_draft().await["revision"], 1);
 
-    // Reopened, the chat shows its saved draft and saves over revision 1.
-    tab_a.navigate(&chat_url).await;
+    // Use newer text discards B's edit and shows A's saved draft.
+    tab_b.click_conflict("Use newer text").await;
+    tab_b
+        .wait_composer("Older text from tab A", Duration::from_secs(5))
+        .await;
+    assert!(tab_b.conflict().await.is_none());
+    tokio::time::sleep(Duration::from_millis(1_500)).await;
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 1, "text": "Older text from tab A"}),
+        "Use newer text wrote to the server"
+    );
+
+    // B saves over revision 1; A, still at revision 1, now conflicts.
+    tab_b.type_composer("Newer text from tab B").await;
+    assert_eq!(tab_b.settled_mark().await, "Saved");
+    tab_a.type_composer("Tab A insists").await;
+    assert_eq!(
+        tab_a.wait_conflict().await,
+        (2, "Newer text from tab B".to_owned())
+    );
+    // The draft moves again before A chooses: Retry names the revision A was
+    // shown (2), so it is refused and the newest draft is shown instead.
+    tab_b.type_composer("Tab B moved again").await;
+    assert_eq!(tab_b.settled_mark().await, "Saved");
+    assert_eq!(server_draft().await["revision"], 3);
+    tab_a.click_conflict("Retry").await;
     let started = Instant::now();
-    while tab_a.composer().await.0 != "Newer text from tab B" {
+    loop {
+        if tab_a.conflict().await == Some((3, "Tab B moved again".to_owned())) {
+            break;
+        }
         assert!(
-            started.elapsed() < Duration::from_secs(20),
-            "the reopened chat did not show its saved draft: {:?}",
-            tab_a.composer().await
+            started.elapsed() < Duration::from_secs(10),
+            "Retry over a draft that moved again showed no new conflict: {:?}",
+            tab_a.conflict().await
         );
         tokio::time::sleep(Duration::from_millis(60)).await;
     }
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 3, "text": "Tab B moved again"}),
+        "Retry overwrote a revision the physician was never shown"
+    );
+    // Retry over the revision now shown replaces it with A's text.
+    tab_a.click_conflict("Retry").await;
+    assert_eq!(tab_a.settled_mark().await, "Saved");
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 4, "text": "Tab A insists"})
+    );
+    drop(tab_b);
 
-    // Hold the next save in flight, open another chat, then let it land.
+    // Reopened, the chat shows its saved draft.
+    tab_a.navigate(&chat_url).await;
+    tab_a
+        .wait_composer("Tab A insists", Duration::from_secs(20))
+        .await;
+
+    // Typing during a long save still gets a trailing save of the newer text.
     tab_a
         .call(
             "Fetch.enable",
             serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
         )
         .await;
-    tab_a.type_composer("Edited after reopening").await;
-    tab_a
-        .eval("[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click()")
-        .await;
+    tab_a.type_composer("Edited during").await;
     let put = tab_a.held_request("PUT").await;
-    let saving = tab_a
-        .eval("[document.querySelector('.composer-actions .composer-notice')?.textContent ?? '', [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').disabled]")
-        .await;
+    assert_eq!(tab_a.composer().await.1, "Saving…");
+    tab_a.type_composer("Edited during a long save").await;
+    tab_a.release(&put).await;
+    let trailing = tab_a.held_request("PUT").await;
+    let body = CdpBrowser::held_body(&trailing);
     assert_eq!(
-        saving.pointer("/result/result/value"),
-        Some(&serde_json::json!(["Saving…", true])),
-        "a running save showed no Saving mark or left Save enabled: {saving}"
+        body,
+        serde_json::json!({"expected_revision": 5, "text": "Edited during a long save"}),
+        "the trailing save did not name the revision the first save produced"
+    );
+    tab_a.release(&trailing).await;
+    let started = Instant::now();
+    while server_draft().await["revision"] != 6 {
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "the trailing save never landed"
+        );
+        tab_a.release_all().await;
+        tokio::time::sleep(Duration::from_millis(30)).await;
+    }
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 6, "text": "Edited during a long save"})
+    );
+
+    // Hold the next save in flight, open another chat, then let it land.
+    tab_a.type_composer("Edited after reopening").await;
+    let put = tab_a.held_request("PUT").await;
+    assert_eq!(
+        tab_a.composer().await.1,
+        "Saving…",
+        "a running save showed no Saving mark"
     );
     tab_a
         .eval("document.querySelector('button.sidebar-new-conversation').click()")
@@ -505,27 +574,21 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     tab_a.release(&put).await;
     // The save lands on the server for its own chat ...
     let started = Instant::now();
-    while server_draft().await["revision"] != 2 {
+    while server_draft().await["revision"] != 7 {
         assert!(
             started.elapsed() < Duration::from_secs(10),
             "the held save never landed"
         );
-        tab_a.eval("0").await;
-        for request in std::mem::take(&mut tab_a.paused) {
-            tab_a.release(&request).await;
-        }
+        tab_a.release_all().await;
         tokio::time::sleep(Duration::from_millis(30)).await;
     }
     assert_eq!(
         server_draft().await,
-        serde_json::json!({"revision": 2, "text": "Edited after reopening"})
+        serde_json::json!({"revision": 7, "text": "Edited after reopening"})
     );
     // ... and its answer never marks the chat now shown.
     for _ in 0..10 {
-        tab_a.eval("0").await;
-        for request in std::mem::take(&mut tab_a.paused) {
-            tab_a.release(&request).await;
-        }
+        tab_a.release_all().await;
         assert_eq!(
             tab_a.composer().await,
             (String::new(), String::new()),
@@ -534,6 +597,394 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
     tab_a.call("Fetch.disable", serde_json::json!({})).await;
+}
+
+/// Same-tab recovery through `sessionStorage`, signed in (a page restores
+/// only under a known physician): text typed just before a reload, text
+/// whose save was still on its way, and text whose save landed but whose
+/// answer was lost all come back without a duplicate write; a stale local
+/// baseline asks for an explicit choice; sign-out forgets every record; and
+/// denied storage keeps the text in memory and says reload recovery is off.
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::set_var("PHYSICIAN_AUTH", "required");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+            env::remove_var("PHYSICIAN_DATABASE_URL");
+        }
+    })
+    .await;
+    let address = server.address;
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let chat = "chat-recovery";
+    let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
+    let mut tab = CdpBrowser::launch(&chromium(), &format!("http://{address}/")).await;
+    tab.wait_for_text("Work email", Duration::from_secs(20))
+        .await;
+    tab.request_sign_in("physician@codahealth.test").await;
+    tab.wait_for_text("Mary Louis", Duration::from_secs(20))
+        .await;
+    let bearer = tab
+        .eval("sessionStorage.getItem('coda.physician.session')")
+        .await
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .expect("signed-in bearer session")
+        .to_owned();
+    let http = reqwest::Client::new();
+    let draft_url = format!("http://{address}/physician-state/drafts/{patient}/{chat}");
+    let server_draft = || async {
+        http.get(&draft_url)
+            .bearer_auth(&bearer)
+            .send()
+            .await
+            .unwrap()
+            .json::<serde_json::Value>()
+            .await
+            .unwrap()
+    };
+    let open_chat = async |tab: &mut CdpBrowser| {
+        tab.wait_for_text(
+            "What would you like Coda to review?",
+            Duration::from_secs(20),
+        )
+        .await;
+    };
+    tab.navigate(&chat_url).await;
+    open_chat(&mut tab).await;
+
+    // 1. Reloaded before the debounce: the text is only in this tab's
+    // storage, comes back, and then saves.
+    tab.type_composer("Typed just before the reload").await;
+    assert_eq!(server_draft().await["revision"], 0);
+    assert_eq!(
+        tab.recovery_keys().await.len(),
+        1,
+        "the unsent text was not kept for a reload"
+    );
+    tab.reload().await;
+    tab.wait_composer("Typed just before the reload", Duration::from_secs(20))
+        .await;
+    assert_eq!(tab.settled_mark().await, "Saved");
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 1, "text": "Typed just before the reload"})
+    );
+
+    // 2. Reloaded while the save was held before the server: it comes back
+    // and saves over the revision this tab last saw.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
+    )
+    .await;
+    tab.type_composer("Typed while a save was on its way").await;
+    let _held = tab.held_request("PUT").await;
+    tab.reload().await;
+    tab.release_all().await;
+    tab.call("Fetch.disable", serde_json::json!({})).await;
+    tab.release_all().await;
+    tab.wait_composer("Typed while a save was on its way", Duration::from_secs(20))
+        .await;
+    assert_eq!(tab.settled_mark().await, "Saved");
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 2, "text": "Typed while a save was on its way"})
+    );
+
+    // 3. The save lands but its answer is lost: after the reload the
+    // server's matching text is taken as the baseline; no conflict, no
+    // second write.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{
+            "urlPattern": "*/physician-state/drafts/*",
+            "requestStage": "Response"
+        }] }),
+    )
+    .await;
+    tab.type_composer("Saved but never answered").await;
+    let answer = tab.held_request("PUT").await;
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 3, "text": "Saved but never answered"})
+    );
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": answer["requestId"], "errorReason": "Failed" }),
+    )
+    .await;
+    assert_eq!(tab.settled_mark().await, "Not saved");
+    tab.call("Fetch.disable", serde_json::json!({})).await;
+    tab.release_all().await;
+    tab.reload().await;
+    tab.wait_composer("Saved but never answered", Duration::from_secs(20))
+        .await;
+    tokio::time::sleep(Duration::from_millis(2_500)).await;
+    assert!(
+        tab.conflict().await.is_none(),
+        "this tab's own lost save showed as a conflict"
+    );
+    assert_eq!(
+        server_draft().await,
+        serde_json::json!({"revision": 3, "text": "Saved but never answered"}),
+        "the recovered text was written twice"
+    );
+    assert!(
+        tab.recovery_keys().await.is_empty(),
+        "a record outlived the text it kept"
+    );
+
+    // 4. Another writer moved the draft before this tab's text was saved:
+    // after the reload the physician chooses; nothing is overwritten.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
+    )
+    .await;
+    tab.type_composer("Local edit nobody saved").await;
+    let _held = tab.held_request("PUT").await;
+    let moved = http
+        .put(&draft_url)
+        .bearer_auth(&bearer)
+        .json(&serde_json::json!({"expected_revision": 3, "text": "Written elsewhere"}))
+        .send()
+        .await
+        .unwrap();
+    assert!(moved.status().is_success());
+    tab.reload().await;
+    tab.call("Fetch.disable", serde_json::json!({})).await;
+    tab.release_all().await;
+    assert_eq!(
+        tab.wait_conflict().await,
+        (4, "Written elsewhere".to_owned())
+    );
+    assert_eq!(tab.composer().await.0, "Local edit nobody saved");
+    assert_eq!(server_draft().await["revision"], 4);
+    tab.click_conflict("Use newer text").await;
+    tab.wait_composer("Written elsewhere", Duration::from_secs(5))
+        .await;
+    assert!(tab.recovery_keys().await.is_empty());
+
+    // 5. Sign-out forgets every record before anything else can read it.
+    tab.type_composer("Unsent at sign-out").await;
+    assert_eq!(tab.recovery_keys().await.len(), 1);
+    tab.eval("document.querySelector('button[aria-label=\"Sign out of Coda\"]').click()")
+        .await;
+    tab.wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
+    assert!(
+        tab.recovery_keys().await.is_empty(),
+        "sign-out left unsent text in this tab's storage"
+    );
+    drop(tab);
+
+    // 6. Denied storage: the text stays on screen and saves; the page says
+    // a reload cannot bring it back.
+    let mut denied = CdpBrowser::launch(&chromium(), "about:blank").await;
+    denied
+        .call(
+            "Page.addScriptToEvaluateOnNewDocument",
+            serde_json::json!({"source": r#"(() => {
+        const set = Storage.prototype.setItem;
+        Storage.prototype.setItem = function (key, value) {
+            if (String(key).startsWith('coda.physician.draft.')) {
+                throw new DOMException('quota', 'QuotaExceededError');
+            }
+            return set.call(this, key, value);
+        };
+    })()"#}),
+        )
+        .await;
+    denied.navigate(&format!("http://{address}/")).await;
+    denied
+        .wait_for_text("Work email", Duration::from_secs(20))
+        .await;
+    denied.request_sign_in("physician@codahealth.test").await;
+    denied
+        .wait_for_text("Mary Louis", Duration::from_secs(20))
+        .await;
+    denied.navigate(&chat_url).await;
+    denied
+        .wait_composer("Written elsewhere", Duration::from_secs(20))
+        .await;
+    denied.type_composer("Kept only in memory").await;
+    denied
+        .wait_for_text(
+            "This tab can’t keep a reload copy of your draft.",
+            Duration::from_secs(5),
+        )
+        .await;
+    assert_eq!(denied.composer().await.0, "Kept only in memory");
+    assert_eq!(denied.settled_mark().await, "Saved");
+}
+
+/// Send from the keyboard (Ctrl+Enter) with text typed while the command is
+/// still unanswered: acceptance removes only the submitted message, keeps
+/// the later text, and the durable draft follows. A Send whose answer is lost
+/// across a reload is asked about again with the same command key, never a
+/// new one, and the message appears once.
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::set_var("PHYSICIAN_AUTH", "required");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+            env::remove_var("PHYSICIAN_DATABASE_URL");
+        }
+    })
+    .await;
+    let address = server.address;
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let chat = "chat-keyboard-send";
+    let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
+    let mut tab = CdpBrowser::launch(&chromium(), &format!("http://{address}/")).await;
+    tab.wait_for_text("Work email", Duration::from_secs(20))
+        .await;
+    tab.request_sign_in("physician@codahealth.test").await;
+    tab.wait_for_text("Mary Louis", Duration::from_secs(20))
+        .await;
+    let bearer = tab
+        .eval("sessionStorage.getItem('coda.physician.session')")
+        .await
+        .pointer("/result/result/value")
+        .and_then(|value| value.as_str())
+        .expect("signed-in bearer session")
+        .to_owned();
+    let http = reqwest::Client::new();
+    let draft_url = format!("http://{address}/physician-state/drafts/{patient}/{chat}");
+    let server_draft = || async {
+        http.get(&draft_url)
+            .bearer_auth(&bearer)
+            .send()
+            .await
+            .unwrap()
+            .json::<serde_json::Value>()
+            .await
+            .unwrap()
+    };
+    let ctrl_enter = r#"(() => {
+        const box = document.querySelector('textarea.composer');
+        box.focus();
+        box.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', ctrlKey: true, bubbles: true}));
+        return true;
+    })()"#;
+    tab.navigate(&chat_url).await;
+    tab.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(20),
+    )
+    .await;
+
+    // 1. Typed, autosaved, then sent from the keyboard while the command is
+    // held; more typing lands before the answer.
+    let first = "Check the potassium trend";
+    tab.type_composer(first).await;
+    assert_eq!(tab.settled_mark().await, "Saved");
+    assert_eq!(server_draft().await["text"], first);
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    )
+    .await;
+    tab.eval(ctrl_enter).await;
+    let held = tab.held_request("POST").await;
+    let key = CdpBrowser::held_body(&held)["idempotency_key"].clone();
+    assert_eq!(
+        CdpBrowser::held_body(&held)["payload"]["text"],
+        first,
+        "keyboard Send did not submit the composer text"
+    );
+    tab.type_composer(&format!("{first} and the sodium")).await;
+    tab.release(&held).await;
+    tab.call("Fetch.disable", serde_json::json!({})).await;
+    tab.wait_composer("and the sodium", Duration::from_secs(10))
+        .await;
+    tab.wait_for_text(first, Duration::from_secs(10)).await;
+    assert_eq!(tab.settled_mark().await, "Saved");
+    assert_eq!(
+        server_draft().await["text"],
+        "and the sodium",
+        "the durable draft still held the sent message"
+    );
+
+    // 2. Sent, but the answer is lost and the page reloads: the reload asks
+    // again with the same key; the message lands once and clears.
+    let second = "Order a repeat BMP";
+    tab.type_composer(second).await;
+    assert_eq!(tab.settled_mark().await, "Saved");
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{
+            "urlPattern": "*/commands",
+            "requestStage": "Response"
+        }] }),
+    )
+    .await;
+    tab.eval(
+        "[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send').click()",
+    )
+    .await;
+    let answered = tab.held_request("POST").await;
+    let lost_key = CdpBrowser::held_body(&answered)["idempotency_key"].clone();
+    assert_ne!(lost_key, key);
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
+    )
+    .await;
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    )
+    .await;
+    tab.reload().await;
+    let reasked = tab.held_request("POST").await;
+    assert_eq!(
+        CdpBrowser::held_body(&reasked)["idempotency_key"],
+        lost_key,
+        "the reload issued a new command for a Send whose answer was lost"
+    );
+    tab.release(&reasked).await;
+    tab.call("Fetch.disable", serde_json::json!({})).await;
+    tab.release_all().await;
+    tab.wait_for_text(second, Duration::from_secs(20)).await;
+    tab.wait_composer("", Duration::from_secs(10)).await;
+    let lines = tab
+        .eval(&format!(
+            "[...document.querySelectorAll('[aria-label=\"Conversation\"] .formatted-message')].filter(m => m.textContent.includes({})).length",
+            serde_json::to_string(second).unwrap()
+        ))
+        .await;
+    assert_eq!(
+        lines.pointer("/result/result/value"),
+        Some(&serde_json::json!(1)),
+        "the re-asked message did not appear exactly once"
+    );
+    let started = Instant::now();
+    while server_draft().await["text"] != "" {
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "the durable draft kept the accepted message: {}",
+            server_draft().await
+        );
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    }
 }
 
 async fn new_chat(browser: &mut CdpBrowser) -> String {
@@ -1777,10 +2228,9 @@ impl CdpBrowser {
         )
     }
 
-    /// Clicks Save and returns the mark it settles on: Saved or Not saved.
-    async fn save_composer(&mut self) -> String {
-        self.eval("[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Save').click()")
-            .await;
+    /// Waits for the autosave after typing to settle, and returns its mark:
+    /// Saved or Not saved. There is no Save button to click.
+    async fn settled_mark(&mut self) -> String {
         let started = Instant::now();
         loop {
             let (_, mark) = self.composer().await;
@@ -1789,10 +2239,106 @@ impl CdpBrowser {
             }
             assert!(
                 started.elapsed() < Duration::from_secs(10),
-                "Save settled on no mark: {mark:?}"
+                "autosave settled on no mark: {mark:?}\n{}",
+                self.dom().await
             );
             tokio::time::sleep(Duration::from_millis(50)).await;
         }
+    }
+
+    /// Waits until the composer shows `text`.
+    async fn wait_composer(&mut self, text: &str, timeout: Duration) {
+        let started = Instant::now();
+        loop {
+            let (shown, _) = self.composer().await;
+            if shown == text {
+                return;
+            }
+            assert!(
+                started.elapsed() < timeout,
+                "the composer never showed {text:?}; it shows {shown:?}"
+            );
+            tokio::time::sleep(Duration::from_millis(60)).await;
+        }
+    }
+
+    /// The conflict the composer shows: the newer revision and its text.
+    async fn conflict(&mut self) -> Option<(u64, String)> {
+        let value = self
+            .eval("(() => { const c = document.querySelector('.composer-conflict'); return c ? [Number(c.dataset.revision), c.querySelector('.composer-conflict-text')?.textContent ?? ''] : null; })()")
+            .await;
+        let pair = value.pointer("/result/result/value")?.as_array()?.clone();
+        Some((pair[0].as_u64()?, pair[1].as_str()?.to_owned()))
+    }
+
+    /// Waits for the composer to show a conflict, and returns it.
+    async fn wait_conflict(&mut self) -> (u64, String) {
+        let started = Instant::now();
+        loop {
+            if let Some(conflict) = self.conflict().await {
+                return conflict;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "no conflict showed: {:?}",
+                self.composer().await
+            );
+            tokio::time::sleep(Duration::from_millis(60)).await;
+        }
+    }
+
+    /// Clicks the conflict's `label` button (Retry or Use newer text).
+    async fn click_conflict(&mut self, label: &str) {
+        let clicked = self
+            .eval(&format!(
+                "(() => {{ const b = [...document.querySelectorAll('.composer-conflict button')].find(b => b.textContent.trim() === {}); if (!b) return false; b.click(); return true; }})()",
+                serde_json::to_string(label).unwrap()
+            ))
+            .await;
+        assert_eq!(
+            clicked.pointer("/result/result/value"),
+            Some(&serde_json::json!(true)),
+            "no {label} button in the conflict"
+        );
+    }
+
+    /// This tab's same-tab draft recovery keys.
+    async fn recovery_keys(&mut self) -> Vec<String> {
+        self.eval("Object.keys(sessionStorage).filter(k => k.startsWith('coda.physician.draft.'))")
+            .await
+            .pointer("/result/result/value")
+            .and_then(|value| value.as_array())
+            .map(|keys| {
+                keys.iter()
+                    .filter_map(|key| key.as_str().map(str::to_owned))
+                    .collect()
+            })
+            .unwrap_or_default()
+    }
+
+    /// Lets every held request go on.
+    async fn release_all(&mut self) {
+        self.eval("0").await;
+        for request in std::mem::take(&mut self.paused) {
+            self.release(&request).await;
+        }
+    }
+
+    /// The JSON body of a held request.
+    fn held_body(request: &serde_json::Value) -> serde_json::Value {
+        use base64::Engine;
+        let text = match request["request"]["postData"].as_str() {
+            Some(text) => text.to_owned(),
+            None => request["request"]["postDataEntries"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(|entry| entry["bytes"].as_str())
+                .filter_map(|bytes| base64::engine::general_purpose::STANDARD.decode(bytes).ok())
+                .map(|bytes| String::from_utf8_lossy(&bytes).into_owned())
+                .collect(),
+        };
+        serde_json::from_str(&text).unwrap_or(serde_json::Value::Null)
     }
 
     async fn send_frame(&mut self, payload: &[u8]) {
