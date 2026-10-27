@@ -43,5 +43,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/co
 ```
 
 Lint must report no findings. Every rule written here must hold; each graph's own
-rules hold as they do alone (the physician graph's `NoRevisionWithoutReply` stops at
-the state limit there too).
+rules hold as they do alone. The physician graph's `NoRevisionWithoutReply` stops at
+the explicit search's state limit here and alone; the physician Verus proof
+(`every_initialized_finite_trace_is_safe`) proves it, with every other physician rule,
+in every reachable state.
