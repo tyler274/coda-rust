@@ -1,8 +1,8 @@
 {
   "format": 1,
   "module": "physician",
-  "chart_sha256": "14074d9bb8bd32e22dff84f0c25ee2f206ecef05139eed7820ce448066a82071",
-  "generated_sha256": "b6ec59ef43cb9f7e62632622be067d5d7a95aac6bda5d26ee7abb07d32d5f09d",
+  "chart_sha256": "d388c8e955fd37c719717eb00f2f1bbc31d5d18ebc6438389f6d7dbf7e6014c0",
+  "generated_sha256": "05cbf4269abd8bcda207aa6ed59a5cdb75505f03c582dcbf4b242a145d6dccd7",
   "steps_sha256": "87d78e548f87ba8070e5ab73af3031a314d25bd086945259ce2442acbf9293ab",
   "semantics": "pstack broadcast events; pre-state guards; nondeterministic choices; stuttering allowed; parallel parts follow their parent's post-state, and exit wins",
   "regions": [
@@ -20549,6 +20549,10 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Connection ended.Ended, discharged by the practice",
             "Connection ended.Ended, the patient left",
@@ -20556,7 +20560,7 @@
             "Not connected"
           ]
         },
-        "reason": "only a patient not connected or invited can be invited"
+        "reason": "only a patient not connected or invited can be invited; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -20586,6 +20590,10 @@
           "Physician session/Signed in/Your command on the patient's connection": [
             "Invite on the patient's connection: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Connection ended.Ended, discharged by the practice",
             "Connection ended.Ended, the patient left",
@@ -20593,7 +20601,7 @@
             "Not connected"
           ]
         },
-        "reason": "only a patient not connected or invited can be invited; and an answer comes only for a command in flight"
+        "reason": "only a patient not connected or invited can be invited; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "invite the patient",
       "transitions": [
@@ -20654,6 +20662,10 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Practice connection": [
                     "Connection ended.Ended, discharged by the practice",
                     "Connection ended.Ended, the patient left",
@@ -20661,7 +20673,7 @@
                     "Not connected"
                   ]
                 },
-                "reason": "only a patient not connected or invited can be invited"
+                "reason": "only a patient not connected or invited can be invited; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -20722,13 +20734,17 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Invited.Invitation couldn't be delivered, with Resend",
             "Invited.Invitation sent.No reminder yet",
             "Invited.Invitation sent.Reminder sent"
           ]
         },
-        "reason": "only a sent or undelivered invitation is resent"
+        "reason": "only a sent or undelivered invitation is resent; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -20758,13 +20774,17 @@
           "Physician session/Signed in/Your command on the patient's connection": [
             "Resend on the patient's connection: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Invited.Invitation couldn't be delivered, with Resend",
             "Invited.Invitation sent.No reminder yet",
             "Invited.Invitation sent.Reminder sent"
           ]
         },
-        "reason": "only a sent or undelivered invitation is resent; and an answer comes only for a command in flight"
+        "reason": "only a sent or undelivered invitation is resent; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "resend the invitation",
       "transitions": [
@@ -20819,13 +20839,17 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Practice connection": [
                     "Invited.Invitation couldn't be delivered, with Resend",
                     "Invited.Invitation sent.No reminder yet",
                     "Invited.Invitation sent.Reminder sent"
                   ]
                 },
-                "reason": "only a sent or undelivered invitation is resent"
+                "reason": "only a sent or undelivered invitation is resent; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -20886,6 +20910,10 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Invited.Invitation couldn't be delivered, with Resend",
             "Invited.Invitation sent.No reminder yet",
@@ -20893,7 +20921,7 @@
             "Invited.Sending the invitation"
           ]
         },
-        "reason": "only an open invitation is withdrawn"
+        "reason": "only an open invitation is withdrawn; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -20923,6 +20951,10 @@
           "Physician session/Signed in/Your command on the patient's connection": [
             "Cancel the invitation on the patient's connection: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Invited.Invitation couldn't be delivered, with Resend",
             "Invited.Invitation sent.No reminder yet",
@@ -20930,7 +20962,7 @@
             "Invited.Sending the invitation"
           ]
         },
-        "reason": "only an open invitation is withdrawn; and an answer comes only for a command in flight"
+        "reason": "only an open invitation is withdrawn; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "cancel the invitation",
       "transitions": [
@@ -20991,6 +21023,10 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Practice connection": [
                     "Invited.Invitation couldn't be delivered, with Resend",
                     "Invited.Invitation sent.No reminder yet",
@@ -20998,7 +21034,7 @@
                     "Invited.Sending the invitation"
                   ]
                 },
-                "reason": "only an open invitation is withdrawn"
+                "reason": "only an open invitation is withdrawn; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -21059,11 +21095,15 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Connected"
           ]
         },
-        "reason": "only a live connection can end"
+        "reason": "only a live connection can end; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -21093,11 +21133,15 @@
           "Physician session/Signed in/Your command on the patient's connection": [
             "Discharge on the patient's connection: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Practice connection": [
             "Connected"
           ]
         },
-        "reason": "only a live connection can end; and an answer comes only for a command in flight"
+        "reason": "only a live connection can end; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "discharge the patient",
       "transitions": [
@@ -21140,11 +21184,15 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Practice connection": [
                     "Connected"
                   ]
                 },
-                "reason": "only a live connection can end"
+                "reason": "only a live connection can end; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -21205,12 +21253,16 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Message to match.Waiting to be matched",
             "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now"
           ]
         },
-        "reason": "only a message waiting to be matched"
+        "reason": "only a message waiting to be matched; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -21240,12 +21292,16 @@
           "Physician session/Signed in/Your command on the message match": [
             "Confirm on the message match: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Message to match.Waiting to be matched",
             "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now"
           ]
         },
-        "reason": "only a message waiting to be matched; and an answer comes only for a command in flight"
+        "reason": "only a message waiting to be matched; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "confirm the match",
       "transitions": [
@@ -21534,12 +21590,16 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Patient message: match": [
                     "No correction waiting on Undo.Message to match.Waiting to be matched",
                     "No correction waiting on Undo.Message to match.Waiting to be matched, looks urgent; leads Today as Now"
                   ]
                 },
-                "reason": "only a message waiting to be matched"
+                "reason": "only a message waiting to be matched; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -21910,12 +21970,16 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only an unlinked message or another patient's"
+        "reason": "only an unlinked message or another patient's; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -21945,12 +22009,16 @@
           "Physician session/Signed in/Your command on the message match": [
             "Link on the message match: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Patient message: match": [
             "No correction waiting on Undo.Another patient's message",
             "No correction waiting on Undo.Not a patient, until the sender writes again"
           ]
         },
-        "reason": "only an unlinked message or another patient's; and an answer comes only for a command in flight"
+        "reason": "only an unlinked message or another patient's; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "link the message to the patient",
       "transitions": [
@@ -22239,12 +22307,16 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Patient message: match": [
                     "No correction waiting on Undo.Another patient's message",
                     "No correction waiting on Undo.Not a patient, until the sender writes again"
                   ]
                 },
-                "reason": "only an unlinked message or another patient's"
+                "reason": "only an unlinked message or another patient's; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -22305,6 +22377,10 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Messaging channel/Channel connected to the practice/Who manages messaging": [
             "You manage the messaging connection"
           ],
@@ -22312,7 +22388,7 @@
             "No correction waiting on Undo.Linked to the patient"
           ]
         },
-        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01)"
+        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -22342,6 +22418,10 @@
           "Physician session/Signed in/Your command on the message match": [
             "Move to another patient on the message match: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Messaging channel/Channel connected to the practice/Who manages messaging": [
             "You manage the messaging connection"
           ],
@@ -22349,7 +22429,7 @@
             "No correction waiting on Undo.Linked to the patient"
           ]
         },
-        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); and an answer comes only for a command in flight"
+        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "another patient chosen for the message",
       "transitions": [
@@ -22392,6 +22472,10 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Messaging channel/Channel connected to the practice/Who manages messaging": [
                     "You manage the messaging connection"
                   ],
@@ -22399,7 +22483,7 @@
                     "No correction waiting on Undo.Linked to the patient"
                   ]
                 },
-                "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01)"
+                "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -22460,6 +22544,10 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Messaging channel/Channel connected to the practice/Who manages messaging": [
             "You manage the messaging connection"
           ],
@@ -22467,7 +22555,7 @@
             "No correction waiting on Undo.Linked to the patient"
           ]
         },
-        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01)"
+        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -22497,6 +22585,10 @@
           "Physician session/Signed in/Your command on the message match": [
             "Mark not a patient on the message match: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Messaging channel/Channel connected to the practice/Who manages messaging": [
             "You manage the messaging connection"
           ],
@@ -22504,7 +22596,7 @@
             "No correction waiting on Undo.Linked to the patient"
           ]
         },
-        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); and an answer comes only for a command in flight"
+        "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "the message is marked not a patient",
       "transitions": [
@@ -22547,6 +22639,10 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Messaging channel/Channel connected to the practice/Who manages messaging": [
                     "You manage the messaging connection"
                   ],
@@ -22554,7 +22650,7 @@
                     "No correction waiting on Undo.Linked to the patient"
                   ]
                 },
-                "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01)"
+                "reason": "only the messaging manager corrects a linked match (A3, Dev 2026-10-01); acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]
@@ -22615,12 +22711,16 @@
       "needs": {
         "not": false,
         "states": {
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Patient message: match": [
             "Marked not a patient, Undo shown",
             "Moved to another patient, Undo shown"
           ]
         },
-        "reason": "only while a correction's Undo shows"
+        "reason": "only while a correction's Undo shows; acting on a patient needs you to see them, at least who they are"
       },
       "transitions": [
         {
@@ -22650,12 +22750,16 @@
           "Physician session/Signed in/Your command on the message match": [
             "Undo the correction on the message match: sending; other commands on it wait"
           ],
+          "Access to the patient": [
+            "Clinical access",
+            "Identity only"
+          ],
           "Patient message: match": [
             "Marked not a patient, Undo shown",
             "Moved to another patient, Undo shown"
           ]
         },
-        "reason": "only while a correction's Undo shows; and an answer comes only for a command in flight"
+        "reason": "only while a correction's Undo shows; acting on a patient needs you to see them, at least who they are; and an answer comes only for a command in flight"
       },
       "accepts": "undo the correction",
       "transitions": [
@@ -22704,12 +22808,16 @@
               {
                 "not": false,
                 "states": {
+                  "Access to the patient": [
+                    "Clinical access",
+                    "Identity only"
+                  ],
                   "Patient message: match": [
                     "Marked not a patient, Undo shown",
                     "Moved to another patient, Undo shown"
                   ]
                 },
-                "reason": "only while a correction's Undo shows"
+                "reason": "only while a correction's Undo shows; acting on a patient needs you to see them, at least who they are"
               }
             ]
           ]

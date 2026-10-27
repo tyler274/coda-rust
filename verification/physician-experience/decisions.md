@@ -18,6 +18,12 @@ Linear, then the settled docs, then mockups.
 - **Communication standard (2026-10-24).** Coda never sends on its own. Only the
   exact words a physician approved go out: sent by the physician, or by Coda on
   their behalf and shown as sent by Coda for them (PM:160, 992).
+- **Access has one owner (2026-10-26).** The physician's access to a patient
+  (clinical, identity only, or none) is one region every patient command
+  reads: acting on a patient or their linked message needs at least identity
+  access, and anything showing or changing clinical content needs clinical
+  access. Roles inside the practice are practice policy, not graph state; only
+  the messaging manager is modeled, as the messaging contract names it.
 - **Behavior, not presentation (2026-10-26).** Layout, open and close, hover
   and paging belong to the surface map and the app, not the graph, as in
   Duet's. The graph keeps what the physician can do, what Coda does, and what
