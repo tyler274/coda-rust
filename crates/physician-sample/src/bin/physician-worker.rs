@@ -16,7 +16,10 @@ use axum::routing::{get, post};
 use base64::Engine;
 use harness::engine::{Cancellation, Item, Limits, Provider, Request as ModelRequest, Turn};
 use local_product::runtime::async_trait;
-use local_product::runtime::delivery::{Delivery, DeliveryState};
+use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
+
+#[path = "physician-worker/revision.rs"]
+mod revision;
 use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
@@ -103,6 +106,11 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
     let Ok((delivery, message_id)) = decode_push(&bytes) else {
         return StatusCode::BAD_REQUEST;
     };
+    // Decode and dispatch only after verifying the push identity. Revision
+    // scopes name reply work, never a chat conversation.
+    if delivery.kind == DeliveryKind::ReplyRevision {
+        return revision::deliver(&worker, &delivery, &message_id).await;
+    }
     let claim = match worker.store.claim_delivery(&delivery, LEASE_SECONDS).await {
         Ok(Some(claim)) => claim,
         Ok(None) => return absent_claim(&worker, &delivery).await,
@@ -375,6 +383,7 @@ impl Worker {
                 ModelSource::Fixed {
                     text,
                     failures_remaining: Arc::new(std::sync::atomic::AtomicU32::new(failure_count)),
+                    revision_failures: failure_count,
                     delay,
                     marker,
                 },
@@ -565,6 +574,8 @@ enum ModelSource {
     Fixed {
         text: String,
         failures_remaining: Arc<std::sync::atomic::AtomicU32>,
+        // Revision failures use durable attempt counts, including across restarts.
+        revision_failures: u32,
         delay: Duration,
         marker: bool,
     },
@@ -585,6 +596,7 @@ impl ModelSource {
                 failures_remaining,
                 delay,
                 marker,
+                ..
             } => Ok(Model::Fixed {
                 text: text.clone(),
                 failures_remaining: failures_remaining.clone(),
@@ -797,6 +809,16 @@ mod tests {
         assert_eq!(id, "m1");
         assert_eq!(decoded.input_id, "k");
         assert_eq!(decoded.scope.workspace, "w");
+        assert_eq!(decoded.kind, DeliveryKind::ChatTurn);
+        let mut revision = decoded;
+        revision.kind = DeliveryKind::ReplyRevision;
+        let data = base64::engine::general_purpose::STANDARD
+            .encode(serde_json::to_vec(&revision).unwrap());
+        let body = json!({"message": {"data": data, "message_id": "revision-message"}});
+        let (decoded, id) = decode_push(body.to_string().as_bytes()).unwrap();
+        assert_eq!(decoded.kind, DeliveryKind::ReplyRevision);
+        assert_eq!(decoded.input_id, "k");
+        assert_eq!(id, "revision-message");
         assert!(decode_push(b"{}").is_err());
         assert!(decode_push(br#"{"message":{"data":"not base64","messageId":"m"}}"#).is_err());
         let bad = base64::engine::general_purpose::STANDARD.encode("{}");

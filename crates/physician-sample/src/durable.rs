@@ -2,7 +2,9 @@
 //! existing physician runtime; the broker is only a recoverable wakeup hint.
 use crate::queue::ChatQueue;
 use local_product::runtime::{
-    Accepted, Authority, Conversation, Input, Resumed, Scope, Store, delivery::Delivery,
+    Accepted, Authority, Conversation, Input, Resumed, Scope, Store,
+    delivery::Delivery,
+    reply::{RevisionAccepted, RevisionInput},
 };
 use std::sync::Arc;
 
@@ -46,6 +48,36 @@ impl DurableChat {
                 .map_err(|e| e.to_string())?;
         } else {
             tracing::warn!("accepted physician input awaits queue recovery");
+        }
+        Ok(accepted)
+    }
+
+    /// Saves a revision and its exact source observation before queueing it.
+    /// Duplicate and refused commands never publish another wakeup.
+    pub async fn accept_revision(
+        &self,
+        scope: &Scope,
+        input: &RevisionInput,
+        session_hash: Vec<u8>,
+        sources: Vec<local_product::physician_sources::SourceRevision>,
+    ) -> Result<RevisionAccepted, String> {
+        let accepted = self
+            .store
+            .accept_revision(scope, input, session_hash, sources)
+            .await
+            .map_err(|e| e.to_string())?;
+        if accepted != RevisionAccepted::New {
+            return Ok(accepted);
+        }
+        let delivery = Delivery::reply_revision(scope.clone(), input.key.clone());
+        if self.queue.publish(&delivery).await.is_ok() {
+            // Acceptance is committed already. Even a dispatch-marker failure
+            // must not report accepted work as rejected; recovery can republish.
+            if self.store.dispatched(&delivery, 60).await.is_err() {
+                tracing::warn!("accepted physician revision dispatch marker unavailable");
+            }
+        } else {
+            tracing::warn!("accepted physician revision awaits queue recovery");
         }
         Ok(accepted)
     }
@@ -110,17 +142,45 @@ impl DurableChat {
         Ok(page.next)
     }
 
+    /// Revision recovery has its own keyset, independent of chat pagination.
+    pub async fn recover_revision_page(
+        &self,
+        after: Option<&Scope>,
+    ) -> Result<Option<Scope>, String> {
+        let page = self
+            .store
+            .revisions_due(100, after)
+            .await
+            .map_err(|e| e.to_string())?;
+        for delivery in page.deliveries {
+            if self.queue.publish(&delivery).await.is_ok() {
+                self.store
+                    .dispatched(&delivery, 60)
+                    .await
+                    .map_err(|e| e.to_string())?;
+            } else {
+                tracing::warn!("physician revision queue recovery publication failed");
+            }
+        }
+        Ok(page.next)
+    }
+
     /// Explicitly starts recovery on the site's always-allocated CPU. Keep and
     /// abort the task on graceful shutdown. Construction never starts execution.
     pub fn start_recovery(self: Arc<Self>) -> tokio::task::JoinHandle<()> {
         tokio::spawn(async move {
             let mut after = None;
+            let mut revision_after = None;
             let mut ticks = tokio::time::interval(std::time::Duration::from_secs(10));
             loop {
                 ticks.tick().await;
                 match self.recover_page(after.as_ref()).await {
                     Ok(next) => after = next,
                     Err(_) => tracing::warn!("physician queue recovery database unavailable"),
+                }
+                match self.recover_revision_page(revision_after.as_ref()).await {
+                    Ok(next) => revision_after = next,
+                    Err(_) => tracing::warn!("physician revision recovery database unavailable"),
                 }
             }
         })
