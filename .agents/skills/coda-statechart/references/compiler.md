@@ -183,6 +183,13 @@ group: an edge labeled NAME stands for one edge per member. A NAME with
 `{placeholders}` is one group per instance that binds them, its members bound the same way. `%% events declared`
 makes the chart strict: every labeled edge must carry a declared event, and
 unlabeled steps are refused.
+`%% cause CAUSE | needs [not] Ids | reason: TEXT` is a cause's standing limit, written
+once for everything that cause does: every concrete event it causes, including those a
+command generates and each template instance, needs it beside its own needs. It stays a
+separate condition, so an event's needs can't widen it. A command's acceptance also keeps
+its click's limits, and its refusal fires when any of them fails, as with its needs. A
+composed follower's step keeps its own cause's limit and waits for the owner's. A cause no
+event has is refused.
 
 ```mermaid
 %% event the courier fills locker {key} | by the courier | needs Empty@{key}, Empty@{other} | The courier fills an empty locker while the other one is empty.

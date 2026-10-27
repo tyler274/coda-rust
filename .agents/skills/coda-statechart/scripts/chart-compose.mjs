@@ -133,16 +133,20 @@ export function compose(text, options = {}) {
   const names = new Map(), catalog = new Map(), groups = new Map(), declared = [], instances = [], ignored = [];
   const nevers = [];
   const parts = [];
-  // Each owner event's needs, in the owner's prefixed ids, for the followers' steps on it. A
-  // command's refusal also carries the command's needs, which must fail for it to happen.
+  // Each owner event's needs and limits, in the owner's prefixed ids, for the followers' steps
+  // on it. A command's refusal also carries what the command needs, its click's limits
+  // included; one of them must fail for it to happen.
   const ownerNeeds = new Map(), ownerRefuses = new Map();
   for (const { key, x } of expanded)
-    for (const [l, { decl, values }] of x.catalog) {
+    for (const [l, { decl, values, limits = [] }] of x.catalog) {
       if (!owns.has(`${key}\n${l}`)) continue;
       const prefixed = (g) => ({ not: g.not, ids: g.ids.map((i) => `${key}_${i.replace(/\{([A-Za-z_]\w*)\}/g, (w, n) => values[n] ?? w)}`),
-        ...(g.reason ? { reason: g.reason } : {}) });
-      if (decl.needs) ownerNeeds.set(l, prefixed(decl.needs));
-      if (decl.refuses) ownerRefuses.set(l, prefixed(decl.refuses));
+        ...(g.reason ? { reason: g.reason } : {}), ...(g.cause ? { cause: g.cause } : {}) });
+      const all = [decl.needs, ...limits].filter(Boolean).map(prefixed);
+      if (all.length) ownerNeeds.set(l, all);
+      if (decl.refuses || decl.refuseLimits)
+        ownerRefuses.set(l, { ...(decl.refuses ? { refuseIds: prefixed(decl.refuses) } : {}),
+          ...(decl.refuseLimits ? { refuseLimits: decl.refuseLimits.map(prefixed) } : {}) });
     }
   for (const { key, x } of expanded) {
     const id = (s) => (s === "[*]" ? s : `${key}_${s}`);
@@ -164,6 +168,7 @@ export function compose(text, options = {}) {
         t.from = id(t.from);
         t.to = id(t.to);
         for (const f of ["when", "needsIds", "refuseIds"]) if (t[f]) t[f] = ids(t[f]);
+        for (const f of ["causeIds", "refuseLimits"]) if (t[f]) t[f] = t[f].map(ids);
       },
     });
     // A follower's step on a shared event is drawn on each owner label instead.
@@ -173,11 +178,11 @@ export function compose(text, options = {}) {
           const s = t.label && followed(key, t.label);
           if (!s) return [{ ...t, label: label(t.label), text: t.label ? t.text.replace(t.label, label(t.label)) : t.text }];
           return s.owners.map((o) => {
-            if (t.refuseIds && ownerRefuses.has(o.label))
+            if ((t.refuseIds || t.refuseLimits) && ownerRefuses.has(o.label))
               throw new Error(`${key}'s refusal "${t.label}" can't be shared onto the refusal "${o.label}"; share it onto an event that is not a refusal`);
             return { ...t, label: o.label, text: t.text.replace(t.label, o.label), shared: true,
               ...(ownerNeeds.has(o.label) ? { ownerIds: ownerNeeds.get(o.label) } : {}),
-              ...(ownerRefuses.has(o.label) ? { refuseIds: ownerRefuses.get(o.label) } : {}) };
+              ...(ownerRefuses.get(o.label) ?? {}) };
           });
         });
       },
@@ -186,11 +191,12 @@ export function compose(text, options = {}) {
       if (followed(key, l)) continue;
       const decl = { ...entry.decl,
         ...(entry.decl.needs ? { needs: ids(entry.decl.needs) } : {}),
+        ...(entry.decl.refuseLimits ? { refuseLimits: entry.decl.refuseLimits.map(ids) } : {}),
         ...(entry.decl.accepts ? { accepts: label(entry.decl.accepts) } : {}),
         ...(entry.decl.command?.client ? { command: { ...entry.decl.command, client: entry.decl.command.client.map(id) } } : {}) };
       const name = label(l);
       if (catalog.has(name)) throw new Error(`the event "${name}" is declared by two composed charts; share it or rename one`);
-      catalog.set(name, { ...entry, decl });
+      catalog.set(name, { ...entry, decl, ...(entry.limits ? { limits: entry.limits.map(ids) } : {}) });
     }
     for (const d of x.events ?? []) declared.push({ ...d, label: followed(key, d.label) ? d.label : label(d.label) });
     for (const [g, members] of x.groups ?? []) groups.set(groups.has(g) ? `${g} (${key})` : g, members.map(label));

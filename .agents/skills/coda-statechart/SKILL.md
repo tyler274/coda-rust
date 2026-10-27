@@ -45,7 +45,7 @@ Follow the [shared principles](../../../verification/README.md#principles).
 Use the [compiler](references/compiler.md) for its supported `stateDiagram-v2`
 subset: nested parallel regions, templates, shapes, declared events, commands and
 `/ effect` labels expand into one flat model. Write shared behavior once (a template,
-a shape or an event group) instead of copying it. Encode real finite-state exclusions with `%% never` and
+a shape, an event group or a cause's standing needs) instead of copying it. Encode real finite-state exclusions with `%% never` and
 state guards with `%% when`. Link identity, revision, collection and progress promises to named data
 proofs; do not invent artificial states to make every chart have a safety rule.
 A chart without rules establishes transition correspondence only.

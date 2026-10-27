@@ -49,12 +49,19 @@ function describe(t, g, event) {
   const declared = event === undefined ? (t.label ? g.info(t.label) : null) : event;
   if (t.needs && JSON.stringify(t.needs) !== JSON.stringify(declared?.needs ?? null))
     parts.push(`needs here: ${limitWords(t.needs)}`);
-  for (const w of t.within ?? []) parts.push(`${w.owner ? "the event's own needs" : "part condition"}: ${guardWords(w)}`);
-  for (const c of t.unless ?? []) parts.push(`blocked while ${c.map(guardWords).join(" and ")}`);
   const e = t.label ? g.info(t.label) : null;
+  // A limit the event itself carries is listed with the event; a step's other limits show here.
+  const same = (a, b) => a.cause === b.cause && a.not === b.not && JSON.stringify(a.states) === JSON.stringify(b.states);
+  for (const w of t.within ?? []) {
+    if (w.cause && !w.owner && ((declared ?? e)?.limits ?? []).some((l) => same(l, w))) continue;
+    const kind = w.cause ? `${w.owner ? "the event's" : "this step's"} cause, ${w.cause}, always needs` : w.owner ? "the event's own needs" : "part condition";
+    parts.push(`${kind}: ${guardWords(w)}`);
+  }
+  for (const c of t.unless ?? []) parts.push(`blocked while ${c.map(guardWords).join(" and ")}`);
   if (e) {
     parts.push(`cause: ${e.cause}`);
     if (e.needs) parts.push(`needs: ${limitWords(e.needs)}`);
+    for (const l of e.limits ?? []) parts.push(`${l.cause} always needs: ${limitWords(l)}`);
   }
   if (t.optional) parts.push("optional");
   if (t.intent) parts.push(`intent: ${t.intent}`);
@@ -114,7 +121,7 @@ export function queryState(compiled, text) {
     for (const t of edges) if (t.ri === ri && set.has(t.to) && !set.has(t.from)) ins.push(`  from ${quoted(t.from)} ${on(t)}${describe(t, g)}`);
     for (const t of edges) if (t.ri === ri && set.has(t.from) && !set.has(t.to)) outs.push(`  to ${quoted(t.to)} ${on(t)}${describe(t, g)}`);
     // Steps drawn from inside a part to outside its composite are moves of the parent.
-    const leaves = edges.filter((t) => r.scope && t.ri === r.parent && t.within?.some((w) => !w.not && w.states[r.caption]?.some((s) => set.has(s))));
+    const leaves = edges.filter((t) => r.scope && t.ri === r.parent && t.within?.some((w) => !w.not && !w.cause && w.states[r.caption]?.some((s) => set.has(s))));
     for (const t of leaves) outs.push(`  leaves with ${r.scope.region}: ${t.from} --> ${t.to} ${on(t)}${describe(t, g)}`);
     if (r.scope) outs.push(`  closes (to ${r.inactive}) whenever ${r.scope.region} leaves ${r.scope.state}`);
     const loops = edges.filter((t) => t.ri === ri && set.has(t.from) && set.has(t.to));
@@ -152,6 +159,7 @@ export function queryEvent(compiled, text) {
     if (e) {
       lines.push(`  cause: ${e.cause}`);
       lines.push(`  needs: ${e.needs ? limitWords(e.needs) : "nothing"}`);
+      for (const l of e.limits ?? []) lines.push(`  ${l.cause} always needs: ${limitWords(l)}`);
       lines.push(`  intent: ${e.intent}`);
       if (e.family) lines.push(`  family: ${e.family}`);
     } else lines.push("  not declared");
@@ -268,6 +276,7 @@ export function lint(compiled, { cause, repeats = false, unread = false } = {}) 
       if (!e || e.cause.trim().toLowerCase() !== wanted) continue;
       const what = `restricts without a stated reason: ${quoted(a.label)}`;
       if (e.needs && !e.needs.reason) findings.push(`${what} needs: ${guardWords(e.needs)}`);
+      for (const l of e.limits ?? []) if (!l.reason) findings.push(`${what} ${l.cause} always needs: ${guardWords(l)}`);
       for (const [ri, moves] of a.moves)
         for (const m of moves) if (m.guard && !m.guard.reason)
           findings.push(`${what}: ${regions[ri].caption}: ${m.from} --> ${m.to} ${guardWords(m.guard)}`);

@@ -170,16 +170,18 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
             ...(t.when ? { when: t.when } : {}),
             ...(t.needsIds ? { needsIds: t.needsIds } : {}),
             ...(t.ownerIds ? { ownerIds: t.ownerIds } : {}),
+            ...(t.causeIds ? { causeIds: t.causeIds } : {}),
             ...(within.length ? { within } : {}),
             ...(blockers ? { unless: blockers } : {}),
             ...(t.refuseIds ? { refuseIds: t.refuseIds } : {}),
+            ...(t.refuseLimits ? { refuseLimits: t.refuseLimits } : {}),
             ...(enter ? { enter } : {}),
             ...(t.optional ? { optional: true } : {}),
             ...(t.intent ? { intent: t.intent } : {}),
           });
-        const own = t.shared ? { needsIds: t.needsIds, ownerIds: t.ownerIds } : {};
-        if (t.label && (t.when || own.needsIds || own.ownerIds || t.refuseIds))
-          pendingUnless.push([key, { within: source, when: t.when, ...own, refuseIds: t.refuseIds }]);
+        const own = t.shared ? { needsIds: t.needsIds, ownerIds: t.ownerIds, causeIds: t.causeIds } : {};
+        if (t.label && (t.when || own.needsIds || own.ownerIds || own.causeIds || t.refuseIds || t.refuseLimits))
+          pendingUnless.push([key, { within: source, when: t.when, ...own, refuseIds: t.refuseIds, refuseLimits: t.refuseLimits }]);
         else if (t.label && source) pendingNegated.push([key, { ...source, not: true }]);
         else if (t.label) pending.push(key);
       }
@@ -276,32 +278,50 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
     }
     return { not: when.not, states, ...(when.reason ? { reason: when.reason } : {}) };
   };
+  // A cause's standing limit, checked in its own words; it joins a step as its own condition.
+  const standing = (c, label) => {
+    for (const id of c.ids)
+      if (!owners.has(id)) throw new Error(`the cause "${c.cause}" needs ${id}, which is not a state id in the chart`);
+    return { ...needs(c, label), cause: c.cause };
+  };
   for (const [name, r] of Object.entries(regions))
     for (const t of r.transitions) {
       if (t.needsIds) {
         t.needs = needs(t.needsIds, t.label);
         delete t.needsIds;
       }
-      // A composed chart's step on another chart's event also waits for that event's own needs.
+      if (t.causeIds) {
+        t.within = [...(t.within ?? []), ...t.causeIds.map((c) => standing(c, t.label))];
+        delete t.causeIds;
+      }
+      // A composed chart's step on another chart's event also waits for that event's own needs
+      // and its cause's limit.
       if (t.ownerIds) {
-        t.within = [...(t.within ?? []), { ...needs(t.ownerIds, t.label), owner: true }];
+        t.within = [...(t.within ?? []), ...t.ownerIds.map((o) => ({ ...(o.cause ? standing(o, t.label) : needs(o, t.label)), owner: true }))];
         delete t.ownerIds;
       }
+      // What a refusal's command needs, its click's limits included; it fires when any fails.
+      const refusing = (c) => [...(c.refuseIds ? [needs(c.refuseIds, t.label)] : []),
+        ...(c.refuseLimits ?? []).map((l) => standing(l, t.label))];
       // A shallower step yields to each deeper one exactly while that one is enabled: its part,
-      // guard and needs hold, and a refusal's command needs fail somewhere (one blocker per region).
+      // guard, needs and limits hold, and a refusal's command fails somewhere (one blocker per
+      // region of each condition it needs).
       if (t.unless) t.unless = t.unless.flatMap((c) => {
         const all = [...(c.within ? [c.within] : []),
           ...(c.when ? [guard(c.when, name)] : []),
           ...(c.needsIds ? [needs(c.needsIds, t.label)] : []),
-          ...(c.ownerIds ? [{ ...needs(c.ownerIds, t.label), owner: true }] : [])];
-        if (!c.refuseIds) return [all];
-        return Object.entries(needs(c.refuseIds, t.label).states)
-          .map(([region, states]) => [...all, { not: true, states: { [region]: states } }]);
+          ...(c.causeIds ?? []).map((l) => standing(l, t.label)),
+          ...(c.ownerIds ?? []).map((o) => ({ ...(o.cause ? standing(o, t.label) : needs(o, t.label)), owner: true }))];
+        const failing = refusing(c);
+        if (!failing.length) return [all];
+        return failing.flatMap((g) => Object.entries(g.states)
+          .map(([region, states]) => [...all, { not: !g.not, states: { [region]: states } }]));
       });
-      // A command is refused exactly while its needs fail.
-      if (t.refuseIds) {
-        t.unless = [...(t.unless ?? []), [needs(t.refuseIds, t.label)]];
+      // A command is refused exactly while what it needs fails.
+      if (t.refuseIds || t.refuseLimits) {
+        t.unless = [...(t.unless ?? []), refusing(t)];
         delete t.refuseIds;
+        delete t.refuseLimits;
       }
       if (!t.when) continue;
       t.guard = guard(t.when, name);
@@ -309,11 +329,12 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
     }
   // Declared events by concrete label: who causes each, what it needs, and its intent.
   const events = new Map();
-  for (const [label, { decl, values }] of catalog)
+  for (const [label, { decl, values, limits }] of catalog)
     events.set(label, {
       cause: substitute(decl.cause, values), intent: substitute(decl.intent, values),
       needs: decl.needs ? needs({ not: decl.needs.not, ids: decl.needs.ids.map((id) => substitute(id, values)),
         reason: decl.needs.reason && substitute(decl.needs.reason, values) }, label) : null,
+      ...(limits?.length ? { limits: limits.map((l) => standing(l, label)) } : {}),
       ...(decl.label !== label ? { family: decl.label } : {}),
       ...(decl.accepts ? { accepts: decl.accepts } : {}),
     });
