@@ -1,0 +1,178 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002589",
+      "events": [
+        {
+          "id": "2026-01-14a",
+          "kind": "specialist_visit",
+          "start": "2026-01-14T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2026-01-14T10:40", "resulted": "2026-01-16T12:00", "results": [{"test": "HIV-1 RNA Viral Load", "value": 45}]},
+            {"panel": null, "collected": "2026-01-14T10:40", "resulted": "2026-01-15T09:30", "results": [{"test": "CD4 Count", "value": 430}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "author": "infectious disease",
+              "date": "2026-03-20T15:05",
+              "body": "INFECTIOUS DISEASE CLINIC — PROGRESS NOTE\nDate of service: 01/14/2026\ncc: primary care physician\n\n25-year-old man with HIV diagnosed during acute infection in June 2025, seen here for intake 11/06/2025. Baseline at intake: CD4 380 cells/uL, HIV-1 RNA 64,000 copies/mL, genotype without major resistance mutations. Started bictegravir/emtricitabine/tenofovir alafenamide one tablet daily that day.\nAlso followed for syphilis: primary in 04/2025 and secondary in 10/2025, both treated with benzathine penicillin by PCP; 6-month RPR due in April with PCP.\n\nInterval: taking the pill every evening with dinner, says he has missed maybe two doses total. No side effects. Rash resolved. No fevers.\nMeds: bictegravir/emtricitabine/TAF 50/200/25 mg daily. Allergies: NKDA.\n\nExam: well. No thrush, no adenopathy, skin clear.\n\nLabs today: HIV-1 RNA 45 copies/mL; CD4 430 cells/uL.\n\nA/P: HIV, responding well at 10 weeks; expect full suppression by next visit. Continue regimen, adherence reinforced. Undetectable = untransmittable discussed, with condoms until he is confirmed undetectable. Return in 4 months with labs.\n\nPlease excuse the delay in sending notes."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "telephone",
+          "start": "2026-03-23T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records",
+              "author": "MA",
+              "date": "2026-03-23T09:10",
+              "body": "ID progress note from 1/14 received by fax 3/20, scanned to Media. The 11/6 intake note was not included. Forwarded to PCP's inbox for review before his April visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "portal_message",
+          "start": "2026-04-08T19:27",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "follow up",
+              "author": "patient",
+              "date": "2026-04-08T19:27",
+              "body": "Got the reminder about the 6 month syphilis blood test. Is Friday morning still ok? I have class at 11"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: follow up",
+              "author": "front desk",
+              "date": "2026-04-09T08:30",
+              "body": "Friday 4/10 at 8:00 is all yours. Please bring the bottle of the HIV medication so the doctor can update your list."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-10a",
+          "kind": "office_visit",
+          "start": "2026-04-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month syphilis follow-up",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Acute HIV infection", "icd10": "B20", "action": "resolved"},
+            {"label": "Human immunodeficiency virus [HIV] disease", "icd10": "B20", "action": "diagnosed", "onset": "2025-05-20"}
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV infection; prescribed by infectious disease"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-04-10T08:30", "resulted": "2026-04-11T10:20", "results": [{"test": "Rapid Plasma Reagin", "text": "Reactive, titer 1:8"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2026-04-10T08:40"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-10T08:00"},
+            {"procedure": "Venipuncture", "performed": "2026-04-10T08:30"},
+            {"procedure": "Immunization administration", "performed": "2026-04-10T08:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-04-10T08:50",
+              "body": "Six months after treatment for secondary syphilis. Feels well. Rash gone since about November. No headaches now, no vision change, no new sores. Brought his pill bottle.\n\nHIV: established with ID since 11/6/25, on bictegravir/emtricitabine/TAF daily, evening dosing, rarely misses. ID note from January reviewed: CD4 380 -> 430, viral load 64,000 -> 45 at 10 weeks. Next ID visit in May. Med list updated today from the bottle.\n\nExam: well-appearing. Skin clear including palms and soles. No oral lesions. No lymphadenopathy. Heart and lungs normal. PHQ-9 2.\n\nA/P:\n1. Secondary syphilis, treated 10/17/25. RPR drawn today for the 6-month titer (baseline 1:64). Will message result. Repeat at 12 months.\n2. HIV infection on ART, managed by ID. The acute label no longer fits; changed on the problem list. Doing well.\n3. PCV20 today, indicated with HIV. He asked about other vaccines; we'll go over the rest at his physical in the fall.\n4. Safer sex: condoms until ID confirms he's undetectable; he agrees.\nRTC fall for physical and flu shot; message any time."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "portal_message",
+          "start": "2026-04-13T07:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "RPR result",
+              "author": "PCP",
+              "date": "2026-04-13T07:45",
+              "body": "Good news: your RPR is down to 1:8 from 1:64. That is more than the fourfold drop we look for, so the treatment worked. We'll repeat it in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RPR result",
+              "author": "patient",
+              "date": "2026-04-13T12:02",
+              "body": "awesome, thank you!!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T13:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2026-05-13T14:05", "resulted": "2026-05-15T11:00", "results": [{"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}]},
+            {"panel": null, "collected": "2026-05-13T14:05", "resulted": "2026-05-14T09:45", "results": [{"test": "CD4 Count", "value": 505}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Follow-up",
+              "author": "infectious disease",
+              "date": "2026-06-04T10:15",
+              "body": "INFECTIOUS DISEASE CLINIC — PROGRESS NOTE\nDate of service: 05/13/2026\ncc: primary care physician\n\nHIV on bictegravir/emtricitabine/TAF since 11/2025. Adherent, no side effects. Spring semester went fine. Syphilis titer per PCP fell from 1:64 to 1:8 in April.\nMeds: bictegravir/emtricitabine/TAF daily. Allergies: NKDA.\nExam unremarkable.\n\nLabs: HIV-1 RNA not detected (<20 copies/mL). CD4 505 cells/uL.\n\nA/P: HIV, now virologically suppressed. Continue same regimen. Labs every 4 to 6 months for the first year. Return in 5 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "telephone",
+          "start": "2026-06-05T13:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records",
+              "author": "MA",
+              "date": "2026-06-05T13:20",
+              "body": "ID note dated 5/13 received 6/4, scanned to Media and sent to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "portal_message",
+          "start": "2026-07-23T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "immunization record",
+              "author": "patient",
+              "date": "2026-07-23T16:48",
+              "body": "Could you put an updated copy of my immunization record in the portal? Housing office wants it before move-in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: immunization record",
+              "author": "MA",
+              "date": "2026-07-24T09:02",
+              "body": "Done, it's under Documents now and includes the pneumonia vaccine from April."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

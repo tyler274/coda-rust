@@ -1,0 +1,639 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002637",
+   "given": "Andre",
+   "family": "Mensah",
+   "birth_date": "1997-11-14",
+   "address_line": "41 Larkspur Lane",
+   "phone": "+1-347-555-0100",
+   "email": "andre.mensah@example.test",
+   "marital_status": "married",
+   "summary": "Software developer in Amherst who carries a sickle cell trait label alongside a sickle cell disease course on hydroxyurea and folic acid. Folate deficiency found at a 2023 fatigue visit; hyposthenuria and CKD stage 2 named by nephrology in 2024; preconception counseling with his wife in 2026.",
+   "events": [
+    {
+     "id": "2021-08-23a",
+     "kind": "telephone",
+     "start": "2021-08-23T10:12",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2021-08-23T10:12",
+       "body": "Caller is a 23 y/o man moving his primary care to us after relocating to Amherst for work. Reports sickle cell, on two daily meds that his old office has been refilling. Membership paperwork emailed. Records release signed electronically for his prior primary care office. New patient visit booked 9/8 at 9:00."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-01a",
+     "kind": "outside_records",
+     "start": "2021-09-01T14:30",
+     "reason": "Prior primary care records",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2021-09-01T14:30",
+       "body": "Records from prior primary care office, covering 2016 through June 2021. Received by fax, 34 pages, routed to PCP before the new patient visit.\n\nProblem list on their summary: sickle cell trait (newborn screen); recurrent vaso-occlusive pain crises; sickle cell disease without crisis.\nMedications on their summary: hydroxyurea 500 mg capsules, 2 caps daily; folic acid 1 mg daily.\nAllergies: NKDA.\nImmunizations listed as current, last Tdap 2016.\nVisits: yearly physicals, pain episodes handled at home by phone, CBCs every few months. No admissions in the period covered. Most recent CBC (06/2021) hemoglobin in the mid 9s, MCV just over 100."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-08a",
+     "kind": "establish_care",
+     "start": "2021-09-08T09:00",
+     "end": "2021-09-08T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Sickle-cell trait",
+       "action": "history",
+       "onset": "1997-11-20",
+       "note": "label from newborn screening per prior records"
+      },
+      {
+       "label": "Sickle-cell disease without crisis",
+       "action": "history",
+       "onset": "1999-06-01"
+      },
+      {
+       "label": "Recurrent vaso-occlusive pain crises",
+       "icd10": "D57.00",
+       "action": "history",
+       "onset": "2003-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "hydroxyurea 500 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 2 capsules (1000 mg) by mouth daily",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Sickle cell disease"
+      },
+      {
+       "drug": "folic acid 1 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "weight_kg": 72.4,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin": 9.6,
+       "Mean Corpuscular Volume": 104,
+       "Platelets": 388,
+       "White Blood Cells": 6.8,
+       "Bilirubin, Total": 1.8,
+       "Creatinine": 1.04
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.6
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 104
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "Reticulocyte count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 6.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "Lactate dehydrogenase",
+         "loinc": "2532-0",
+         "unit": "U/L",
+         "value": 334
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "Urine Protein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-08T09:50",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Does not drink alcohol"
+      },
+      {
+       "item": "Occupation",
+       "value": "Software developer"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-09-08T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-09-08T09:00",
+       "body": "NEW PATIENT VISIT\n\n23 y/o man here to set up care. Moved to the area this summer for a developer job. Prior PCP records reviewed (filed 9/1).\n\nSickle cell: labelled trait on his newborn screen and every list since, but describes a lifelong disease course. Painful episodes in arms, legs and low back since early childhood; several admissions as a child and teen for IV pain medicine. Nothing needing the hospital in the last several years. Now gets milder flares every few weeks; rests, pushes oral fluids, rides them out at home. Has been on hydroxyurea for years (1000 mg daily) and folic acid 1 mg daily, refilled through his old office.\n\nPMH: as above. PSH: none.\nMeds: hydroxyurea 500 mg x2 daily; folic acid 1 mg daily.\nAllergies: NKDA.\nFamily: father has sickle cell trait; a cousin on mother's side has sickle cell disease; mother with hypertension.\nSocial: software developer, works mostly remote. Never smoker. No alcohol. Married.\nImmunizations: reports current; Tdap 2016 per old records.\n\nROS: energy his usual. No fever, chest pain, dyspnea, urinary symptoms, rash.\n\nExam: Well appearing, slim. Mild conjunctival pallor, no scleral icterus. No lymphadenopathy. Heart regular, soft systolic flow murmur at the left sternal border. Lungs clear. Abdomen soft, nontender, spleen not felt. No leg ulcers. Neuro grossly normal.\n\nA/P\n1. Sickle cell (trait per records, disease course, on hydroxyurea): continue hydroxyurea 1000 mg daily and folic acid. Baseline CBC with retic, LDH, CMP, UA today. CBC every 3-4 months while on hydroxyurea; will take over the refills.\n2. Recurrent pain crises: stable pattern, home management. Hydration, call us for anything that does not settle.\n3. Health maintenance: HIV and hep C screen today. Flu shot when available next month. PHQ-2 negative.\n\nFollow up in about 6 months, sooner with any problems."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-10a",
+     "kind": "portal_message",
+     "start": "2021-09-10T16:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-09-10T16:20",
+       "body": "Hi Andre, your labs from Wednesday are back. Hemoglobin 9.6 with a reticulocyte count of 6.2% and LDH 334: right in line with the numbers in your old records. Kidney and liver tests fine apart from the mildly raised bilirubin we expect with sickle cell. Urine normal. HIV and hepatitis C screens negative. No changes. Next blood count in December."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T08:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T08:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - Flu Vaccine",
+       "author": "RN",
+       "date": "2021-10-19T08:40",
+       "body": "Flu vaccine given L deltoid, IM. No prior reactions. Tolerated well, waited 15 min, left without issue. VIS given."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "lab_only",
+     "start": "2021-12-14T07:50",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-12-14T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-12-14T07:50",
+       "results": [
+        {
+         "test": "Reticulocyte count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 5.7
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-12-14T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CBC review",
+       "author": "PCP",
+       "date": "2021-12-14T15:05",
+       "body": "Hydroxyurea monitoring CBC. Counts stable, ANC fine, platelets ok. Continue. Released to portal with a short note."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-05a",
+     "kind": "pharmacy",
+     "start": "2022-01-05T11:02",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Hydroxyurea refill",
+       "author": "MA",
+       "date": "2022-01-05T11:02",
+       "body": "Pharmacy request: hydroxyurea 500 mg caps, #180. Last CBC 12/14 reviewed by PCP, ok to fill. Sent 90-day supply with 1 refill per PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-16a",
+     "kind": "office_visit",
+     "start": "2022-03-16T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Six-month follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-03-16T15:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-16T15:55",
+       "results": [
+        {
+         "test": "Reticulocyte count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 6.6
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-03-16T15:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-03-16T15:20",
+       "body": "S: Routine check. Two or three mild pain flares since the fall, legs mostly, each a day or two, managed at home with fluids and rest. No fevers. Taking hydroxyurea daily. Folic acid \"most days.\" Busy release cycle at work.\n\nO: Vitals reviewed, afebrile. Mild pallor. Soft flow murmur, unchanged. Lungs clear. Abdomen soft. No leg ulcers.\n\nA/P: Sickle cell on hydroxyurea, stable. CBC and retic today. Encouraged daily folic acid. Next labs in June, physical in September."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-22a",
+     "kind": "nurse_visit",
+     "start": "2022-06-22T08:00",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed lab appointment",
+       "author": "front desk",
+       "date": "2022-06-22T11:30",
+       "body": "No-show for 8:00 lab draw. Left voicemail to reschedule; portal message sent as well."
+      }
+     ],
+     "reason": "Blood draw",
+     "service": "Internal Medicine — Primary Care"
+    },
+    {
+     "id": "2022-06-29a",
+     "kind": "lab_only",
+     "start": "2022-06-29T07:45",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-29T07:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-29T07:45",
+       "results": [
+        {
+         "test": "Reticulocyte count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 5.4
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-06-29T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CBC review",
+       "author": "PCP",
+       "date": "2022-06-29T14:40",
+       "body": "Stable on hydroxyurea. No action."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-21a",
+     "kind": "annual_physical",
+     "start": "2022-09-21T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-09-21T09:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-21T09:10",
+       "results": [
+        {
+         "test": "Reticulocyte count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 6.0
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-21T09:10",
+       "results": [
+        {
+         "test": "Lactate dehydrogenase",
+         "loinc": "2532-0",
+         "unit": "U/L",
+         "value": 352
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-21T09:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-21T09:10",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-09-21T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-09-21T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-09-21T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-21T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-09-21T08:30",
+       "body": "ANNUAL PHYSICAL\n\nFeels well. Pain flares continue at the same rhythm, every few weeks, short, home-managed. Nothing near needing the ED. Working long hours but sleeping ok. Walks most evenings.\n\nMeds: hydroxyurea 1000 mg daily, folic acid 1 mg daily. NKDA.\nSocial: never smoker, no alcohol.\n\nExam: Pleasant, well. Conjunctivae a little pale, sclerae anicteric. Oropharynx normal. No nodes. Soft systolic flow murmur LSB, otherwise RRR. Lungs clear. Abdomen soft, no splenomegaly. Skin: no ulcers. Neuro nonfocal.\n\nPHQ-2: 0.\n\nPlan:\n- Sickle cell on hydroxyurea: CBC/retic/LDH, CMP today. Continue both meds.\n- Lipids once for baseline.\n- Flu and bivalent COVID booster given.\n- Continue CBCs every 3-4 months. Physical again next September."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "lab_only",
+     "start": "2022-12-13T08:05",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-12-13T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-13T08:05",
+       "results": [
+        {
+         "test": "Reticulocyte count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "value": 6.4
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-12-13T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CBC review",
+       "author": "PCP",
+       "date": "2022-12-13T16:10",
+       "body": "Counts within his usual range. Continue hydroxyurea. Next CBC March."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

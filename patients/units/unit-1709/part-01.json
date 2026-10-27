@@ -1,0 +1,444 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001709",
+      "given": "Tiana",
+      "family": "Diallo",
+      "birth_date": "1987-03-24",
+      "address_line": "41 Cabot Street, Apt 2",
+      "phone": "+1-347-555-0103",
+      "email": "tiana.diallo@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher who joined in mid-2021 early in her third pregnancy, with fibroids, a prior cesarean later found to be classical, and a urethral diverticulum kept on nitrofurantoin prophylaxis. Two further high-risk pregnancies follow: placenta previa with bleeding and severe preeclampsia with HELLP-pattern labs in 2024, and acute fatty liver of pregnancy in 2026 after her last practice visit in September 2025.",
+      "events": [
+        {
+          "id": "2021-07-19a",
+          "kind": "telephone",
+          "start": "2021-07-19T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2021-07-19T13:10",
+              "body": "Caller wants to transfer her care here; she teaches second grade and is off for the summer. Says she just found out she is pregnant and has had bladder infections on and off since the winter. Insurance is a private plan, card photo uploaded. Membership packet emailed. New patient slot given for July 27 at 9:00. Asked her to sign a release for her old office so we can pull records."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-27a",
+          "kind": "establish_care",
+          "start": "2021-07-27T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit; early pregnancy; recurrent urinary infections",
+          "conditions": [
+            {"label": "Uterine leiomyoma", "action": "diagnosed", "onset": "2020-05-12", "note": "Found at prior practice 2020, asymptomatic, followed by ultrasound there"},
+            {"label": "History of gestational hypertension", "icd10": "Z87.59", "action": "diagnosed", "onset": "2019-05-20", "note": "Second pregnancy, 2019"}
+          ],
+          "medications": [
+            {"drug_text": "Prenatal Vitamins Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 71.5, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2021-07-27T09:35", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No alcohol use"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-07-27T09:00"}
+          ],
+          "orders": [
+            {"id": "obgyn-referral-2021", "action": "placed", "order": "Obstetrics and gynecology referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "Prenatal care; recurrent urinary infections with voiding symptoms"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-07-27T09:00",
+              "body": "34 y/o teacher establishing care. Two things on her mind today.\n\n1) Pregnancy. Home test positive last week, LMP June 21, so about 5 weeks. Third pregnancy. Some breast tenderness, no bleeding or cramping. Already back on her prenatal vitamin with iron.\nOB history per pt: 2017 term vaginal birth, second-degree tear repaired. 2019 cesarean because the baby was breech / lying awkwardly; BP ran high late in that pregnancy and she was told it was gestational hypertension. Does not know what kind of uterine incision she had. Fibroids seen on ultrasound at her old office last year, never caused symptoms.\n\n2) Bladder infections since about January, she thinks four or five, each treated with a few days of antibiotics at her old office. Between infections she still has some burning, feels like she doesn't empty all the way, and dribbles a little after voiding. Intercourse has been painful in front. No fever or flank pain now.\n\nPMH: fibroids; gestational HTN 2019.\nPSH: cesarean 2019; perineal tear repair 2017.\nMeds: prenatal vitamin with iron daily.\nAllergies: NKDA.\nFH: mother had preeclampsia and fibroids; father with high blood pressure.\nSH: married, teaches second grade, never smoked, no alcohol, no drugs.\n\nExam: well appearing, NAD. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no CVA tenderness. Lower abdominal scar well healed. Pelvic deferred to OB. Ext warm, no edema.\nOffice urine hCG positive.\nPHQ-2 0.\n\nA/P\n- Early intrauterine pregnancy presumed, ~5 wks. Continue prenatal vitamin. Referred to OB/GYN for prenatal care; asked them to also look at the urinary symptoms, which have a pattern I'd want examined rather than just treated again.\n- Recurrent UTI symptoms with incomplete emptying and post-void dribbling: as above. No antibiotics today since she is asymptomatic for infection right now.\n- Hx gestational HTN: BP fine today. OB will decide on aspirin later in the first trimester.\n- Fibroids: noted.\n- Health maintenance: COVID series done this spring (both doses in April). Will get flu shot this fall. Records release signed.\n\nRTC after she is established with OB, sooner prn."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records request",
+              "author": "front desk",
+              "date": "2021-07-27T11:20",
+              "body": "Signed release faxed to the patient's previous primary care office requesting the last five years of notes, labs, imaging and immunizations."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "outside_records",
+          "start": "2021-08-11T14:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records from prior primary care office",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2020-06-23T10:00", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory, transformation zone present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "MA",
+              "date": "2021-08-11T14:05",
+              "body": "Records from former primary care office arrived by fax, 38 pages, filed under Outside Records. Contents reviewed and summarized for the PCP:\n- Visits 2016-2021, mostly acute: several cystitis visits since January 2021 treated with short antibiotic courses.\n- Pelvic ultrasound May 2020: uterine fibroids, no symptoms; repeat imaging there later in 2020 described as stable.\n- Pap with HPV co-test June 2020: negative.\n- Obstetric summaries: 2017 vaginal delivery at term with second-degree laceration repaired; 2019 cesarean for malpresentation, pregnancy complicated by gestational hypertension. Operative note not included; incision type not stated.\n- Immunizations: flu most years.\n- No allergies listed."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-13a",
+          "kind": "outside_records",
+          "start": "2021-08-13T10:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "OB/GYN consultation letter",
+          "conditions": [
+            {"label": "Urethral diverticulum", "icd10": "N36.1", "action": "diagnosed", "onset": "2021-08-09"}
+          ],
+          "medications": [
+            {"drug_text": "cephalexin 500 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth four times daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "Infected urethral diverticulum"},
+            {"drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth nightly", "dose": {"value": 100, "unit": "mg"}, "frequency": "NIGHTLY", "route": "Oral", "course": "chronic", "reason": "UTI prophylaxis, urethral diverticulum"}
+          ],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2021-08-09T10:30", "results": [{"test": "Urine Leukocyte Esterase", "text": "Positive"}, {"test": "Urine White Blood Cells", "text": "Many"}]}
+          ],
+          "orders": [
+            {"id": "obgyn-referral-2021", "action": "done", "date": "2021-08-13T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics & Gynecology consultation",
+              "author": "obstetrics",
+              "date": "2021-08-13T10:40",
+              "body": "Women's health group — consultation letter\nDate of visit: 08/09/2021\nRe: Tiana Diallo, DOB 03/24/1987\n\nThank you for sending Ms. Diallo, a 34-year-old G3P2 at 7w0d by LMP, for first prenatal care and urinary complaints.\n\nShe describes about six months of repeated bladder infections with dysuria, a feeling of not emptying fully, some dribbling after she voids, and dyspareunia. Prior births: term vaginal delivery 2017 with second-degree tear; cesarean 2019 for malpresentation, gestational hypertension that pregnancy.\n\nMedications: prenatal vitamin with iron. Allergies: none known.\nFamily history: mother with preeclampsia and fibroids; father hypertensive. Never smoker, no alcohol. Teacher.\n\nExam: on the anterior vaginal wall there is a tender, mobile mass along the course of the urethra; gentle pressure expresses purulent fluid at the meatus. Uterus enlarged consistent with dates. No adnexal tenderness.\nUrinalysis: leukocyte esterase positive with many white cells (pyuria).\n\nImpression: urethral diverticulum, currently infected, explaining her recurrent UTIs and post-void dribbling. Early pregnancy, viable-appearing on bedside scan.\n\nPlan:\n- Cephalexin 500 mg four times a day for 7 days.\n- Then nitrofurantoin 100 mg nightly as suppression for the remainder of pregnancy.\n- Given the history of gestational hypertension and a mother with preeclampsia, she will begin aspirin 81 mg daily at 12 weeks.\n- Routine prenatal labs drawn today; she will be followed in our prenatal clinic.\n\nWe will keep you updated."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "portal_message",
+          "start": "2021-09-14T19:42",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication update",
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Preeclampsia prevention in pregnancy"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Started baby aspirin",
+              "author": "patient",
+              "date": "2021-09-14T19:42",
+              "body": "Hi, just letting you know the OB had me start a baby aspirin yesterday since I hit 12 weeks. Still on the nightly antibiotic and the vitamin. Burning is gone since the 7 days of pills. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Started baby aspirin",
+              "author": "PCP",
+              "date": "2021-09-15T07:55",
+              "body": "Thanks for the update, Tiana. I've added the aspirin 81 mg to your list here. Glad the burning settled."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-12T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2021-10-12T15:30",
+              "body": "Came in after school. 16 weeks pregnant, no egg allergy, no prior reactions. Inactivated quadrivalent flu vaccine 0.5 mL IM left deltoid. VIS given. Tolerated well, waited 15 min without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "outside_records",
+          "start": "2021-11-29T09:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit letter",
+          "conditions": [
+            {"label": "Idiopathic polyhydramnios", "icd10": "O40.2XX0", "action": "diagnosed", "onset": "2021-11-22"}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2021-11-22T11:00", "text": "Single live intrauterine gestation, cephalic. Biometry concordant with dates; estimated fetal weight appropriate. Amniotic fluid index 26 cm. Fetal survey: no structural anomaly identified; stomach bubble present and normal in size; bowel unremarkable, no dilated loops. Placenta posterior fundal, clear of the cervix. Cervical length normal.", "conclusion": "Polyhydramnios (AFI 26 cm) without fetal anomaly or evidence of gastrointestinal obstruction. Normal growth, cephalic."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit, 22 weeks",
+              "author": "obstetrics",
+              "date": "2021-11-29T09:15",
+              "body": "Women's health group — prenatal update\nVisit 11/22/2021, 22w0d\n\nDoing well. No contractions, no bleeding, no leaking fluid. Vitals within normal limits. Fetal heart tones regular. Fundal height measured ahead of her dates, so we scanned today: AFI 26 cm, normal anatomy with no sign of GI obstruction, cephalic, growth on track.\n\nAssessment: polyhydramnios with no cause found — idiopathic. Will follow fluid and growth with serial ultrasound.\nMeds: prenatal vitamin, aspirin 81 mg, nitrofurantoin 100 mg nightly. No UTI symptoms since starting suppression."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "pharmacy",
+          "start": "2021-12-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-11T12:30"}
+          ],
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Immunization from community pharmacy",
+              "author": "MA",
+              "date": "2021-12-14T11:00",
+              "body": "State registry shows a COVID booster (Pfizer) given 12/11/2021 at a retail pharmacy. Entered into the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-10a",
+          "kind": "outside_records",
+          "start": "2022-01-10T08:50",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit note",
+          "vitals": {"bp": [120, 78], "hr": 82},
+          "conditions": [
+            {"label": "Transverse lie", "icd10": "O32.2XX0", "action": "diagnosed", "onset": "2022-01-04"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-01-04T10:20"}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2022-01-04T10:00", "text": "Single live intrauterine gestation. Fetal lie transverse, fetal spine running perpendicular to the maternal long axis. Biometry appropriate for dates. Placenta clear of the cervix. No other abnormality seen.", "conclusion": "Transverse lie at 28 weeks; otherwise normal."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit, 28 weeks",
+              "author": "obstetrics",
+              "date": "2022-01-10T08:50",
+              "body": "Prenatal note, visit 01/04/2022 (28w1d)\nS: Feels good, baby moving a lot.\nO: BP 120/78, HR 82. FH equal to dates. FHT normal.\nUS today: transverse lie, otherwise unremarkable.\nA/P: 28 weeks, polyhydramnios being followed. Transverse lie — common at this stage, recheck at 36 weeks. Tdap given today. Continue aspirin, PNV, nitrofurantoin."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-24a",
+          "kind": "portal_message",
+          "start": "2022-01-24T16:18",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave forms",
+              "author": "patient",
+              "date": "2022-01-24T16:18",
+              "body": "My school district needs a medical form for my maternity leave in March. Is that something you fill out or should it be the OB?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave forms",
+              "author": "RN",
+              "date": "2022-01-25T08:31",
+              "body": "Hi Tiana — the OB office usually completes pregnancy leave forms since they have your due date and delivery plan. If they can't, send it to us and we'll take care of it."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-04a",
+          "kind": "outside_records",
+          "start": "2022-03-04T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit note",
+          "conditions": [
+            {"label": "Breech presentation at 36 weeks gestation", "icd10": "O32.1XX0", "action": "diagnosed", "onset": "2022-02-28"}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2022-02-28T14:00", "text": "Single live intrauterine gestation in breech presentation, fetal buttocks nearest the cervix. Biometry appropriate. Uterus contains multiple leiomyomas; the largest is fundal. None lies in the lower segment. Placenta clear of the cervix.", "conclusion": "Breech presentation at 36 weeks. Multiple uterine leiomyomas, largest fundal."}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit, 36 weeks",
+              "author": "obstetrics",
+              "date": "2022-03-04T12:30",
+              "body": "Prenatal note, visit 02/28/2022, 36w0d\nShe feels well. Says the movements feel different than with her first. No contractions or bleeding.\nFundal height appropriate. FHT normal.\nUS: now breech (was transverse at 28 wks). Several fibroids again seen, biggest at the fundus; these have been known since 2020 and never caused trouble.\nPlan: discussed presentation; will reassess at next visits and at admission. Delivery planning to follow. Continue current meds."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-04a",
+          "kind": "outside_records",
+          "start": "2022-04-04T10:05",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Hospital discharge summary, delivery",
+          "conditions": [
+            {"label": "History of classical cesarean section", "icd10": "Z98.891", "action": "diagnosed", "onset": "2019-05-20", "note": "Vertical upper-segment uterine incision, 2019; repeat cesarean 2022-03-28"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "stop", "reason": "Delivered"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "author": "obstetrics",
+              "date": "2022-04-04T10:05",
+              "body": "Area hospital — Maternity unit discharge summary\nAdmitted 03/28/2022, discharged 03/31/2022\n\nReason for admission: 40w0d, regular contractions every five minutes for two hours.\n\nOn arrival vitals were stable, fetal tracing reassuring. Cervix 4 cm. Bedside scan confirmed the baby had turned to cephalic.\nShe asked to labor for a vaginal birth. When we went over her prior cesarean in detail she described being told the baby had been in an awkward position and the cut on her uterus was vertical, high on the uterus. This is a classical uterine scar; labor after a classical incision carries an unacceptable rupture risk, and she agreed to proceed.\n\nProcedure 03/28/2022: repeat cesarean delivery under spinal anesthesia. Liveborn infant, healthy, term. Prior vertical scar confirmed. Fibroids seen, left alone. Estimated blood loss within usual range.\n\nPostpartum course uncomplicated; BP normal throughout. Ambulating, tolerating diet, incision clean.\n\nDischarge diagnoses: term pregnancy delivered by repeat cesarean; history of classical cesarean section; polyhydramnios; uterine leiomyomas; urethral diverticulum.\nDischarge medications: prenatal vitamin daily; nitrofurantoin 100 mg nightly. Aspirin stopped.\nAllergies: NKDA.\nFollow-up: postpartum visit at the women's health group. Any future pregnancy needs early OB care and planned cesarean."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "telephone",
+          "start": "2022-04-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum check-in",
+              "author": "RN",
+              "date": "2022-04-12T10:20",
+              "body": "Called after discharge summary came in. Two weeks out from her section. Incision healing, sore but manageable. Sleeping in pieces with the baby, mood OK, has help at home. No fever, no calf pain, no urinary burning. Has her OB postpartum check scheduled. Booked her with us in May."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "office_visit",
+          "start": "2022-05-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up",
+          "conditions": [
+            {"label": "Idiopathic polyhydramnios", "icd10": "O40.2XX0", "action": "resolved"},
+            {"label": "Transverse lie", "icd10": "O32.2XX0", "action": "resolved"},
+            {"label": "Breech presentation at 36 weeks gestation", "icd10": "O32.1XX0", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 76.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-05-17T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Follow-up",
+              "author": "PCP",
+              "date": "2022-05-17T15:40",
+              "body": "Seen 7 weeks after repeat cesarean (03/28). OB postpartum visit done last week and she was cleared. Baby feeding well.\nFeels tired but herself. No urinary infections since August; still taking nitrofurantoin nightly and prenatal vitamin. Aspirin stopped at delivery.\nLearned in labor that her 2019 cesarean was a classical incision — she understands any future pregnancy means early OB care and a planned section.\n\nExam: BP normal today. Abdomen soft, incision well healed. No edema.\nPHQ-9: 3.\n\nA/P\n- Postpartum, recovering well. Mood screen reassuring.\n- Urethral diverticulum on nitrofurantoin suppression: no breakthrough infections. Continue.\n- History of classical cesarean: noted on problem list.\n- Fibroids: unchanged, asymptomatic.\n- Cleaned up the problem list (pregnancy-specific fluid and presentation problems closed).\nPhysical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 73.5, "labs": {"Thyroid Stimulating Hormone": 1.62}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-20T16:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-20T16:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-20T16:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-20T16:20", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-20T15:45"},
+            {"procedure": "Venipuncture", "performed": "2022-09-20T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-20T15:45",
+              "body": "Annual exam. Back at school two weeks, says the classroom is quieter than her house with three kids. Baby is 6 months.\nNo complaints. Periods returned. No urinary infections on nightly nitrofurantoin. No pelvic pain or heavy bleeding from the fibroids.\n\nMeds: nitrofurantoin 100 mg qhs, prenatal vitamin daily.\nAllergies: NKDA.\nROS otherwise negative.\n\nExam: BP fine. Well appearing. Skin without rash. HEENT normal, TMs clear. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Breasts deferred (lactation ended, no concerns). Abdomen soft, well-healed scars. Ext no swelling.\nPHQ-2 0.\n\nA/P\n- Health maintenance: CBC, CMP, lipids, TSH. One-time HIV and hepatitis C screens. Pap with HPV from 2020 normal, next due 2025. Flu and bivalent COVID at a nurse visit next month.\n- Urethral diverticulum: stable on suppression, renew nitrofurantoin here going forward.\n- History of gestational hypertension; BP normal.\nSee in a year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "portal_message",
+          "start": "2022-09-22T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2022-09-22T12:10",
+              "body": "Hi Tiana, your labs from Tuesday all look good — blood counts, kidney and liver tests, cholesterol and thyroid are normal, and the HIV and hepatitis C screens were negative. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T15:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T15:27"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-18T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2022-10-18T15:20",
+              "body": "Flu vaccine IM right deltoid, bivalent Pfizer COVID booster IM left deltoid. No prior reactions. VIS reviewed. Observed 15 minutes, no problems."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "pharmacy",
+          "start": "2022-12-06T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Nitrofurantoin renewal",
+              "author": "RN",
+              "date": "2022-12-06T09:05",
+              "body": "Pharmacy request for nitrofurantoin 100 mg capsules, one nightly; OB prescription has run out of refills. PCP agreed at physical to take over. Sent #90 with 3 refills. Pt notified through portal."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

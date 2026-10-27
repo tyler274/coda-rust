@@ -1,0 +1,1201 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002221",
+   "events": [
+    {
+     "id": "2022-01-06a",
+     "kind": "outside_records",
+     "start": "2022-01-06T10:10",
+     "reason": "pharmacy vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-12-21T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Shingrix dose 2",
+       "author": "MA",
+       "date": "2022-01-06T10:10",
+       "body": "Registry shows second Shingrix dose given 12/21/2021 at his pharmacy. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "lab_only",
+     "start": "2022-02-08T07:55",
+     "reason": "fasting labs before diabetes visit",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Creatinine": 1.8,
+       "Microalbumin/Creatinine Ratio": 300
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-02-08T07:55",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.8
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Glucose",
+         "value": 146
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-02-08T07:55",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 146
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-02-08T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-02-08T07:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 300
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-02-08T07:55"
+      }
+     ]
+    },
+    {
+     "id": "2022-02-15a",
+     "kind": "office_visit",
+     "start": "2022-02-15T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up; urinating more, thirsty",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "resolved"
+      },
+      {
+       "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+       "action": "diagnosed",
+       "onset": "2022-02-08"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "diagnosed",
+       "onset": "2022-02-08",
+       "note": "diabetic nephropathy"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       86
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "bmp-recheck-2022",
+       "action": "placed",
+       "order": "Basic metabolic panel and urine albumin/creatinine in 3 months",
+       "category": "lab",
+       "reason": "new reduced kidney function"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-15T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2022-02-15T12:40",
+       "body": "CC: diabetes recheck. Says he is up to the bathroom more and more thirsty than usual, going on a few months.\n\nHPI: Otherwise feels fine. Taking metformin, lisinopril, HCTZ, atorvastatin every day without misses, pill box. Has been very strict with his eating since the holidays, cut out bread and desserts. No dysuria, hesitancy or weak stream. No swelling, no shortness of breath, no NSAID use.\n\nLabs 2/8: fasting glucose 146, A1c 7.2. Creatinine 1.8, a clear step up from 1.2 in August. Urine albumin/creatinine 300 mg/g, first time we have measured it.\n\nExam: BP 132/86. Well appearing. Heart regular, lungs clear, abdomen soft, no edema. Feet: pulses intact, sensation intact. Unremarkable overall.\n\nA/P:\n1. Chronic kidney disease, stage 3b by today's numbers (eGFR about 40), with heavy albuminuria. In a man with diabetes for over a decade and no other explanation this is diabetic nephropathy. Explained what the numbers mean. Repeat BMP and urine ACR in 3 months to confirm it holds.\n2. T2DM, A1c 7.2. The thirst and frequency are more than I would expect for this A1c. Continue metformin. Keep up the diet.\n3. HTN, BP 132/86, continue lisinopril and HCTZ.\n4. Avoid ibuprofen and naproxen, Tylenol is fine.\n\nRTC 3 months with labs."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-17a",
+     "kind": "portal_message",
+     "start": "2022-02-17T19:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Question about kidneys",
+       "author": "patient",
+       "date": "2022-02-17T19:50",
+       "body": "Doctor, I have been reading about kidney disease stages since our visit. Being a math person I made a little chart of my creatinine. Should I be cutting back on protein? Is the wine ok? Thanks, Tom"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Question about kidneys",
+       "author": "PCP",
+       "date": "2022-02-18T07:58",
+       "body": "Hi Tom, good questions and I like the chart. No need to cut protein drastically; normal portions of meat, fish, eggs or beans are fine. A glass or two of wine a week is fine. The most useful things are what you are already doing: steady sugars, steady blood pressure, staying away from anti-inflammatory pain relievers. We will recheck in May."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "office_visit",
+     "start": "2022-05-17T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "kidney function recheck, diabetes",
+     "state": {
+      "labs": {
+       "Creatinine": 1.74,
+       "Microalbumin/Creatinine Ratio": 280,
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-05-17T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-05-17T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-05-17T09:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 280
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-05-17T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.1
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-recheck-2022",
+       "action": "done",
+       "date": "2022-05-17T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-05-17T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: CKD and Diabetes",
+       "author": "PCP",
+       "date": "2022-05-17T15:20",
+       "body": "Back for the kidney recheck. Thirst has settled; he thinks he was simply drinking more because he was worried about it. No complaints today.\n\nLabs today: creatinine 1.7s, holding in the same range as February. Urine ACR 280. Potassium and bicarbonate normal. Hgb normal. A1c 7.1.\n\nExam: vitals as charted. No edema. Heart and lungs normal.\n\nAssessment: CKD stage 3b from diabetic nephropathy, now confirmed over 3 months. Stable.\n\nPlan: same medicines. Labs every 6 months. Renally dose anything new. Next visit late summer."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-18a",
+     "kind": "portal_message",
+     "start": "2022-05-18T07:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Kidney recheck",
+       "author": "PCP",
+       "date": "2022-05-18T07:50",
+       "body": "Tom, as we discussed yesterday, the creatinine is holding steady in the same range as February and the urine protein is about the same, so this is your new baseline. A1c 7.1. We will keep checking every 6 months."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Kidney recheck",
+       "author": "patient",
+       "date": "2022-05-18T09:14",
+       "body": "Understood. Added the new points to my graph. Tom"
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "outside_records",
+     "start": "2022-07-12T14:30",
+     "reason": "ophthalmology letter",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Annual Letter",
+       "author": "ophthalmology",
+       "date": "2022-07-12T14:30",
+       "body": "Re: Thomas Casey, DOB 01/09/1953, seen 07/06/2022.\n\nAnnual diabetic and glaucoma examination. Continues latanoprost both eyes at bedtime with good adherence. Dilated exam: no diabetic retinopathy in either eye; optic nerves unchanged from last year. Fields stable compared with the fall study.\n\nPlan: continue latanoprost, return in 6 months for pressure check and in 1 year for dilated exam.\n\nOphthalmology"
+      }
+     ]
+    },
+    {
+     "id": "2022-08-09a",
+     "kind": "office_visit",
+     "start": "2022-08-09T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2022-08-10a",
+     "kind": "telephone",
+     "start": "2022-08-10T09:15",
+     "reason": "missed appointment",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed visit call",
+       "author": "front desk",
+       "date": "2022-08-10T09:20",
+       "body": "Called re: missed 8/9 appointment. Pt apologized, wrote the wrong week on his calendar. Has not felt well with his stomach lately, wants to come in. Rebooked 9/20, first available with PCP. Told him to call sooner if worse."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "office_visit",
+     "start": "2022-09-20T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "nausea, vomiting after meals, weight loss",
+     "state": {
+      "weight_kg": 83.0,
+      "labs": {
+       "Hemoglobin A1c": 8.1,
+       "Hemoglobin": 12.4,
+       "Lipase": 34,
+       "Glucose": 178
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-20T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Bilirubin, Total"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-20T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.4
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-20T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.1
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-20T09:20",
+       "results": [
+        {
+         "test": "Lipase"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral-2022",
+       "action": "placed",
+       "order": "Gastroenterology referral, urgent",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "postprandial vomiting, early satiety, weight loss"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-09-20T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit: Nausea and Weight Loss",
+       "author": "PCP",
+       "date": "2022-09-20T13:05",
+       "body": "CC: stomach trouble, losing weight.\n\nHPI: Since about mid-July he has felt full after a few bites and is nauseated most afternoons. In the last month he has vomited after larger meals several times, food that looks like what he ate. No blood, no black stools, no pain to speak of, just fullness up high. Weight down 7 lb from spring. Fasting sugars have crept into the 170s-190s though he has not changed his diet or pills, which surprised him. No fever, no jaundice, no change in stool color.\n\nMeds unchanged: metformin, lisinopril, HCTZ, atorvastatin, latanoprost. No NSAIDs.\n\nExam: thinner. Vitals as charted, afebrile. Abdomen: mild tenderness in the epigastrium, fullness there that I cannot clearly define. No hepatomegaly, no jaundice. Rest normal.\n\nA/P: Early satiety with postprandial vomiting of undigested food, weight loss and newly worse glycemic control in a 69 year old. Concerned about an obstructing process in the upper GI tract, including a pancreatic or gastric malignancy. Labs today (CMP, CBC, A1c, lipase). Urgent GI referral placed, front desk to call for the earliest slot. Small frequent meals, liquids if solids will not stay down, call if he cannot keep fluids down.\n\nNo change to metformin for now. Will call with labs."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-21a",
+     "kind": "telephone",
+     "start": "2022-09-21T16:30",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Results call",
+       "author": "PCP",
+       "date": "2022-09-21T16:41",
+       "body": "Called Tom. A1c 8.1, up from 7.1 in May. Hemoglobin 12.4, a little low and new for him. Liver tests and lipase normal, creatinine at his usual level. GI appointment confirmed for 10/17. Told him to call if vomiting gets worse in the meantime."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-04a",
+     "kind": "nurse_visit",
+     "start": "2022-10-04T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "influenza and COVID vaccines",
+     "measure": [
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-04T10:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-04T10:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-04T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2022-10-04T10:38",
+       "body": "High-dose flu L deltoid, Pfizer bivalent booster R deltoid. Tolerated. Weight checked at PCP request, down another pound. He is eating small meals, vomited twice this week. GI appt 10/17. Reinforced to call if not keeping fluids down."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-17a",
+     "kind": "specialist_visit",
+     "start": "2022-10-17T14:00",
+     "service": "Gastroenterology",
+     "reason": "nausea, vomiting, early satiety, weight loss",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-10-17T14:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.1
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.0
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-17T14:50",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 180
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-17T14:50",
+       "results": [
+        {
+         "test": "CA 19-9",
+         "loinc": "24108-3",
+         "unit": "U/mL",
+         "value": 120
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral-2022",
+       "action": "done",
+       "date": "2022-10-17T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Consultation",
+       "author": "gastroenterology",
+       "date": "2022-10-20T10:25",
+       "body": "GASTROENTEROLOGY CONSULTATION\nPatient: Thomas Casey  DOB 01/09/1953  Seen: 10/17/2022\nReason: urgent referral from primary care for vomiting and weight loss\n\nHPI: 69 year old man with type 2 diabetes, stage 3 CKD and glaucoma. For three months he has had nausea that has steadily worsened, fills up quickly, and now vomits after meals; what comes up is recognizable, undigested food. He has lost 10 pounds over that time. His sugars have been running well above his usual for the past few weeks with no change in what he eats or takes. Metformin is his only diabetes medicine.\n\nMeds: metformin 1000 mg twice daily, lisinopril 20 mg, hydrochlorothiazide 12.5 mg, atorvastatin 40 mg, latanoprost drops. NKDA.\nFamily history: father MI at 67, mother diabetes and glaucoma, sister hypertension.\nSocial: retired teacher, never smoker, occasional wine.\n\nExam: thin, not toxic. Mild epigastric tenderness. A firm mass can be felt in the upper abdomen. No jaundice, no lymphadenopathy, no ascites.\n\nData: Hemoglobin 12.1, WBC 7.0, platelets 250. Fasting glucose 180. CA 19-9 120 U/mL (reference 0-37).\nUpper GI series (done the same day): contrast leaves the stomach slowly, with a narrowed segment at the distal stomach.\n\nImpression: gastric outlet narrowing with a palpable upper abdominal mass, weight loss, new hyperglycemia and a raised CA 19-9. Pancreatic malignancy is the leading concern.\n\nPlan: pancreas-protocol CT with IV hydration before and after given his kidney function, then endoscopic ultrasound with fine-needle aspiration. Discussed with him at length. Will update primary care as results come in.\n\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-26a",
+     "kind": "imaging",
+     "start": "2022-10-26T07:30",
+     "service": "Radiology",
+     "reason": "pancreas protocol CT",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2022-10-26T08:10",
+       "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST, PANCREAS PROTOCOL (arterial and portal venous phases). IV hydration given per renal protocol.\nClinical: gastric outlet symptoms, palpable mass, CA 19-9 elevated.\nFindings: 3.4 cm hypoattenuating mass in the pancreatic head. It compresses the second portion of the duodenum, narrowing the gastric outlet. No contact with the superior mesenteric artery, celiac axis or common hepatic artery. The mass abuts the superior mesenteric vein over less than 180 degrees without contour deformity. Common bile duct normal caliber. Liver without focal lesion. No ascites. No enlarged abdominal or pelvic lymph nodes. Kidneys normal in size without hydronephrosis. Colon, bladder and bones unremarkable. Lung bases clear.",
+       "conclusion": "3.4 cm pancreatic head mass compressing the duodenum, consistent with pancreatic carcinoma. Resectable by vascular criteria. No metastatic disease seen."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "CT Abdomen/Pelvis, Pancreas Protocol",
+       "author": "radiology",
+       "date": "2022-10-27T08:15",
+       "body": "Report received electronically and filed. Pancreatic head mass 3.4 cm, resectable by vessel criteria, no metastases. Endoscopic ultrasound is scheduled by GI for 11/3."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-03a",
+     "kind": "procedure_visit",
+     "start": "2022-11-03T08:00",
+     "service": "Gastroenterology",
+     "reason": "endoscopic ultrasound with fine-needle aspiration",
+     "conditions": [
+      {
+       "label": "Malignant neoplasm of pancreas",
+       "action": "diagnosed",
+       "onset": "2022-10-17",
+       "note": "adenocarcinoma of the pancreatic head"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2022-11-03T08:40",
+       "issued": "2022-11-07T12:00",
+       "text": "Specimen: pancreatic head mass, EUS-guided fine-needle aspiration and cell block.\nMicroscopic: clusters of atypical glandular cells with nuclear enlargement, irregular nuclear contours and loss of polarity, in a desmoplastic background. Cell block shows infiltrating malignant glands.",
+       "conclusion": "Pancreas, head mass, EUS-FNA: adenocarcinoma."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "EUS-FNA Report",
+       "author": "gastroenterology",
+       "date": "2022-11-07T15:30",
+       "body": "PROCEDURE: Upper endoscopic ultrasound with fine-needle aspiration, 11/03/2022. Monitored anesthesia care.\nFindings: narrowed but traversable duodenal bulb and second portion. Hypoechoic irregular mass in the pancreatic head measuring about 34 mm, consistent with the CT. No liver lesions in the views obtained, no ascites. No suspicious nodes. Three passes with a 22-gauge needle, adequate per on-site review.\nComplications: none.\nPathology (final 11/7): adenocarcinoma.\nPlan: referred to surgical oncology for resection. Patient informed by phone today.\n\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "telephone",
+     "start": "2022-11-08T08:05",
+     "reason": "diagnosis follow-up call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call after biopsy result",
+       "author": "PCP",
+       "date": "2022-11-08T08:22",
+       "body": "Called Tom after GI's report came through. He already heard from them yesterday; quiet on the phone but clear-headed. Surgical oncology consult this Friday. Offered to see him before or after, he would like to come in Thursday with his questions written down. Booked."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-10a",
+     "kind": "office_visit",
+     "start": "2022-11-10T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "new pancreatic cancer diagnosis",
+     "state": {
+      "weight_kg": 81.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-11-10T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Visit: New Diagnosis Discussion",
+       "author": "PCP",
+       "date": "2022-11-10T17:02",
+       "body": "40 minute visit, mostly counseling.\n\nTom brought a typed page of questions. We went through the CT and the biopsy: adenocarcinoma of the head of the pancreas, 3.4 cm, no spread seen, and the vessels look clear enough that a surgeon should be able to remove it. He sees surgical oncology tomorrow. We talked about what the operation involves, the recovery, that chemotherapy usually follows, and that the obstruction should resolve once the tumor is out.\n\nStill vomiting a few times a week; tolerating soft foods and shakes. Weight 81 kg, down from 86 two years ago.\n\nDiabetes: sugars higher, A1c 8.1 in September. Expect this may change after surgery. No change today.\nKidneys: told surgery and oncology about his CKD; renally dosed drugs.\n\nHe asked about a health care proxy; he has one, gave us a copy today for scanning.\n\nWill touch base after his surgical visit."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "hospital_admission",
+     "start": "2022-12-06T06:00",
+     "end": "2022-12-14T12:30",
+     "service": "Surgical Oncology",
+     "reason": "pancreaticoduodenectomy",
+     "medications": [
+      {
+       "drug_text": "lipase 24000 UNT / protease 76000 UNT / amylase 120000 UNT Delayed Release Oral Capsule",
+       "action": "start",
+       "sig": "Take 2 capsules by mouth with each meal and 1 capsule with snacks",
+       "dose": {
+        "value": 2,
+        "unit": "capsule"
+       },
+       "frequency": "TID with meals",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "pancreatic insufficiency after pancreaticoduodenectomy"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2022-12-06T11:30",
+       "issued": "2022-12-09T16:00",
+       "text": "Specimen: pancreaticoduodenectomy.\nTumor: moderately differentiated ductal adenocarcinoma of the pancreatic head, 3.3 cm in greatest dimension, confined to the pancreas.\nMargins: pancreatic neck, bile duct, uncinate/SMA, SMV groove, proximal and distal enteric margins all negative.\nLymph nodes: 0 of 21 involved.\nStage: pT2 N0.",
+       "conclusion": "Pancreatic ductal adenocarcinoma, 3.3 cm, margins negative, 0/21 nodes, pT2 N0."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Surgical Oncology Discharge Summary",
+       "author": "surgical oncology",
+       "date": "2022-12-19T09:10",
+       "body": "DISCHARGE SUMMARY\nAdmitted 12/06/2022, discharged 12/14/2022\nProcedure: open pancreaticoduodenectomy, 12/06/2022\n\nIndication: 3.4 cm pancreatic head adenocarcinoma (EUS-FNA) with duodenal compression, resectable on imaging.\n\nCourse: operation without complication. Nasogastric tube out day 2, diet advanced from day 4, tolerating a regular diabetic diet by discharge. Drain output low and amylase normal, drain removed day 6. Blood sugars monitored closely in hospital; metformin resumed once eating. Creatinine stayed at his baseline. Wound clean.\n\nPathology: 3.3 cm moderately differentiated ductal adenocarcinoma, all margins negative, 0 of 21 nodes, pT2 N0.\n\nDischarge medications: metformin 1000 mg twice daily; lisinopril 20 mg daily; hydrochlorothiazide 12.5 mg daily; atorvastatin 40 mg daily; latanoprost both eyes at bedtime; NEW pancrelipase (lipase 24,000 units) 2 capsules with meals, 1 with snacks.\nAllergies: NKDA.\n\nFollow-up: surgical clinic 2 weeks; medical oncology referral placed for adjuvant chemotherapy; primary care within 1 week.\n\nSurgical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-21a",
+     "kind": "office_visit",
+     "start": "2022-12-21T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up",
+     "state": {
+      "weight_kg": 78.0,
+      "labs": {
+       "Hemoglobin": 11.4,
+       "Glucose": 152
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-21T11:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-12-21T11:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.4
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2022-12-21T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2022-12-21T14:44",
+       "body": "Transitional care visit, one week after discharge from surgical oncology (pancreaticoduodenectomy 12/6). Summary reviewed.\n\nHe is tired but eating better than he has in months, no vomiting since surgery. Takes the enzyme capsules with every meal; stools formed. Incision sore, no drainage. No fevers. Sugars 140s-180s fasting on metformin.\n\nMeds reconciled: metformin, lisinopril, HCTZ, atorvastatin, latanoprost, plus pancrelipase. Nothing stopped.\n\nExam: afebrile. Midline/subcostal incision healing well, staples out at surgical clinic last Friday. Abdomen soft, appropriately tender. No edema.\n\nLabs: creatinine at baseline, potassium normal. Hemoglobin 11.4, expected after surgery.\n\nA/P:\n1. Pancreatic adenocarcinoma, resected, pT2 N0, clear margins. Oncology consult 1/17 for adjuvant therapy.\n2. Exocrine insufficiency after resection, on pancrelipase, working.\n3. T2DM: allow a little latitude while recovering; recheck A1c in spring.\n4. CKD 3b, stable through the hospital stay.\n5. Postoperative anemia, recheck CBC with next labs."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-17a",
+     "kind": "specialist_visit",
+     "start": "2023-01-17T09:30",
+     "service": "Medical Oncology",
+     "reason": "adjuvant therapy consultation",
+     "medications": [
+      {
+       "drug_text": "gemcitabine 1000 MG Injection",
+       "action": "start",
+       "sig": "IV on days 1, 8 and 15 of each 28-day cycle for 6 cycles, dose adjusted for renal function",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "adjuvant therapy, resected pancreatic adenocarcinoma"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-01-17T09:00",
+       "results": [
+        {
+         "test": "CA 19-9",
+         "loinc": "24108-3",
+         "unit": "U/mL",
+         "value": 28
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology Consultation",
+       "author": "oncology",
+       "date": "2023-01-20T13:15",
+       "body": "MEDICAL ONCOLOGY CONSULTATION, 01/17/2023\nThomas Casey, 70 y/o\n\nDiagnosis: pancreatic head ductal adenocarcinoma, pT2 N0, R0 resection 12/06/2022.\n\nHe has recovered well from surgery and is eating, on pancrelipase with meals. ECOG 1. Comorbidities include diabetes, CKD stage 3b (creatinine around 1.8), hypertension, glaucoma.\n\nPostoperative CA 19-9: 28 U/mL (was 120 before surgery).\n\nDiscussion: adjuvant chemotherapy improves survival after resection. Given his age and kidney function, we chose single-agent gemcitabine rather than a multi-drug regimen. Plan gemcitabine on days 1, 8 and 15 of 28-day cycles for 6 cycles, starting 01/24/2023, with dose adjustment for renal function and CBC before each dose. Restaging CT chest and MRI abdomen at the end of treatment.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2023-02-14a",
+     "kind": "portal_message",
+     "start": "2023-02-14T20:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Sugars on chemo days",
+       "author": "patient",
+       "date": "2023-02-14T20:05",
+       "body": "Hi Doc. Second cycle going OK, tired the day after but no vomiting. My fasting sugars are 160-190 the morning after infusion, then back to 140s. Do I need to change anything? Tom"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Sugars on chemo days",
+       "author": "PCP",
+       "date": "2023-02-15T08:12",
+       "body": "Hi Tom, a bump around infusion days is common during chemotherapy. Those numbers are acceptable for a few days at a time. Keep taking metformin and the enzymes. If you see readings over 300 or feel very thirsty or sick, call. We have an A1c planned for April."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "office_visit",
+     "start": "2023-04-11T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and CKD follow-up during chemotherapy",
+     "state": {
+      "weight_kg": 77.5,
+      "labs": {
+       "Hemoglobin A1c": 7.6,
+       "Hemoglobin": 11.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-11T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-04-11T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-11T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-11T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes / CKD Follow-up",
+       "author": "PCP",
+       "date": "2023-04-11T13:30",
+       "body": "Cycle 4 of gemcitabine in progress. Fatigue the days after infusion, otherwise managing. Eating three meals with enzymes, weight steady at 77-78 kg. No vomiting. Sleeping fine. PHQ-9 4, says he is \"more tired than sad\".\n\nA1c 7.6 (8.1 before surgery). Creatinine stable at his baseline, potassium fine. LDL at goal on atorvastatin. Oncology checks CBC with each treatment.\n\nExam: vitals as charted. Healed abdominal incision. No edema.\n\nA/P: T2DM A1c 7.6, acceptable during chemotherapy, continue metformin. CKD 3b stable. HTN fine. Next visit after chemo finishes."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-02a",
+     "kind": "pharmacy",
+     "start": "2023-05-02T11:40",
+     "reason": "prior authorization",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Pancrelipase prior authorization",
+       "author": "MA",
+       "date": "2023-05-02T11:52",
+       "body": "Drug plan requires prior auth for the pancrelipase capsules for the new plan year. Surgical oncology prescribed, but pharmacy faxed us. Completed with PCP: exocrine pancreatic insufficiency after pancreaticoduodenectomy 12/2022. Approved same day through 12/31."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-05a",
+     "kind": "specialist_visit",
+     "start": "2023-07-05T09:00",
+     "service": "Medical Oncology",
+     "reason": "gemcitabine cycle 6, day 15",
+     "medications": [
+      {
+       "drug_text": "gemcitabine 1000 MG Injection",
+       "action": "stop",
+       "reason": "adjuvant course completed"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Oncology Treatment Note",
+       "title": "Final Infusion",
+       "author": "oncology",
+       "date": "2023-07-05T12:20",
+       "body": "Cycle 6 day 15 gemcitabine given, renally adjusted dose. Tolerated. Adjuvant course complete. Restaging and end-of-treatment visit scheduled."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-11a",
+     "kind": "outside_records",
+     "start": "2023-07-11T15:00",
+     "reason": "ophthalmology letter",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Annual Letter",
+       "author": "ophthalmology",
+       "date": "2023-07-11T15:00",
+       "body": "Re: Thomas Casey, examined 07/07/2023.\n\nGlaucoma and diabetic eye exam. Latanoprost continued nightly. Optic nerves stable in appearance. No diabetic retinopathy. Fields without definite progression.\n\nReturn 6 months.\n\nOphthalmology"
+      }
+     ]
+    },
+    {
+     "id": "2023-07-18a",
+     "kind": "specialist_visit",
+     "start": "2023-07-18T10:00",
+     "service": "Medical Oncology",
+     "reason": "end of adjuvant treatment",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-07-18T09:30",
+       "results": [
+        {
+         "test": "CA 19-9",
+         "loinc": "24108-3",
+         "unit": "U/mL",
+         "value": 19
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology Follow-up",
+       "author": "oncology",
+       "date": "2023-07-21T11:05",
+       "body": "MEDICAL ONCOLOGY, 07/18/2023\n\nMr. Casey completed 6 cycles of adjuvant gemcitabine on 07/05/2023. Fatigue improving. No abdominal pain, eating well with pancrelipase.\n\nRestaging: CT chest without contrast and MRI abdomen, 07/12/2023: postsurgical changes, no evidence of recurrent or metastatic disease.\nCA 19-9: 19 U/mL.\n\nPlan: surveillance with history, exam, CA 19-9 and imaging every 6 months.\n\nMedical Oncology"
+      }
+     ]
+    },
+    {
+     "id": "2023-07-24a",
+     "kind": "portal_message",
+     "start": "2023-07-24T12:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Finished chemo",
+       "author": "patient",
+       "date": "2023-07-24T12:05",
+       "body": "Oncology says the scans are clear and I am done with treatment. Thought you would want to know. Every six months for scans now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Finished chemo",
+       "author": "PCP",
+       "date": "2023-07-24T15:30",
+       "body": "That is great news, Tom. Their letter came in this morning. Enjoy the summer, see you in September for your wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-23a",
+     "kind": "specialist_visit",
+     "start": "2023-08-23T14:15",
+     "service": "Dermatology",
+     "reason": "itchy rash with blisters",
+     "conditions": [
+      {
+       "label": "Bullous pemphigoid",
+       "action": "diagnosed",
+       "onset": "2023-06-20"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "clobetasol propionate 0.0005 MG/MG Topical Ointment",
+       "action": "start",
+       "sig": "Apply thin layer to affected skin twice daily; taper as directed",
+       "route": "Topical",
+       "frequency": "BID",
+       "course": "chronic",
+       "reason": "bullous pemphigoid"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-08-23T14:45",
+       "issued": "2023-08-30T12:00",
+       "text": "Specimen: punch biopsy, perilesional skin, left forearm, submitted in transport medium for direct immunofluorescence.\nDirect immunofluorescence: linear deposition of IgG and C3 along the basement membrane zone.",
+       "conclusion": "Linear IgG and C3 along the basement membrane zone, consistent with bullous pemphigoid."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Punch skin biopsy, single lesion",
+       "performed": "2023-08-23T14:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology Visit",
+       "author": "dermatology",
+       "date": "2023-10-03T10:40",
+       "body": "DERMATOLOGY\nPatient: Thomas Casey  DOB 01/09/1953\nVisit: 08/23/2023\n\nHPI: Seen previously here in 2021 for a back lesion and moles. About two months ago he developed itchy, raised red patches across his trunk which he took for an allergy. In the last two weeks these have turned into large, taut blisters on the belly, arms and thighs. He has started nothing new, no new soaps or laundry products. History of pancreatic cancer resected last year with chemotherapy completed in July, diabetes, CKD, hypertension, glaucoma.\nMeds: metformin, lisinopril, hydrochlorothiazide, atorvastatin, latanoprost, pancrelipase. NKDA.\n\nExam: numerous tense bullae, 1 to 3 cm, sitting on erythematous skin of the abdomen, forearms and thighs; urticarial plaques ring several of them. Oral, nasal and genital mucosa clear.\n\nBiopsy: punch from perilesional skin of the left forearm for direct immunofluorescence. Result 08/30: linear IgG and C3 along the basement membrane zone.\n\nAssessment: bullous pemphigoid.\n\nPlan: clobetasol 0.05% ointment twice daily to the involved skin, including new spots; avoid systemic steroids given his diabetes. Taper over the coming months as it quiets. Follow up 6 weeks.\n\nDermatology"
+      }
+     ]
+    },
+    {
+     "id": "2023-08-25a",
+     "kind": "portal_message",
+     "start": "2023-08-25T09:35",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Skin blisters",
+       "author": "patient",
+       "date": "2023-08-25T09:35",
+       "body": "FYI. I saw dermatology Wednesday for the blistering rash I mentioned to the nurse. They biopsied my arm and think it is something called pemphigoid. They gave me a strong steroid ointment. Itch is a little better already. Will let you know what the biopsy says. Tom"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Skin blisters",
+       "author": "PCP",
+       "date": "2023-08-25T12:10",
+       "body": "Thanks for letting me know, Tom. That fits what you described. Use the ointment as they directed, keep the blisters clean and don't pop them. We have not received their note yet; I will ask for it. Let me know if any blisters look infected (spreading redness, pus, fever)."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "annual_physical",
+     "start": "2023-09-26T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "state": {
+      "weight_kg": 78.5,
+      "labs": {
+       "Hemoglobin A1c": 7.3,
+       "Hemoglobin": 12.6,
+       "Microalbumin/Creatinine Ratio": 260
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-26T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-26T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.6
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-26T08:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-26T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.3
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-26T08:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 260
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2023-09-26T10:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-09-26T10:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-26T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-26T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-26T13:55",
+       "body": "SUBSEQUENT ANNUAL WELLNESS VISIT\n\nInterval: pancreatic adenocarcinoma resected 12/2022, adjuvant gemcitabine finished 7/2023, July restaging clear. Bullous pemphigoid diagnosed by dermatology 8/2023 (letter still not received despite a request; history from patient), on clobetasol ointment.\n\nFunctional: independent. Walking again 30 minutes daily. No falls. Still avoids night driving because of the glaucoma.\nMood: PHQ-2 1.\nCognition: no concerns from him, recall 3/3.\n\nSkin: forearms and abdomen with fading pink patches and healed erosions, no tense blisters today. He is now applying once daily per derm.\n\nExam otherwise: heart regular, lungs clear, abdomen soft with healed incision, no edema. Feet: intact sensation and pulses.\n\nLabs today: A1c 7.3. Creatinine at baseline. Hgb 12.6, recovering. Urine ACR 260. LDL at goal.\n\nPrevention: high-dose flu and updated covid vaccines today. RSV vaccine recommended at the pharmacy (age, diabetes, CKD). Colonoscopy due 2026.\n\nA/P: T2DM with CKD 3b, stable; HTN controlled; hyperlipidemia; pancreatic cancer in surveillance with oncology; BP improving on topical therapy; glaucoma per ophthalmology. Follow up in 4 to 5 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "outside_records",
+     "start": "2023-10-17T09:10",
+     "reason": "pharmacy vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-12T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "RSV vaccine",
+       "author": "MA",
+       "date": "2023-10-17T09:10",
+       "body": "State registry: RSV vaccine (adjuvanted) given 10/12/2023 at his pharmacy. Added. Also confirmed dermatology's 8/23 note arrived by fax 10/3 and was scanned."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

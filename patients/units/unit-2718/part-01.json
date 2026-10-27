@@ -1,0 +1,990 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002718",
+   "given": "Michelle",
+   "family": "Tremblay",
+   "birth_date": "1976-06-05",
+   "address_line": "48 Conway Street, Apt 2",
+   "phone": "+1-860-555-0148",
+   "email": "michelle.tremblay@example.test",
+   "marital_status": "single",
+   "summary": "Administrative assistant on Medicaid with type 2 diabetes, hypertension and severe obesity who joins in 2021, has a Roux-en-Y bypass in 2022 complicated by an anastomotic leak, then in 2025-2026 is found to have Cushing syndrome with an L1 fracture, a gastrojejunal stricture, B12 deficiency anemia, erysipelas and septic cavernous sinus thrombosis. Endocrinology localization of the Cushing syndrome is the open thread at today.",
+   "events": [
+    {
+     "id": "2021-08-03a",
+     "kind": "outside_records",
+     "start": "2021-08-03T14:20",
+     "reason": "Records from prior primary care office",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records summary",
+       "author": "front desk",
+       "date": "2021-08-03T14:20",
+       "body": "Records received by fax from patient's previous primary care office ahead of her new patient visit next week. 41 pages. Includes visit notes 2017-2021, med list, labs, immunizations.\n\nHighlights pulled for the PCP:\n- Type 2 diabetes, on metformin 1000 mg BID. Last A1c in their records 8.9 (spring 2021).\n- Hypertension on lisinopril 20 mg daily.\n- Obesity, weight 116-120 kg over the last 3 years.\n- Several sinus infections treated with antibiotics over the years.\n- Pap 2019: NILM, HPV negative.\n- Screening mammogram 2020: BI-RADS 1.\n- NKDA.\n- Tdap last 2010. No pneumococcal vaccine on file.\n\nScanned to chart under Outside Records."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-10a",
+     "kind": "establish_care",
+     "start": "2021-08-10T09:00",
+     "end": "2021-08-10T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with hyperglycemia",
+       "action": "history",
+       "onset": "2013-05-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2015-03-01"
+      },
+      {
+       "label": "Severe obesity due to excess calories",
+       "action": "history",
+       "onset": "2005-01-01"
+      },
+      {
+       "label": "Acute recurrent sinusitis, unspecified",
+       "icd10": "J01.91",
+       "action": "history",
+       "onset": "2016-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "weight_kg": 118.0,
+      "height_cm": 163.0,
+      "bp": [
+       134,
+       84
+      ],
+      "labs": {
+       "Hemoglobin A1c": 8.8,
+       "Low Density Lipoprotein": 138,
+       "High Density Lipoprotein": 36,
+       "Triglycerides": 255,
+       "Hemoglobin": 13.1,
+       "Microalbumin/Creatinine Ratio": 12,
+       "Thyroid Stimulating Hormone": 1.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Administrative assistant"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.8
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-10T10:05",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2021-08-10T09:50"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-08-10T09:52"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-08-10T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-08-10T09:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-08-10T10:05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "bariatric-referral",
+       "action": "placed",
+       "order": "Bariatric surgery program referral",
+       "category": "referral",
+       "to": "Bariatric Surgery",
+       "reason": "Severe obesity with type 2 diabetes and hypertension"
+      },
+      {
+       "id": "mammo-2021",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-08-10T10:00",
+       "body": "NEW PATIENT VISIT\n\n45F transferring care from another primary care office (records reviewed, in chart). Wants a doctor she can actually reach; her last office kept changing providers on her.\n\nHPI: Type 2 DM dx about 8 years ago, on metformin 1000 BID, never on anything else. Says she takes it most days, GI upset when she started but settled. Doesn't check sugars, no meter at home. Last A1c in outside records 8.9. HTN on lisinopril 20, no side effects. Weight has been 115-120 kg for years. Has tried calorie counting, a commercial program twice, walking at lunch. Loses 5-8 kg then it comes back. Asking about weight loss surgery, her insurance covers it now and a coworker had it done.\nAlso gets sinus infections a couple of times a year, usually treated with antibiotics at urgent care. None now.\n\nPMH: T2DM, HTN, obesity, recurrent sinusitis\nPSH: none\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily\nAllergies: NKDA\nFHx: mother T2DM. Father HTN. Maternal aunt with severe obesity.\nSHx: Administrative assistant at a property management office. Lives alone in an apartment in town. Never smoker, no alcohol, no drugs.\n\nROS: no chest pain, dyspnea, polyuria, vision change, numbness of the feet. Snoring per a past partner, no witnessed apneas known.\n\nExam: vitals in flowsheet. Ht 163 cm, wt 118 kg, BMI 44.4.\nWell appearing, pleasant. HEENT normal, no sinus tenderness. Neck supple, no thyromegaly. Heart RRR no murmur. Lungs clear. Abdomen obese, soft, nontender. Ext no edema. Feet: skin intact, monofilament intact bilaterally, DP pulses 2+.\n\nA/P:\n1. Type 2 diabetes, not at goal. A1c today. Discussed options including adding a second agent; she would rather pursue bariatric surgery first, which is reasonable given BMI over 40 with comorbidities. Continue metformin.\n2. Hypertension, controlled on lisinopril 20. CMP, UACR.\n3. Severe obesity, BMI 44. Referral to bariatric surgery program placed.\n4. Recurrent sinusitis by history, quiet now.\n5. HM: Tdap and PCV20 today. HCV and HIV screening once, ordered. Screening mammogram ordered. Pap up to date (2019 co-test negative). Colon screening at 45, will start FIT next year after we see where surgery lands. Flu and COVID booster at a nurse visit in October.\n\nRTC 3 months."
+      }
+     ],
+     "vitals": {
+      "height_cm": 163.0,
+      "weight_kg": 118.0
+     }
+    },
+    {
+     "id": "2021-08-12a",
+     "kind": "portal_message",
+     "start": "2021-08-12T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-08-12T16:40",
+       "body": "Hi Michelle, your labs are back. A1c 8.8, which is about what your old office had, so diabetes is not well controlled yet. Kidney function, potassium, thyroid and blood count all normal. No protein in the urine. LDL cholesterol is a bit high. Hepatitis C and HIV screens negative. The bariatric program should call you in the next couple of weeks; let me know if you don't hear from them."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "imaging",
+     "start": "2021-09-14T08:30",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-09-14T08:30",
+       "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: prior outside study 2020. Breast composition: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples normal. Axillae unremarkable.",
+       "conclusion": "BI-RADS 1, negative. Routine screening recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "done",
+       "date": "2021-09-14T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Mammogram result letter",
+       "author": "front desk",
+       "date": "2021-09-16T11:00",
+       "body": "Dear Ms. Tremblay, your screening mammogram on 9/14/2021 was normal (no sign of cancer). Please continue routine screening. A copy has been sent to your doctor."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-06a",
+     "kind": "nurse_visit",
+     "start": "2021-10-06T12:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-06T12:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-06T12:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-06T12:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse Visit - Immunizations",
+       "author": "RN",
+       "date": "2021-10-06T12:35",
+       "body": "Came in on her lunch hour. Flu vaccine L deltoid, Pfizer booster R deltoid (primary series at a pharmacy in spring, card seen). Tolerated well, waited 15 min, no reaction. VIS given."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-25a",
+     "kind": "outside_records",
+     "start": "2021-10-25T11:05",
+     "reason": "Bariatric surgery consult letter",
+     "orders": [
+      {
+       "id": "bariatric-referral",
+       "action": "done",
+       "date": "2021-10-25T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Bariatric Surgery Consultation",
+       "author": "bariatric surgery",
+       "date": "2021-10-25T11:05",
+       "body": "Regional Bariatric Surgery Program\nDate of consultation: 10/19/2021\n\nThank you for referring Ms. Tremblay, 45, for surgical weight loss evaluation.\n\nShe has had obesity since her twenties, with multiple supervised diet attempts. Comorbidities: type 2 diabetes (most recent A1c 8.8), hypertension. No GERD symptoms. Never smoker, no alcohol. Medications metformin 1000 mg twice daily, lisinopril 20 mg daily. NKDA.\n\nExam: Ht 163 cm, Wt 117.6 kg, BMI 44.3. BP 132/84. Abdomen obese, soft, no hernias, no prior incisions.\n\nAssessment: Class III obesity with diabetes. Good candidate for laparoscopic Roux-en-Y gastric bypass, which offers the best metabolic benefit for her diabetes. Risks reviewed at length, including leak, stricture, marginal ulcer, internal hernia, dumping and lifelong vitamin and mineral deficiencies requiring supplements and monitoring.\n\nPlan: 6-month program: dietitian visits, psychology evaluation, support group, preoperative clearance from PCP closer to the date. We will send the clearance request.\n\nBariatric Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "office_visit",
+     "start": "2021-11-16T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "weight_kg": 116.8,
+      "labs": {
+       "Hemoglobin A1c": 8.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-11-16T16:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-11-16T16:10",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-11-16T15:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-11-16T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-11-16T16:20",
+       "body": "F/u DM, HTN. Saw the bariatric program in October, is in their 6 month prep program, had first dietitian visit, likes her. Down about a kilo. Taking metformin consistently now, set a phone alarm.\n\nNo hypoglycemia sx. No chest pain or SOB.\n\nExam: vitals reviewed. Heart RRR, lungs clear, no edema.\n\nA/P\nT2DM: A1c today. Continue metformin 1000 BID. Surgery likely to help more than any drug I'd add right now; revisit if A1c rises.\nHTN: at goal on lisinopril 20.\nObesity: in bariatric prep program.\nRTC 3-4 months or for pre-op clearance when the program asks."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 116.9
+     }
+    },
+    {
+     "id": "2021-12-09a",
+     "kind": "outside_records",
+     "start": "2021-12-09T10:00",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2021-12-09T10:00",
+       "body": "Optometry report to PCP. Exam 12/02/2021.\nDilated fundus exam both eyes. Best corrected acuity 20/20 OD, 20/25 OS. IOP 15/16. Lens clear. Optic nerves healthy, cup-to-disc 0.3 OU. Maculae flat. No hemorrhages, exudates or neovascularization.\nImpression: No diabetic retinopathy OU. Mild myopia, glasses updated.\nRecommend repeat dilated exam in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-22a",
+     "kind": "telephone",
+     "start": "2022-02-22T13:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pre-op clearance request",
+       "author": "front desk",
+       "date": "2022-02-22T13:10",
+       "body": "Bariatric program called. Pt has a surgery date of 4/21 for laparoscopic gastric bypass, needs PCP pre-op evaluation with ECG and CBC/BMP within 30-60 days. Form faxed. Scheduled pt 3/8 at 8:20."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "office_visit",
+     "start": "2022-03-08T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Pre-operative evaluation for gastric bypass",
+     "state": {
+      "weight_kg": 114.2,
+      "labs": {
+       "Hemoglobin A1c": 8.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-03-08T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-08T08:50",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-03-08T08:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.3
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-03-08T08:40",
+       "text": "Sinus rhythm, rate 76. PR 158 ms, QRS 88 ms, QTc 421 ms. Normal axis. No ST or T wave abnormality. No prior for comparison.",
+       "conclusion": "Normal ECG."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-03-08T08:20"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2022-03-08T08:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-03-08T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Pre-operative Evaluation",
+       "author": "PCP",
+       "date": "2022-03-08T09:15",
+       "body": "PRE-OP EVALUATION\nProcedure: laparoscopic Roux-en-Y gastric bypass, 4/21/2022, bariatric program.\n\nCompleted the program steps (dietitian, psychology, support group). Down about 4 kg since joining here. Excited, a bit nervous.\n\nFunctional capacity: climbs 2 flights at work without stopping, walks 30 min most days. >4 METs. No chest pain, syncope, orthopnea, palpitations. No prior anesthesia, no family hx of anesthesia problems. No bleeding history.\n\nMeds: metformin 1000 BID, lisinopril 20 daily. NKDA.\n\nExam: vitals in flowsheet, wt 114 kg. Airway: mouth opening normal, full neck ROM. Heart RRR no murmur. Lungs clear. Abd obese, soft. No edema.\n\nECG: sinus, normal.\n\nAssessment: 45F, low-risk surgery profile from a cardiac standpoint, no active cardiac conditions, good functional capacity. RCRI 0 (not on insulin). Acceptable risk to proceed.\nRecs:\n- Hold metformin the morning of surgery, hold lisinopril the morning of surgery.\n- Labs today (CBC, BMP, A1c) will be faxed to program.\n- Post-op supplement regimen per bariatric program.\n\nForm completed and faxed."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-25a",
+     "kind": "outside_records",
+     "start": "2022-04-25T09:30",
+     "reason": "Operative note and discharge summary, gastric bypass",
+     "conditions": [
+      {
+       "label": "Status post bariatric surgery",
+       "action": "diagnosed",
+       "onset": "2022-04-21"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "vitamin B12 1 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet (1000 mcg) by mouth daily",
+       "dose": {
+        "value": 1000,
+        "unit": "ug"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Post-gastric bypass supplementation"
+      },
+      {
+       "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet (600 mg calcium / 400 units vitamin D) by mouth twice daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Post-gastric bypass supplementation"
+      },
+      {
+       "drug_text": "multivitamin Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Post-gastric bypass supplementation"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - Laparoscopic Roux-en-Y Gastric Bypass",
+       "author": "bariatric surgery",
+       "date": "2022-04-25T09:30",
+       "body": "Regional hospital, bariatric surgery service\nAdmitted 04/21/2022, discharged 04/23/2022\n\nProcedure 04/21/2022: Laparoscopic Roux-en-Y gastric bypass (antecolic, 150 cm Roux limb, small gastric pouch, stapled gastrojejunostomy). Estimated blood loss minimal. No intraoperative complications. Leak test negative at the end of the case.\n\nHospital course: Uneventful. Advanced to bariatric clear liquids POD 1, tolerated. Ambulating, pain controlled with oral medication by POD 2. Afebrile, heart rate 70s-80s at discharge. Glucose 120s-150s.\n\nDischarge medications:\n- Metformin 1000 mg twice daily (resume)\n- Lisinopril 20 mg daily\n- Cyanocobalamin 1000 mcg daily (new, lifelong)\n- Calcium carbonate with vitamin D 600 mg/400 units twice daily (new, separate from multivitamin)\n- Multivitamin 1 tablet daily, chewable for the first month (new)\nAllergies: NKDA\n\nDiet: bariatric full liquid stage for 2 weeks per handout.\nReturn precautions: fever, increasing abdominal pain, fast heart rate, shortness of breath, vomiting.\nFollow-up in bariatric clinic in 2 weeks; PCP in 2-4 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-09a",
+     "kind": "outside_records",
+     "start": "2022-05-09T10:15",
+     "reason": "Readmission discharge summary, anastomotic leak",
+     "conditions": [
+      {
+       "label": "Anastomotic leak after gastric bypass",
+       "icd10": "K95.89",
+       "action": "diagnosed",
+       "onset": "2022-04-24"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-04-26T19:40",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 14.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.5
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-04-26T19:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Glucose",
+         "value": 180
+        }
+       ]
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2022-04-26T19:20",
+       "temp_c": 38.7,
+       "hr": 110,
+       "rr": 22,
+       "bp": [
+        135,
+        85
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2022-04-26T20:05",
+       "text": "Single upright portable AP view. Lungs are clear without focal consolidation, effusion or pneumothorax. Heart size normal. No free intraperitoneal air beneath the hemidiaphragms. Postsurgical staple lines in the left upper quadrant.",
+       "conclusion": "No free air under the diaphragm. No acute cardiopulmonary process."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - Anastomotic Leak",
+       "author": "general surgery",
+       "date": "2022-05-09T10:15",
+       "body": "Regional hospital, general surgery\nAdmitted 04/26/2022 via the emergency department. Discharged 05/06/2022.\n\nReason for admission: Five days after laparoscopic Roux-en-Y gastric bypass (04/21), two days of worsening abdominal pain, fever and shortness of breath.\n\nPresentation: T 38.7 C, HR 110, RR 22, BP 135/85. Abdomen distended and diffusely tender to palpation; no rebound, no guarding. WBC 14.0, Hgb 12.5, platelets 250, creatinine 1.0, BUN 18, glucose 180. Upright chest film without free air.\n\nGiven tachycardia, fever and pain early after bypass, she was taken emergently to the OR the same night.\n\nProcedure 04/26/2022: Diagnostic laparoscopy converted to exploratory laparotomy. Leak identified at the gastrojejunal anastomosis with localized contamination in the left upper quadrant. Primary repair with omental buttress, washout, two closed suction drains placed.\n\nHospital course: Broad-spectrum IV piperacillin-tazobactam. NPO with IV fluids, then clear liquids from POD 5 and advanced to bariatric full liquids. Metformin held while NPO and resumed on diet. Drains removed POD 8 and 9. Fevers resolved by day 3, white count normalized. Midline incision clean, staples out at bariatric clinic follow-up.\n\nDiagnosis: Anastomotic leak (gastrojejunostomy) after Roux-en-Y gastric bypass, repaired.\n\nDischarge medications: unchanged from 04/23 (metformin 1000 mg BID, lisinopril 20 mg daily, cyanocobalamin 1000 mcg daily, calcium carbonate/vitamin D 600 mg/400 units BID, multivitamin daily). Antibiotics completed in hospital.\nAllergies: NKDA.\nFollow-up: bariatric surgery clinic 1 week; PCP 1 week."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-11a",
+     "kind": "office_visit",
+     "start": "2022-05-11T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up after gastric bypass and leak repair",
+     "state": {
+      "weight_kg": 106.5,
+      "labs": {
+       "Hemoglobin": 11.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Anastomotic leak after gastric bypass",
+       "icd10": "K95.89",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-05-11T11:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-05-11T11:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2022-05-11T10:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-05-11T11:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2022-05-11T11:25",
+       "body": "Post-discharge visit. Bypass 4/21, back 4/26 with a leak at the GJ anastomosis, ex-lap and repair, home 5/6. Discharge summary reviewed.\n\nFeels weak and tired but much better. Pain mostly at the midline incision, using less of the pain medicine each day. Tolerating full liquids, protein shakes 3/day, sipping water all day. No fever, no vomiting. BMs every 2 days.\n\nTaking metformin 1000 BID, lisinopril 20, B12 1000 mcg, calcium/D BID, multivitamin. Sugars in the hospital 120s-150s.\n\nExam: afebrile, HR 84, BP ok. Looks tired. Midline incision healing, no erythema or drainage, drain sites dry and closed. Abdomen soft, appropriately tender near incision. Lungs clear.\n\nA/P\n1. S/p RYGB complicated by anastomotic leak, repaired. Recovering. Leak resolved per surgery. CBC/BMP today. Bariatric clinic Friday.\n2. T2DM: continue metformin for now. If intake stays low and sugars drop, may need to lower; she'll call with any shakiness or sweats.\n3. HTN: BP fine, continue lisinopril; may need less as weight falls.\n4. Supplements as above, lifelong.\nRTC 2-3 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-26a",
+     "kind": "outside_records",
+     "start": "2022-07-26T15:00",
+     "reason": "Bariatric surgery follow-up letter",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Bariatric Surgery Follow-up",
+       "author": "bariatric surgery",
+       "date": "2022-07-26T15:00",
+       "body": "Bariatric surgery clinic, 3-month postoperative visit 07/21/2022.\n\nDoing well after a difficult start (leak, repaired). Eating soft solids, small portions, protein goal met most days. No vomiting, no dysphagia, no dumping. Weight 98.6 kg, down from 114 kg preoperatively.\n\nIncision healed. Taking cyanocobalamin, calcium with vitamin D and multivitamin as prescribed.\n\nPlan: continue supplements lifelong. Labs at 6 and 12 months. Annual visits thereafter. Reminder to avoid NSAIDs."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "annual_physical",
+     "start": "2022-10-18T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 93.4,
+      "bp": [
+       126,
+       80
+      ],
+      "labs": {
+       "Hemoglobin A1c": 6.9,
+       "Hemoglobin": 12.8,
+       "Low Density Lipoprotein": 128,
+       "Triglycerides": 190,
+       "High Density Lipoprotein": 40
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-10-18T09:55",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-10-18T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-10-18T09:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-18T09:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-18T09:55",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T09:45"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T09:47"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-10-18T09:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T09:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-10-18T09:55"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2022",
+       "action": "placed",
+       "order": "Fecal immunochemical test",
+       "category": "lab",
+       "reason": "Colorectal cancer screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-10-18T10:10",
+       "body": "ANNUAL PHYSICAL\n\n46F, 6 months out from RYGB (leak, repaired). Feels like a different person. Down about 25 kg from pre-op, 93 kg today. Eating 3 small meals + protein snacks. Walking 40 min at lunch. No vomiting, no dysphagia, occasional loose stool after sweets which she now avoids. Taking all supplements.\nNo sinus infections this year.\n\nMeds: metformin 1000 BID, lisinopril 20, cyanocobalamin 1000 mcg, calcium/D 600/400 BID, MVI.\nAllergies: NKDA\n\nROS otherwise negative. Periods regular.\n\nExam: BMI 35.2. Well appearing. HEENT nl. Thyroid nl. Heart RRR, lungs clear. Breasts deferred to mammogram. Abd: healed midline and port scars, soft, NT. Skin: no lesions of concern. Ext no edema. Feet: monofilament intact, pulses 2+.\n\nA/P\n- T2DM: A1c today; expect a big improvement. Continue metformin for now.\n- HTN: 126/80 on lisinopril 20. Continue.\n- S/p RYGB: supplements lifelong, bariatric clinic is checking micronutrients.\n- HM: flu + bivalent COVID today. FIT kit given (age 46, average risk). Mammogram due next fall. Pap due 2024. PHQ-2 0.\nRTC 6 months."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       126,
+       80
+      ]
+     }
+    },
+    {
+     "id": "2022-10-20a",
+     "kind": "portal_message",
+     "start": "2022-10-20T12:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2022-10-20T12:30",
+       "body": "Michelle, great news: A1c is down to 6.9 from 8.8 last year. Kidney and liver tests normal, blood count normal, urine protein normal. LDL still in the high 120s. Keep up the walking. Remember to send back the FIT kit."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Physical labs",
+       "author": "patient",
+       "date": "2022-10-20T19:05",
+       "body": "Thank you!! I cried a little. Will mail the kit this week."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "lab_only",
+     "start": "2022-11-08T10:00",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-11-04T07:00",
+       "resulted": "2022-11-08T10:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2022",
+       "action": "done",
+       "date": "2022-11-08T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "MA",
+       "date": "2022-11-08T14:20",
+       "body": "FIT negative. Pt notified by portal per PCP. Repeat in 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "outside_records",
+     "start": "2022-12-13T09:40",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Examination",
+       "author": "optometry",
+       "date": "2022-12-13T09:40",
+       "body": "Optometry report. Exam 12/06/2022. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema. Acuity 20/20 OU with correction. Return 1 year."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,2426 @@
+{
+  "unit": "unit-2614",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002614",
+      "given": "Zachary",
+      "family": "Norris",
+      "birth_date": "1998-06-07",
+      "address_line": "27 Laurel Park, Apt 3",
+      "phone": "+1-347-555-0162",
+      "email": "zachary.norris@example.test",
+      "marital_status": "partnered",
+      "summary": "Young man with bilateral cataract surgery at 20 who joins in 2020, is diagnosed with myotonic dystrophy type 1 by neurology in 2023, Klinefelter syndrome (47,XXY) with azoospermia by genetics in 2024, and AV conduction disease by cardiology in 2025. By 2026 he has dysphagia, weight loss and confirmed low testosterone, and is weighing fertility options before any testosterone.",
+      "events": [
+        {
+          "id": "2020-09-08a",
+          "kind": "telephone",
+          "start": "2020-09-08T10:42",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2020-09-08T10:42",
+              "author": "front desk",
+              "body": "Caller is a 22 y/o man who moved into an apartment in town this summer and has not had a regular doctor since his pediatric office. Membership explained, agreement emailed. Intake booked for 9/22 at 9:00. He will sign a release so we can pull his old office records and the eye surgery records from 2018."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "establish_care",
+          "start": "2020-09-22T09:00",
+          "end": "2020-09-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, physical",
+          "conditions": [
+            {
+              "label": "Presence of intraocular lens",
+              "action": "history",
+              "onset": "2018-07-10",
+              "note": "Bilateral cataract extraction with IOL, 2018, age 20",
+              "icd10": "Z96.1"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              71
+            ],
+            "hr": 78,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 79.0,
+            "height_cm": 188.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-22T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T10:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time retail sales associate"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2020-09-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2020-09-22T10:05",
+              "author": "PCP",
+              "body": "22 y/o M here to establish. Last regular care was his pediatric practice in high school. Feels well. No complaints today.\n\nPMH: none ongoing. Cataracts in both eyes found at 20; had them taken out with lens implants, right then left, summer 2018 at an outside surgery center. Vision fine with glasses for reading now and then. Says he had some trouble with reading in school, thinks it was mild dyslexia, never formally treated.\nPSH: bilateral cataract extraction w/ IOL (2018).\nMeds: none. No supplements.\nAllergies: NKDA.\nFHx: father has a muscle disease, pt not sure what it is called, and also had cataracts young. Mother healthy. Nothing known on mom's side.\nSHx: works part time on the sales floor at a store in town. Lives on his own, has a girlfriend. Never smoked, does not drink, no drugs. Right-handed.\n\nROS: negative in full except as above.\n\nExam: tall, thin young man, NAD. HEENT: pupils round and reactive, IOLs in place, TMs clear, oropharynx clear. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Strength and gait grossly normal.\n\nA/P\n1. Health maintenance: screening HIV and hep C, CBC, CMP, lipids. Flu vaccine given. PHQ-2 negative. Will get childhood shot records and Tdap date from old office.\n2. History of bilateral cataract surgery at 20, pseudophakic. Eye follow-up with his surgeon as they advise.\n3. Family history of a muscle disease in father: asked him to find out the name from his dad.\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0,
+            "height_cm": 188.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm",
+            "rr"
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2020-09-24T16:20",
+              "author": "PCP",
+              "body": "Hi Zachary, all of your blood work from Tuesday is normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "outside_records",
+          "start": "2020-10-20T13:10",
+          "procedures": [
+            {
+              "procedure": "Cataract extraction with intraocular lens",
+              "performed": "2018-07-10T08:00"
+            },
+            {
+              "procedure": "Cataract extraction with intraocular lens",
+              "performed": "2018-08-07T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2015-08-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior pediatric office and eye surgery records",
+              "date": "2020-10-20T13:10",
+              "author": "MA",
+              "body": "Received by fax, 31 pages.\n\nPediatric office (care through 2016): routine well visits, normal growth with a fast height gain in the teen years. Childhood immunization series complete. Tdap 08/11/2015. No chronic conditions listed.\n\nOutside eye surgery center: bilateral visually significant cataracts in a 20 y/o. Right eye phacoemulsification with posterior chamber IOL 07/10/2018, left eye 08/07/2018. Both uncomplicated. Post-op visits with good acuity in each eye.\n\nAbstracted into chart. Scanned to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "pharmacy",
+          "start": "2021-04-13T15:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-13T15:30"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "pharmacy",
+          "start": "2021-05-04T15:45",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-04T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine card",
+              "date": "2021-05-05T19:02",
+              "author": "patient",
+              "body": "Got both of my covid shots at the pharmacy (April 13 and May 4). Uploading a picture of the card so you have it."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "portal_message",
+          "start": "2021-10-05T12:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical and flu shot",
+              "date": "2021-10-05T12:14",
+              "author": "patient",
+              "body": "Got the reminder for my yearly physical. Work is crazy through the holidays, can I push it to after New Year's? Also going to skip the flu shot this year if that's ok."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical and flu shot",
+              "date": "2021-10-05T14:30",
+              "author": "front desk",
+              "body": "No problem. You are booked for Tuesday 2/8 at 8:30. Doctor says the flu shot is still recommended, and you can stop in for one anytime if you change your mind."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "annual_physical",
+          "start": "2022-02-08T08:30",
+          "end": "2022-02-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              69
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 78.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-08T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-08T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-02-08T09:00",
+              "text": "Normal sinus rhythm, rate 64. PR 168 ms, QRS 92 ms, QTc 408 ms. Normal axis. No ST or T wave abnormality. No prior tracing for comparison.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-02-08T08:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2022-02-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-08T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-02-08T09:20",
+              "author": "PCP",
+              "body": "Annual. Doing fine, still part time at the store, picking up extra shifts. No new problems. Eyes good since surgery. Two COVID doses last spring. Skipped flu this season.\n\nAsked again about his father's diagnosis; he still does not know the name, only that it is a muscle problem that started in his dad's 30s. Pt has no symptoms of his own. Given the family history and no prior tracing, got a baseline ECG today.\n\nMeds none. NKDA. Never smoker, no EtOH.\nExam: well appearing, tall and lean. Heart regular, no murmur. Lungs clear. Abd benign. Strength full, gait normal.\nECG: NSR 64, PR 168, QRS 92, normal.\n\nA/P: Healthy 23 y/o. Baseline ECG normal, filed for comparison. CBC/BMP. PHQ-2 0. Encourage flu next fall. Return in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-02-09a",
+          "kind": "portal_message",
+          "start": "2022-02-09T11:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2022-02-09T11:05",
+              "author": "PCP",
+              "body": "Your ECG and blood tests from yesterday all look normal. We'll keep the ECG on file to compare against in the future."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:18"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2022-10-18T16:25",
+              "author": "RN",
+              "body": "In after work for flu and the bivalent COVID booster. Screening questions negative, no prior reactions. Flu in L deltoid, COVID in R deltoid. Waited 15 min without issue. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "portal_message",
+          "start": "2022-12-06T13:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Work form",
+              "date": "2022-12-06T13:20",
+              "author": "patient",
+              "body": "My job needs a form saying I got a physical this year for their wellness thing. Can you fill it out? Attaching it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Work form",
+              "date": "2022-12-07T10:15",
+              "author": "MA",
+              "body": "Form completed with your February physical date and signed. Uploaded back to you here and a copy is in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-02a",
+          "kind": "telephone",
+          "start": "2023-05-02T09:12",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-05-02T09:12",
+              "author": "front desk",
+              "body": "Pt cancelling the 5/16 physical, got put on the schedule at work that morning. Will call back with a new date."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T15:40",
+          "end": "2023-06-20T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hand stiffness, can't let go of grip",
+          "vitals": {
+            "bp": [
+              118,
+              71
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 100,
+            "weight_kg": 78.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-20T16:15",
+              "resulted": "2023-06-21T09:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "unit": "U/L",
+                  "value": 284
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-20T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-20T16:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "grip myotonia, weakness, family history of muscle disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-06-20T16:20",
+              "author": "PCP",
+              "body": "S: Several months of his hands \"sticking.\" Started golfing with coworkers this spring and after a swing he can't open his hand off the club right away. Same thing shaking hands with customers and with doorknobs. Takes a few seconds to let go. Also more tired than usual and feels his hands and lower legs are weaker. Over the last few weeks a little harder to get up from a low chair, feels clumsy walking on uneven ground. No numbness, no pain, no rash.\nFamily: dad's muscle disease started in his early 30s and pt says this sounds like what dad describes.\n\nO: Thin, well. After a tight fist he is slow to open his fingers, improves with repeating it. Strength grossly 5-/5 in hand grip and ankle dorsiflexion, otherwise 5/5. Reflexes symmetric. Gait normal on flat floor. Heart regular.\n\nA/P: Grip release delay with mild distal weakness and a father with a similar muscle disease. Concerned for an inherited myotonic disorder. CK today. Referral to neurology, asked them to see him this summer. Pt agrees."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "portal_message",
+          "start": "2023-06-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CK result",
+              "date": "2023-06-21T12:40",
+              "author": "PCP",
+              "body": "Zachary, your CK (a muscle enzyme) came back at 284, a bit above the normal range. That fits with what we talked about and I've sent it along with the referral. Neurology should call you to schedule; let me know if you haven't heard from them in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "portal_message",
+          "start": "2023-08-21T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology visit",
+              "date": "2023-08-21T20:15",
+              "author": "patient",
+              "body": "Saw neurology last Monday. She said it is probably myotonic dystrophy, the same thing my dad has, and they sent a genetic test. Did you get her notes? She said my legs are a little weak at the ankles too."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurology visit",
+              "date": "2023-08-22T08:05",
+              "author": "PCP",
+              "body": "Thanks for letting me know. We have not received the note yet. I'm asking our staff to request it today, along with the genetic test result when it is back. Let's meet once I have it."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-08-22T09:30",
+              "author": "front desk",
+              "body": "Called the neurology office, spoke with their records clerk. Requested 8/14 consult note and pending genetic testing. Faxed our request form and signed release. They said 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, second attempt",
+              "date": "2023-09-12T14:05",
+              "author": "front desk",
+              "body": "Neurology note from 8/14 still not here. Called their office again; clerk says the note was waiting on the genetic result to be added. Will send both once signed. Re-faxed release."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:20",
+          "conditions": [
+            {
+              "label": "Myotonic dystrophy type 1",
+              "action": "diagnosed",
+              "onset": "2023-08-14",
+              "icd10": "G71.11"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-09-26T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation (visit 08/14/2023)",
+              "date": "2023-09-26T11:20",
+              "author": "neurology",
+              "body": "NEUROMUSCULAR CLINIC: CONSULTATION\nDate of service: 08/14/2023\nReferred by: primary care, for difficulty releasing grip\n\nHistory: 25-year-old right-handed man. The problem first showed itself on the golf course: after swinging he could not unclench from the club. He has the same trouble disengaging from a handshake and from doorknobs. For several months he has felt more fatigued, with mild weakness he localizes to the hands and the lower legs. More recently he struggles to stand from a chair and feels unsteady on uneven ground. His father developed a muscle disorder in his early thirties with complaints much like these.\n\nPMH: bilateral cataracts removed at 20 with lens implants. No medications. NKDA. Never smoker, no alcohol. Part-time retail sales associate.\n\nExamination: Grip myotonia, with delayed relaxation after sustained handgrip. Mild foot drop on both sides. Receding hairline with early frontal balding. No skin rash and no joint deformity. Remainder of the neurologic examination without focal deficit.\n\nData: Creatine kinase from his primary care office 284 U/L, mildly elevated.\n\nImpression: Grip myotonia with distal-predominant weakness, early frontal balding, cataracts at a young age and an affected father. Clinical picture is myotonic dystrophy type 1.\n\nPlan: DMPK repeat analysis sent. Discussed autosomal dominant inheritance. Follow up in the neuromuscular clinic.\n\nADDENDUM 09/08/2023: DMPK testing shows an expanded CTG repeat on one allele, estimated at about 420 repeats. This confirms myotonic dystrophy type 1. Result reviewed with the patient by phone.\n\nAllergies: NKDA. Copy to primary care."
+            },
+            {
+              "type": "Result Note",
+              "title": "Neurology letter reviewed",
+              "date": "2023-09-26T17:05",
+              "author": "PCP",
+              "body": "Neuro consult and DMPK addendum reviewed. DM1 confirmed, ~420 CTG repeats. Added to problem list. Pt already has a follow-up with me 10/10."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "office_visit",
+          "start": "2023-10-10T16:00",
+          "end": "2023-10-10T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, myotonic dystrophy; fertility question",
+          "vitals": {
+            "bp": [
+              116,
+              73
+            ],
+            "hr": 70,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 96,
+            "weight_kg": 79.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-10T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-10T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-10T16:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-10T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-10T16:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:38"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:38"
+            }
+          ],
+          "orders": [
+            {
+              "id": "genetics-referral",
+              "action": "placed",
+              "order": "Medical genetics referral",
+              "category": "referral",
+              "to": "Medical Genetics",
+              "reason": "myotonic dystrophy type 1, family planning, 5 months trying to conceive"
+            },
+            {
+              "id": "semen-analysis",
+              "action": "placed",
+              "order": "Semen analysis",
+              "category": "lab",
+              "reason": "trying to conceive without success"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-10T16:40",
+              "author": "PCP",
+              "body": "F/u after neurology. DM1 confirmed by gene test (~420 repeats). He took it in stride; his father has the same diagnosis and pt has watched it for years. Hands about the same. Still working.\n\nNew question: he and his girlfriend have been trying for a baby since around May without a pregnancy. Wants to know if his diagnosis changes anything for having kids.\n\nNo meds. NKDA.\nExam: hand grip release slow, unchanged. Mild bilateral ankle dorsiflexion weakness. Heart regular. Lungs clear.\n\nA/P\n1. Myotonic dystrophy type 1. Neuromuscular clinic following. Basic labs today (CMP, A1c, TSH) for a baseline.\n2. Trying to conceive, ~5 months. Discussed that DM1 can pass to a child and that genetics can go over family planning options with both of them. Referral to medical genetics. Semen analysis ordered as a first step; instructions given (2-5 days abstinence, sample to lab within an hour).\n3. Flu shot today.\nRTC after genetics."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 5.2,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "lab_only",
+          "start": "2023-11-08T08:15",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-08T08:15",
+              "resulted": "2023-11-08T14:00",
+              "results": [
+                {
+                  "test": "Semen volume",
+                  "loinc": "3160-9",
+                  "unit": "mL",
+                  "value": 2.6
+                },
+                {
+                  "test": "Spermatozoa, motile",
+                  "loinc": "13942-8",
+                  "text": "Absent. No spermatozoa of any kind seen, including on examination of the centrifuged pellet."
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "semen-analysis",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-11-10a",
+          "kind": "portal_message",
+          "start": "2023-11-10T10:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Semen analysis result",
+              "date": "2023-11-10T10:25",
+              "author": "PCP",
+              "body": "Hi Zachary, the lab did not find any sperm in the sample, including when they spun it down to look more carefully. This is called azoospermia. It has several possible causes, and it is exactly the kind of thing the genetics team should look at. I've sent the result to them ahead of your February appointment. Happy to talk by phone before then if you want."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Semen analysis result",
+              "date": "2023-11-10T21:48",
+              "author": "patient",
+              "body": "Ok. Kind of a lot to take in. We'll wait for the genetics appt. Thanks for sending it over."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "outside_records",
+          "start": "2024-02-20T10:05",
+          "conditions": [
+            {
+              "label": "Klinefelter syndrome",
+              "action": "diagnosed",
+              "onset": "2024-02-06"
+            },
+            {
+              "label": "Male infertility",
+              "action": "diagnosed",
+              "onset": "2024-02-06"
+            }
+          ],
+          "orders": [
+            {
+              "id": "genetics-referral",
+              "action": "done",
+              "date": "2024-02-20T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical genetics consultation (visit 02/06/2024)",
+              "date": "2024-02-20T10:05",
+              "author": "medical genetics",
+              "body": "MEDICAL GENETICS CONSULTATION\nDate of visit: 02/06/2024\nReason: myotonic dystrophy type 1; infertility\n\nHistory: 25-year-old man seen roughly six months after his neuromuscular diagnosis of DM1 (DMPK expansion, about 420 CTG repeats). He and his partner have been trying for a pregnancy for about nine months. He has never fathered a pregnancy. He describes erections and libido as normal. Recent semen analysis from his primary care office showed azoospermia. His parents remember a growth spurt in adolescence; he has always been tall and lean, which the family put down to genetics. Right-handed. Had trouble learning to read and calls it mild dyslexia. Otherwise healthy apart from cataract surgery in both eyes at 20. Takes no medications. NKDA.\n\nFamily history: father with DM1 and early cataracts; paternal grandfather with weakness and grip myotonia, never diagnosed; mother healthy; no known genetic conditions on the maternal side.\n\nSocial: works part-time in retail and lives on his own. Did not play team sports growing up and remembers feeling somewhat awkward next to classmates.\n\nExamination: Height 6 ft 2 in, with legs long in proportion to the trunk. Pleasant and cooperative, a little reserved. Little facial or chest hair, sparse axillary hair. Gynecomastia present. Testes palpable on both sides, small and firm. Neurologic examination normal.\n\nStudies: Scrotal ultrasound, no structural abnormality of either testis or of the vasa deferentia. Buccal smear: a dense, darkly staining chromatin body at the nuclear margin in many somatic cells, consistent with an extra X chromosome. Testicular biopsy not performed.\n\nAssessment:\n1. Klinefelter syndrome, suspected on exam and buccal smear; peripheral blood karyotype sent for confirmation.\n2. Male infertility with azoospermia, explained by #1.\n3. Myotonic dystrophy type 1: counseled that each child of his would have a 50% chance of inheriting the expansion, with possible lengthening of the repeat when passed on.\n\nPlan: karyotype; fertility options to be discussed further if the couple wishes to pursue them; return as needed.\n\nCopy to primary care."
+            },
+            {
+              "type": "Result Note",
+              "title": "Genetics letter reviewed",
+              "date": "2024-02-20T17:30",
+              "author": "PCP",
+              "body": "Genetics letter reviewed. Klinefelter suspected on exam and buccal smear, karyotype pending. Azoospermia attributed. Added Klinefelter and male infertility to problems; family hx updated (father DM1, early cataracts; PGF undiagnosed weakness/myotonia). F/u with pt 3/12."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "outside_records",
+          "start": "2024-03-07T14:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-06T11:30",
+              "resulted": "2024-02-28T15:00",
+              "results": [
+                {
+                  "test": "Karyotype",
+                  "loinc": "29770-5",
+                  "text": "47,XXY in all 20 metaphase cells examined"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Genetics addendum: karyotype",
+              "date": "2024-03-07T14:40",
+              "author": "medical genetics",
+              "body": "ADDENDUM to consultation of 02/06/2024\nPeripheral blood chromosome analysis: 47,XXY in all 20 cells counted. Confirms Klinefelter syndrome. Discussed with the patient by telephone 03/01/2024."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "office_visit",
+          "start": "2024-03-12T16:20",
+          "end": "2024-03-12T16:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after genetics",
+          "vitals": {
+            "bp": [
+              122,
+              68
+            ],
+            "hr": 84,
+            "rr": 14,
+            "temp_c": 36.8,
+            "weight_kg": 78.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-12T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-12T16:50",
+              "author": "PCP",
+              "body": "Here to go over genetics. Karyotype 47,XXY, so Klinefelter, and that explains the azoospermia. He says it was strange to learn this at 25 but a lot of things about growing up make more sense now. He and his partner are taking a break from trying for now and may go back to genetics about options later. Mood ok, sleeping fine, working.\n\nHands unchanged. No new weakness.\nExam: BP and HR fine. Wt 78. Grip release slow. Heart regular.\n\nA/P\n1. Klinefelter syndrome, 47,XXY. Male infertility, azoospermia.\n2. Myotonic dystrophy type 1, neuromuscular clinic following.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "portal_message",
+          "start": "2024-09-17T18:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling physical",
+              "date": "2024-09-17T18:40",
+              "author": "patient",
+              "body": "Can I get my physical in October? Tuesdays before 10 work best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling physical",
+              "date": "2024-09-18T09:02",
+              "author": "front desk",
+              "body": "You're set for Tuesday 10/22 at 8:30. Labs will be drawn at the visit, so nothing to eat after midnight except water."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:30",
+          "end": "2024-10-22T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 75,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 4
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 75
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T09:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:08"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-22T09:08"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T09:15",
+              "author": "PCP",
+              "body": "Annual. Working the same hours. Grip trouble about the same as spring, gets by at work. Not trying for a pregnancy right now.\n\nProblems: DM1 (DMPK ~420 repeats), Klinefelter 47,XXY with azoospermia, s/p bilateral cataract surgery with IOLs.\nMeds: none. NKDA. Never smoker, no alcohol.\n\nExam: Tall, lean. Early frontal balding. Sparse body hair. HEENT: IOLs. Heart regular, no murmur. Lungs clear. Abdomen soft. Slow grip release, mild ankle dorsiflexion weakness both sides, otherwise strength full.\n\nA/P: Health maintenance. CBC, CMP, lipids, A1c, TSH. Flu and updated COVID given. PHQ-9 3. Next physical one year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-10-24T13:50",
+              "author": "PCP",
+              "body": "Blood work from your physical is all in the normal range, including sugar (A1c), thyroid and cholesterol. See you next year, sooner if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T16:30",
+          "end": "2025-01-14T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, short of breath jogging, skipped beats",
+          "vitals": {
+            "bp": [
+              121,
+              84
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 77.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-14T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardio-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "myotonic dystrophy type 1 with exertional fatigue and sensation of irregular heartbeat"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-14T17:05",
+              "author": "PCP",
+              "body": "S: Started jogging in the fall to get in shape and finds he gets winded fast, sooner than he thinks he should. More tired in general. Some nights lying flat in bed he feels like his heart pauses or skips. No chest pain, no lightheadedness, has never passed out. Not short of breath at rest or walking around the store.\n\nO: BP and HR normal, SpO2 normal. Wt 77.5. Heart rate regular during exam, no murmur. Lungs clear. No leg swelling.\n\nA/P: DM1 with exercise intolerance and a sense of irregular beats lying down. Heart involvement is a known part of DM1 and he has never had a cardiology evaluation. Referral to cardiology, asked for a prompt visit; their office does the ECG and any monitoring. Baseline ECG 2022 normal, sent with the referral. Call or go to the ED for fainting, chest pain, or near-fainting."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "portal_message",
+          "start": "2025-02-03T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology",
+              "date": "2025-02-03T20:10",
+              "author": "patient",
+              "body": "Saw the heart doctor last week. They said my ECG showed a slow electrical signal and I'm wearing a monitor for 2 days starting the 11th. Echo was normal. Just letting you know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cardiology",
+              "date": "2025-02-04T07:55",
+              "author": "PCP",
+              "body": "Thanks, Zachary. Glad the echo was normal. I'll watch for their note and the monitor results. Call if you feel faint at any point."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "outside_records",
+          "start": "2025-02-12T09:50",
+          "conditions": [
+            {
+              "label": "First-degree atrioventricular block",
+              "action": "diagnosed",
+              "onset": "2025-01-29",
+              "icd10": "I44.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-01-29T10:10",
+              "text": "PA and lateral views. Cardiac silhouette is normal in size. No pulmonary edema or vascular congestion. Lungs clear. No pleural effusion. Bones unremarkable.",
+              "conclusion": "Normal chest radiograph.",
+              "issued": "2025-01-29T13:00"
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-01-29T11:00",
+              "text": "Normal left ventricular size and wall thickness. Normal left ventricular systolic function with no regional wall motion abnormality. Right ventricle normal in size and function. Valves structurally normal without significant regurgitation or stenosis. No pericardial effusion.",
+              "conclusion": "Normal left ventricular function. No valvular disease.",
+              "issued": "2025-01-29T15:30"
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-01-29T09:40",
+              "text": "Sinus rhythm, rate 66, regular. PR 236 ms. QRS 94 ms with normal morphology. No dropped beats. Compared with tracing of 02/08/2022 (PR 168 ms), PR prolongation is new.",
+              "conclusion": "Sinus rhythm with first-degree AV block, new since 2022."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardio-referral",
+              "action": "done",
+              "date": "2025-02-12T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation (visit 01/29/2025)",
+              "date": "2025-02-12T09:50",
+              "author": "cardiology",
+              "body": "CARDIOLOGY CONSULTATION\nVisit date: 01/29/2025\nReferred by primary care: DM1 with fatigue and reduced exercise tolerance\n\nHPI: 26-year-old man with myotonic dystrophy type 1 and Klinefelter syndrome. Gets out of breath quickly when he jogs. At times, mainly when lying flat, he senses a beat that comes late or out of rhythm. He denies chest pain, palpitations as such, dizziness and syncope. Sleep is normal. Drinks little caffeine and no alcohol.\n\nMeds: none. Allergies: NKDA.\nFamily history: father with DM1 and premature cataracts; paternal grandfather with undiagnosed weakness and grip myotonia; mother healthy.\n\nExam: Blood pressure and heart rate normal. Apical pulse slightly irregular. No murmurs, rubs or gallops. Lungs clear. No edema.\n\nStudies today:\n- Chest x-ray: normal heart size, no edema or vascular congestion.\n- Echocardiogram: normal LV function, valves normal.\n- ECG: regular sinus rhythm with PR 236 ms, normal QRS, no non-conducted P waves. Prior ECG from three years ago had a normal PR, so this is new.\n\nAssessment: First-degree AV block, new, in a young man with DM1. Conduction system involvement is expected in this disease and needs surveillance. Structural heart is normal.\n\nPlan: 48-hour ambulatory ECG monitor to look for higher-grade block. Follow-up after the monitor. He knows to report fainting or near-fainting right away.\n\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Cardiology letter reviewed",
+              "date": "2025-02-12T16:45",
+              "author": "PCP",
+              "body": "Cards consult reviewed. CXR and echo normal. New 1st degree AVB, PR 236 (was 168 in 2022). Monitor ordered by them. Added to problem list."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T16:10",
+          "end": "2025-05-20T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology",
+          "vitals": {
+            "bp": [
+              129,
+              76
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 78.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-20T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-20T16:40",
+              "author": "PCP",
+              "body": "F/u. Wore the heart monitor for 2 days in February and saw cardiology again in April. Per pt, they told him there were some \"skipped beats\" mostly while he was asleep, that he does not need a pacemaker now, and that they will repeat the ECG and monitor every year. We have not received the monitor report or the April note.\n\nStill tires easily; has backed off the jogging and walks instead. No fainting or near-fainting.\n\nExam: well. Heart regular today, no murmur. Lungs clear.\n\nA/P\n1. First-degree AV block, DM1-related per cardiology. Awaiting April letter and monitor report; staff to request.\n2. DM1, Klinefelter: stable.\nPhysical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-05-21T10:05",
+              "author": "front desk",
+              "body": "Faxed request to cardiology for the 2/11 ambulatory monitor report and 4/8 office note. Called to confirm receipt, left message with their records line."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "outside_records",
+          "start": "2025-06-03T14:15",
+          "conditions": [
+            {
+              "label": "Second-degree atrioventricular block, type I",
+              "action": "diagnosed",
+              "onset": "2025-04-08",
+              "icd10": "I44.1"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up (visit 04/08/2025)",
+              "date": "2025-06-03T14:15",
+              "author": "cardiology",
+              "body": "CARDIOLOGY FOLLOW-UP\nVisit date: 04/08/2025\n\nInterval: Wore a 48-hour ambulatory monitor beginning 02/11/2025. No symptoms recorded in the diary other than fatigue. No syncope or presyncope.\n\nMonitor review: Sinus rhythm with first-degree AV block throughout. Intermittent second-degree AV block, type I, predominantly during sleep. Longest pause 2.2 seconds. No higher-grade AV block. No atrial fibrillation or flutter. No ventricular tachycardia.\n\nExam: BP and HR normal. Rhythm mildly irregular. No murmur.\n\nAssessment: First-degree AV block with intermittent second-degree type I block. In a patient with myotonic dystrophy type 1 these represent conduction system disease of DM1.\n\nPlan: No pacing indication at present. Annual ECG and ambulatory monitor, sooner for symptoms. He is to report any fainting, near-fainting or new breathlessness promptly. Anesthesia teams should be told of his DM1 and conduction disease before any procedure.\n\nMeds: none. Allergies: NKDA.\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Cardiology follow-up reviewed",
+              "date": "2025-06-03T17:20",
+              "author": "PCP",
+              "body": "April cards note finally in. Monitor: 1st degree AVB with intermittent 2nd degree type I, mostly asleep, longest pause 2.2 s, nothing higher grade. Added 2nd degree AVB type I. Annual ECG/monitor with cardiology. Monitor report itself was not included; not chasing further since the findings are in the note."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed physical",
+              "date": "2025-10-22T11:40",
+              "author": "front desk",
+              "body": "Called pt about yesterday's missed physical. He overslept after a late inventory shift. Rebooked Tues 11/18, 8:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T08:30",
+          "end": "2025-11-18T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              131,
+              81
+            ],
+            "hr": 83,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 75.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-18T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-18T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-18T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-18T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-18T09:15",
+              "author": "PCP",
+              "body": "Annual, rescheduled from October. Feels about the same. Hands still slow to let go. Walking rather than jogging. No fainting. Neuromuscular follow-up is set for January.\n\nWt 75, down from 77.5 in January; he has not been trying to lose. Eating normally per pt.\n\nProblems: DM1; first-degree AVB with intermittent 2nd-degree type I (cardiology following yearly); Klinefelter 47,XXY with azoospermia; s/p bilateral cataract surgery.\nMeds: none. NKDA.\n\nExam: Lean. Frontal balding. Heart rate irregular at times, no murmur. Lungs clear. Slow grip release; mild ankle dorsiflexion weakness bilaterally.\n\nA/P: Health maintenance. CBC, CMP, A1c, TSH. Flu shot today. Weight down 2.5 kg this year: recheck at next visit, ask neuro to weigh in. PHQ-2 1."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "portal_message",
+          "start": "2025-11-20T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-11-20T12:10",
+              "author": "PCP",
+              "body": "Your blood count, chemistry panel, thyroid and A1c from Tuesday are all normal. Mention the weight change at your neurology visit in January, and we'll check it again when I see you next."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-17T10:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-27T09:15",
+              "resulted": "2026-01-27T16:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "unit": "U/L",
+                  "value": 120
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "unit": "mg/dL",
+                  "value": 90
+                },
+                {
+                  "test": "Testosterone, Total",
+                  "unit": "ng/dL",
+                  "value": 220
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "unit": "mIU/mL",
+                  "value": 15
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "mIU/mL",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-01-27T09:00",
+              "text": "Sinus rhythm with prolonged PR interval. Normal QRS duration and morphology. No acute ST or T wave change.",
+              "conclusion": "First-degree AV block."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up (visit 01/27/2026)",
+              "date": "2026-02-17T10:30",
+              "author": "neurology",
+              "body": "NEUROMUSCULAR CLINIC: FOLLOW-UP\nDate of service: 01/27/2026\n\nDiagnoses: myotonic dystrophy type 1 (DMPK ~420 CTG repeats); Klinefelter syndrome 47,XXY; first-degree AV block with intermittent second-degree type I block (cardiology following); bilateral cataract extraction at 20.\n\nInterval history: Handshakes are again hard to release. He notices his face is weaker, food is harder to get down, and he has lost weight without trying. He also reports less interest in sex than before.\n\nMeds: none. Allergies: NKDA. Never smoker, no alcohol. Works part-time in retail.\n\nExamination: Wasting of the temporalis and masseter muscles on both sides. Atrophy of the intrinsic muscles of the hands. Grip myotonia persists. Heart rhythm irregular on auscultation.\n\nLaboratory (drawn today): CK 120 U/L (ref 38-174). Fasting glucose 90 mg/dL. Total testosterone 220 ng/dL, low. FSH 15 mIU/mL and LH 14 mIU/mL, both elevated.\nECG today: first-degree heart block.\n\nImpression: Progression of DM1 with bulbar involvement (dysphagia) and weight loss. Primary testicular failure, as expected with Klinefelter syndrome, now with low testosterone and reduced libido.\n\nPlan:\n1. Modified barium swallow with speech-language pathology.\n2. Continue yearly cardiology surveillance; irregular rhythm noted today.\n3. Low testosterone to be addressed by primary care.\n4. Return to clinic in 12 months.\n\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Neurology letter reviewed",
+              "date": "2026-02-17T17:10",
+              "author": "PCP",
+              "body": "Neuro f/u reviewed. Dysphagia, facial weakness, weight loss. T 220 with high FSH/LH, libido down. MBS ordered by them. Have staff move his visit up; will repeat AM testosterone here."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "telephone",
+          "start": "2026-02-18T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2026-02-18T09:20",
+              "author": "front desk",
+              "body": "Per PCP, offered pt an earlier visit to go over the neurology results. Booked 3/3 at 8:00 so a morning blood draw can be done at the visit. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "outside_records",
+          "start": "2026-02-27T13:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Modified barium swallow study (02/24/2026)",
+              "date": "2026-02-27T13:45",
+              "author": "speech-language pathology",
+              "body": "MODIFIED BARIUM SWALLOW STUDY\nDate: 02/24/2026\nReferred by: neuromuscular clinic, DM1 with dysphagia\n\nConsistencies: thin and nectar-thick liquid by cup and straw, puree, soft solid, cracker.\n\nFindings: Oral phase with mildly reduced bolus control. Swallow initiation delayed. Pharyngeal residue in the valleculae and pyriform sinuses after solids, cleared with a second swallow. No laryngeal penetration or aspiration with any consistency.\n\nImpression: Mild oropharyngeal dysphagia.\n\nRecommendations: Regular diet. Small bites, eat slowly, alternate solids with sips of liquid, use a second swallow as needed. Repeat study if symptoms progress.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T08:00",
+          "end": "2026-03-03T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after neurology: swallowing, weight loss, low testosterone",
+          "conditions": [
+            {
+              "label": "Oropharyngeal dysphagia",
+              "action": "diagnosed",
+              "onset": "2026-01-27",
+              "icd10": "R13.12"
+            },
+            {
+              "label": "Unintentional weight loss",
+              "action": "diagnosed",
+              "onset": "2025-11-18"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              74
+            ],
+            "hr": 81,
+            "rr": 13,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 72.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-03T08:30",
+              "resulted": "2026-03-04T11:20",
+              "results": [
+                {
+                  "test": "Testosterone, Total",
+                  "unit": "ng/dL",
+                  "value": 228
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-03T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-03T08:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T08:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-03T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-03T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-03T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-03-03T08:40",
+              "author": "PCP",
+              "body": "S: Here after his January neuromuscular visit and the swallow study. Food, meat and bread especially, feels like it hangs up and he has to swallow twice. No choking, no coughing with drinks, no pneumonia. Face feels weaker and friends say he looks thinner in the face. Has lost weight without trying. Eating three meals but slower. Sex drive lower than a year or two ago. Mood ok, PHQ-9 4.\n\nO: Wt 72.5 (75 in Nov, 77.5 last Jan). BP/HR fine. Temporal and masseter hollowing. Thenar and interosseous wasting both hands, slow grip release. Heart irregular at times, no murmur. Lungs clear.\n\nSwallow study 2/24: mild oropharyngeal dysphagia, residue clears with second swallow, no aspiration. Regular diet with strategies.\n\nA/P\n1. Oropharyngeal dysphagia, DM1. Follow SLP strategies; he has the handout. Call for choking, cough with meals or fevers.\n2. Unintentional weight loss, about 5 kg in a year. Likely DM1 progression with slower eating. Calorie-dense snacks between meals. CBC, CMP, TSH, A1c today. Weigh at each visit.\n3. Low testosterone (220 at neurology, high FSH/LH) with lower libido. Repeat morning testosterone drawn now, 08:30. Will discuss treatment and fertility at next visit.\n4. DM1, conduction disease, Klinefelter: per specialists.\nRTC 4 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "portal_message",
+          "start": "2026-03-05T15:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Testosterone and other labs",
+              "date": "2026-03-05T15:15",
+              "author": "PCP",
+              "body": "Hi Zachary, your morning testosterone came back at 228, low again and close to the neurology result. Blood count, chemistry, thyroid and A1c are normal. Before we talk about testosterone treatment we need to talk about whether you and your partner still want to try for a biological child, because testosterone can make that harder. We'll go over it on April 1."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Testosterone and other labs",
+              "date": "2026-03-05T22:30",
+              "author": "patient",
+              "body": "Yeah we still want to try at some point. We'll talk about it before the appointment. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-01a",
+          "kind": "office_visit",
+          "start": "2026-04-01T16:00",
+          "end": "2026-04-01T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low testosterone, fertility, weight check",
+          "conditions": [
+            {
+              "label": "Testicular hypofunction",
+              "action": "diagnosed",
+              "onset": "2026-01-27",
+              "note": "Primary hypogonadism, Klinefelter syndrome",
+              "icd10": "E29.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 76,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 72.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-01T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral",
+              "action": "placed",
+              "order": "Reproductive urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "Klinefelter syndrome, azoospermia, low testosterone; fertility options before testosterone therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-01T16:40",
+              "author": "PCP",
+              "body": "S: Follow-up. Swallowing about the same, using the second swallow and sips, no choking. Eating more snacks. Libido still low, no other complaints. He and his partner talked it over: they still hope to have a biological child at some point and want to know their options before he starts anything.\n\nO: Wt 72.0 (72.5 in March). BP/HR normal. Facial and hand wasting as before. Heart irregular at times.\n\nLabs: AM testosterone 228 (3/3), 220 with FSH 15 and LH 14 at neurology (1/27). CBC, CMP, TSH, A1c normal.\n\nA/P\n1. Male hypogonadism, primary (testicular), Klinefelter. Two low morning values with high gonadotropins. Testosterone would help libido, energy and bone, but it shuts down what little sperm production there may be. Agreed to see reproductive urology first about sperm retrieval options; no testosterone for now. Referral placed.\n2. Weight loss, slowing. Continue extra calories. Recheck weight next visit.\n3. Dysphagia: SLP strategies.\n4. DM1 with conduction disease: cardiology yearly visit coming up in May.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "telephone",
+          "start": "2026-04-02T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral sent",
+              "date": "2026-04-02T11:00",
+              "author": "front desk",
+              "body": "Urology referral with notes and lab results faxed to the reproductive urology office. They will contact pt directly; earliest new-patient slot late May."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "outside_records",
+          "start": "2026-06-09T09:40",
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-05-12T10:20",
+              "text": "Sinus rhythm, rate 62. PR 240 ms. QRS 96 ms, normal morphology. No dropped beats on this tracing. Compared with 01/29/2025, PR slightly longer.",
+              "conclusion": "Sinus rhythm with first-degree AV block."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up (visit 05/12/2026)",
+              "date": "2026-06-09T09:40",
+              "author": "cardiology",
+              "body": "CARDIOLOGY: ANNUAL FOLLOW-UP\nVisit date: 05/12/2026\n\nDM1 with first-degree AV block and intermittent second-degree type I block found on monitoring last year. No syncope or presyncope. Fatigue unchanged. Neurology notes bulbar symptoms and weight loss this year.\n\nMeds: none. Allergies: NKDA.\nExam: BP and HR normal. Occasionally irregular rhythm. No murmur. Lungs clear.\nECG: sinus rhythm, PR 240 ms, QRS 96 ms.\n\nAssessment: Conduction disease of DM1, no change.\nPlan: Repeat 48-hour ambulatory monitor. No pacing indication. Annual follow-up, sooner for symptoms.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T19:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urology visit",
+              "date": "2026-06-16T19:55",
+              "author": "patient",
+              "body": "Saw the urologist on May 28. He talked about a surgery where they look for sperm in the testicles to freeze it, and said to do that before any testosterone. My girlfriend and I are still deciding. Not sure if they sent you anything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urology visit",
+              "date": "2026-06-17T08:10",
+              "author": "PCP",
+              "body": "Thanks for the update. We haven't received their note. Take the time you need to decide, and let me know what you choose so we can plan around it. We'll talk more at your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment reminder",
+              "date": "2026-08-11T10:30",
+              "author": "front desk",
+              "body": "Reminder: your annual physical is Tuesday, September 22 at 8:30 am. Please come fasting for blood work. Reply to confirm."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment reminder",
+              "date": "2026-08-11T12:02",
+              "author": "patient",
+              "body": "Confirmed, I'll be there."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "First-degree atrioventricular block|I44.0": {
+        "code": "I44.0",
+        "display": "Atrioventricular block, first degree",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Myotonic dystrophy type 1|G71.11": {
+        "code": "G71.11",
+        "display": "Myotonic muscular dystrophy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Oropharyngeal dysphagia|R13.12": {
+        "code": "R13.12",
+        "display": "Dysphagia, oropharyngeal phase",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Presence of intraocular lens|Z96.1": {
+        "code": "Z96.1",
+        "display": "Presence of intraocular lens",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Second-degree atrioventricular block, type I|I44.1": {
+        "code": "I44.1",
+        "display": "Atrioventricular block, second degree",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Karyotype": {
+        "code": "29770-5",
+        "display": "Karyotype [Identifier] in Blood or Tissue Nominal",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "mIU/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Semen volume": {
+        "code": "3160-9",
+        "display": "Volume of Semen",
+        "unit": "mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Spermatozoa, motile": {
+        "code": "13942-8",
+        "display": "Spermatozoa Motile [Presence] in Semen by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,1262 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002728",
+      "events": [
+        {
+          "id": "2023-02-07a",
+          "kind": "lab_only",
+          "start": "2023-02-07T07:15",
+          "state": {
+            "labs": {
+              "Potassium": 3.3
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-07T07:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-02-07T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP",
+              "author": "PCP",
+              "date": "2023-02-07T17:20",
+              "body": "K still low-ish on replacement, kidneys normal. Same plan. Spring visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-17a",
+          "kind": "office_visit",
+          "start": "2023-04-17T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "state": {
+            "bp": [
+              150,
+              96
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "colo-2023",
+              "action": "placed",
+              "order": "Screening colonoscopy",
+              "category": "procedure",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening, age 45"
+            },
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-17T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2023-04-17T07:55",
+              "body": "Spring check before she gets slammed. Feels about the same - headaches a couple times a week, tired at the end of the day, cramps better with potassium. Home readings 148-154/94-98. Taking everything.\nMeds: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 BID, pantoprazole 40.\nExam: BP as above. RRR. Lungs clear. Trace edema.\nA/P\n1. Primary hyperaldosteronism / resistant HTN - unchanged on current regimen per endocrine plan. Feb K low but steady.\n2. Turned 45 - screening colonoscopy referral placed (no family hx CRC).\n3. Mammogram ordered.\nPhysical in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "imaging",
+          "start": "2023-05-09T07:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-05-09T07:30",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 04/2021 and 05/2019. Scattered fibroglandular densities. No suspicious mass, calcifications or distortion. Stable.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-05-09T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result",
+              "author": "PCP",
+              "date": "2023-05-10T12:15",
+              "body": "Paula - mammogram normal, no changes from before."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "procedure_visit",
+          "start": "2023-06-20T09:00",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2023-06-20T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2023",
+              "action": "done",
+              "date": "2023-06-20T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2023-06-22T10:00",
+              "body": "OUTSIDE ENDOSCOPY CENTER - COLONOSCOPY REPORT\nProcedure date: 06/20/2023\nIndication: average-risk screening, age 45.\nMedications/allergies reviewed: NKDA.\nSedation: monitored anesthesia care.\nPrep: good, adequate in all segments.\nFindings: the colon was examined to the cecum; appendiceal orifice and ileocecal valve photographed. Mucosa normal throughout. No polyps, masses or diverticula. Normal retroflexion in the rectum.\nImpression: normal colonoscopy.\nRecommendation: repeat screening colonoscopy in 10 years."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result",
+              "author": "PCP",
+              "date": "2023-06-23T09:40",
+              "body": "Colonoscopy report reviewed - normal, no polyps. Next screening in 10 years (2033)."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "bp": [
+              152,
+              96
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T08:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-17T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-17T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-17T08:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-17T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-17T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-10-17T08:45",
+              "body": "Annual exam.\nInterval: colonoscopy normal in June. Mammo normal in May. Good season, hired a second helper.\nSx: headaches unchanged, intermittent. No palpitations. Bowels normal. Heartburn controlled.\nMeds: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 BID, pantoprazole 40. NKDA.\nExam: BP as recorded (manual rpt 150/96). Well-appearing. Thyroid normal. RRR, no murmur. Lungs clear. Abd soft, NT. Breasts no masses. Skin: no suspicious lesions. Trace ankle edema.\nA/P\n1. Primary hyperaldosteronism / resistant HTN / hypokalemia - stable on current regimen; CMP today.\n2. PUD - quiet on PPI.\n3. Prevention: flu + updated COVID today. Pap due 2024. Mammo spring.\nRTC spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "portal_message",
+          "start": "2023-10-19T09:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2023-10-19T09:30",
+              "body": "Labs about the same as last year - potassium a little low on the supplement, otherwise normal. Cholesterol fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "portal_message",
+          "start": "2024-01-30T18:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Diarrhea",
+              "author": "patient",
+              "date": "2024-01-30T18:55",
+              "body": "I've had watery diarrhea for about 3 weeks now. No fever, no blood. It doesn't seem to matter if I eat or not. Feeling crampy and wiped out. Can I get in?"
+            },
+            {
+              "type": "Portal Reply",
+              "title": "RE: Diarrhea",
+              "author": "RN",
+              "date": "2024-01-31T08:20",
+              "body": "Hi Paula, Dr wants to see you. Earliest is Monday 2/12 at 7:40 - booked. Push fluids, an oral rehydration drink is better than plain water. If you feel faint, can't keep fluids down, or see blood, go to urgent care or the ED."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "office_visit",
+          "start": "2024-02-12T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "watery diarrhea for one month",
+          "state": {
+            "bp": [
+              142,
+              90
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-12T08:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.0
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-12T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-12T08:10",
+              "results": [
+                {
+                  "test": "Magnesium"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "stool-2024",
+              "action": "placed",
+              "order": "Stool studies: C. difficile, culture, ova and parasites",
+              "category": "lab",
+              "reason": "chronic watery diarrhea"
+            },
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chronic watery diarrhea with hypokalemia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-12T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-12T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-02-12T08:35",
+              "body": "S: ~4 wks of watery, non-bloody diarrhea, 5-6 times a day, including overnight and on days she barely eats. Mild crampy discomfort, no real pain. No fever, travel, sick contacts, new foods, antibiotics or new meds. No well water - town supply. Lightheaded standing quickly. Weight about the same.\nMeds: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 BID, pantoprazole 40.\n\nO: Temp normal. BP as recorded, HR a bit up. Mucous membranes slightly dry. Abd soft, active bowel sounds, mild diffuse tenderness, no masses. Colonoscopy 6/2023 was normal.\n\nA/P\nChronic watery diarrhea, 1 month. Persists while fasting, which makes a secretory process more likely than osmotic. Long-term PPI noted.\n- Stool C. diff, culture, O&P. Celiac serology, TSH, CBC, BMP, Mg.\n- Oral rehydration solution, keep potassium as prescribed.\n- GI referral now rather than waiting.\nCall with worsening, blood, fever, fainting."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "lab_only",
+          "start": "2024-02-13T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-13T10:00",
+              "resulted": "2024-02-15T12:00",
+              "results": [
+                {
+                  "test": "Clostridioides difficile toxin B gene",
+                  "loinc": "54067-4",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No Salmonella, Shigella, Campylobacter, Shiga toxin-producing E. coli isolated"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool",
+                  "loinc": "10704-5",
+                  "text": "None seen"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "stool-2024",
+              "action": "done",
+              "date": "2024-02-15T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Stool and blood tests",
+              "author": "PCP",
+              "date": "2024-02-15T16:40",
+              "body": "Paula - stool tests negative for infection and parasites. Celiac test negative, thyroid normal. Potassium was 3.0 Monday - keep taking every dose, and drink the rehydration solution. GI referral is in; their office will call."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-22a",
+          "kind": "telephone",
+          "start": "2024-02-22T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI appointment",
+              "author": "front desk",
+              "date": "2024-02-22T11:30",
+              "body": "GI scheduled pt for 3/19. Pt says diarrhea unchanged, holding up ok, drinking the electrolyte drinks. Told to call if worse before then."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "specialist_visit",
+          "start": "2024-03-19T13:20",
+          "service": "Gastroenterology",
+          "reason": "chronic watery diarrhea",
+          "state": {
+            "bp": [
+              118,
+              76
+            ],
+            "labs": {
+              "Bicarbonate": 19,
+              "Chloride": 112
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-19T13:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium",
+                  "value": 2.0
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T13:55",
+              "results": [
+                {
+                  "test": "pH of Venous blood",
+                  "loinc": "2746-6",
+                  "unit": "[pH]",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2024-03-19T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2024-03-21T15:30",
+              "body": "OUTSIDE GASTROENTEROLOGY - NEW CONSULTATION\nDate of visit: 03/19/2024\nReason: chronic watery diarrhea, referred by primary care.\n\nMs. Nowak, 46, has known primary hyperaldosteronism followed by endocrinology. For several weeks she has had large-volume watery stools that keep coming even on days she fasts. She has cramping in her legs and hands and gets lightheaded. Stool infectious studies, celiac serology and TSH from her PCP were negative. Colonoscopy 06/2023 was normal.\n\nMedications: lisinopril 20 mg, amlodipine 10 mg, hydrochlorothiazide 25 mg, potassium chloride 40 mEq twice daily, pantoprazole 40 mg.\nAllergies: NKDA.\nFamily history: father hypertension, ruptured cerebral aneurysm at 67; mother type 2 diabetes, hyperlipidemia; paternal aunt with primary hyperaldosteronism.\nSocial: never smoker, rare wine, self-employed landscaper.\n\nExam: dry mucous membranes and decreased skin turgor; she looks volume depleted. Abdomen soft, nontender, no masses.\n\nLabs today: potassium 2.0 mEq/L, venous pH 7.30, glucose 150 mg/dL (non-fasting). Stool electrolytes give a low osmotic gap (resulted 03/20).\n\nAddendum 03/19 16:50: potassium of 2.0 called to the patient; she was sent to the hospital infusion unit this evening for intravenous potassium chloride with cardiac monitoring and went home afterward. Her primary care office is asked to repeat a BMP later this week.\n\nAssessment: secretory diarrhea - persists with fasting, low stool osmotic gap - with severe hypokalemia and acidosis from stool losses. Infection, celiac disease and microscopic colitis on a normal colonoscopy are less likely. A hormone-secreting neuroendocrine tumor needs to be excluded.\n\nPlan: CT abdomen with a pancreatic protocol. Continue oral potassium and oral rehydration. Return after imaging.\n\nOutside gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-22a",
+          "kind": "lab_only",
+          "start": "2024-03-22T07:10",
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "labs": {
+              "Potassium": 3.1,
+              "Bicarbonate": 24,
+              "Chloride": 104
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-22T07:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-22T07:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Repeat potassium",
+              "author": "PCP",
+              "date": "2024-03-22T14:15",
+              "body": "Spoke with pt. Got the GI letter and the infusion note - potassium was 2.0 Tues, IV replacement that evening. Today better but still low. Still 5-6 watery stools a day. Continue KCl 40 BID and ORS; she has CT scheduled 4/2. Any palpitations, weakness or fainting - ED."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "imaging",
+          "start": "2024-04-02T11:00",
+          "conditions": [
+            {
+              "label": "Pancreatic neuroendocrine tumor (VIPoma)",
+              "icd10": "C25.4",
+              "action": "diagnosed",
+              "onset": "2024-04-02",
+              "note": "3.1 cm pancreatic tail mass on CT; hormone confirmed later"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-04-02T11:00",
+              "text": "Indication: secretory diarrhea, evaluate for pancreatic neuroendocrine tumor.\nTechnique: multiphase CT of the abdomen with pancreatic protocol (non-contrast, late arterial and portal venous phases) with portal venous imaging of the pelvis. 100 mL IV contrast.\nFindings: In the pancreatic tail there is a 3.1 x 2.7 cm well-circumscribed mass that enhances avidly in the late arterial phase and becomes isodense on the portal venous phase. The pancreatic duct is not dilated. The remainder of the pancreas is normal. The splenic vein is patent. The liver is normal in size without focal lesions. Gallbladder, spleen and kidneys are normal. Adrenal glands are unremarkable. No lymphadenopathy. Small and large bowel are fluid-filled without wall thickening. No ascites. Pelvic organs are unremarkable.\nBones: no suspicious lesions.",
+              "conclusion": "3.1 cm arterially enhancing pancreatic tail mass, most consistent with a pancreatic neuroendocrine tumor. No liver lesions or adenopathy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result",
+              "author": "PCP",
+              "date": "2024-04-03T12:40",
+              "body": "Called Paula with the CT result (copy to us from GI's order). A 3 cm mass in the tail of the pancreas that looks like a neuroendocrine tumor - the kind that can make hormones causing exactly this diarrhea. Nothing in the liver. GI will see her and arrange next tests; most likely surgical removal. She was upset but relieved there's an explanation. Will check in after GI visit. Added to problem list."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "specialist_visit",
+          "start": "2024-05-07T10:40",
+          "service": "Gastroenterology",
+          "reason": "pancreatic neuroendocrine tumor",
+          "state": {
+            "bp": [
+              132,
+              84
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug_text": "octreotide 20 MG Injectable Suspension",
+              "action": "start",
+              "sig": "20 mg intramuscular injection every 4 weeks, given in clinic",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "Q4W",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "symptom control, pancreatic neuroendocrine tumor"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "author": "gastroenterology",
+              "date": "2024-05-10T09:00",
+              "body": "OUTSIDE GASTROENTEROLOGY - FOLLOW-UP\nDate of visit: 05/07/2024\n\nFollow-up of secretory diarrhea. CT 04/02 showed a 3.1 cm hypervascular mass in the pancreatic tail without liver lesions. Gallium-68 DOTATATE PET-CT on 05/02 showed intense somatostatin-receptor uptake in the pancreatic tail mass and no other sites of uptake.\n\nShe still has 5 to 7 watery stools a day and leg cramps. Potassium improved after IV replacement on her PCP recheck.\nMedications: lisinopril 20, amlodipine 10, hydrochlorothiazide 25, potassium chloride 40 mEq BID, pantoprazole 40. NKDA.\nExam: BP 132/84. Not toxic. Abdomen benign.\n\nAssessment: localized, somatostatin-receptor-positive pancreatic neuroendocrine tumor with a secretory diarrhea syndrome.\nPlan:\n1. Octreotide LAR 20 mg IM every 4 weeks for symptom control, first dose today. Prior authorization obtained by our office.\n2. Referral to surgical oncology for resection.\n3. Return in a few months; labs then.\n\nOutside gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "portal_message",
+          "start": "2024-05-13T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shot and surgery",
+              "author": "patient",
+              "date": "2024-05-13T20:10",
+              "body": "Got the first octreotide shot last week, sore hip but diarrhea maybe a little better already? Surgery consult is June 11. Just keeping you posted."
+            },
+            {
+              "type": "Portal Reply",
+              "title": "RE: Shot and surgery",
+              "author": "PCP",
+              "date": "2024-05-14T07:30",
+              "body": "Thanks for the update - glad there's some improvement. Med list updated. Let's do a BP and potassium visit after the surgical consult."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "specialist_visit",
+          "start": "2024-06-11T15:00",
+          "service": "Surgical Oncology",
+          "reason": "pancreatic tail neuroendocrine tumor",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Surgical Oncology Consultation",
+              "author": "surgical oncology",
+              "date": "2024-06-14T11:20",
+              "body": "OUTSIDE SURGICAL ONCOLOGY - CONSULTATION\nDate of visit: 06/11/2024\n\n46-year-old woman with a 3.1 cm pancreatic tail neuroendocrine tumor on CT and DOTATATE PET-CT, localized, with secretory diarrhea partly controlled on octreotide LAR. Also primary hyperaldosteronism on lisinopril, amlodipine, hydrochlorothiazide and potassium chloride; PUD on pantoprazole. Prior diagnostic laparoscopy at 32. NKDA.\n\nExam: healthy-appearing. Abdomen soft, small healed laparoscopy scars, no mass.\n\nAssessment and plan: resection is recommended - laparoscopic spleen-preserving distal pancreatectomy. Risks discussed, including pancreatic leak and diabetes. Ms. Nowak runs a landscaping business and asked to schedule in November once her season ends; since the tumor is localized and symptoms are controlled on octreotide, this is reasonable. Tentative date 11/19. Continue octreotide through October; electrolytes to be followed by her PCP and GI.\n\nOutside surgical oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "office_visit",
+          "start": "2024-06-25T06:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and potassium; Pap",
+          "state": {
+            "bp": [
+              140,
+              88
+            ],
+            "labs": {
+              "Potassium": 3.0,
+              "Bicarbonate": 26
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-25T07:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-25T07:20",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-06-25T07:10",
+              "text": "Liquid-based cervical cytology. Satisfactory for evaluation; transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-25T06:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-25T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-06-25T07:45",
+              "body": "F/u after GI and surgical consults. Pancreatic NET, surgery planned 11/19 (her choice to wait for the end of the season - surgeon agreeable). On octreotide monthly since May: stools down to 3-5/day, still loose. Cramps occasionally. Drinking a lot on job sites.\nMeds: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 BID, pantoprazole 40, octreotide LAR 20 q4wk (GI).\nExam: BP as recorded, lower than her usual with the fluid losses. Mucosa moist. Abd soft NT. Pelvic: Pap/HPV collected, normal exam.\nA/P\n1. Pancreatic NET with secretory diarrhea - octreotide per GI, resection Nov.\n2. Hypokalemia - BMP, Mg today. Continue 40 BID.\n3. Primary hyperaldosteronism / HTN - BP lower with diarrhea, no change; call if lightheaded.\n4. Pap/HPV today. Mammo ordered.\nRTC after surgery."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "portal_message",
+          "start": "2024-06-27T13:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2024-06-27T13:00",
+              "body": "Potassium about where it was in the spring, magnesium normal, kidneys fine. Same dose of potassium. Pap and HPV results normal - next in 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "imaging",
+          "start": "2024-07-09T16:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-07-09T16:30",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 05/2023. Scattered areas of fibroglandular density. No suspicious findings.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-07-09T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result",
+              "author": "PCP",
+              "date": "2024-07-10T07:50",
+              "body": "Mammogram normal again. Good."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "specialist_visit",
+          "start": "2024-09-30T09:40",
+          "service": "Gastroenterology",
+          "reason": "chronic diarrhea follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              70
+            ],
+            "hr": 95
+          },
+          "measure": [
+            "weight_kg"
+          ],
+          "state": {
+            "bp": [
+              112,
+              72
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-30T10:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 2.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 95
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-30T10:15",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-30T10:15",
+              "resulted": "2024-10-04T15:00",
+              "results": [
+                {
+                  "test": "Vasoactive intestinal peptide",
+                  "loinc": "3125-2",
+                  "unit": "pg/mL",
+                  "value": 200
+                },
+                {
+                  "test": "Gastrin",
+                  "loinc": "2333-3",
+                  "unit": "pg/mL",
+                  "text": "Normal"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "author": "gastroenterology",
+              "date": "2024-10-07T08:50",
+              "body": "OUTSIDE GASTROENTEROLOGY - FOLLOW-UP\nDate of visit: 09/30/2024\n\nMs. Nowak returns for the chronic diarrhea we first evaluated six months ago, in the setting of primary hyperaldosteronism and a pancreatic tail neuroendocrine tumor awaiting resection on 11/19. On octreotide LAR she still has up to eight bowel movements on bad days; no blood and no abdominal pain. Muscle cramps have come back over the last few weeks. Her weight has held. No travel and no sick contacts.\n\nMedications: lisinopril 20, amlodipine 10, hydrochlorothiazide 25, potassium chloride 40 mEq BID, pantoprazole 40, octreotide LAR 20 mg every 4 weeks. NKDA.\n\nExam: BP 110/70, HR 95. Appears dry. Abdomen unremarkable - no masses, no organomegaly.\n\nLabs: sodium 140, potassium 2.9, chloride 95, bicarbonate 32, BUN 18, creatinine 0.9, fasting glucose 90. Stool osmotic gap 50 mOsm/kg. Gastrin normal. Vasoactive intestinal peptide 200 pg/mL (resulted 10/04).\n\nAssessment: functioning pancreatic VIPoma - markedly elevated VIP with secretory diarrhea, gastrin normal - with hypokalemia and volume depletion, compounded by her aldosterone excess and thiazide.\nPlan: continue octreotide until surgery; last injection mid-October. Oral rehydration, potassium as prescribed. Surgery 11/19 as planned. We will see her after resection.\n\nOutside gastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:45",
+          "reason": "flu and COVID vaccines",
+          "measure": [
+            "bp"
+          ],
+          "state": {
+            "bp": [
+              138,
+              88
+            ],
+            "labs": {
+              "Potassium": 3.1,
+              "Bicarbonate": 29
+            }
+          },
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T07:48"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T07:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T07:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T08:00",
+              "body": "Flu L deltoid, COVID R deltoid, tolerated. Getting them in before her November surgery. Dr reviewed GI letter - VIP elevated, confirms the tumor type; no change to plan."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-01a",
+          "kind": "telephone",
+          "start": "2024-11-01T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-op request",
+              "author": "MA",
+              "date": "2024-11-01T10:05",
+              "body": "Surgical oncology pre-admission nurse requested med list, allergy list, last ECG and recent BMP. Faxed med list (lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 mEq BID, pantoprazole 40, octreotide LAR - last dose 10/15), NKDA, ECG 2/2020, BMP 6/2024. They will repeat ECG and labs at pre-admission testing."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "hospital_admission",
+          "start": "2024-11-19T06:00",
+          "end": "2024-11-23T11:30",
+          "service": "Surgical Oncology",
+          "reason": "laparoscopic distal pancreatectomy for pancreatic neuroendocrine tumor",
+          "state": {
+            "bp": [
+              136,
+              84
+            ],
+            "labs": {
+              "Lipase": 32
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "medications": [
+            {
+              "drug_text": "octreotide 20 MG Injectable Suspension",
+              "action": "stop",
+              "reason": "tumor resected"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-20T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-20T05:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-21T05:30",
+              "results": [
+                {
+                  "test": "Lipase"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-11-19T10:30",
+              "text": "Specimen: distal pancreas, laparoscopic spleen-preserving distal pancreatectomy.\nGross: segment of distal pancreas 9.0 x 3.5 x 3.0 cm containing a well-circumscribed tan-pink mass, 3.1 cm in greatest dimension.\nMicroscopic: well-differentiated neuroendocrine tumor with nested and trabecular growth. Mitoses fewer than 2 per 2 mm2. Ki-67 proliferation index 2%. Immunohistochemistry: synaptophysin and chromogranin positive; vasoactive intestinal peptide positive.\nMargins: pancreatic transection and peripancreatic soft tissue margins negative. Lymphovascular invasion not identified.\nLymph nodes: 0 of 8 involved.",
+              "conclusion": "Well-differentiated pancreatic neuroendocrine tumor, WHO grade 1 (Ki-67 2%), 3.1 cm, VIP immunostain positive, margins negative, 0/8 nodes."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-11-19T14:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-11-23T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Surgical Oncology",
+              "author": "surgical oncology",
+              "date": "2024-11-25T14:00",
+              "body": "REGIONAL MEDICAL CENTER - SURGICAL ONCOLOGY DISCHARGE SUMMARY\nAdmitted 11/19/2024, discharged 11/23/2024.\n\nDiagnosis: pancreatic tail neuroendocrine tumor (VIPoma).\nProcedure 11/19: laparoscopic spleen-preserving distal pancreatectomy. Estimated blood loss minimal. Drain placed.\nOther problems: primary hyperaldosteronism with resistant hypertension, chronic hypokalemia, peptic ulcer disease.\nAllergies: NKDA.\n\nCourse: uneventful. Diet advanced by day 2. Drain amylase low and drain removed on day 3. Potassium replaced intravenously the first night, then her home oral dose resumed. Blood pressure medicines resumed on day 1. Stools formed by discharge, no watery diarrhea since surgery. Glucose stayed normal.\n\nPathology: well-differentiated neuroendocrine tumor, grade 1, 3.1 cm, Ki-67 2%, VIP positive, margins negative, 0/8 nodes.\n\nDischarge medications: lisinopril 20 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, potassium chloride 40 mEq twice daily, pantoprazole 40 mg daily, oxycodone-acetaminophen 5/325 one tablet every 6 hours as needed (12 tablets). Octreotide discontinued.\nActivity: no lifting over 10 lb for 4-6 weeks.\nFollow-up: surgical oncology clinic 2 weeks; VIP level at 3 months; surveillance imaging at 1 year; PCP within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "office_visit",
+          "start": "2024-12-04T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-operative follow-up",
+          "state": {
+            "bp": [
+              150,
+              94
+            ],
+            "labs": {
+              "Potassium": 3.3,
+              "Bicarbonate": 30
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-04T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-04T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-04T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2024-12-04T09:00",
+              "body": "2 wks s/p lap distal pancreatectomy (spleen kept) 11/19. Path: G1 NET, VIP+, clear margins, nodes negative. Saw surgery yesterday - healing well.\nThe big news: no diarrhea since the operation. 1-2 normal stools a day. Appetite good. Used 3 of the oxycodone pills, now just occasional Tylenol. Doing light greenhouse work only.\nMeds: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 BID, pantoprazole 40. Octreotide stopped.\nExam: BP as recorded - back up to her pre-tumor baseline now that she's not losing fluid. Afebrile. Port sites clean and dry, no erythema. Abd soft, appropriately tender near the left ports.\nA/P\n1. VIPoma, resected - surgical onc following; VIP at 3 mo, CT at 1 yr.\n2. Primary hyperaldosteronism / resistant HTN / hypokalemia - BP back to 150s; BMP today; continue current regimen.\n3. Post-op - lifting limits through early January.\nRTC spring physical."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

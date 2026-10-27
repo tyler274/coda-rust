@@ -1,0 +1,1016 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002728",
+      "events": [
+        {
+          "id": "2021-02-18a",
+          "kind": "nurse_visit",
+          "start": "2021-02-18T08:00",
+          "reason": "COVID vaccine dose 1",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-02-18T08:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-02-18T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID vaccine #1",
+              "author": "RN",
+              "date": "2021-02-18T08:25",
+              "body": "Dose 1 given R deltoid. Observed 15 min, no reaction. Card filled out. Dose 2 booked 3/18."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "office_visit",
+          "start": "2021-03-16T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "state": {
+            "bp": [
+              148,
+              94
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2021-04",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "3 weeks after starting thiazide"
+            },
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-16T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2021-03-16T08:15",
+              "body": "Here before the season starts. On lisinopril 20 and amlodipine 10, takes both every morning with the pantoprazole. Home log Feb avg 147/93. Mild ankle puffiness at the end of long days, gone by morning. No headaches. First COVID shot done, second Thursday.\n\nExam: BP as above. HR regular. Trace ankle edema bilat. Lungs clear.\n\nA/P\n1. HTN not at goal on two agents. Adding hydrochlorothiazide 25 mg qAM. Reviewed sun sensitivity (she's outside all day - hat and sleeves) and to drink to thirst in the heat. BMP in 3 weeks for potassium and sodium.\n2. Screening mammogram due - ordered.\n3. PUD - stable.\nBack in ~3 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              148,
+              94
+            ]
+          }
+        },
+        {
+          "id": "2021-03-18a",
+          "kind": "nurse_visit",
+          "start": "2021-03-18T08:00",
+          "reason": "COVID vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-18T08:04"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-03-18T08:04"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "COVID vaccine #2",
+              "author": "RN",
+              "date": "2021-03-18T08:22",
+              "body": "Dose 2 L deltoid. Observed, fine. Expect a sore arm and maybe a rough day tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "lab_only",
+          "start": "2021-04-06T07:05",
+          "state": {
+            "labs": {
+              "Bicarbonate": 30
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-04-06T07:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.1
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2021-04",
+              "action": "done",
+              "date": "2021-04-06T07:05"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hypokalemia",
+              "icd10": "E87.6",
+              "action": "diagnosed",
+              "onset": "2021-04-06"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypokalemia on hydrochlorothiazide"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Low potassium",
+              "author": "PCP",
+              "date": "2021-04-06T16:30",
+              "body": "Called pt re BMP. Potassium 3.1 three weeks into HCTZ. Na and creatinine fine. No cramps or palpitations. Starting KCl 20 mEq twice daily with food (swallow whole, ok to split if large). More bananas/potatoes/greens. Recheck at June visit. She'd rather stay on the HCTZ than add another pill - BP readings already lower (low 140s)."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-30a",
+          "kind": "imaging",
+          "start": "2021-04-30T16:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-04-30T16:10",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 05/2019. Scattered areas of fibroglandular density. No new mass, suspicious calcification or distortion.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-04-30T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Result",
+              "author": "PCP",
+              "date": "2021-05-03T08:30",
+              "body": "Mammogram normal. Next in 1-2 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "office_visit",
+          "start": "2021-06-09T06:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and potassium follow-up",
+          "state": {
+            "bp": [
+              144,
+              92
+            ],
+            "labs": {
+              "Magnesium": 2.0
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-09T07:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.2
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-09T07:10",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (40 mEq) by mouth twice daily with food",
+              "dose": {
+                "value": 40,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypokalemia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-09T06:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-09T07:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2021-06-09T07:35",
+              "body": "Early slot, has a crew waiting. Taking KCl 20 BID, lisinopril 20, amlodipine 10, HCTZ 25, pantoprazole. Occasional calf cramp at night after long hot days. Home BPs low-mid 140s/90s.\n\nExam: BP as above. Ankle edema trace. Otherwise unchanged.\n\nLabs drawn today, called her after: K 3.2 on 20 BID, Mg normal, creatinine fine.\n\nA/P\n1. Hypokalemia on thiazide, only partly corrected - increase KCl to 40 mEq twice daily (2 tabs BID). New Rx sent.\n2. HTN - better than last year but still above goal on 3 drugs. Revisit in fall.\nSalt-water/sports drinks in heat ok in moderation."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              144,
+              92
+            ]
+          }
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "pharmacy",
+          "start": "2021-08-11T10:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Potassium refill early",
+              "author": "MA",
+              "date": "2021-08-11T10:40",
+              "body": "Pharmacy says insurance rejected KCl fill as too soon - old Rx still on file at 1 tab BID qty 60. Called pharmacy, clarified current dose is 2 tabs BID, discontinued the old script on their end. Filled qty 360/90 days."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "bp": [
+              150,
+              96
+            ],
+            "labs": {
+              "Potassium": 3.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T08:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-19T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-10-19T08:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-10-19T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-19T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-10-19T08:30",
+              "body": "Annual. Season wrapping up, tired in the usual end-of-year way. Night cramps less since the potassium went up. No chest pain, dyspnea, headaches. Periods regular.\nMeds: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 mEq BID, pantoprazole 40.\nNKDA.\n\nExam: BP as recorded (rpt 148/96). Well. HEENT nl. Neck no thyroid enlargement. Heart RRR. Lungs clear. Abd soft NT. Breasts no masses. Skin - sun damage forearms/neck, no suspicious lesions. Trace ankle edema.\n\nA/P\n1. Preventive: mammo current (4/21). Pap current (2019). CMP/CBC/lipids today. Flu + COVID booster today. Colon screening at 45.\n2. HTN on 3 drugs still above goal. Adherence sounds solid; checked technique with her cuff. Want a few months of steady readings before next step - recheck January.\n3. Hypokalemia on replacement.\n4. PUD - stable."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-21a",
+          "kind": "portal_message",
+          "start": "2021-10-21T11:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2021-10-21T11:00",
+              "body": "Labs look fine overall. Potassium better on the supplement but still on the low side. Cholesterol good. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-02a",
+          "kind": "portal_message",
+          "start": "2021-11-02T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP still high",
+              "author": "patient",
+              "date": "2021-11-02T21:14",
+              "body": "Still getting 150s over high 90s most mornings even on all three pills. I really do take them. Is there something else going on? My dad's pressure was never controlled either."
+            },
+            {
+              "type": "Portal Reply",
+              "title": "RE: BP still high",
+              "author": "PCP",
+              "date": "2021-11-03T07:40",
+              "body": "I believe you, and you're right to ask. Being this hard to control on three medicines plus needing potassium is a pattern I want to look into properly. Let's go over it at the January visit (or sooner if you get headaches, chest pain or vision changes)."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-19a",
+          "kind": "office_visit",
+          "start": "2022-01-19T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "uncontrolled blood pressure",
+          "state": {
+            "bp": [
+              156,
+              98
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Resistant hypertension",
+              "icd10": "I1A.0",
+              "action": "diagnosed",
+              "onset": "2022-01-19"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-01-19T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.3
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "resistant hypertension with hypokalemia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-01-19T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-01-19T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2022-01-19T09:00",
+              "body": "S: BP f/u. Home avg Dec-Jan ~155/97. Takes lisinopril 20, amlodipine 10, HCTZ 25 every morning - uses a weekly pill box, pharmacy fill history matches. Low salt at home. No NSAIDs or decongestants. Snoring - denies; sleeps well. Occasional headaches this winter, mild.\nO: BP as above, R arm 154/98. HR regular. No abdominal bruit. Lungs clear. Trace edema.\nK 3.3 today on 40 mEq BID.\nA/P\n1. Resistant hypertension - above goal on three full-dose agents including a diuretic, with adherence confirmed.\n2. Persistent low potassium needing high-dose replacement.\nThe combination plus an aunt with an adrenal cause of hypertension makes a secondary cause (aldosterone excess) a real question. Referring to endocrinology for evaluation rather than piling on a 4th drug blind. No med changes today.\nContinue home log; RTC after endocrine."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              156,
+              98
+            ]
+          }
+        },
+        {
+          "id": "2022-02-03a",
+          "kind": "telephone",
+          "start": "2022-02-03T14:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "author": "front desk",
+              "date": "2022-02-03T14:25",
+              "body": "Endocrinology referral accepted. First new-patient slot 3/21. Pt aware and has the address. Asked to be on cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "specialist_visit",
+          "start": "2022-03-21T10:00",
+          "service": "Endocrinology",
+          "reason": "resistant hypertension with hypokalemia",
+          "vitals": {
+            "bp": [
+              158,
+              100
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Primary hyperaldosteronism (Conn syndrome)",
+              "icd10": "E26.01",
+              "action": "diagnosed",
+              "onset": "2022-03-21"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-21T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 145
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-21T10:40",
+              "resulted": "2022-03-25T14:00",
+              "results": [
+                {
+                  "test": "Aldosterone",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Plasma Renin Activity",
+                  "text": "Low"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2022-03-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "author": "endocrinology",
+              "date": "2022-03-28T09:15",
+              "body": "OUTSIDE ENDOCRINOLOGY - CONSULTATION LETTER\nDate of visit: 03/21/2022\nReferred by primary care for resistant hypertension with hypokalemia.\n\nThank you for asking us to see Ms. Nowak, a 44-year-old landscaper. For roughly half a year her headaches have been getting worse and she has felt more tired, with muscle weakness at the end of the workday. She also describes occasional spells of a racing heart with sweating. Hypertension was first diagnosed about two years ago and has never been well controlled despite an ACE inhibitor, a calcium channel blocker and a thiazide.\n\nMedications: lisinopril 20 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, potassium chloride 40 mEq twice daily, pantoprazole 40 mg daily.\nAllergies: no known drug allergies.\nPMH: peptic ulcer disease. PSH: diagnostic laparoscopy at 32, negative.\nFamily history: father with hypertension who died of a ruptured cerebral aneurysm at 67; mother with type 2 diabetes and hyperlipidemia; paternal aunt with primary hyperaldosteronism.\nSocial: never smoker; wine once or twice a month; self-employed in landscaping and horticulture.\n\nExam: BP 158/100. Comfortable. No cushingoid features. Heart regular. No abdominal bruits. No edema.\n\nLabs today: sodium 145 mEq/L, potassium 3.1 mEq/L on replacement. Plasma aldosterone concentration elevated with plasma renin activity suppressed (reports to follow in the chart).\n\nImpression: Primary hyperaldosteronism (Conn syndrome) - hypertension resistant to three agents, spontaneous-range hypokalemia on supplementation, high-normal sodium, elevated aldosterone with low renin, and a family history of the same disorder.\n\nPlan: continue current antihypertensives and potassium chloride 40 mEq twice daily. Return to this clinic in 6 months with repeat electrolytes and renin/aldosterone.\n\nAllergies reviewed: NKDA.\nOutside endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "portal_message",
+          "start": "2022-04-05T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrine visit",
+              "author": "patient",
+              "date": "2022-04-05T19:22",
+              "body": "Did you get the letter from the endocrinologist? She said it's the adrenal thing like my aunt. I'm not totally sure what happens next, they said to come back in 6 months."
+            },
+            {
+              "type": "Portal Reply",
+              "title": "RE: Endocrine visit",
+              "author": "PCP",
+              "date": "2022-04-05T21:05",
+              "body": "Got it and read it. The tests show your adrenal glands are making too much aldosterone, a hormone that holds on to salt and pushes out potassium - which fits both your blood pressure and your low potassium. Endocrinology is leading on this; their plan for now is to keep your current medicines and potassium and recheck in 6 months. Keep sending me your home readings and keep your fall physical with me."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "pharmacy",
+          "start": "2022-06-14T09:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refills",
+              "author": "MA",
+              "date": "2022-06-14T09:50",
+              "body": "Electronic refill requests: lisinopril 20, amlodipine 10, HCTZ 25, KCl 20 mEq (2 BID), pantoprazole 40. Last BMP 3/22 at endo. Sent 90-day supplies per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-19a",
+          "kind": "specialist_visit",
+          "start": "2022-09-19T14:30",
+          "service": "Endocrinology",
+          "reason": "primary hyperaldosteronism follow-up",
+          "vitals": {
+            "bp": [
+              158,
+              100
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-19T15:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 146
+                },
+                {
+                  "test": "Potassium",
+                  "value": 2.9
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-19T15:05",
+              "resulted": "2022-09-23T11:00",
+              "results": [
+                {
+                  "test": "Aldosterone",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Plasma Renin Activity",
+                  "text": "Low"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "author": "endocrinology",
+              "date": "2022-09-26T10:40",
+              "body": "OUTSIDE ENDOCRINOLOGY - FOLLOW-UP LETTER\nDate of visit: 09/19/2022\n\nMs. Nowak returns for primary hyperaldosteronism. Over the last six months the headaches have continued and she still gets bouts of muscle weakness, mostly on hot workdays. Her home pressures have stayed high on her current medications.\n\nMedications: lisinopril 20 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, potassium chloride 40 mEq twice daily, pantoprazole 40 mg daily.\nAllergies: NKDA.\n\nExam: BP 158/100. No peripheral edema.\n\nLabs: sodium 146 mEq/L (high), potassium 2.9 mEq/L (low), bicarbonate 32 mEq/L (high). Plasma renin activity remains low and aldosterone elevated.\n\nImpression: primary hyperaldosteronism with persistent hypertension, hypokalemia and metabolic alkalosis.\n\nPlan: continue the present regimen. Follow up with primary care for blood pressure and potassium monitoring.\n\nOutside endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T08:15",
+          "documents": [
+            {
+              "type": "Portal Message",
+              "title": "Endocrine follow-up letter",
+              "author": "PCP",
+              "date": "2022-09-27T08:15",
+              "body": "Paula, I have the endocrinology letter from last week. Potassium was 2.9 there. Please keep taking the full 2 tablets twice a day and let me know right away about any palpitations or weakness that doesn't go away with rest. We'll recheck at your physical next month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrine follow-up letter",
+              "author": "patient",
+              "date": "2022-09-27T12:48",
+              "body": "Will do. Booked for the 25th."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "annual_physical",
+          "start": "2022-10-25T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "bp": [
+              154,
+              98
+            ],
+            "labs": {
+              "Potassium": 3.2,
+              "Bicarbonate": 30,
+              "Sodium": 143
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-25T08:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-25T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-25T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-25T08:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-25T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, bivalent",
+              "date": "2022-10-25T08:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-10-25T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-25T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-25T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-25T08:40",
+              "body": "Annual. Headaches come and go, worse on hot days and after long ones. Some leg weakness late in the day, better with rest. No chest pain, palpitations lately.\nMeds unchanged: lisinopril 20, amlodipine 10, HCTZ 25, KCl 40 BID, pantoprazole 40. NKDA.\nEndocrinology (3/22, 9/22): primary hyperaldosteronism, aldosterone high/renin low; regimen continued; K 2.9 in Sept.\n\nExam: BP as recorded. Well. Heart RRR, no murmur. Lungs clear. Abd soft. Breasts normal. Trace ankle edema. Strength 5/5.\n\nA/P\n1. Primary hyperaldosteronism / resistant HTN - endocrine following; BP still above goal. CMP + Mg today.\n2. Hypokalemia - on 40 BID.\n3. Preventive: flu + bivalent COVID today. Mammogram due spring. Colonoscopy at 45 next year.\n4. PUD stable.\nBP visit in ~6 wks."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "portal_message",
+          "start": "2022-10-27T10:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2022-10-27T10:10",
+              "body": "Potassium still a bit low, magnesium normal, kidney function normal. Blood counts, thyroid and cholesterol normal. No changes - see you in December."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure check",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2022-12-06T09:30",
+              "body": "No-show 8:00 BP check. Left VM to reschedule."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment callback",
+              "author": "front desk",
+              "date": "2022-12-07T13:05",
+              "body": "Pt called back - forgot, was setting up holiday greens orders. Will do a lab check in Feb and see Dr in spring."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

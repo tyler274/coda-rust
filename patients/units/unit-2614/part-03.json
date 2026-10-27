@@ -1,0 +1,346 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002614",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T16:30",
+          "end": "2025-01-14T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, short of breath jogging, skipped beats",
+          "state": {
+            "weight_kg": 77.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "orders": [
+            {
+              "id": "cardio-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "myotonic dystrophy type 1 with exertional fatigue and sensation of irregular heartbeat"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-14T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-14T17:05",
+              "body": "S: Started jogging in the fall to get in shape and finds he gets winded fast, sooner than he thinks he should. More tired in general. Some nights lying flat in bed he feels like his heart pauses or skips. No chest pain, no lightheadedness, has never passed out. Not short of breath at rest or walking around the store.\n\nO: BP and HR normal, SpO2 normal. Wt 77.5. Heart rate regular during exam, no murmur. Lungs clear. No leg swelling.\n\nA/P: DM1 with exercise intolerance and a sense of irregular beats lying down. Heart involvement is a known part of DM1 and he has never had a cardiology evaluation. Referral to cardiology, asked for a prompt visit; their office does the ECG and any monitoring. Baseline ECG 2022 normal, sent with the referral. Call or go to the ED for fainting, chest pain, or near-fainting."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 77.5
+          }
+        },
+        {
+          "id": "2025-02-03a",
+          "kind": "portal_message",
+          "start": "2025-02-03T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cardiology",
+              "author": "patient",
+              "date": "2025-02-03T20:10",
+              "body": "Saw the heart doctor last week. They said my ECG showed a slow electrical signal and I'm wearing a monitor for 2 days starting the 11th. Echo was normal. Just letting you know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cardiology",
+              "author": "PCP",
+              "date": "2025-02-04T07:55",
+              "body": "Thanks, Zachary. Glad the echo was normal. I'll watch for their note and the monitor results. Call if you feel faint at any point."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "outside_records",
+          "start": "2025-02-12T09:50",
+          "conditions": [
+            {
+              "label": "First-degree atrioventricular block",
+              "icd10": "I44.0",
+              "action": "diagnosed",
+              "onset": "2025-01-29"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cardio-referral",
+              "action": "done",
+              "date": "2025-02-12T09:50"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-01-29T10:10",
+              "issued": "2025-01-29T13:00",
+              "text": "PA and lateral views. Cardiac silhouette is normal in size. No pulmonary edema or vascular congestion. Lungs clear. No pleural effusion. Bones unremarkable.",
+              "conclusion": "Normal chest radiograph."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-01-29T11:00",
+              "issued": "2025-01-29T15:30",
+              "text": "Normal left ventricular size and wall thickness. Normal left ventricular systolic function with no regional wall motion abnormality. Right ventricle normal in size and function. Valves structurally normal without significant regurgitation or stenosis. No pericardial effusion.",
+              "conclusion": "Normal left ventricular function. No valvular disease."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-01-29T09:40",
+              "text": "Sinus rhythm, rate 66, regular. PR 236 ms. QRS 94 ms with normal morphology. No dropped beats. Compared with tracing of 02/08/2022 (PR 168 ms), PR prolongation is new.",
+              "conclusion": "Sinus rhythm with first-degree AV block, new since 2022."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation (visit 01/29/2025)",
+              "author": "cardiology",
+              "date": "2025-02-12T09:50",
+              "body": "CARDIOLOGY CONSULTATION\nVisit date: 01/29/2025\nReferred by primary care: DM1 with fatigue and reduced exercise tolerance\n\nHPI: 26-year-old man with myotonic dystrophy type 1 and Klinefelter syndrome. Gets out of breath quickly when he jogs. At times, mainly when lying flat, he senses a beat that comes late or out of rhythm. He denies chest pain, palpitations as such, dizziness and syncope. Sleep is normal. Drinks little caffeine and no alcohol.\n\nMeds: none. Allergies: NKDA.\nFamily history: father with DM1 and premature cataracts; paternal grandfather with undiagnosed weakness and grip myotonia; mother healthy.\n\nExam: Blood pressure and heart rate normal. Apical pulse slightly irregular. No murmurs, rubs or gallops. Lungs clear. No edema.\n\nStudies today:\n- Chest x-ray: normal heart size, no edema or vascular congestion.\n- Echocardiogram: normal LV function, valves normal.\n- ECG: regular sinus rhythm with PR 236 ms, normal QRS, no non-conducted P waves. Prior ECG from three years ago had a normal PR, so this is new.\n\nAssessment: First-degree AV block, new, in a young man with DM1. Conduction system involvement is expected in this disease and needs surveillance. Structural heart is normal.\n\nPlan: 48-hour ambulatory ECG monitor to look for higher-grade block. Follow-up after the monitor. He knows to report fainting or near-fainting right away.\n\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Cardiology letter reviewed",
+              "author": "PCP",
+              "date": "2025-02-12T16:45",
+              "body": "Cards consult reviewed. CXR and echo normal. New 1st degree AVB, PR 236 (was 168 in 2022). Monitor ordered by them. Added to problem list."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T16:10",
+          "end": "2025-05-20T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after cardiology",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-20T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-05-20T16:40",
+              "body": "F/u. Wore the heart monitor for 2 days in February and saw cardiology again in April. Per pt, they told him there were some \"skipped beats\" mostly while he was asleep, that he does not need a pacemaker now, and that they will repeat the ECG and monitor every year. We have not received the monitor report or the April note.\n\nStill tires easily; has backed off the jogging and walks instead. No fainting or near-fainting.\n\nExam: well. Heart regular today, no murmur. Lungs clear.\n\nA/P\n1. First-degree AV block, DM1-related per cardiology. Awaiting April letter and monitor report; staff to request.\n2. DM1, Klinefelter: stable.\nPhysical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2025-05-21T10:05",
+              "body": "Faxed request to cardiology for the 2/11 ambulatory monitor report and 4/8 office note. Called to confirm receipt, left message with their records line."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "outside_records",
+          "start": "2025-06-03T14:15",
+          "conditions": [
+            {
+              "label": "Second-degree atrioventricular block, type I",
+              "icd10": "I44.1",
+              "action": "diagnosed",
+              "onset": "2025-04-08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology follow-up (visit 04/08/2025)",
+              "author": "cardiology",
+              "date": "2025-06-03T14:15",
+              "body": "CARDIOLOGY FOLLOW-UP\nVisit date: 04/08/2025\n\nInterval: Wore a 48-hour ambulatory monitor beginning 02/11/2025. No symptoms recorded in the diary other than fatigue. No syncope or presyncope.\n\nMonitor review: Sinus rhythm with first-degree AV block throughout. Intermittent second-degree AV block, type I, predominantly during sleep. Longest pause 2.2 seconds. No higher-grade AV block. No atrial fibrillation or flutter. No ventricular tachycardia.\n\nExam: BP and HR normal. Rhythm mildly irregular. No murmur.\n\nAssessment: First-degree AV block with intermittent second-degree type I block. In a patient with myotonic dystrophy type 1 these represent conduction system disease of DM1.\n\nPlan: No pacing indication at present. Annual ECG and ambulatory monitor, sooner for symptoms. He is to report any fainting, near-fainting or new breathlessness promptly. Anesthesia teams should be told of his DM1 and conduction disease before any procedure.\n\nMeds: none. Allergies: NKDA.\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Cardiology follow-up reviewed",
+              "author": "PCP",
+              "date": "2025-06-03T17:20",
+              "body": "April cards note finally in. Monitor: 1st degree AVB with intermittent 2nd degree type I, mostly asleep, longest pause 2.2 s, nothing higher grade. Added 2nd degree AVB type I. Annual ECG/monitor with cardiology. Monitor report itself was not included; not chasing further since the findings are in the note."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "telephone",
+          "start": "2025-10-22T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed physical",
+              "author": "front desk",
+              "date": "2025-10-22T11:40",
+              "body": "Called pt about yesterday's missed physical. He overslept after a late inventory shift. Rebooked Tues 11/18, 8:30."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T08:30",
+          "end": "2025-11-18T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 75.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T09:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-18T09:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-18T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-18T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-18T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-11-18T09:15",
+              "body": "Annual, rescheduled from October. Feels about the same. Hands still slow to let go. Walking rather than jogging. No fainting. Neuromuscular follow-up is set for January.\n\nWt 75, down from 77.5 in January; he has not been trying to lose. Eating normally per pt.\n\nProblems: DM1; first-degree AVB with intermittent 2nd-degree type I (cardiology following yearly); Klinefelter 47,XXY with azoospermia; s/p bilateral cataract surgery.\nMeds: none. NKDA.\n\nExam: Lean. Frontal balding. Heart rate irregular at times, no murmur. Lungs clear. Slow grip release; mild ankle dorsiflexion weakness bilaterally.\n\nA/P: Health maintenance. CBC, CMP, A1c, TSH. Flu shot today. Weight down 2.5 kg this year: recheck at next visit, ask neuro to weigh in. PHQ-2 1."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 75.0
+          }
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "portal_message",
+          "start": "2025-11-20T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-11-20T12:10",
+              "body": "Your blood count, chemistry panel, thyroid and A1c from Tuesday are all normal. Mention the weight change at your neurology visit in January, and we'll check it again when I see you next."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

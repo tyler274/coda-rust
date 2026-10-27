@@ -1,0 +1,3933 @@
+{
+  "unit": "unit-2722",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002722",
+      "given": "Aisha",
+      "family": "Reed",
+      "birth_date": "1978-10-19",
+      "address_line": "48 Bellamy Terrace",
+      "phone": "+1-617-555-0189",
+      "email": "aisha.reed@example.test",
+      "marital_status": "single",
+      "summary": "Teacher who joins in 2021 with three-drug hypertension found to be primary hyperaldosteronism, just before thyroidectomy for papillary thyroid cancer. Later a fibroadenoma, a right frontal meningioma resected in 2024, and an anterior communicating aneurysm rupture coiled in late 2024, with a second thunderclap admission in 2025 that excluded a bleed.",
+      "events": [
+        {
+          "id": "2021-06-08a",
+          "kind": "telephone",
+          "start": "2021-06-08T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-06-08T10:20",
+              "author": "front desk",
+              "body": "Ms. Reed phoned about transferring her primary care to us. Starting at a new elementary school in the fall; the district's pre-employment exam flagged her blood pressure and they want a letter from her own doctor. Booked new patient visit Mon 6/14 at 8:40. Release signed over the phone for records from her prior primary care office; request faxed."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-14a",
+          "kind": "establish_care",
+          "start": "2021-06-14T08:40",
+          "end": "2021-06-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; elevated blood pressure",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2017-05-01",
+              "note": "label carried from prior practice"
+            },
+            {
+              "label": "Uterine leiomyoma",
+              "action": "diagnosed",
+              "onset": "2019-09-01"
+            },
+            {
+              "label": "Malignant neoplasm of thyroid gland",
+              "action": "diagnosed",
+              "onset": "2021-05-11",
+              "note": "papillary carcinoma on FNA at prior practice; thyroidectomy booked",
+              "icd10": "C73"
+            },
+            {
+              "label": "Family history of breast cancer",
+              "action": "diagnosed",
+              "onset": "2021-06-14",
+              "note": "mother, age 58"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for headache",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "occasional headache"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              158,
+              100
+            ],
+            "hr": 76,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 83.0,
+            "height_cm": 165.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-14T09:35",
+              "resulted": "2021-06-14T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 146
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.1
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 31
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-14T09:35",
+              "resulted": "2021-06-17T11:05",
+              "results": [
+                {
+                  "test": "Plasma Renin Activity",
+                  "text": "<0.2"
+                },
+                {
+                  "test": "Aldosterone",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-06-14T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "renin-aldo-2021",
+              "action": "placed",
+              "order": "Plasma renin activity and aldosterone",
+              "category": "lab",
+              "reason": "hypokalemia with hypertension on three drugs"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-06-14T09:40",
+              "author": "PCP",
+              "body": "New patient, 42F, teacher, here to establish and for a BP letter. Her new district's pre-employment exam read her pressure as high. Says she has been treated for 'high blood pressure' for about four years at her old office, on lisinopril 10, amlodipine 5 and HCTZ 25, takes them every day. Also tired for months and gets cramps in her calves and hands, worse at the end of the school day, sometimes at night.\n\nOther history per pt (records requested): fibroids with heavy periods, seen on an ultrasound a couple of years ago; her old PCP felt a lump in her neck this spring, ultrasound then needle biopsy in May came back papillary thyroid cancer. She has a surgeon and the thyroidectomy is set for mid-July. Tylenol now and then for a headache.\nNo drug allergies. Never smoked, doesn't drink. Single, lives alone, teaches 2nd grade.\nFamily: mother had breast cancer at 58. Father has hypertension and had a brain aneurysm. A sister on thyroid replacement.\n\nExam: BP 158/100 (repeat similar), HR 76. Well appearing. Small firm nodule R thyroid lobe, no nodes. Heart regular, no murmur. Lungs clear. Abd soft. No edema. Neuro grossly intact.\n\nA/P\n1. Hypertension, uncontrolled on 3 agents incl a diuretic, with cramps and fatigue. Needs a secondary workup. BMP today, and renin/aldosterone drawn this morning (pt on ACEi, which if anything raises renin). Will call with results. No med change today.\n2. Papillary thyroid ca on FNA, surgery scheduled. Asked her to have the surgeon's office send the op note.\n3. Fibroids - symptomatic, she'd like to talk to GYN after the summer.\n4. Health maintenance: records pending. Will do full physical in the winter.\nLetter for school: under care for blood pressure, cleared to work."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Lab result note",
+              "date": "2021-06-14T17:30",
+              "author": "PCP",
+              "body": "K 3.1, bicarb 31, Na 146. Hypokalemic alkalosis on HCTZ with BP this high - aldosteronism high on the list. Waiting on renin/aldo before adding anything."
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              100
+            ],
+            "weight_kg": 82.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-06-16a",
+          "kind": "outside_records",
+          "start": "2021-06-16T14:00",
+          "reason": "prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-06-16T14:00",
+              "author": "outside primary care",
+              "body": "Summary of records received (scanned, 41 pages).\nHypertension diagnosed 2017; lisinopril, then amlodipine added 2018, HCTZ added 2020. No secondary workup in the records.\nPelvic ultrasound 09/2019: enlarged fibroid uterus.\nThyroid ultrasound 04/2021: 2.4 cm solid hypoechoic nodule right lobe. FNA 05/11/2021: papillary thyroid carcinoma. Referred to endocrine surgery.\nScreening: cervical cytology with HPV 03/2020 negative. Screening mammogram 02/2020 negative.\nAllergies: NKDA.\nReviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "telephone",
+          "start": "2021-06-17T16:05",
+          "reason": "results",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "resolved",
+              "note": "reclassified as secondary"
+            },
+            {
+              "label": "Primary hyperaldosteronism",
+              "action": "diagnosed",
+              "onset": "2021-06-17",
+              "icd10": "E26.09"
+            },
+            {
+              "label": "Resistant hypertension secondary to primary hyperaldosteronism",
+              "action": "diagnosed",
+              "onset": "2017-05-01",
+              "icd10": "I15.2"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "spironolactone 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (50 mg) by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "primary hyperaldosteronism"
+            }
+          ],
+          "orders": [
+            {
+              "id": "renin-aldo-2021",
+              "action": "done",
+              "date": "2021-06-17T11:05"
+            },
+            {
+              "id": "endo-referral-2021",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "primary hyperaldosteronism; thyroid cancer after surgery"
+            },
+            {
+              "id": "bmp-2021-06",
+              "action": "placed",
+              "order": "Basic metabolic panel in 10 days",
+              "category": "lab",
+              "reason": "potassium on spironolactone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results call",
+              "date": "2021-06-17T16:05",
+              "author": "PCP",
+              "body": "Called pt. Renin activity undetectable, aldosterone 31. With the low K this is primary aldosteronism - explains the cramps and why three meds weren't touching her pressure. Explained in plain terms: the adrenal glands making too much of a salt-retaining hormone. Starting spironolactone 50 daily (2 x 25 mg), keep the other three for now. Possible side effects reviewed (breast tenderness, irregular bleeding, dizziness). Repeat BMP in about 10 days. Endocrinology referral placed - same group can see her for the thyroid after surgery. She was relieved there is a reason. Sent to pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-28a",
+          "kind": "lab_only",
+          "start": "2021-06-28T07:50",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-06-28T07:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-06-28T07:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-2021-06",
+              "action": "done",
+              "date": "2021-06-28T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2021-06-28T15:20",
+              "author": "PCP",
+              "body": "K up to 4.0 on spironolactone. Good. Message sent to pt."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bicarbonate": 26,
+              "Potassium": 4.0,
+              "Sodium": 141
+            }
+          }
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "hospital_admission",
+          "start": "2021-07-12T07:00",
+          "end": "2021-07-13T11:00",
+          "service": "Endocrine Surgery",
+          "reason": "total thyroidectomy for papillary thyroid carcinoma",
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 100,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "after total thyroidectomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Endocrine surgery discharge summary",
+              "date": "2021-07-15T09:00",
+              "author": "endocrine surgery",
+              "body": "Regional hospital, endocrine surgery service. Admitted 07/12/2021, discharged 07/13/2021.\nProcedure 07/12/2021: total thyroidectomy for FNA-proven papillary thyroid carcinoma, right lobe. Both recurrent laryngeal nerves identified and preserved. Parathyroids identified in situ.\nPostoperative course uncomplicated. Voice normal. Calcium normal on serial checks, no symptoms of hypocalcemia.\nDischarge medications: levothyroxine 100 mcg daily (new); continue lisinopril 10 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, spironolactone 50 mg.\nAllergies: NKDA.\nFollow-up: final pathology to endocrinology; endocrinology appointment early September."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-27a",
+          "kind": "office_visit",
+          "start": "2021-07-27T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up; post-thyroidectomy",
+          "vitals": {
+            "bp": [
+              140,
+              92
+            ],
+            "hr": 57,
+            "spo2": 98,
+            "weight_kg": 81.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-07-27T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-07-27T16:00",
+              "author": "PCP",
+              "body": "Two weeks out from thyroidectomy, went home next day. Voice fine, no tingling. Started levothyroxine 100.\nOn spironolactone 6 wks. Cramps are gone, she says she hadn't realized how tired she was until it lifted. No breast tenderness or dizziness. Home readings mostly 130s/80s.\nExam: BP a little higher here than her home log. Incision clean, well healed, no swelling. Lungs clear, RRR, no edema.\nA/P: Primary aldosteronism - much better on spironolactone; K was 4.0. Continue all four. Endo appt 9/2 will cover adrenal imaging and post-op thyroid. Thyroid ca - path pending with surgeon/endo. RTC 3-4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-02a",
+          "kind": "specialist_visit",
+          "start": "2021-09-02T10:30",
+          "service": "Endocrinology",
+          "reason": "follow-up after total thyroidectomy; primary aldosteronism",
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "levothyroxine sodium 0.125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning on an empty stomach",
+              "dose": {
+                "value": 125,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "after total thyroidectomy for papillary carcinoma"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-02T10:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 15
+                },
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-0",
+                  "unit": "ng/mL",
+                  "text": "undetectable (<0.1)"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-07-12T09:30",
+              "text": "Specimen: thyroid, total thyroidectomy.\nPapillary thyroid carcinoma, classic type, right lobe, 2.5 cm in greatest dimension. Vascular invasion present. No extrathyroidal extension. Margins negative. Lymph nodes: none involved. Left lobe and isthmus: no tumor.",
+              "conclusion": "Papillary thyroid carcinoma, 2.5 cm, with vascular invasion; margins negative; no lymph node involvement."
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "done",
+              "date": "2021-09-02T10:30"
+            },
+            {
+              "id": "adrenal-ct-2021",
+              "action": "placed",
+              "order": "CT adrenal protocol",
+              "category": "imaging",
+              "reason": "primary aldosteronism subtype"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2021-09-07T12:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Date of visit 09/02/2021.\nReason: referred by PCP for primary aldosteronism; post total thyroidectomy (07/12/2021) for papillary thyroid carcinoma.\nShe is doing well since surgery, no complaints, and came with a list of questions about what she can do to keep the cancer from coming back.\nMeds: levothyroxine 100 mcg, spironolactone 50 mg, lisinopril 10 mg, amlodipine 5 mg, HCTZ 25 mg, acetaminophen PRN. Allergies: NKDA.\nExam: neck incision healing well, no erythema, drainage or collection. No palpable cervical nodes.\nLabs: TSH 15. Thyroglobulin undetectable.\nPathology: 2.5 cm papillary carcinoma, vascular invasion, nodes negative.\nAssessment/Plan:\n1. Papillary thyroid carcinoma s/p total thyroidectomy. Intermediate features (vascular invasion) but node negative and an undetectable thyroglobulin. We talked through radioactive iodine at length; given the undetectable thyroglobulin we agreed together to forgo it and follow her closely. TSH is too high on 100 mcg - increase levothyroxine to 125 mcg. Aim for TSH in the low-normal range. Recheck TSH in 6-7 weeks (can be drawn at PCP). Thyroglobulin and neck ultrasound yearly.\n2. Primary aldosteronism, confirmed biochemically by PCP (suppressed renin, aldosterone 31, hypokalemia). Adrenal CT ordered to look for a unilateral adenoma. Continue spironolactone 50 mg meanwhile.\nCopy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "imaging",
+          "start": "2021-09-20T13:15",
+          "reason": "adrenal CT",
+          "orders": [
+            {
+              "id": "adrenal-ct-2021",
+              "action": "done",
+              "date": "2021-09-20T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "CT adrenal glands without and with contrast",
+              "date": "2021-09-20T16:40",
+              "author": "radiology",
+              "body": "Outside imaging center. Exam date 09/20/2021.\nIndication: primary aldosteronism.\nTechnique: thin-section CT through the adrenal glands before and after IV contrast.\nFindings: Right adrenal gland normal in size and contour. Left adrenal gland normal in size and contour. No adrenal nodule. Visualized kidneys, liver and pancreas unremarkable.\nImpression: Normal adrenal glands. No adrenal nodule."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology addendum",
+              "date": "2021-09-24T09:00",
+              "author": "endocrinology",
+              "body": "Addendum to 09/02/2021 consult. Adrenal CT shows normal glands with no nodule. In the setting of confirmed primary aldosteronism this most likely represents bilateral disease, which is treated medically. Plan lifelong mineralocorticoid antagonist - continue spironolactone 50 mg daily, potassium and creatinine with her PCP. Will see her in a year with thyroglobulin and neck ultrasound."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-07a",
+          "kind": "specialist_visit",
+          "start": "2021-10-07T14:00",
+          "service": "Gynecology",
+          "reason": "symptomatic uterine fibroids",
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2021-10-07T14:30",
+              "text": "Transabdominal and transvaginal views. Uterus enlarged with multiple intramural fibroids, the largest 5.1 cm in the fundus. Endometrium normal thickness. Ovaries normal. No free fluid.",
+              "conclusion": "Enlarged fibroid uterus. Normal ovaries."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2021-10-12T10:00",
+              "author": "gynecology",
+              "body": "Outside gynecology, date of visit 10/07/2021.\nSelf-referred, PCP copied. Long history of heavy periods with known fibroids; soaks through protection on the first two days, misses work. Wants a uterus-sparing option and a short recovery; no plans for pregnancy.\nUltrasound today: enlarged fibroid uterus, largest 5.1 cm fundal intramural.\nOptions reviewed: hormonal options, myomectomy, hysterectomy, uterine artery embolization. She prefers embolization. Referred to interventional radiology; tentatively scheduled over the late November break.\nAllergies NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu shot and TSH draw",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-19T15:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-19T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse visit",
+              "date": "2021-10-19T15:50",
+              "author": "RN",
+              "body": "In after school for flu vaccine, L deltoid, tolerated. Lot recorded. TSH drawn per endo request on the new 125 dose. Pt reports COVID primary series done in the spring through the school district clinic, card shown."
+            },
+            {
+              "type": "Result Note",
+              "title": "TSH result",
+              "date": "2021-10-20T08:10",
+              "author": "PCP",
+              "body": "TSH 1.4 on levothyroxine 125. Right where endo wants it. Copy to endocrinology."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.4
+            }
+          }
+        },
+        {
+          "id": "2021-12-02a",
+          "kind": "ed_visit",
+          "start": "2021-12-02T19:10",
+          "end": "2021-12-02T23:40",
+          "service": "Emergency Medicine",
+          "reason": "pelvic pain after uterine artery embolization",
+          "conditions": [
+            {
+              "label": "Post-embolization syndrome",
+              "action": "diagnosed",
+              "onset": "2021-11-30",
+              "icd10": "T81.89XA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain with food, up to 7 days",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-embolization pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 37.2,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-02T19:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-02T19:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2021-12-03T09:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, seen with gynecology. Date of visit 12/02/2021.\nCC: lower abdominal pain and vaginal discharge, 2 days after uterine artery embolization (11/30/2021).\nHPI: 43F with primary aldosteronism and prior papillary thyroid cancer s/p thyroidectomy. Cramping lower abdominal pain since the procedure, steadily worse over two days, with a light blood-tinged discharge. No fever, nausea, vomiting or diarrhea.\nMeds: spironolactone, lisinopril, amlodipine, hydrochlorothiazide, levothyroxine, acetaminophen PRN. NKDA.\nVitals: T 37.2, BP 130/85, P 88, RR 16.\nExam: abdomen with a tender, enlarged uterus, no rebound or guarding. Pelvic: small amount of blood-tinged discharge, no foul odor. \nLabs: WBC 9.0, Hgb 12.5, Plt 250. CRP 8 (ref <5). Urine hCG negative.\nED course: ketorolac 15 mg IV with good relief. Reviewed with gynecology - presentation consistent with post-embolization syndrome, no features of infection.\nDx: post-embolization syndrome.\nDispo: home. Ibuprofen 600 mg q6h PRN with food up to a week. Return for fever, foul discharge, heavy bleeding or worsening pain. PCP follow-up within a week."
+            }
+          ],
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2021-12-09a",
+          "kind": "telehealth_visit",
+          "start": "2021-12-09T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "conditions": [
+            {
+              "label": "Post-embolization syndrome",
+              "action": "resolved",
+              "icd10": "T81.89XA"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-12-09T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "date": "2021-12-09T16:25",
+              "author": "PCP",
+              "body": "Video from home after school, identity verified. ED last Thursday for pain two days after her fibroid embolization - post-embolization syndrome. Pain has eased a lot, only needed ibuprofen twice yesterday, none today. Discharge tapering off. No fever.\nReminded her: ibuprofen only short term with her BP meds and spironolactone - she has stopped.\nA/P: post-embolization syndrome, resolving. GYN follow-up already booked January. Call for fever or heavy bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "specialist_visit",
+          "start": "2022-01-11T09:20",
+          "service": "Gynecology",
+          "reason": "follow-up after uterine artery embolization",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up",
+              "date": "2022-01-13T11:00",
+              "author": "gynecology",
+              "body": "Outside gynecology, visit 01/11/2022. Six weeks after uterine artery embolization (11/30/2021). ED visit two days post procedure for post-embolization syndrome, settled with NSAIDs. First period since was noticeably lighter, about four days, no clots, did not miss work. Abdomen soft, nontender. Plan: no further intervention; will reassess if bleeding returns. Back to routine gynecologic care with PCP. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "annual_physical",
+          "start": "2022-02-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              90
+            ],
+            "hr": 73,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 81.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-02-22T08:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-22T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-02-22T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 196
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 138
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-22T08:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.3
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-02-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-02-22T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-02-22T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-02-22T09:10",
+              "author": "PCP",
+              "body": "Annual exam. 43F. Feeling well. Energy good since spironolactone. Periods lighter since the embolization in Nov. No headaches beyond the odd one from grading late. Home BP mostly 128-136 / 80s.\nMeds: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN. NKDA.\nSocial: teaching 2nd grade at the new school, likes it. Walks after work. Never smoker, no alcohol.\nFamily: mother breast ca at 58; father HTN and cerebral aneurysm; sister hypothyroid.\nROS negative.\nExam: well. Thyroidectomy scar healed. Breasts symmetric, no masses, no nipple change, axillae clear. Heart RRR. Lungs clear. Abdomen soft, nontender. No edema. Skin unremarkable.\nA/P\n- Primary aldosteronism / resistant HTN: at goal-ish at home. CMP today for K and Cr.\n- PTC s/p thyroidectomy: endo yearly, TSH today.\n- Fibroids s/p UAE: improved.\n- Screening: Tdap today. HCV and HIV screening today. Cervical co-test due 2025. Mammogram - mother's history; she's had one in 2020, order screening yearly - she'd like to wait until summer when school is out.\n- Flu given in the fall; COVID booster discussed."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2022-02-23T12:30",
+              "author": "PCP",
+              "body": "CMP, CBC, lipids, TSH normal. K normal on spironolactone + lisinopril. HCV and HIV nonreactive. Portal message sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-05-03a",
+          "kind": "portal_message",
+          "start": "2022-05-03T20:41",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2022-05-03T20:41",
+              "author": "patient",
+              "body": "Hi, could I get 90 day refills on the spironolactone and the levothyroxine? My insurance changed the mail order rules. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Refills",
+              "date": "2022-05-04T09:12",
+              "author": "MA",
+              "body": "Hi Ms. Reed, 90-day supplies of both sent to the mail order pharmacy with 3 refills. Let us know if they don't arrive within 10 days."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "office_visit",
+          "start": "2022-06-13T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right breast lump",
+          "conditions": [
+            {
+              "label": "Lump in right breast, upper outer quadrant",
+              "action": "diagnosed",
+              "onset": "2022-05-13",
+              "icd10": "N63.11"
+            },
+            {
+              "label": "Situational anxiety",
+              "action": "diagnosed",
+              "onset": "2022-05-13",
+              "icd10": "F41.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              139,
+              85
+            ],
+            "hr": 57,
+            "weight_kg": 81.9
+          },
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-06-13T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dx-mammo-2022",
+              "action": "placed",
+              "order": "Diagnostic mammogram, bilateral, and right breast ultrasound",
+              "category": "imaging",
+              "reason": "palpable right breast mass"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - breast lump",
+              "date": "2022-06-13T14:15",
+              "author": "PCP",
+              "body": "Found a lump in her right breast in the shower about a month ago. Has not changed since. Not painful. No discharge from the nipple, no skin dimpling or redness. She has been checking it every day and admits she is scared - mother's cancer, plus her own thyroid cancer last year. Sleeping less. GAD-7 8.\nExam: firm mass about 1.5 cm R breast upper outer quadrant, does not move freely, nontender. No skin changes, no nipple retraction. No axillary or supraclavicular nodes. L breast normal.\nA/P\n1. Palpable R breast mass. Diagnostic mammogram + targeted ultrasound, marked urgent. Explained most lumps at her age turn out benign but this one needs imaging and likely a biopsy.\n2. Situational anxiety around the lump. Talked it through; she'd rather not start anything, has her sister for support. Will move quickly so she's not waiting. Message me anytime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "imaging",
+          "start": "2022-06-21T10:00",
+          "reason": "diagnostic breast imaging",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2022-06-21T10:00",
+              "text": "Bilateral diagnostic mammogram with spot compression of the right breast. Breasts heterogeneously dense. A BB marker at the palpable site, right breast upper outer quadrant, overlies an oval circumscribed equal-density mass. No suspicious calcifications. Left breast: no mass, distortion or suspicious calcifications.",
+              "conclusion": "Oval circumscribed mass at the palpable site, right breast. See ultrasound."
+            },
+            {
+              "study": "Breast ultrasound",
+              "performed": "2022-06-21T10:30",
+              "text": "Targeted right breast ultrasound at the palpable site. At 10 o'clock, 6 cm from the nipple: oval, circumscribed, hypoechoic solid mass, parallel orientation, 1.6 x 1.0 x 1.2 cm. No posterior shadowing. Right axilla: normal lymph nodes.",
+              "conclusion": "1.6 cm solid mass, right breast 10 o'clock, corresponding to the palpable finding. BI-RADS 4A: low suspicion for malignancy. Ultrasound-guided core biopsy recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dx-mammo-2022",
+              "action": "done",
+              "date": "2022-06-21T10:30"
+            },
+            {
+              "id": "breast-bx-2022",
+              "action": "placed",
+              "order": "Ultrasound-guided core biopsy, right breast",
+              "category": "procedure",
+              "reason": "BI-RADS 4A mass"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "procedure_visit",
+          "start": "2022-06-28T11:00",
+          "service": "Breast Imaging",
+          "reason": "ultrasound-guided core biopsy, right breast",
+          "conditions": [
+            {
+              "label": "Lump in right breast, upper outer quadrant",
+              "action": "resolved",
+              "icd10": "N63.11"
+            },
+            {
+              "label": "Fibroadenoma of right breast",
+              "action": "diagnosed",
+              "onset": "2022-05-13",
+              "icd10": "D24.1"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-06-28T11:20",
+              "text": "Specimen: right breast, 10 o'clock, ultrasound-guided core needle biopsy (4 cores).\nFibroadenoma. No atypia. No malignancy identified.",
+              "conclusion": "Fibroadenoma, right breast. Benign.",
+              "issued": "2022-07-01T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "breast-bx-2022",
+              "action": "done",
+              "date": "2022-06-28T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Breast biopsy report",
+              "date": "2022-07-01T13:00",
+              "author": "radiology",
+              "body": "Outside breast imaging center. Ultrasound-guided core biopsy, right breast 10 o'clock, 14-gauge, 4 cores, 06/28/2022. Clip placed, confirmed on post-procedure mammogram. No complications.\nAddendum 07/01: pathology fibroadenoma, benign and concordant with imaging. Recommend follow-up right breast ultrasound in 6 months, then annual screening mammography."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "telephone",
+          "start": "2022-07-01T14:10",
+          "reason": "biopsy result",
+          "orders": [
+            {
+              "id": "breast-us-6mo",
+              "action": "placed",
+              "order": "Right breast ultrasound, 6-month follow-up",
+              "category": "imaging",
+              "reason": "fibroadenoma after biopsy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Biopsy result call",
+              "date": "2022-07-01T14:10",
+              "author": "PCP",
+              "body": "Called with path: fibroadenoma, benign. She cried with relief. Follow-up ultrasound in 6 months per radiology, then yearly mammograms. Ordered."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "specialist_visit",
+          "start": "2022-09-13T09:40",
+          "service": "Endocrinology",
+          "reason": "thyroid cancer surveillance; primary aldosteronism",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of thyroid gland",
+              "action": "resolved",
+              "note": "no evidence of disease one year after surgery",
+              "icd10": "C73"
+            },
+            {
+              "label": "History of thyroid cancer",
+              "action": "history",
+              "onset": "2021-05-11"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                },
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-0",
+                  "unit": "ng/mL",
+                  "text": "<0.1"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-13T09:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2022-09-08T14:00",
+              "text": "Neck ultrasound after total thyroidectomy. Thyroid bed: no residual tissue or mass. Central and lateral neck compartments: no abnormal lymph nodes.",
+              "conclusion": "Post-thyroidectomy neck without evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2022-09-16T10:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology, visit 09/13/2022.\nOne year after total thyroidectomy for 2.5 cm PTC (vascular invasion, N0), no RAI. Feels well. Benign breast biopsy this summer.\nLevothyroxine 125 mcg; TSH in range today. Thyroglobulin <0.1. Neck ultrasound 09/08: empty thyroid bed, no abnormal nodes.\nExcellent response to therapy. Continue current dose; yearly TSH, thyroglobulin and ultrasound.\nAldosteronism: on spironolactone 50 with lisinopril, amlodipine, HCTZ. K and creatinine normal today. BP 134/84 here. Continue. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "office_visit",
+          "start": "2022-09-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              89
+            ],
+            "hr": 56,
+            "weight_kg": 82.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-27T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "BP Follow-up",
+              "date": "2022-09-27T16:20",
+              "author": "PCP",
+              "body": "BP check. School started, busy but fine. Home log 120s-130s/80s. Endo note reviewed - thyroglobulin undetectable, ultrasound clean; endo calling it no evidence of disease, list updated. K normal there.\nExam: lungs clear, heart RRR, no edema.\nA/P: aldosteronism/HTN stable on 4 meds; no change. Flu and COVID booster at a nurse visit next month. RTC winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse visit - vaccines",
+              "date": "2022-10-13T16:05",
+              "author": "RN",
+              "body": "Flu vaccine R deltoid, bivalent COVID booster L deltoid. Observed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "office_visit",
+          "start": "2022-11-21T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "headaches",
+          "vitals": {
+            "bp": [
+              136,
+              83
+            ],
+            "hr": 67,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 81.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-21T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2022",
+              "action": "placed",
+              "order": "Neurology referral, urgent",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "progressive headaches with nocturnal and positional features, morning vomiting"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - headaches",
+              "date": "2022-11-21T16:30",
+              "author": "PCP",
+              "body": "Headaches since late summer, close to three months. Dull, all over the front, worse at night and when she bends to help the kids at their desks. Some mornings nauseated and has vomited a few times before work. Acetaminophen takes the edge off. Never had headaches like this.\nBP fine at home. No fever, no trauma.\nExam: BP normal. Alert, fluent. Cranial nerves grossly intact. Moves all limbs; gait normal.\nA/P: new progressive headache with nighttime/positional worsening and morning vomiting - red flags. Urgent neurology referral today for evaluation and brain imaging; called the neurology office myself to get her in. ED if sudden severe headache, weakness, vision change or confusion. Acetaminophen as needed in the meantime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "specialist_visit",
+          "start": "2022-12-12T09:00",
+          "service": "Neurology",
+          "reason": "three months of headaches",
+          "medications": [
+            {
+              "drug_text": "dexamethasone 4 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily, then taper over 4 weeks as directed",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "vasogenic edema around right frontal mass"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2022-12-12T11:30",
+              "text": "Indication: progressive headache, left-sided weakness.\nFindings: 2 cm enhancing mass in the right frontal lobe with surrounding vasogenic edema. No hemorrhage. No midline shift. Ventricles normal in size. No other lesions.",
+              "conclusion": "2 cm enhancing right frontal lobe mass with surrounding vasogenic edema."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2022",
+              "action": "done",
+              "date": "2022-12-12T09:00"
+            },
+            {
+              "id": "nsgy-referral-2022",
+              "action": "placed",
+              "order": "Neurosurgery referral, urgent",
+              "category": "referral",
+              "to": "Neurosurgery",
+              "reason": "right frontal mass"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2022-12-14T08:30",
+              "author": "neurology",
+              "body": "Outside neurology, visit 12/12/2022. Urgent referral from PCP.\n44F with primary aldosteronism and papillary thyroid carcinoma treated by thyroidectomy in 2021. Three months of dull aching headache, worse at night and on bending forward, with nausea and some morning vomiting.\nMeds: spironolactone, lisinopril, amlodipine, HCTZ, levothyroxine, acetaminophen PRN. NKDA.\nExam: BP normal. Mild left-sided weakness, 4+/5 arm and leg. Slight tremor of the left hand. Rest of the neuro exam normal.\nMRI brain with and without contrast (same day): 2 cm enhancing right frontal lobe mass with vasogenic edema.\nImpression: right frontal brain mass with edema explaining her headache and left-sided signs.\nPlan: dexamethasone 4 mg twice daily, tapering over 4 weeks. Urgent neurosurgery referral placed. No driving until neurosurgery has seen her. Return for worse headache, vomiting, weakness or seizure."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "telehealth_visit",
+          "start": "2022-12-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology",
+          "conditions": [
+            {
+              "label": "Right frontal brain mass",
+              "action": "diagnosed",
+              "onset": "2022-09-01",
+              "icd10": "D43.0"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-12-19T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "date": "2022-12-19T16:40",
+              "author": "PCP",
+              "body": "Video, at home. Neurology letter and MRI reviewed with her: 2 cm right frontal mass with edema. On dexamethasone a week - headache much better, no vomiting since Wednesday, says the left hand feels steadier. Some trouble sleeping on the steroid. Neurosurgery appt Jan 10.\nTaking the week off before break; colleagues covering. Mother staying with her.\nA/P: R frontal mass - added to list. Steroid: take with food, take the dose by early afternoon. Watch BP and sugars while on it - no symptoms of high sugar. Let me know what neurosurgery says. ED precautions reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "imaging",
+          "start": "2023-01-05T09:30",
+          "reason": "6-month breast ultrasound",
+          "reports": [
+            {
+              "study": "Breast ultrasound",
+              "performed": "2023-01-05T09:30",
+              "text": "Right breast 10 o'clock: biopsy-proven fibroadenoma, oval circumscribed hypoechoic mass, 1.6 x 1.0 x 1.1 cm, unchanged. Biopsy clip in place.",
+              "conclusion": "Stable biopsy-proven fibroadenoma. BI-RADS 2: benign. Return to annual screening mammography."
+            }
+          ],
+          "orders": [
+            {
+              "id": "breast-us-6mo",
+              "action": "done",
+              "date": "2023-01-05T09:30"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "specialist_visit",
+          "start": "2023-01-10T13:00",
+          "service": "Neurosurgery",
+          "reason": "right frontal mass",
+          "orders": [
+            {
+              "id": "nsgy-referral-2022",
+              "action": "done",
+              "date": "2023-01-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery consultation",
+              "date": "2023-01-12T15:00",
+              "author": "neurosurgery",
+              "body": "Outside neurosurgery, visit 01/10/2023.\n44F referred by neurology for a 2 cm enhancing right frontal mass with vasogenic edema (MRI 12/12/2022), found on workup of three months of headache with mild left-sided weakness and left-hand tremor. On a dexamethasone taper; headache gone, weakness and tremor resolved.\nPMH: primary aldosteronism; papillary thyroid cancer, thyroidectomy 2021, no evidence of disease.\nExam today: neuro intact, strength 5/5 throughout, no tremor.\nImaging reviewed: the appearance favors a meningioma.\nDiscussion: offered resection now versus surveillance MRI now that she is asymptomatic. She wishes to avoid surgery if she can and to finish the school year. Reasonable. Repeat MRI in 3 months; sooner for any recurrent headache, weakness or seizure. Finish the steroid taper. OK to drive."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "annual_physical",
+          "start": "2023-03-14T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              90
+            ],
+            "hr": 63,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 82.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-14T08:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-14T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.03
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-14T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 127
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-14T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-03-14T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening; mother with breast cancer"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-14T09:05",
+              "author": "PCP",
+              "body": "Annual. 44F. Off dexamethasone since mid-January, no headaches. Neurosurgery watching the R frontal mass, repeat MRI in April. Back at work fully. Worry about the mass comes and goes; sleeping better. GAD-7 4.\nMeds: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN.\nExam: well appearing. Neuro: strength symmetric, no tremor, gait normal. Breasts: small firm mobile R UOQ lump at the biopsy site, unchanged; no other masses. Heart RRR, lungs clear, abd benign, no edema.\nA/P\n- R frontal mass, likely meningioma per neurosurgery: on surveillance.\n- Aldosteronism/HTN: stable, CMP today.\n- Hx PTC: endo yearly.\n- Fibroadenoma R breast: stable on Jan US. Screening mammogram this summer.\n- Colorectal screening at 45 - next year.\nLabs today."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2023-03-15T11:40",
+              "author": "PCP",
+              "body": "All normal, K 4.3 range. Sent to portal."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "imaging",
+          "start": "2023-04-11T07:30",
+          "reason": "surveillance MRI brain",
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2023-04-11T07:30",
+              "text": "Comparison 12/12/2022. Enhancing right frontal mass measures 2.0 cm, unchanged. Surrounding vasogenic edema markedly decreased. No new lesion. No hemorrhage or mass effect.",
+              "conclusion": "Stable 2 cm right frontal mass with much less edema."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery follow-up",
+              "date": "2023-04-13T10:00",
+              "author": "neurosurgery",
+              "body": "MRI 04/11/2023 reviewed by phone with patient: mass unchanged at 2 cm, edema much reduced. Asymptomatic. Continue surveillance, next MRI in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "imaging",
+          "start": "2023-06-20T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-06-20T08:20",
+              "text": "Breasts heterogeneously dense. Biopsy clip right breast 10 o'clock at the known fibroadenoma, stable. No new mass, suspicious calcifications or architectural distortion.",
+              "conclusion": "BI-RADS 2: benign. Annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-06-20T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "office_visit",
+          "start": "2023-07-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 66,
+            "weight_kg": 81.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-18T10:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-07-18T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "BP Follow-up",
+              "date": "2023-07-18T10:45",
+              "author": "PCP",
+              "body": "Rescheduled from last week - forgot, first week of summer break. Feels well. No headaches. Mammogram benign. MRI in April stable.\nHome BP log averages 132/84.\nExam: RRR, lungs clear, no edema. Neuro nonfocal.\nA/P: aldosteronism/HTN - stable, BMP today. Refills x1 yr sent. Endo in Sept, neurosurgery MRI Oct."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "specialist_visit",
+          "start": "2023-09-12T09:40",
+          "service": "Endocrinology",
+          "reason": "thyroid cancer surveillance; primary aldosteronism",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                },
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-0",
+                  "unit": "ng/mL",
+                  "text": "<0.1"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2023-09-07T15:00",
+              "text": "Post-thyroidectomy neck. Thyroid bed clear. No abnormal cervical lymph nodes.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2023-09-14T11:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology, visit 09/12/2023. Two years after thyroidectomy for PTC. Tg undetectable, TSH in goal, neck US clear. Continues to show excellent response. Levothyroxine 125 unchanged.\nAldosteronism: on spironolactone 50, lisinopril, amlodipine, HCTZ; BP 136/86 today. Continue.\nNoted right frontal mass on neurosurgical surveillance.\nReturn 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T07:30",
+          "reason": "surveillance MRI brain",
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2023-10-10T07:30",
+              "text": "Comparison 04/11/2023. Right frontal enhancing mass 2.0 cm, unchanged. Mild surrounding edema, similar. No new lesion.",
+              "conclusion": "Stable right frontal mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery follow-up",
+              "date": "2023-10-12T14:00",
+              "author": "neurosurgery",
+              "body": "MRI 10/10/2023: right frontal mass stable at 2 cm. No symptoms. Continue surveillance; MRI in 6 months or sooner with symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse visit - vaccines",
+              "date": "2023-10-19T16:00",
+              "author": "MA",
+              "body": "Flu L arm, updated COVID R arm. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "ed_visit",
+          "start": "2023-12-14T06:50",
+          "end": "2023-12-14T15:30",
+          "service": "Emergency Medicine",
+          "reason": "severe headaches with morning vomiting and blurry vision",
+          "medications": [
+            {
+              "drug_text": "dexamethasone 4 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily until surgery",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "edema around right frontal mass"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              88
+            ],
+            "hr": 78,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97
+          },
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2023-12-14T10:15",
+              "text": "Comparison 10/10/2023. The known enhancing right frontal mass with increased surrounding edema. No hemorrhage. No hydrocephalus.",
+              "conclusion": "Known right frontal mass with increased surrounding edema."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2023-12-15T08:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of visit 12/14/2023.\nCC: severe headaches, morning nausea, blurry vision.\nHPI: 45F with a known right frontal mass on surveillance and primary aldosteronism. Over recent weeks her headaches have become severe and throbbing, felt at the back of the head, daily and worst on waking, with nausea and vomiting most mornings. Brief episodes of blurred vision. No head injury, no new medications.\nMeds: spironolactone, lisinopril, amlodipine, HCTZ, levothyroxine, acetaminophen. NKDA.\nVitals: BP 142/88, HR 78. BMI 30.\nExam: bilateral papilledema on fundoscopy. Remainder of neurologic exam unremarkable.\nMRI brain: known right frontal mass, now with more surrounding edema.\nED diagnosis: structural intracranial lesion with raised pressure signs.\nCourse: dexamethasone 10 mg IV. Headache improved. Discussed with on-call neurosurgery, who know her - plan resection; to be scheduled within weeks.\nDispo: home on dexamethasone 4 mg twice daily until surgery. Return for worsening headache, vomiting, vision loss, weakness or seizure."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-12-21a",
+          "kind": "office_visit",
+          "start": "2023-12-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "vitals": {
+            "bp": [
+              137,
+              84
+            ],
+            "hr": 65,
+            "weight_kg": 82.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "date": "2023-12-21T11:40",
+              "author": "PCP",
+              "body": "Seen in ED last Thursday - several weeks of worsening morning headaches with vomiting and blurred vision; papilledema; MRI known R frontal mass with more edema. Back on dexamethasone 4 bid. Neurosurgery booked craniotomy Jan 9.\nToday: headaches much less, no vomiting since steroid. Vision clear. Nervous about surgery but says it's a relief to have a plan. On leave from school until after recovery.\nExam: alert, neuro nonfocal, strength 5/5.\nA/P: R frontal mass - surgery 1/9. Steroid precautions as before. Pre-op labs will be done by neurosurgery. Will see her after."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "hospital_admission",
+          "start": "2024-01-09T06:30",
+          "end": "2024-01-12T12:00",
+          "service": "Neurosurgery",
+          "reason": "right frontal craniotomy for resection of mass",
+          "medications": [
+            {
+              "drug_text": "dexamethasone 4 MG Oral Tablet",
+              "action": "stop",
+              "reason": "replaced by post-op taper"
+            },
+            {
+              "drug_text": "dexamethasone 2 MG Oral Tablet",
+              "action": "start",
+              "sig": "Taper over 2 weeks as directed, then stop",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-op taper"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-01-09T10:00",
+              "text": "Specimen: right frontal mass, resection.\nMeningioma, WHO CNS grade 1. No brain invasion. Mitotic activity low.",
+              "conclusion": "Meningioma, WHO grade 1.",
+              "issued": "2024-01-11T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Neurosurgery discharge summary",
+              "date": "2024-01-15T09:00",
+              "author": "neurosurgery",
+              "body": "Regional hospital, neurosurgery service. Admitted 01/09/2024, discharged 01/12/2024.\nIndication: 2 cm enhancing right frontal mass on surveillance since 12/2022, now with increasing edema, papilledema and morning headaches with vomiting.\nProcedure 01/09/2024: right frontal craniotomy, gross total resection.\nPathology: meningioma, WHO grade 1.\nCourse: uncomplicated. Neuro exam intact post-op. Headache controlled with acetaminophen. Wound clean.\nDischarge meds: dexamethasone taper over 2 weeks then stop; acetaminophen PRN; home spironolactone, lisinopril, amlodipine, HCTZ, levothyroxine unchanged. NKDA.\nFollow-up: staple removal at 10-14 days; MRI brain in 3 months; no driving for 2 weeks; return to work when cleared."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "office_visit",
+          "start": "2024-01-22T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after craniotomy",
+          "conditions": [
+            {
+              "label": "Right frontal brain mass",
+              "action": "resolved",
+              "note": "resected; pathology meningioma",
+              "icd10": "D43.0"
+            },
+            {
+              "label": "Meningioma",
+              "action": "diagnosed",
+              "onset": "2022-09-01",
+              "note": "right frontal, WHO grade 1, gross total resection 01/09/2024"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              144,
+              90
+            ],
+            "hr": 63,
+            "temp_c": 37.4,
+            "spo2": 99,
+            "weight_kg": 82.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-22T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal immunochemical test",
+              "category": "lab",
+              "reason": "colorectal cancer screening, age 45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op visit",
+              "date": "2024-01-22T14:55",
+              "author": "PCP",
+              "body": "Two weeks after R frontal craniotomy (1/9), home 1/12. Path meningioma grade 1, all of it removed. Staples out at neurosurgery Friday. Finished the dexamethasone taper yesterday. Mild incision soreness, no headache like before, no vomiting. Tired. Sister driving her.\nExam: incision healing, no erythema. Alert, speech normal. Strength 5/5, no drift. Gait steady.\nA/P: meningioma s/p gross total resection - list updated. MRI April. Plans to go back to teaching in Feb if neurosurgery clears. Due for colorectal screening - FIT kit given to take home."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "lab_only",
+          "start": "2024-02-06T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-05T07:00",
+              "resulted": "2024-02-06T15:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-02-06T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2024-02-07T09:30",
+              "author": "MA",
+              "body": "FIT negative. Pt notified via portal, repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              139,
+              96
+            ],
+            "hr": 67,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T08:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-19T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-19T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-03-19T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-19T09:00",
+              "author": "PCP",
+              "body": "Annual exam, 45F. Back at work since mid-February, part days the first two weeks, now full. Occasional mild headache at the incision site, otherwise none. Sleeping ok.\nMeds unchanged: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN.\nExam: craniotomy scar healed. Neuro intact. Breasts: R UOQ fibroadenoma unchanged, no new mass. Heart RRR, lungs clear, abdomen soft, no edema.\nA/P\n- Meningioma s/p resection: MRI April.\n- Aldosteronism/HTN: labs today.\n- Hx PTC, fibroadenoma: routine.\n- Screening: FIT negative Feb. Mammogram June. Co-test due 2025."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "imaging",
+          "start": "2024-04-16T07:30",
+          "reason": "post-op MRI brain",
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2024-04-16T07:30",
+              "text": "Comparison 12/14/2023. Postoperative changes of right frontal craniotomy. No residual enhancing tumor. Edema resolved. No new lesion.",
+              "conclusion": "Gross total resection of right frontal meningioma without residual or recurrent tumor."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery follow-up",
+              "date": "2024-04-18T10:00",
+              "author": "neurosurgery",
+              "body": "3-month post-op visit after right frontal craniotomy for WHO grade 1 meningioma. Doing well, back at work. Exam intact. MRI: no residual tumor, edema resolved. Plan yearly MRI."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "imaging",
+          "start": "2024-06-18T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-06-18T08:20",
+              "text": "Heterogeneously dense breasts. Stable biopsy clip and fibroadenoma, right breast 10 o'clock. No new findings.",
+              "conclusion": "BI-RADS 2: benign."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-06-18T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              137,
+              89
+            ],
+            "hr": 63,
+            "weight_kg": 81.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-23T10:10",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-07-23T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "BP Follow-up",
+              "date": "2024-07-23T10:05",
+              "author": "PCP",
+              "body": "Summer, rested. Home BP 128-138/82-88. No headache. Post-op MRI clean; mammogram benign.\nExam: RRR, no edema.\nA/P: aldosteronism/HTN stable - continue all four, BMP today. Endo Sept. Vaccines in Oct."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "specialist_visit",
+          "start": "2024-09-10T09:40",
+          "service": "Endocrinology",
+          "reason": "thyroid cancer surveillance; primary aldosteronism",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                },
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-0",
+                  "unit": "ng/mL",
+                  "text": "<0.1"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2024-09-12T11:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology, visit 09/10/2024. Three years post thyroidectomy. Tg <0.1, TSH at goal. Neck exam normal. Given three years of undetectable Tg and two clean ultrasounds, will space ultrasound to every 2-3 years; Tg and TSH yearly. Levothyroxine 125.\nAldosteronism on spironolactone 50 plus three others; BP 136/88 today. K normal at PCP in July. Continue.\nInterval resection of a right frontal meningioma noted."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-17T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse visit - vaccines",
+              "date": "2024-10-17T16:00",
+              "author": "RN",
+              "body": "Flu and 2024-25 COVID given, separate arms. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "hospital_admission",
+          "start": "2024-11-28T14:30",
+          "end": "2024-12-09T13:00",
+          "service": "Neurocritical Care",
+          "reason": "sudden severe headache; subarachnoid hemorrhage",
+          "medications": [
+            {
+              "drug_text": "nimodipine 30 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules (60 mg) by mouth every 4 hours to complete 21 days (through 12/19/2024)",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "Q4H",
+              "route": "Oral",
+              "course": "short",
+              "reason": "aneurysmal subarachnoid hemorrhage"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-28T14:35",
+              "bp": [
+                158,
+                94
+              ],
+              "hr": 88
+            },
+            {
+              "time": "2024-11-28T18:00",
+              "bp": [
+                138,
+                82
+              ],
+              "hr": 80,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-28T16:20",
+              "results": [
+                {
+                  "test": "CSF red blood cells, tube 1",
+                  "loinc": "26454-9",
+                  "unit": "/uL",
+                  "value": 1500
+                },
+                {
+                  "test": "CSF red blood cells, tube 4",
+                  "loinc": "26454-9",
+                  "unit": "/uL",
+                  "value": 1480
+                },
+                {
+                  "test": "CSF white blood cells",
+                  "loinc": "26465-5",
+                  "unit": "/uL",
+                  "value": 4
+                },
+                {
+                  "test": "CSF protein",
+                  "loinc": "2880-3",
+                  "unit": "mg/dL",
+                  "value": 45
+                },
+                {
+                  "test": "CSF glucose",
+                  "loinc": "2342-4",
+                  "unit": "mg/dL",
+                  "value": 60
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2024-11-28T15:00",
+              "text": "No intracranial hemorrhage. No mass effect or midline shift. Ventricles normal. Expected postoperative changes of right frontal craniotomy.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Neurocritical care discharge summary",
+              "date": "2024-12-11T10:00",
+              "author": "neurocritical care",
+              "body": "Regional hospital, neuro ICU. Admitted 11/28/2024 via the emergency department, discharged 12/09/2024.\nPresentation: 46F, sudden severe headache - the worst of her life - while lifting a heavy box about 2 hours before arrival, with nausea and light sensitivity. History of right frontal meningioma resected 01/2024 (outside lists still say 'frontal lobe mass'), primary aldosteronism, PTC s/p thyroidectomy, fibroids s/p UAE. Father with a cerebral aneurysm.\nED: BP 158/94, HR 88. Alert, anxious, neck stiff.\nCT head: no hemorrhage; postoperative craniotomy changes only.\nLumbar puncture: opening pressure 28 cm H2O. RBC 1500 tube 1, 1480 tube 4. Xanthochromia present. WBC 4. Protein 45. Glucose 60.\nCT angiography: 6 mm saccular aneurysm of the anterior communicating artery.\nDiagnosis: subarachnoid hemorrhage from ruptured anterior communicating artery aneurysm.\nCourse: endovascular coil embolization 11/29/2024, complete occlusion, no complications. Neuro ICU monitoring; nimodipine 60 mg every 4 hours for 21 days; no clinical vasospasm. Headache improved steadily. BP managed on home regimen. No neurologic deficit.\nDischarge meds: nimodipine 60 mg q4h through 12/19/2024; acetaminophen PRN; spironolactone 50, lisinopril 10, amlodipine 5, hydrochlorothiazide 25, levothyroxine 125 unchanged. NKDA.\nFollow-up: neurointerventional with angiogram in 6 months; PCP within 1 week; no heavy lifting for 4 weeks; no driving until cleared."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "office_visit",
+          "start": "2024-12-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "transitional care after hospitalization",
+          "conditions": [
+            {
+              "label": "Nontraumatic subarachnoid hemorrhage from anterior communicating artery",
+              "action": "diagnosed",
+              "onset": "2024-11-28",
+              "icd10": "I60.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              82
+            ],
+            "hr": 64,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 81.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-16T11:00",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-12-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional care visit",
+              "date": "2024-12-16T11:15",
+              "author": "PCP",
+              "body": "Home a week after 11 days in the neuro ICU for a ruptured anterior communicating aneurysm, coiled 11/29. Discharge summary reviewed. RN called her the day after discharge.\nHeadache now mild, acetaminophen once a day. No vomiting, no weakness, no confusion. Taking nimodipine every 4 hours - alarms on her phone, through 12/19. Some lightheadedness standing; home BP 118-126/76-80 on nimodipine plus her usual four.\nSister staying with her. Out of work through January.\nExam: BP below, alert, oriented, speech fluent. Pupils equal. Strength full, no drift. Gait steady.\nA/P\n1. Aneurysmal SAH, coiled. Finish nimodipine 12/19. Rise slowly from sitting; lightheadedness should ease once nimodipine stops - call if she feels faint. Angiogram in 6 months per neurointerventional. No heavy lifting.\n2. Aldosteronism/HTN: as above. BMP drawn.\n3. Meningioma s/p resection: MRI Jan.\nWork note given. Call with any sudden headache."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "imaging",
+          "start": "2025-01-14T07:30",
+          "reason": "yearly MRI brain",
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2025-01-14T07:30",
+              "text": "Comparison 04/16/2024. Stable postoperative changes of right frontal craniotomy. No recurrent enhancing tumor. Coil mass at the anterior communicating artery with susceptibility artifact. No new lesion.",
+              "conclusion": "No recurrent meningioma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery follow-up",
+              "date": "2025-01-16T10:00",
+              "author": "neurosurgery",
+              "body": "One year after resection of right frontal WHO grade 1 meningioma. MRI without recurrence. Recovering from aneurysmal SAH in November, coiled. Next MRI one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "lab_only",
+          "start": "2025-02-11T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-10T07:00",
+              "resulted": "2025-02-11T14:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-02-12T09:00",
+              "author": "MA",
+              "body": "FIT negative. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "annual_physical",
+          "start": "2025-03-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Nontraumatic subarachnoid hemorrhage from anterior communicating artery",
+              "action": "resolved",
+              "icd10": "I60.2"
+            },
+            {
+              "label": "History of subarachnoid hemorrhage",
+              "action": "history",
+              "onset": "2024-11-28",
+              "note": "AComm aneurysm, coiled 11/2024"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              94
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-18T08:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-18T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-18T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 200
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 118
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 141
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-18T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-03-18T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "annual screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-18T09:00",
+              "author": "PCP",
+              "body": "Annual, 46F. Back teaching since February. Headaches rare. Some worry with any headache since November - GAD-7 4, handles it, declines counseling referral for now.\nLightheadedness went away after the nimodipine course; home BP 130s/80s.\nMeds: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN.\nExam: well. Neuro intact. Breasts unchanged. Heart RRR, lungs clear, no edema.\nA/P\n- SAH 11/2024, coiled: recovered, moved to history. Angiogram June.\n- Meningioma: Jan MRI clean.\n- Aldosteronism/HTN: labs today.\n- Screening: FIT neg Feb, mammogram June. Cervical co-test due - she'd prefer to do it next year with the physical; ok.\nLabs today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "procedure_visit",
+          "start": "2025-06-10T08:00",
+          "service": "Neurointerventional Radiology",
+          "reason": "follow-up cerebral angiogram after aneurysm coiling",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Cerebral angiogram report",
+              "date": "2025-06-12T12:00",
+              "author": "neurointerventional radiology",
+              "body": "Outside neurointerventional service. Diagnostic cerebral angiogram 06/10/2025, right femoral access.\nIndication: 6-month follow-up after coil embolization of a ruptured anterior communicating artery aneurysm (11/29/2024).\nFindings: coiled anterior communicating artery aneurysm completely occluded, no neck remnant. No other aneurysm. Normal intracranial circulation.\nNo complications; access site hemostasis with closure device.\nPlan: noninvasive vascular imaging in 18 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "imaging",
+          "start": "2025-06-17T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-06-17T08:20",
+              "text": "Heterogeneously dense breasts. Stable right breast fibroadenoma with biopsy clip. No new mass or suspicious calcification.",
+              "conclusion": "BI-RADS 2: benign."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-06-17T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              84
+            ],
+            "hr": 69,
+            "weight_kg": 81.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-22T10:05",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-07-22T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "BP Follow-up",
+              "date": "2025-07-22T10:00",
+              "author": "PCP",
+              "body": "Feels well. Angiogram in June showed the aneurysm fully closed. Mammogram benign. Gardening most mornings this summer.\nHome BP 128-136/80-86.\nExam: RRR, lungs clear, no edema.\nA/P: aldosteronism/HTN stable, BMP today, no changes. Endo Sept."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "specialist_visit",
+          "start": "2025-09-09T09:40",
+          "service": "Endocrinology",
+          "reason": "thyroid cancer surveillance; primary aldosteronism",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-09T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                },
+                {
+                  "test": "Thyroglobulin",
+                  "loinc": "3013-0",
+                  "unit": "ng/mL",
+                  "text": "<0.1"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2025-09-11T11:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology, visit 09/09/2025. Four years after thyroidectomy, Tg undetectable, TSH at goal on levothyroxine 125. Neck ultrasound next year.\nAldosteronism stable on spironolactone 50 with lisinopril, amlodipine, HCTZ. BP 134/86 here. Continue. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-16T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-16T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-16T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse visit - vaccines",
+              "date": "2025-10-16T16:00",
+              "author": "MA",
+              "body": "Flu and COVID 2025-26 given. No reaction in 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "hospital_admission",
+          "start": "2025-12-05T11:20",
+          "end": "2025-12-07T12:30",
+          "service": "Neurocritical Care",
+          "reason": "sudden severe headache",
+          "vitals": [
+            {
+              "time": "2025-12-05T11:25",
+              "bp": [
+                158,
+                94
+              ],
+              "hr": 88,
+              "temp_c": 37.1
+            },
+            {
+              "time": "2025-12-05T20:00",
+              "bp": [
+                136,
+                84
+              ],
+              "hr": 76,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-05T13:40",
+              "results": [
+                {
+                  "test": "CSF red blood cells, tube 1",
+                  "loinc": "26454-9",
+                  "unit": "/uL",
+                  "value": 6
+                },
+                {
+                  "test": "CSF red blood cells, tube 4",
+                  "loinc": "26454-9",
+                  "unit": "/uL",
+                  "value": 2
+                },
+                {
+                  "test": "CSF white blood cells",
+                  "loinc": "26465-5",
+                  "unit": "/uL",
+                  "value": 1
+                },
+                {
+                  "test": "CSF protein",
+                  "loinc": "2880-3",
+                  "unit": "mg/dL",
+                  "value": 34
+                },
+                {
+                  "test": "CSF glucose",
+                  "loinc": "2342-4",
+                  "unit": "mg/dL",
+                  "value": 63
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-12-05T11:50",
+              "text": "No intracranial hemorrhage. No mass effect. Stable postoperative changes of right frontal craniotomy. Coil mass at the anterior communicating artery with streak artifact.",
+              "conclusion": "No hemorrhage or mass effect."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Neurocritical care discharge summary",
+              "date": "2025-12-09T09:00",
+              "author": "neurocritical care",
+              "body": "Regional hospital, neuro ICU. Admitted 12/05/2025 via ED, discharged 12/07/2025.\nPresentation: 47F with prior aneurysmal SAH (AComm, coiled 11/2024) and resected right frontal meningioma. Abrupt severe headache about two hours before arrival while gardening, similar to the prior bleed, with nausea and one episode of vomiting at home. No trauma or fall.\nED: BP 158/94, HR 88, T 37.1. Alert, anxious. Nonfocal neurologic exam. Neck stiff on flexion. Fundi normal.\nCT head: no hemorrhage or mass effect.\nWith high suspicion for recurrent hemorrhage: lumbar puncture - opening pressure 17 cm H2O, RBC 6 tube 1 and 2 tube 4, no xanthochromia, WBC 1, protein 34, glucose 63. CT angiography: coiled aneurysm remains completely occluded, no new aneurysm, no vasospasm.\nAssessment: subarachnoid hemorrhage excluded.\nCourse: admitted to neuro ICU for monitoring overnight. Headache settled with acetaminophen and ondansetron. Neuro checks stable. Transferred to floor 12/06, home 12/07.\nDischarge meds: home meds unchanged (spironolactone 50, lisinopril 10, amlodipine 5, hydrochlorothiazide 25, levothyroxine 125, acetaminophen PRN). NKDA.\nFollow-up: PCP within a week; neurointerventional as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "office_visit",
+          "start": "2025-12-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization",
+          "vitals": {
+            "bp": [
+              136,
+              78
+            ],
+            "hr": 62,
+            "temp_c": 37.1,
+            "spo2": 100,
+            "weight_kg": 82.5
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-12-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-12-11T16:20",
+              "author": "PCP",
+              "body": "Admitted Fri 12/5 for a sudden severe headache while gardening; two nights in neuro ICU. CT, LP and CTA all reassuring - no new bleed, coils holding. Summary reviewed with her.\nHeadache gone since Sunday. Shaken - 'it felt exactly like last time.' Back at school Monday.\nExam: alert, neuro intact, no meningismus today.\nA/P: thunderclap headache with SAH excluded on full workup. Told her she did exactly the right thing going in and should do the same again. Aldosteronism/HTN - home readings back to her usual. No med changes. Physical in the summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "imaging",
+          "start": "2026-01-13T07:30",
+          "reason": "yearly MRI brain",
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2026-01-13T07:30",
+              "text": "Comparison 01/14/2025. Stable postoperative right frontal changes. No recurrent tumor. Stable coil artifact at the anterior communicating artery. No new lesion.",
+              "conclusion": "No evidence of recurrent meningioma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery follow-up",
+              "date": "2026-01-15T10:00",
+              "author": "neurosurgery",
+              "body": "Two years after resection of WHO grade 1 right frontal meningioma, MRI without recurrence. Plan MRI every other year from here."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "lab_only",
+          "start": "2026-02-10T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-09T07:00",
+              "resulted": "2026-02-10T14:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2026-02-11T09:00",
+              "author": "MA",
+              "body": "Yearly FIT negative. Notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure check",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-03-17T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video visit",
+              "date": "2026-03-17T16:20",
+              "author": "PCP",
+              "body": "Video from her classroom after dismissal. Home cuff log for 2 weeks averages 133/85. No headaches since December. No cramps.\nA/P: aldosteronism/HTN stable on four meds, continue. Annual physical with labs and co-test in summer. 90-day refills sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "imaging",
+          "start": "2026-06-16T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2026-06-16T08:20",
+              "text": "Heterogeneously dense breasts. Stable right breast fibroadenoma and clip. No new findings.",
+              "conclusion": "BI-RADS 2: benign."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "annual_physical",
+          "start": "2026-07-31T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              95
+            ],
+            "hr": 65,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 81.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-31T08:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-31T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 265
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-31T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 123
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 139
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-31T08:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-07-31T08:30",
+              "text": "Specimen adequate, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2026-08-05T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-07-31T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-31T09:10",
+              "author": "PCP",
+              "body": "Annual, 47F. Good year. No headaches since the December admission. Periods regular and light. Home BP 130s/80s. Mammogram in June benign. Teaching 3rd grade this fall.\nMeds: spironolactone 50, lisinopril 10, amlodipine 5, HCTZ 25, levothyroxine 125, acetaminophen PRN. NKDA.\nExam: well appearing. Healed thyroidectomy and craniotomy scars. Neuro intact. Breasts: known R fibroadenoma unchanged. Heart RRR, lungs clear. Abd soft. Pelvic: normal external genitalia, cervix normal; co-test collected. No edema.\nA/P\n- Primary aldosteronism / resistant HTN: CMP for K and Cr.\n- Hx PTC: endo in Sept, TSH today too.\n- Meningioma s/p resection: next MRI 2028 per neurosurgery.\n- Hx SAH, coiled: neurointerventional imaging due early 2027.\n- Fibroadenoma: annual mammogram.\n- Screening: co-test today, FIT done Feb. Flu and COVID in the fall.\nRTC late Oct for BP check and vaccines."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "portal_message",
+          "start": "2026-08-05T13:00",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2026-08-05T13:00",
+              "author": "PCP",
+              "body": "Hi Aisha - all of your bloodwork from Friday is normal, including potassium and kidney function, and your thyroid level is right on target. Your Pap and HPV test came back normal too, so no repeat for five years. Enjoy the rest of the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Your results",
+              "date": "2026-08-05T19:22",
+              "author": "patient",
+              "body": "Thank you! See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T10:15",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill - spironolactone",
+              "date": "2026-08-18T10:15",
+              "author": "MA",
+              "body": "Mail-order pharmacy request for spironolactone 25 mg, 2 tabs daily, 90-day supply. Last K normal 7/31. Approved per protocol, 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-30a",
+          "kind": "office_visit",
+          "start": "2026-10-30T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and potassium follow-up; flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Fibroadenoma of right breast|D24.1": {
+        "code": "D24.1",
+        "display": "Benign neoplasm of right breast",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lump in right breast, upper outer quadrant|N63.11": {
+        "code": "N63.11",
+        "display": "Unspecified lump in the right breast, upper outer quadrant",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant neoplasm of thyroid gland|C73": {
+        "code": "C73",
+        "display": "Malignant neoplasm of thyroid gland",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Nontraumatic subarachnoid hemorrhage from anterior communicating artery|I60.2": {
+        "code": "I60.2",
+        "display": "Nontraumatic subarachnoid hemorrhage from anterior communicating artery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Post-embolization syndrome|T81.89XA": {
+        "code": "T81.89XA",
+        "display": "Other complications of procedures, not elsewhere classified, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary hyperaldosteronism|E26.09": {
+        "code": "E26.09",
+        "display": "Other primary hyperaldosteronism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Resistant hypertension secondary to primary hyperaldosteronism|I15.2": {
+        "code": "I15.2",
+        "display": "Hypertension secondary to endocrine disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Right frontal brain mass|D43.0": {
+        "code": "D43.0",
+        "display": "Neoplasm of uncertain behavior of brain, supratentorial",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Situational anxiety|F41.8": {
+        "code": "F41.8",
+        "display": "Other specified anxiety disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "dexamethasone 2 MG Oral Tablet": {
+        "code": "197581",
+        "display": "dexamethasone 2 MG Oral Tablet",
+        "ingredient": "dexamethasone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "dexamethasone 4 MG Oral Tablet": {
+        "code": "197582",
+        "display": "dexamethasone 4 MG Oral Tablet",
+        "ingredient": "dexamethasone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "nimodipine 30 MG Oral Capsule": {
+        "code": "198037",
+        "display": "nimodipine 30 MG Oral Capsule",
+        "ingredient": "nimodipine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "CSF glucose": {
+        "code": "2342-4",
+        "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF protein": {
+        "code": "2880-3",
+        "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF red blood cells, tube 1": {
+        "code": "26454-9",
+        "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF red blood cells, tube 4": {
+        "code": "26454-9",
+        "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CSF white blood cells": {
+        "code": "26465-5",
+        "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
+        "unit": "/uL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Thyroglobulin": {
+        "code": "3013-0",
+        "display": "Thyroglobulin [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain without and with contrast": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

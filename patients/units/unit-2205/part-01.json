@@ -1,0 +1,347 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002205",
+      "given": "Francis",
+      "family": "Sawyer",
+      "birth_date": "1954-01-19",
+      "address_line": "27 Damon Pond Rd",
+      "phone": "+1-978-555-0177",
+      "email": "francis.sawyer@example.test",
+      "marital_status": "single",
+      "summary": "Retired construction worker with type 2 diabetes, hypertension, hyperlipidemia and decades of heavy drinking who joined in 2020. A confusing lisinopril renewal in 2021 leads to a noncompliance label, and Dupuytren contracture appears in the right hand in 2022 and the left in 2024; last seen April 2025.",
+      "events": [
+        {
+          "id": "2020-08-03a",
+          "kind": "telephone",
+          "start": "2020-08-03T11:05",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "author": "front desk",
+              "date": "2020-08-03T11:05",
+              "body": "Mr. Sawyer phoned about moving his primary care here; previous office is in another town and he wants someone closer to Chesterfield. Medicare, no secondary. Reviewed membership terms, he is fine with them. Takes three daily pills for sugar, pressure and cholesterol. First appointment set for Mon 8/24 at 9:00, asked him to come fasting and bring all bottles. Release of records signed by email and sent to the prior primary office today."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "establish_care",
+          "start": "2020-08-24T09:00",
+          "end": "2020-08-24T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; diabetes, hypertension, cholesterol",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history"},
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Hyperlipidemia", "action": "history"},
+            {"label": "Alcohol use disorder, chronic", "icd10": "F10.20", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 93.2, "height_cm": 180.0, "bp": [130, 78], "labs": {"Hemoglobin A1c": 7.0, "Low Density Lipoprotein": 92, "High Density Lipoprotein": 50, "Triglycerides": 170, "Microalbumin/Creatinine Ratio": 11, "Glucose": 140}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-24T09:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-08-24T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-24T09:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2020-08-24T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 12}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Heavy daily use for decades, about 6 to 8 drinks per day"},
+            {"item": "Occupation", "value": "Retired construction worker"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-08-24T09:00"},
+            {"procedure": "Venipuncture", "performed": "2020-08-24T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-08-24T10:05",
+              "body": "66 y/o man transferring care from a primary office about forty minutes away. Retired from construction (framing, then site work) a few years ago, mostly home now.\n\nCarries type 2 diabetes, hypertension and high cholesterol, all managed by the previous office for years; he could not say when the sugar was first found. Brought his bottles: metformin 1000 mg twice a day, lisinopril 10 mg daily, atorvastatin 40 mg daily. Says he rarely misses. No home glucose meter in use. No chest pain, shortness of breath, leg pain on walking, foot sores or vision change.\n\nAlcohol: he is straightforward about it. Drinks every day and has for decades, usually six to eight beers or mixed drinks across the afternoon and evening. Does not think it causes him trouble, never had withdrawal he can name, no DUIs. Never smoked. No other substances.\n\nPSH: none. Allergies: no known drug allergies.\nFamily: father had type 2 diabetes, mother had high blood pressure, paternal grandfather had a heart attack at 72.\n\nExam: well appearing, talkative. BP at goal today, see vitals. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, no hepatomegaly, nontender. Extremities warm, no edema. Feet: skin intact, no calluses or ulcers, monofilament sensation intact both feet, DP and PT pulses 2+. Hands unremarkable.\n\nA/P\n1. Type 2 diabetes, on metformin alone. A1c, CMP and urine albumin/creatinine today. Will get prior office records including last eye exam.\n2. Hypertension, controlled on lisinopril 10.\n3. Hyperlipidemia on atorvastatin 40. Lipids today.\n4. Alcohol use disorder, long standing, heavy daily use. AUDIT-C 12. Talked plainly about what that amount does to sugar, pressure, liver and falls. Offered naltrexone and a referral to an outpatient counselor; he would rather not right now, says he'll think about cutting back on weekdays. Door left open.\n5. Health maintenance: hep C and HIV screening today (one-time). Flu shot in October. Colonoscopy history pending prior records.\n\nFollow up 3 to 4 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "portal_message",
+          "start": "2020-08-26T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2020-08-26T16:40",
+              "body": "Hi Mr. Sawyer, your labs from Monday are back. A1c is 7.2, which is close to where we want it for you. Kidney and liver tests are normal, blood counts normal, no protein in the urine. Cholesterol numbers are reasonable on the atorvastatin. Hepatitis C and HIV screens were negative. No changes for now. See you in the winter."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-10a",
+          "kind": "outside_records",
+          "start": "2020-09-10T13:20",
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV13", "date": "2019-05-07T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "front desk",
+              "date": "2020-09-10T13:20",
+              "body": "Received from patient's prior primary practice: 46 pages, covering 2014 to July 2020. Abstracted for the chart:\n- Problems carried there: type 2 diabetes, hypertension, hyperlipidemia, alcohol use.\n- Medications: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg daily. No allergies listed.\n- Colonoscopy 2017: normal, no polyps, ten-year interval recommended.\n- Pneumococcal conjugate (PCV13) given May 2019.\n- Optometry diabetic eye exam June 2019: no diabetic retinopathy..\nFiled to media. PCP notified."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-06T14:40"},
+            {"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2020-10-06T14:42"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2020-10-06T14:40"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: Immunizations",
+              "author": "RN",
+              "date": "2020-10-06T14:50",
+              "body": "In for vaccines. No fever or illness today. High-dose flu to L deltoid, PPSV23 to R deltoid (PCV13 was given at his last office in 2019 per records, so this completes the pneumococcal series). VIS given. Waited 15 min, no reaction. Left the office walking without difficulty."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T10:15",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Metformin Renewal",
+              "author": "MA",
+              "date": "2020-12-08T10:15",
+              "body": "Pharmacy sent renewal request for metformin 1000 mg, last filled by prior office. Seen here 8/24, A1c 7.2. Routed to PCP, approved 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-22a",
+          "kind": "office_visit",
+          "start": "2021-02-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-02-22T10:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-02-22T10:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2021-02-22T10:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2021-02-22T11:10",
+              "body": "Diabetes and BP recheck.\nWinter has been quiet, mostly indoors. Takes his three pills, keeps them on the kitchen counter. Got his first COVID shot at the regional vaccine site last month, second dose this week. Drinking unchanged, maybe a bit more with being cooped up; still not interested in medication or counseling for it.\nNo polyuria, no foot numbness, no chest pain.\n\nExam: NAD. Heart RRR. Lungs clear. No edema. Feet intact.\n\nA1c 7.5 today; BMP otherwise unremarkable.\n\nA/P: T2DM: A1c 7.5, up from the fall, likely the housebound winter; no change yet, recheck with summer labs. HTN at goal on lisinopril 10. Lipids due in summer. AUD: brief counseling again, he heard it. Return about 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-03a",
+          "kind": "portal_message",
+          "start": "2021-03-03T19:22",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, original", "date": "2021-01-27T11:00"},
+            {"vaccine": "COVID-19, mRNA, Moderna, original", "date": "2021-02-24T11:30"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine Card",
+              "author": "patient",
+              "date": "2021-03-03T19:22",
+              "body": "Nurse asked me to send the card. Picture attached, both Moderna shots done, Jan 27 and Feb 24. Second one knocked me flat for a day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Vaccine Card",
+              "author": "MA",
+              "date": "2021-03-04T08:50",
+              "body": "Thanks Francis, both doses are now in your record. A rough day after the second one is common. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "office_visit",
+          "start": "2021-06-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "state": {"bp": [132, 78], "labs": {"Hemoglobin A1c": 6.8, "Fasting Glucose": 138, "Total Cholesterol": 190, "Low Density Lipoprotein": 90, "High Density Lipoprotein": 55, "Triglycerides": 150}},
+          "vitals": {"bp": [132, 78]},
+          "measure": ["hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2021-06-21T08:05", "resulted": "2021-06-21T09:45", "results": [{"test": "Total Cholesterol", "value": 190}, {"test": "Low Density Lipoprotein", "value": 90}, {"test": "High Density Lipoprotein", "value": 55}, {"test": "Triglycerides", "value": 150}]},
+            {"panel": null, "collected": "2021-06-21T08:05", "resulted": "2021-06-21T09:45", "results": [{"test": "Hemoglobin A1c", "value": 6.8}, {"test": "Fasting Glucose", "value": 138}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-06-21T10:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2021-06-21T11:00",
+              "body": "S: Here for his regular check. Nothing new; feels the same as always. Says he has not missed his metformin, lisinopril or atorvastatin. He read something online about heart attacks in diabetics and wants to know if there is anything more he should be doing to protect his heart, given his grandfather's MI.\n\nO: BP 132/78. Remainder of vitals in flowsheet. Comfortable. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Feet without lesions.\nFasting labs drawn this morning: A1c 6.8%, fasting glucose 138. Total cholesterol 190, LDL 90, HDL 55, triglycerides 150.\n\nA/P\n1. Cardiovascular risk: went through his picture with him. Pressure is where we want it, LDL is 90 on atorvastatin, sugar is in range. The thing most within his reach is the alcohol; six to eight drinks a day pushes up pressure and triglycerides and adds calories. Also talked about a walk most days and less takeout. He wanted a pill answer and was a little disappointed, but agreed to try cutting back. No medication changes today.\n2. T2DM: A1c 6.8, continue metformin 1000 BID.\n3. HTN: controlled, lisinopril 10 daily.\n4. HLD: atorvastatin 40 daily.\n5. AUD: as above. Still declines naltrexone or counseling.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-07a",
+          "kind": "telephone",
+          "start": "2021-09-07T16:10",
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "stop", "reason": "Reordered to new pharmacy"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take as directed", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication Renewal, Covering",
+              "author": "covering physician",
+              "date": "2021-09-07T16:10",
+              "body": "Pt texted the on-call line over the holiday weekend: switched pharmacies, out of his blood pressure pill. Covering for PCP. Lisinopril 10 mg sent to the new pharmacy, 90 tabs. PCP visit already on the books next Monday."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-13a",
+          "kind": "office_visit",
+          "start": "2021-09-13T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "conditions": [
+            {"label": "Medication noncompliance", "icd10": "Z91.148", "action": "diagnosed", "onset": "2021-09-13"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "stop", "reason": "Order rewritten with explicit sig"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth once daily in the morning", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "state": {"bp": [158, 92], "labs": {"Hemoglobin A1c": 7.2, "Creatinine": 1.1, "Total Cholesterol": 190, "Low Density Lipoprotein": 100, "High Density Lipoprotein": 40, "Triglycerides": 250}},
+          "vitals": {"bp": [158, 92]},
+          "measure": ["hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2021-09-13T08:15", "resulted": "2021-09-13T09:30", "results": [{"test": "Total Cholesterol", "value": 190}, {"test": "Low Density Lipoprotein", "value": 100}, {"test": "High Density Lipoprotein", "value": 40}, {"test": "Triglycerides", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-13T08:15", "resulted": "2021-09-13T09:30", "results": [{"test": "Creatinine", "value": 1.1}, {"test": "Glucose"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2021-09-13T08:15", "resulted": "2021-09-13T09:30", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-09-13T10:25"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-13T09:40"},
+            {"procedure": "Immunization administration", "performed": "2021-09-13T10:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Office Visit",
+              "author": "PCP",
+              "date": "2021-09-13T10:30",
+              "body": "S: 67 y/o here for his three-month check. Tells me he is taking everything. Then, when we got to the pressure pill, he admitted he is mixed up: last week someone other than me sent a new blood pressure prescription to his new pharmacy, the label just says take as directed, and the tablets look nothing like his old ones. He can't remember what he was told about how often. He thinks some days he took one of each bottle and other days neither. Denies chest pain, palpitations or lightheadedness.\n\nO: BP 158/92, rechecked similar. Other vitals normal. Exam unremarkable: heart regular, lungs clear, no edema.\nLabs this morning: A1c 7.2%. Creatinine 1.1. TC 190, LDL 100, HDL 40, TG 250.\n\nA/P\n1. Medication noncompliance: not intentional, a labeling and bottle mix-up. The new bottle is the same drug and dose he has always taken, lisinopril 10 mg. Order rewritten with a plain once-a-morning sig and the old bottle is to come off the counter. Wrote out his three medicines on a card. Weekly pill organizer suggested and he'll buy one.\n2. HTN: today's number goes with the missed and doubled doses. No change in dose. Nurse BP check in 4 weeks.\n3. T2DM: A1c up a little from 6.8; HDL down and triglycerides up since June. Likely the irregular month and the drinking. Continue metformin.\n4. HLD: continue atorvastatin 40.\n5. AUD: no change in intake. Counseled.\n6. High-dose flu vaccine today.\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "portal_message",
+          "start": "2021-09-14T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pill Bottles",
+              "author": "patient",
+              "date": "2021-09-14T08:12",
+              "body": "Old lisinopril bottle is in the trash. New one only, one in the morning. Bought the box with the days on it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Pill Bottles",
+              "author": "RN",
+              "date": "2021-09-14T09:30",
+              "body": "Perfect. Bring the organizer to your BP check on Oct 12 and we'll look at it together."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure recheck",
+          "state": {"bp": [134, 82]},
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-10-12T14:00"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-12T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit: BP Check",
+              "author": "RN",
+              "date": "2021-10-12T14:10",
+              "body": "BP recheck after the lisinopril label mix-up. Brought his organizer, all compartments empty through yesterday, one tablet in each. Pressure at goal on two readings (see flowsheet). No dizziness. Shingrix dose 1 given R deltoid, dose 2 due in 2 to 6 months. Routed to PCP, who agrees no change."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-19a",
+          "kind": "pharmacy",
+          "start": "2021-11-19T12:30",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, original", "date": "2021-11-17T15:00"}
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Vaccine Notification",
+              "author": "MA",
+              "date": "2021-11-19T12:30",
+              "body": "Community pharmacy notified us of a Moderna COVID booster given 11/17. Entered into immunization history."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

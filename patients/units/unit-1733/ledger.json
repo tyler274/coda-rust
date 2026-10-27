@@ -1,0 +1,2784 @@
+{
+  "unit": "unit-1733",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001733",
+      "given": "Kelly",
+      "family": "Sousa",
+      "birth_date": "1989-07-27",
+      "address_line": "27 Ferry Landing Rd, Apt 2",
+      "phone": "+1-413-555-0129",
+      "email": "kelly.sousa@example.test",
+      "marital_status": "single",
+      "summary": "Woman in her thirties on Medicaid with a history of injection drug use and repeated sexually transmitted infections, who joined in 2018. Her chart runs through an HSIL Pap found before a pregnancy, ITP treated with prednisone, genital herpes, trichomoniasis, chancroid with chlamydia, a tubo-ovarian abscess admission and, after her last visit, acute transverse myelitis.",
+      "events": [
+        {
+          "id": "2018-09-27a",
+          "kind": "telephone",
+          "start": "2018-09-27T10:40",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2018-09-27T10:40",
+              "author": "front desk",
+              "body": "Caller wants a primary care doctor closer to home; her old office is a two-bus trip away. MassHealth card read back and eligibility checked, active. Demographics entered. Offered first new-patient slot, Thurs 10/4 at 9:20. Asked her to bring any pill bottles and the name of the old office so we can request records. Release form mailed."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-04a",
+          "kind": "establish_care",
+          "start": "2018-10-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "History of recurrent chlamydia infection",
+              "action": "history",
+              "note": "more than one episode in her twenties, treated elsewhere",
+              "icd10": "Z86.19"
+            },
+            {
+              "label": "History of recurrent urinary tract infections",
+              "action": "history",
+              "icd10": "Z87.440"
+            },
+            {
+              "label": "History of intravenous drug use",
+              "action": "history",
+              "note": "none at joining by her account",
+              "icd10": "Z87.898"
+            },
+            {
+              "label": "High risk sexual behavior",
+              "action": "diagnosed",
+              "onset": "2018-10-04",
+              "icd10": "Z72.51"
+            },
+            {
+              "label": "Tobacco use",
+              "action": "diagnosed",
+              "onset": "2018-10-04"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              65
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 63.1,
+            "height_cm": 164.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-10-04T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2018-10-04T10:05",
+              "author": "PCP",
+              "body": "29F here to set up care. Last seen at another office 'a few years back.' No complaints today.\n\nPMH: chlamydia more than once in her 20s, treated each time at the other office or a clinic. Several bladder infections over the years, nothing recent. Used IV drugs in the past; tells me she has not injected in years and does not want to go into it further today. I let it rest and told her the door is open.\nPSH: none.\nMeds: none. Allergies: NKDA.\nFH: mother with high blood pressure, father with type 2 diabetes. Nobody with a bleeding problem.\nSH: lives in town, not working. Smokes about 5 cigs/day. Drinks maybe once or twice a month. More than one partner, condoms 'sometimes.'\nGyn: last Pap at the old office, she doesn't know when exactly or what it showed.\n\nExam: well appearing, in no distress. Heart regular, lungs clear. Abdomen soft. Skin without track marks or rashes. Gyn exam deferred to the physical.\n\nA/P\n1. Establishing care. Records request to prior office.\n2. Tobacco: advised to quit, she is 'thinking about it.' Not ready for a quit date.\n3. Sexual health: talked through condoms every time and testing with new partners. She'll do a Pap and testing at the physical.\n4. Prior IV drug use: no current injecting per pt. Revisit.\nSchedule a physical in the spring."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request",
+              "date": "2018-10-04T10:30",
+              "author": "front desk",
+              "body": "Signed release on file. Request for last 5 years of notes, labs, Pap results faxed to patient's former primary care office."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2018-11-08a",
+          "kind": "outside_records",
+          "start": "2018-11-08T14:10",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from former primary care office",
+              "date": "2018-11-08T14:10",
+              "author": "outside primary care",
+              "body": "Packet of 22 pages from the former practice, visits 2013 through 2016. Acute visits for urinary symptoms treated with short antibiotic courses; two chlamydia treatments noted in medication history. Routine labs from 2015 (CBC and chemistry panel) within normal limits. No cervical cytology report in the packet. Allergies: none known.\n\n[Reviewed by PCP 11/9: nothing to act on. Pap still needed - due at physical.]"
+            }
+          ]
+        },
+        {
+          "id": "2019-06-12a",
+          "kind": "annual_physical",
+          "start": "2019-06-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-06-13a",
+          "kind": "telephone",
+          "start": "2019-06-13T11:15",
+          "reason": "Missed physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment outreach",
+              "date": "2019-06-13T11:15",
+              "author": "front desk",
+              "body": "Pt missed yesterday's 8:40 physical. Voicemail box full on first try; second try left message to call back and rebook. Reminder letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-17a",
+          "kind": "nurse_visit",
+          "start": "2019-10-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "vitals": {
+            "temp_c": 37.1
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-17T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-17T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2019-10-17T13:40",
+              "author": "RN",
+              "body": "Walked in for flu vaccine. Afebrile, feels well, no prior vaccine reactions. VIS given. Quadrivalent flu 0.5 mL IM L deltoid, tolerated. Reminded her she still needs to rebook the physical she missed in June - she says after the holidays."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-05-14a",
+          "kind": "annual_physical",
+          "start": "2020-05-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              79
+            ],
+            "hr": 69,
+            "rr": 14,
+            "temp_c": 37.2,
+            "spo2": 98,
+            "weight_kg": 63.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2020-05-14T10:30",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: epithelial cell abnormality, squamous: high-grade squamous intraepithelial lesion (HSIL). Organisms: Actinomyces-like organisms present.",
+              "conclusion": "HSIL. Actinomyces-like organisms. Colposcopy recommended.",
+              "issued": "2020-05-19T08:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-05-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-05-14T11:10",
+              "author": "PCP",
+              "body": "30F for her physical, first one with us. Masked, screened at the door. Nothing bothering her today.\n\nHx: chlamydia x several in her 20s, recurrent UTIs, past IV drug use (none now per pt). No surgeries. No meds. NKDA.\nFH: mom HTN, dad T2DM, no bleeding disorders.\nSH: ~5 cig/day, social alcohol a couple times a month. Not working. Multiple partners, condom use inconsistent.\nGyn: had a Pap at the old office years ago, has no idea of the result. Never got the HPV shots. Discussed that she is past the routine age and that it is a shared decision at 30 - she'd rather not today.\n\nROS negative.\nVitals normal.\nGen: well. HEENT normal. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear. Abd soft, NT. Breasts without masses. Pelvic: normal external genitalia, cervix without visible lesion, no discharge, no adnexal tenderness. Skin clear. Extremities without edema.\n\nA/P\n- Health maintenance: Pap sent today. Declines HPV vaccine.\n- Tobacco: brief counseling again. Not ready.\n- Sexual health: condoms, testing with new partners. Offered STI panel; she'll think about it.\n- Return in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-05-19a",
+          "kind": "telephone",
+          "start": "2020-05-19T12:20",
+          "reason": "Abnormal Pap result",
+          "conditions": [
+            {
+              "label": "Abnormal cervical Papanicolaou smear",
+              "action": "diagnosed",
+              "onset": "2020-05-14",
+              "note": "HSIL"
+            },
+            {
+              "label": "Asymptomatic Actinomyces colonization of genital tract",
+              "action": "diagnosed",
+              "onset": "2020-05-14",
+              "note": "Actinomyces-like organisms on Pap; no IUD",
+              "icd10": "Z22.8"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colpo-referral",
+              "action": "placed",
+              "order": "Gynecology referral for colposcopy",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "HSIL on cervical cytology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pap result discussed",
+              "date": "2020-05-19T12:20",
+              "author": "PCP",
+              "body": "Called pt with Pap: HSIL. Explained this is a high-grade change on the screening test, not cancer, but needs a closer look (colposcopy) with gyn. Also mentioned the report saw organisms that look like Actinomyces - she has no IUD and no symptoms, so nothing to treat. She was quiet but asked good questions. Referral to gyn placed; she knows they will call. Asked her to tell us if she hasn't heard in 2 weeks."
+            },
+            {
+              "type": "Referral",
+              "title": "Referral to Gynecology",
+              "date": "2020-05-19T12:35",
+              "author": "PCP",
+              "body": "Reason: colposcopy for HSIL on cervical cytology 5/14/20. Also Actinomyces-like organisms on the same specimen; asymptomatic, no IUD. Hx recurrent chlamydia, multiple partners. NKDA. No meds. Pap report attached."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-30a",
+          "kind": "outside_records",
+          "start": "2020-06-30T09:15",
+          "reason": "Gynecology colposcopy letter",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2020-05-20",
+              "note": "LMP 2020-05-06"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2020-06-25T14:00",
+              "text": "Specimen: cervix, 6 o'clock, colposcopic biopsy. Sections show squamous mucosa with full-thickness loss of maturation in the lower two-thirds and mitotic figures above the basal layer. No invasion seen.",
+              "conclusion": "High-grade squamous intraepithelial lesion (CIN 2). Negative for invasive carcinoma.",
+              "issued": "2020-06-29T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colpo-referral",
+              "action": "done",
+              "date": "2020-06-30T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology colposcopy letter",
+              "date": "2020-06-30T09:15",
+              "author": "gynecology",
+              "body": "Dear Doctor,\n\nThank you for sending Ms. Sousa for colposcopy after HSIL cytology. Date of visit 6/25/2020.\n\nRoutine urine hCG before the procedure was positive. LMP 5/6/20, so about 7 weeks. She was surprised; we talked about options and she plans to continue the pregnancy and start prenatal care with our group.\n\nColposcopy adequate, squamocolumnar junction fully seen. Acetowhite change with fine mosaicism at 6 o'clock; one biopsy taken. No endocervical curettage given the pregnancy. Pathology returned CIN 2, no invasion.\n\nPlan: no excision during pregnancy. We'll repeat colposcopy about 6-8 weeks postpartum. The Actinomyces-like organisms on her Pap need no treatment without symptoms or an IUD.\n\nMedications: none (prenatal vitamin advised). Allergies: NKDA.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2020-07-02a",
+          "kind": "portal_message",
+          "start": "2020-07-02T20:45",
+          "reason": "Question about care during pregnancy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "do i still see you",
+              "date": "2020-07-02T20:45",
+              "author": "patient",
+              "body": "hi so I guess you heard im pregnant. do I still come to you or just the OB now? I dont want to lose my spot"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: do i still see you",
+              "date": "2020-07-03T08:30",
+              "author": "PCP",
+              "body": "Congratulations, and you aren't losing anything. The OB team will handle your pregnancy care and your cervix follow-up. We stay your doctor for everything else - message or call any time. Once the baby is here we'll get you back in for a check-up."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-11a",
+          "kind": "outside_records",
+          "start": "2020-09-11T10:20",
+          "reason": "OB prenatal visit letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit summary, 18 weeks",
+              "date": "2020-09-11T10:20",
+              "author": "obstetrics",
+              "body": "Prenatal visit 9/9/2020, 18w0d by LMP.\n\nDoing well, no bleeding, cramping or leaking. This pregnancy has been uncomplicated to date. She has had one cat for years and just brought home a second from a shelter, and she wanted to know what she should be careful about.\n\nVitals normal. Fundal height and fetal heart tones appropriate for dates. No lymphadenopathy. Skin without lesions.\n\nPrenatal labs earlier this pregnancy were normal: blood type O positive, antibody screen negative.\n\nPlan: given the cat exposure we sent toxoplasma IgG and IgM. Someone else should scoop the litter if possible, otherwise gloves and hand-washing; avoid undercooked meat. Anatomy ultrasound at 20 weeks.\n\nPast history: chlamydia more than once, urinary infections, past injection drug use. Cervical CIN 2 in follow-up after delivery. Allergies: NKDA. Smoking about 5/day; cessation discussed.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "outside_records",
+          "start": "2020-09-14T15:40",
+          "reason": "OB addendum, toxoplasma serology",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Addendum: toxoplasma serology",
+              "date": "2020-09-14T15:40",
+              "author": "obstetrics",
+              "body": "Addendum to 9/9/20 visit. Toxoplasma gondii IgG POSITIVE, IgM NEGATIVE. Consistent with infection in the past, before this pregnancy; no risk to the fetus from this result and no treatment needed. Patient informed by phone; litter and food precautions reviewed again. Allergies: NKDA.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "portal_message",
+          "start": "2020-09-15T07:55",
+          "reason": "Question about cat result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "cat test",
+              "date": "2020-09-15T07:55",
+              "author": "patient",
+              "body": "The OB said my toxo came back positive but its old?? Do I have to give up the cats. My shelter cat is literally a baby"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: cat test",
+              "date": "2020-09-15T12:10",
+              "author": "PCP",
+              "body": "No need to give up the cats. That pattern means you caught it at some point in the past, before you got pregnant, so it doesn't put the baby at risk. Keep doing what the OB said: someone else on litter duty if you can, gloves and hand-washing if not."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-11a",
+          "kind": "outside_records",
+          "start": "2021-02-11T11:05",
+          "reason": "Delivery summary received",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2020-05-20",
+              "note": "delivered 2021-02-03"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-08T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2020-12-02T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor and delivery discharge summary",
+              "date": "2021-02-11T11:05",
+              "author": "obstetrics",
+              "body": "Admitted 2/3/2021 in spontaneous labor at 39w2d. Uncomplicated labor; spontaneous vaginal delivery of a healthy liveborn infant the same evening. Perineum intact. Estimated blood loss within normal range. Postpartum course routine; discharged home 2/5/2021 with infant.\n\nPrenatal course: uncomplicated. Blood type O positive, antibody screen negative. Toxoplasma IgG positive / IgM negative (remote). Influenza vaccine 10/8/2020 and Tdap 12/2/2020 given at prenatal visits.\n\nFollow-up: postpartum visit and repeat colposcopy for CIN 2 in about 8 weeks.\nAllergies: NKDA. Discharge medications: none new.\n\nOB/GYN"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Scanned to chart",
+              "date": "2021-02-11T11:20",
+              "author": "MA",
+              "body": "Hospital delivery summary indexed under outside records. Flu 10/8/20 and Tdap 12/2/20 entered in immunization history from the summary. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "portal_message",
+          "start": "2021-03-02T14:25",
+          "reason": "Postpartum colposcopy scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "cervix appt",
+              "date": "2021-03-02T14:25",
+              "author": "patient",
+              "body": "Hi its Kelly. Baby is good. The OB office wants me back for the cervix thing in April. Is that too soon or should I wait. Also can I get the covid shot now"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: cervix appt",
+              "date": "2021-03-02T17:40",
+              "author": "PCP",
+              "body": "Glad you're both doing well. April is right on time - please keep that appointment, it matters. And yes, you're eligible now; the state sign-up site and most pharmacies have slots. Let us know when you get it so we can add it to your record."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-29a",
+          "kind": "outside_records",
+          "start": "2021-04-29T09:50",
+          "reason": "Postpartum colposcopy letter",
+          "conditions": [
+            {
+              "label": "Abnormal cervical Papanicolaou smear",
+              "action": "resolved",
+              "note": "postpartum biopsies benign"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-04-22T15:10",
+              "text": "Specimens: A) cervix, 6 o'clock, biopsy; B) cervix, 12 o'clock, biopsy. Both show benign squamous and endocervical mucosa with mild chronic inflammation. No dysplasia identified.",
+              "conclusion": "Benign cervical mucosa. Negative for intraepithelial lesion and malignancy.",
+              "issued": "2021-04-27T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology postpartum colposcopy letter",
+              "date": "2021-04-29T09:50",
+              "author": "gynecology",
+              "body": "Dear Doctor,\n\nMs. Sousa returned on 4/22/2021, eleven weeks after an uncomplicated vaginal delivery, for repeat colposcopy after CIN 2 found in early pregnancy.\n\nColposcopy adequate. Faint acetowhite change only; biopsies at 6 and 12 o'clock. Pathology benign, no dysplasia. This fits regression, which is common after pregnancy.\n\nPlan: co-testing (cytology and HPV) in one year, which can be done at your office. If negative, repeat co-testing per surveillance guidelines. Contraception discussed; she will think about options.\n\nAllergies: NKDA. Medications: none.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2021-06-03a",
+          "kind": "outside_records",
+          "start": "2021-06-03T10:15",
+          "reason": "Immunization registry update",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-06T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-27T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Immunizations reconciled from state registry",
+              "date": "2021-06-03T10:15",
+              "author": "MA",
+              "body": "Pt messaged that she finished her COVID shots at a community pharmacy. Pulled from state registry: Pfizer 5/6/21 and 5/27/21. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-03a",
+          "kind": "office_visit",
+          "start": "2021-09-03T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bruising",
+          "vitals": {
+            "bp": [
+              109,
+              80
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-03T10:05",
+              "resulted": "2021-09-03T12:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 20
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2021-09-03T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "placed",
+              "order": "Hematology referral, urgent",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "platelets 20 with bruising and petechiae"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "date": "2021-09-03T10:20",
+              "author": "PCP",
+              "body": "32F, 7 months postpartum, here because she's been bruising all week. Big bruises on her thighs she doesn't remember getting and little red dots on her lower legs. No nosebleeds, gum bleeding, blood in urine or stool. No fever, no recent illness. No new medicines or supplements; not taking anything over the counter. Periods back, not heavy. Nobody in the family with a bleeding disorder.\n\nVitals normal. Several large bruises on both thighs. Petechiae scattered around both ankles. No mouth blood blisters. No palpable nodes. Abdomen soft, no spleen felt.\n\nA/P: bruising with petechiae. CBC stat.\n\nAddendum 12:45: CBC back - Hb 14.0, WBC 6.0, platelets 20. Isolated low platelets. Spoke with on-call hematology, who will see her Monday morning first thing. Called pt: no contact sports or heavy lifting, no ibuprofen/aspirin/naproxen, and go to the ED for any bleeding that won't stop, black stools, blood in urine, or a bad headache. She repeated it back."
+            },
+            {
+              "type": "Referral",
+              "title": "Urgent referral to Hematology",
+              "date": "2021-09-03T12:50",
+              "author": "PCP",
+              "body": "32F, 7 months postpartum, 1 week of easy bruising and lower-leg petechiae. Platelets 20 today; Hb 14.0 and WBC 6.0 normal. No meds. Hx past injection drug use, recurrent STIs. NKDA. Discussed with on-call hematology; seen 9/6."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-07a",
+          "kind": "outside_records",
+          "start": "2021-09-07T13:30",
+          "reason": "Hematology consult letter",
+          "conditions": [
+            {
+              "label": "Immune thrombocytopenic purpura",
+              "action": "diagnosed",
+              "onset": "2021-08-27"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth every morning for 14 days, then taper as directed by hematology",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "reason": "immune thrombocytopenia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-06T09:30",
+              "resulted": "2021-09-07T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "done",
+              "date": "2021-09-07T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology consultation",
+              "date": "2021-09-07T13:30",
+              "author": "hematology",
+              "body": "Date of consultation: 9/6/2021\nReason: thrombocytopenia\n\nThank you for the urgent referral. Ms. Sousa is a 32-year-old who noticed easy bruising and pinpoint spots on her lower legs over the past week. She has not been sick lately, has started no new medicines, and knows of no bleeding disorder in her family. Seven months postpartum, uncomplicated delivery. Past history of injection drug use and recurrent genitourinary infections; sexually active with more than one partner, barrier protection inconsistent.\n\nExam: several large ecchymoses over the thighs, petechiae over both ankles. No wet purpura. No lymphadenopathy. No hepatomegaly or splenomegaly. Joints without swelling or warmth.\n\nData: your CBC of 9/3 - hemoglobin 14.0, WBC 6.0, platelets 20. I reviewed the peripheral smear: platelets reduced, no clumping, normal-appearing red cells and white cells, no schistocytes or blasts.\n\nHIV, hepatitis C antibody and hepatitis B surface antigen sent today: all nonreactive. Hepatitis B surface antibody negative (not immune).\n\nImpression: immune thrombocytopenia (ITP), primary, with skin bleeding only.\n\nPlan:\n1. Prednisone 60 mg each morning x 14 days, then taper over about 4 weeks guided by counts.\n2. CBC in 2 weeks here.\n3. Avoid NSAIDs and aspirin. Bleeding precautions reviewed.\n4. She is not immune to hepatitis B; would recommend vaccination through your office.\n\nAllergies: NKDA.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "pharmacy",
+          "start": "2021-09-08T16:10",
+          "reason": "Pharmacy question about prednisone quantity",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2021-09-08T16:10",
+              "author": "RN",
+              "body": "Pharmacist called wanting to confirm who manages the prednisone taper since our office is listed as PCP. Told her the hematology office wrote it and owns the taper; gave their number. Rx is 60 mg daily x 14 days to start, which matches the consult letter."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "outside_records",
+          "start": "2021-09-22T10:40",
+          "reason": "Hematology follow-up note",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-20T09:15",
+              "resulted": "2021-09-20T11:00",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 98
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology follow-up",
+              "date": "2021-09-22T10:40",
+              "author": "hematology",
+              "body": "Visit 9/20/2021. On prednisone 60 mg day 14. Bruises fading, no new petechiae, no bleeding. Platelets 98 today. Begin taper: 40 mg x 1 week, 20 mg x 1 week, 10 mg x 1 week, 5 mg x 1 week, then stop. CBC in 4-5 weeks.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-30a",
+          "kind": "portal_message",
+          "start": "2021-10-30T09:05",
+          "reason": "Finished prednisone",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "taper complete 2021-10-29"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "done with steroids",
+              "date": "2021-10-30T09:05",
+              "author": "patient",
+              "body": "Took my last prednisone yesterday!!! Blood doctor said my platelets were 172 on Monday. Do I still need to come back to you for anything"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: done with steroids",
+              "date": "2021-11-01T08:15",
+              "author": "PCP",
+              "body": "Great news. Hematology will keep checking your counts for a while. Two things here: the hepatitis B vaccine series they recommended (3 shots) and your flu shot - the nurse can do both. The front desk will reach out."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-01a",
+          "kind": "outside_records",
+          "start": "2021-11-01T14:00",
+          "reason": "Hematology follow-up note",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-25T09:20",
+              "resulted": "2021-10-25T11:10",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 172
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology follow-up",
+              "date": "2021-11-01T14:00",
+              "author": "hematology",
+              "body": "Visit 10/25/2021. On the last week of the taper (5 mg), finishing 10/29. No bleeding or bruising. Platelets 172. Recheck CBC off steroids in about 6 weeks.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "nurse_visit",
+          "start": "2021-11-18T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B #1 and flu",
+          "vitals": {
+            "temp_c": 37.0
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-18T14:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2021-11-18T14:25"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-11-18T14:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2021-11-18T14:35",
+              "author": "RN",
+              "body": "Here for hep B #1 and flu. Afebrile, well. Off prednisone since 10/29. Hep B adult 1.0 mL IM R deltoid; flu 0.5 mL IM L deltoid. Pressure held 2 min at each site given ITP hx, no bruising. Next hep B in 1 month, scheduled 12/20."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-12-08a",
+          "kind": "outside_records",
+          "start": "2021-12-08T09:30",
+          "reason": "Hematology letter",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-06T09:10",
+              "resulted": "2021-12-06T10:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 205
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology follow-up and return to primary care",
+              "date": "2021-12-08T09:30",
+              "author": "hematology",
+              "body": "Visit 12/6/2021. Five weeks off prednisone. Platelets 205. No bleeding. ITP in remission after a single steroid course.\n\nReturning her to your care. Suggest CBC every 3-4 months for the first year, then yearly, and a call to us if platelets fall below 50 or she bleeds. Continue to avoid NSAIDs when she can.\n\nAllergies: NKDA. Medications: none.\n\nHematology & Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "nurse_visit",
+          "start": "2021-12-20T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hepatitis B #2",
+          "vitals": {
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-12-20T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2021-12-20T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hepatitis B vaccine #2",
+              "date": "2021-12-20T15:20",
+              "author": "RN",
+              "body": "Hep B #2 given IM L deltoid, tolerated. Arm sore for a day last time, nothing else. #3 due in May - will line it up with her physical."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "lab_only",
+          "start": "2022-03-24T08:30",
+          "reason": "Platelet check after ITP",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-24T08:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2022-03-24T15:00",
+              "author": "PCP",
+              "body": "Platelets normal. Message sent to pt. Next CBC with physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "annual_physical",
+          "start": "2022-05-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              77
+            ],
+            "hr": 50,
+            "rr": 13,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 62.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-19T09:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-19T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-05-19T09:30",
+              "text": "Liquid-based cervical cytology, satisfactory for evaluation, transformation zone present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2022-05-23T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-05-19T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-19T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-05-19T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-05-19T10:30",
+              "author": "PCP",
+              "body": "32F, physical. Baby is 15 months and keeping her busy. Feels well.\n\nInterval: ITP in 9/21, prednisone course done 10/29/21, platelets normal since. Postpartum colposcopy 4/21 benign; gyn asked us to co-test at 1 year - doing that today.\nMeds: none. NKDA.\nSH: still ~5 cig/day. Alcohol rare. Partners: 'it's complicated,' condoms sometimes.\n\nROS: no bruising, no bleeding, no urinary symptoms, no discharge.\nVitals normal. PHQ-9 4.\nExam: well. Heart and lungs normal. Abdomen benign, no splenomegaly. No petechiae or bruises. Pelvic: normal external genitalia, cervix appears healthy, no discharge. Co-test collected.\n\nA/P\n1. ITP in remission: CBC today.\n2. Cervical surveillance: co-test today.\n3. Hep B #3 given today - series complete.\n4. Tobacco: she'd like to cut down once the baby sleeps through. Not ready for meds.\n5. Sexual health: condoms each time; STI testing any time she wants it, no appointment needed.\nCMP for baseline."
+            },
+            {
+              "type": "Nursing Note",
+              "title": "Hepatitis B #3",
+              "date": "2022-05-19T09:46",
+              "author": "MA",
+              "body": "Hep B #3 IM R deltoid per PCP order. Series complete. Tolerated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "portal_message",
+          "start": "2022-05-24T11:30",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2022-05-24T11:30",
+              "author": "PCP",
+              "body": "Hi Kelly - your platelets and blood counts are normal, and your kidney and liver tests are fine. Your Pap and HPV test are both negative, which is what we hoped for after last year's biopsies. Next one in a year or two; I'll remind you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your results",
+              "date": "2022-05-24T19:02",
+              "author": "patient",
+              "body": "omg thank god. thank you"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T11:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall vaccines",
+              "date": "2022-10-13T11:15",
+              "author": "RN",
+              "body": "Flu (L deltoid) and bivalent Pfizer booster (R deltoid). Brought the toddler; both behaved. Afebrile, no reactions in the past beyond a sore arm. Waited 15 min, fine."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-01-03a",
+          "kind": "outside_records",
+          "start": "2023-01-03T10:10",
+          "reason": "Gynecology visit letter",
+          "conditions": [
+            {
+              "label": "Anogenital herpes simplex virus infection",
+              "action": "diagnosed",
+              "onset": "2022-12-26",
+              "icd10": "A60.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "first episode genital herpes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit letter",
+              "date": "2023-01-03T10:10",
+              "author": "gynecology",
+              "body": "Visit date 12/29/2022.\n\nMs. Sousa came in with three days of genital sores. They started as tiny blisters and within a day turned into open, painful spots. They itch, and it burns when she urinates. No discharge, no fever.\n\nHistory: CIN 2 in 2020 with benign postpartum biopsies and a negative co-test in 5/2022; ITP in 2021, in remission; past chlamydia; past injection drug use. Multiple partners, condoms inconsistently.\n\nExam: grouped small vesicles with shallow ulcerations on both labia majora. Tender inguinal nodes on both sides. Vagina and cervix otherwise normal; remainder of exam unremarkable.\n\nSwab of an ulcer base: HSV PCR POSITIVE. Viral culture sent, pending.\n\nAssessment: first clinical episode of anogenital herpes.\nPlan: valacyclovir 1 g twice daily x 10 days. Sitz baths; urinating in a warm bath can ease the burning. Avoid sex while sores are present; partners should be told. We talked about recurrences and options if they come often.\n\nAllergies: NKDA.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-06a",
+          "kind": "outside_records",
+          "start": "2023-01-06T15:20",
+          "reason": "Gynecology addendum, viral culture",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Addendum: viral culture",
+              "date": "2023-01-06T15:20",
+              "author": "gynecology",
+              "body": "Addendum to 12/29/2022 visit: viral culture of the labial lesion grew herpes simplex virus, confirming the PCR. No change to plan.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T22:14",
+          "reason": "Questions after herpes diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "question",
+              "date": "2023-01-09T22:14",
+              "author": "patient",
+              "body": "The gyn told you about the herpes I assume. Sores are almost gone. Is this going to mess with my platelets or anything? I feel kind of gross honestly"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: question",
+              "date": "2023-01-10T08:05",
+              "author": "PCP",
+              "body": "I did get the letter. It doesn't affect your platelets. It's very common and nothing to feel gross about - plenty of people have it and never know. If sores come back, message me or gyn early, because treatment works best in the first day or two. And condoms every time lower the chance of passing it on."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "lab_only",
+          "start": "2023-06-20T08:20",
+          "reason": "Yearly CBC after ITP",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-20T08:20",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2023-06-20T14:40",
+              "author": "PCP",
+              "body": "Platelets normal, rest of CBC normal. Portal note sent. She has not booked this year's physical - front desk to reach out."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical outreach",
+              "date": "2023-06-21T10:00",
+              "author": "front desk",
+              "body": "Called to schedule annual. Pt says summer is hard with childcare, will call back in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "outside_records",
+          "start": "2023-09-14T09:35",
+          "reason": "Gynecology visit letter",
+          "conditions": [
+            {
+              "label": "Trichomoniasis",
+              "action": "diagnosed",
+              "onset": "2023-09-05",
+              "icd10": "A59.01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "metronidazole 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days. No alcohol during and for 3 days after.",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "trichomoniasis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology visit letter",
+              "date": "2023-09-14T09:35",
+              "author": "gynecology",
+              "body": "Visit date 9/12/2023.\n\nOne week of discharge with a bad odor and mild itching. No pelvic pain. LMP two weeks ago, normal. No antibiotics recently, no new soaps or products.\n\nHistory: anogenital HSV (first episode 12/2022), past chlamydia, ITP in remission.\n\nVitals normal. Exam: thin yellow-green discharge. Cervix red with small punctate bleeding points after swabbing. No cervical motion or adnexal tenderness. Rest of exam normal.\n\nOffice testing: vaginal pH 5.5; whiff test positive; saline wet mount with motile, pear-shaped flagellated organisms.\n\nAssessment: trichomoniasis.\nPlan: metronidazole 500 mg twice daily x 7 days; no alcohol during and for 3 days after. Partners need treatment before resuming sex. Retest in 3 months - can be done at your office.\n\nAllergies: NKDA.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T13:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T13:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T13:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu and COVID",
+              "date": "2023-10-19T13:55",
+              "author": "RN",
+              "body": "Flu L arm, 2023-24 COVID R arm. No issues. Reminded about trich retest in December - order in, lab only, no appointment. Physical still not booked; gave her the scheduling line."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "lab_only",
+          "start": "2023-12-12T09:10",
+          "reason": "Trichomonas retest",
+          "conditions": [
+            {
+              "label": "Trichomoniasis",
+              "action": "resolved",
+              "icd10": "A59.01"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-12T09:10",
+              "resulted": "2023-12-14T10:00",
+              "results": [
+                {
+                  "test": "Trichomonas vaginalis rRNA",
+                  "loinc": "46154-1",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Trichomonas retest",
+              "date": "2023-12-14T12:30",
+              "author": "PCP",
+              "body": "Trichomonas NAAT (self-collected vaginal swab) not detected. Treated infection cleared. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              74
+            ],
+            "hr": 59,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-21T11:00",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-05-21T10:45",
+              "text": "Liquid-based cervical cytology, satisfactory for evaluation, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2024-05-24T13:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-05-21T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-21T11:25",
+              "author": "PCP",
+              "body": "34F, physical - first in two years; childcare made last year hard.\n\nSince last physical: genital HSV first episode 12/2022 (one course of valacyclovir, no recurrence she's noticed). Trichomoniasis 9/2023, treated, retest negative 12/2023. ITP stable, platelets normal 6/2023.\nMeds: none. NKDA.\nSH: smoking ~5/day, unchanged. Alcohol a couple times a month. Not working. Partners: more than one, condoms 'when I have them.' Gave her a bag from the front desk basket.\n\nROS negative. Vitals normal. PHQ-9 2.\nExam: well appearing. HEENT normal. Heart, lungs normal. Abdomen soft, no spleen. Skin without bruising or petechiae. Pelvic: no lesions, no discharge, cervix normal. Co-test collected.\n\nA/P\n1. Cervical surveillance: second co-test after the 2020 CIN 2 - collected.\n2. ITP: CBC.\n3. Tobacco: discussed again, precontemplative.\n4. STI prevention: condoms; walk-in testing any time.\n5. HSV: watch for recurrences, early treatment.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "portal_message",
+          "start": "2024-05-28T09:20",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-05-28T09:20",
+              "author": "PCP",
+              "body": "Kelly - Pap and HPV negative again, and your platelets are normal. Two normal co-tests in a row, so the next one isn't due for 3 years (2027)."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-06a",
+          "kind": "outside_records",
+          "start": "2024-09-06T08:45",
+          "reason": "ED record received",
+          "conditions": [
+            {
+              "label": "Chancroid",
+              "action": "diagnosed",
+              "onset": "2024-08-31",
+              "icd10": "A57"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ceftriaxone 250 MG Injection",
+              "action": "historical",
+              "sig": "250 mg IM once, given in the ED",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "ONCE",
+              "route": "Intramuscular",
+              "course": "short",
+              "reason": "chancroid"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-05T18:20",
+              "resulted": "2024-09-05T19:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-05T18:20",
+              "resulted": "2024-09-05T21:30",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2024-09-06T08:45",
+              "author": "emergency medicine",
+              "body": "Date of service: 9/5/2024\n\nCC: genital sores, groin swelling.\n\nHPI: 35F with past chlamydia, past injection drug use, genital HSV and trichomoniasis. Five days ago tender bumps appeared on the labia; they became pustules and then broke open into sores with red bases and sharp edges. Pain and swelling in both groins. No travel. Discloses trading sex for drugs. Not currently on any medicines.\n\nAllergies: NKDA.\nVitals: within normal limits.\n\nExam: several ulcers 1-2 cm on the labia majora with purulent exudate. Tender inguinal adenopathy on both sides, no fluctuance.\n\nData: WBC 9.0, Hgb 13.2, Plt 250. RPR non-reactive. Gram stain of ulcer exudate: gram-negative rods. Gonorrhea/chlamydia NAAT and HIV sent; results to follow to PCP.\n\nMDM: painful purulent ulcers with tender nodes, negative RPR, gram-negative rods on stain - chancroid.\nTreatment: ceftriaxone 250 mg IM given. Pain control, sitz baths. Partners within 10 days need evaluation. Follow up with PCP within 1-2 weeks; RTED for fever or worsening swelling.\n\nDiagnosis: chancroid.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "telephone",
+          "start": "2024-09-09T11:50",
+          "reason": "ED STI results",
+          "conditions": [
+            {
+              "label": "Chlamydial infection of lower genitourinary tract",
+              "action": "diagnosed",
+              "onset": "2024-09-05",
+              "icd10": "A56.00"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 7 days with water, stay upright 30 min",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "chlamydia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-05T18:25",
+              "resulted": "2024-09-08T07:40",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED results - chlamydia positive",
+              "date": "2024-09-09T11:50",
+              "author": "PCP",
+              "body": "ED forwarded the send-outs from 9/5: chlamydia DETECTED, gonorrhea not detected, HIV nonreactive. Called pt. The ceftriaxone she got in the ED doesn't cover chlamydia. Doxycycline 100 BID x 7 days sent. No sex until 7 days after finishing and partners treated. Retest in 3 months. Sores are a little better. Follow-up visit booked for next week."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, genital ulcers",
+          "vitals": {
+            "bp": [
+              126,
+              74
+            ],
+            "hr": 73,
+            "temp_c": 36.9,
+            "weight_kg": 63.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-17T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2024-09-17T14:40",
+              "author": "PCP",
+              "body": "Seen in ED 9/5 for chancroid (ceftriaxone IM). Chlamydia positive on the ED swab; finished doxycycline yesterday, no GI upset.\n\nSores much less painful. Groin swelling down. No fever.\n\nVitals normal. Labia: ulcers granulating, no exudate. Inguinal nodes smaller, mildly tender, no fluctuance.\n\nA/P\n1. Chancroid - healing as expected.\n2. Chlamydia - treated; NAAT retest in December (order in).\n3. The ED note says she has traded sex for drugs. I asked about it gently, privately. She did not want to talk about what she uses or get a referral today. Told her it changes nothing about how we take care of her and that I can connect her any time.\n4. Condoms and partner treatment reviewed.\nRTC as scheduled for physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "date": "2024-10-22T10:40",
+              "author": "RN",
+              "body": "Trivalent flu IM L deltoid. Declined COVID today, maybe later. Tolerated."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "lab_only",
+          "start": "2024-12-10T09:00",
+          "reason": "Chlamydia retest",
+          "conditions": [
+            {
+              "label": "Chlamydial infection of lower genitourinary tract",
+              "action": "resolved",
+              "icd10": "A56.00"
+            },
+            {
+              "label": "Chancroid",
+              "action": "resolved",
+              "icd10": "A57"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-10T09:00",
+              "resulted": "2024-12-12T08:30",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Chlamydia retest",
+              "date": "2024-12-12T10:15",
+              "author": "PCP",
+              "body": "Chlamydia and gonorrhea NAAT not detected. Chancroid healed at September visit. Resolved both on problem list. Portal note to pt."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-07a",
+          "kind": "telephone",
+          "start": "2025-03-07T09:30",
+          "reason": "Hospital admission notice",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission notification",
+              "date": "2025-03-07T09:30",
+              "author": "RN",
+              "body": "Hospital case manager called: pt admitted to gynecology last night with pelvic infection, on IV antibiotics. Will fax summary at discharge. Asked them to have her call us for a follow-up visit within a week of going home."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telephone",
+          "start": "2025-03-11T10:15",
+          "reason": "Post-discharge scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-03-11T10:15",
+              "author": "RN",
+              "body": "Pt home since yesterday. No fever since Saturday. Taking doxycycline and metronidazole, no missed doses, some nausea with the metronidazole but keeping them down. Pain 'way better.' Reviewed: no alcohol with metronidazole, call for fever, worsening pain or vomiting. Visit Fri 3/14 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "outside_records",
+          "start": "2025-03-12T13:00",
+          "reason": "Hospital discharge summary",
+          "conditions": [
+            {
+              "label": "Acute pelvic inflammatory disease with tubo-ovarian abscess",
+              "action": "diagnosed",
+              "onset": "2025-03-03",
+              "icd10": "N70.03"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily to complete 14 days of therapy",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "tubo-ovarian abscess"
+            },
+            {
+              "drug_text": "metronidazole 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily to complete 14 days of therapy. No alcohol.",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "tubo-ovarian abscess"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-06T21:40",
+              "resulted": "2025-03-06T22:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 55
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-06T21:40",
+              "resulted": "2025-03-06T23:00",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 24
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-06T22:10",
+              "resulted": "2025-03-08T09:00",
+              "results": [
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-03-06T23:30",
+              "text": "Transabdominal and transvaginal technique. Uterus normal in size, endometrium thin and uniform. Right adnexa: complex multiloculated mass with thick walls and internal debris, measuring 5.4 x 4.6 x 4.1 cm in three orthogonal planes. Left ovary normal in size with normal follicles. No free fluid.",
+              "conclusion": "Complex multiloculated right adnexal mass with thick walls and internal debris, 5.4 cm, in keeping with tubo-ovarian abscess in this clinical setting."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Gynecology discharge summary",
+              "date": "2025-03-12T13:00",
+              "author": "gynecology",
+              "body": "Admitted: 3/6/2025. Discharged: 3/10/2025.\nDiagnosis: acute pelvic inflammatory disease with right tubo-ovarian abscess.\n\nPresentation: 35-year-old with three days of fever, lower abdominal pain on both sides that worsens with movement, and vaginal discharge. Prior chlamydia, most recently treated six months ago, and recent chancroid. Past injection drug use; ITP in remission.\n\nOn arrival: T 38.7 C (101.7 F), HR 110, BP 100/60. Cervical motion tenderness, tenderness of both adnexa, purulent discharge from the cervix.\nLabs: WBC 15.0, Hgb 12.2, CRP 24 mg/L. Urine hCG negative. GC/CT NAAT negative; HIV nonreactive.\nPelvic ultrasound: complex multiloculated right adnexal mass with thick walls and internal debris, 5.4 x 4.6 x 4.1 cm.\n\nCourse: IV ceftriaxone, doxycycline and metronidazole. Afebrile within 48 hours, pain steadily improving, tolerating diet. Abscess size suitable for antibiotic therapy alone; no drainage or surgery required. Transitioned to oral therapy on day 4.\n\nDischarge medications: doxycycline 100 mg twice daily and metronidazole 500 mg twice daily to complete 14 days total.\nFollow-up: PCP within 1 week; gynecology with repeat pelvic ultrasound in about 6 weeks. Partner treatment advised.\nAllergies: NKDA.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-14a",
+          "kind": "office_visit",
+          "start": "2025-03-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, tubo-ovarian abscess",
+          "vitals": {
+            "bp": [
+              131,
+              85
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 62.6
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-03-14T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-03-14T11:20",
+              "author": "PCP",
+              "body": "Admitted 3/6-3/10 for PID with a 5.4 cm right TOA, treated with IV then oral antibiotics, no drainage. Discharge summary reviewed.\n\nToday: no fever since day 2 in hospital. Lower belly 'sore, not sharp.' Discharge almost gone. On day 9 of 14 of doxycycline + metronidazole; mild nausea, eating fine. No alcohol.\n\nVitals normal, afebrile. Abdomen soft, mild lower tenderness, no guarding or rebound.\n\nA/P\n1. PID with TOA - improving on oral therapy. Finish all 14 days. Gyn ultrasound in ~6 wk (she has the appointment). Return precautions reviewed.\n2. Partners: she says she has told the one she's still seeing to get treated.\n3. STI prevention again - condoms; offered a harm-reduction referral, declined for now.\n4. Smoking - unchanged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "outside_records",
+          "start": "2025-04-28T14:45",
+          "reason": "Gynecology follow-up letter",
+          "conditions": [
+            {
+              "label": "Acute pelvic inflammatory disease with tubo-ovarian abscess",
+              "action": "resolved",
+              "icd10": "N70.03"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2025-04-24T10:15",
+              "text": "Transvaginal technique. Uterus normal in size. Endometrium thin. Right ovary normal in size and appearance; no residual adnexal collection. Left ovary normal. No free fluid.",
+              "conclusion": "Interval resolution of the right adnexal collection. Normal ovaries."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up letter",
+              "date": "2025-04-28T14:45",
+              "author": "gynecology",
+              "body": "Visit 4/24/2025, follow-up after admission for PID with right TOA.\n\nCompleted 14 days of oral antibiotics. No pain, fever or discharge. Exam: no cervical motion or adnexal tenderness. Repeat ultrasound today: the right adnexal collection has resolved and both ovaries look normal.\n\nNo further gynecologic follow-up needed for this; routine cervical screening with you. We discussed contraception and condom use.\n\nAllergies: NKDA.\n\nOB/GYN"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "annual_physical",
+          "start": "2025-11-04T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              137,
+              72
+            ],
+            "hr": 74,
+            "rr": 13,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 62.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-04T10:05",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-04T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-04T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-04T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-04T10:20",
+              "author": "PCP",
+              "body": "36F, physical.\n\nInterval: PID with right TOA 3/2025, antibiotics only, gyn ultrasound 4/2025 resolved. No pelvic pain since. Chancroid and chlamydia 9/2024, retest negative 12/2024. HSV - no recurrences she's noticed. ITP - platelets normal 5/2024.\nMeds: none. NKDA.\nSH: ~5 cig/day. Alcohol 1-2 drinks a month. Not working. Doesn't want to discuss partners in detail today; condoms 'mostly.'\n\nROS: negative. No bruising.\nVitals normal. PHQ-9 3.\nExam: well appearing. HEENT normal. Neck without nodes. Heart RRR. Lungs clear. Abdomen soft, nontender. Skin without bruising, petechiae or lesions. Neuro grossly normal, gait normal. Pelvic deferred - no symptoms, co-test not due until 2027.\n\nA/P\n1. Health maintenance: flu today. CBC, BMP.\n2. ITP in remission - CBC.\n3. Cervical screening - next co-test 2027.\n4. Tobacco - counseled; she'll call if she wants help quitting.\n5. STI prevention - condoms, walk-in testing.\nReturn in one year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T16:10",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-11-06T16:10",
+              "author": "PCP",
+              "body": "Hi Kelly, blood counts including platelets are normal and your kidney function and sugar are normal. Nothing to change. See you next year."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-05a",
+          "kind": "telephone",
+          "start": "2026-03-05T15:30",
+          "reason": "Hospital admission notice",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission notification",
+              "date": "2026-03-05T15:30",
+              "author": "front desk",
+              "body": "Hospital case management left a voicemail: pt admitted to neurology 3/4. Will send records. Message routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T11:20",
+          "reason": "Neurology discharge summary",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-04T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 320
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-04T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-04T16:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-05T08:00",
+              "resulted": "2026-03-06T10:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Neurology discharge summary",
+              "date": "2026-03-16T11:20",
+              "author": "neurology",
+              "body": "Admitted: 3/4/2026. Discharged: 3/11/2026 to inpatient rehabilitation.\nPrincipal diagnosis: acute transverse myelitis, thoracic.\n\nHistory: 36-year-old woman with two days of worsening weakness in both legs and numbness from the umbilicus down. About two weeks earlier she had a flu-like illness that passed without treatment. No trauma; denies recent risky behavior. Background: ITP in remission, prior genital infections including PID with TOA 3/2025, past injection drug use. Smoker. NKDA.\n\nExam on admission: strength 3/5 throughout both lower extremities. Light touch and pinprick reduced below T10. Lower extremity reflexes brisk; Babinski sign present on both sides. Arms normal. Cranial nerves normal.\n\nWorkup: CBC, ESR and CMP normal. Urgent MRI of the spine: focal T2 hyperintense signal in the thoracic cord. MRI brain: normal. Lumbar puncture: CSF white cells 14 (lymphocyte predominant), protein 58 mg/dL, glucose normal; oligoclonal bands absent; CSF culture and viral PCR panel negative. Serum AQP4 and MOG antibodies negative. HIV and RPR negative.\n\nTreatment: IV methylprednisolone 1 g daily x 5 days. Bladder emptying normal on scans throughout.\n\nAt discharge: legs 4-/5, standing and walking short distances with a walker and assistance. Sensory level persists.\nDischarge medications: none.\nDisposition: acute inpatient rehabilitation. Neurology clinic follow-up in about 2 months.\n\nNeurology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Scanned to chart",
+              "date": "2026-03-16T11:40",
+              "author": "MA",
+              "body": "Neurology discharge summary (11 pages) indexed under outside records and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-01a",
+          "kind": "outside_records",
+          "start": "2026-04-01T09:40",
+          "reason": "Rehabilitation discharge summary",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient rehabilitation discharge summary",
+              "date": "2026-04-01T09:40",
+              "author": "physical medicine and rehabilitation",
+              "body": "Admitted 3/11/2026, discharged home 3/27/2026.\nDiagnosis: impaired mobility after acute transverse myelitis (thoracic).\n\nDaily physical and occupational therapy. Gains in transfers, standing balance and gait. Bladder and bowel function normal throughout.\n\nAt discharge: independent with transfers; walks household distances with a rolling walker; stairs with rail and supervision. Leg strength improving.\nEquipment: rolling walker, shower chair.\nPlan: outpatient PT 2-3 times a week; neurology follow-up as scheduled.\nMedications: none. Allergies: NKDA.\n\nPhysical Medicine & Rehabilitation"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "portal_message",
+          "start": "2026-04-07T13:05",
+          "reason": "Home from rehab",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "home",
+              "date": "2026-04-07T13:05",
+              "author": "patient",
+              "body": "Hi its Kelly. Im home from the rehab place, walking with a walker. PT 3x a week starting this week. Neurology sees me in May. Do you need to see me? Getting rides is hard right now"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: home",
+              "date": "2026-04-07T17:30",
+              "author": "PCP",
+              "body": "So glad you're home - I read the hospital and rehab summaries. Neurology and PT are the main thing right now. I would still like to see you once you're steadier on your feet; when rides are easier, call or message and we'll find a time. MassHealth covers rides to appointments - the front desk can help set that up. Call sooner for fever, new weakness, or any trouble with your bladder or bowels."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "outside_records",
+          "start": "2026-05-26T10:30",
+          "reason": "Neurology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology clinic follow-up",
+              "date": "2026-05-26T10:30",
+              "author": "neurology",
+              "body": "Visit 5/20/2026, follow-up of acute transverse myelitis (admitted 3/4-3/11/2026, IV methylprednisolone, then inpatient rehab).\n\nSteadily better with outpatient PT. Now walking with a cane outdoors, none at home. Bladder and bowels normal.\n\nExam: lower extremity strength 4+/5 on both sides. Sensory level has faded; patchy reduced pinprick below T10. Reflexes still brisk in the legs.\n\nImpression: recovering acute transverse myelitis. Brain MRI, CSF bands and AQP4/MOG antibodies at admission were reassuring.\nPlan: continue PT. Repeat MRI of the thoracic spine this summer. No new medication. Return in 4 months.\nAllergies: NKDA.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T10:50",
+          "reason": "Scheduling follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "appointment",
+              "date": "2026-08-17T10:50",
+              "author": "patient",
+              "body": "Hi I can come in now, got rides set up. Mostly using the cane. Can I get an appointment in the next few weeks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: appointment",
+              "date": "2026-08-17T14:20",
+              "author": "front desk",
+              "body": "Hi Kelly, you're booked with your doctor on Thursday 9/10 at 10:00. Please bring the name of your PT office."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after transverse myelitis admission",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute pelvic inflammatory disease with tubo-ovarian abscess|N70.03": {
+        "code": "N70.03",
+        "display": "Acute salpingitis and oophoritis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anogenital herpes simplex virus infection|A60.9": {
+        "code": "A60.9",
+        "display": "Anogenital herpesviral infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Asymptomatic Actinomyces colonization of genital tract|Z22.8": {
+        "code": "Z22.8",
+        "display": "Carrier of other infectious diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chancroid|A57": {
+        "code": "A57",
+        "display": "Chancroid",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chlamydial infection of lower genitourinary tract|A56.00": {
+        "code": "A56.00",
+        "display": "Chlamydial infection of lower genitourinary tract, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "High risk sexual behavior|Z72.51": {
+        "code": "Z72.51",
+        "display": "High risk heterosexual behavior",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of intravenous drug use|Z87.898": {
+        "code": "Z87.898",
+        "display": "Personal history of other specified conditions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of recurrent chlamydia infection|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of recurrent urinary tract infections|Z87.440": {
+        "code": "Z87.440",
+        "display": "Personal history of urinary (tract) infections",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Trichomoniasis|A59.01": {
+        "code": "A59.01",
+        "display": "Trichomonal vulvovaginitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ceftriaxone 250 MG Injection": {
+        "code": "309092",
+        "display": "ceftriaxone 250 MG Injection",
+        "ingredient": "ceftriaxone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "metronidazole 500 MG Oral Tablet": {
+        "code": "311681",
+        "display": "metronidazole 500 MG Oral Tablet",
+        "ingredient": "metronidazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Trichomonas vaginalis rRNA": {
+        "code": "46154-1",
+        "display": "Trichomonas vaginalis rRNA [Presence] in Specimen by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

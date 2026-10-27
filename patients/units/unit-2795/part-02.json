@@ -1,0 +1,270 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002795",
+      "events": [
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {"weight_kg": 88.6, "labs": {"Hemoglobin A1c": 7.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-01-30T16:25", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-30T16:25", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "orders": [
+            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-30T15:50"},
+            {"procedure": "Venipuncture", "performed": "2025-01-30T16:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Chronic care follow-up", "author": "PCP", "date": "2025-01-30T16:35", "body": "Winter f/u. Admits the holidays were rough on her eating and she has not been walking since it got icy. Fasting sugars creeping into the 150s. Meds taken daily. No lows, no foot symptoms, no chest pain.\nEye exam 11/2024 normal per patient, report never came - will ask them again.\n\nExam: BP okay. Weight up a little from summer. Heart/lungs normal. Abdomen soft, nontender. Feet: normal sensation and pulses.\n\nT2DM: expect A1c a bit higher today. If it is over 7.5 we'll talk about adding something; for now she'd rather get back to walking at the school gym after dismissal.\nHTN, lipids, thyroid: stable.\nScreening mammogram reordered for spring.\nRTC 4-6 mo."},
+            {"type": "Result Note", "title": "A1c result", "author": "PCP", "date": "2025-01-31T12:40", "body": "A1c about where it was in the fall, not at the point where I'd add a medication. Messaged her: same plan, recheck in the summer."}
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "imaging",
+          "start": "2025-04-08T08:15",
+          "reason": "Screening mammogram",
+          "orders": [
+            {"id": "mammo-2025", "action": "done", "date": "2025-04-08T08:15"}
+          ],
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-04-08T08:15", "issued": "2025-04-09T11:30", "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 04/2024 and 2022. Scattered fibroglandular density. No mass, suspicious calcification, or distortion. No change from prior.", "conclusion": "BI-RADS 1: Negative. Return to annual screening."}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "office_visit",
+          "start": "2025-05-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lump in lower abdomen",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "gensurg-ref", "action": "placed", "order": "General surgery referral", "category": "referral", "to": "General Surgery", "reason": "Reducible bulge at lower midline laparotomy scar, suspected incisional hernia"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-13T15:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office visit: abdominal wall bulge", "author": "PCP", "date": "2025-05-13T16:30", "body": "CC: bump below her belly button.\n\nHPI: Noticed a soft swelling in the lower abdomen sometime around New Year's. Thinks it has gotten a bit bigger since. Most obvious at the end of a school day when she has been on her feet, or after carrying boxes for her classroom. When she lies down at night it flattens out and she cannot find it. No pain. No nausea or vomiting, bowels regular, no constipation. Did not mention it in January because she thought it was just weight.\n\nPSH reminder: midline laparotomy 2020 for SBO; C-section 1995.\n\nExam: Vitals reviewed. Abdomen obese, soft, nontender. Standing, there is a soft bulge along the lower part of the midline scar that gets fuller when she coughs; it reduces easily with gentle pressure and when supine. No skin changes over it. Lower transverse scar flat. No groin bulge.\n\nA/P: Bulge at the laparotomy scar, reducible and nontender - most consistent with an incisional hernia. Referred to general surgery for evaluation. Reviewed what to watch for (a bulge that stays out, becomes painful or firm, vomiting) and to go to the ED if that happens. Diabetes and BP f/u due in summer."}
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telephone",
+          "start": "2025-06-24T10:50",
+          "reason": "Records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Surgery consult note request", "author": "MA", "date": "2025-06-24T10:50", "body": "Pt saw general surgery 6/2 per her portal check-in; no consult note received. Called the surgeons' office, they will fax the visit note. Will watch the fax queue."}
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "outside_records",
+          "start": "2025-07-08T14:20",
+          "reason": "General surgery consultation note",
+          "conditions": [
+            {"label": "Incisional hernia without obstruction or gangrene", "icd10": "K43.2", "action": "diagnosed", "onset": "2024-12-15", "note": "Lower midline laparotomy scar; watchful waiting per surgery"}
+          ],
+          "orders": [
+            {"id": "gensurg-ref", "action": "done", "date": "2025-07-08T14:20"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "General surgery consultation", "author": "general surgery", "date": "2025-07-08T14:20", "body": "GENERAL SURGERY - NEW PATIENT CONSULTATION\nDate of service: 06/02/2025\nReferring: primary care\nReason: lower abdominal swelling\n\nMs. Hastings is a 58-year-old teacher seen for a lower abdominal bulge. She became aware of it roughly six months ago and feels it has slowly enlarged. It is most apparent after long periods standing or with exertion and goes away when she lies flat. She has had no nausea, vomiting, constipation or abdominal pain.\n\nPast history: hypertension, type 2 diabetes, dyslipidemia, hypothyroidism, obesity with BMI 33.\nSurgical history: cesarean delivery 1995. Laparotomy in 2020 for small bowel obstruction. No abdominal operations or abdominal trauma since then.\nMedications: metformin 1000 mg twice daily, lisinopril 10 mg daily, atorvastatin 20 mg daily, levothyroxine 75 mcg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFamily history: mother with diabetes and hypertension; father with coronary disease and hyperlipidemia; sister status post cholecystectomy for gallstones; brother status post inguinal herniorrhaphy.\nSocial: never smoker, no alcohol, elementary school teacher.\n\nExam: Pleasant, comfortable. Abdomen soft and nontender. Along the old lower midline incision there is a soft, reducible, nontender mass which becomes more prominent when she bears down. No erythema or warmth over it. No other abdominal wall or groin masses on careful palpation.\n\nImpression: Incisional hernia of the lower midline laparotomy scar, reducible, minimally symptomatic.\n\nPlan: We discussed elective repair versus a period of observation. Given that it is reducible and not bothering her much, she prefers to wait, which is reasonable. Any improvement in weight and glucose control before an eventual repair would be to her benefit. She knows to return sooner, or go to an emergency department, for pain, rapid enlargement, or a bulge that will not go back in. She will call us when she wishes to schedule repair.\n\nGeneral Surgery attending"},
+            {"type": "Progress Notes", "title": "Outside note review", "author": "PCP", "date": "2025-07-09T07:45", "body": "Surgery consult 6/2 reviewed: incisional hernia at the midline laparotomy scar, reducible. Watchful waiting, she can schedule elective repair when ready. Added to problem list."}
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "office_visit",
+          "start": "2025-08-18T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 87.9, "labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-08-18T10:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-08-18T09:40"},
+            {"procedure": "Venipuncture", "performed": "2025-08-18T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2025-08-18T10:15", "body": "S: Back to classroom setup next week. Walked most mornings this summer. Fasting sugars back in the 120s-130s. Hernia: no pain, still pops out at the end of the day, she is not ready for surgery - maybe next summer. Meds unchanged.\nO: Vitals reviewed, BP a little above goal today. Abdomen: reducible lower midline bulge, nontender, same as May. Feet normal.\nA/P: T2DM - A1c today, continue metformin. HTN - mildly up today, recheck in October, no change. Incisional hernia - observation per surgery, warning signs reviewed again. Physical in October."},
+            {"type": "Result Note", "title": "A1c result", "author": "PCP", "date": "2025-08-19T13:00", "body": "A1c 6.6, under 7 again. Portal note sent: nice work this summer. BP was a little up at the visit; will recheck at the physical."}
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "annual_physical",
+          "start": "2025-10-09T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-09T07:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-09T07:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-09T07:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-10-09T07:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-09T08:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-09T08:02"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-10-09T07:20"},
+            {"procedure": "Immunization administration", "performed": "2025-10-09T08:00"},
+            {"procedure": "Venipuncture", "performed": "2025-10-09T07:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Preventive visit", "author": "PCP", "date": "2025-10-09T08:20", "body": "PHYSICAL, 58 y/o F\n\nInterval: surgery consult in June for incisional hernia, observing. Otherwise no new problems. Fasting this morning. PHQ-2 negative.\n\nCurrent meds: metformin 1000 mg BID; lisinopril 10 mg daily; atorvastatin 20 mg daily; levothyroxine 75 mcg qAM; aspirin 81 mg daily. NKDA.\nNever smoker. No alcohol.\n\nROS: no chest pain, dyspnea, abdominal pain, change in bowels, urinary symptoms, rashes.\n\nExam\nGeneral: no distress\nHEENT, neck: unremarkable; thyroid normal size\nHeart: regular, no murmur\nLungs: clear\nAbdomen: soft, nontender; reducible bulge at lower midline scar, unchanged\nExtremities: no edema\nFeet: sensation intact to monofilament, pulses palpable\nSkin: nothing concerning\n\nPlan\n- Fasting labs: CMP, CBC, lipids, A1c, TSH, urine microalbumin\n- Flu and 2025-26 COVID vaccines given\n- Mammogram due April; Pap with HPV due 2026, can do at next physical; colonoscopy 2029\n- Eye exam next month\n- Diabetes f/u in about 5 months"},
+            {"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2025-10-10T16:05", "body": "All physical labs reviewed and acceptable: A1c 7.4, up from summer as usual for her, LDL at goal on atorvastatin 20, TSH normal, renal and hepatic panels normal, urine microalbumin normal. Released with comment."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T09:10",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry diabetic eye exam", "author": "optometry", "date": "2025-11-18T09:10", "body": "Diabetic eye exam - 11/05/2025\nPatient: Hastings, Doris (DOB 11/21/1966)\nDM type 2. Meds per patient list. NKDA.\nBCVA 20/20 right, 20/25 left. Pressures normal.\nDilated exam: no diabetic retinopathy OU. Maculae flat and dry. Lens clear.\nA: No diabetic retinopathy.\nP: Return 1 year.\nFaxed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T08:45",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Lisinopril refill", "author": "MA", "date": "2026-01-13T08:45", "body": "eRx renewal request from mail-order pharmacy for lisinopril 10 mg daily x90. Last BP at goal, BMP normal in October. Approved, 90 days with 1 refill. F/u visit due - reminder sent to schedule."}
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and hypertension follow-up",
+          "state": {"weight_kg": 87.2, "labs": {"Hemoglobin A1c": 7.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-03-06T16:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-06T16:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-06T15:30"},
+            {"procedure": "Venipuncture", "performed": "2026-03-06T16:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: DM2, HTN, hernia", "author": "PCP", "date": "2026-03-06T16:15", "body": "Subjective\nCame straight from school. Feeling fine. Has kept up walking in the gym most afternoons this winter and weight is a little down. Fasting sugars 115-135. All five meds daily, no side effects. Hernia unchanged, painless, still thinking about having it fixed this summer and will call surgery herself.\n\nObjective\nVitals reviewed - BP at goal, weight down slightly.\nHeart regular. Lungs clear.\nAbdomen: soft, nontender; soft reducible bulge at the lower midline scar, no change.\nNo edema. Feet: intact sensation and pulses.\n\nAssessment / Plan\n1. Type 2 DM - A1c and BMP today. Metformin 1000 BID.\n2. HTN - controlled on lisinopril 10.\n3. Hyperlipidemia - atorvastatin 20, lipids done in October.\n4. Hypothyroidism - levothyroxine 75 mcg, TSH normal in October.\n5. Incisional hernia - observation; she will contact surgery if she wants repair.\n6. Obesity - encouraged, keep going.\nMammogram due April - she will schedule. Pap with HPV due this year, at the fall physical.\nFollow-up 4-6 months."}
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Friday's labs", "author": "PCP", "date": "2026-03-09T12:20", "body": "Hi Doris, your A1c from Friday is a bit over 7, about where it usually runs, and your kidney function and potassium are normal. Keep up the walking. See you in late summer or early fall."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Metformin refill", "author": "MA", "date": "2026-05-19T09:05", "body": "Mail-order request: metformin 1000 mg BID x90. Seen 3/6, A1c and renal function fine. Sent with 1 refill per protocol."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T20:10",
+          "reason": "Upcoming gallbladder surgery",
+          "documents": [
+            {"type": "Patient Message", "title": "Gallbladder surgery next week", "author": "patient", "date": "2026-07-21T20:10", "body": "Hi, just wanted to let you know what's been going on. A few times this spring I had pain in my upper belly after dinner that lasted a couple of hours and then went away. I went back to the surgeon I saw for my hernia and they sent me for an ultrasound, which showed gallstones (my sister had the same thing). They are taking my gallbladder out laparoscopically on July 29. They gave me instructions about my medications for the day of surgery. Is there anything you need from me or anything I should do differently?"},
+            {"type": "Patient Message", "title": "Re: Gallbladder surgery next week", "author": "PCP", "date": "2026-07-22T07:55", "body": "Thanks for letting us know, Doris. Follow the surgical team's medication instructions for the day of surgery - they will tell you when to restart your metformin and aspirin. Please ask them to send us the operative note afterward. Wishing you an easy recovery, and message us if anything comes up."}
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "ed_visit",
+          "start": "2026-08-06T11:05",
+          "end": "2026-08-06T21:40",
+          "service": "Emergency Medicine",
+          "reason": "Jaundice after cholecystectomy",
+          "vitals": [
+            {"time": "2026-08-06T11:10", "bp": [134, 78], "hr": 76, "temp_c": 36.7, "rr": 16, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-08-06T11:40", "results": [
+              {"test": "Bilirubin, Total", "value": 4.7},
+              {"test": "Bilirubin, Direct", "value": 3.6},
+              {"test": "Alkaline Phosphatase", "value": 312},
+              {"test": "Aspartate Aminotransferase", "value": 96},
+              {"test": "Alanine Aminotransferase", "value": 148},
+              {"test": "Albumin", "value": 4.0}
+            ]},
+            {"panel": null, "collected": "2026-08-06T11:40", "results": [{"test": "Lipase", "value": 34}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-06T11:40", "results": [
+              {"test": "White Blood Cells", "value": 7.4},
+              {"test": "Hemoglobin", "value": 13.1},
+              {"test": "Platelets", "value": 236}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-08-06T11:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.1}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-06T11:40", "results": [
+              {"test": "Creatinine", "value": 0.82},
+              {"test": "Glucose", "value": 168}
+            ]}
+          ],
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2026-08-06T13:20", "text": "Indication: jaundice, 8 days after laparoscopic cholecystectomy. The gallbladder is surgically absent. No fluid collection in the gallbladder fossa. The common bile duct measures 9 mm. The distal duct is obscured by overlying bowel gas. Liver normal in size and echotexture without focal lesion. Pancreatic head not well seen. No ascites. Right kidney unremarkable.", "conclusion": "Post-cholecystectomy. Common bile duct 9 mm; distal duct not visualized. No fluid collection in the gallbladder fossa."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-08-13T10:30", "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD - received by fax 08/13/2026\nDate of visit: 08/06/2026\n\nChief complaint: yellow eyes and skin.\n\nHPI: 59-year-old woman with hypertension, type 2 diabetes, dyslipidemia, hypothyroidism, obesity and a known incisional hernia, who had a laparoscopic cholecystectomy 8 days ago for presumed symptomatic gallstones. Per the operative records available to us, no intraoperative cholangiogram was obtained. She did well for the first several days at home, then over the last 3 days has noticed her eyes and skin turning yellow, with pale, clay-colored stools and very dark urine. She has had no fever, no abdominal pain and no nausea. Eating normally, bowels moving regularly. No history of liver disease.\n\nPMH: as above. PSH: cesarean section 1995, laparotomy for SBO 2020, laparoscopic cholecystectomy 7/29/2026.\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 20 mg daily, levothyroxine 75 mcg daily, aspirin 81 mg daily.\nAllergies: NKDA.\nFamily hx: mother DM2/HTN; father CAD/hyperlipidemia; sister cholecystectomy for stones; brother inguinal hernia repair.\nSocial: never smoker. Denies alcohol or IV drug use.\n\nTriage vitals: BP 134/78, HR 76, T 36.7 C, RR 16, SpO2 98% RA. Afebrile, vitals normal throughout.\n\nExam: Alert, comfortable. Scleral icterus; skin mildly jaundiced. Abdomen soft, nondistended, nontender; no hepatosplenomegaly. Bowel sounds present. Laparoscopic port sites clean, dry, healing well. Reducible lower midline incisional hernia. Rectal deferred. Remainder of exam unremarkable.\n\nLabs: total bilirubin 4.7, direct 3.6, alk phos 312, AST 96, ALT 148, albumin 4.0, lipase 34. WBC 7.4, Hgb 13.1, plt 236. INR 1.1. Creatinine 0.82, glucose 168.\n\nImaging: RUQ US - post-cholecystectomy, CBD 9 mm, distal duct obscured by gas, no fossa collection. MRCP 18:40 - 8 mm calculus in the distal common bile duct, CBD 9 mm, no other filling defect, no fluid collection, pancreatic duct normal.\n\nED course / MDM: Painless obstructive jaundice after cholecystectomy with a dilated duct and a distal CBD stone on MRCP - retained common bile duct stone. Afebrile with normal white count and lipase: no evidence of cholangitis or pancreatitis. Discussed with GI and the operating surgeon. Admitted to the surgical service for ERCP.\n\nDiagnosis: Choledocholithiasis (retained common bile duct stone) following laparoscopic cholecystectomy.\nDisposition: admitted."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T14:35",
+          "reason": "Update after hospital stay",
+          "documents": [
+            {"type": "Patient Message", "title": "Back home", "author": "patient", "date": "2026-08-11T14:35", "body": "Hi - I wanted to update you. About a week after my gallbladder surgery my eyes and skin turned yellow, so I went to the ER on the 6th. They found a stone stuck in my bile duct and kept me overnight. The next day they did a scope (ERCP) and pulled the stone out, and I went home on the 8th. The yellow is already fading and I feel fine. They didn't change any of my medicines. I have a follow-up with the surgeon. I asked them to send you everything."},
+            {"type": "Patient Message", "title": "Re: Back home", "author": "PCP", "date": "2026-08-12T08:05", "body": "Doris, I'm sorry you had to go through that, and glad it was sorted out quickly. We'll watch for the hospital records. Call the surgeon or the ED right away for fever, chills, belly pain or if the yellow comes back. Keep your follow-up with surgery, and let us know when you'd like to come in to catch up."}
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "telephone",
+          "start": "2026-08-14T11:15",
+          "reason": "Records request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Hospital records request", "author": "MA", "date": "2026-08-14T11:15", "body": "ED record from 8/6 received yesterday and routed to PCP. Still missing: operative note from the 7/29 cholecystectomy, ERCP report and discharge summary. Faxed request to the hospital's medical records department and called the surgeons' office for the op note."}
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "outside_records",
+          "start": "2026-08-25T15:40",
+          "reason": "ERCP report",
+          "documents": [
+            {"type": "Procedure Note", "title": "ERCP report", "author": "gastroenterology", "date": "2026-08-25T15:40", "body": "ENDOSCOPIC RETROGRADE CHOLANGIOPANCREATOGRAPHY\nDate of procedure: 08/07/2026\nIndication: choledocholithiasis on MRCP after laparoscopic cholecystectomy (7/29/2026); obstructive jaundice.\nAllergies: NKDA.\nSedation: monitored anesthesia care.\n\nFindings: Normal major papilla. Deep biliary cannulation achieved with a sphincterotome over a wire. Cholangiogram showed a common bile duct of 9 mm with a single 8 mm filling defect in the distal duct. No leak from the cystic duct stump. Biliary sphincterotomy performed. The stone was extracted with an extraction balloon. Final balloon occlusion cholangiogram showed no remaining filling defects with good drainage.\n\nImpression: Choledocholithiasis, cleared. Biliary sphincterotomy.\nComplications: none immediate.\nPlan: advance diet, resume home medications, repeat liver tests per surgical team. \n\nGastroenterology"},
+            {"type": "Progress Notes", "title": "Outside record review", "author": "PCP", "date": "2026-08-26T07:40", "body": "ED record (8/6) and ERCP report (8/7) reviewed: retained CBD stone after lap chole, cleared at ERCP with sphincterotomy. Operative note and discharge summary still outstanding - MA following up."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001887",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T09:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Prenatal Vitamin",
+              "author": "RN",
+              "date": "2025-01-14T09:40",
+              "body": "Electronic request from pt's pharmacy, prenatal vitamin with DHA 1 cap daily, #90 with 3 refills. Still nursing per last visit. Approved."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "portal_message",
+          "start": "2025-03-26T21:03",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2025-02-14", "note": "LMP 2025-02-14 by patient report"}
+          ],
+          "orders": [
+            {"id": "ob-referral-2025", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "pregnancy, LMP 2/14/2025; prior term delivery 8/2024; family history of preeclampsia and eclampsia"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant Again",
+              "author": "patient",
+              "date": "2025-03-26T21:03",
+              "body": "Surprise! Positive test tonight. Last period started Feb 14. A little sooner than we planned but we're happy. Still taking the prenatal vitamin every day. Can you send me back to the same OB office?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant Again",
+              "author": "PCP",
+              "date": "2025-03-27T08:20",
+              "body": "Congratulations! That puts you at about 6 weeks. Referral to the same obstetrics office is in, and I flagged your family history for them again. Keep the vitamin going. Let us know if you need anything before you're seen."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "telephone",
+          "start": "2025-04-08T13:10",
+          "orders": [
+            {"id": "ob-referral-2025", "action": "done", "date": "2025-04-08T13:10"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Closed",
+              "author": "RN",
+              "date": "2025-04-08T13:10",
+              "body": "OB office confirmed pt was seen 4/7 for her new OB visit. Referral marked complete."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-19a",
+          "kind": "ed_visit",
+          "start": "2025-10-19T19:35",
+          "end": "2025-10-19T23:10",
+          "service": "Emergency Medicine",
+          "reason": "witnessed seizure at 35 weeks",
+          "vitals": [
+            {"time": "2025-10-19T19:40", "bp": [162, 106], "hr": 96, "rr": 18, "temp_c": 36.7}
+          ],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-10-19T19:55", "results": [{"test": "Urine Protein", "text": "3+"}]}
+          ],
+          "conditions": [
+            {"label": "Eclampsia complicating pregnancy, third trimester", "icd10": "O15.03", "action": "diagnosed", "onset": "2025-10-19"}
+          ]
+        },
+        {
+          "id": "2025-10-19b",
+          "kind": "hospital_admission",
+          "start": "2025-10-19T23:10",
+          "end": "2025-10-23T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "eclampsia, delivery"
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "telephone",
+          "start": "2025-10-24T10:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Hospital Call",
+              "author": "RN",
+              "date": "2025-10-24T10:25",
+              "body": "Pt called to let us know she was in the hospital. Sunday evening at home she had a seizure, partner saw it and drove her straight to the ED. Had been getting headaches and some blurry vision for a few days before and hadn't called anyone. ED told her it was eclampsia. Got magnesium and IV BP meds, then moved to L&D, induced, and delivered a baby boy Monday at 35 weeks. Both home now and doing ok. Discharged yesterday on labetalol 200 mg twice a day; OB wants a BP check within a week. No headache, vision fine, no seizure since. Has a home cuff from OB.\nBooked with PCP Wed 10/29 at 9:20. Asked her to call 911 for any seizure, severe headache, vision change or chest pain/SOB. Requested ED and hospital records."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-29a",
+          "kind": "office_visit",
+          "start": "2025-10-29T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization for eclampsia",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug_text": "labetalol hydrochloride 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "postpartum blood pressure after eclampsia"}
+          ],
+          "state": {"bp": [136, 86], "weight_kg": 74.0},
+          "vitals": {"bp": [136, 86]},
+          "measure": ["hr", "temp_c", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-08-28T10:00"},
+            {"vaccine": "Influenza, unspecified", "date": "2025-09-30T10:00"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-29T09:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-29T09:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-10-29T09:20"},
+            {"procedure": "Venipuncture", "performed": "2025-10-29T09:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-10-29T10:10",
+              "body": "S: 29F, 10 days after an eclamptic seizure at 35w2d (LMP 2/14). Brought to a regional ED 10/19 after a generalized seizure at home lasting about a minute, then postictal. Several days of headaches and intermittent blurred vision beforehand. Per pt she was treated with magnesium and IV labetalol, admitted to L&D, induced, and had a vaginal delivery of a boy 10/20. Infant home and feeding. She went home 10/23 on labetalol 200 mg BID. No discharge summary yet; ED/hospital records requested 10/24.\n\nSince home: no headaches, no visual symptoms, no RUQ pain, no SOB. Ankles were puffy last week and are better. Home BPs mostly 130s/80s. Taking labetalol twice daily, some lightheadedness getting up at night, no falls. Pumping and nursing.\n\nMeds: labetalol 200 mg BID (hospital), prenatal vitamin with DHA daily, calcium carbonate prn (not using).\nNKDA. Tdap (late Aug) and flu (end of Sept) given at OB, added to record.\nFHx: mother preeclampsia, maternal aunt eclampsia.\n\nO: BP 136/86 on recheck. Alert, oriented, conversant, no deficits. Fundi not examined. Heart RRR, no murmur. Lungs clear. Abdomen soft, fundus below the umbilicus, nontender. Trace ankle edema both sides. Reflexes 2+ and symmetric, no clonus.\n\nA/P\n1. Eclampsia, postpartum. Neurologically back to baseline. BP acceptable on labetalol. CBC and CMP today to check counts, kidney and liver numbers after the admission. Keep labetalol 200 BID. Home BP twice daily, send readings in 2-3 weeks. Return precautions for headache, vision change, seizure, BP 160/110 or higher: 911/ED.\n2. Pregnancy delivered; removed from list.\n3. Recurrence and long-term risk: she'll need early obstetric care in any future pregnancy, and yearly BP and cardiovascular checks after this. Will talk more once she's recovered.\nFollow-up in about 8 weeks, sooner by BP readings."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "portal_message",
+          "start": "2025-10-30T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-10-30T12:40",
+              "body": "Hi Jada, yesterday's labs are all normal: blood count, platelets, kidney function and liver tests. Keep the labetalol as is and send me your home readings in a couple of weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "outside_records",
+          "start": "2025-11-06T14:20",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-11-06T14:20",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPT — PHYSICIAN NOTE (faxed copy)\nDOS 10/19/2025\n\nCC: seizure at home.\nHPI: 29 y/o G2P1 at 35w2d, brought in by her partner, who saw her go rigid and then shake for roughly one minute while sitting on the couch, followed by confusion and sleepiness. He says she has complained of headaches and some blurred vision over the last several days; did not seek care. No recent illness, fever or injury. Prior pregnancy: term vaginal delivery 8/2024, presentation unclear in labor; prenatal course that pregnancy was normal.\nMeds: prenatal vitamin with DHA daily; calcium carbonate 500 mg BID prn heartburn. Allergies: NKDA.\nFHx: mother preeclampsia, delivered at 36 wk; maternal aunt eclampsia in first pregnancy.\nSH: teacher, never smoker, no alcohol.\n\nVS: T 36.7, HR 96, RR 18, BP 162/106.\nExam: postictal, rouses to voice. 2+ pitting edema bilateral lower extremities. Fetal monitoring: reactive NST.\nUA: protein 3+. Remaining labs pending at time of note.\n\nImpression: eclampsia, 35 weeks.\nED course: magnesium sulfate loading dose and infusion; IV labetalol for BP. OB at bedside. No further seizure activity in the department.\nDisposition: admitted to Labor & Delivery."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "portal_message",
+          "start": "2025-11-17T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home BP Readings",
+              "author": "patient",
+              "date": "2025-11-17T19:22",
+              "body": "Here are my numbers for the last 2 weeks. Mornings mostly 118-126 over 72-80, evenings about the same, highest was 128/82. Taking the labetalol twice a day. No headaches. The dizziness at night is gone. Baby is gaining weight!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home BP Readings",
+              "author": "PCP",
+              "date": "2025-11-18T07:55",
+              "body": "These look great. Stay on the labetalol for now and keep checking once a day. At your visit next month we'll likely be able to come off it. Glad the little one is growing."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-26a",
+          "kind": "office_visit",
+          "start": "2025-12-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up after eclampsia",
+          "conditions": [
+            {"label": "Eclampsia complicating pregnancy, third trimester", "icd10": "O15.03", "action": "resolved"},
+            {"label": "History of preeclampsia", "action": "diagnosed", "onset": "2025-10-19", "note": "eclampsia at 35 weeks, October 2025"}
+          ],
+          "medications": [
+            {"drug_text": "labetalol hydrochloride 200 MG Oral Tablet", "action": "stop", "reason": "blood pressure normal postpartum"}
+          ],
+          "state": {"bp": [116, 74], "weight_kg": 72.0},
+          "vitals": {"bp": [116, 74]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-12-26T11:15", "resulted": "2025-12-27T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-26T10:40"},
+            {"procedure": "Venipuncture", "performed": "2025-12-26T11:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Blood Pressure Follow-up",
+              "author": "PCP",
+              "date": "2025-12-26T11:20",
+              "body": "Follow-up, ~10 weeks after eclampsia and delivery at 35 wk.\n\nFeels like herself. No headaches, vision changes, swelling or chest symptoms. Home readings over the last month mostly 110s/70s on labetalol 200 BID, a few in the low 100s systolic with some morning lightheadedness. OB postpartum visit done earlier this month, told she's healed. Still nursing. Sleeping when the baby sleeps. Mood ok, PHQ-9 3. ED note received 11/6 and reviewed; no discharge summary has come.\n\nMeds: labetalol 200 BID, prenatal vitamin with DHA daily, calcium carbonate prn (hasn't used).\n\nExam: BP 116/74, HR regular. Well-appearing. Heart and lungs normal. No edema. Neuro nonfocal.\n\nA/P\n1. Blood pressure after eclampsia, now normal. Stop labetalol today (low dose, readings low-normal). Check home BP daily for 2 weeks and message me; restart if consistently 140/90 or more. Eclampsia closed on the problem list, history of preeclampsia added.\n2. Long-term risk: a hypertensive pregnancy roughly doubles later heart and blood pressure risk. Plan BP at least yearly here, lipids today, and a yearly physical. Any future pregnancy: let OB know early so they can plan prevention from the start.\n3. Prenatal vitamin continues while nursing.\nPhysical next fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "portal_message",
+          "start": "2025-12-29T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholesterol Result",
+              "author": "PCP",
+              "date": "2025-12-29T09:30",
+              "body": "Your cholesterol panel from Friday is in a healthy range. We'll repeat it every few years. Don't forget to send home BPs in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "portal_message",
+          "start": "2026-01-07T20:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BPs Off Labetalol",
+              "author": "patient",
+              "date": "2026-01-07T20:48",
+              "body": "Two weeks off the labetalol. Readings have been 112-124 over 70-78, nothing over 125. Feeling good and no more dizzy mornings."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BPs Off Labetalol",
+              "author": "PCP",
+              "date": "2026-01-08T07:40",
+              "body": "Perfect, those are normal. You can stop checking daily; a few readings a month is plenty. See you in the fall for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "pharmacy",
+          "start": "2026-03-12T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: Prenatal Vitamin",
+              "author": "RN",
+              "date": "2026-03-12T08:50",
+              "body": "Pharmacy e-request, prenatal vitamin with DHA daily. Pt still breastfeeding per 12/26 note. Refilled x1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "portal_message",
+          "start": "2026-06-02T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall Physical",
+              "author": "patient",
+              "date": "2026-06-02T16:05",
+              "body": "Hi! School's out in a couple weeks. Can I set up my physical for October? I'd like a late afternoon if possible."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall Physical",
+              "author": "front desk",
+              "date": "2026-06-03T09:12",
+              "body": "Hi Jada, the October schedule opens in August. We'll message you as soon as it does so you can grab a late afternoon slot."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001782",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "annual_physical",
+          "start": "2025-01-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"bp": [130, 84], "weight_kg": 87.2},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-14T09:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-01-14T09:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-01-14T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-01-14T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2025-01-14T09:30", "issued": "2025-01-17T08:10", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-01-14T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-01-14T10:25", "body": "PREVENTIVE VISIT\n\n34 yo. Feels well. Baby is 10 months, sleeping better. Working full time again. BP log steady, high 120s to mid 130s over low-mid 80s. Still on prenatal daily - she and her husband would like another child at some point but not yet. Labetalol 200 BID, no missed doses she can recall.\n\nROS negative except mild fatigue.\n\nExam: BP as charted. NAD. HEENT normal, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Breasts without masses. Abdomen soft, nontender, healed incisions. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV obtained. Extremities without edema. Skin clear.\nPHQ-9 2.\n\nA/P\n- Chronic HTN: controlled on labetalol. If she plans pregnancy, labetalol is fine to continue; told her to message me as soon as she has a positive test so we can coordinate with OB early, given her preeclampsia history.\n- Class I obesity: weight a little lower than summer. Continue walking.\n- Screening: Pap with HPV today. Labs: CBC, CMP, lipids, A1c, urine microalbumin. HIV/HCV already done 2023. Flu and COVID done in October.\n- RTC 3 months BP."}
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T12:05",
+          "documents": [
+            {"type": "Result Note", "title": "Pap and Lab Results", "author": "PCP", "date": "2025-01-17T12:05", "body": "Your Pap test is normal and HPV was not found, so the next one is in 5 years. Cholesterol, A1c, kidney and liver tests, blood counts and urine protein are all normal as well. Nice work."}
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Administrative", "title": "Missed Appointment", "author": "front desk", "date": "2025-04-08T16:30", "body": "No-show for 3:40 BP follow-up. Called, left message to reschedule. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-22T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-04-22T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2025-04-22T12:35", "body": "Video, she is at her desk at work on her break; consents to video. Sorry about the missed visit, daycare closed that day.\n\nHome cuff (validated at our office last year) past 3 weeks: 126-136 / 80-88, avg roughly 131/84. No symptoms. Taking labetalol 200 BID and the prenatal.\n\nAssessment: chronic hypertension, stable at goal on current dose.\nPlan: continue labetalol; 90-day refill sent. Thinking about trying for a second child this year - reviewed early contact with OB and with us. In-person visit in fall, sooner if pregnant."}
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "portal_message",
+          "start": "2025-06-16T06:55",
+          "conditions": [{"label": "Pregnant state", "icd10": "Z33.1", "action": "diagnosed", "onset": "2025-05-16", "note": "LMP 2025-05-16"}],
+          "orders": [{"id": "ob-2025", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "pregnancy with chronic hypertension and prior preeclampsia"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Pregnant again", "author": "patient", "date": "2025-06-16T06:55", "body": "Positive test yesterday! LMP May 16. You told me to tell you first thing so here I am. Same plan with the labetalol?"},
+            {"type": "Patient Message", "title": "RE: Pregnant again", "author": "PCP", "date": "2025-06-16T11:20", "body": "Congratulations, and thank you for the quick note. Yes - same labetalol 200 mg twice a day and keep the prenatal vitamin. I've sent a referral to your OB group so they see you early given last time. Please send home BP readings weekly, and go to labor and delivery for 160/110 or above, severe headache, vision changes, or pain under the right ribs. Let's plan an office visit in September."}
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "outside_records",
+          "start": "2025-07-28T10:15",
+          "orders": [{"id": "ob-2025", "action": "done", "date": "2025-07-28T10:15"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Obstetrics Initial Prenatal Visit", "author": "obstetrics", "date": "2025-07-28T10:15", "body": "OUTSIDE OBSTETRICS AND GYNECOLOGY GROUP\nNew OB visit 07/22/2025\n\nG3P2 (two prior cesareans, 2023 and 03/2024 at 34 weeks). LMP 05/16/2025, EDD 02/20/2026 confirmed on ultrasound.\nHigh-risk features: chronic hypertension; preeclampsia superimposed on chronic hypertension in the last pregnancy, with magnesium toxicity.\nMeds: labetalol 200 mg BID, prenatal with DHA.\nAllergies: NKDA.\nBP 124/80.\nPlan: prenatal visits every 4 weeks, home BP monitoring, BP co-management with PCP. Plan for repeat cesarean."}
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "office_visit",
+          "start": "2025-09-05T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure in pregnancy",
+          "state": {"bp": [126, 80], "weight_kg": 90.1},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-05T11:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-05T11:20", "results": [{"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2025-09-05T11:20", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-09-05T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-09-05T11:35", "body": "Chronic HTN in pregnancy, 16w0d today by LMP 5/16 (EDD 2/20/26). OB intake 7/22 reviewed - following every 4 wks, plan repeat C/S.\n\nFeeling well, nausea gone. Home BPs 118-130 / 74-84, weekly log sent through portal all summer. No headaches, visual change, RUQ pain or swelling. Labetalol 200 mg BID, prenatal.\n\nExam: BP as charted. Comfortable. Heart RRR, lungs clear. Abdomen soft, nontender. No edema. Reflexes 2+.\n\nA/P\n1. Chronic hypertension, pregnancy 16 wks - at goal, usual mid-pregnancy dip. Continue labetalol 200 BID, no change.\n2. History of preeclampsia - baseline CBC, CMP and urine albumin/creatinine today for OB to compare against later in pregnancy. Copy to OB.\n3. Flu shot this fall at her OB visit is fine; ask them to send the record.\nReviewed warning signs again. Will see her after delivery; OB is primary for the pregnancy. Front desk to book postpartum BP visit when she delivers."}
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "portal_message",
+          "start": "2025-09-08T08:30",
+          "documents": [
+            {"type": "Result Note", "title": "Lab Results", "author": "PCP", "date": "2025-09-08T08:30", "body": "Hi Tiana, baseline labs from Friday are normal - platelets, kidney and liver tests, and urine protein. I've sent a copy to your OB."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "pharmacy",
+          "start": "2025-11-18T14:20",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill Request", "author": "MA", "date": "2025-11-18T14:20", "body": "Pharmacy request labetalol 200 mg BID x90 days. Last seen 9/5, pregnant ~26 wks, OB following. Approved per PCP."}
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "hospital_admission",
+          "start": "2026-01-09T08:15",
+          "end": "2026-01-13T13:00",
+          "service": "Obstetrics — Intensive Care",
+          "reason": "Right upper quadrant pain and nausea at 34 weeks",
+          "vitals": [
+            {"time": "2026-01-09T08:20", "bp": [148, 96]}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-09T08:45", "results": [{"test": "Platelets", "value": 74}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-09T08:45", "results": [{"test": "Aspartate Aminotransferase", "value": 290}, {"test": "Alanine Aminotransferase", "value": 235}, {"test": "Bilirubin, Total", "value": 3.1}]},
+            {"panel": null, "collected": "2026-01-09T08:45", "results": [
+              {"test": "Lactate Dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 680},
+              {"test": "Haptoglobin", "loinc": "4542-7", "unit": "mg/dL", "text": "Undetectable"}
+            ]},
+            {"panel": "Urinalysis", "collected": "2026-01-09T08:40", "results": [{"test": "Urine Protein", "text": "2+"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-12T05:40", "results": [{"test": "Platelets", "value": 146}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-12T05:40", "results": [{"test": "Aspartate Aminotransferase", "value": 52}, {"test": "Alanine Aminotransferase", "value": 66}, {"test": "Bilirubin, Total", "value": 0.9}]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2026-01-21T15:40", "body": "REGIONAL HOSPITAL - OBSTETRICS / OB INTENSIVE CARE\nAdmitted 01/09/2026   Discharged 01/13/2026\n\n35 yo G3P2 at 34w0d with chronic hypertension and prior superimposed preeclampsia, admitted 2024 for antepartum bleeding. Presented with new pain in the right upper abdomen and nausea that would not settle. Had felt more tired over recent days with little appetite.\n\nOn arrival BP 148/96. Mild scleral icterus. Tender in the RUQ. Reflexes brisk, symmetric. Fetal tracing reassuring.\nLabs: platelets 74,000/uL; AST 290; ALT 235; total bilirubin 3.1; LDH 680; haptoglobin undetectable. Urine protein 2+.\n\nAssessment: severe preeclampsia, HELLP form, superimposed on chronic hypertension.\n\nCourse: stabilized in OB intensive care. Magnesium sulfate for seizure prophylaxis. Repeat cesarean the same day (third cesarean). Liveborn infant. Magnesium continued 24 hours postpartum, then stopped. Labs improved steadily; on 01/12 platelets 146, AST 52, ALT 66, bilirubin 0.9.\n\nDischarge diagnoses: severe preeclampsia (HELLP) superimposed on chronic hypertension, delivered by repeat cesarean at 34w0d.\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin with DHA daily.\nAllergies: NKDA.\nFollow-up: BP check in OB clinic within a week; postpartum visit 6 weeks; primary care for ongoing BP."}
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "ed_visit",
+          "start": "2026-01-16T18:30",
+          "end": "2026-01-18T11:00",
+          "service": "Emergency Department — Obstetrics",
+          "reason": "Elevated blood pressure one week postpartum",
+          "vitals": [
+            {"time": "2026-01-16T18:35", "bp": [150, 100], "hr": 88},
+            {"time": "2026-01-17T02:10", "bp": [150, 100], "hr": 88, "rr": 12}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-17T02:20", "results": [{"test": "Sodium", "value": 138}, {"test": "Potassium", "value": 4.2}, {"test": "Chloride", "value": 100}, {"test": "Bicarbonate", "value": 24}, {"test": "Calcium", "value": 8.9}]},
+            {"panel": null, "collected": "2026-01-17T02:20", "results": [{"test": "Magnesium", "value": 5.2}]},
+            {"panel": null, "collected": "2026-01-17T02:25", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.35},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 50},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 70}
+            ]},
+            {"panel": null, "collected": "2026-01-17T07:30", "results": [{"test": "Magnesium", "value": 2.6}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Emergency Department and Readmission Record", "author": "emergency medicine", "date": "2026-01-27T09:50", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT / OBSTETRICS\nDates of service: 01/16/2026 - 01/18/2026\n\nOne week after cesarean (01/09) for severe preeclampsia. Came in after home BP readings were high. ED BP 150/100, HR 88. OB consulted; readmitted for postpartum preeclampsia and IV magnesium sulfate started for seizure prophylaxis. Labetalol 200 mg BID continued.\n\nOvernight on the infusion she reported trouble breathing and felt weak all over. Exam: lethargic; patellar reflexes absent; breath sounds diminished at both bases, no wheeze or crackles; RR 12.\nABG: pH 7.35, pCO2 50, pO2 70.\nNa 138, K 4.2, Cl 100, HCO3 24, Ca 8.9. Mg 5.2 mg/dL (elevated).\n\nImpression: magnesium toxicity with hypoventilation.\nMagnesium stopped. Calcium gluconate 1 g IV. Alert with reflexes back within a few hours; Mg 2.6 in the morning.\n\nDischarged 01/18 on labetalol 200 mg BID and prenatal vitamin. NKDA. BP check in OB clinic in 3-4 days, then routine postpartum care. Recommend PCP follow-up for blood pressure."}
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "portal_message",
+          "start": "2026-01-26T21:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Update and refill", "author": "patient", "date": "2026-01-26T21:14", "body": "Hi, I had the baby on the 9th, early again, and then ended up back in the hospital for my pressure a week later. Long story, they should be sending you the paperwork. Both of us are home and doing ok. Could you send a refill of the labetalol? I'm down to a week. I'll make an appointment once things calm down a little."},
+            {"type": "Patient Message", "title": "RE: Update and refill", "author": "PCP", "date": "2026-01-27T08:05", "body": "Tiana, so glad you and the baby are home. Labetalol 200 mg twice a day sent to your pharmacy. The hospital records came in this morning and I'm reading them. Keep checking your pressure and follow the OB plan; any reading of 160/110 or more, a severe headache or trouble breathing means going straight back in. Book with us whenever you're ready."}
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "outside_records",
+          "start": "2026-03-03T13:30",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-24T11:00", "results": [{"test": "Platelets", "value": 231}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-02-24T11:00", "results": [{"test": "Aspartate Aminotransferase", "value": 24}, {"test": "Alanine Aminotransferase", "value": 21}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Obstetrics Postpartum Visit", "author": "obstetrics", "date": "2026-03-03T13:30", "body": "OUTSIDE OBSTETRICS AND GYNECOLOGY GROUP\nPostpartum visit 02/24/2026\n\nSix and a half weeks after repeat cesarean at 34w0d for severe preeclampsia (HELLP), with a postpartum readmission for preeclampsia complicated by magnesium toxicity.\nBP 132/86 on labetalol 200 mg BID. Incision healing well. Mood stable.\nLabs today: platelets 231, AST 24, ALT 21.\nNKDA.\nPlan: continue labetalol; long-term blood pressure care with her primary care physician."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "pharmacy",
+          "start": "2026-05-12T09:35",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill Request", "author": "MA", "date": "2026-05-12T09:35", "body": "Labetalol 200 mg BID refill requested. Last office visit 9/2025. Approved 30 days only per PCP - needs appointment for further refills. Portal reminder sent."}
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Appointment", "author": "patient", "date": "2026-08-03T12:40", "body": "Sorry it's taken me so long. Can I come in for a BP check and just to catch up? Mornings are best."},
+            {"type": "Patient Message", "title": "RE: Appointment", "author": "front desk", "date": "2026-08-03T14:02", "body": "Hi Tiana, you're booked Monday 9/14 at 9:30 with your doctor. Please bring your home blood pressure log. A 30-day labetalol refill was sent to bridge you until then."}
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# unit-2647 story (Silas Mahoney, MRN00002647)
+
+- 2023-12-14 telephone: calls to join the practice; nosebleeds and tiredness; no doctor in years (P)
+- 2024-01-08 establish_care: new-patient visit; epistaxis, fatigue, DOE; pallor, oral telangiectasias; Hgb 9.1, MCV 72; iron studies; HHT and IDA diagnosed; CT chest and hematology referral ordered; flu vaccine; screening labs (S, R1, R2, A1, A2, P)
+- 2024-01-09 portal_message: results; ferrous sulfate 325 mg daily started (A3)
+- 2024-01-12 imaging: CT chest with contrast, multiple pulmonary AVMs (S, R2)
+- 2024-01-16 telephone: PCP calls with CT result; pulmonary AVMs on list; HHT center referral (S, A4)
+- 2024-01-30 telephone: referral coordinator, hematology and HHT center referrals sent (A2, A4, P)
+- 2024-02-20 portal_message: nosebleed at work, first-aid advice, iron check-in (P)
+- 2024-03-05 telephone: HHT center could not reach him (A4, P)
+- 2024-03-11 office_visit no-show (P)
+- 2024-03-12 portal_message: missed visit, please reschedule (P)
+- 2024-05-24 office_visit: last seen; stopped iron, constipation; Hgb 9.4, MCV 71; iron every other day; referrals re-sent (A5)
+- 2024-05-28 portal_message: CBC result note (A5)
+- 2024-06-04 telephone: referral coordinator; hematology needs him to call (P)
+- 2024-08-19 pharmacy: ferrous sulfate refill (P)
+- 2024-10-07 portal_message: flu reminder, no reply (P)
+- 2024-12-23 specialist_visit: hematology consult; Hgb 9.3, MCV 70, ferritin 7, eos 8%; hookworm ova; Necator americanus; albendazole once (S, R3, R4, R5, A6) — letter received 2025-04-08
+- 2025-01-06 pharmacy: fill history shows albendazole from hematology; records requested (P)
+- 2025-02-11 telephone: second records request (P)
+- 2025-04-09 telephone: PCP review of hematology letter; front desk outreach to schedule, no answer (P)
+- 2025-07-21 portal_message: asks for copy of records before volunteering abroad (P)
+- 2025-10-06 portal_message: flu reminder, no reply (P)
+- 2026-02-24 ed_visit: DOE, fatigue after six months abroad; HR 104; Hgb 9.6, MCV 72, ferritin 5, retic 2.6%; O&P ordered (S, R6) — received 2026-03-09
+- 2026-02-27 telephone (ED): O&P hookworm ova; hookworm infection; albendazole once (A7, R5) — received 2026-03-09
+- 2026-03-10 portal_message: PCP got ED records, asks him to schedule; no reply (P)
+- 2026-03-24 telephone: front desk call to schedule, no answer (P)
+- 2026-06-15 portal_message: overdue-visit reminder (P)
