@@ -2,7 +2,6 @@
   "unit": "unit-2618",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002618/2025-10-28a: allergen \"Haloperidol\" not in catalog (text only)",
     "MRN00002618/2025-10-28a: reaction \"Acute dystonia (oculogyric crisis)\" not in catalog (text only)"
   ],
   "patients": [
@@ -2258,6 +2257,8 @@
           "allergies": [
             {
               "substance": "Haloperidol",
+              "snomed": "386837002",
+              "category": "medication",
               "reaction": "Acute dystonia (oculogyric crisis)",
               "severity": "moderate",
               "criticality": "low",
@@ -2988,6 +2989,13 @@
         "display": "Lithium [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Haloperidol": {
+        "code": "386837002",
+        "display": "Haloperidol",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

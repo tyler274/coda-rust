@@ -18,6 +18,45 @@ Linear, then the settled docs, then mockups.
 - **Communication standard (2026-10-24).** Coda never sends on its own. Only the
   exact words a physician approved go out: sent by the physician, or by Coda on
   their behalf and shown as sent by Coda for them (PM:160, 992).
+- **Access has one owner (2026-10-26).** The physician's access to a patient
+  (clinical, identity only, or none) is one region every patient command
+  reads: acting on a patient or their linked message needs at least identity
+  access, and anything showing or changing clinical content needs clinical
+  access. Roles inside the practice are practice policy, not graph state; only
+  the messaging manager is modeled, as the messaging contract names it.
+- **A concern always comes with its explanation (2026-10-26, from the care-team
+  contract's visibility table).** Coda raises or revises a concern only in work
+  that writes the physician a communication explaining it, and the concern
+  opens that work. A quiet finish may only close concerns. The graph holds this
+  as two outcomes of every kind of work: a finish with an update for you, the
+  only one that raises or revises a concern, and a quiet finish. Which
+  communication explains which concern revision is a data promise for a linked
+  proof, not graph state.
+- **Behavior, not presentation (2026-10-26).** Layout, open and close, hover
+  and paging belong to the surface map and the app, not the graph, as in
+  Duet's. The graph keeps what the physician can do, what Coda does, and what
+  is guaranteed. It keeps what is open only when a read, an access limit or a
+  guarantee depends on it (the reader, Updates, Find patient, a source pane
+  and its load); how things open is the app's. A guarantee that lived in a
+  screen detail stays as a plain rule:
+  - Opening an update is one event wherever the app offers it; previewing one
+    never navigates or clears attention, only opening it does. Collapsing Coda
+    to the orb is presentation.
+  - The patient page shows what the summary rests on and its limits (Basis)
+    and the sources Coda read (Sources); a Sources row opens that source's
+    citation. Opening and closing them is presentation.
+  - Sidebar and schedule collapse are remembered per physician (M8); they are
+    preferences of the surface, not graph state.
+  - Running work may show its current step, only from a real tool call
+   ; the step line is the surface's. The graph keeps that the work
+    is running.
+  - Find patient searches the whole roster on the server, and every roster
+    patient stays reachable; Updates keeps every update of the day reachable.
+    How results and the day page in is the surface's.
+  - A source pane belongs to the surface that opened it and closes with it;
+    how many show at once is the surface's.
+  - A draft is kept quietly; how it saves is the app's. When it can't be kept,
+    it says Not saved with Retry, and nothing typed is lost (N3).
 - **Ideal state, not infrastructure (2026-10-24).** The graph is the ideal
   behavior of the full product for any user: what they see and how things act and
   work for them. It leaves out runtime capacity, retries, timeouts, interruptions,
@@ -29,6 +68,16 @@ Linear, then the settled docs, then mockups.
 - **Today and Updates (2026-10-23).** Today is only what needs the physician;
   Updates is the day's record of everything Coda did, which the physician never
   maintains.
+
+## 2026-10-22
+
+- **Done is shared.** Done on a concern clears that exact concern for every
+  physician; another physician's Done clears it for you too.
+- **One owner for the patient's connection.** The practice side keeps one
+  connection lifecycle, the invitation included. The roster shows its status
+  without notifications. An ended connection can be invited again, and consent
+  wording is fixed for the MVP, so there is no re-consent state (with the
+  2026-10-23 decisions below).
 
 ## Tie-out decisions (2026-10-23)
 
@@ -50,12 +99,19 @@ Linear, then the settled docs, then mockups.
    what it read and offers one tap to update. Changes from that answer wait for
    the update. *Revised 2026-10-24:* any change in records counts (not only a
    second one), and understanding, review and visit preparation look again on
-   their own before finishing.
+   their own before finishing. *Revised 2026-10-26:* whatever Coda is working
+   on takes in what arrives meanwhile before it finishes, so nothing it
+   publishes rests on an older reading; the patient review still owns
+   responding to news. A chat answer already given is what was said: it keeps
+   the records it used, marked when newer ones arrive, with Update. This
+   replaces finishing on older records and RP:1430-1432's publishing a
+   reassessment as it is.
 8. One receipt rule for every physician command: a command changes its item only
    when accepted; a lost receipt shows as pending and never sends twice; only
    if it still can't be confirmed does the item say so, with Check again.
 9. When a records source is down, each patient page and briefing says
-   "Records as of …, couldn't update". When the practice's whole source is down,
+   "Records as of …, couldn't update". A source that comes back keeps its last
+   good "Records as of …" until it actually updates. When the practice's whole source is down,
    Today carries one line for the practice, never a row per patient. Coda keeps
    working from the last good records. *The practice-wide line was approved for
    the graph 2026-10-24.*
@@ -67,7 +123,7 @@ Linear, then the settled docs, then mockups.
 12. A new message supersedes a stopped answer. The stopped answer stays in the
     transcript marked stopped, and Resume exists only until the physician sends
     something else.
-13. Coverage: reader navigation, Updates paging and earlier days, the orb, Find
+13. Coverage: reader navigation, every update of the day and earlier days, the orb, Find
     patient's read and failure, unavailable citations, and thumbs on briefings and
     reviews.
 14. Session expiry is not sign-out. A sign-in prompt covers the screen and hides
@@ -164,10 +220,10 @@ held until Resume (supersedes CT:98's "Pause is removed entirely").
   connection ended. The patient's For my doctor arrives only when they send it,
   like a message from them (Dev, 2026-10-26).
 
-## Audit findings the graph cites
+## Audit findings
 
-The graph also cites findings from the 2026-10-23 audits that settled a behavior
-from the sources:
+The graph, the standing rules and infrastructure-gaps.md cite these findings
+from the 2026-10-23 audits, each of which settled a behavior from the sources:
 
 | Id | Behavior | Source |
 | --- | --- | --- |

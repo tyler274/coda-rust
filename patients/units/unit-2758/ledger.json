@@ -2,9 +2,10 @@
   "unit": "unit-2758",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002758/2019-09-10a: allergen \"Tree pollen\" not in catalog (text only)",
-    "MRN00002758/2019-09-10a: allergen \"Dust mite\" not in catalog (text only)",
-    "MRN00002758/2025-11-03a: allergen \"Packed red blood cells\" not in catalog (text only)",
+    "MRN00002758/2020-05-12a: lab order \"CBC and iron studies\" names no one catalog lab, panel, study or procedure",
+    "MRN00002758/2024-03-12a: procedure order \"Upper endoscopy with small bowel biopsy and colonoscopy\" names no one catalog lab, panel, study or procedure",
+    "MRN00002758/2024-03-12a: procedure order \"Ferric carboxymaltose infusion\" names no one catalog lab, panel, study or procedure",
+    "MRN00002758/2025-03-03a: procedure order \"Ferric carboxymaltose infusion\" names no one catalog lab, panel, study or procedure",
     "left text-only (not verified): drug \"ferric carboxymaltose 50 MG/ML Injectable Solution\""
   ],
   "patients": [
@@ -104,6 +105,8 @@
             },
             {
               "substance": "Tree pollen",
+              "snomed": "782576004",
+              "category": "environment",
               "reaction": "Itching",
               "severity": "mild",
               "criticality": "low",
@@ -111,6 +114,8 @@
             },
             {
               "substance": "Dust mite",
+              "snomed": "260147004",
+              "category": "environment",
               "reaction": "Itching",
               "severity": "mild",
               "criticality": "low",
@@ -4464,6 +4469,8 @@
           "allergies": [
             {
               "substance": "Packed red blood cells",
+              "snomed": "431069006",
+              "category": "biologic",
               "reaction": "Hives",
               "severity": "mild",
               "criticality": "low",
@@ -5340,6 +5347,23 @@
         "code": "10704-5",
         "display": "Ova and parasites identified in Stool by Light microscopy",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Dust mite": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Packed red blood cells": {
+        "code": "431069006",
+        "display": "Packed red blood cells",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Tree pollen": {
+        "code": "782576004",
+        "display": "Tree pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     },
     "rejected": [

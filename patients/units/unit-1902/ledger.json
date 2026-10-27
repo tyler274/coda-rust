@@ -1,9 +1,7 @@
 {
   "unit": "unit-1902",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001902/2025-05-06a: allergen \"Lamotrigine\" not in catalog (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001902",
@@ -758,6 +756,8 @@
           "allergies": [
             {
               "substance": "Lamotrigine",
+              "snomed": "387562000",
+              "category": "medication",
               "reaction": "Rash",
               "severity": "moderate",
               "criticality": "high",
@@ -1565,6 +1565,13 @@
         "display": "levetiracetam 750 MG Oral Tablet",
         "ingredient": "levetiracetam",
         "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "allergens": {
+      "Lamotrigine": {
+        "code": "387562000",
+        "display": "Lamotrigine",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

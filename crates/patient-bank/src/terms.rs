@@ -1,10 +1,13 @@
-//! Verify the out-of-catalog conditions and drugs one unit's authors proposed.
+//! Verify the out-of-catalog codes one unit's authors proposed.
 //!
 //! A proposed ICD-10-CM code is accepted only when NLM Clinical Tables returns it,
 //! and its official display replaces the author's. A drug written as text is coded
 //! only when RxNav resolves it to a clinical or branded drug with the same
 //! ingredient and an equivalent strength: `3 mg/0.5 mL` is 6 mg/mL, so it never
-//! matches a 3 mg/mL pen. A drug whose text states no strength stays text-only.
+//! matches a 3 mg/mL pen. A drug whose text states no strength stays text-only. A
+//! lab or study's LOINC is accepted when NLM Clinical Tables returns it, and an
+//! allergen or procedure's SNOMED CT code when tx.fhir.org knows it as an active
+//! concept of the right kind (a substance, product or organism; a procedure).
 //! Everything that fails stays text-only and is listed as rejected.
 
 use std::sync::LazyLock;
@@ -151,27 +154,48 @@ fn ingredient(text: &str) -> Option<String> {
     Some(word.to_string())
 }
 
+/// The dose form a drug name ends with ("oral tablet", "extended release oral
+/// capsule"): what follows its last strength.
+fn form(text: &str) -> String {
+    let rest = STRENGTH
+        .find_iter(text)
+        .last()
+        .map_or("", |m| &text[m.end()..]);
+    rest.split_whitespace()
+        .map(str::to_lowercase)
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
 /// RxNav's best clinical or branded drug for `text` with the same ingredient and
 /// an equivalent strength.
 pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<VerifiedCode>> {
     let Some(first) = ingredient(text) else {
         return Ok(None);
     };
-    for rxcui in look.rxnorm_candidates(text)? {
-        let Some((tty, name)) = look.rxnorm_properties(&rxcui)? else {
+    let found = |code: &str, display: &str, receipt: &str| VerifiedCode {
+        code: code.into(),
+        display: display.into(),
+        ingredient: Some(first.clone()),
+        unit: None,
+        receipt: receipt.into(),
+    };
+    let candidates = look.rxnorm_candidates(text)?;
+    let mut others = Vec::new();
+    for rxcui in &candidates {
+        let Some((tty, name)) = look.rxnorm_properties(rxcui)? else {
             continue;
         };
         if !matches!(tty.as_str(), "SCD" | "SBD" | "GPCK" | "BPCK") {
+            others.push(rxcui.clone());
             continue;
         }
         if name.to_lowercase().contains(&first) && equivalent(text, &name) {
-            return Ok(Some(VerifiedCode {
-                code: rxcui,
-                display: name,
-                ingredient: Some(first),
-                unit: None,
-                receipt: "NLM RxNav approximateTerm + properties".into(),
-            }));
+            return Ok(Some(found(
+                rxcui,
+                &name,
+                "NLM RxNav approximateTerm + properties",
+            )));
         }
     }
     // approximateTerm can miss an exact clinical drug; try the ingredient's own list
@@ -180,13 +204,21 @@ pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<VerifiedCode
             continue;
         };
         if equivalent(text, name) {
-            return Ok(Some(VerifiedCode {
-                code: rxcui.into(),
-                display: name.into(),
-                ingredient: Some(first),
-                unit: None,
-                receipt: "NLM RxNav drugs".into(),
-            }));
+            return Ok(Some(found(rxcui, name, "NLM RxNav drugs")));
+        }
+    }
+    // or it found only a drug component ("penicillin V potassium 250 MG"): its
+    // drugs come in every form, so the text's form picks among them
+    let wanted = form(text);
+    for rxcui in others {
+        for (code, name) in look.rxnorm_related_drugs(&rxcui)? {
+            if equivalent(text, &name) && !wanted.is_empty() && form(&name) == wanted {
+                return Ok(Some(found(
+                    &code,
+                    &name,
+                    "NLM RxNav approximateTerm + related",
+                )));
+            }
         }
     }
     Ok(None)
@@ -304,6 +336,66 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
             Err(e) => terms
                 .rejected
                 .push(format!("{kind} {label:?} LOINC lookup failed: {e}")),
+        }
+    }
+    // Allergens and procedures the catalog lacks, by their SNOMED CT concept.
+    let mut snomed: Vec<(bool, &str, &str)> = Vec::new();
+    for ev in patients.iter().flat_map(|p| &p.events) {
+        for a in &ev.allergies {
+            if let (false, Some(code)) = (catalog.allergens.contains_key(&a.substance), &a.snomed) {
+                snomed.push((true, &a.substance, code));
+            }
+        }
+        for x in &ev.procedures {
+            if let (false, Some(code)) = (catalog.procedures.contains_key(&x.procedure), &x.snomed)
+            {
+                snomed.push((false, &x.procedure, code));
+            }
+        }
+    }
+    for (allergen, label, code) in snomed {
+        let (kind, tags): (&str, &[&str]) = if allergen {
+            (
+                "allergen",
+                &["substance", "product", "medicinal product", "organism"],
+            )
+        } else {
+            ("procedure", &["procedure", "regime/therapy"])
+        };
+        let known = if allergen {
+            &terms.allergens
+        } else {
+            &terms.procedures
+        };
+        if known.contains_key(label)
+            || terms
+                .rejected
+                .iter()
+                .any(|r| r.contains(&format!("{label:?}")))
+        {
+            continue;
+        }
+        let code = code.trim().to_string();
+        match look.snomed_of(&code, tags) {
+            Some(display) => {
+                let v = VerifiedCode {
+                    code,
+                    display,
+                    ingredient: None,
+                    unit: None,
+                    receipt: "tx.fhir.org SNOMED CT".into(),
+                };
+                let map = if allergen {
+                    &mut terms.allergens
+                } else {
+                    &mut terms.procedures
+                };
+                map.insert(label.to_string(), v);
+            }
+            None => terms.rejected.push(format!(
+                "{kind} {label:?} SNOMED {code} is not an active {} concept",
+                tags.join(" or ")
+            )),
         }
     }
     look.save()?;

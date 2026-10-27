@@ -14,6 +14,15 @@ The connection is live (Dev 2026-10-25): while connected, each change to what th
 patient shares in Duet reaches the practice as "a shared Duet record arrives",
 which makes Coda's work owed. Nothing crosses otherwise.
 
+## Decided, not yet drawn
+
+- **The practice writes back in Duet (Dev 2026-10-26).** When a patient is connected
+  through Duet, the words a physician approves for them reach Duet's thread, marked as
+  from their practice, instead of only their email or text. The communication standard
+  holds: only the exact approved words go out. Gmail and Spruce stay the channel for
+  patients not on Duet. It is drawn later as a connected graph on both sides, since the
+  Duet graph holds only the MVP (Dev 2026-10-25).
+
 Check it from the repository root; the composition reads both graphs:
 
 ```bash
@@ -34,5 +43,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/co
 ```
 
 Lint must report no findings. Every rule written here must hold; each graph's own
-rules hold as they do alone (the physician graph's `NoRevisionWithoutReply` stops at
-the state limit there too).
+rules hold as they do alone. The physician graph's `NoRevisionWithoutReply` stops at
+the explicit search's state limit here and alone; the physician Verus proof
+(`every_initialized_finite_trace_is_safe`) proves it, with every other physician rule,
+in every reachable state.

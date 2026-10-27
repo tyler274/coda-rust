@@ -10,8 +10,7 @@ graph's method ([physician-experience](../physician-experience/README.md)).
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph assumes away and the runtime must still guarantee. |
 | [../connected-care](../connected-care/README.md) | How this graph meets the physician graph: shared events and the rules across them. |
 
-The graph is being written region by region, one commit per step. Check every
-change from the repository root:
+Check every change from the repository root:
 
 ```bash
 node .agents/skills/coda-statechart/scripts/statechart.mjs lint verification/duet-experience/duet.mmd

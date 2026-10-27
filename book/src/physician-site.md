@@ -16,12 +16,43 @@ specification or a claim of current Rust completeness.
 
 ## Current execution paths
 
-[`physician-sample::live`](/crates/physician-sample/src/live.rs) currently opens
-[`PhysicianSession`](/crates/local-product/src/execution.rs) for mounted chat
-and reply work, using the local session file outside test fixtures. The separate
-Postgres [`runtime::Store`](/crates/local-product/src/runtime.rs) owns durable
-acceptance, leases and recovery primitives; configuring the physician auth
-database does not connect chat routes to that store.
+The page, identity, clinical execution and delivery each have an owner:
+
+| Responsibility | Owner |
+| --- | --- |
+| Physician screens, navigation and command feedback | [`physician-app`](/crates/physician-app/src/lib.rs), through [`physician-client`](/crates/physician-client/src/lib.rs) and [`physician-wire`](/crates/physician-wire) |
+| Sign-in, practice membership and panel access | [`physician-auth`](/crates/physician-auth/src/lib.rs), enforced at the site routes |
+| Serving projections and accepting chat commands | [`physician-sample`](/crates/physician-sample/src/lib.rs) and its [`live`](/crates/physician-sample/src/live.rs) adapter |
+| Physician model execution and conversation state | [`local-product`](/crates/local-product/src/lib.rs): `PhysicianSession` for inline execution; Postgres `runtime::Store` for queued execution |
+| Waking accepted queued turns and executing them | [`durable`](/crates/physician-sample/src/durable.rs) and [`physician-worker`](/crates/physician-sample/src/bin/physician-worker.rs), through Pub/Sub |
+| Telling open pages to reread changed state | [`physician-bus`](/crates/physician-bus/src/lib.rs), using a local bus or Redis fan-out |
+
+With `PHYSICIAN_CHAT_TOPIC` unset, `live` opens
+[`PhysicianSession`](/crates/local-product/src/execution.rs) for chat and reply
+work, using a local session file outside test fixtures. The model mode selects
+Codex CLI, cassette recording/replay or opt-in Responses API execution; see
+<a href="/README%2Emd#physician-chat-codex-cli">local chat setup</a>.
+
+With `PHYSICIAN_CHAT_TOPIC` set, the site accepts and reads chat through the
+Postgres [`runtime::Store`](/crates/local-product/src/runtime.rs), and the worker
+runs the accepted turn. This requires `PHYSICIAN_DATABASE_URL`; setting the
+database alone still leaves chat inline. [Scaling across instances](#scaling-across-instances)
+describes acceptance, recovery, fan-out and the current reply-revision limit.
+
+The synthetic practice's recorded projections and the live chat path are separate
+evidence. A rendered summary, Today row or recorded draft does not establish that
+the Rust runtime produced that clinical work. Likewise, a completed chat does not
+establish all the graph's review, preparation, follow-up and communication paths.
+Use the [implementation coverage](#product-direction-and-proof) to find those gaps.
+
+### Choose the proof for the claim
+
+| Check | What it can establish | Boundary |
+| --- | --- | --- |
+| Graph rules and Verus model proof | The specified transitions preserve the modeled rules. | Does not execute the app, its Rust owners or a clinical model. |
+| `cargo test -p physician-sample --test site` | The exercised Chromium journeys render and behave correctly against their test setup. | Does not qualify every graph state or hosted dependency. |
+| <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">Local physician scale recipe</a> | Real site/worker binaries, Postgres, Valkey and Pub/Sub emulator support the exercised cross-instance chat and recovery journeys. | Fixed provider, proof sign-in and emulator delivery; not real model quality, mail delivery or hosted push authentication. |
+| [Staging qualification](gcp.md#rust-staging-bootstrap-and-deployment-gate) | The recorded checks against the deployed revision and its actual dependencies. | Requires explicit readback of the journey, identity, effects and recovery; successful deployment alone is insufficient. |
 
 ## Physician sign-in and practice access
 

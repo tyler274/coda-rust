@@ -1,15 +1,12 @@
-//! The patient front door: accounts, practice invitations, the
-//! Duet-account-to-roster-patient link, consent, and premium status.
+//! The earlier patient account, practice invitation, roster-link, consent and
+//! premium store, still consumed by physician authentication routes, the Duet
+//! binary's readiness check and separate Duet library routers. Invitations explicitly establish the roster link;
+//! SHA-256 token hashes and single-use redemption protect that store's contract.
 //!
-//! One durable owner, outside Duet and Agents, for who a patient is, which
-//! practice's roster they belong to, whether they consented to share with
-//! their physician, and whether they pay for premium. The practice invites
-//! the patient explicitly — identity is never guessed from names, phones, or
-//! clinical text — and the patient's accepted invitation writes the link.
-//! Agents reads only a per-patient cadence setting and never knows who pays;
-//! Duet reads only which premium features are on; neither stores billing.
-//! Invitations and tokens are stored `sha256`-hashed so the presented token
-//! is the only secret, and an invitation redeems exactly once.
+//! This crate also contains Duet identity, conversation and privacy-journal
+//! modules. They are separate from the durable owners composed by `duet-api`'s
+//! current binary; their presence does not make them mounted patient routes.
+//! Book: `book/src/front-door.md` records consumers and migration boundaries.
 
 #![deny(missing_docs)]
 

@@ -81,6 +81,10 @@ daily, atorvastatin 40 mg at bedtime, hydrochlorothiazide 25 mg daily. Height 18
   obesity hypoventilation. "Alcohol consumption" is carried as social history, not as a
   diagnosis. Class II obesity stays on the list beside it as the source has it.
 - **R7.** Ages follow the seed birth date (53 at the April 2022 physical).
+- **R8.** The source's April 2022 (TG 650) and January 2026 (TG 800) panels give LDL 130,
+  which no LDL calculation yields at those triglycerides. Resolution: those two panels
+  report LDL by direct assay (lipid panel with direct LDL), as a lab does when
+  triglycerides run over 400.
 - **Left as the source has it:** no diabetes drug is added despite A1c of 7.8 and
   7.2; atorvastatin stays 40 mg with LDL 130 in a diabetic; triglycerides of 650 and
   800 get no fibrate or fish oil; hepatomegaly in a daily drinker gets no imaging;

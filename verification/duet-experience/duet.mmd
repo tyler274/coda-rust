@@ -3,17 +3,20 @@ stateDiagram-v2
 %% The graph is the spec; Verus derives from it. It states the ideal behavior of the full
 %% product for every person, from Dev's intent and the settled sources, never from existing
 %% code. decisions.md holds the charter, the sources and the dated decisions it cites.
-%% Written region by region; this file currently holds the account and export, your health sources, the conversation, follow-through, Duet's reviews and Today, For my doctor, your practice, and what comes back from it.
+%% Written region by region; this file currently holds your screens, the thread and its alerts, notes and medications you enter, the account and export, your health sources, the conversation, follow-through, Duet's own work and Today, For my doctor, your practice, and what comes back from it.
 %% Scope: MVP behavior (Dev 2026-10-25); later functionality joins as connected graphs.
 %%
 %% Events. Every labeled step carries a declared event: who causes it, what it needs, and
 %% what it is for.
 %% events declared
+%% Whatever Duet's AI does, in a reply, a Check-in or its own work, it does only with your current
+%% permission, AI on and current Terms. Its events state only what they need beyond that.
+%% cause Duet's AI | needs PAllowed, SwOn, TCur | reason: no AI work without your permission (F3); the AI switch, a newer AI permission and newer Terms pause it (D7; Dev 2026-10-25)
 %% event sign in | by you | needs not ADeleting | reason: an account being deleted takes no new sessions (north-star.md, Identity and setup) | You sign in on this device: Sign in with Apple or email on iPhone, Google or email on Android, email on the web (Dev 2026-10-20). Whatever the method, a person has one account; a first sign-in creates it, and nothing about your health is kept before it.
 %% event agree and continue | by you | command on your setup: Agree and continue, clicked while DIn | needs AAgree | reason: only your own agreement on this device records the Terms | You agree to the current Terms after signing in; Duet records that version and when (north-star.md, Identity and setup). Duet then asks for a display name only when your sign-in brought none.
 %% event save your display name | by you | command on your setup: Save name, clicked while DIn | needs AName | reason: the name is yours to give | You give Duet the name it uses for you; it is never verified.
 %% event change your display name | by you | command on your account: Change name, clicked while DIn | needs AReady, TCur | reason: the name is yours to change; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change the name Duet uses for you, at any time; it is never verified, and Duet holds no legal name (Dev 2026-10-26).
-%% event allow AI | by you | command on your setup: Allow AI, clicked while DIn | needs AChoose | reason: AI permission is your choice | You allow Duet's AI for conversation, its private memory of you, and its own reviews, after reading what it does and its limits (north-star.md, Privacy; decisions.md, The account).
+%% event allow AI | by you | command on your setup: Allow AI, clicked while DIn | needs AChoose | reason: AI permission is your choice | You allow Duet's AI for conversation, its private memory of you, and its own work, after reading what it does and its limits (north-star.md, Privacy; decisions.md, The account).
 %% event not now for AI | by you | command on your setup: Not now, clicked while DIn | needs AChoose | reason: AI permission is your choice | You decline Duet's AI for now; everything that isn't AI keeps working.
 %% event allow AI in settings | by you | command on your AI settings: Allow AI, clicked while DIn | needs PNot, TCur | reason: AI permission is your choice; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You give Duet's AI permission later, from settings.
 %% event withdraw AI permission | by you | command on your AI settings: Withdraw permission, clicked while DIn | needs PAllowed, PNew | reason: AI permission is your choice | You withdraw permission for Duet's AI: work in progress ends for good and nothing returns if you allow it again; your history, conversation and saved work stay (F3; Dev 2026-10-06).
@@ -21,15 +24,15 @@ stateDiagram-v2
 %% event allow the new AI permission | by you | command on your AI settings: Allow the new version, clicked while DIn | needs PNew, TCur | reason: AI permission is your choice; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You allow the new version; paused work continues.
 %% event turn AI off | by you | command on your AI settings: Turn off, clicked while DIn | needs SwOn, TCur | reason: the switch is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You turn off Conversation and insights: AI work pauses without being used up, and your conversation stays readable (D7).
 %% event turn AI on | by you | command on your AI settings: Turn on, clicked while DIn | needs SwOff, TCur | reason: the switch is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You turn AI back on; paused work continues.
-%% event pause proactive work | by you | command on your AI settings: Pause proactive work, clicked while DIn | needs PwOn, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | One control pauses Duet's own reviews and the Reminders and Check-ins you asked for; chat and memory keep working (north-star.md, Requested follow-through).
-%% event resume proactive work | by you | command on your AI settings: Resume proactive work, clicked while DIn | needs PwPaused, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Reviews, Reminders and Check-ins continue.
+%% event pause proactive work | by you | command on your AI settings: Pause proactive work, clicked while DIn | needs PwOn, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | One control pauses Duet's own work and the Reminders and Check-ins you asked for; chat and memory keep working (north-star.md, Requested follow-through).
+%% event resume proactive work | by you | command on your AI settings: Resume proactive work, clicked while DIn | needs PwPaused, TCur | reason: the control is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Duet's own work, Reminders and Check-ins continue.
 %% event Duet publishes new Terms | by Duet | needs not TNew | reason: newer Terms already waiting are replaced by the newest | Duet asks you to accept newer Terms; until you do, the app waits on them and AI work pauses without being used up (D7; Dev 2026-10-04). During setup you agree to the newest version.
 %% event accept the new Terms | by you | command on your account: Accept the new Terms, clicked while DIn | needs TNew | reason: only your own agreement records the Terms | You accept the newer Terms and paused work continues.
 %% event sign out on this device | by you | needs DIn | reason: commands need a session on this device | This device forgets your account and stops its notifications; your other devices and any practice connection are unchanged (north-star.md, sign-out).
 %% event sign out everywhere | by you | needs DIn | reason: commands need a session on this device | Every session ends, here and on your other devices, which must sign in again; your account, history and any practice connection stay. Duet says done only once every session has ended (22780b06).
 %% event sign in on another device | by you | needs not ANone, ADeleting | reason: another device joins an account that exists and isn't being deleted | You sign in to the same account on another device. The graph follows the account from this device, so the account starts here.
 %% event sign out on another device | by you | needs ODIn | reason: only a signed-in device signs out | That device forgets your account.
-%% event delete your account | by you | command on your account: Delete account, clicked while DIn | needs AAgree, AName, AChoose, AReady | reason: deletion is yours alone, once, for an account not already being deleted | After confirming who you are, Duet starts deleting everything it keeps about you and ends any practice connection (F2).
+%% event delete your account | by you | command on your account: Delete account, clicked while DIn | needs AAgree, AName, AChoose, AReady | reason: deletion is yours alone, once, for an account not already being deleted | After confirming who you are, Duet starts deleting everything it keeps about you and ends any practice connection; the practice keeps what it already received, dated (F2).
 %% event the deletion finishes | by Duet | needs ADeleting | reason: only a started deletion finishes | Everything is gone from Duet and from every device; nothing old work or a restored backup does brings it back. A deletion still finishing is never shown as done.
 %% event export your data | by you | command on your account: Export, clicked while DIn | needs AReady, ExNone, ExReady, ExFailed | reason: exporting is always yours, even before newer Terms, as deleting your account is (Dev 2026-10-26); one export is prepared at a time | You ask for everything Duet keeps about you; a new export replaces the last one.
 %% event your export is ready | by Duet | needs ExPreparing | reason: only an export being prepared finishes | Everything Duet keeps about you is ready to save, each item with its source and date: the conversation and its runs with your feedback, your health records and readings, insights, Plans, Reminders and Check-ins, For my doctor, your doctor's plan, and your sources and connections (north-star.md, Source access, export and deletion).
@@ -40,7 +43,7 @@ stateDiagram-v2
 %% one Send and no Stop. A sent message is never lost (D1).
 %% event type in the composer | by you | needs DIn, TCur | reason: the composer belongs to this device's session and a set-up account; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You write a draft; it waits while AI is off or permission is missing (north-star.md, Product structure).
 %% event clear your draft | by you | needs DrText, TCur | reason: only a draft can be cleared; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You empty the composer.
-%% event ask about this | by you | needs DIn, TCur | reason: only a set-up account has items to ask about; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pick Ask about this on an insight, a record, a measurement or a saved item: that exact item and version join your draft, your text stays, and nothing is sent (north-star.md, Today).
+%% event ask about this | by you | needs DIn, TCur | reason: only a set-up account has items to ask about; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pick Ask about this on an insight, a record, a measurement or a saved item: that item joins your draft, your text stays, and nothing is sent (north-star.md, Today). While you draft it shows its current version, marked if it was corrected since you picked it; the message keeps the version it carried once sent (Dev 2026-10-26).
 %% event remove the attached item | by you | needs CtxOn, TCur | reason: only an attached item can be removed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The item leaves your draft.
 %% event reply to a message | by you | needs DIn, TCur | reason: only a set-up account has a thread; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You quote one earlier message, yours or Duet's, in your draft; quoting gives no new permission to repeat what it said (north-star.md, Product structure).
 %% event dismiss the quote | by you | needs QOn, TCur | reason: only a quote can be dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The quote leaves your draft.
@@ -48,10 +51,33 @@ stateDiagram-v2
 %% event Duet receives your message | by Duet | needs OSending, OUnsure, AReady | reason: only a message on its way arrives, sent or not yet confirmed | Your message is in the thread for good. With no reply in progress Duet starts one; while Duet is writing, your message steers that reply, which answers both (Dev 2026-10-25).
 %% event your message isn't confirmed | by the network | needs OSending | reason: only a message on its way can go unconfirmed | Duet can't tell yet whether it arrived; the message says so and keeps your words, never shown as failed or as sent.
 %% event try sending again | by you | needs DIn, OUnsure, OUnsent, TCur | reason: only a message that didn't arrive or isn't confirmed is retried; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The same message goes again; it can never arrive twice.
-%% event Duet refuses your message | by Duet | needs OSending | reason: only a message on its way can be refused | A definite refusal, such as an attached item that changed: the message stays with your words, Try again and Edit.
-%% event edit the unsent message | by you | needs DIn, OUnsent, TCur | reason: only a refused message goes back to the composer; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Its words and quote return to the composer, after asking if they would replace a newer draft; its attached item returns only while it is still current.
+%% event Duet refuses your message | by Duet | needs OSending | reason: only a message on its way can be refused | A definite refusal: the message stays with your words, Try again and Edit.
+%% event edit the unsent message | by you | needs DIn, OUnsent, TCur | reason: only a refused message goes back to the composer; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Its words and quote return to the composer, after asking if they would replace a newer draft; its attached item returns at its current version.
 %% event Duet finishes the reply | by Duet's AI | needs RWriting | reason: only a reply being written finishes | The reply is complete in the thread with what it cites.
 %% event the reply can't finish | by Duet's runtime | needs RWriting | reason: only a reply being written can fail | What was written stays, marked unfinished, with Try again; never silence (D1). Whatever the reply already saved stays saved.
+%% events Duet posts in the thread = Duet finishes the reply | the reply can't finish
+%% events Duet has something to tell you = Duet proposes a note on its own | Duet finishes its own work with something to tell you | Duet delivers the Reminder | Duet delivers the Reminder with its own additions | Duet delivers the Check-in | the Check-in can't finish | the Check-in keeps failing | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
+%% events Duet noticed something on its own = Duet proposes a note on its own | Duet finishes its own work with something to tell you
+%% events Duet stops writing early = turn AI off | Duet publishes new Terms | Duet publishes a new AI permission | withdraw AI permission
+%% event you see the new messages | by you | needs ThUnseen, DIn, AppFront, TabDuet, CoNone, RdShown@conversation, RdKept@conversation, TCur | reason: only messages on screen in front of you are seen; newer Terms wait for your acceptance first | The conversation shows Duet's new messages on this device's screen, so they are seen everywhere: seen is one fact for your account (Dev 2026-10-26).
+%% event you see the new messages on another device | by you | needs ThUnseen, ODIn | reason: only a signed-in device shows the conversation | You read Duet's new messages on your other device; they are seen here too (Dev 2026-10-26).
+%% event leave Duet | by you | needs AppFront | reason: only an app on screen goes to the background | Duet goes to the background on this device; anything in progress keeps going.
+%% event open Duet | by you | needs AppBack | reason: only an app in the background comes back | Duet is on screen again, where you left it.
+%% Alerts (north-star.md, Notifications; Dev 2026-10-26). Each message alerts once, like texting, while Duet is in
+%% the background on a device whose alerts are allowed and that is signed in to your account. Replies, what you
+%% asked for and your practice's news always alert there; what Duet noticed from its own work alerts only once you
+%% turn on its one switch, which follows your account. Duet keeps no quiet hours of its own: your device's Focus
+%% or Do Not Disturb decides whether an alert sounds. Lock-screen text is generic: no health value, source,
+%% doctor content or medical claim; a Reminder may show the words you agreed. A notification never proves the
+%% work behind it finished, and opening one starts nothing new.
+%% event allow alerts | by you | needs NtAsk | reason: only the first ask is answered here | You allow Duet's alerts on this device when it first asks.
+%% event don't allow alerts | by you | needs NtAsk | reason: only the first ask is answered here | Duet works the same without alerts; everything waits in the thread.
+%% event turn alerts off in your device's settings | by you | needs NtOn | reason: only allowed alerts are turned off | This device stops getting Duet's alerts, and the notification waiting on it goes.
+%% event turn alerts on in your device's settings | by you | needs NtOff | reason: only alerts that are off are turned on | This device gets Duet's alerts again from now on; nothing missed arrives late.
+%% event turn on alerts for Duet's own work | by you | command on your alerts: Turn on, clicked while DIn | needs IaOff, TCur | reason: the choice is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Off until you turn it on (north-star.md, Notifications): what Duet noticed from its own work then alerts you too. One switch saved with your account, so every device follows it (Dev 2026-10-26).
+%% event turn off alerts for Duet's own work | by you | command on your alerts: Turn off, clicked while DIn | needs IaOn, TCur | reason: the choice is yours; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | What Duet noticed still posts in the thread, without alerting you.
+%% event open the notification | by you | needs NoWaiting, AppBack | reason: only a notification waiting on this device opens, from outside Duet | Duet opens on the conversation at its newest message; it starts nothing new.
+%% events Duet tells you what you asked for or your practice's news = Duet delivers the Reminder | Duet delivers the Reminder with its own additions | Duet delivers the Check-in | the Check-in can't finish | the Check-in keeps failing | your doctor's plan arrives or changes | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment | your practice's invitation reaches you | your practice discharges you
 %% event try the reply again | by you | command on the reply: Try again, clicked while DIn | needs RUnfinished, PAllowed, SwOn, TCur | reason: Duet's AI needs your permission, the switch on and current Terms | Duet writes the reply again from your messages.
 %% event Duet's AI sees a possible emergency or self-harm | by Duet's AI | needs RWriting | reason: only a reply being written can carry a safety line | Duet's AI judges that what you describe could be an emergency, or mentions self-harm.
 %% event mark the reply helpful | by you | command on your feedback: Helpful, clicked while DIn | needs RDone, TCur | reason: only a finished reply takes feedback; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | 👍 saves at once, a quiet tapback; switching from 👎 drops its reasons and note (Dev 2026-09-23).
@@ -64,17 +90,20 @@ stateDiagram-v2
 %% conversation or directly. Duet's AI never resumes them. They continue through
 %% inactivity. A Plan is a routine with no schedule.
 %% event Duet saves the {kind} you asked for | by Duet's AI | needs RWriting | reason: a reply saves follow-through only from your current message or a proposal you accepted; reading a record or a provider's note adds no step, and nothing it read can ask for more than you did (Dev 2026-09-25, Dev 2026-10-25) | The {kind} is saved and shows on Today; the thread shows its receipt only once the save is confirmed.
-%% event the {kind} comes due | by the clock | Its scheduled time arrives, in the timezone you agreed. A time that comes while AI permission is withdrawn or a newer one waits, AI is off, newer Terms wait or proactive work is paused passes undelivered; nothing stale arrives later (F3; Dev 2026-10-25). A time that comes while the last Check-in couldn't finish replaces it.
+%% event the {kind} comes due | by the clock | Its scheduled time arrives, in the timezone you agreed. A Reminder needs no AI, so at its time Duet delivers it, even while AI is off, newer Terms wait or a newer AI permission waits (Dev 2026-10-26). Any other time that comes while AI permission is withdrawn, or while a newer AI permission, AI off or newer Terms wait (for a Check-in), or proactive work is paused passes undelivered; nothing stale arrives later (F3; Dev 2026-10-25). A time that comes while the last Check-in couldn't finish replaces it.
 %% event Duet starts the Check-in | by Duet | needs FuDue@checkin, PAllowed, SwOn, TCur, PwOn | reason: a Check-in is AI work and proactive work: it needs your permission, the switch on, current Terms and proactive work on (F3, D7, D10) | Duet's AI begins the Check-in from your current context; its accepted instruction is fixed.
-%% event Duet delivers the Check-in | by Duet's AI | needs FuRun@checkin | reason: only a running Check-in delivers | Its result arrives in the conversation, with a notification if you allowed them; a delivered Check-in never means you did something medical. After its last time the Check-in is completed.
-%% event the Check-in can't finish | by Duet's runtime | needs FuRun@checkin | reason: only a running Check-in fails | What was written stays, marked unfinished, with Try again; never silence (D1).
+%% event Duet delivers the Check-in | by Duet's AI | needs FuRun@checkin | reason: only a running Check-in delivers | Its result posts in the thread as Duet's message; a delivered Check-in never means you did something medical. After its last time the Check-in is completed.
+%% event the Check-in can't finish | by Duet's runtime | needs FuRun@checkin | reason: only a running Check-in fails | What was written stays, marked unfinished, and Duet says so in the thread with Try again, since you asked for it; never silence (D1; Dev 2026-10-26).
+%% event the Check-in keeps failing | by Duet's runtime | needs FuRun@checkin | reason: only a running Check-in fails | After failing repeatedly, it pauses itself and Duet says so in the thread; only you resume it (Dev 2026-10-26). How many failures in a row count as repeatedly is the runtime's (infrastructure-gaps.md).
 %% event try the Check-in again | by you | command on the Check-in: Try again, clicked while DIn | needs FuStuck@checkin, PAllowed, SwOn, TCur, PwOn | reason: a Check-in is AI work and proactive work: it needs your permission, the switch on, current Terms and proactive work on (F3, D7) | Duet runs the same Check-in again with its accepted instruction.
 %% events proactive AI work pauses = turn AI off | Duet publishes new Terms | Duet publishes a new AI permission | pause proactive work
-%% event Duet delivers the Reminder | by Duet | needs FuDue@reminder, PAllowed, SwOn, TCur, PwOn | reason: a Reminder needs no new AI, but your consent, the AI switch and proactive work still govern it (north-star.md, Insight evidence) | Your agreed words arrive in the conversation exactly, with a notification if you allowed them. After its last time the Reminder is completed.
-%% event pause the {kind} | by you | command on the {kind}: Pause, clicked while DIn | needs FuActive@{key}, FuDue@{key}, {run}, {stuck}, TCur | reason: only a live {kind} pauses; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pause it; a run in progress ends for good.
+%% event Duet delivers the Reminder | by Duet | needs FuSched@reminder, PAllowed, PNew, PwOn | reason: a Reminder needs no AI, but your consent and proactive work still govern it (north-star.md, Insight evidence; Dev 2026-10-26) | At its time, Duet posts your agreed words in the thread, unchanged, even while AI is off, newer Terms wait or a newer AI permission waits. After its last time the Reminder is completed.
+%% event Duet delivers the Reminder with its own additions | by Duet's AI | needs FuSched@reminder, PwOn | reason: what Duet adds is AI work, so it waits on what Duet's AI needs; the words alone never do (Dev 2026-10-26) | Your agreed words lead, unchanged, and Duet adds what it judges useful. After its last time the Reminder is completed.
+%% events the Reminder is delivered = Duet delivers the Reminder | Duet delivers the Reminder with its own additions
+%% event pause the {kind} | by you | command on the {kind}: Pause, clicked while DIn | needs FuActive@{key}, {due}, {run}, {stuck}, TCur | reason: only a live {kind} pauses; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You pause it; a run in progress ends for good.
 %% event resume the {kind} | by you | command on the {kind}: Resume, clicked while DIn | needs FuPaused@{key}, TCur | reason: only a paused {kind} resumes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | It continues from its next time.
-%% event change the {kind} | by you | command on the {kind}: Change, clicked while DIn | needs FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change it directly; a run in progress ends for good (backend-architecture.md, Accepted follow-through).
-%% event cancel the {kind} | by you | command on the {kind}: Cancel, clicked while DIn | needs FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} is cancelled; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You cancel it; its receipt in the thread says so.
+%% event change the {kind} | by you | command on the {kind}: Change, clicked while DIn | needs FuActive@{key}, {due}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change it directly; a run in progress ends for good (backend-architecture.md, Accepted follow-through).
+%% event cancel the {kind} | by you | command on the {kind}: Cancel, clicked while DIn | needs FuActive@{key}, {due}, {run}, {stuck}, FuPaused@{key}, TCur | reason: only a saved {kind} is cancelled; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You cancel it; its receipt in the thread says so.
 %% event Duet changes the {kind} as you asked | by Duet's AI | needs RWriting | reason: a reply changes follow-through only from your current message; what it read can't ask for more than you did (backend-architecture.md, Accepted follow-through) | The reply changes the {kind} as your message asked; a run in progress ends for good, and its receipt shows once the change is confirmed.
 %% event Duet pauses the {kind} as you asked | by Duet's AI | needs RWriting | reason: a reply pauses follow-through only from your current message | The reply pauses the {kind} as your message asked; a run in progress ends for good. Only you resume it.
 %% event Duet cancels the {kind} as you asked | by Duet's AI | needs RWriting | reason: a reply cancels follow-through only from your current message | The reply cancels the {kind} as your message asked; its receipt in the thread says so.
@@ -82,15 +111,14 @@ stateDiagram-v2
 %% event change the Plan | by you | command on the Plan: Save, clicked while DIn | needs PlSaved, TCur | reason: only a saved Plan changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit the Plan directly; asking in conversation saves it again.
 %% event delete the Plan | by you | command on the Plan: Delete, clicked while DIn | needs PlSaved, TCur | reason: only a saved Plan is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The Plan goes; Reminders and Check-ins that served it keep running (Dev 2026-09-28).
 %% event Duet deletes the Plan as you asked | by Duet's AI | needs RWriting, PlSaved | reason: a reply deletes a Plan only from your current message | The Plan goes as your message asked; Reminders and Check-ins that served it keep running.
-%% event Duet links the {kind} to your Plan as you asked | by Duet's AI | needs RWriting, PlSaved, FuActive@{key}, FuDue@{key}, {run}, {stuck}, FuPaused@{key} | reason: a reply links follow-through only from your current message, to a saved Plan, for a {kind} you have (Dev 2026-09-28) | The {kind} now serves your Plan, and the Plan's detail shows it. A {kind} serves at most one Plan; you change the link in conversation, not with a new control.
+%% event Duet links the {kind} to your Plan as you asked | by Duet's AI | needs RWriting, PlSaved, FuActive@{key}, {due}, {run}, {stuck}, FuPaused@{key} | reason: a reply links follow-through only from your current message, to a saved Plan, for a {kind} you have (Dev 2026-09-28) | The {kind} now serves your Plan, and the Plan's detail shows it. A {kind} serves at most one Plan; you change the link in conversation, not with a new control.
 %% event Duet unlinks the {kind} from your Plan as you asked | by Duet's AI | needs RWriting, LkPlan@{key} | reason: a reply changes the link only from your current message (Dev 2026-09-28) | The {kind} keeps running on its own.
 %%
-%% Duet's own reviews and Today. Three kinds of review: a daily look once a day completes, a weekly
-%% recap once a week completes, and a review when new records arrive. Each may finish quietly, and
-%% silence is success. Whether they pause while you're away is open (Dev 2026-10-25). A review
-%% running when what it read changes looks again from a fresh snapshot, without being used up.
-%% event a day completes | by the clock | Your local day ends; Duet owes it one look. Each day is decided once: a look still owed or running for the day before gives way to the newer day (E3).
-%% event a week with fresh records completes | by the clock | Your local week, Saturday to Friday, ends with something new to read; Duet owes it one recap, which gives way to a newer week the same way. A week with nothing new owes nothing.
+%% Duet's own work and Today. Duet may take something on whenever it judges it worth doing for you
+%% (Dev 2026-10-26): a look at your day, a weekly recap, new records, a trend to follow. When and how
+%% often is the harness's (infrastructure-gaps.md). Work may finish with something to tell you, posted
+%% in the thread and pinned on Today, or quietly, and silence is success. Work running when what it
+%% read changes looks again from a fresh snapshot.
 %% Your health sources (behaviour-contract A, B, F1; north-star.md, Connect your health and
 %% Source access): your phone's health data (Apple Health on iPhone, Health Connect on Android) and
 %% Doctors & hospitals, where each organization you sign in to is authorized, refreshed, fails and is
@@ -108,39 +136,43 @@ stateDiagram-v2
 %% event the import can't finish | by the organization's portal | needs OrgImporting | reason: only a running import fails | The source is down or keeps failing; what you already have stays visible and the next refresh tries again (B5, B6).
 %% event the organization stops accepting Duet's access | by the organization's portal | needs OrgConn | reason: only a connected organization can drop its access | The portal's sign-in expired or was revoked; the source shows it couldn't update since its last import, with Reconnect (Dev 2026-10-26).
 %% event refresh your records | by you | command on the organization: Refresh, clicked while DIn | needs OrgCurrent, OrgPartial, OrgTrouble, TCur | reason: only a connected organization that isn't already importing refreshes; newer Terms wait for your acceptance first | You ask for an update now; a stuck import elsewhere never blocks it (B6).
-%% event the daily refresh starts | by the clock | needs OrgCurrent, OrgPartial, OrgTrouble | reason: only a connected organization that isn't already importing refreshes | At most once a day Duet asks each connected organization for what changed (B7).
+%% event your records refresh on their own | by Duet | needs OrgCurrent, OrgPartial, OrgTrouble | reason: only a connected organization that isn't already importing refreshes | Duet asks each connected organization for what changed, on its own; how often is the harness's (infrastructure-gaps.md, Health sources). A refresh you ask for never waits on it (B6, B7).
 %% event reconnect the organization | by you | needs DIn, OrgSignIn, TCur | reason: only an organization that needs you to sign in again is reconnected; newer Terms wait for your acceptance first | You go back to the portal to sign in again; your history stays as it is.
 %% event disconnect the organization | by you | command on the organization: Disconnect, clicked while DIn | needs OrgConn | reason: only a connected organization disconnects; stopping a source is always yours, even before newer Terms, as leaving your practice is (Dev 2026-10-26) | New data stops at once and work in flight is fenced; everything already imported stays, as of its last update, until you delete your account (F1).
 %% event allow your phone's health data | by you | needs DIn, AReady, PhOff, TCur | reason: a set-up account connects; newer Terms wait for your acceptance first | You allow Duet to read Apple Health on iPhone or Health Connect on Android; declining changes nothing (north-star.md, Connect your health).
 %% event your phone's history finishes importing | by your phone | needs PhImporting, DIn | reason: only an import in progress finishes, and the phone reads only while you're signed in on it (behaviour-contract rule 12) | The available history arrives in resumable steps, and any gap in coverage is stated (A5).
-%% event your phone's readings arrive | by your phone | needs PhOn, DIn | reason: only a connected phone sends readings, and only while you're signed in on it; queued readings wait (behaviour-contract rule 12) | Every reading arrives as its own measurement with its time and the time zone it was taken in (A2, A3). Readings don't start a review; they reach the next one (Dev 2026-10-06).
+%% event your phone's readings arrive | by your phone | needs PhOn, DIn | reason: only a connected phone sends readings, and only while you're signed in on it; queued readings wait (behaviour-contract rule 12) | Every reading arrives as its own measurement with its time and the time zone it was taken in (A2, A3). When Duet looks at them is the harness's (infrastructure-gaps.md).
 %% event a reading is deleted in your phone's health app | by your phone | needs PhOn, DIn | reason: only a connected phone reports deletions, and only while you're signed in on it (behaviour-contract rule 12) | The reading leaves current evidence and its day is recalculated; earlier versions stay for existing citations. An empty or failed read, or lost access, is never a deletion (A4).
 %% event access is turned off in your phone's settings | by you | needs PhOn | reason: only granted access can be turned off | You turn off Duet's access in the phone's settings; Duet stops reading and keeps what it has, and says so on the source.
 %% event access is turned back on in your phone's settings | by you | needs PhBlocked | reason: only access you turned off comes back | Duet reads again from where it left off.
 %% event disconnect your phone's health data | by you | command on your phone's health data: Disconnect, clicked while DIn | needs PhOn, PhBlocked | reason: only a connected phone source disconnects; stopping a source is always yours, even before newer Terms (Dev 2026-10-26) | Uploads stop and everything already imported stays until you delete your account (F1; north-star.md, Apple Health daily history).
 %% event clinical records arrive from your phone's health app | by your phone | needs PhOn, DIn | reason: they come only through a connected phone, while you're signed in on it (behaviour-contract rule 12) | On iPhone, clinical records you already connected and approved in the Health app arrive through Apple Health, after their own Apple permission. Duet never claims it can add, refresh or disconnect those provider accounts; they're managed in the Health app (north-star.md, Source access).
 %% event a clinical record changes in your phone's health app | by your phone | needs PhOn, DIn | reason: only a connected phone reports changes, while you're signed in on it (behaviour-contract rule 12) | A clinical record from the Health app is corrected or removed. The new version arrives; anything already published keeps the version it used, and unfinished work looks again before it publishes (E5).
-%% event new records arrive | by your records source | needs OrgImporting | reason: records arrive only through an import that is running | A portal or other source delivers something new; a changed record is a correction. Reprocessing Duet's own data is not an arrival (C5). Apple Health readings wait for the next review rather than starting one (Dev 2026-10-06).
+%% event new records arrive | by your records source | needs OrgImporting | reason: records arrive only through an import that is running | A portal or other source delivers something new; a changed record is a correction. Reprocessing Duet's own data is not an arrival (C5).
 %% event a record is corrected | by your records source | needs OrgImporting | reason: corrections and deletions arrive only through an import that is running | A source corrects or replaces a record you already have. The new version arrives; anything already published keeps the version it used (E5). Unfinished work looks again before it publishes, so nothing goes out from the old version.
 %% events records come in = new records arrive | clinical records arrive from your phone's health app
-%% events your records change = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app
+%% Work takes in what arrives while it runs (Dev 2026-10-26): a reply, a Check-in and Duet's own work
+%% each take in new data that reaches Duet before they finish. Taking it in is not a restart: an
+%% unrelated arrival changes nothing it says (north-star.md, Sep 27); a change to what it read does.
+%% events new data arrives for Duet = new records arrive | clinical records arrive from your phone's health app | your phone's readings arrive
 %% Unfinished work looks again before it publishes when something it read changes. A reply
 %% hears the changes you or your sources make, including your own edits to a Reminder or Check-in, so a
 %% reply already writing never overwrites them (D9; behaviour-contract rule 16). Duet's own Plan saves
 %% happen inside the reply.
-%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in
-%% events what Duet read changes = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked
-%% Your edits to For my doctor and your appointment don't restart work that is running. A review or
-%% reply notes the change, and an update it proposes afterwards waits for you to review it again
+%% events you or your sources change what Duet read = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication
+%% events what Duet read changes = a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app | your doctor's plan arrives or changes | change the Plan | delete the Plan | mark an insight not accurate | Duet saves the Plan you asked for | Duet deletes the Plan as you asked | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication | Duet saves a note as you asked | Duet changes the note as you asked | Duet deletes the note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked | Duet confirms a medication from your records as you asked | Duet changes the medication as you asked | Duet marks the medication stopped as you asked | Duet deletes the medication as you asked
+%% Your edits to For my doctor and your appointment don't restart work that is running. Duet's own work
+%% or a reply notes the change, and an update it proposes afterwards waits for you to review it again
 %% against your latest version (Dev 2026-10-26).
 %% events you change For my doctor or your appointment = save For my doctor | start fresh | save your appointment date | remove your appointment date | your practice schedules your appointment | your practice moves your appointment | your practice cancels your appointment
 %% events Duet changes For my doctor or your appointment as you asked = Duet saves your question for your doctor as you said it | Duet notes your appointment as you said
-%% event Duet starts the {review} | by Duet | needs RvOwed@{key}, PAllowed, SwOn, TCur, PwOn | reason: a review is AI work Duet chose to do: it needs your permission, the switch on, current Terms and proactive work on (F3, D7) | Duet's AI begins the {review} from a stable dated snapshot of what you allowed it to read.
-%% event Duet finishes the {review} | by Duet's AI | needs RvRun@{key} | reason: only a running review finishes | The {review} may publish insights on Today, at most three current across all reviews (E1), may write in the conversation, or may stay quiet; only what reached Duet's AI counts as reviewed (D5). Published insights never change (E5).
-%% event the {review} can't finish | by Duet's runtime | needs RvRun@{key} | reason: only a running review fails | The {review} ends without a decision and is never shown as quiet; when the daily look fails, Today says Duet couldn't check (E3).
-%% events Duet finishes a review = Duet finishes the daily look | Duet finishes the weekly recap | Duet finishes the new-records review
-%% event the insights' time passes | by the clock | needs TdInsights | reason: only current insights leave | The current insights leave Today and stay in Earlier insights (north-star.md, Today).
-%% event the decision's time passes | by the clock | needs TdQuiet, TdCouldnt | reason: only a quiet or failed decision goes stale | The day it spoke for is over; Today no longer says Quiet or Couldn't check for it.
+%% event Duet takes on its own work | by Duet's AI | needs PwOn | reason: Duet chooses its own work only while proactive work is on (D7) | Duet judges something worth doing for you and begins it from a stable dated snapshot of what you allowed it to read, whenever and for whatever reason. Routine looks are examples, not a menu (Dev 2026-10-26).
+%% event Duet finishes its own work with something to tell you | by Duet's AI | needs OwRun | reason: only running work finishes | Duet posts what it noticed in the thread as one message, and Today pins it: insights (at most three current across all of Duet's work, E1), a proposed update for your doctor, or whatever it judges worth saying. Only what reached Duet's AI counts as reviewed (D5); published insights never change (E5).
+%% event Duet finishes its own work quietly | by Duet's AI | needs OwRun | reason: only running work finishes | Duet decided nothing needs saying; silence is success. No message is owed, Today says Quiet, and current insights stay (E3; Dev 2026-10-26).
+%% event Duet's own work can't finish | by Duet's runtime | needs OwRun | reason: only running work fails | The work ends without a decision and is never shown as quiet: Today says Duet couldn't check, with Retry (E3). No message is owed; Duet may still mention it (Dev 2026-10-26).
+%% event retry the check | by you | needs DIn, TsCouldnt, OwIdle, PAllowed, SwOn, TCur, PwOn | reason: Retry runs under the same consent, AI switch, Terms and proactive work as any of Duet's work (Dev 2026-10-26) | From Today's Couldn't check, Duet looks again now.
+%% event the pinned message's time passes | by the clock | needs TpPinned | reason: only something pinned leaves | What Today pinned leaves; its insights stay in Earlier insights and the message stays in the conversation (north-star.md, Today).
+%% event the decision's time passes | by the clock | needs TsQuiet, TsCouldnt | reason: only a quiet or failed decision goes stale | Its time is over; Today no longer says Quiet or Couldn't check.
 %% event mark an insight not accurate | by you | command on the insight: Not accurate, clicked while DIn | needs TCur | reason: an insight on Today, in Earlier insights or on a source can be marked; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The insight is marked corrected and stays as written; Duet never replaces it on its own (E5).
 %% events you change your follow-through = Duet saves the Reminder you asked for | Duet saves the Check-in you asked for | pause the Reminder | pause the Check-in | resume the Reminder | resume the Check-in | change the Reminder | change the Check-in | cancel the Reminder | cancel the Check-in | Duet changes the Reminder as you asked | Duet changes the Check-in as you asked | Duet pauses the Reminder as you asked | Duet pauses the Check-in as you asked | Duet cancels the Reminder as you asked | Duet cancels the Check-in as you asked | Duet links the Reminder to your Plan as you asked | Duet links the Check-in to your Plan as you asked | Duet unlinks the Reminder from your Plan as you asked | Duet unlinks the Check-in from your Plan as you asked
 %%
@@ -149,12 +181,44 @@ stateDiagram-v2
 %% editing and saving work with AI off, Duet only proposes, and nothing it proposes saves by itself.
 %% It stays in Duet: saving shares nothing. While you're connected you can send the saved version to
 %% your practice; its agents read it like a message from you and judge whether a physician needs to
-%% see it (Dev 2026-10-26).
-%% event save For my doctor | by you | command on For my doctor: Save, clicked while DIn | needs TCur | reason: the workspace is yours to edit, with or without AI; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You add, remove or arrange what it holds and edit your words, then save; the saved version is what you can send (north-star.md, For my doctor).
+%% see it (Dev 2026-10-26). It is one live version everywhere: a record in it always shows its current
+%% version, a corrected one saying when it was corrected, and every open editor shows newer saves as
+%% they land. Nothing stale stays around, and no save erases a newer one (Dev 2026-10-26).
+%% event save For my doctor | by you | command on For my doctor: Save, clicked while DIn | needs TCur | reason: the workspace is yours to edit, with or without AI; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You add, remove or arrange what it holds and edit your words, then save; the saved version is what you can send (north-star.md, For my doctor). Your unsaved words stay through newer saves that land while you edit, and saving never removes anything saved since; only the same words changed in two places ask you to pick (Dev 2026-10-26).
 %% event start fresh | by you | command on For my doctor: Start fresh, clicked while DIn | needs DcSaved, TCur | reason: only a workspace with something in it clears; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | After you confirm, one step clears it; Duet keeps no history of earlier versions (north-star.md, For my doctor).
-%% event send For my doctor to your practice | by you | command on For my doctor: Send to my practice, clicked while DIn | needs PrcConn, DcSaved, TCur | reason: only a saved workspace is sent, and only to a connected practice; newer Terms wait for your acceptance first (Dev 2026-10-26) | Your saved For my doctor goes to your practice as you saved it; the practice's agents read it like a message from you and judge whether a physician needs to see it (Dev 2026-10-26). Later saves don't change what you sent.
-%% event Duet proposes an update for your doctor | by Duet's AI | needs RWriting | reason: a reply proposes when you ask or whenever Duet judges an update useful; a proposal saves nothing until you review it (Dev 2026-10-25) | Duet drafts a concise, factual account from your sources, each with its source and date; the proposal carries only the changes and is never saved by itself.
+%% event send For my doctor to your practice | by you | command on For my doctor: Send to my practice, clicked while DIn | needs PrcConn, DcSaved, TCur | reason: only a saved workspace is sent, and only to a connected practice; newer Terms wait for your acceptance first (Dev 2026-10-26) | Your saved For my doctor goes to your practice as you saved it, each record at its current version; the practice's agents read it like a message from you and judge whether a physician needs to see it (Dev 2026-10-26). Later saves don't change what you sent.
+%% event Duet proposes an update for your doctor | by Duet's AI | needs RWriting | reason: a reply proposes when you ask or whenever Duet judges an update useful; a proposal saves nothing until you review it (Dev 2026-10-25) | Duet drafts a concise, factual account from your sources, each with its source and date; the proposal carries only the changes and is never saved by itself. It posts in the thread with Save and Dismiss, and For my doctor shows it too (Dev 2026-10-26).
+%% event Duet saves the update for your doctor as you asked | by Duet's AI | needs RWriting, PrReady | reason: a reply saves a proposal only when your current message asks for it, and only one you could save yourself against your latest workspace (Dev 2026-10-26) | You said yes in words; Duet saves exactly the proposed update, as Save would. A proposal overtaken by your edits must be reviewed again first.
 %% event Duet saves your question for your doctor as you said it | by Duet's AI | needs RWriting | reason: only your own exact words save without review (north-star.md, For my doctor) | Your question joins the workspace word for word; anything Duet would add or reword is proposed instead.
+%%
+%% Notes and medications you enter (north-star.md, You and the page; Dev 2026-10-26). They are yours:
+%% you add, change and delete them, with or without AI, and Duet has the same tools to use in conversation as
+%% you ask, deciding when; what it saved shows in its message, with Undo. Duet may also propose a note on its
+%% own from what you tell it; a proposal saves nothing until you save it. A saved note is a dated record
+%% entered by you, kept apart from Duet's private understanding; Duet reads it, For my doctor can hold it,
+%% and while you're connected it flows to your practice. One note and one medication stand for each.
+%% event add a note | by you | command on the note: Add, clicked while DIn | needs AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You write a dated note in You; it is a record entered by you.
+%% event change the note | by you | command on the note: Save, clicked while DIn | needs NoteSaved, TCur | reason: only a saved note changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You edit your note; its date and history stay yours.
+%% event delete the note | by you | command on the note: Delete, clicked while DIn | needs NoteSaved, TCur | reason: only a saved note is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The note goes, including Undo on Duet's message; what was already sent keeps what it showed.
+%% event Duet saves a note as you asked | by Duet's AI | needs RWriting | reason: a reply saves a note when your current message asks for it (Dev 2026-10-26) | Duet saves the note and its message shows exactly what it saved, with Undo.
+%% event Duet changes the note as you asked | by Duet's AI | needs RWriting, NoteSaved | reason: a reply changes a note when your current message asks for it (Dev 2026-10-26) | Duet changes your note and shows what changed.
+%% event Duet deletes the note as you asked | by Duet's AI | needs RWriting, NoteSaved | reason: a reply deletes a note when your current message asks for it (Dev 2026-10-26) | Duet deletes your note and says so.
+%% event Duet offers a note in its reply | by Duet's AI | needs RWriting | reason: a note offered in Duet's reply to you is conversation, so it needs no proactive work, and an offer saves nothing (Dev 2026-10-26) | From what you just told it, Duet's reply carries a short dated note in your words (what, when it started, how often, how bad) without a diagnosis or urgency judgment, with Save and Dismiss. A newer proposal replaces one still waiting.
+%% event Duet proposes a note on its own | by Duet's AI | needs PwOn | reason: a note offered later, unprompted, is Duet's own work, so it waits while proactive work is paused, and a proposal saves nothing (Dev 2026-10-26) | From what you told it earlier, Duet posts a short dated note in your words (what, when it started, how often, how bad) without a diagnosis or urgency judgment, as its own message with Save and Dismiss. A newer proposal replaces one still waiting.
+%% events Duet proposes a note = Duet offers a note in its reply | Duet proposes a note on its own
+%% event save the proposed note | by you | command on the proposed note: Save, clicked while DIn | needs NpReady, TCur | reason: only a waiting proposal saves; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You save it as proposed or as you edited it.
+%% event Duet saves the proposed note as you asked | by Duet's AI | needs RWriting, NpReady | reason: a reply saves a proposal only when your current message asks for it (Dev 2026-10-26) | You said yes in words; Duet saves the proposed note as Save would.
+%% event dismiss the proposed note | by you | command on the proposed note: Dismiss, clicked while DIn | needs NpReady, TCur | reason: only a waiting proposal is dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The proposal goes; nothing was saved.
+%% event add a medication | by you | command on the medication: Add, clicked while DIn | needs AReady, TCur | reason: a set-up account adds; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You add a medication you take; it shows under What I take (confirmed by me).
+%% event confirm a medication from your records | by you | command on the medication: Confirm, clicked while DIn | needs RecHave, TCur | reason: only a medication in your records is confirmed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You mark a medication from your records as one you take; the record itself never changes.
+%% event change the medication | by you | command on the medication: Save, clicked while DIn | needs MdTaking, MdStopped, TCur | reason: only a medication of yours changes; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | You change its dose, schedule or notes.
+%% event mark the medication stopped | by you | command on the medication: Stop, clicked while DIn | needs MdTaking, TCur | reason: only a medication you take is stopped; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | It stays in your medications, marked stopped with the date, and leaves What I take (Dev 2026-10-26).
+%% event delete the medication | by you | command on the medication: Delete, clicked while DIn | needs MdTaking, MdStopped, TCur | reason: only a medication of yours is deleted; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | For a mistake: it leaves your medications; a medication in your records stays there.
+%% event Duet adds a medication as you asked | by Duet's AI | needs RWriting | reason: a reply adds a medication when your current message asks for it (Dev 2026-10-26) | Duet adds it and its message shows exactly what it saved, with Undo.
+%% event Duet confirms a medication from your records as you asked | by Duet's AI | needs RWriting, RecHave | reason: a reply confirms a medication when your current message asks for it (Dev 2026-10-26) | Duet marks it as one you take and says so.
+%% event Duet changes the medication as you asked | by Duet's AI | needs RWriting, MdTaking, MdStopped | reason: a reply changes a medication when your current message asks for it (Dev 2026-10-26) | Duet changes it and shows what changed.
+%% event Duet marks the medication stopped as you asked | by Duet's AI | needs RWriting, MdTaking | reason: a reply stops a medication when your current message asks for it (Dev 2026-10-26) | Duet marks it stopped with the date and says so.
+%% event Duet deletes the medication as you asked | by Duet's AI | needs RWriting, MdTaking, MdStopped | reason: a reply deletes a medication when your current message asks for it (Dev 2026-10-26) | Duet deletes it and says so.
 %% event save the update for your doctor | by you | command on For my doctor: Save the update, clicked while DIn | needs PrReady, TCur | reason: only an update you reviewed against your latest workspace saves; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Saves exactly the update as you reviewed and edited it, in one step.
 %% event dismiss the update for your doctor | by you | command on For my doctor: Dismiss the update, clicked while DIn | needs PrReady, PrStale, TCur | reason: only a proposed update is dismissed; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The proposal goes; your workspace is unchanged.
 %% event review the update again | by you | needs DIn, PrStale, TCur | reason: only an update overtaken by a change to what it read is reviewed again; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The update shows against your latest workspace and the current version of its sources, keeping what you edited in it, for you to review again (north-star.md, Proposals and review).
@@ -178,7 +242,7 @@ stateDiagram-v2
 %% Duet explains the plan faithfully and never invents or amends it. When the connection ends, the
 %% last plan stays, marked no longer updated.
 %% event your doctor's plan arrives or changes | by your practice's records | needs PrcConn | reason: documented care reaches Duet only through the current connection and consent | A documented care decision or open item arrives or changes with its source, author, date and status; Duet shows it as "your doctor's plan". An undecided suggestion stays an unconfirmed suggestion until the source records a decision. Unfinished work that read the earlier plan looks again before it publishes.
-%% event you answer a Check-in about your doctor's plan | by you | needs DIn, TCur, PrcConn, DpCurrent | reason: answers flow only while connected, about a plan that is current; newer Terms wait for your acceptance first | Your reply to a Check-in that follows your doctor's plan goes to the practice with what you share, for its next review, never as an alert on its own.
+%% event you answer a Check-in about your doctor's plan | by you | needs DIn, TCur, PrcConn, DpCurrent, CaOpen, CaOpenHeld | reason: answers flow only while connected, about a plan that is current, to a Check-in posted in the thread, so no other conversation crosses; newer Terms wait for your acceptance first | Your reply to a Check-in that follows your doctor's plan goes to the practice with what you share, for its next review, never as an alert on its own.
 %%
 %% Your practice's appointments: while connected, the practice's schedule gives
 %% appointment context beside any date you gave yourself. Conflicting dates both stay visible and never
@@ -188,7 +252,45 @@ stateDiagram-v2
 %% event your practice moves your appointment | by your practice | needs PrcConn, PaSet | reason: only a known practice appointment moves, while connected | The new time shows; what you prepared stays.
 %% event your practice cancels your appointment | by your practice | needs PrcConn, PaSet | reason: only a known practice appointment is cancelled, while connected | It no longer shows as booked; what you prepared stays.
 %% event your practice's appointment passes | by your practice | needs PrcConn, PaSet | reason: only a known practice appointment passes, while connected | Its time has passed.
-%% events your shared data changes = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app | your phone's readings arrive | a reading is deleted in your phone's health app | you answer a Check-in about your doctor's plan
+%%
+%% The app's screens on this device (ui-surface-map.md, Navigation map and Page and state inventory):
+%% three tabs, Duet, Today and You; Shared is removed. Today is the home for insights and current
+%% care. What is open stays only where a read or guarantee depends on it; moving around never
+%% changes your health data or Duet's work, and opening something never marks it done.
+%% event go to Duet | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | The conversation, where you left it.
+%% event go to Today | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Insights and your current care: Plans, Reminders, Check-ins, For my doctor and your doctor's plan.
+%% event go to You | by you | needs DIn, AReady, TCur | reason: the app's screens belong to a set-up account on this device; newer Terms wait for your acceptance first (north-star.md, Identity and setup) | Your health library, your sources and settings (north-star.md, You).
+%% event open an insight | by you | needs TabToday, TpPinned, TCur | reason: only what Today pins opens from Today; newer Terms wait first | Its detail: the explanation, its exact support and recording limits, Ask about this and Not accurate (ui-surface-map.md, Insight detail).
+%% event open a measurement on Today | by you | needs TabToday, TCur | reason: Today shows only measurements you chose; newer Terms wait first | The measurement's chart, with its source and any estimate marked as one.
+%% event open your Plan | by you | needs TabToday, PlSaved, TCur | reason: only a saved Plan opens; newer Terms wait first | The Plan, the Reminders and Check-ins that serve it, and the conversation that saved it; no counts, progress or results.
+%% event open the Reminder | by you | needs TabToday, FuActive@reminder, FuPaused@reminder, FuDone@reminder, FuCancelled@reminder, TCur | reason: only a Reminder you have opens; newer Terms wait first | The Reminder's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
+%% event open the Check-in | by you | needs TabToday, FuActive@checkin, FuDue@checkin, FuRun@checkin, FuStuck@checkin, FuPaused@checkin, FuDone@checkin, FuCancelled@checkin, TCur | reason: only a Check-in you have opens; newer Terms wait first | The Check-in's detail: its accepted instruction, schedule and actual state, its Plan if it serves one, and its controls.
+%% event open For my doctor | by you | needs TabToday, TCur | reason: the workspace is yours whether or not it has anything yet; newer Terms wait first | Your workspace for your doctor, empty or saved, with your appointment.
+%% event open your doctor's plan | by you | needs TabToday, DpCurrent, DpOld, TCur | reason: only a plan your practice sent opens; newer Terms wait first | Your doctor's documented decisions and open items, with source, author and date, and whether it is still updated.
+%% event go back on Today | by you | needs TabToday | reason: only the tab you're on goes back | You return to Today; nothing you had saved changes.
+%% event open a records group | by you | needs TabYou, TCur | reason: newer Terms wait first | Medications, Allergies, Conditions, Recent labs, Procedures, Imaging, or Records & documents (north-star.md, You).
+%% event open a record | by you | needs TabYou, TCur | reason: newer Terms wait first | The record as its source sent it, with its source and date; a corrected record shows its current version and keeps the earlier one (north-star.md, You).
+%% event open Measurements & trends | by you | needs TabYou, TCur | reason: newer Terms wait first | Every measurement category you have.
+%% event open a measurement in You | by you | needs TabYou, TCur | reason: newer Terms wait first | Its chart over any period, with its source and coverage.
+%% event open Health history | by you | needs TabYou, TCur | reason: newer Terms wait first | Everything in time order: clinical events, daily measurements and documents.
+%% event open Earlier insights | by you | needs TabYou, TCur | reason: newer Terms wait first | Insights that have left Today, as written, with any you marked not accurate (north-star.md, Today).
+%% event search your health | by you | needs TabYou, TCur | reason: newer Terms wait first | Search shows only its results, or a quiet no matches.
+%% event open Sources & data | by you | needs TabYou, TCur | reason: newer Terms wait first | Your phone's health data and Doctors & hospitals, each with its own status (north-star.md, Source access).
+%% event open Doctors & hospitals | by you | needs TabYou, TCur | reason: newer Terms wait first | Your organizations, each with its status and actions, and Connect.
+%% event open your phone's health data | by you | needs TabYou, TCur | reason: newer Terms wait first | Its connection, what it brought in, and its controls.
+%% event open Settings | by you | needs DIn, AReady | reason: Settings stay reachable even before newer Terms, for exporting, deleting your account and withdrawing AI permission | Your name, AI, privacy, export, sign-out and deletion (ui-surface-map.md, Settings).
+%% event open AI settings | by you | needs DIn, AReady | reason: AI settings stay reachable even before newer Terms, for withdrawing permission | Your AI permission, the AI switch, and proactive work.
+%% event go back on You | by you | needs TabYou | reason: only the tab you're on goes back | You return to your health library; nothing you had saved changes. How far back goes is presentation.
+%% events you open something on Today = open an insight | open a measurement on Today | open your Plan | open the Reminder | open the Check-in | open For my doctor | open your doctor's plan
+%% events you open a page on You = open a records group | open a record | open Measurements & trends | open a measurement in You | open Health history | open Earlier insights | search your health | open Sources & data | open Doctors & hospitals | open your phone's health data | open Settings | open AI settings
+%% event open supporting information | by you | needs TabDuet, TCur | reason: citations are in the conversation; newer Terms wait first | The exact version of what a reply cited, never a newer one in its place (C6; ui-surface-map.md, cited source).
+%% event close the supporting information | by you | needs CoSource | reason: only open supporting information closes | You're back in the conversation where you were.
+%% event {read} shows a saved copy | by the app | needs RdLoading@{key} | reason: only a read in progress shows a saved copy | What you saw last appears at once and refreshes quietly; loading shows only when nothing can.
+%% event {read} loads | by Duet | A first read shows; a refresh updates what is shown in place, and an empty answer never replaces it.
+%% event {read} loads in part | by Duet | What loaded shows with one quiet line and Retry; never read as empty.
+%% event {read} fails to load | by Duet | What was shown stays with one quiet line and Retry; with nothing shown, it says it couldn't load, with Retry. Never a false empty state.
+%% event retry {read} | by you | needs DIn, RdKept@{key}, RdFailed@{key} | reason: only a read that shows a problem offers Retry | You read it again; what is shown stays.
+%% events your shared data changes = new records arrive | a record is corrected | clinical records arrive from your phone's health app | a clinical record changes in your phone's health app | your phone's readings arrive | a reading is deleted in your phone's health app | you answer a Check-in about your doctor's plan | add a note | change the note | delete the note | save the proposed note | add a medication | confirm a medication from your records | change the medication | mark the medication stopped | delete the medication | Duet saves a note as you asked | Duet changes the note as you asked | Duet deletes the note as you asked | Duet saves the proposed note as you asked | Duet adds a medication as you asked | Duet confirms a medication from your records as you asked | Duet changes the medication as you asked | Duet marks the medication stopped as you asked | Duet deletes the medication as you asked
 
   state "Duet" as App {
 
@@ -330,6 +432,8 @@ stateDiagram-v2
           %% when PAllowed, SwOn, TCur | reason: Duet's AI needs your permission, the switch on and current Terms (F3)
           RWriting --> RWriting : you or your sources change what Duet read / looks again at the reply
           RPaused --> RPaused : you or your sources change what Duet read / looks again at the reply
+          RWriting --> RWriting : new data arrives for Duet / takes in what arrived
+          RPaused --> RPaused : new data arrives for Duet / takes in what arrived
           RWriting --> RDone : Duet finishes the reply
           RWriting --> RUnfinished : the reply can't finish
           RUnfinished --> RWriting : try the reply again
@@ -369,22 +473,70 @@ stateDiagram-v2
           state "Safety line shown" as SlShown
           SlNone --> SlOwed : Duet's AI sees a possible emergency or self-harm
           SlShown --> SlOwed : Duet's AI sees a possible emergency or self-harm
-          SlOwed --> SlShown : Duet finishes the reply
-          SlOwed --> SlShown : the reply can't finish
-          SlOwed --> SlShown : withdraw AI permission
-          SlOwed --> SlShown : turn AI off
-          SlOwed --> SlShown : Duet publishes new Terms
-          SlOwed --> SlShown : Duet publishes a new AI permission
+          SlOwed --> SlShown : Duet posts in the thread
+          SlOwed --> SlShown : Duet stops writing early
           SlShown --> SlOwed : try the reply again
           SlShown --> SlNone : Duet receives your message [starts a new reply]
           %% when not RWriting, RPaused | reason: a steer belongs to the reply in progress, writing or paused
         }
         --
+        %% The thread (Dev 2026-10-26): Duet is thread and message first. Whatever Duet says, it says as a
+        %% message in the conversation, and Today pins what matters from it. Whether something new waits
+        %% unseen is one fact for your account, whichever device you read it on.
+        state "The thread" as Thread {
+          [*] --> ThSeen
+          state "Nothing new from Duet" as ThSeen
+          state "A new message from Duet, unseen" as ThUnseen
+          ThSeen --> ThUnseen : Duet posts in the thread
+          ThSeen --> ThUnseen : Duet has something to tell you [unless Duet is writing]
+          %% when not RWriting | reason: while Duet writes, its own message waits for the reply to end (Dev 2026-10-26)
+          ThSeen --> ThUnseen : Duet stops writing early [with a message waiting]
+          %% when OmWaiting | reason: a reply that stops posts what was waiting for it
+          ThUnseen --> ThSeen : you see the new messages
+          ThUnseen --> ThSeen : you see the new messages on another device
+        }
+        --
+        %% What Duet has to tell you on its own (Dev 2026-10-26): what its own work noticed, a proposed note,
+        %% a Reminder, a Check-in or its failure, your practice's news. It posts at once, unless Duet is replying to you: then it waits and posts right
+        %% after the reply ends, however it ends. Your message steers the reply and goes ahead of it. With
+        %% AI unavailable, a Reminder posts your words and your practice's news posts as fixed product text.
+        state "Duet's own message" as OwnMsg {
+          [*] --> OmNone
+          state "Nothing waiting to post" as OmNone
+          %% Whether anything you asked for or your practice's news is among what waits decides whether
+          %% it alerts without your switch for Duet's own work (north-star.md, Notifications; Dev 2026-10-26).
+          state "A message waiting for the reply to end" as OmWaiting {
+            [*] --> OmOwn
+            state "Only Duet's own message waiting" as OmOwn
+            state "What you asked for or your practice's news waiting" as OmAsked
+            OmOwn --> OmAsked : Duet tells you what you asked for or your practice's news
+          }
+          OmNone --> OmOwn : Duet noticed something on its own [while Duet is writing]
+          %% when RWriting | reason: Duet's own messages never cut into a reply (Dev 2026-10-26)
+          OmNone --> OmAsked : Duet tells you what you asked for or your practice's news [while Duet is writing]
+          %% when RWriting | reason: Duet's own messages never cut into a reply (Dev 2026-10-26)
+          OmWaiting --> OmNone : Duet posts in the thread
+          OmWaiting --> OmNone : Duet stops writing early
+          %% never WaitsOnlyWhileWriting: A message waiting for the reply to end & No reply in progress -- A message waits only for a reply being written.
+          %% never WaitsNotAfterFinish: A message waiting for the reply to end & Reply finished -- A finished reply posts what waited.
+          %% never WaitsNotAfterFailure: A message waiting for the reply to end & Reply unfinished, with Try again -- A reply that can't finish posts what waited.
+          %% never WaitsNotWhilePaused: A message waiting for the reply to end & Reply paused -- A paused reply posts what waited.
+        }
+        --
+        %% One switch for alerts about what Duet noticed from its own work, saved with your account (Dev 2026-10-26).
+        state "Alerts for Duet's own work" as InsAlerts {
+          [*] --> IaOff
+          state "Duet's own work doesn't alert you" as IaOff
+          state "Duet's own work alerts you" as IaOn
+          IaOff --> IaOn : turn on alerts for Duet's own work
+          IaOn --> IaOff : turn off alerts for Duet's own work
+        }
+        --
         %% One saved item per kind stands for each of its kind; each behaves the same way.
         state "{Kind}" as Fu {
           %% template
-          %% instance reminder: kind = Reminder, Kind = Reminder, run = FuDue@reminder, stuck = FuDue@reminder
-          %% instance checkin: kind = Check-in, Kind = Check-in, run = FuRun@checkin, stuck = FuStuck@checkin
+          %% instance reminder: kind = Reminder, Kind = Reminder, due = FuSched@reminder, run = FuSched@reminder, stuck = FuSched@reminder
+          %% instance checkin: kind = Check-in, Kind = Check-in, due = FuDue@checkin, run = FuRun@checkin, stuck = FuStuck@checkin
           [*] --> FuNone
           state "No {kind}" as FuNone
           %% Scheduled: waiting for its next time, whether or not its last run failed. What happens
@@ -396,9 +548,15 @@ stateDiagram-v2
             %% only checkin
           }
           state "{Kind} due" as FuDue
+          %% only checkin
           state "Check-in running" as FuRun
           %% only checkin
-          state "{Kind} paused by you" as FuPaused
+          state "{Kind} paused" as FuPaused {
+            [*] --> FuPausedYou
+            state "{Kind} paused by you" as FuPausedYou
+            state "Check-in paused after failing repeatedly" as FuHalted
+            %% only checkin
+          }
           state "{Kind} completed" as FuDone
           state "{Kind} cancelled" as FuCancelled
           FuNone --> FuActive : Duet saves the {kind} you asked for
@@ -406,27 +564,54 @@ stateDiagram-v2
           FuCancelled --> FuActive : Duet saves the {kind} you asked for
           FuSched --> FuDue : the {kind} comes due [AI allowed, on, current Terms, proactive work on]
           %% when PAllowed, SwOn, TCur, PwOn | reason: Duet delivers only while you allow it, AI is on, Terms are current and proactive work is on (F3, D7)
+          %% only checkin
           FuSched --> FuActive : the {kind} comes due [newer AI permission, a later time remains]
           %% when PNew | reason: a time that comes while a newer AI permission waits passes undelivered (Dev 2026-10-25)
+          %% only checkin
           FuSched --> FuDone : the {kind} comes due [newer AI permission, its last time]
           %% when PNew | reason: a time that comes while a newer AI permission waits passes undelivered (Dev 2026-10-25)
+          %% only checkin
           FuSched --> FuActive : the {kind} comes due [AI not allowed, a later time remains]
           %% when PNot | reason: a time that comes while AI permission is withdrawn passes undelivered (F3)
           FuSched --> FuDone : the {kind} comes due [AI not allowed, its last time]
           %% when PNot | reason: a time that comes while AI permission is withdrawn passes undelivered (F3)
           FuSched --> FuActive : the {kind} comes due [AI off, a later time remains]
           %% when PAllowed, SwOff | reason: a time that comes while AI is off passes undelivered (Dev 2026-10-25)
+          %% only checkin
           FuSched --> FuDone : the {kind} comes due [AI off, its last time]
           %% when PAllowed, SwOff | reason: a time that comes while AI is off passes undelivered (Dev 2026-10-25)
+          %% only checkin
           FuSched --> FuActive : the {kind} comes due [newer Terms, a later time remains]
           %% when PAllowed, SwOn, TNew | reason: a time that comes while newer Terms wait passes undelivered (Dev 2026-10-25)
+          %% only checkin
           FuSched --> FuDone : the {kind} comes due [newer Terms, its last time]
           %% when PAllowed, SwOn, TNew | reason: a time that comes while newer Terms wait passes undelivered (Dev 2026-10-25)
+          %% only checkin
           FuSched --> FuActive : the {kind} comes due [proactive work paused, a later time remains]
           %% when PAllowed, SwOn, TCur, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
           FuSched --> FuDone : the {kind} comes due [proactive work paused, its last time]
           %% when PAllowed, SwOn, TCur, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          FuSched --> FuActive : the {kind} comes due [newer AI permission, proactive work paused, a later time remains]
+          %% when PNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          %% only reminder
+          FuSched --> FuDone : the {kind} comes due [newer AI permission, proactive work paused, its last time]
+          %% when PNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          %% only reminder
+          FuSched --> FuActive : the {kind} comes due [AI off, proactive work paused, a later time remains]
+          %% when PAllowed, SwOff, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          %% only reminder
+          FuSched --> FuDone : the {kind} comes due [AI off, proactive work paused, its last time]
+          %% when PAllowed, SwOff, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          %% only reminder
+          FuSched --> FuActive : the {kind} comes due [newer Terms, proactive work paused, a later time remains]
+          %% when PAllowed, SwOn, TNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          %% only reminder
+          FuSched --> FuDone : the {kind} comes due [newer Terms, proactive work paused, its last time]
+          %% when PAllowed, SwOn, TNew, PwPaused | reason: a time that comes while proactive work is paused passes undelivered (Dev 2026-10-25)
+          %% only reminder
           FuRun --> FuStuck : the Check-in can't finish
+          %% only checkin
+          FuRun --> FuHalted : the Check-in keeps failing
           %% only checkin
           FuStuck --> FuRun : try the Check-in again
           %% only checkin
@@ -436,13 +621,15 @@ stateDiagram-v2
           %% only checkin
           FuRun --> FuDone : Duet delivers the Check-in
           %% only checkin
-          FuDue --> FuActive : Duet delivers the Reminder
+          FuSched --> FuActive : the Reminder is delivered
           %% only reminder
-          FuDue --> FuDone : Duet delivers the Reminder
+          FuSched --> FuDone : the Reminder is delivered
           %% only reminder
           FuRun --> FuDue : proactive AI work pauses
           %% only checkin
           FuRun --> FuDue : what Duet read changes
+          %% only checkin
+          FuRun --> FuRun : new data arrives for Duet / takes in what arrived
           %% only checkin
           FuRun --> FuDue : Duet receives your message / may look again at the Check-in
           %% only checkin
@@ -455,37 +642,74 @@ stateDiagram-v2
           FuStuck --> FuDone : withdraw AI permission
           %% only checkin
           FuDue --> FuActive : withdraw AI permission
+          %% only checkin
           FuDue --> FuDone : withdraw AI permission
+          %% only checkin
           FuSched --> FuPaused : pause the {kind}
           FuDue --> FuPaused : pause the {kind}
+          %% only checkin
           FuRun --> FuPaused : pause the {kind}
           %% only checkin
           FuPaused --> FuActive : resume the {kind}
           FuSched --> FuActive : change the {kind}
           FuDue --> FuActive : change the {kind}
+          %% only checkin
           FuRun --> FuActive : change the {kind}
           %% only checkin
-          FuPaused --> FuPaused : change the {kind}
+          FuPausedYou --> FuPausedYou : change the {kind}
+          FuHalted --> FuHalted : change the {kind}
+          %% only checkin
           FuSched --> FuCancelled : cancel the {kind}
           FuDue --> FuCancelled : cancel the {kind}
+          %% only checkin
           FuRun --> FuCancelled : cancel the {kind}
           %% only checkin
           FuPaused --> FuCancelled : cancel the {kind}
           FuSched --> FuActive : Duet changes the {kind} as you asked
           FuDue --> FuActive : Duet changes the {kind} as you asked
+          %% only checkin
           FuRun --> FuActive : Duet changes the {kind} as you asked
           %% only checkin
-          FuPaused --> FuPaused : Duet changes the {kind} as you asked
+          FuPausedYou --> FuPausedYou : Duet changes the {kind} as you asked
+          FuHalted --> FuHalted : Duet changes the {kind} as you asked
+          %% only checkin
           FuSched --> FuPaused : Duet pauses the {kind} as you asked
           FuDue --> FuPaused : Duet pauses the {kind} as you asked
+          %% only checkin
           FuRun --> FuPaused : Duet pauses the {kind} as you asked
           %% only checkin
           FuSched --> FuCancelled : Duet cancels the {kind} as you asked
           FuDue --> FuCancelled : Duet cancels the {kind} as you asked
+          %% only checkin
           FuRun --> FuCancelled : Duet cancels the {kind} as you asked
           %% only checkin
           FuPaused --> FuCancelled : Duet cancels the {kind} as you asked
-          %% never DueNeedsAIAllowed: {Kind} due & AI not allowed -- A time that comes while AI permission is withdrawn passes undelivered (F3).
+        }
+        --
+        %% Only your answer to a delivered Check-in about your doctor's plan crosses to the practice;
+        %% the rest of your conversation never does. Which Check-in follows the plan is data. A question
+        %% is answerable once it is in the thread: one delivered while Duet writes waits with Duet's own
+        %% message and becomes answerable when the reply ends, however it ends (Dev 2026-10-26).
+        state "A Check-in waiting for your answer" as CkAns {
+          [*] --> CaNone
+          state "No Check-in waiting for an answer" as CaNone
+          state "A delivered Check-in waits to post" as CaHeld
+          state "A delivered Check-in waits for your answer" as CaOpen
+          state "A Check-in waits for your answer, and a newer one waits to post" as CaOpenHeld
+          CaNone --> CaOpen : Duet delivers the Check-in [unless Duet is writing]
+          %% when not RWriting | reason: you answer only a question you can see in the thread
+          CaNone --> CaHeld : Duet delivers the Check-in [while Duet is writing]
+          %% when RWriting | reason: while Duet writes, its own message waits for the reply to end (Dev 2026-10-26)
+          CaOpen --> CaOpenHeld : Duet delivers the Check-in [while Duet is writing]
+          %% when RWriting | reason: while Duet writes, its own message waits for the reply to end (Dev 2026-10-26)
+          CaHeld --> CaOpen : Duet posts in the thread
+          CaHeld --> CaOpen : Duet stops writing early
+          CaOpenHeld --> CaOpen : Duet posts in the thread
+          CaOpenHeld --> CaOpen : Duet stops writing early
+          CaOpen --> CaNone : you answer a Check-in about your doctor's plan
+          CaOpenHeld --> CaHeld : you answer a Check-in about your doctor's plan
+          %% never CheckInHeldOnlyWhileWaiting: A delivered Check-in waits to post & Nothing waiting to post -- A Check-in waits to post only among what waits for the reply to end.
+          %% never NewerCheckInHeldOnlyWhileWaiting: A Check-in waits for your answer, and a newer one waits to post & Nothing waiting to post -- A Check-in waits to post only among what waits for the reply to end.
         }
         --
         state "Your Plan" as Plan {
@@ -533,84 +757,75 @@ stateDiagram-v2
           ExPreparing --> ExFailed : your export can't finish
         }
         --
-        %% The name Duet uses for you: yours to change at any time; Duet holds no legal name (Dev 2026-10-26).
-        state "Your display name" as Nm {
-          [*] --> NmSet
-          state "The name Duet uses for you" as NmSet
-          NmSet --> NmSet : change your display name
-        }
-        --
-        state "{Review}" as Rv {
-          %% template
-          %% instance daily: review = daily look, Review = Daily look
-          %% instance weekly: review = weekly recap, Review = Weekly recap
-          %% instance arrival: review = new-records review, Review = New-records review
-          [*] --> RvIdle
-          state "No {review} due" as RvIdle
-          state "{Review} due" as RvOwed
-          state "{Review} running" as RvRun {
-            [*] --> RvLatest
-            state "{Review} running on your latest edits" as RvLatest
-            state "{Review} running, you edited since it started" as RvBehind
-            RvLatest --> RvBehind : you change For my doctor or your appointment
-            RvLatest --> RvBehind : Duet changes For my doctor or your appointment as you asked
-            RvLatest --> RvBehind : save the update for your doctor
+        %% Duet's own work: one region stands for whatever Duet took on. A pause or a withdrawal stops it, and
+        %% Duet may take it on again once it may work. Looking again starts over from your latest edits.
+        state "Duet's own work" as Own {
+          [*] --> OwIdle
+          state "Nothing Duet is working on" as OwIdle
+          state "Duet's own work running" as OwRun {
+            [*] --> OwLatest
+            state "Duet's own work running on your latest edits" as OwLatest
+            state "Duet's own work running, you edited since it started" as OwBehind
+            OwLatest --> OwBehind : Duet saves the update for your doctor as you asked
+            OwLatest --> OwBehind : you change For my doctor or your appointment
+            OwLatest --> OwBehind : Duet changes For my doctor or your appointment as you asked
+            OwLatest --> OwBehind : save the update for your doctor
+            %% Taking in what arrives is not a restart, so it keeps whether you edited since.
+            OwLatest --> OwLatest : new data arrives for Duet / takes in what arrived
+            OwBehind --> OwBehind : new data arrives for Duet / takes in what arrived
+            OwLatest --> OwLatest : Duet receives your message / may take it in
+            OwBehind --> OwBehind : Duet receives your message / may take it in
+            OwBehind --> OwLatest : Duet receives your message / may look again from your latest edits
           }
-          RvIdle --> RvOwed : a day completes
-          %% only daily
-          RvOwed --> RvOwed : a day completes
-          %% only daily
-          RvRun --> RvOwed : a day completes
-          %% only daily
-          RvIdle --> RvOwed : a week with fresh records completes
-          %% only weekly
-          RvOwed --> RvOwed : a week with fresh records completes
-          %% only weekly
-          RvRun --> RvOwed : a week with fresh records completes
-          %% only weekly
-          RvIdle --> RvOwed : your records change
-          %% only arrival
-          RvRun --> RvOwed : records come in
-          RvRun --> RvOwed : what Duet read changes
-          RvOwed --> RvRun : Duet starts the {review}
-          RvRun --> RvIdle : Duet finishes the {review}
-          RvRun --> RvIdle : the {review} can't finish
-          RvRun --> RvOwed : proactive AI work pauses
-          RvRun --> RvOwed : you change your follow-through
-          RvRun --> RvOwed : Duet receives your message / may look again at the {review}
-          RvRun --> RvIdle : withdraw AI permission
-          RvOwed --> RvIdle : withdraw AI permission
-          %% never ReviewNeedsAIAllowed: {Review} running & AI not allowed -- No AI work without your permission (F3).
-          %% never ReviewNeedsAIOn: {Review} running & AI off -- The AI switch pauses AI work (D7).
-          %% never ReviewNeedsCurrentAIPermission: {Review} running & Newer AI permission to allow -- A newer AI permission pauses AI work (Dev 2026-10-25).
-          %% never ReviewNeedsCurrentTerms: {Review} running & Newer Terms to accept -- Newer Terms pause AI work (D7).
-          %% never ReviewNeedsProactiveOn: {Review} running & Proactive work paused -- The proactive-work control pauses Duet's reviews.
+          OwIdle --> OwRun : Duet takes on its own work
+          OwIdle --> OwRun : retry the check
+          OwRun --> OwRun : what Duet read changes
+          OwRun --> OwRun : you change your follow-through
+          OwRun --> OwIdle : Duet finishes its own work with something to tell you
+          OwRun --> OwIdle : Duet finishes its own work quietly
+          OwRun --> OwIdle : Duet's own work can't finish
+          OwRun --> OwIdle : proactive AI work pauses
+          OwRun --> OwIdle : withdraw AI permission
+          %% never OwnWorkNeedsAIAllowed: Duet's own work running & AI not allowed -- No AI work without your permission (F3).
+          %% never OwnWorkNeedsAIOn: Duet's own work running & AI off -- The AI switch pauses AI work (D7).
+          %% never OwnWorkNeedsCurrentAIPermission: Duet's own work running & Newer AI permission to allow -- A newer AI permission pauses AI work (Dev 2026-10-25).
+          %% never OwnWorkNeedsCurrentTerms: Duet's own work running & Newer Terms to accept -- Newer Terms pause AI work (D7).
+          %% never OwnWorkNeedsProactiveOn: Duet's own work running & Proactive work paused -- The proactive-work control pauses Duet's own work.
         }
         --
-        %% Today's insights: at most three, or silence. Quiet appears only after Duet actually decided;
-        %% a failure says Duet couldn't check (E3). A quiet decision never erases current insights, and
-        %% once a decision's time passes Today says nothing it no longer knows.
-        state "What Duet noticed on Today" as Today {
-          [*] --> TdBuilding
-          state "Still building context" as TdBuilding
-          state "Insights on Today" as TdInsights
-          state "Quiet" as TdQuiet
-          state "Couldn't check" as TdCouldnt
-          state "No current insights" as TdNothing
-          TdBuilding --> TdInsights : Duet finishes a review
-          TdBuilding --> TdQuiet : Duet finishes a review
-          TdQuiet --> TdInsights : Duet finishes a review
-          TdCouldnt --> TdInsights : Duet finishes a review
-          TdCouldnt --> TdQuiet : Duet finishes a review
-          TdInsights --> TdInsights : Duet finishes a review
-          TdBuilding --> TdCouldnt : the daily look can't finish
-          TdQuiet --> TdCouldnt : the daily look can't finish
-          TdNothing --> TdInsights : Duet finishes a review
-          TdNothing --> TdQuiet : Duet finishes a review
-          TdNothing --> TdCouldnt : the daily look can't finish
-          TdInsights --> TdNothing : the insights' time passes
-          TdQuiet --> TdNothing : the decision's time passes
-          TdCouldnt --> TdNothing : the decision's time passes
+        %% Today pins what Duet told you from its own work (Dev 2026-10-26): at most three insights, a
+        %% proposed update for your doctor, or whatever it said, until its time passes. A quiet decision or
+        %% a failure never erases what is pinned.
+        state "What Duet pinned on Today" as Today {
+          [*] --> TpNone
+          state "Nothing pinned" as TpNone
+          state "Duet's latest message pinned" as TpPinned
+          TpNone --> TpPinned : Duet finishes its own work with something to tell you
+          TpPinned --> TpPinned : Duet finishes its own work with something to tell you
+          TpPinned --> TpNone : the pinned message's time passes
+        }
+        --
+        %% Today's own status speaks for Duet's latest work, whatever prompted it: Still building context
+        %% before any decision, Quiet only after Duet actually decided, Couldn't check with Retry when it
+        %% failed (E3). Once a decision's time passes Today says nothing it no longer knows. The status is
+        %% Today's own, not a message (Dev 2026-10-26).
+        state "Duet's latest work on Today" as TodayStatus {
+          [*] --> TsBuilding
+          state "Still building context" as TsBuilding
+          state "No status line" as TsNone
+          state "Quiet" as TsQuiet
+          state "Couldn't check, with Retry" as TsCouldnt
+          TsBuilding --> TsNone : Duet finishes its own work with something to tell you
+          TsQuiet --> TsNone : Duet finishes its own work with something to tell you
+          TsCouldnt --> TsNone : Duet finishes its own work with something to tell you
+          TsBuilding --> TsQuiet : Duet finishes its own work quietly
+          TsNone --> TsQuiet : Duet finishes its own work quietly
+          TsCouldnt --> TsQuiet : Duet finishes its own work quietly
+          TsBuilding --> TsCouldnt : Duet's own work can't finish
+          TsNone --> TsCouldnt : Duet's own work can't finish
+          TsQuiet --> TsCouldnt : Duet's own work can't finish
+          TsQuiet --> TsNone : the decision's time passes
+          TsCouldnt --> TsNone : the decision's time passes
         }
         --
         %% For my doctor: your workspace, Duet's proposed update, and your appointment.
@@ -622,6 +837,8 @@ stateDiagram-v2
           DcSaved --> DcSaved : save For my doctor
           DcEmpty --> DcSaved : save the update for your doctor
           DcSaved --> DcSaved : save the update for your doctor
+          DcEmpty --> DcSaved : Duet saves the update for your doctor as you asked
+          DcSaved --> DcSaved : Duet saves the update for your doctor as you asked
           DcEmpty --> DcSaved : Duet saves your question for your doctor as you said it
           DcSaved --> DcSaved : Duet saves your question for your doctor as you said it
           DcSaved --> DcEmpty : start fresh
@@ -650,32 +867,74 @@ stateDiagram-v2
           %% when RrBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
           PrHas --> PrStale : Duet proposes an update for your doctor [For my doctor changed while it ran]
           %% when RrBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the daily look [read your latest] / may propose an update for your doctor
-          %% when RvLatest@daily | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the daily look [read your latest] / may propose an update for your doctor
-          %% when RvLatest@daily | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the daily look [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@daily | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the daily look [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@daily | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the weekly recap [read your latest] / may propose an update for your doctor
-          %% when RvLatest@weekly | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the weekly recap [read your latest] / may propose an update for your doctor
-          %% when RvLatest@weekly | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the weekly recap [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@weekly | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the weekly recap [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@weekly | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrNone --> PrReady : Duet finishes the new-records review [read your latest] / may propose an update for your doctor
-          %% when RvLatest@arrival | reason: it read your latest For my doctor
-          PrHas --> PrReady : Duet finishes the new-records review [read your latest] / may propose an update for your doctor
-          %% when RvLatest@arrival | reason: it read your latest For my doctor
-          PrNone --> PrStale : Duet finishes the new-records review [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@arrival | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
-          PrHas --> PrStale : Duet finishes the new-records review [For my doctor changed while it ran] / may propose an update for your doctor
-          %% when RvBehind@arrival | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
+          PrNone --> PrReady : Duet finishes its own work with something to tell you [read your latest] / may propose an update for your doctor
+          %% when OwLatest | reason: it read your latest For my doctor
+          PrHas --> PrReady : Duet finishes its own work with something to tell you [read your latest] / may propose an update for your doctor
+          %% when OwLatest | reason: it read your latest For my doctor
+          PrNone --> PrStale : Duet finishes its own work with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
+          %% when OwBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
+          PrHas --> PrStale : Duet finishes its own work with something to tell you [For my doctor changed while it ran] / may propose an update for your doctor
+          %% when OwBehind | reason: you changed For my doctor or your appointment while it ran, so you review it against your latest version (Dev 2026-10-26)
           PrReady --> PrNone : save the update for your doctor
+          PrReady --> PrNone : Duet saves the update for your doctor as you asked
           PrHas --> PrNone : dismiss the update for your doctor
+        }
+        --
+        %% Notes you enter: a dated record entered by you; one note stands for each.
+        state "Your note" as Note {
+          [*] --> NoteNone
+          state "No note" as NoteNone
+          state "Note saved" as NoteSaved
+          NoteNone --> NoteSaved : add a note
+          NoteSaved --> NoteSaved : add a note
+          NoteNone --> NoteSaved : Duet saves a note as you asked
+          NoteSaved --> NoteSaved : Duet saves a note as you asked
+          NoteNone --> NoteSaved : save the proposed note
+          NoteSaved --> NoteSaved : save the proposed note
+          NoteNone --> NoteSaved : Duet saves the proposed note as you asked
+          NoteSaved --> NoteSaved : Duet saves the proposed note as you asked
+          NoteSaved --> NoteSaved : change the note
+          NoteSaved --> NoteSaved : Duet changes the note as you asked
+          NoteSaved --> NoteNone : delete the note
+          NoteSaved --> NoteNone : Duet deletes the note as you asked
+        }
+        --
+        %% A note Duet proposed: it saves nothing until you save it.
+        state "Duet's proposed note" as NoteProp {
+          [*] --> NpNone
+          state "No note proposed" as NpNone
+          state "A note to review" as NpReady
+          NpNone --> NpReady : Duet proposes a note
+          NpReady --> NpReady : Duet proposes a note
+          NpReady --> NpNone : save the proposed note
+          NpReady --> NpNone : Duet saves the proposed note as you asked
+          NpReady --> NpNone : dismiss the proposed note
+        }
+        --
+        %% Medications you take: entered by you or confirmed from your records. One stands for each.
+        state "Your medication" as Med {
+          [*] --> MdNone
+          state "No medication of yours" as MdNone
+          state "Taking it" as MdTaking
+          state "Stopped, with the date" as MdStopped
+          MdNone --> MdTaking : add a medication
+          MdStopped --> MdTaking : add a medication
+          MdNone --> MdTaking : Duet adds a medication as you asked
+          MdStopped --> MdTaking : Duet adds a medication as you asked
+          MdNone --> MdTaking : confirm a medication from your records
+          MdStopped --> MdTaking : confirm a medication from your records
+          MdNone --> MdTaking : Duet confirms a medication from your records as you asked
+          MdStopped --> MdTaking : Duet confirms a medication from your records as you asked
+          MdTaking --> MdTaking : change the medication
+          MdStopped --> MdStopped : change the medication
+          MdTaking --> MdTaking : Duet changes the medication as you asked
+          MdStopped --> MdStopped : Duet changes the medication as you asked
+          MdTaking --> MdStopped : mark the medication stopped
+          MdTaking --> MdStopped : Duet marks the medication stopped as you asked
+          MdTaking --> MdNone : delete the medication
+          MdStopped --> MdNone : delete the medication
+          MdTaking --> MdNone : Duet deletes the medication as you asked
+          MdStopped --> MdNone : Duet deletes the medication as you asked
         }
         --
         state "Your appointment" as Appt {
@@ -716,6 +975,7 @@ stateDiagram-v2
         %% never PlanCurrentNotInvited: Your doctor's plan, current & A practice's invitation waits for you -- A plan is current only while connected.
         %% never PracticeAppointmentOnlyConnected: Appointment from your practice & Connection ended -- Once the connection ends, the practice's appointment goes away (Dev 2026-10-26).
         %% never PracticeAppointmentNotInvited: Appointment from your practice & A practice's invitation waits for you -- The practice's schedule reaches Duet only while connected.
+        %% never CheckInDueNeedsAIAllowed: Check-in due & AI not allowed -- A time that comes while AI permission is withdrawn passes undelivered (F3).
         %% never CheckInOnlyWithAIAllowed: Check-in running & AI not allowed -- No AI work without your permission (F3).
         %% never CheckInOnlyWithAIOn: Check-in running & AI off -- The AI switch pauses AI work (D7).
         %% never CheckInOnlyWithCurrentAIPermission: Check-in running & Newer AI permission to allow -- A newer AI permission pauses AI work (Dev 2026-10-25).
@@ -761,6 +1021,11 @@ stateDiagram-v2
           DrEmpty --> DrText : edit the unsent message
         }
         --
+        %% An item you attach follows its current version while you draft. If it is removed, by you, by
+        %% Duet as you asked or by its source, it drops off your unsent message with a quiet note, and Send
+        %% still works (Dev 2026-10-26). A cancelled Reminder or Check-in and an insight marked not
+        %% accurate still exist, so they stay.
+        %% events an item you could attach is removed = delete the note | Duet deletes the note as you asked | delete the Plan | Duet deletes the Plan as you asked | delete the medication | Duet deletes the medication as you asked | a record is corrected | a clinical record changes in your phone's health app | a reading is deleted in your phone's health app
         state "Item attached to your draft" as Ctx {
           [*] --> CtxNone
           state "Nothing attached" as CtxNone
@@ -768,8 +1033,10 @@ stateDiagram-v2
           CtxNone --> CtxOn : ask about this
           CtxOn --> CtxOn : ask about this
           CtxOn --> CtxNone : remove the attached item
+          CtxOn --> CtxNone : an item you could attach is removed / the attached item, if it was the one removed, drops off with a quiet note
+          CtxOn --> CtxOn : an item you could attach is removed / an attached item still there stays, at its current version
           CtxOn --> CtxNone : send your message
-          CtxNone --> CtxOn : edit the unsent message / may restore the item while it is still current
+          CtxNone --> CtxOn : edit the unsent message / may restore the item
         }
         --
         state "Quote in your draft" as Quote {
@@ -818,6 +1085,14 @@ stateDiagram-v2
           %% receipt the Plan
         }
         --
+        state "Your command on your note" as MyNoteRc {
+          %% receipt the note
+        }
+        --
+        state "Your command on your medication" as MedRc {
+          %% receipt the medication
+        }
+        --
         state "Your command on the insight" as InsightRc {
           %% receipt the insight
         }
@@ -841,6 +1116,158 @@ stateDiagram-v2
         state "Your command on your phone's health data" as PhRc {
           %% receipt your phone's health data
         }
+        --
+        state "Your command on your alerts" as AlertRc {
+          %% receipt your alerts
+        }
+        --
+        state "Your command on the proposed note" as NoteRc {
+          %% receipt the proposed note
+        }
+        --
+        %% Which tab you're on (ui-surface-map.md, Navigation map). Ask about this takes you to the conversation
+        %% with that item; Settings and AI settings are in You.
+        state "Tab" as Tab {
+          [*] --> TabDuet
+          state "On Duet, the conversation" as TabDuet
+          state "On Today" as TabToday
+          state "On You" as TabYou
+          TabDuet --> TabToday : go to Today
+          TabDuet --> TabYou : go to You
+          TabToday --> TabDuet : go to Duet
+          TabToday --> TabYou : go to You
+          TabYou --> TabDuet : go to Duet
+          TabYou --> TabToday : go to Today
+          TabToday --> TabDuet : ask about this
+          TabYou --> TabDuet : ask about this
+          TabToday --> TabDuet : open the notification
+          TabYou --> TabDuet : open the notification
+          TabDuet --> TabYou : open Settings
+          TabToday --> TabYou : open Settings
+          TabDuet --> TabYou : open AI settings
+          TabToday --> TabYou : open AI settings
+        }
+        --
+        %% Only what a guarantee rests on (D1, Dev 2026-10-26): an item you don't have never opens, and a Plan
+        %% deleted while open says so. Which other page is open is the app's; opening changes nothing.
+        state "Open on Today" as TodayOpen {
+          [*] --> ToNone
+          state "Today itself" as ToNone
+          state "Your Plan open" as ToPlan
+          state "The Reminder open" as ToRem
+          state "The Check-in open" as ToChk
+          state "Your doctor's plan open" as ToDocPlan
+          state "Your Plan open, removed since" as ToPlanGone
+          ToNone --> ToPlan : open your Plan
+          ToPlan --> ToNone : go back on Today
+          ToNone --> ToRem : open the Reminder
+          ToRem --> ToNone : go back on Today
+          ToNone --> ToChk : open the Check-in
+          ToChk --> ToNone : go back on Today
+          ToNone --> ToDocPlan : open your doctor's plan
+          ToDocPlan --> ToNone : go back on Today
+          ToRem --> ToPlan : open your Plan
+          ToChk --> ToPlan : open your Plan
+          ToPlan --> ToRem : open the Reminder
+          ToPlan --> ToChk : open the Check-in
+          ToPlan --> ToPlanGone : delete the Plan
+          ToPlan --> ToPlanGone : Duet deletes the Plan as you asked
+          ToPlanGone --> ToNone : go back on Today
+          %% never PlanOpenOnlyWhileSaved: Your Plan open & No Plan -- An open Plan that is deleted says it was removed (ui-surface-map.md, Plan).
+          %% never ReminderOpenOnlyWhileSaved: The Reminder open & No Reminder -- Only a Reminder you have opens.
+          %% never CheckInOpenOnlyWhileSaved: The Check-in open & No Check-in -- Only a Check-in you have opens.
+          %% never DoctorPlanOpenOnlyWhenSent: Your doctor's plan open & No plan from your doctor -- Only a plan your practice sent opens.
+        }
+        --
+        state "What Today shows" as TodayRead {
+          %% use read as today: read = Today
+        }
+        --
+        state "The item open on Today" as TodayItemRead {
+          %% use read as todayitem: read = the item
+          [*] --> TiNone
+          state "Nothing open on Today" as TiNone
+          TiNone --> RdLoading : you open something on Today
+          RdShown --> RdLoading : you open something on Today
+          RdKept --> RdLoading : you open something on Today
+          RdFailed --> RdLoading : you open something on Today
+          RdLoading --> RdLoading : you open something on Today
+          RdShown --> TiNone : go back on Today
+          RdKept --> TiNone : go back on Today
+          RdFailed --> TiNone : go back on Today
+          RdLoading --> TiNone : go back on Today
+        }
+        --
+        state "Your health library read" as LibraryRead {
+          %% use read as library: read = your health library
+        }
+        --
+        state "The page open on You" as YouItemRead {
+          %% use read as youitem: read = the page
+          [*] --> YiNone
+          state "Only the library open" as YiNone
+          YiNone --> RdLoading : you open a page on You
+          RdShown --> RdLoading : you open a page on You
+          RdKept --> RdLoading : you open a page on You
+          RdFailed --> RdLoading : you open a page on You
+          RdLoading --> RdLoading : you open a page on You
+          RdShown --> YiNone : go back on You
+          RdKept --> YiNone : go back on You
+          RdFailed --> YiNone : go back on You
+          RdLoading --> YiNone : go back on You
+        }
+        --
+        state "The conversation read" as ConvRead {
+          %% use read as conversation: read = the conversation
+        }
+        --
+        %% Supporting information: the exact version a reply cited (C6, E5).
+        state "Open on Duet" as ChatOpen {
+          [*] --> CoNone
+          state "The conversation itself" as CoNone
+          state "Supporting information open" as CoSource {
+            state "The supporting information read" as SrcRead {
+              %% use read as source: read = the supporting information
+            }
+            --
+            %% It always shows the exact version the reply cited, never a newer one in its place; a load
+            %% may find that a newer one exists, and the note stays through a later failed refresh (C6, E5).
+            state "The cited version" as SrcVersion {
+              [*] --> SvLatest
+              state "No newer version known" as SvLatest
+              state "A note that a newer version exists" as SvNewer
+              SvLatest --> SvNewer : the supporting information loads / may note a newer version
+              SvLatest --> SvNewer : the supporting information loads in part / may note a newer version
+            }
+          }
+          CoNone --> CoSource : open supporting information
+          CoSource --> CoSource : open supporting information
+          CoSource --> CoNone : close the supporting information
+          CoSource --> CoNone : ask about this
+          CoSource --> CoNone : open the notification
+        }
+        %% How every read behaves, written once (ui-surface-map.md, Navigation map: first load is distinct
+        %% from a refresh; a loader belongs only to an unresolved read; a failure keeps what is shown;
+        %% a read that ended without a result shows a terminal state, never a false empty one).
+        state "Read" as ReadShape {
+          %% shape read
+          [*] --> RdLoading
+          %% except todayitem, youitem
+          state "Loading {read}" as RdLoading
+          state "Showing {read}" as RdShown
+          state "Showing {read}, with one quiet line and Retry" as RdKept
+          state "Couldn't load {read}, with Retry" as RdFailed
+          RdLoading --> RdShown : {read} shows a saved copy
+          RdLoading --> RdShown : {read} loads
+          RdShown --> RdShown : {read} loads
+          RdKept --> RdShown : {read} loads
+          RdLoading --> RdKept : {read} loads in part
+          RdShown --> RdKept : {read} loads in part
+          RdLoading --> RdFailed : {read} fails to load
+          RdShown --> RdKept : {read} fails to load
+          RdKept --> RdKept : retry {read}
+          RdFailed --> RdLoading : retry {read}
+        }
       }
       DOut --> DIn : sign in
       DIn --> DOut : sign out on this device
@@ -857,6 +1284,57 @@ stateDiagram-v2
       ODIn --> ODOut : sign out on another device
       ODIn --> ODOut : sign out everywhere
       ODIn --> ODOut : the deletion finishes
+    }
+    --
+    %% Whether Duet is on this device's screen or in the background: what you can see right now.
+    state "Duet on this device" as AppVis {
+      [*] --> AppFront
+      state "Duet on screen" as AppFront
+      state "Duet in the background" as AppBack
+      AppFront --> AppBack : leave Duet
+      AppBack --> AppFront : open Duet
+      AppBack --> AppFront : open the notification
+    }
+    --
+    %% This device's own alert permission: it belongs to the device, not the session (north-star.md, Notifications).
+    state "This device's alerts" as Alerts {
+      [*] --> NtAsk
+      state "Duet hasn't asked for alerts yet" as NtAsk
+      state "Alerts allowed on this device" as NtOn
+      state "Alerts not allowed on this device" as NtOff
+      NtAsk --> NtOn : allow alerts
+      NtAsk --> NtOff : don't allow alerts
+      NtOn --> NtOff : turn alerts off in your device's settings
+      NtOff --> NtOn : turn alerts on in your device's settings
+    }
+    --
+    %% What waits on this device's lock screen: at most one notification stands for every message since you last
+    %% saw the thread. Only the signed-in account's alerts wait here, so a shared device alerts for whoever is
+    %% signed in; signing out or deleting clears it. Seeing the messages on any device clears it (Dev 2026-10-26).
+    state "Notification on this device" as Notice {
+      [*] --> NoNone
+      state "No notification waiting" as NoNone
+      state "A notification from Duet waiting" as NoWaiting
+      NoNone --> NoWaiting : Duet posts in the thread [you're away, alerts allowed]
+      %% when AppBack, NtOn, DIn | reason: a reply alerts like a text, only while you're away and this device allows alerts (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet tells you what you asked for or your practice's news [you're away, alerts allowed, not mid-reply]
+      %% when AppBack, NtOn, DIn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what you asked for and your practice's news alert wherever alerts are allowed; while Duet writes it waits for the reply (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet noticed something on its own [you're away, alerts allowed, your switch on, not mid-reply]
+      %% when AppBack, NtOn, DIn, IaOn, RIdle, RPaused, RUnfinished, REnded, RDone | reason: what Duet noticed or offers on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet stops writing early [with what you asked for or your practice's news waiting, you're away, alerts allowed]
+      %% when OmAsked, AppBack, NtOn, DIn | reason: a reply that stops posts what waited, and what you asked for and your practice's news alert wherever alerts are allowed (Dev 2026-10-26)
+      NoNone --> NoWaiting : Duet stops writing early [with only Duet's own message waiting, you're away, alerts allowed, your switch on]
+      %% when OmOwn, AppBack, NtOn, DIn, IaOn | reason: what Duet noticed on its own alerts only once you turn it on (north-star.md, Notifications; Dev 2026-10-26)
+      NoWaiting --> NoNone : open the notification
+      NoWaiting --> NoNone : you see the new messages
+      NoWaiting --> NoNone : you see the new messages on another device
+      NoWaiting --> NoNone : turn alerts off in your device's settings
+      NoWaiting --> NoNone : sign out on this device
+      NoWaiting --> NoNone : sign out everywhere
+      NoWaiting --> NoNone : the deletion finishes
+      %% never NoticeOnlySignedIn: A notification from Duet waiting & Signed out on this device -- Only the signed-in account's alerts wait on this device (Dev 2026-10-26).
+      %% never NoticeOnlyWithAlerts: A notification from Duet waiting & Alerts not allowed on this device -- Turning alerts off ends what this device was owed (north-star.md, Notifications).
+      %% never NoticeOnlyAfterAsking: A notification from Duet waiting & Duet hasn't asked for alerts yet -- Duet alerts only after you allow it.
     }
     --
     %% Your practice: the connection is yours and the practice's, not a device's. Connected means
@@ -885,13 +1363,15 @@ stateDiagram-v2
       PrcEnded --> PrcNone : delete your account
     }
     --
-    %% What you have from your sources: kept through any disconnect, gone only with your account (F1, F2).
-    state "Your health records" as Rec {
+    %% The records your sources sent (readings are measurements, not records): kept through any
+    %% disconnect, gone only with your account (F1, F2). Notes
+    %% and medications you enter are records in You too and open without this; it decides only
+    %% what a source-backed step, like confirming a medication from your records, can act on.
+    state "Records from your sources" as Rec {
       [*] --> RecNone
-      state "No records yet" as RecNone
-      state "Records kept" as RecHave
+      state "No records from your sources yet" as RecNone
+      state "Records from your sources kept" as RecHave
       RecNone --> RecHave : records come in
-      RecNone --> RecHave : your phone's readings arrive
       RecHave --> RecNone : the deletion finishes
     }
     --
@@ -913,15 +1393,13 @@ stateDiagram-v2
         OrgCurrent --> OrgImporting : refresh your records
         OrgPartial --> OrgImporting : refresh your records
         OrgTrouble --> OrgImporting : refresh your records
-        OrgCurrent --> OrgImporting : the daily refresh starts
-        OrgPartial --> OrgImporting : the daily refresh starts
-        OrgTrouble --> OrgImporting : the daily refresh starts
+        OrgCurrent --> OrgImporting : your records refresh on their own
+        OrgPartial --> OrgImporting : your records refresh on their own
+        OrgTrouble --> OrgImporting : your records refresh on their own
         OrgSignIn --> OrgResigning : reconnect the organization
         OrgResigning --> OrgImporting : the portal signs you in
         OrgResigning --> OrgSignIn : cancel the portal sign-in
         OrgResigning --> OrgSignIn : the portal sign-in fails
-        OrgImporting --> OrgImporting : new records arrive
-        OrgImporting --> OrgImporting : a record is corrected
       }
       OrgOff --> OrgSigning : connect a doctor or hospital
       OrgSigning --> OrgConn : the portal signs you in
@@ -942,14 +1420,6 @@ stateDiagram-v2
         state "Bringing in your history" as PhImporting
         state "Up to date from your phone" as PhCurrent
         PhImporting --> PhCurrent : your phone's history finishes importing
-        PhImporting --> PhImporting : your phone's readings arrive
-        PhCurrent --> PhCurrent : your phone's readings arrive
-        PhImporting --> PhImporting : a reading is deleted in your phone's health app
-        PhImporting --> PhImporting : clinical records arrive from your phone's health app
-        PhImporting --> PhImporting : a clinical record changes in your phone's health app
-        PhCurrent --> PhCurrent : a reading is deleted in your phone's health app
-        PhCurrent --> PhCurrent : clinical records arrive from your phone's health app
-        PhCurrent --> PhCurrent : a clinical record changes in your phone's health app
       }
       state "Access turned off in your phone's settings; your readings stay" as PhBlocked
       PhOff --> PhOn : allow your phone's health data
@@ -964,7 +1434,7 @@ stateDiagram-v2
     %% never PhoneOnlyWithAccount: Phone connected & No account -- Sources belong to an account; deleting it ends every one (F2).
     %% never OrganizationNotWhileDeleting: Organization connected & Deleting your account -- Deletion stops every source at once (F2).
     %% never PhoneNotWhileDeleting: Phone connected & Deleting your account -- Deletion stops every source at once (F2).
-    %% never RecordsGoWithAccount: Records kept & No account -- Records are kept until the account is deleted, and not after (F1, F2).
+    %% never RecordsGoWithAccount: Records from your sources kept & No account -- Records are kept until the account is deleted, and not after (F1, F2).
     %% never SessionWithoutAccount: Signed in on this device & No account -- A session always belongs to an account.
     %% never OtherSessionWithoutAccount: Signed in on another device & No account -- A session always belongs to an account.
   }

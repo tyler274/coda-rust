@@ -4,6 +4,7 @@
 //! cargo run -p patient-bank -- catalog [--roger-fixture DIR]
 //! cargo run -p patient-bank -- import --db PATH
 //! cargo run -p patient-bank -- brief|check|preview UNIT
+//! cargo run -p patient-bank -- find icd10|loinc|snomed|rxnorm WORDS...
 //! cargo run -p patient-bank -- build [--out DIR]
 //! cargo run -p patient-bank -- validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
 //! ```
@@ -56,6 +57,18 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
                 return Err(format!("{command} takes one unit id").into());
             };
             unit::run(command, uid)?
+        }
+        "find" => {
+            let o = Opts::parse(rest, &[])?;
+            let [system, words @ ..] = o.positional.as_slice() else {
+                return Err("find takes a system (icd10, loinc, snomed, rxnorm) and words".into());
+            };
+            // reads the shared answers and writes none, so authors can search at once
+            let mut look = catalog::Lookup::layered(&paths::root().join("find-lookups.json"))?;
+            for row in look.find(system, &words.join(" "))? {
+                println!("{row}");
+            }
+            0
         }
         "build" => {
             let o = Opts::parse(rest, &["--out"])?;
@@ -137,6 +150,7 @@ patient-bank runs the synthetic patient bank pipeline.
   patient-bank catalog [--roger-fixture DIR]
   patient-bank import --db PATH
   patient-bank brief|check|preview UNIT
+  patient-bank find icd10|loinc|snomed|rxnorm WORDS...
   patient-bank build [--out DIR]
   patient-bank validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
 

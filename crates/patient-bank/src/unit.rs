@@ -55,6 +55,10 @@ pub fn vocabulary(c: &Catalog) -> String {
         block("Allergens", c.allergens.keys()),
         block("Allergy reactions", c.reactions.keys()),
         block("Vaccines (CVX)", c.vaccines.keys()),
+        block(
+            "Referral specialties (an order's \"to\")",
+            c.specialties.keys(),
+        ),
     ]
     .join("\n")
 }

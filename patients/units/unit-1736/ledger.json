@@ -2,9 +2,7 @@
   "unit": "unit-1736",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001736/2024-01-14a: allergen \"Lamotrigine\" not in catalog (text only)",
     "MRN00001736/2024-01-14a: reaction \"Toxic epidermal necrolysis\" not in catalog (text only)",
-    "MRN00001736/2025-01-16a: allergen \"Dextromethorphan\" not in catalog (text only)",
     "MRN00001736/2025-01-16a: reaction \"Serotonin syndrome\" not in catalog (text only)"
   ],
   "patients": [
@@ -1820,6 +1818,8 @@
           "allergies": [
             {
               "substance": "Lamotrigine",
+              "snomed": "387562000",
+              "category": "medication",
               "reaction": "Toxic epidermal necrolysis",
               "severity": "severe",
               "criticality": "high",
@@ -2839,6 +2839,8 @@
           "allergies": [
             {
               "substance": "Dextromethorphan",
+              "snomed": "387114001",
+              "category": "medication",
               "reaction": "Serotonin syndrome",
               "severity": "severe",
               "criticality": "high",
@@ -4182,7 +4184,7 @@
                 },
                 {
                   "test": "Prothrombin Time-International Normalized Ratio",
-                  "value": 1.0
+                  "value": 1.1
                 }
               ]
             },
@@ -4670,6 +4672,18 @@
         "code": "15374-2",
         "display": "Sulfonylurea [Presence] in Serum or Plasma",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Dextromethorphan": {
+        "code": "387114001",
+        "display": "Dextromethorphan",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Lamotrigine": {
+        "code": "387562000",
+        "display": "Lamotrigine",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

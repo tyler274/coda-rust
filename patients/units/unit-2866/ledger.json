@@ -2,7 +2,7 @@
   "unit": "unit-2866",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002866/2024-10-07a: allergen \"Heparin\" not in catalog (text only)",
+    "MRN00002866/2024-03-19a: referral to \"Orthopedic Surgery\" names no catalog specialty",
     "MRN00002866/2024-10-07a: reaction \"Heparin-induced thrombocytopenia\" not in catalog (text only)"
   ],
   "patients": [
@@ -2240,7 +2240,7 @@
                 },
                 {
                   "test": "Prothrombin Time-International Normalized Ratio",
-                  "value": 1.03
+                  "value": 1.0
                 }
               ]
             },
@@ -2507,6 +2507,8 @@
           "allergies": [
             {
               "substance": "Heparin",
+              "snomed": "372877000",
+              "category": "medication",
               "reaction": "Heparin-induced thrombocytopenia",
               "severity": "severe",
               "criticality": "high",
@@ -4204,6 +4206,13 @@
         "display": "Heparin induced platelet Ab [Units/volume] in Serum",
         "unit": "{OD}",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Heparin": {
+        "code": "372877000",
+        "display": "Heparin",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

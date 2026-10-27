@@ -398,13 +398,15 @@ fn a_visit_is_an_encounter_its_records_link_to() {
 }
 
 #[test]
-fn an_order_stays_open_until_it_is_done_or_cancelled() {
+fn an_order_is_coded_by_what_it_orders_and_stays_open_until_closed() {
     let p = patient(json!([
         visit("e1", "2026-03-02T09:00", json!({"orders": [
             {"id": "cards", "action": "placed", "order": "Cardiology referral",
              "category": "referral", "to": "Cardiology", "reason": "palpitations"},
             {"id": "echo", "action": "placed", "order": "Transthoracic echocardiogram",
-             "category": "imaging"}
+             "category": "imaging"},
+            {"id": "fit", "action": "placed", "order": "Fecal Immunochemical Test",
+             "category": "lab"}
         ]})),
         {"id": "e2", "kind": "telephone", "start": "2026-04-10T15:00", "orders": [
             {"id": "echo", "action": "cancelled"}
@@ -433,6 +435,20 @@ fn an_order_stays_open_until_it_is_done_or_cancelled() {
         Some("revoked")
     );
     assert!(render(&p, "2026-03-01T09:00").service_requests.is_empty());
+    // each order carries its catalog code; a referral's specialty is its performer
+    let catalog = catalog();
+    let order = |what: &str| {
+        open.service_requests
+            .iter()
+            .find(|o| o.code.text.as_deref() == Some(what))
+            .expect(what)
+    };
+    let fit = &catalog.labs["Fecal Immunochemical Test"].code;
+    assert_eq!(order("Fecal Immunochemical Test").code.coding[0].code, *fit);
+    assert_eq!(
+        order("Cardiology referral").performer_type[0].coding[0].code,
+        catalog.specialties["Cardiology"].code
+    );
 }
 
 #[test]
@@ -789,6 +805,157 @@ fn a_draw_keeps_its_derived_members_and_set_levels_consistent() {
     }
 }
 
+#[test]
+fn a_stated_calculated_test_fixes_its_open_input_and_every_lab_formula_holds() {
+    let lipids = |results: serde_json::Value| {
+        patient(json!([visit(
+            "e1",
+            "2024-01-03T09:00",
+            json!({"labs": [{"panel": "Lipid Panel", "collected": "2024-01-03T09:00",
+                "results": results}],
+                "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Lipids drawn."}]})
+        )]))
+    };
+    // the source gives total cholesterol, LDL and HDL: triglycerides follow from them
+    let stated = lipids(json!([{"test": "Total Cholesterol", "value": 190},
+        {"test": "Low Density Lipoprotein", "value": 100},
+        {"test": "High Density Lipoprotein", "value": 45}]));
+    let (p, errors) = measure::apply(&seed(), &stated, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    let tg = p.events[0].labs[0]
+        .results
+        .iter()
+        .find(|r| r.test == "Triglycerides")
+        .and_then(|r| r.value.as_ref())
+        .map(patient_bank::ledger::num);
+    assert_eq!(tg, Some(225.0), "TC 190 = LDL 100 + HDL 45 + TG/5");
+    assert!(
+        errors_for(seed(), p)
+            .iter()
+            .all(|e| !e.contains("disagrees"))
+    );
+
+    // a Martin-Hopkins LDL is a lab's real calculation; one no formula gives is not
+    let all = |ldl: i64| {
+        lipids(json!([{"test": "Total Cholesterol", "value": 210},
+            {"test": "Low Density Lipoprotein", "value": ldl},
+            {"test": "High Density Lipoprotein", "value": 45},
+            {"test": "Triglycerides", "value": 200}]))
+    };
+    let disagrees = |ldl| {
+        let (p, _) = measure::apply(&seed(), &all(ldl), &catalog());
+        errors_for(seed(), p)
+            .iter()
+            .any(|e| e.contains("Total Cholesterol 210 disagrees"))
+    };
+    assert!(!disagrees(140), "TG/f with f = 8 is Martin-Hopkins");
+    assert!(disagrees(60), "no lab's formula puts LDL 60 here");
+
+    // a result answered in text stays text: no number is solved into it, and the
+    // formula it blocks holds back none of the other members
+    let withheld = lipids(json!([{"test": "Total Cholesterol", "value": 260},
+        {"test": "Triglycerides", "value": 640},
+        {"test": "Low Density Lipoprotein", "text": "Not calculated (triglycerides >400 mg/dL)"}]));
+    let (p, errors) = measure::apply(&seed(), &withheld, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    let result = |test: &str| {
+        p.events[0].labs[0]
+            .results
+            .iter()
+            .find(|r| r.test == test)
+            .unwrap_or_else(|| panic!("{test} left out"))
+    };
+    let ldl = result("Low Density Lipoprotein");
+    assert!(ldl.value.is_none() && ldl.text.is_some(), "{ldl:?}");
+    assert!(result("High Density Lipoprotein").value.is_some());
+    assert!(result("Non-HDL Cholesterol").value.is_some());
+}
+
+#[test]
+fn no_known_drug_allergies_ends_when_a_drug_allergy_is_recorded() {
+    let allergy = |substance: &str, category: Option<&str>| {
+        let mut a = json!({"substance": substance});
+        if let Some(c) = category {
+            a["category"] = json!(c);
+        }
+        a
+    };
+    let chart = |later: serde_json::Value| {
+        patient(json!([
+            visit(
+                "e1",
+                "2024-01-03T09:00",
+                json!({"allergies": [allergy("No known drug allergies", None)]})
+            ),
+            visit("e2", "2024-06-03T09:00", json!({"allergies": [later]})),
+        ]))
+    };
+    let nkda_status = |p: &Patient, when: &str| {
+        render(p, when)
+            .allergies
+            .iter()
+            .find(|a| a.code.text.as_deref() == Some("No known drug allergies"))
+            .map(|a| a.clinical_status.coding[0].code.clone())
+    };
+    let drug = chart(allergy("Penicillin", None));
+    assert_eq!(
+        nkda_status(&drug, "2024-03-01T00:00").as_deref(),
+        Some("active")
+    );
+    assert_eq!(
+        nkda_status(&drug, "2024-07-01T00:00").as_deref(),
+        Some("inactive")
+    );
+    let food = chart(allergy("Peanut", None));
+    assert_eq!(
+        nkda_status(&food, "2024-07-01T00:00").as_deref(),
+        Some("active"),
+        "a food allergy leaves no known drug allergies true"
+    );
+
+    // saying there are none while one is listed contradicts the list
+    let again = patient(json!([
+        visit(
+            "e1",
+            "2024-01-03T09:00",
+            json!({"allergies": [allergy("Penicillin", None)]})
+        ),
+        visit(
+            "e2",
+            "2024-06-03T09:00",
+            json!({"allergies": [allergy("No known drug allergies", None)]})
+        ),
+    ]));
+    let errors = errors_for(seed(), again);
+    assert!(
+        errors
+            .iter()
+            .any(|e| e.contains("while \"Penicillin\" is on the allergy list")),
+        "{errors:?}"
+    );
+    // the same contradiction inside one visit leaves no known drug allergies inactive
+    let same = patient(json!([visit(
+        "e1",
+        "2024-01-03T09:00",
+        json!({"allergies": [allergy("Penicillin", None), allergy("No known drug allergies", None)]})
+    )]));
+    assert_eq!(
+        nkda_status(&same, "2024-03-01T00:00").as_deref(),
+        Some("inactive")
+    );
+    assert!(
+        errors_for(seed(), same)
+            .iter()
+            .any(|e| e.contains("while \"Penicillin\" is on the allergy list"))
+    );
+    // an allergen the catalog lacks says what kind it is
+    let errors = errors_for(seed(), chart(allergy("Dust mites", None)));
+    assert!(
+        errors.iter().any(|e| e.contains("\"category\"")),
+        "{errors:?}"
+    );
+}
+
 fn catalog() -> Catalog {
     Catalog::load(&paths::catalog()).expect("catalog")
 }
@@ -817,14 +984,18 @@ fn a_patients_own_normal_stays_in_range() {
 }
 
 #[test]
-fn a_test_the_catalog_lacks_is_coded_by_its_verified_loinc() {
+fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
     let draw = |loinc: serde_json::Value| {
         patient(json!([visit(
             "e1",
             "2024-01-01T09:00",
             json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
                 {"test": "Calcitonin", "loinc": loinc, "unit": "pg/mL", "value": 500}
-            ]}], "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
+            ]}],
+            "allergies": [{"substance": "Dust mites", "snomed": "260147004", "category": "environment"}],
+            "procedures": [{"procedure": "Cesarean section", "snomed": "11466000",
+                "performed": "2024-01-01T09:30"}],
+            "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
         )]))
     };
     let unknown = |e: &Vec<String>| e.iter().any(|x| x.contains("unknown lab test"));
@@ -844,6 +1015,20 @@ fn a_test_the_catalog_lacks_is_coded_by_its_verified_loinc() {
             receipt: "test".into(),
         },
     );
+    let snomed = |code: &str, display: &str| patient_bank::ledger::VerifiedCode {
+        code: code.into(),
+        display: display.into(),
+        ingredient: None,
+        unit: None,
+        receipt: "test".into(),
+    };
+    terms
+        .allergens
+        .insert("Dust mites".into(), snomed("260147004", "House dust mite"));
+    terms.procedures.insert(
+        "Cesarean section".into(),
+        snomed("11466000", "Cesarean section"),
+    );
     let chart = Renderer {
         catalog: &catalog.with_terms(&terms),
         terms: &terms,
@@ -857,4 +1042,18 @@ fn a_test_the_catalog_lacks_is_coded_by_its_verified_loinc() {
             .any(|o| o.code.coding.iter().any(|c| c.code == "1992-7")),
         "the verified test renders with its LOINC code"
     );
+    let coded = |codes: Vec<&patient_bank::fhir::CodeableConcept>, code: &str| {
+        codes
+            .iter()
+            .any(|c| c.coding.iter().any(|x| x.code == code))
+    };
+    assert!(coded(
+        chart.allergies.iter().map(|a| &a.code).collect(),
+        "260147004"
+    ));
+    assert_eq!(chart.allergies[0].category, vec!["environment".to_string()]);
+    assert!(coded(
+        chart.procedures.iter().map(|x| &x.code).collect(),
+        "11466000"
+    ));
 }

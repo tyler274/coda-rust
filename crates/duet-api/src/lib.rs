@@ -1,9 +1,8 @@
-//! Axum owner for Duet's moments, account, and session routes. Other patient
-//! routers stay on FastAPI until each one moves. The physician Node server is
-//! not this crate.
-//! The front door is embedded here for Duet: joining redeems a practice
-//! invitation, consent shares with the physician through the front-door
-//! store, and premium reads name only which features are on.
+//! Duet-owned account, privacy, evidence, conversation, workspace and publication
+//! services. `main.rs` composes the durable route families and recovery workers.
+//! The earlier router in this module retains moments, front-door join/consent/
+//! premium and in-memory care routes for its callers; the binary does not mount it.
+//! `conversation_execution` is also separate from the mounted conversation path.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
