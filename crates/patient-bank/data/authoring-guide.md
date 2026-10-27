@@ -141,8 +141,11 @@ a prescription is a medication action, and a resulted lab is a lab result.
 - **Codes.** Use the catalog labels in the vocabulary file exactly. For anything
   it lacks, give the standard code and check verifies it: a condition's `icd10`, a
   drug's `drug_text` (generic name, strength and form), a lab result's `loinc` and
-  `unit`, a report's `loinc`. An allergen it lacks stays text. "No known drug
-  allergies" is an allergen.
+  `unit`, a report's `loinc`, an allergen's or procedure's `snomed`. Look codes up
+  with `patient-bank find icd10|loinc|snomed|rxnorm WORDS`, never from memory. An
+  allergen the catalog lacks also gives its `category` (food, medication,
+  environment or biologic). "No known drug allergies" is an allergen that holds
+  until a drug allergy is recorded; never record it while one is listed.
 - **Numbers come from code.** You record where the patient's body is, and code
   measures it. Give an event a `state` when a level is first known or changes:
   weight and height at the first visit, a blood pressure level when it is not
@@ -155,7 +158,10 @@ a prescription is a medication action, and a resulted lab is a lab result.
   yourself for every number build-req gives (code would scatter it) and for what no
   level can give: a qualitative result (`"text"`), a culture, a one-off number.
 - **Labs.** A panel lists only the members you mean; code fills the rest and
-  derives eGFR, CBC indices and the differential's remainder. Give `"resulted"` (on
+  derives eGFR, CBC indices and the differential's remainder. A calculated test you
+  state (total cholesterol, non-HDL, eGFR, transferrin saturation, PT) fixes the
+  input you leave out, so give the test or its inputs; check rejects a set no
+  lab's formula gives. Give `"resulted"` (on
   the draw or one result) or `"issued"` (on a report) when the story needs a
   specific release time.
 - **Vitals.** `measure` the vitals the contact would take. When build-req gives a
@@ -190,7 +196,8 @@ Event ids are unique across a patient's parts and sort by date (`2019-03-14a`).
           "appointment": "booked (after today, nothing else on the event) | cancelled | no-show",
           "conditions": [{"label": "Essential hypertension", "action": "diagnosed|history|resolved", "onset": "YYYY-MM-DD", "note": "optional"}],
           "medications": [{"drug": "lisinopril 10 MG Oral Tablet", "action": "start|stop|historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic|short", "reason": "optional"}],
-          "allergies": [{"substance": "Penicillin", "reaction": "Hives", "severity": "mild|moderate|severe", "criticality": "low|high", "type": "allergy|intolerance"}],
+          "allergies": [{"substance": "Penicillin", "reaction": "Hives", "severity": "mild|moderate|severe", "criticality": "low|high", "type": "allergy|intolerance"},
+                        {"substance": "Dust mites", "snomed": "260147004 (one the catalog lacks)", "category": "food|medication|environment|biologic"}],
           "state": {"bp": [146, 92], "weight_kg": 88.4, "height_cm": 177.0, "labs": {"Low Density Lipoprotein": 162}},
           "measure": ["bp", "hr", "spo2", "weight_kg"],
           "labs": [{"panel": "Lipid Panel", "collected": "YYYY-MM-DDTHH:MM", "results": [{"test": "Low Density Lipoprotein"}]},
@@ -198,7 +205,8 @@ Event ids are unique across a patient's parts and sort by date (`2019-03-14a`).
           "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
           "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
           "reports": [{"study": "Chest X-ray, 2 views", "performed": "YYYY-MM-DDTHH:MM", "text": "…", "conclusion": "…"}],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "YYYY-MM-DDTHH:MM"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "YYYY-MM-DDTHH:MM"},
+                         {"procedure": "Cesarean section", "snomed": "11466000 (one the catalog lacks)", "performed": "YYYY-MM-DDTHH:MM"}],
           "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "YYYY-MM-DDTHH:MM"}],
           "orders": [{"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral|lab|imaging|procedure", "to": "Dermatology", "reason": "changing mole"},
                      {"id": "derm-referral", "action": "done|cancelled", "date": "YYYY-MM-DDTHH:MM (on a later event)"}],

@@ -14,7 +14,7 @@ use std::collections::HashMap;
 use serde_json::Number;
 
 use crate::catalog::Catalog;
-use crate::draw::{self, Draw, SOLVE, own_normal};
+use crate::draw::{self, Draw, IDENTITIES, own_normal};
 use crate::labs::{normal, rounded};
 use crate::ledger::{Patient, State, Vital, VitalSet, Vitals, num};
 use crate::rng::Rng;
@@ -103,27 +103,55 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
         let eid = format!("{}/{}", p.mrn, ev.id);
         if let Some(s) = &ev.state {
             levels.apply(s);
-            for (derived, input, others, solve) in SOLVE {
-                if s.labs.contains_key(*input) {
-                    continue;
-                }
-                let Some(target) = s.labs.get(*derived).map(num) else {
+            // A level on a calculated test moves the input its identity names, the
+            // other inputs pinned at their levels. Backward through the table, so a
+            // level on non-HDL moves total cholesterol, which moves LDL.
+            let age = time::age_on(p.birth_date.0, ev.start.date());
+            let mut targets: HashMap<&str, f64> =
+                s.labs.iter().map(|(t, v)| (t.as_str(), num(v))).collect();
+            for id in IDENTITIES.iter().rev() {
+                let (Some(k), Some(&target)) = (id.moves, targets.get(id.test)) else {
                     continue;
                 };
-                let mut got = Vec::new();
-                for t in *others {
+                let input = id.inputs[k];
+                if s.labs.contains_key(input) {
+                    continue;
+                }
+                let mut values = vec![0.0; id.inputs.len()];
+                let mut pinned = true;
+                for (j, t) in id.inputs.iter().enumerate().filter(|(j, _)| *j != k) {
                     let level = levels.labs.get(*t).copied();
                     let Some(level) = level.or_else(|| own_normal(&p.mrn, t, female)) else {
+                        pinned = false;
                         break;
                     };
                     levels.labs.insert(t.to_string(), level);
-                    got.push(level.0);
+                    values[j] = level.0;
                 }
-                if got.len() == others.len() {
-                    let dec = normal(input, female).map_or(0, |n| n.1);
-                    let v = solve(target, &got).max(0.0);
-                    levels.labs.insert(input.to_string(), (v, dec));
+                if !pinned {
+                    continue;
                 }
+                match id.solve(k, target, &values, age, female) {
+                    Some(v) => {
+                        levels
+                            .labs
+                            .insert(input.to_string(), (v, draw::decimals(input, female)));
+                        targets.insert(input, v);
+                    }
+                    None => errors.push(format!(
+                        "{eid}: no {input} level gives {} {target}; set the inputs' levels instead",
+                        id.test
+                    )),
+                }
+            }
+            // the analyzer's hemoglobin is about a third of the hematocrit
+            if let Some(hct) = s.labs.get("Hematocrit")
+                && !s.labs.contains_key("Hemoglobin")
+            {
+                let dec = normal("Hemoglobin", female).map_or(0, |n| n.1);
+                levels
+                    .labs
+                    .insert("Hemoglobin".into(), (num(hct) * 0.334, dec));
             }
         }
         if !ev.measure.is_empty() {

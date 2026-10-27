@@ -17,6 +17,7 @@ use std::time::Duration;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
+use crate::ledger::{AllergyCategory, AllergyItem};
 use crate::{Result, paths};
 
 pub const ICD: &str = "http://hl7.org/fhir/sid/icd-10-cm";
@@ -62,25 +63,44 @@ pub struct Catalog {
 }
 
 impl Catalog {
-    /// This catalog plus the labs and studies a ledger's verified terms add.
+    /// This catalog plus the labs, studies, allergens and procedures a ledger's
+    /// verified terms add.
     pub fn with_terms(&self, terms: &crate::ledger::Terms) -> Catalog {
         let mut c = self.clone();
-        let loinc = c.systems.get("loinc").cloned().unwrap_or_default();
-        let entry = |v: &crate::ledger::VerifiedCode| Entry {
-            system: loinc.clone(),
+        let system = |name: &str| c.systems.get(name).cloned().unwrap_or_default();
+        let (loinc, snomed) = (system("loinc"), system("snomed"));
+        let entry = |system: &str, v: &crate::ledger::VerifiedCode| Entry {
+            system: system.to_string(),
             code: v.code.clone(),
             display: Some(v.display.clone()),
             receipt: Some(v.receipt.clone()),
             unit: v.unit.clone(),
             ..Entry::default()
         };
-        for (label, v) in &terms.labs {
-            c.labs.entry(label.clone()).or_insert_with(|| entry(v));
-        }
-        for (label, v) in &terms.reports {
-            c.reports.entry(label.clone()).or_insert_with(|| entry(v));
+        for (section, system, verified) in [
+            (&mut c.labs, &loinc, &terms.labs),
+            (&mut c.reports, &loinc, &terms.reports),
+            (&mut c.allergens, &snomed, &terms.allergens),
+            (&mut c.procedures, &snomed, &terms.procedures),
+        ] {
+            for (label, v) in verified {
+                section
+                    .entry(label.clone())
+                    .or_insert_with(|| entry(system, v));
+            }
         }
         c
+    }
+
+    /// An allergy entry's FHIR category (the catalog's, else the entry's own), and
+    /// the category it rules out when it is a "no known" entry.
+    pub fn allergy_class(&self, item: &AllergyItem) -> (&str, Option<&str>) {
+        let entry = self.allergens.get(&item.substance);
+        let category = match entry.and_then(|e| e.category.as_ref()) {
+            Some(Category::Text(c)) => c.as_str(),
+            _ => item.category.map_or("medication", AllergyCategory::as_str),
+        };
+        (category, entry.and_then(|e| e.negates.as_deref()))
     }
 
     pub fn load(path: &Path) -> Result<Catalog> {
@@ -143,6 +163,9 @@ pub struct Entry {
     pub range_source: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub category: Option<Category>,
+    /// A "no known" allergen: the allergen category it says the patient has none of.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub negates: Option<String>,
     /// Panel members, in reporting order.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub members: Vec<String>,
@@ -320,9 +343,121 @@ impl Lookup {
             .collect()
     }
 
+    /// Real codes whose names match `words`, as "code display", from the service
+    /// `check` verifies that system against: ICD-10-CM and LOINC from NLM Clinical
+    /// Tables, SNOMED CT from tx.fhir.org (with each concept's kind), RxNorm drugs
+    /// from RxNav.
+    pub fn find(&mut self, system: &str, words: &str) -> Result<Vec<String>> {
+        let rows = |found: &Value| -> Vec<String> {
+            found[3]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(|r| Some(format!("{} {}", r[0].as_str()?, r[1].as_str()?)))
+                .collect()
+        };
+        let clinical = |api: &str, pairs: &[(&str, &str)]| {
+            let mut q = vec![("terms", words), ("maxList", "15")];
+            q.extend_from_slice(pairs);
+            format!(
+                "https://clinicaltables.nlm.nih.gov/api/{api}/v3/search?{}",
+                urlencode(&q)
+            )
+        };
+        Ok(match system {
+            "icd10" => {
+                let q = [("sf", "code,name"), ("df", "code,name")];
+                rows(&self.get(&clinical("icd10cm", &q), "application/json")?)
+            }
+            "loinc" => {
+                let q = [("df", "LOINC_NUM,LONG_COMMON_NAME")];
+                rows(&self.get(&clinical("loinc_items", &q), "application/json")?)
+            }
+            "snomed" => {
+                let url = format!(
+                    "https://tx.fhir.org/r4/ValueSet/$expand?{}",
+                    urlencode(&[
+                        ("url", "http://snomed.info/sct?fhir_vs"),
+                        ("filter", words),
+                        ("count", "15"),
+                        ("includeDesignations", "true"),
+                    ])
+                );
+                let found = self.get(&url, "application/fhir+json")?;
+                let fsn = |c: &Value| -> Option<String> {
+                    c["designation"].as_array()?.iter().find_map(|d| {
+                        (d["use"]["code"] == "900000000000003001")
+                            .then(|| d["value"].as_str().map(String::from))?
+                    })
+                };
+                found["expansion"]["contains"]
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .filter_map(|c| {
+                        let name = fsn(c).or_else(|| c["display"].as_str().map(String::from))?;
+                        Some(format!("{} {name}", c["code"].as_str()?))
+                    })
+                    .collect()
+            }
+            "rxnorm" => {
+                let mut out = Vec::new();
+                for rxcui in self.rxnorm_candidates(words)? {
+                    if let Some((tty, name)) = self.rxnorm_properties(&rxcui)?
+                        && !out.iter().any(|o: &String| o.ends_with(&name))
+                    {
+                        out.push(format!("{rxcui} [{tty}] {name}"));
+                    }
+                }
+                out
+            }
+            _ => {
+                return Err(
+                    format!("find takes icd10, loinc, snomed or rxnorm, not {system:?}").into(),
+                );
+            }
+        })
+    }
+
     /// Any lookup failure reads as "not found".
     pub fn snomed(&mut self, code: &str) -> Option<String> {
         self.tx(SNOMED, code)
+    }
+
+    /// An active SNOMED CT concept's display, when its fully specified name's
+    /// semantic tag is one of `tags` (a procedure for a procedure, a substance for
+    /// an allergen); any failure reads as "not found".
+    pub fn snomed_of(&mut self, code: &str, tags: &[&str]) -> Option<String> {
+        let url = format!(
+            "https://tx.fhir.org/r4/CodeSystem/$lookup?{}",
+            urlencode(&[("system", SNOMED), ("code", code)])
+        );
+        let params = self.get(&url, "application/fhir+json").ok()?;
+        let params = params["parameter"].as_array()?;
+        let part = |p: &Value, name: &str| -> Option<Value> {
+            p["part"]
+                .as_array()?
+                .iter()
+                .find(|x| x["name"] == name)
+                .cloned()
+        };
+        let inactive = params.iter().any(|p| {
+            p["name"] == "property"
+                && part(p, "code").is_some_and(|c| c["valueCode"] == "inactive")
+                && part(p, "value").is_some_and(|v| v["valueBoolean"] == true)
+        });
+        let fsn = params.iter().find_map(|p| {
+            let fully = part(p, "use")?["valueCoding"]["code"] == "900000000000003001";
+            (p["name"] == "designation" && fully)
+                .then(|| part(p, "value")?["valueString"].as_str().map(String::from))?
+        })?;
+        let tag = fsn.rsplit_once('(')?.1.trim_end_matches(')');
+        if inactive || !tags.contains(&tag) {
+            return None;
+        }
+        params.iter().find(|p| p["name"] == "display")?["valueString"]
+            .as_str()
+            .map(String::from)
     }
 
     /// A code's display from tx.fhir.org; any failure reads as "not found".
@@ -379,6 +514,30 @@ impl Lookup {
                     .collect()
             })
             .unwrap_or_default())
+    }
+
+    /// The clinical and branded drugs RxNav relates to a concept (a drug component
+    /// such as "penicillin V potassium 250 MG" relates to its tablets and capsules).
+    pub fn rxnorm_related_drugs(&mut self, rxcui: &str) -> Result<Vec<(String, String)>> {
+        let url = format!("https://rxnav.nlm.nih.gov/REST/rxcui/{rxcui}/related.json?tty=SCD+SBD");
+        let found = self.get(&url, "application/json")?;
+        Ok(found["relatedGroup"]["conceptGroup"]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .flat_map(|g| {
+                g["conceptProperties"]
+                    .as_array()
+                    .cloned()
+                    .unwrap_or_default()
+            })
+            .filter_map(|c| {
+                Some((
+                    c["rxcui"].as_str()?.to_string(),
+                    c["name"].as_str()?.to_string(),
+                ))
+            })
+            .collect())
     }
 
     /// RxNav's term type and name for a concept.

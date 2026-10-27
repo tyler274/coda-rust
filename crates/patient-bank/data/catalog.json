@@ -4705,6 +4705,18 @@
       },
       "range_source": "coda-gym lab_reference_ranges.xlsx"
     },
+    "Low Density Lipoprotein, Direct": {
+      "system": "http://loinc.org",
+      "code": "18262-6",
+      "display": "Cholesterol in LDL [Mass/volume] in Serum or Plasma by Direct assay",
+      "receipt": "NLM Clinical Tables LOINC",
+      "unit": "mg/dL",
+      "range": {
+        "high": 100,
+        "low": 0
+      },
+      "range_source": "coda-gym lab_reference_ranges.xlsx"
+    },
     "Lyme Disease Antibody with Reflex to Immunoblot": {
       "system": "http://loinc.org",
       "code": "20449-5",
@@ -5420,6 +5432,18 @@
         "High Density Lipoprotein",
         "Triglycerides",
         "Low Density Lipoprotein",
+        "Non-HDL Cholesterol"
+      ]
+    },
+    "Lipid Panel with Direct LDL": {
+      "system": "http://loinc.org",
+      "code": "57698-3",
+      "display": "Lipid panel with direct LDL - Serum or Plasma",
+      "members": [
+        "Total Cholesterol",
+        "High Density Lipoprotein",
+        "Triglycerides",
+        "Low Density Lipoprotein, Direct",
         "Non-HDL Cholesterol"
       ]
     },
@@ -6331,7 +6355,8 @@
       "system": "http://snomed.info/sct",
       "code": "409137002",
       "display": "No known drug allergy",
-      "category": "medication"
+      "category": "medication",
+      "negates": "medication"
     },
     "Peanut": {
       "system": "http://snomed.info/sct",

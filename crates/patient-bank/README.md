@@ -27,6 +27,7 @@ patients/units/<unit>/
 ```bash
 cargo run -q -p patient-bank -- import --db <synthetic_hospital benchmark_v1.3.db>
 cargo run -q -p patient-bank -- brief|check|preview <unit>
+cargo run -q -p patient-bank -- find icd10|loinc|snomed|rxnorm <words>
 cargo run -q -p patient-bank -- build
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
 cargo run -q -p patient-bank -- catalog
@@ -45,18 +46,21 @@ the terminology cache, the bank and the schema live under the ignored
 - **The ledger format.** Typed structs that reject unknown fields, misspelled
   actions and malformed times, so a bad draft fails with its path.
 - **Time.** `timeline.rs` gives every record its own instant, and a chart as of a
-  moment holds exactly the records before it. Drug and problem status come from
-  each concept's whole history: a restarted drug stops at its own stop, and a
-  problem diagnosed again after it resolved is a new episode with its own row.
+  moment holds exactly the records before it. Drug, problem and allergy status
+  come from each concept's whole history: a restarted drug stops at its own stop, a
+  problem diagnosed again after it resolved is a new episode with its own row, and
+  "no known drug allergies" turns inactive when a drug allergy is recorded.
 - **Today.** Everything is dated before the bank time. A draw not back yet is
   `pending` (no values, `registered`), and a booked visit is an empty event on the
   practice calendar. What happens after today is decided later, when the patients
   are run.
 - **Codes.** `data/catalog.json` holds verified ICD-10-CM, LOINC, RxNorm, SNOMED,
   CVX and CPT codes. A concept is added by writing its label and code there and
-  running `catalog`, which reads every entry back from its official service. `check` verifies any extra condition code, drug text, or lab or
-  study LOINC an author proposes and stores the answer in the ledger, so build and
-  validate need no network.
+  running `catalog`, which reads every entry back from its official service. `check`
+  verifies any extra condition code, drug text, lab or study LOINC, or allergen or
+  procedure SNOMED concept an author proposes and stores the answer in the ledger,
+  so build and validate need no network. `find` searches those same services, so
+  authors look codes up instead of recalling them.
 - **Repeats.** Authors write alone, so they fall back on the same defaults.
   `repeats.rs` finds the names and phrases a few charts share (the practice's own
   templates are shared by many and do not count) and lab values far more common
@@ -67,7 +71,8 @@ the terminology cache, the bank and the schema live under the ignored
   results and booked visits, the last held practice visit is the seed's
   `last_seen` and nothing after it changes the practice's lists, a visit is booked
   only when the seed says so, nothing stops, resolves or closes before it started,
-  results come after their draw, and lab arithmetic is what an analyzer reports.
+  "no known drug allergies" is not recorded while a drug allergy is listed, results
+  come after their draw, and every calculated test is what a lab's formula gives.
   It does not judge how a chart reads; the author's reread of `chart.txt` does.
 - **Numbers.** `measure` makes every number the chart shows, at `check`, and
   writes it into the ledger. A contact's vitals and each draw's results read the
@@ -76,7 +81,9 @@ the terminology cache, the bank and the schema live under the ignored
   differential shares what is left of 100%, and red-cell indices, eGFR (CKD-EPI
   2021), anion gap, cholesterol totals, transferrin saturation and prothrombin
   time are calculated from the draw. A level set on a calculated test moves the
-  inputs it comes from.
+  inputs it comes from, and a stated calculated test fixes the input the draw leaves
+  out. Each formula lives once in `draw.rs` with the range real labs' constants give
+  (Martin-Hopkins LDL, a reagent's ISI), which `check` accepts.
 - **The renderer.** Encounters, Conditions, MedicationRequests, Observations
   (lab panels with `hasMember`, BP with components), DiagnosticReports,
   Procedures, AllergyIntolerances, DocumentReferences, Immunizations and
