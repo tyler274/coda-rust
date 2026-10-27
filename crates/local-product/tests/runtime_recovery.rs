@@ -80,19 +80,32 @@ async fn candidate(store: &Store, scope: &Scope) -> (Claim, Candidate) {
         transcript: vec![],
         usage: engine::Usage::default(),
     };
-    store
-        .persist(
-            &claim,
-            Event {
-                attempt_id: claim.attempt.clone(),
-                sequence: 1,
-                kind: EventKind::Candidate {
-                    text: candidate.text.clone(),
+    // The terminal turn first, so only the authority fence can refuse it.
+    let kinds = [
+        EventKind::ProviderReturned(engine::Turn {
+            items: vec![engine::Item::Message {
+                role: "assistant".into(),
+                text: candidate.text.clone(),
+            }],
+            receipt: serde_json::json!({"controlled": true}),
+        }),
+        EventKind::Candidate {
+            text: candidate.text.clone(),
+        },
+    ];
+    for (sequence, kind) in (1..).zip(kinds) {
+        store
+            .persist(
+                &claim,
+                Event {
+                    attempt_id: claim.attempt.clone(),
+                    sequence,
+                    kind,
                 },
-            },
-        )
-        .await
-        .unwrap();
+            )
+            .await
+            .unwrap();
+    }
     (claim, candidate)
 }
 
@@ -171,6 +184,7 @@ impl recovery::Executor for Execute {
             claim,
             authority: Auth,
             instructions: "controlled version 1".into(),
+            skills: None,
         };
         let scope = host.claim.scope.clone();
         host.run(

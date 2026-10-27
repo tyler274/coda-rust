@@ -156,6 +156,12 @@ let
   duetPrivacyDelivery = native "duet-privacy-delivery";
   physicianWeb = web "physician-app";
   duetWeb = web "duet-app";
+  # The packaged clinical skill catalog the hosted worker loads once at
+  # startup (PHYSICIAN_SKILLS_DIR). Only skills/ enters this store path;
+  # being in the build source alone would not put it in the image.
+  physicianSkills = pkgs.runCommand "physician-skills" { } ''
+    cp -r ${lib.fileset.toSource { root = ../skills; fileset = ../skills; }} $out
+  '';
 in
 {
   coda-servers = servers;
@@ -163,6 +169,7 @@ in
   doppler-cli = doppler;
   physician-sample = physician;
   physician-worker = physicianWorker;
+  physician-skills = physicianSkills;
   duet-api = duet;
   physician-web = physicianWeb;
   duet-web = duetWeb;
@@ -193,8 +200,11 @@ in
     role = "runtime";
     binary = physicianWorker;
     executable = "physician-worker";
+    # Hosted startup requires its skill catalog; a missing one stops it.
+    assets = physicianSkills;
     # Hosted startup requires sessions, exactly as on the site.
     environment = [
+      "PHYSICIAN_SKILLS_DIR=${physicianSkills}"
       "PHYSICIAN_AUTH=required"
       "CODA_LOCAL_MODEL_EXECUTION=api"
     ];

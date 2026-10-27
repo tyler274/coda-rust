@@ -22,6 +22,8 @@ use sha2::{Digest, Sha256};
 
 pub mod codex;
 pub mod execution;
+/// Hosted physician chat instructions and the `skill_view` tool.
+pub mod physician_chat;
 pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;

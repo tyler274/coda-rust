@@ -41,7 +41,7 @@ Vercel retirement.
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
-| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker, loading the skill catalog at `PHYSICIAN_SKILLS_DIR` |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |

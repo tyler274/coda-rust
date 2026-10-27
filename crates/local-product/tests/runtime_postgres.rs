@@ -41,18 +41,30 @@ async fn database_crash_restart_retains_acknowledged_command_and_event() {
     let command = input();
     s.accept(&scope, &command).await.unwrap();
     let claim = s.claim(&scope, 60).await.unwrap().unwrap();
-    s.persist(
-        &claim,
-        engine::Event {
-            attempt_id: claim.attempt.clone(),
-            sequence: 1,
-            kind: engine::EventKind::Candidate {
+    let kinds = [
+        engine::EventKind::ProviderReturned(engine::Turn {
+            items: vec![engine::Item::Message {
+                role: "assistant".into(),
                 text: "durable candidate".into(),
-            },
+            }],
+            receipt: json!({"controlled": true}),
+        }),
+        engine::EventKind::Candidate {
+            text: "durable candidate".into(),
         },
-    )
-    .await
-    .unwrap();
+    ];
+    for (sequence, kind) in (1..).zip(kinds) {
+        s.persist(
+            &claim,
+            engine::Event {
+                attempt_id: claim.attempt.clone(),
+                sequence,
+                kind,
+            },
+        )
+        .await
+        .unwrap();
+    }
     drop(s);
     assert!(
         std::process::Command::new("pg_ctl")
@@ -83,7 +95,7 @@ async fn database_crash_restart_retains_acknowledged_command_and_event() {
     );
     let state = s.conversation(&scope).await.unwrap();
     assert_eq!(state.messages.len(), 1);
-    assert_eq!(state.attempts[0].events.len(), 1);
+    assert_eq!(state.attempts[0].events.len(), 2);
     s.commit(
         &claim,
         &engine::Candidate {
@@ -187,6 +199,7 @@ async fn refused_event_ack_prevents_provider_dispatch_and_tools_fail_closed() {
         claim,
         authority: Allowed,
         instructions: "versioned test".into(),
+        skills: None,
     };
     for name in [
         "write_patient_memory",
@@ -275,6 +288,7 @@ async fn durable_acceptance_dedup_tenants_successor_and_engine_commit() {
         claim: successor.clone(),
         authority: Allowed,
         instructions: "test instruction v1".into(),
+        skills: None,
     };
     host.run(&mut Provider, &limits(), &engine::Cancellation::default())
         .await
@@ -359,4 +373,316 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(resumed.attempt, next.attempt);
     assert_eq!(s.conversation(&scope).await.unwrap().messages.len(), 3);
+}
+
+fn skills() -> local_product::physician_chat::PhysicianSkills {
+    local_product::physician_chat::PhysicianSkills::load(
+        &std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"),
+    )
+    .unwrap()
+}
+
+fn read(id: &str, name: &str, arguments: &str) -> engine::Item {
+    engine::Item::Call(engine::Invocation {
+        id: id.into(),
+        name: name.into(),
+        arguments: arguments.into(),
+    })
+}
+
+fn result<'a>(context: &'a engine::Context, id: &str) -> &'a str {
+    context
+        .items
+        .iter()
+        .find_map(|item| match item {
+            engine::Item::Result { call_id, output } if call_id == id => Some(output.as_str()),
+            _ => None,
+        })
+        .unwrap_or_else(|| panic!("no result for {id}"))
+}
+
+/// Round 1 reads a skill body alongside bad, unknown, unavailable and
+/// over-budget calls; round 2 reads a supporting resource the body named;
+/// round 3 answers. Every request is checked against the loader's exact bytes.
+struct SkillReader {
+    skills: local_product::physician_chat::PhysicianSkills,
+    instructions: String,
+}
+#[async_trait]
+impl engine::Provider for SkillReader {
+    fn request_bytes(&self, _: &engine::Request<'_>) -> Result<usize, String> {
+        Ok(100)
+    }
+    async fn complete(&mut self, request: engine::Request<'_>) -> Result<engine::Turn, String> {
+        let context = request.context;
+        assert_eq!(context.instructions, self.instructions);
+        assert!(context.instructions.contains(self.skills.catalog()));
+        assert_eq!(
+            context
+                .tools
+                .iter()
+                .map(|t| t.name.as_str())
+                .collect::<Vec<_>>(),
+            ["skill_view"]
+        );
+        let view = |id: &str, name: &str, path: Option<&str>, bytes: u32| {
+            let harness = harness::Harness::load(
+                &std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"),
+            )
+            .unwrap();
+            assert_eq!(
+                result(context, id),
+                harness.skill_view(name, path, bytes).unwrap().to_json(),
+                "{id} must be the loader's exact result"
+            );
+        };
+        let turn = |items| {
+            Ok(engine::Turn {
+                items,
+                receipt: json!({"controlled": request.ordinal}),
+            })
+        };
+        match request.ordinal {
+            1 => turn(vec![
+                engine::Item::Message {
+                    role: "assistant".into(),
+                    text: "Reading the pre-visit skill. ".into(),
+                },
+                read(
+                    "body",
+                    "skill_view",
+                    r#"{"name":"pre-visit-preparation","file_path":null,"max_result_bytes":65536}"#,
+                ),
+                read(
+                    "malformed",
+                    "skill_view",
+                    r#"{"name":"pre-visit-preparation"}"#,
+                ),
+                read("not-json", "skill_view", "not json"),
+                read(
+                    "unknown",
+                    "write_patient_memory",
+                    r#"{"name":"pre-visit-preparation","file_path":null,"max_result_bytes":4096}"#,
+                ),
+                read(
+                    "missing",
+                    "skill_view",
+                    r#"{"name":"not-a-skill","file_path":null,"max_result_bytes":4096}"#,
+                ),
+                read(
+                    "over",
+                    "skill_view",
+                    r#"{"name":"pre-visit-preparation","file_path":null,"max_result_bytes":4096}"#,
+                ),
+            ]),
+            2 => {
+                view("body", "pre-visit-preparation", None, 65536);
+                view("missing", "not-a-skill", None, 4096);
+                view("over", "pre-visit-preparation", None, 4096);
+                for refused in ["malformed", "not-json", "unknown"] {
+                    let output: serde_json::Value =
+                        serde_json::from_str(result(context, refused)).unwrap();
+                    assert_eq!(output["executed"], false, "{refused}");
+                    assert!(output["error"].as_str().is_some_and(|e| !e.is_empty()));
+                }
+                assert!(result(context, "unknown").contains("unknown or unoffered tool"));
+                assert!(result(context, "malformed").contains("Invalid skill_view arguments"));
+                turn(vec![
+                    engine::Item::Message {
+                        role: "assistant".into(),
+                        text: "Checking a supporting guide. ".into(),
+                    },
+                    read(
+                        "resource",
+                        "skill_view",
+                        r#"{"name":"patient-memory-maintenance","file_path":"references/authoring-guide.md","max_result_bytes":65536}"#,
+                    ),
+                ])
+            }
+            3 => {
+                view(
+                    "resource",
+                    "patient-memory-maintenance",
+                    Some("references/authoring-guide.md"),
+                    65536,
+                );
+                turn(vec![
+                    engine::Item::Message {
+                        role: "assistant".into(),
+                        text: "Final answer, ".into(),
+                    },
+                    engine::Item::Message {
+                        role: "assistant".into(),
+                        text: "in two parts.".into(),
+                    },
+                ])
+            }
+            other => panic!("unexpected request {other}"),
+        }
+    }
+}
+
+fn skill_limits() -> engine::Limits {
+    engine::Limits {
+        model_calls: 8,
+        tool_calls: 16,
+        calls_per_turn: 8,
+        request_bytes: 1_048_576,
+        response_bytes: 131_072,
+        tool_result_bytes: 65_536,
+        total_tool_result_bytes: 262_144,
+        output_tokens: 500,
+        elapsed: std::time::Duration::from_secs(30),
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn skill_reads_reach_the_next_request_and_only_the_answer_is_published() {
+    let s = store().await;
+    let scope = scope();
+    s.accept(&scope, &input()).await.unwrap();
+    let claim = s.claim(&scope, 60).await.unwrap().unwrap();
+    let skills = skills();
+    let instructions = skills.instructions(local_product::physician_chat::INSTRUCTIONS);
+    let mut host = PhysicianHost {
+        store: s.clone(),
+        claim,
+        authority: Allowed,
+        instructions: instructions.clone(),
+        skills: Some(skills.clone()),
+    };
+    host.run(
+        &mut SkillReader {
+            skills,
+            instructions: instructions.clone(),
+        },
+        &skill_limits(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    drop(host);
+    drop(s);
+    // Read back through a new connection.
+    let s = store().await;
+    let state = s.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "completed");
+    assert_eq!(state.messages.len(), 2);
+    assert_eq!(state.messages[1].text, "Final answer, in two parts.");
+    let events = &state.attempts[0].events;
+    // Every request recorded the exact instructions, catalog and tool.
+    let started: Vec<_> = events
+        .iter()
+        .filter_map(|e| match &e.kind {
+            engine::EventKind::ProviderStarted { context, .. } => Some(context),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(started.len(), 3);
+    assert!(started.iter().all(|c| c.instructions == instructions));
+    assert!(instructions.contains(local_product::physician_chat::INSTRUCTIONS_VERSION));
+    // Executed reads are recorded with their version identities; refusals
+    // are recorded as not executed.
+    let returned: std::collections::HashMap<_, _> = events
+        .iter()
+        .filter_map(|e| match &e.kind {
+            engine::EventKind::ToolReturned {
+                call_id,
+                output,
+                executed,
+            } => Some((call_id.as_str(), (output.as_str(), *executed))),
+            _ => None,
+        })
+        .collect();
+    assert_eq!(returned.len(), 7);
+    for id in ["body", "missing", "over", "resource"] {
+        assert!(returned[id].1, "{id} executed");
+    }
+    for id in ["malformed", "not-json", "unknown"] {
+        assert!(!returned[id].1, "{id} refused");
+    }
+    let body: serde_json::Value = serde_json::from_str(returned["body"].0).unwrap();
+    assert_eq!(body["status"], "available");
+    assert!(body["version_id"].as_str().is_some_and(|v| !v.is_empty()));
+    let resource: serde_json::Value = serde_json::from_str(returned["resource"].0).unwrap();
+    assert!(
+        resource["version_id"]
+            .as_str()
+            .is_some_and(|v| !v.is_empty())
+    );
+    // Narration stays in the record and out of the published answer.
+    assert!(events.iter().any(|e| matches!(&e.kind,
+        engine::EventKind::ProviderReturned(turn)
+            if turn.items.iter().any(|i| matches!(i, engine::Item::Message { text, .. } if text.starts_with("Reading the pre-visit")))
+    )));
+    assert!(!state.messages[1].text.contains("Reading"));
+}
+
+/// Keeps requesting reads; never answers.
+struct Endless;
+#[async_trait]
+impl engine::Provider for Endless {
+    fn request_bytes(&self, _: &engine::Request<'_>) -> Result<usize, String> {
+        Ok(100)
+    }
+    async fn complete(&mut self, request: engine::Request<'_>) -> Result<engine::Turn, String> {
+        Ok(engine::Turn {
+            items: vec![
+                engine::Item::Message {
+                    role: "assistant".into(),
+                    text: format!("Still reading {}. ", request.ordinal),
+                },
+                read(
+                    &format!("read-{}", request.ordinal),
+                    "skill_view",
+                    r#"{"name":"pre-visit-preparation","file_path":null,"max_result_bytes":65536}"#,
+                ),
+            ],
+            receipt: json!({}),
+        })
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
+    let s = store().await;
+    let scope = scope();
+    s.accept(&scope, &input()).await.unwrap();
+    let claim = s.claim(&scope, 60).await.unwrap().unwrap();
+    let skills = skills();
+    let mut host = PhysicianHost {
+        store: s.clone(),
+        claim,
+        authority: Allowed,
+        instructions: skills.instructions(local_product::physician_chat::INSTRUCTIONS),
+        skills: Some(skills),
+    };
+    let error = host
+        .run(
+            &mut Endless,
+            &engine::Limits {
+                model_calls: 3,
+                ..skill_limits()
+            },
+            &engine::Cancellation::default(),
+        )
+        .await
+        .unwrap_err();
+    assert!(error.contains("model calls"), "{error}");
+    let state = s.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "failed");
+    assert_eq!(state.messages.len(), 1, "narration must not be published");
+    let executed = state.attempts[0]
+        .events
+        .iter()
+        .filter(|e| {
+            matches!(
+                e.kind,
+                engine::EventKind::ToolReturned { executed: true, .. }
+            )
+        })
+        .count();
+    assert_eq!(executed, 3);
 }
