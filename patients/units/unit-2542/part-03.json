@@ -1,0 +1,289 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002542",
+      "events": [
+        {
+          "id": "2025-02-24a",
+          "kind": "office_visit",
+          "start": "2025-02-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-02-24T16:40", "resulted": "2025-02-27T10:15", "results": [
+              {"test": "Hepatitis B Surface Antibody", "text": "Reactive (immune)"},
+              {"test": "Hepatitis A virus total antibody", "loinc": "109972-0", "text": "Non-reactive"},
+              {"test": "Varicella zoster virus IgG", "loinc": "111373-7", "text": "Positive"}
+            ]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-02-24T16:30"},
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-02-24T16:32"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-24T16:00"},
+            {"procedure": "Immunization administration", "performed": "2025-02-24T16:30"},
+            {"procedure": "Venipuncture", "performed": "2025-02-24T16:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-02-24T16:00", "body": "34M, routine check-in. HIV from birth, followed by ID; genital HSV-2. Had the bruising/low platelet episode in 2023, none since.\nSays he takes Biktarvy and valacyclovir every day. No complaints at all today.\n\nVaccines: last flu was here about a year ago, skipped this fall. Doesn't remember ever having chickenpox or shingles. No idea whether he's immune to hep A or hep B. Last tetanus shot - can't recall, nothing in his records here.\nSexual hx: several partners, condoms some of the time but not always.\nNKDA.\n\nExam: well. Skin clear, no petechiae. No adenopathy. Heart and lungs normal. Abdomen benign.\n\nPlan:\n- Tdap today, plus flu (still in season).\n- Hep B surface Ab, hep A total Ab, varicella IgG - will vaccinate based on results.\n- Condoms every time; encouraged him to keep up STI screens at ID.\n- Continue current meds.\nPhysical due early next year."}
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Immunity Results", "author": "PCP", "date": "2025-02-27T12:10", "body": "Hi Malik - you're immune to hepatitis B (probably vaccinated as a kid) and to chickenpox, so nothing needed for those. You are not immune to hepatitis A. That's a two-shot vaccine, 6 months apart. The front desk will reach out to book the first one with our nurse."},
+            {"type": "Patient Message", "title": "RE: Immunity Results", "author": "patient", "date": "2025-02-27T18:33", "body": "sounds good. late afternoon works best for me"}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "nurse_visit",
+          "start": "2025-03-25T16:15",
+          "reason": "hepatitis A vaccine dose 1",
+          "immunizations": [{"vaccine": "Hepatitis A, adult", "date": "2025-03-25T16:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-03-25T16:20"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Hep A #1", "author": "RN", "date": "2025-03-25T16:15", "body": "Hep A vaccine 1 mL IM R deltoid. VIS given. Fine afterward. Dose 2 due late Sept or later - reminder set."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "specialist_visit",
+          "start": "2025-06-10T09:30",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2025-06-10T10:05", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"},
+              {"test": "Rapid Plasma Reagin", "text": "Non-reactive"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2025-06-16T14:45", "body": "Outside Infectious Disease - 06/10/2025\n\nSuppressed on BIC/FTC/TAF. He reports multiple partners with inconsistent condom use; counseled. STI panel sent.\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF daily, valacyclovir 500 mg daily. Received Tdap and first hep A dose at his PCP.\nExam: normal, no genital lesions reported.\nResults: VL not detected, CD4 stable, RPR non-reactive, GC/CT negative.\nPlan: continue; return in 6 months."}
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "specialist_visit",
+          "start": "2025-09-03T10:45",
+          "service": "Infectious Disease",
+          "reason": "painless penile ulcer",
+          "conditions": [
+            {"label": "Primary genital syphilis", "icd10": "A51.0", "action": "diagnosed", "onset": "2025-08-13"}
+          ],
+          "medications": [
+            {"drug_text": "4 ML penicillin G benzathine 600000 UNT/ML Prefilled Syringe", "action": "start", "sig": "2.4 million units IM once, given in clinic", "dose": {"value": 2400000, "unit": "U"}, "frequency": "ONCE", "route": "Intramuscular", "course": "short", "reason": "primary syphilis"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-09-03T11:10", "results": [
+              {"test": "Rapid Plasma Reagin", "text": "Non-reactive"},
+              {"test": "Treponema pallidum particle agglutination (TP-PA)", "loinc": "71793-4", "text": "Reactive"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Visit - Genital Ulcer", "author": "infectious disease", "date": "2025-09-08T16:00", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nDate of visit: 9/3/2025\n\nCC: sore on the penis x3 weeks.\n\nHe noticed a sore on the shaft about three weeks ago. It doesn't hurt, hasn't grown or shrunk, and nothing drains from it. He has felt some swelling in both groins. Different from his usual herpes - no tingling, no blisters. Multiple partners, condoms not every time.\n\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF daily; valacyclovir 500 mg daily.\n\nExam: single firm, indurated ulcer on the penile shaft, clean base, not tender. Both inguinal regions with enlarged, non-tender nodes.\n\nLabs: RPR non-reactive. TP-PA reactive. HIV RNA not detected on today's draw.\n\nAssessment: primary syphilis. A non-reactive RPR this early is not unusual; the treponemal test and the classic painless indurated chancre make the diagnosis.\n\nPlan:\n- Benzathine penicillin G 2.4 million units IM, one dose, given today. Observed 30 min, no reaction.\n- Partner notification through the state health department; he was given the DIS contact.\n- Abstain until the ulcer heals and partners are treated.\n- Return in about 3 months with repeat RPR.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T13:05",
+          "documents": [
+            {"type": "Patient Message", "title": "ID Visit Follow-up", "author": "PCP", "date": "2025-09-09T13:05", "body": "Hi Malik, I saw the note from your ID visit last week - glad they got you treated the same day. Let me know if the sore isn't clearly healing in the next couple of weeks. Your second hep A shot is due now too; we can do it with your flu shot in October."},
+            {"type": "Patient Message", "title": "RE: ID Visit Follow-up", "author": "patient", "date": "2025-09-09T20:17", "body": "Its already looking better. October is fine"}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T16:40",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Hepatitis A, adult", "date": "2025-10-21T16:45"},
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-21T16:46"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-21T16:48"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-21T16:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "RN", "date": "2025-10-21T16:40", "body": "Three vaccines today: hep A #2 (R deltoid, series now complete), flu (L deltoid), 2025-26 Pfizer COVID (L deltoid, 1 inch below). No fever, no complaints. Waited 15 min, no issues."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "specialist_visit",
+          "start": "2025-12-09T09:00",
+          "service": "Infectious Disease",
+          "reason": "HIV and syphilis follow-up",
+          "conditions": [
+            {"label": "Primary genital syphilis", "icd10": "A51.0", "action": "resolved", "note": "Treated 9/2025; ulcer healed"}
+          ],
+          "state": {"labs": {"CD4 Count": 720}},
+          "labs": [
+            {"panel": null, "collected": "2025-12-09T09:35", "results": [
+              {"test": "Rapid Plasma Reagin", "text": "Non-reactive"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2025-12-15T11:20", "body": "Outside ID clinic, visit 12/09/2025.\n\nThree months after penicillin for primary syphilis. The ulcer closed within a few weeks and has not come back. No rash, no new lesions. Partners were notified.\nNKDA.\nMeds: BIC/FTC/TAF daily, valacyclovir 500 mg daily.\nExam: penile shaft healed, no residual induration. No rash on palms or soles. Inguinal nodes no longer prominent.\nLabs: RPR non-reactive. HIV RNA not detected. CD4 in a good range.\nAssessment: primary syphilis, treated. HIV suppressed.\nPlan: RPR again with next routine labs. Reinforced condoms. Return 6 months."}
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "telephone",
+          "start": "2026-01-13T09:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request", "author": "MA", "date": "2026-01-13T09:25", "body": "Pharmacy requesting renewal of valacyclovir 500 mg, no refills left. Last seen 2/2025, physical due - pended to PCP; scheduler to call pt about a physical."},
+            {"type": "Telephone Encounter", "title": "Refill Approved", "author": "PCP", "date": "2026-01-13T14:02", "body": "Approved 90-day supply x1. Needs physical this spring."}
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "ed_visit",
+          "start": "2026-02-23T19:40",
+          "end": "2026-02-24T00:15",
+          "service": "Emergency Medicine",
+          "reason": "left testicular pain and swelling",
+          "conditions": [
+            {"label": "Chlamydial epididymitis", "icd10": "A56.19", "action": "diagnosed", "onset": "2026-02-21"}
+          ],
+          "medications": [
+            {"drug_text": "ceftriaxone 500 MG Injection", "action": "start", "sig": "500 mg IM once in the ED", "dose": {"value": 500, "unit": "mg"}, "frequency": "ONCE", "route": "Intramuscular", "course": "short", "reason": "epididymitis"},
+            {"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 10 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "chlamydial epididymitis"}
+          ],
+          "vitals": {"temp_c": 38.3, "bp": [130, 80], "hr": 88},
+          "measure": ["rr", "spo2"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2026-02-23T20:05", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "Positive"},
+              {"test": "Urine White Blood Cells", "value": 30},
+              {"test": "Urine Nitrite", "text": "Negative"},
+              {"test": "Urine Blood"}
+            ]},
+            {"panel": null, "collected": "2026-02-23T20:05", "resulted": "2026-02-23T23:20", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-02-23T19:40"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-02-25T08:30", "body": "EMERGENCY DEPARTMENT - outside hospital\nArrival 02/23/2026 19:40\n\nChief complaint: L testicle pain and swelling x 2 days, burning with urination, penile discharge.\n\nHPI: 35M with perinatally acquired HIV (on ART), HSV-2, and syphilis treated last fall. Two days of worsening left testicular pain and swelling. Lying down with the scrotum propped up helps some. Over the same stretch, burning when he urinates and a whitish, milky drip from the penis. Several partners, condoms not consistently.\n\nAllergies: NKDA\nHome meds: bictegravir/emtricitabine/TAF, valacyclovir 500 mg daily\n\nVitals: T 38.3 C (100.9 F), BP 130/80, HR 88.\n\nExam: uncomfortable but nontoxic. Left testis swollen and tender, sitting higher than the right. Lifting the scrotum eases the pain (Prehn sign positive). Cremasteric reflex present. Right side normal.\n\nResults: UA with pyuria and positive leukocyte esterase. Urine NAAT: Chlamydia trachomatis positive, N. gonorrhoeae negative.\n\nED course / MDM: presentation fits epididymitis, most likely sexually transmitted given urethritis symptoms; preserved cremasteric reflex and relief with elevation favor this over torsion. Ceftriaxone 500 mg IM given in the ED; tolerated. Doxycycline 100 mg twice daily for 10 days prescribed.\n\nDisposition: discharged home 00:15. Scrotal support, ice, rest. Abstain from sex until treatment finished and partners treated. Follow up with PCP within a week. Return for worsening pain, high fever or vomiting.\n\nDiagnosis: acute left epididymitis, chlamydial."}
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "telephone",
+          "start": "2026-02-25T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-ED Call", "author": "RN", "date": "2026-02-25T10:15", "body": "ED record received. Called pt: on day 2 of doxycycline, taking it with food, fever gone, pain a little better. Booked PCP f/u 3/3."}
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "office_visit",
+          "start": "2026-03-03T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, epididymitis",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "ct-retest-2026", "action": "placed", "order": "Chlamydia trachomatis NAAT, urine (test of reinfection)", "category": "lab", "reason": "retest 3 months after treatment"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-03-03T16:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2026-03-03T16:20", "body": "Here after the ED visit 2/23 for left epididymitis, urine positive for chlamydia (GC neg). Got ceftriaxone there, now day 8 of 10 of doxycycline. Pain and swelling way down, burning with urination gone, no more discharge. No fever since the first day. Some stomach upset with the doxy, manageable with meals.\nHasn't had sex since; he notified his partners and says they're getting treated.\n\nExam: afebrile. Testes symmetric, no swelling, non-tender, no masses. No urethral discharge. No inguinal nodes.\n\nA/P: chlamydial epididymitis, responding.\n- Finish doxycycline.\n- Retest chlamydia ~3 months out - will do at his physical, booked 5/1.\n- Condoms; discussed that he's had two bacterial STIs in 6 months.\nRTC 5/1."}
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "annual_physical",
+          "start": "2026-05-01T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, chlamydia retest",
+          "conditions": [
+            {"label": "Chlamydial epididymitis", "icd10": "A56.19", "action": "resolved", "note": "Treated; retest pending at visit"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-01T09:05", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-01T09:05", "results": [{"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2026-05-01T09:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2026-05-01T09:05", "resulted": "2026-05-04T13:40", "results": [
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "orders": [
+            {"id": "ct-retest-2026", "action": "done", "date": "2026-05-01T09:05"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-05-01T08:30"},
+            {"procedure": "Venipuncture", "performed": "2026-05-01T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-05-01T08:30", "body": "Physical; also due for the chlamydia recheck after the February epididymitis.\n\nInterval: finished the doxycycline, everything settled within about two weeks. No testicular pain, no urinary symptoms, no discharge since. Saw ID in December: syphilis treated, RPR negative, viral load undetectable. Taking Biktarvy and valacyclovir daily.\nNKDA. Never smoker. 1-2 drinks most weeks. Still at the logistics job.\nSexual hx: multiple partners; says he's been using condoms consistently since February.\nPHQ-2 0.\n\nExam: well-appearing. HEENT normal. No adenopathy. Heart regular, no murmurs. Lungs clear. Abdomen soft. GU: testes normal size, non-tender, no masses. Skin without lesions.\n\nA/P\n1. HIV, perinatal - suppressed, ID following q6 months.\n2. Genital HSV-2 - quiet on valacyclovir; refilled.\n3. Chlamydial epididymitis - clinically resolved; urine GC/CT retest sent today.\n4. Primary syphilis 2025 - treated per ID.\n5. HM - Tdap 2025, hep A series done, PCV20 2021;  Flu/COVID in the fall. CMP, CBC, lipids.\nFollow-up in September."}
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "portal_message",
+          "start": "2026-05-05T11:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2026-05-05T11:50", "body": "Malik - your chlamydia and gonorrhea recheck is negative, so the infection is cleared. Blood counts, kidney and liver tests and cholesterol are all normal. See you in September."},
+            {"type": "Patient Message", "title": "RE: Lab Results", "author": "patient", "date": "2026-05-05T12:14", "body": "Great, thank you!"}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T10:10",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2026-06-09T10:45", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"},
+              {"test": "Rapid Plasma Reagin", "text": "Non-reactive"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2026-06-15T09:40", "body": "Outside infectious disease clinic - seen 6/9/2026\n\nDoing well. Epididymitis in February treated in the ED, retest negative at his PCP in May. Daily ART, no missed doses reported.\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF daily; valacyclovir 500 mg daily.\nExam: normal; no genital lesions.\nLabs: VL not detected. CD4 stable. RPR non-reactive.\nPlan: continue, 6 months.\n\n[Filed to chart as received.]"}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy Refill", "author": "MA", "date": "2026-07-14T10:05", "body": "Pharmacy fax: valacyclovir 500 mg refill request. Rx from 5/1 still has refills on file - pharmacy notified, filled."}
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:22",
+          "documents": [
+            {"type": "Patient Message", "title": "September Appointment", "author": "patient", "date": "2026-08-18T19:22", "body": "Just checking I'm still on for Sept 15. Can I get my flu shot at that visit?"},
+            {"type": "Patient Message", "title": "RE: September Appointment", "author": "front desk", "date": "2026-08-19T08:55", "body": "Yes, you're set for Tuesday 9/15 at 4:00. Flu vaccine should be in by then and we'll plan on it."}
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "office_visit",
+          "start": "2026-09-15T16:00",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

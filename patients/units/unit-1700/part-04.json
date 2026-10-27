@@ -1,0 +1,237 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001700",
+      "events": [
+        {
+          "id": "2026-01-05a",
+          "kind": "specialist_visit",
+          "start": "2026-01-05T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit; right thigh pain",
+          "documents": [{"type": "Consult Note", "title": "Obstetrics Prenatal Visit", "author": "obstetrics", "date": "2026-03-06T10:20",
+            "body": "Obstetrics and Gynecology, prenatal visit\nDate of visit: 01/05/2026\n\n31 y/o G2P1 at 32w3d, rheumatic mitral stenosis, alpha-thalassemia trait, followed since the 28-week visit. New concern: about two months of burning and pins-and-needles along the outer right thigh. Worse when she stands for a long time at work, eases when she lies down. No injury. No back pain, no weakness. Weight up 25 lb this pregnancy.\n\nExam: right thigh skin normal, no redness or swelling. Patch of reduced light-touch sensation over the anterolateral thigh. Hip exam normal, full painless range. Lumbar spine nontender, normal motion. Patellar and ankle reflexes intact and symmetric. Straight leg raise negative right and left. Strength normal.\n\nAssessment: meralgia paresthetica, right, lateral femoral cutaneous nerve compression, typical in late pregnancy.\nPlan: reassurance, avoid tight waistbands and belts, change position and sit when possible during the school day. Expect improvement after delivery. Return if weakness or bladder or bowel changes.\nMeds: prenatal vitamin, folic acid 1 mg. NKDA.\n\n[Received with delivery records 3/6/2026.]"}]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "ed_visit",
+          "start": "2026-01-16T17:20",
+          "end": "2026-01-16T22:10",
+          "service": "Emergency Medicine",
+          "reason": "left leg swelling in pregnancy",
+          "conditions": [{"label": "Deep vein thrombosis of left lower extremity in pregnancy", "icd10": "O22.33", "action": "diagnosed", "onset": "2026-01-13"}],
+          "medications": [{"drug_text": "enoxaparin sodium 80 MG in 0.8 ML Prefilled Syringe", "action": "start", "sig": "Inject 70 mg (0.7 mL) under the skin every 12 hours", "dose": {"value": 70, "unit": "mg"}, "frequency": "Q12H", "route": "Subcutaneous", "course": "chronic", "reason": "DVT in pregnancy"}],
+          "state": {"weight_kg": 69.0, "labs": {"Hemoglobin": 10.8, "Hematocrit": 33.6, "Mean Corpuscular Volume": 66}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-16T17:50", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Red Blood Cells"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-16T17:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-01-16T17:50", "results": [{"test": "Prothrombin Time"}, {"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "reports": [{"study": "Lower extremity venous duplex", "performed": "2026-01-16T19:05", "text": "Left lower extremity venous compression ultrasound with color and spectral flow assessment. Common femoral and femoral veins compressible with normal phasic flow. Popliteal vein noncompressible and distended with intraluminal echogenic material and absent flow. Calf veins incompletely seen due to swelling.", "conclusion": "Acute deep vein thrombosis of the left popliteal vein."}],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-01-16T17:20"}],
+          "documents": [{"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-01-23T09:30",
+            "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate of service: 01/16/2026\nPatient: Maricel Srisai, 31 F, G2P1 at 34w0d\nAllergies: NKDA\n\nCC: left leg swelling\n\nHPI: 31 year old pregnant woman with rheumatic mitral stenosis and alpha-thal trait. Three days of left leg swelling with a tight, aching feeling, worse the longer she stands, now hard to walk on. No injury, no long trips. No chest pain, no shortness of breath. Fetal movement normal.\n\nMeds: prenatal vitamin, folic acid. SH: no tobacco, alcohol or drugs.\n\nExam: afebrile, vitals stable and within normal limits. Left calf visibly larger than right and tender, faint redness, skin intact without breakdown or ulcers. Dorsalis pedis and posterior tibial pulses intact both feet. Lungs clear. Gravid abdomen, nontender.\n\nUltrasound: left popliteal vein will not compress, consistent with DVT.\nLabs: CBC with platelets normal, Hgb at her usual low level, creatinine normal, PT/INR normal.\n\nImpression: acute left lower extremity DVT (popliteal) in the third trimester.\n\nPlan: discussed with on-call OB. Enoxaparin 70 mg subcutaneous every 12 hours (1 mg/kg, weight 69 kg), first dose given here at 21:00, teaching done. Prescription sent. OB follow-up early next week; PCP follow-up. Leg elevation, walking as tolerated. Return for chest pain, breathlessness, bleeding, or decreased fetal movement.\n\n[Received 1/23/2026.]"}]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "pharmacy",
+          "start": "2026-01-19T09:20",
+          "documents": [{"type": "Prior Authorization", "title": "Enoxaparin prior authorization", "author": "RN", "date": "2026-01-19T09:20",
+            "body": "Pharmacy faxed a PA request for enoxaparin 80 mg/0.8 mL syringes, 70 mg q12h, prescribed by the ED on 1/16. We had no record of this visit. Called pt: seen in the ED Friday for a left leg clot, ultrasound positive, started on shots. Has been using the ED's starter syringes, has enough through tonight. PA submitted to insurer with diagnosis DVT in pregnancy. Telehealth booked with PCP Wednesday. ED record requested."},
+            {"type": "Prior Authorization", "title": "Enoxaparin PA approved", "author": "RN", "date": "2026-01-19T15:45",
+            "body": "Insurer approved enoxaparin through 7/2026. Pharmacy notified, filling today. Pt aware."}]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-01-21T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "DVT follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2026-01-21T12:10"}],
+          "orders": [{"id": "cbc-2026-01", "action": "placed", "order": "CBC", "category": "lab", "reason": "platelet check on enoxaparin"}],
+          "documents": [{"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2026-01-21T12:40",
+            "body": "Video visit, pt at home on her lunch break, identity verified.\n\nS: 34 weeks. ED 1/16 for 3 days of left leg swelling and aching, ultrasound showed left popliteal DVT. On enoxaparin 70 mg every 12 hours since that night, giving it herself in the belly, some bruising, no other bleeding. Swelling already a bit down, walking easier. No chest pain, no dyspnea, no palpitations. Baby moving well. Saw OB yesterday, they will manage the anticoagulation around delivery. Thigh tingling on the right still bothers her when she stands, OB told her it is a pregnancy nerve thing.\n\nO: appears comfortable on video, speaking full sentences, left calf still fuller than right on camera.\n\nA/P\n1. Left popliteal DVT in pregnancy on therapeutic enoxaparin, improving. Platelet check this week, standing order at the lab. Continue enoxaparin; OB to plan peripartum dosing. Signs of PE reviewed.\n2. Rheumatic MS: no symptoms. She has still not seen cardiology this pregnancy; gave her the scheduling number again.\nFollow up after delivery."}]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "lab_only",
+          "start": "2026-01-22T07:30",
+          "labs": [{"panel": "Complete Blood Count (CBC)", "collected": "2026-01-22T07:30", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}],
+          "orders": [{"id": "cbc-2026-01", "action": "done", "date": "2026-01-22T07:30"}],
+          "documents": [{"type": "Result Note", "title": "CBC on enoxaparin", "author": "PCP", "date": "2026-01-22T13:00",
+            "body": "Platelets normal, no drop on enoxaparin. Hgb stable at her pregnancy baseline. Released to pt."}]
+        },
+        {
+          "id": "2026-02-13a",
+          "kind": "ed_visit",
+          "start": "2026-02-13T08:40",
+          "end": "2026-02-13T12:30",
+          "service": "Emergency Medicine",
+          "reason": "decreased fetal movement",
+          "conditions": [{"label": "Decreased fetal movements in third trimester", "icd10": "O36.8130", "action": "diagnosed", "onset": "2026-02-12"}],
+          "vitals": [{"time": "2026-02-13T08:45", "bp": [120, 78], "hr": 88, "rr": 16, "spo2": 99, "temp_c": 36.7}],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-02-13T08:40"}],
+          "documents": [{"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-03-06T10:25",
+            "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 02/13/2026\nPatient: Maricel Srisai, 31 F, G2P1 at 38w0d\nAllergies: NKDA\n\nCC: baby not moving much\n\nHPI: 38 weeks, about four weeks out from a left leg DVT, on enoxaparin twice daily. Normally a very active baby, especially after she eats, but since yesterday morning she has felt only a handful of movements. No bleeding, no fluid leaking, no contractions. Very anxious and asking whether the baby is all right.\n\nMeds (home list): prenatal vitamin, folic acid. Also on enoxaparin as above.\n\nExam: BP 120/78, HR 88. Fetal heart rate 140 by handheld fetal monitor. Abdomen soft, nontender. Fundus appropriate for dates.\nPrenatal labs reviewed, unremarkable; glucose challenge normal.\n\nCourse: placed on continuous fetal monitoring with OB at bedside, reactive tracing, she felt multiple movements during monitoring.\n\nImpression: decreased fetal movement, third trimester, reassuring evaluation.\nDisposition: home with kick-count instructions, keep scheduled OB visit next week, return immediately for fewer than 10 movements in 2 hours.\n\n[Received with delivery records 3/6/2026.]"}]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "hospital_admission",
+          "start": "2026-02-20T10:15",
+          "end": "2026-02-24T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "decreased fetal movement, nonreassuring fetal testing; labor",
+          "conditions": [
+            {"label": "Fetal distress (Category III fetal heart rate tracing)", "icd10": "O36.8330", "action": "diagnosed", "onset": "2026-02-20"},
+            {"label": "Labor arrest disorder", "icd10": "O62.1", "action": "diagnosed", "note": "arrest of active phase 2/21/2026"}
+          ],
+          "medications": [
+            {"drug_text": "enoxaparin sodium 80 MG in 0.8 ML Prefilled Syringe", "action": "stop", "reason": "held for delivery; dose changed after delivery"},
+            {"drug_text": "enoxaparin sodium 60 MG in 0.6 ML Prefilled Syringe", "action": "start", "sig": "Inject 60 mg under the skin every 12 hours until 4/17/2026", "dose": {"value": 60, "unit": "mg"}, "frequency": "Q12H", "route": "Subcutaneous", "course": "chronic", "reason": "DVT in pregnancy, postpartum"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth every 6 hours as needed for pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "post-cesarean pain"}
+          ],
+          "state": {"weight_kg": 63.0},
+          "vitals": [
+            {"time": "2026-02-20T10:20", "bp": [120, 75], "hr": 80, "rr": 16, "spo2": 99, "temp_c": 36.8},
+            {"time": "2026-02-21T09:00", "bp": [118, 72], "hr": 84, "rr": 18, "spo2": 99, "temp_c": 36.9},
+            {"time": "2026-02-24T08:00", "bp": [114, 70], "hr": 76, "rr": 16, "spo2": 99, "temp_c": 36.6}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-20T11:00", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-22T06:00", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Hematocrit", "value": 31.6}, {"test": "Platelets"}]}
+          ],
+          "reports": [{"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2026-02-20T11:20", "text": "Single live intrauterine pregnancy, cephalic presentation, 39 weeks 0 days. Biophysical profile: nonstress test 0/2, fetal breathing movements 0/2, fetal movements 2/2, fetal tone 2/2, amniotic fluid volume 0/2. Oligohydramnios. Placenta posterior.", "conclusion": "Oligohydramnios. Biophysical profile 4/10."}],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-02-20T12:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-02-24T11:00"}
+          ],
+          "documents": [{"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2026-03-06T10:30",
+            "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 02/20/2026   Discharged: 02/24/2026\nPatient: Maricel Srisai, 31 y/o, G2P1 -> P2\nAllergies: NKDA\n\nAdmission diagnosis: decreased fetal movement at 39w0d with nonreassuring fetal testing.\nDischarge diagnoses: Category III fetal heart rate tracing, resolved with resuscitation; arrest of active phase of labor; low transverse cesarean delivery; left popliteal DVT in pregnancy on enoxaparin; rheumatic mitral stenosis; alpha-thalassemia trait.\n\nPrenatal course: rheumatic mitral stenosis and alpha-thalassemia trait. Fetal ascites, pleural and pericardial effusions on the 28-week ultrasound, followed by maternal-fetal medicine and neonatology; maternal smear from that visit showed microcytic, hypochromic red cells with target cells, consistent with alpha-thalassemia trait. Right meralgia paresthetica. Left popliteal DVT 1/16/2026 on therapeutic enoxaparin. ED visit 2/13 for decreased fetal movement, reassuring.\n\nHospital course: presented to triage 2/20 with six hours of decreased movement. BP 120/75, P 80, T 36.8 C. Fetal tracing with minimal variability, no accelerations and recurrent late decelerations, Category III. Ultrasound with oligohydramnios, BPP 4/10. Admitted to labor and delivery. Last enoxaparin dose 2/20 at 07:00 at home, held from admission. Intrauterine resuscitation with left lateral positioning and IV fluid bolus; tracing returned to Category I within the hour. Induction of labor begun with close monitoring.\nEarly 2/21 membranes ruptured, clear fluid, followed by regular contractions every 3 minutes. Cervix 6 cm, 90% effaced, -2 station. After five hours of adequate contractions she was in severe pain and requested analgesia; epidural placed at 10:15, more than 24 hours after her last therapeutic dose. Repeat exam unchanged in dilation, effacement and station. Intrauterine pressure catheter averaging 220 MVU per 10 minutes. Afebrile, no signs of chorioamnionitis. Fetal tracing reassuring throughout labor.\nDiagnosis of active-phase arrest; low transverse cesarean delivery under epidural anesthesia 2/21 at 15:40, uncomplicated. Liveborn infant handed to the neonatal team.\nPostpartum: recovered well, ambulating, tolerating diet. Enoxaparin restarted 24 hours after surgery at 60 mg every 12 hours (weight 63 kg). Postop day 1 Hgb 10.2. Mitral stenosis: no dyspnea, no arrhythmia on telemetry during labor.\n\nDischarge medications: enoxaparin 60 mg subcut every 12 hours until 4/17/2026 (at least 6 weeks postpartum and 3 months total), acetaminophen 1000 mg every 6 hours as needed, prenatal vitamin daily, folic acid 1 mg daily.\nFollow-up: OB incision check in 1 to 2 weeks; postpartum visit 6 weeks; PCP; cardiology.\n\n[Received by fax 3/6/2026 after request.]"}]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "portal_message",
+          "start": "2026-02-26T21:15",
+          "documents": [{"type": "Patient Message", "title": "Baby is here", "author": "patient", "date": "2026-02-26T21:15",
+            "body": "Hi doctor, I wanted you to know I had the baby last Saturday by C-section. The baby was not moving much so they kept me, then my labor stopped at 6 cm. The baby is with the newborn team. I am home now, still on the blood thinner shots, now 60 twice a day until April 17. I will make an appointment after my OB checkup."},
+            {"type": "Patient Message", "title": "RE: Baby is here", "author": "PCP", "date": "2026-02-27T08:05",
+            "body": "Thank you for telling me, I have been thinking of you. Rest as much as you can. Keep up the shots until April 17. Call right away for chest pain, trouble breathing, heavy bleeding or a hot, red incision. We'll request the hospital records and see you in April."}]
+        },
+        {
+          "id": "2026-02-27a",
+          "kind": "telephone",
+          "start": "2026-02-27T09:30",
+          "documents": [{"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2026-02-27T09:30",
+            "body": "Faxed request to the hospital and the OB office for the delivery admission, the 2/13 ED visit and prenatal notes since December."}]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T11:05",
+          "documents": [{"type": "Refill Encounter", "title": "Enoxaparin refill", "author": "RN", "date": "2026-03-10T11:05",
+            "body": "Pharmacy asking for refill of enoxaparin 60 mg/0.6 mL syringes, hospital Rx was a 2 week supply. Per PCP and discharge summary, sent 60 mg q12h, quantity to finish through 4/17, no refills."}]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "conditions": [
+            {"label": "Meralgia paresthetica, right lower limb", "icd10": "G57.11", "action": "diagnosed", "onset": "2025-11-05"},
+            {"label": "Deep vein thrombosis of left lower extremity in pregnancy", "icd10": "O22.33", "action": "resolved"},
+            {"label": "History of deep vein thrombosis", "action": "history", "onset": "2026-01-13"},
+            {"label": "Uncomplicated pregnancy without urinary tract infection", "icd10": "Z34.81", "action": "resolved"},
+            {"label": "Decreased fetal movements in third trimester", "icd10": "O36.8130", "action": "resolved"},
+            {"label": "Fetal distress (Category III fetal heart rate tracing)", "icd10": "O36.8330", "action": "resolved"},
+            {"label": "Labor arrest disorder", "icd10": "O62.1", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug_text": "enoxaparin sodium 60 MG in 0.6 ML Prefilled Syringe", "action": "stop", "reason": "course completed 4/17/2026"}
+          ],
+          "state": {"weight_kg": 60.5, "labs": {"Hemoglobin": 11.5, "Hematocrit": 35.8, "Mean Corpuscular Volume": 66}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-21T16:10", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Red Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Iron Studies", "collected": "2026-04-21T16:10", "results": [{"test": "Ferritin"}, {"test": "Iron"}, {"test": "Transferrin Saturation"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-21T15:30"}],
+          "documents": [{"type": "Progress Notes", "title": "Postpartum Follow-up", "author": "PCP", "date": "2026-04-21T16:20",
+            "body": "S: 8 weeks after cesarean on 2/21 for arrest of labor. Records from the hospital and OB arrived 3/6 and are reviewed. Did her last enoxaparin injection 4/17 as planned, no bleeding problems. Left leg back to normal size, no pain. OB postpartum check went fine, incision healed. Right outer thigh tingling much better since delivery, only notices it after a long day. Sleeping in pieces with the baby, partner helping. Mood mostly OK, tired. No breathlessness, orthopnea or palpitations. Still has not seen cardiology; appointment now booked for May.\nMeds: prenatal vitamin, folic acid. NKDA.\n\nO: vitals as charted, regular pulse. Well appearing. Heart regular, apical diastolic rumble as before. Lungs clear. Abdomen: low transverse incision well healed. Legs: symmetric, no edema, no calf tenderness. Right thigh: small area of slightly reduced light touch anterolaterally, strength and reflexes normal.\nPHQ-9: 4.\n\nA/P\n1. Left popliteal DVT in pregnancy, provoked, completed 3 months of enoxaparin. Stopped. Moved to history.\n2. Meralgia paresthetica, right, from OB note 1/5, improving postpartum. Added to list. Expect it to settle.\n3. Pregnancy items resolved on the problem list.\n4. Rheumatic MS: cardiology 5/19, glad it is booked.\n5. Alpha-thal trait, post-cesarean: CBC and iron today.\n6. Mood: PHQ-9 4, normal postpartum fatigue, she knows to reach out.\nPhysical in the summer."}]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "portal_message",
+          "start": "2026-04-22T12:30",
+          "documents": [{"type": "Result Note", "title": "Blood count and iron", "author": "PCP", "date": "2026-04-22T12:30",
+            "body": "Your blood count is nearly back to your usual level and iron stores are normal, so no iron pills needed. Keep the prenatal vitamin and folic acid."}]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T09:00",
+          "service": "Cardiology",
+          "reason": "rheumatic mitral stenosis, postpartum",
+          "measure": ["bp", "hr", "weight_kg"],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2026-05-19T08:15", "text": "Technically adequate study. Left ventricle normal in size and wall thickness, LVEF 60%, no regional wall motion abnormality. Right ventricle normal size and function. Mitral valve rheumatic with commissural fusion and anterior leaflet doming. Mitral valve area 1.6 cm2 by planimetry. Mean gradient 6 mmHg at heart rate 70. Mild mitral regurgitation. Left atrium enlarged, volume index 47 mL/m2. Aortic valve normal. Trace tricuspid regurgitation, estimated PASP 34 mmHg. No pericardial effusion.", "conclusion": "Rheumatic mitral stenosis, MVA 1.6 cm2, mean gradient 6 mmHg, unchanged from 2023; mild MR; LVEF 60%."},
+            {"study": "12-lead ECG", "performed": "2026-05-19T08:50", "text": "Sinus rhythm, rate 70. Normal intervals and axis. No ST or T-wave abnormality.", "conclusion": "Sinus rhythm."}
+          ],
+          "orders": [{"id": "cards-ref-preg", "action": "done", "date": "2026-05-19T09:00"}],
+          "documents": [{"type": "Consult Note", "title": "Cardiology Follow-up", "author": "cardiology", "date": "2026-06-02T14:00",
+            "body": "Outpatient Cardiology Follow-up\nDate of visit: 05/19/2026\n\nMs. Srisai returns, last seen by us 6/2024. Since then she stopped metoprolol on her own in late 2024, conceived in May 2025, and delivered by cesarean on 2/21/2026 for arrest of labor after a pregnancy complicated by fetal effusions and a left popliteal DVT treated with enoxaparin through 4/17. She was not seen here during the pregnancy. She reports no palpitations, orthopnea, or exertional dyspnea, including during labor. Meds: prenatal vitamin, folic acid 1 mg. NKDA.\n\nExam: regular rhythm, loud S1, opening snap, apical diastolic rumble. Lungs clear. No edema.\nECG: sinus rhythm 70.\nEcho: MVA 1.6 cm2, mean gradient 6 mmHg at HR 70, LA volume index 47 mL/m2, PASP 34 mmHg, LVEF 60%, mild MR. Unchanged from 2023.\n\nAssessment: stable stage B rheumatic mitral stenosis in sinus rhythm, asymptomatic.\nPlan: echo and visit yearly. Please let us know early in any future pregnancy. Prompt evaluation for palpitations or breathlessness.\n\nOutside cardiology group"}]
+        },
+        {
+          "id": "2026-07-23a",
+          "kind": "annual_physical",
+          "start": "2026-07-23T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [{"label": "Meralgia paresthetica, right lower limb", "icd10": "G57.11", "action": "resolved"}],
+          "state": {"weight_kg": 58.2, "labs": {"Hemoglobin": 11.8, "Hematocrit": 36.9, "Mean Corpuscular Volume": 66}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-23T11:20", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Red Blood Cells"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-23T11:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2026-07-23T11:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2026-07-23T11:20", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-07-23T10:40"}],
+          "documents": [{"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-07-23T11:30",
+            "body": "32 y/o here for annual, five months after her cesarean. Feels like herself again, sleeping better. Thigh tingling gone for about a month. Saw cardiology 5/19, echo unchanged, yearly follow-up; letter received. No palpitations, dyspnea, orthopnea, leg swelling or calf pain. Off enoxaparin since April. Taking prenatal vitamin and folic acid. Back to school in the fall.\n\nExam: vitals as charted. Well. Thyroid normal. Heart regular, apical diastolic rumble, unchanged. Lungs clear. Abdomen soft, incision healed. Legs symmetric, no edema. Right thigh sensation normal today. Mood bright.\nPHQ-2: 0.\n\nA/P\n1. Rheumatic MS stage B, sinus rhythm, cardiology yearly.\n2. Hx paroxysmal AF 2023, no recurrence.\n3. Hx provoked DVT in pregnancy, off anticoagulation.\n4. Meralgia paresthetica resolved.\n5. Alpha-thal trait: CBC; continue folic acid.\n6. Health maintenance: CMP, lipids, TSH. Pap due 2027. Flu and COVID this fall, booked in November.\nRTC November."}]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "portal_message",
+          "start": "2026-07-24T14:10",
+          "documents": [{"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2026-07-24T14:10",
+            "body": "Hi Maricel, everything from Thursday came back fine: blood count back to your usual thalassemia-trait level, kidney and liver normal, thyroid normal, cholesterol good. See you in November."}]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T10:00",
+          "documents": [{"type": "Refill Encounter", "title": "Folic acid refill", "author": "RN", "date": "2026-08-11T10:00",
+            "body": "Refill request folic acid 1 mg daily. Last seen 7/23, on list. Approved #90 with 3 refills."}]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T09:30",
+          "documents": [{"type": "Patient Message", "title": "Appointment reminder", "author": "front desk", "date": "2026-08-18T09:30",
+            "body": "Reminder: you have a follow-up visit with flu vaccine on November 10 at 3:20 pm. Reply here or call if you need to change it."}]
+        },
+        {
+          "id": "2026-11-10a",
+          "kind": "office_visit",
+          "start": "2026-11-10T15:20",
+          "appointment": "booked",
+          "reason": "routine follow-up and flu vaccine"
+        }
+      ]
+    }
+  ]
+}

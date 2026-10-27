@@ -1,0 +1,717 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001994",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "imaging",
+          "start": "2024-01-09T08:00",
+          "reason": "Post-treatment response assessment",
+          "reports": [
+            {
+              "study": "PET-CT skull base to mid-thigh",
+              "loinc": "44139-4",
+              "performed": "2024-01-09T08:00",
+              "issued": "2024-01-10T14:30",
+              "text": "INDICATION: pT1 N1 left oral tongue SCC, status post partial glossectomy, left neck dissection and adjuvant radiation completed 10/17/2023. Response assessment.\nCOMPARISON: PET-CT 07/05/2023.\nFINDINGS: Postsurgical and post-radiation changes of the left oral tongue and left neck without focal FDG avidity. No FDG-avid cervical lymph nodes. No FDG-avid pulmonary nodules or thoracic adenopathy. No suspicious abdominal, pelvic or osseous uptake.",
+              "conclusion": "Expected post-treatment changes. No evidence of residual or recurrent disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Outside PET-CT received",
+              "author": "PCP",
+              "date": "2024-01-12T08:40",
+              "body": "Post-treatment PET from the oncology group: no evidence of disease. Good news; he already heard it from them. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-19a",
+          "kind": "lab_only",
+          "start": "2024-01-19T08:15",
+          "reason": "Repeat kidney function",
+          "state": {
+            "labs": {
+              "Creatinine": 1.8
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-19T08:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-19T08:15",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-01-19T08:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Creatinine trend",
+              "author": "PCP",
+              "date": "2024-01-20T10:15",
+              "body": "Creatinine now 1.8, after 1.5 in November and about 1.0 for years before that. Urine without protein or blood. Lithium level in range. Not explained by radiation-era dehydration anymore. Asked front desk to bring him in this week to talk about nephrology."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-26a",
+          "kind": "office_visit",
+          "start": "2024-01-26T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Rising creatinine",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-26T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "creatinine 1.0 to 1.8 over 10 months on long-term lithium"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-01-26T13:55",
+              "body": "Here to go over the kidney labs.\n\nCreatinine 1.0 (Mar 2023), 1.5 (Nov), 1.8 (last week). UA bland. Lithium levels have stayed in range. Takes no NSAIDs, he says, only Tylenol for the occasional ache. Drinks plenty of coffee, \"some water.\" Feels fine apart from his breathing.\n\nOn lisinopril and HCTZ along with lithium, both of which can push lithium levels and kidney numbers.\n\nExam: BP and HR as charted. No edema. Lungs at baseline.\n\nA/P: Progressive decline in kidney function on a decade of lithium. Needs nephrology input, and any change to lithium goes through his psychiatrist. Referral placed. Kept everything else the same for now pending their advice. Encouraged water through the day."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "specialist_visit",
+          "start": "2024-03-18T10:30",
+          "service": "Nephrology",
+          "reason": "Decreased kidney function on lithium",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ]
+          },
+          "conditions": [
+            {
+              "label": "Lithium nephrotoxicity",
+              "icd10": "N14.19",
+              "action": "diagnosed",
+              "onset": "2023-11-08"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-18T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 35
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-18T11:10",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-03-18T11:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral",
+              "action": "done",
+              "date": "2024-03-18T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "author": "nephrology",
+              "date": "2024-04-10T15:20",
+              "body": "OUTSIDE NEPHROLOGY GROUP — NEW CONSULTATION\nDate of service: 03/18/2024\n\nReason: declining renal function in a patient on long-term lithium.\n\nHPI: 57-year-old man treated with lithium for bipolar I disorder for roughly ten years, with no mood episodes in recent memory. He describes more tiredness lately and getting up to urinate more often, including at night. COPD, hypertension, CAD; treated this past year for a left oral tongue squamous cell carcinoma with surgery and radiation.\n\nMedications: lithium carbonate 300 mg TID, lisinopril 20 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, metoprolol tartrate 50 mg BID, aspirin 81 mg, atorvastatin 40 mg, tiotropium, albuterol as needed.\nAllergies: none known.\nSocial: smokes about a pack a day; light alcohol.\n\nExam: BP 130/85. No peripheral edema.\n\nLabs today: creatinine 2.1, BUN 35, serum lithium 1.2 (within the therapeutic range). Urinalysis negative for protein and blood.\nPrimary care trend: creatinine about 1.0 in 2023, 1.5 in 11/2023, 1.8 in 01/2024.\n\nAssessment: chronic kidney injury most consistent with lithium nephrotoxicity.\n\nPlan:\n1. Discussed lithium with his psychiatrist by phone. Given ten years of stability on it, the shared decision is to continue lithium for now.\n2. Serum lithium and BMP every 3 months; primary care to draw.\n3. Avoid NSAIDs. Maintain good fluid intake.\n4. Return to nephrology in 6 to 12 months or sooner if creatinine rises further.\n\nCC: primary care, outpatient psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T20:14",
+          "reason": "Kidney specialist visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "kidney doctor",
+              "author": "patient",
+              "date": "2024-03-26T20:14",
+              "body": "Saw the kidney doctor last week. He says the lithium is what is doing it but we are staying on it and you are supposed to check it every 3 months. Did he send you anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: kidney doctor",
+              "author": "MA",
+              "date": "2024-03-27T09:02",
+              "body": "Nothing yet from nephrology. We requested the note today. Your doctor will set up the 3-month labs at your April visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-05a",
+          "kind": "telephone",
+          "start": "2024-04-05T12:30",
+          "reason": "Coordination with psychiatry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to outpatient psychiatry",
+              "author": "PCP",
+              "date": "2024-04-05T12:30",
+              "body": "Still no nephrology letter. Called his psychiatrist's office and spoke with the psychiatrist. Confirms the conversation with nephrology and the plan to continue lithium 300 TID for now, with levels every 3 months. Agreed we will draw them here and fax results to psychiatry. They do not routinely send notes; asked them to call if they change the dose."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "office_visit",
+          "start": "2024-04-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after nephrology",
+          "conditions": [
+            {
+              "label": "Chronic kidney disease, stage 3b",
+              "action": "diagnosed",
+              "onset": "2024-01-19",
+              "note": "lithium nephrotoxicity"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-11T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "li-standing",
+              "action": "placed",
+              "order": "Standing order: BMP and serum lithium every 3 months",
+              "category": "lab",
+              "reason": "lithium nephrotoxicity"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-04-11T10:15",
+              "body": "Nephrology letter came in yesterday. Creatinine 2.1 there, BUN 35, lithium 1.2, urine bland. Their read is lithium nephrotoxicity, and with psychiatry they are keeping lithium. The lab-calculated eGFR on that creatinine is in the 3b range, so CKD 3b on the list.\n\nHe is still up at night to pee, tired some afternoons. Mood good.\n\nExam: BP fine. No edema.\n\nPlan:\n- Standing BMP + lithium q3 months here, results faxed to psychiatry.\n- No NSAIDs, reinforced. He knows Tylenol is the safe one.\n- Antihypertensives unchanged.\n- Next draw June."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "office_visit",
+          "start": "2024-06-24T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Groin bulge; lithium monitoring",
+          "conditions": [
+            {
+              "label": "Inguinal hernia",
+              "action": "diagnosed",
+              "onset": "2024-06-01",
+              "note": "right, reducible"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.95,
+              "Lithium": 0.85
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-24T15:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-24T15:35",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-24T15:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "surg-referral",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "right inguinal hernia, elective repair"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-06-24T15:40",
+              "body": "Noticed a bulge in the right groin this month, more after coughing fits and at the end of the day, goes away lying down. Aches a little with lifting. No nausea or vomiting, bowels normal.\n\nExam: standing, reducible bulge at the right groin with cough impulse, nontender, easily reduced. Left side unremarkable. Abdomen soft.\n\nA/P:\n1. Right inguinal hernia, reducible. Surgery referral for elective repair. Reviewed signs of incarceration that mean going straight to the ED.\n2. Lithium/CKD: quarterly draw today.\n3. COPD, HTN unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "portal_message",
+          "start": "2024-06-26T12:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June labs",
+              "author": "PCP",
+              "date": "2024-06-26T12:00",
+              "body": "Creatinine a bit lower than at the kidney doctor, potassium fine, lithium in range. Faxed to your psychiatrist. Next check in September."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "specialist_visit",
+          "start": "2024-07-16T11:00",
+          "service": "Hematology & Oncology",
+          "reason": "Head and neck cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Head and Neck Surveillance Visit",
+              "author": "oncology",
+              "date": "2024-07-23T08:50",
+              "body": "HEAD AND NECK CLINIC — SURVEILLANCE\nVisit 07/16/2024\n\nApproximately 9 months after completing adjuvant radiation for pT1 N1 left oral tongue SCC. No new complaints referable to the head and neck.\nExam: tongue resection site healed, no mucosal abnormality. Neck without palpable nodes. Scope: no lesions.\nImpression: no evidence of disease.\nPlan: continue visits every 3 months through year one, then every 4 to 6 months. Smoking cessation advised again.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "annual_physical",
+          "start": "2024-08-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T08:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-13T08:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-13T08:10",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-08-13T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-08-13T08:50",
+              "body": "AWV, subsequent.\n\nYear in review: tongue cancer treated, NED on surveillance. Kidney function down from lithium, nephrology and psychiatry chose to continue it. Hernia waiting on surgery consult in September.\n\nFunctional: independent, drives, does light carpentry. Wife helps with appointments.\nCognition screen normal. PHQ-9 4, mood steady.\n\nExam: vitals charted. Mouth: healed left tongue, no lesion I can see. Neck: no nodes. Heart RRR. Lungs diminished, prolonged expiration. Abdomen soft, right groin bulge reduces. No edema.\n\nPrevention: colonoscopy next 2028. Vaccines: flu and COVID this fall; pneumococcal, Tdap and Shingrix done. LDCT not reordered, the oncology PET and visits cover his chest for now. Advance directive: still undecided, packet re-given.\n\nTobacco: pack a day. Pre-op will be a reason to quit; he agrees to try when the surgeon sets a date.\n\nLabs: CMP, CBC, lipids, TSH, lithium."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-23a",
+          "kind": "specialist_visit",
+          "start": "2024-09-23T14:10",
+          "service": "General Surgery",
+          "reason": "Preoperative evaluation, inguinal hernia",
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 78,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-23T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-23T14:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-23T14:40",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                }
+              ]
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR nicotine 0.875 MG/HR Transdermal System",
+              "action": "start",
+              "sig": "Apply 1 patch daily; remove and replace every 24 hours",
+              "dose": {
+                "value": 21,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Transdermal",
+              "course": "chronic",
+              "reason": "smoking cessation before surgery"
+            }
+          ],
+          "orders": [
+            {
+              "id": "surg-referral",
+              "action": "done",
+              "date": "2024-09-23T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Preoperative Evaluation",
+              "author": "general surgery",
+              "date": "2024-10-01T16:05",
+              "body": "GENERAL SURGERY CLINIC\nDOS 09/23/2024\n\nReferred for a right inguinal hernia. Reducible, mildly symptomatic with lifting.\n\nPMH: COPD, HTN, CAD, bipolar I on lithium, CKD from lithium, oral tongue SCC treated 2023 (NED).\nMeds: lisinopril 20, amlodipine 5, HCTZ 25, metoprolol tartrate 50 BID, lithium 300 TID, aspirin 81, atorvastatin 40, tiotropium, albuterol.\nNKDA.\nSmoking: currently one pack daily.\n\nExam: BP 138/82, HR 78, SpO2 96% RA. Lungs with mild expiratory wheezes on both sides. Abdomen soft, reducible right inguinal hernia, no tenderness.\n\nLabs: Hgb 14.2, WBC 7.2, plt 250, fasting glucose 98, creatinine 1.9 (known CKD).\n\nPlan: open right inguinal hernia repair with mesh as an outpatient. Because he still smokes, strongly advised stopping before surgery to lower wound and pulmonary risk; nicotine patch 21 mg daily prescribed. Aspirin may continue. Anesthesia aware of lithium and COPD. Tentative date 10/30.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T11:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T11:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu and COVID vaccines",
+              "author": "RN",
+              "date": "2024-10-08T11:50",
+              "body": "Flu (L) and 2024-25 COVID (R) given IM. On day 9 of the nicotine patch, down to a few cigarettes a day. Encouraged him to keep going through surgery. Observed, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-30a",
+          "kind": "procedure_visit",
+          "start": "2024-10-30T07:30",
+          "end": "2024-10-30T13:00",
+          "service": "General Surgery",
+          "reason": "Right inguinal hernia repair",
+          "conditions": [
+            {
+              "label": "Inguinal hernia",
+              "action": "resolved"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Inguinal hernia repair",
+              "performed": "2024-10-30T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report, Right Inguinal Hernia Repair",
+              "author": "general surgery",
+              "date": "2024-11-06T09:00",
+              "body": "AMBULATORY SURGERY CENTER — OPERATIVE REPORT\nDate: 10/30/2024\nPreoperative and postoperative diagnosis: right inguinal hernia.\nProcedure: open right inguinal hernia repair with polypropylene mesh (Lichtenstein technique).\nAnesthesia: general with local infiltration.\nFindings: indirect hernia sac, reduced; cord structures preserved; ilioinguinal nerve identified and protected.\nEBL minimal. No complications. Discharged home the same day in good condition.\nFollow-up: surgical clinic in 2 weeks. No lifting over 10 lb for 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "office_visit",
+          "start": "2024-11-21T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-op check; lithium monitoring",
+          "medications": [
+            {
+              "drug": "24 HR nicotine 0.875 MG/HR Transdermal System",
+              "action": "stop",
+              "reason": "patient stopped using; resumed smoking"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-21T10:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-21T10:55",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-11-21T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2024-11-21T10:50",
+              "body": "Hernia repaired 10/30, op note in. Groin healing, saw the surgeon last week, cleared to lift gradually.\n\nSmoking: used the patch about two weeks around the surgery, then stopped it, says he \"just didn't like it,\" and he was back to a pack within days of the operation. Patch off the list. Not interested in varenicline at this point given his mood history, though I told him it can be used with care.\n\nExam: right groin incision clean, no recurrence. Lungs baseline.\n\nPlan: quarterly BMP and lithium today. Next routine visit in winter."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "telephone",
+          "start": "2024-12-17T11:05",
+          "reason": "Psychiatry request for labs",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outpatient psychiatry request",
+              "author": "MA",
+              "date": "2024-12-17T11:05",
+              "body": "His psychiatrist's office called for the latest lithium level and BMP ahead of his visit next week. Faxed the 11/21 results. They confirmed lithium 300 mg TID unchanged."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

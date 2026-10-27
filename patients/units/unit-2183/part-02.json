@@ -1,0 +1,325 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002183",
+      "events": [
+        {
+          "id": "2020-01-22a",
+          "kind": "pharmacy",
+          "start": "2020-01-22T09:30",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Refill: fenofibrate", "author": "RN", "date": "2020-01-22T09:30", "body": "Pharmacy asking to convert fenofibrate 145 to a 90-day supply with refills. OK'd. Pt tolerating it per pharmacist."}
+          ]
+        },
+        {
+          "id": "2020-03-25a",
+          "kind": "office_visit",
+          "start": "2020-03-25T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Visit cancelled", "author": "front desk", "date": "2020-03-23T13:15", "body": "Called pt to cancel 3/25 in-person visit under the new COVID scheduling rules. He would rather wait than do video right now. Will rebook for May with labs first."}
+          ]
+        },
+        {
+          "id": "2020-05-11a",
+          "kind": "lab_only",
+          "start": "2020-05-11T08:00",
+          "reason": "fasting labs",
+          "state": {"labs": {"Triglycerides": 196, "Low Density Lipoprotein": 71, "Hemoglobin A1c": 7.6}},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2020-05-11T08:00", "results": [{"test": "Triglycerides", "value": 196}, {"test": "Low Density Lipoprotein", "value": 71}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-05-11T08:00", "results": [{"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2020-05-11T08:00", "results": [{"test": "Hemoglobin A1c", "value": 7.6}]}
+          ]
+        },
+        {
+          "id": "2020-05-13a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab review",
+          "medications": [
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "stop", "reason": "dose increased"},
+            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary artery disease, LDL above very-high-risk goal"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-05-13T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2020-05-13T13:55", "body": "Video visit, pt in his kitchen, wife helped with the tablet. Identity verified.\nFeels well. Still no alcohol. Taking the fenofibrate without trouble.\nLabs 5/11: triglycerides down to 196 from 318. LDL 71. A1c 7.6, better. Kidney and liver fine.\nWith two MIs behind him I'd like the LDL lower than 70, closer to 55. Discussed going up on atorvastatin to 80 mg. He's fine with it. New Rx sent; told him to stop the 40s and use the 80 once daily.\nCall with muscle pain or weakness. Labs and visit in about 4 months."}
+          ]
+        },
+        {
+          "id": "2020-06-08a",
+          "kind": "office_visit",
+          "start": "2020-06-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "muscle cramps and weakness",
+          "conditions": [{"label": "Statin-associated muscle symptoms", "icd10": "G72.0", "action": "diagnosed", "onset": "2020-05-27"}],
+          "medications": [
+            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "stop", "reason": "muscle symptoms"},
+            {"drug_text": "fenofibrate 145 MG Oral Tablet", "action": "stop", "reason": "muscle symptoms; combination with statin"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2020-06-08T10:00", "results": [{"test": "Creatine Kinase", "value": 412}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2020-06-08T10:00", "results": [{"test": "Alanine Aminotransferase"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-06-08T10:00", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-06-08T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2020-06-08T10:10", "body": "S: Masked visit. Cramping and weak legs, thighs and hips mostly, started roughly two weeks after he went up to atorvastatin 80 (changed 5/13). Hard getting up from a low chair and the cramps cut his walks short. No dark urine, no fever. Still on fenofibrate. He mentions the January cholesterol visit and that he had been feeling fine before the dose change.\nHx: CAD with MI two years ago and in 2014, stent. T2DM, HTN.\nO: Vitals in flowsheet. Tender to palpation over the proximal thigh muscles both sides. Strength full but effortful. Exam otherwise unremarkable.\nA/P: Statin-associated muscle symptoms, likely made worse by fenofibrate on top of the higher dose.\n- Stop atorvastatin 80 and fenofibrate now.\n- CK, liver panel, BMP today.\n- Plan to retry atorvastatin 40, which he took for years without trouble, once he's back to normal.\nWill call with results."},
+            {"type": "Result Note", "title": "CK result", "author": "PCP", "date": "2020-06-09T08:05", "body": "CK 412, mildly up. Liver tests normal. Kidney function stable. Called pt: stay off both. Recheck CK in 3-4 weeks."}
+          ]
+        },
+        {
+          "id": "2020-07-02a",
+          "kind": "lab_only",
+          "start": "2020-07-02T08:30",
+          "reason": "CK recheck",
+          "labs": [{"panel": null, "collected": "2020-07-02T08:30", "results": [{"test": "Creatine Kinase", "value": 118}]}]
+        },
+        {
+          "id": "2020-07-06a",
+          "kind": "telephone",
+          "start": "2020-07-06T11:40",
+          "reason": "follow-up muscle symptoms",
+          "medications": [{"drug": "atorvastatin 40 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "coronary artery disease"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Statin restart", "author": "PCP", "date": "2020-07-06T11:40", "body": "Called him. Legs back to normal for about a week, walking again. CK 118 on 7/2, normal. Restarting atorvastatin 40 daily, the dose he tolerated for years. Not restarting fenofibrate. He knows to stop and call if the aches come back. Lipids at the September visit."}
+          ]
+        },
+        {
+          "id": "2020-08-12a",
+          "kind": "imaging",
+          "start": "2020-08-12T07:50",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2020-08-12T07:50", "text": "Comparison 06/2019. No pulmonary nodules. Upper-lobe centrilobular emphysema, unchanged. Coronary calcification and stent. No effusion or adenopathy.", "conclusion": "Lung-RADS 1. Annual screening."}],
+          "documents": [{"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2020-08-13T09:20", "body": "Lung-RADS 1 again. Letter sent. Next one summer 2021."}]
+        },
+        {
+          "id": "2020-08-26a",
+          "kind": "outside_records",
+          "start": "2020-08-26T14:10",
+          "reason": "diabetic eye exam",
+          "documents": [{"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2020-08-26T14:10", "body": "Optometry. Dilated exam 08/19/2020. No diabetic retinopathy OU. Mild lens changes, stable. Return 12 months."}]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "office_visit",
+          "start": "2020-09-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Triglycerides": 276, "Low Density Lipoprotein": 74, "Hemoglobin A1c": 7.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2020-09-16T11:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-09-16T11:10", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-16T11:10", "results": [{"test": "Platelets"}]},
+            {"panel": null, "collected": "2020-09-16T11:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 70}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-09-16T10:30"}, {"procedure": "Immunization administration", "performed": "2020-09-16T11:05"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-09-16T11:05"}],
+          "orders": [{"id": "aaa-us-2020", "action": "placed", "order": "Abdominal aorta ultrasound, AAA screening", "category": "imaging", "reason": "male 65-75 who has smoked"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2020-09-16T11:20", "body": "Turned 65 next week. Back on atorvastatin 40 since July, no aches at all. Off alcohol 15 months. Walks most evenings. No chest discomfort lately. Breathing at baseline.\nExam: heart regular, lungs a little diminished at the bases with good air movement, abdomen benign, no edema. Feet: decreased monofilament on both soles, skin intact.\nA/P: CAD/HLD on atorvastatin 40, lipids today, triglycerides likely back up off fenofibrate. T2DM A1c today. Seizures: none, VPA level and CBC. AAA screening ultrasound ordered. Flu shot given. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2020-10-21a",
+          "kind": "imaging",
+          "start": "2020-10-21T09:15",
+          "reason": "AAA screening",
+          "reports": [{"study": "Abdominal ultrasound", "performed": "2020-10-21T09:15", "text": "Limited abdominal aorta ultrasound for aneurysm screening. Abdominal aorta visualized from the diaphragm to the bifurcation. Maximal diameter 2.0 cm. No aneurysm. Iliac origins normal caliber.", "conclusion": "No abdominal aortic aneurysm."}],
+          "orders": [{"id": "aaa-us-2020", "action": "done", "date": "2020-10-21T09:15"}],
+          "documents": [{"type": "Result Note", "title": "AAA screen", "author": "PCP", "date": "2020-10-21T16:30", "body": "Aorta 2.0 cm, normal. One-time screen complete. Portal note to pt."}]
+        },
+        {
+          "id": "2020-11-18a",
+          "kind": "office_visit",
+          "start": "2020-11-18T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chest tightness with exertion",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [{"study": "12-lead ECG", "performed": "2020-11-18T15:20", "text": "Sinus rhythm. Normal axis. Normal intervals. No acute ST changes.", "conclusion": "No acute changes."}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-11-18T15:00"}, {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2020-11-18T15:20"}],
+          "orders": [{"id": "cards-2020", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "exertional chest tightness, known CAD"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2020-11-18T15:40", "body": "Several weeks of a squeezing tightness mid-chest when he walks the hill on his road or carries things upstairs. Goes away within a few minutes when he stops. None at rest, none at night. Different from his heart attacks, which were sudden and much worse.\nExam: comfortable. Heart regular, no murmur. Lungs clear. No edema.\nECG in office: sinus, no acute change.\nA/P: Exertional chest tightness in a man with CAD and two prior MIs; sounds like stable angina. Cardiology referral sent urgent. ED for rest pain or anything lasting over 15 minutes, he and his wife both understand. Continue aspirin, metoprolol, atorvastatin."}
+          ]
+        },
+        {
+          "id": "2020-12-14a",
+          "kind": "specialist_visit",
+          "start": "2020-12-14T10:00",
+          "service": "Cardiology",
+          "reason": "exertional chest tightness",
+          "conditions": [{"label": "Angina pectoris", "action": "diagnosed", "onset": "2020-10-15", "note": "stable angina, medical management"}],
+          "medications": [{"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "start", "sig": "Dissolve 1 tablet under the tongue as needed for chest pain; sit down first; may repeat every 5 minutes, up to 3", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "stable angina"}],
+          "reports": [{"study": "Exercise stress test", "performed": "2020-12-14T10:40", "text": "Bruce protocol. Exercise stopped for chest tightness typical of his complaint. Horizontal ST-segment depression with symptoms, resolving in recovery. No arrhythmia. Appropriate blood pressure response.", "conclusion": "Positive for inducible ischemia with reproduction of symptoms."}],
+          "orders": [{"id": "cards-2020", "action": "done", "date": "2020-12-14T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology consultation", "author": "cardiology", "date": "2020-12-18T12:00", "body": "Outside cardiology group\nDate of visit: 12/14/2020\nReason: exertional chest tightness\n\nMr. Conti, 65, known CAD with MIs in 2014 and 2018 and a stent in 2014, and statin intolerance at high dose this summer, now back on atorvastatin 40. He describes a central squeezing tightness going uphill or up stairs that settles with rest.\nMedications: aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, metformin 1000 BID, insulin glargine, valproic acid, albuterol PRN.\nAllergies: no known drug allergies.\nSocial: former smoker. No alcohol.\nVitals stable. Exam: regular rhythm, no murmur, lungs clear, no edema.\nStress test today reproduced his usual tightness with ischemic ST changes, recovering promptly.\n\nImpression: stable angina pectoris, chronic CAD. Medical management.\nPlan:\n1. Nitroglycerin 0.4 mg SL as needed. Sit down before using it, as it can make him lightheaded. Must never be combined with erectile dysfunction pills of the PDE-5 type. He tried a tablet in clinic after the test, with relief within a few minutes.\n2. Continue aspirin, metoprolol, atorvastatin, lisinopril.\n3. Follow-up in 3 months.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2021-01-06a",
+          "kind": "portal_message",
+          "start": "2021-01-06T19:20",
+          "reason": "question about nitroglycerin",
+          "documents": [
+            {"type": "Patient Message", "title": "nitro question", "author": "patient", "date": "2021-01-06T19:20", "body": "Had to use one of the little nitro pills shoveling the end of the driveway. Sat down like they said and it went away in a couple minutes. Is it ok to keep them in the truck in the cold?"},
+            {"type": "Patient Message", "title": "RE: nitro question", "author": "RN", "date": "2021-01-07T08:40", "body": "Glad it worked. Keep them in the original glass bottle and on you, in a coat pocket, rather than in the truck; heat, cold and light weaken them. Replace the bottle once opened per the pharmacy label. Let us or cardiology know if you're needing them more often."}
+          ]
+        },
+        {
+          "id": "2021-01-27a",
+          "kind": "outside_records",
+          "start": "2021-01-27T15:00",
+          "reason": "COVID vaccine dose 1",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-01-27T15:00"}],
+          "documents": [{"type": "Immunization Record", "title": "COVID-19 vaccine dose 1", "author": "MA", "date": "2021-01-29T10:00", "body": "State registry shows Pfizer dose 1 on 1/27/21 at a regional vaccine clinic. Entered."}]
+        },
+        {
+          "id": "2021-02-17a",
+          "kind": "outside_records",
+          "start": "2021-02-17T15:30",
+          "reason": "COVID vaccine dose 2",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-17T15:30"}],
+          "documents": [{"type": "Immunization Record", "title": "COVID-19 vaccine dose 2", "author": "MA", "date": "2021-02-19T09:30", "body": "Dose 2 Pfizer 2/17/21 per registry. Primary series complete."}]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "specialist_visit",
+          "start": "2021-03-17T09:30",
+          "service": "Cardiology",
+          "reason": "angina follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2021-03-22T11:30", "body": "Outside cardiology group\nDate of visit: 03/17/2021\n\nFollow-up of stable angina. He is having fewer and milder episodes, mostly with snow shoveling or heavy carrying, and nitroglycerin works within minutes. No rest pain. No side effects other than a brief headache once.\nMeds: aspirin, metoprolol succinate 50, atorvastatin 40, lisinopril 20, nitroglycerin SL PRN, diabetes meds, valproic acid.\nAllergies: NKDA.\nVitals unremarkable. Regular, no murmur, lungs clear.\nImpression: stable angina, well controlled on medical therapy.\nPlan: no change. See in 6-12 months.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "office_visit",
+          "start": "2021-03-24T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-03-24T14:15", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2021-03-24T14:15", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-03-24T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2021-03-24T14:20", "body": "Winter was long, ate more and walked less. Sugars running higher. Angina quieter per him and cardiology. Both COVID shots done.\nExam: no distress. Regular rhythm. Lungs clear. No edema. Feet without wounds.\nA/P: T2DM, A1c today. Talked through cutting the evening bread and getting walks back. Not changing insulin today; he'd like to try on his own first. Angina stable, NTG rarely. RTC 3 months / AWV."}
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "annual_physical",
+          "start": "2021-06-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 8.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-09T09:50", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2021-06-09T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-09T09:50", "results": [{"test": "Platelets"}]},
+            {"panel": null, "collected": "2021-06-09T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 63}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2021-06-09T09:00"}],
+          "orders": [{"id": "ldct-2021", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2021-06-09T10:00", "body": "AWV. HRA reviewed. Independent with all daily tasks, still drives. No falls. Hearing and vision ok, eye exam yearly. PHQ-9 3. AUDIT-C 0, two years sober this month.\nThree-item recall and clock normal.\nScreening: LDCT due, ordered. Colonoscopy due 2026. AAA screen done last fall, normal. Hep C/HIV done 2018.\nVaccines: flu each fall, COVID series done. Shingrix discussed, will get it at the pharmacy or here next year when supply settles.\nProxy: wife, form on file.\nPlan given in writing. Labs today."}
+          ]
+        },
+        {
+          "id": "2021-06-30a",
+          "kind": "imaging",
+          "start": "2021-06-30T08:20",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2021-06-30T08:20", "text": "Comparison 08/2020. No pulmonary nodules. Stable upper-lobe emphysema. Coronary calcification and stent. No effusion.", "conclusion": "Lung-RADS 1. Continue annual screening."}],
+          "orders": [{"id": "ldct-2021", "action": "done", "date": "2021-06-30T08:20"}],
+          "documents": [{"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2021-07-01T12:45", "body": "Negative screen, Lung-RADS 1. Letter mailed."}]
+        },
+        {
+          "id": "2021-08-25a",
+          "kind": "outside_records",
+          "start": "2021-08-25T13:20",
+          "reason": "diabetic eye exam",
+          "documents": [{"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2021-08-25T13:20", "body": "Optometry. Dilated exam 08/18/2021: no diabetic retinopathy, no macular edema. Early cataract both eyes, not affecting function. One year."}]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "office_visit",
+          "start": "2021-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": null, "collected": "2021-09-22T10:40", "results": [{"test": "Hemoglobin A1c"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-22T10:00"}, {"procedure": "Immunization administration", "performed": "2021-09-22T10:35"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-09-22T10:35"}, {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-09-22T10:36"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2021-09-22T10:45", "body": "Doing ok. Angina rare. Sugars up some, admits he's not checking much. Feet numb as ever, says no sores.\nExam: regular, lungs clear, no edema. Shoes on, he declined taking off socks today, short on time; foot check next visit.\nA/P: T2DM A1c today, continue glargine 24 + metformin. Flu and COVID booster today. RTC 6 weeks to recheck sugars and feet."}
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "office_visit",
+          "start": "2021-10-27T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "appointment": "no-show",
+          "documents": [{"type": "Telephone Encounter", "title": "No-show", "author": "front desk", "date": "2021-10-27T15:05", "body": "Pt did not arrive for 2:20. Left VM to rebook."}]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "office_visit",
+          "start": "2021-12-07T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sore on bottom of right foot",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [{"panel": null, "collected": "2021-12-07T08:40", "resulted": "2021-12-07T15:00", "results": [{"test": "Hemoglobin A1c", "value": 8.9}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-07T08:40"}],
+          "orders": [{"id": "podiatry-2021", "action": "placed", "order": "Podiatry referral", "category": "referral", "to": "Podiatry", "reason": "plantar wound right foot, diabetic neuropathy"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2021-12-07T09:20", "body": "Wife spotted blood on his sock about three weeks ago. He never felt anything there. Feet have been numb and tingly for years, worse lying in bed, sometimes keeps him up. Lately has trouble feeling the gas pedal. No fever.\nExam: afebrile. Right sole under the big-toe ball: shallow open area with thick callus around it, no redness or drainage. Both feet insensate to monofilament. Right foot cooler, pulses hard to feel on that side.\nA1c 8.9 today.\nA/P: plantar wound right foot in a diabetic with neuropathy, needs specialist eyes this week. Podiatry referral called in, seen Monday. Dry dressing, keep weight off it as best he can, no going barefoot. Sugars are too high; we'll come back to that once the foot is sorted."}
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "specialist_visit",
+          "start": "2021-12-13T13:00",
+          "service": "Podiatry",
+          "reason": "chronic wound right foot",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with foot ulcer", "icd10": "E11.621", "action": "diagnosed", "onset": "2021-11-15", "note": "right plantar first metatarsal head, 2 cm"},
+            {"label": "Peripheral arterial disease", "action": "diagnosed", "onset": "2021-12-13"}
+          ],
+          "orders": [
+            {"id": "podiatry-2021", "action": "done", "date": "2021-12-13T13:00"},
+            {"id": "foot-xr-2021", "action": "placed", "order": "Foot X-ray, right", "category": "imaging", "reason": "plantar ulcer"},
+            {"id": "vascular-2021", "action": "placed", "order": "Vascular surgery referral", "category": "referral", "to": "Vascular Surgery", "reason": "ABI 0.62 right with plantar ulcer"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Podiatry consultation", "author": "podiatry", "date": "2021-12-15T16:00", "body": "Outside podiatry practice\nDate of visit: 12/13/2021\n\nReferred by his PCP for a right foot wound. 66-year-old man with type 2 diabetes for about 18 years, neuropathy, CAD with stable angina followed by cardiology. His wife noticed blood on his sock about three weeks ago; no pain. Years of night-time numbness and tingling in both feet; recently hard to feel the gas pedal. No fever, chills or drainage; walking unaffected. No back pain or radiating leg symptoms. No prior amputations. Admits he doesn't look at his feet regularly, hasn't seen podiatry in years, and wears one pair of worn work shoes daily. Quit smoking years ago.\nROS: no vision change, falls, bowel or bladder trouble, hand numbness, weight loss or fatigue.\nMeds per patient: metformin, insulin glargine, lisinopril, atorvastatin, aspirin, metoprolol, valproic acid, albuterol.\nAllergies: none known.\n\nExam: afebrile. Right plantar first metatarsal head: 2.0 cm shallow ulcer, clean granular base, hyperkeratotic rim. No erythema, edema or fluctuance. Probe to bone negative. Semmes-Weinstein: protective sensation absent over both plantar surfaces including toes and heels. Vibration decreased at both halluces. Capillary refill delayed. DP and PT diminished on the right.\nMost recent A1c 8.9%.\nABI in office: right 0.62, left 1.02.\n\nAssessment: neuropathic diabetic foot ulcer right plantar first MTP region, no clinical infection. Peripheral arterial disease right leg by ABI.\nPlan: debrided callus; offloading felt and post-op shoe; daily dressing changes taught. Foot X-ray. Vascular surgery consult given the ABI. Back in 3-4 weeks.\n\nPodiatry"}
+          ]
+        },
+        {
+          "id": "2021-12-16a",
+          "kind": "imaging",
+          "start": "2021-12-16T11:00",
+          "reason": "right foot ulcer",
+          "reports": [{"study": "Foot X-ray", "performed": "2021-12-16T11:00", "text": "Right foot, three views. No fracture or dislocation. No cortical erosion or periosteal reaction at the first metatarsal head. No soft-tissue gas. Joint spaces preserved. Scattered vascular calcification.", "conclusion": "No radiographic evidence of osteomyelitis."}],
+          "orders": [{"id": "foot-xr-2021", "action": "done", "date": "2021-12-16T11:00"}],
+          "documents": [{"type": "Result Note", "title": "Foot X-ray copy", "author": "PCP", "date": "2021-12-17T08:30", "body": "Copy of podiatry's foot film: no osteomyelitis. Good."}]
+        }
+      ]
+    }
+  ]
+}

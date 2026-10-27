@@ -3329,84 +3329,11 @@
           ]
         },
         {
-          "id": "2025-09-26a",
-          "kind": "portal_message",
-          "start": "2025-09-26T16:00",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Lab results",
-              "date": "2025-09-26T16:00",
-              "author": "PCP",
-              "body": "Thyroid, blood counts and chemistry panel all normal. STI tests negative across the board."
-            }
-          ]
-        },
-        {
-          "id": "2026-01-02a",
-          "kind": "portal_message",
-          "start": "2026-01-02T08:47",
-          "orders": [
-            {
-              "id": "gyn-referral-2026",
-              "action": "placed",
-              "order": "Gynecology referral",
-              "category": "referral",
-              "to": "Gynecology",
-              "reason": "painful genital ulcers, dysuria"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "I think it's back",
-              "date": "2026-01-02T08:47",
-              "author": "patient",
-              "body": "Burning and tingling started a couple days ago and now there are little blisters again, some already popped and sore. Hurts to pee. Bit of a fever and really tired. Gyn or you?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: I think it's back",
-              "date": "2026-01-02T09:30",
-              "author": "PCP",
-              "body": "Sounds like a herpes recurrence. Gyn can see you Monday morning and can swab the sores to confirm, referral sent. If you're miserable over the weekend, text me."
-            }
-          ]
-        },
-        {
           "id": "2026-01-05a",
           "kind": "specialist_visit",
           "start": "2026-01-05T08:40",
           "service": "Gynecology",
           "reason": "Painful genital ulcers and dysuria, 4 days",
-          "conditions": [
-            {
-              "label": "Recurrent genital herpes",
-              "action": "diagnosed",
-              "onset": "2026-01-01"
-            },
-            {
-              "label": "Primary genital herpes simplex virus infection",
-              "action": "resolved",
-              "onset": "2024-12-16",
-              "icd10": "A60.04"
-            }
-          ],
-          "medications": [
-            {
-              "drug": "valacyclovir 1000 MG Oral Tablet",
-              "action": "historical",
-              "sig": "Take 1 tablet by mouth once daily for 5 days",
-              "dose": {
-                "value": 1000,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "short",
-              "reason": "Recurrent genital herpes"
-            }
-          ],
           "vitals": {
             "bp": [
               117,
@@ -3433,13 +3360,6 @@
               ]
             }
           ],
-          "orders": [
-            {
-              "id": "gyn-referral-2026",
-              "action": "done",
-              "date": "2026-01-05T08:40"
-            }
-          ],
           "documents": [
             {
               "type": "Consult Note",
@@ -3457,87 +3377,7 @@
         {
           "id": "2026-01-09b",
           "kind": "outside_records",
-          "start": "2026-01-09T16:45",
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Outside Records Review",
-              "date": "2026-01-09T16:45",
-              "author": "PCP",
-              "body": "Gyn note 1/5 reviewed. HSV-2 recurrence confirmed by PCR, 5 days of valacyclovir. Problem list updated to recurrent genital herpes."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-09a",
-          "kind": "portal_message",
-          "start": "2026-02-09T12:15",
-          "medications": [
-            {
-              "drug": "valacyclovir 1000 MG Oral Tablet",
-              "action": "start",
-              "sig": "At the first sign of an outbreak, take 1 tablet by mouth once daily for 5 days. Dispense 5, 2 refills.",
-              "dose": {
-                "value": 1000,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Recurrent genital herpes, episodic treatment as needed"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "valtrex on hand?",
-              "date": "2026-02-09T12:15",
-              "author": "patient",
-              "body": "All healed from last month. Gyn said I could ask you about having valtrex at home so I can start right away next time instead of waiting for an appt. Is that possible?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: valtrex on hand?",
-              "date": "2026-02-09T16:40",
-              "author": "PCP",
-              "body": "Yes, that's a good plan. I sent valacyclovir 1 g to your pharmacy: take one a day for 5 days, starting at the first tingle or sore. There's enough for three outbreaks. Let me know whenever you use it."
-            },
-            {
-              "type": "Progress Notes",
-              "title": "Medication Note",
-              "date": "2026-02-09T16:42",
-              "author": "PCP",
-              "body": "Recurrent genital HSV-2 (primary 12/2024, recurrence 1/2026, both PCR-confirmed). Episodic valacyclovir 1 g daily x5 days, #5 + 2 refills, patient-initiated."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-17a",
-          "kind": "portal_message",
-          "start": "2026-08-17T10:05",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Physical reminder",
-              "date": "2026-08-17T10:05",
-              "author": "front desk",
-              "body": "Hi Isabelle, it's time for your yearly physical. Would Wednesday 9/23 at 9:00 work?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Physical reminder",
-              "date": "2026-08-17T13:22",
-              "author": "patient",
-              "body": "Yes that works"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Physical reminder",
-              "date": "2026-08-17T13:40",
-              "author": "front desk",
-              "body": "You're booked for Wednesday 9/23 at 9:00."
-            }
-          ]
+          "start": "2026-01-09T16:45"
         },
         {
           "id": "2026-09-23a",

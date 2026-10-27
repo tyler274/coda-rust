@@ -1,0 +1,2958 @@
+{
+  "unit": "unit-2636",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002636",
+      "given": "Nathan",
+      "family": "Webster",
+      "birth_date": "1988-01-31",
+      "address_line": "27 Larkspur Drive, Amherst, MA 01002",
+      "phone": "+1-646-555-0109",
+      "email": "nathan.webster@example.test",
+      "marital_status": "single",
+      "summary": "Construction laborer and heavy smoker who joined in 2019 healthy; ADPKD is found in 2022, alpha-1 antitrypsin deficiency with emphysema in 2023 and Buerger disease in 2024, and an H. pylori gastric ulcer bleeds in 2026 and heals. He keeps smoking throughout.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "telephone",
+          "start": "2019-09-10T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2019-09-10T10:20",
+              "author": "front desk",
+              "body": "Caller is a 31 y/o man looking for a primary care doctor. Says his last PCP retired and the replacement practice books three months out. Works construction, wants a place where he can text and get in quickly. Explained membership and that insurance still covers labs and specialists. He signed up over the phone. New patient physical booked 9/24, 8:00 am (asked for early, before a shift). Release form for prior records emailed to him."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "establish_care",
+          "start": "2019-09-24T08:00",
+          "end": "2019-09-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2007-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "400-600 mg by mouth every 6-8 hours as needed for muscle aches (OTC)",
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Work-related muscle aches"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 78,
+            "spo2": 98,
+            "weight_kg": 81.8,
+            "height_cm": 179.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-24T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-24T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-24T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-24T08:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-09-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-24T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-24T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-24T08:50"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-09-24T08:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-24T09:10",
+              "author": "PCP",
+              "body": "31M establishing care. Prior PCP retired; records requested.\n\nNo active complaints. Physically demanding job (construction laborer, mostly site prep and framing crews). Back and shoulders ache by end of week, takes OTC ibuprofen 400-600 mg when it's bad, maybe a couple of times a week.\n\nPMH: none he knows of. PSH: tonsils out at 8. Meds: OTC ibuprofen prn only. Allergies: none to medicines.\nFH: father has polycystic kidney disease and is on dialysis. Mother has emphysema/COPD, quit smoking years ago. One older brother, healthy as far as he knows.\nSH: single, lives in Amherst. Cigarettes since about 19, 1 to 1.5 ppd depending on the week. No alcohol at all. No drugs.\n\nROS: negative in detail - no chest pain, no dyspnea, no cough beyond a morning clear-throat, no GI or GU complaints, no headaches.\n\nExam: vitals as charted. Well-appearing, muscular. HEENT normal, tonsils absent. Neck supple, no nodes or thyroid enlargement. Heart RRR, no murmur. Lungs clear, good air movement. Abdomen soft, nontender, no masses felt. Ext warm, pulses 2+ radial and pedal. Skin: no rashes. Neuro grossly normal.\n\nA/P\n1. Tobacco use, ~1-1.5 ppd x 12 yrs. Talked about quitting; he's not there yet (\"maybe when the season slows down\"). Offered patch/varenicline whenever he wants to try. Revisit each visit.\n2. Health maintenance: CMP, CBC, lipids today. One-time HIV and hep C screens. Tdap (last one he remembers was high school) and flu shot given. PHQ-2 0.\n3. Muscle aches from work: OTC ibuprofen ok occasionally, with food.\n4. Father's kidney disease: noted. Will keep an eye on his own BP and creatinine.\n\nRTC 1 year for physical, sooner prn. Text line explained."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.06
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "portal_message",
+          "start": "2019-09-26T16:45",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your lab results",
+              "date": "2019-09-26T16:45",
+              "author": "PCP",
+              "body": "Nathan - all of your labs came back fine. Kidney and liver tests, blood counts and cholesterol are in normal range, and the HIV and hepatitis C screens were negative. Nothing to do except keep thinking about the cigarettes. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-15a",
+          "kind": "outside_records",
+          "start": "2019-10-15T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2019-10-15T11:30",
+              "author": "MA",
+              "body": "22 pages received by fax from patient's previous primary care office (visits 2012-2018). Mostly annual physicals and two sick visits for colds. BP always normal there. Labs 2016: basic metabolic and CBC normal. Childhood tonsillectomy noted. Smoking documented at every visit. No diagnoses on their problem list besides tobacco use. Indexed under Outside Records; flagged for PCP review."
+            },
+            {
+              "type": "Result Note",
+              "title": "Reviewed outside records",
+              "date": "2019-10-16T07:50",
+              "author": "PCP",
+              "body": "Reviewed. Nothing new. Consistent with history he gave."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-30a",
+          "kind": "portal_message",
+          "start": "2020-03-30T19:05",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Work letter",
+              "date": "2020-03-30T19:05",
+              "author": "patient",
+              "body": "Hey doc, my company says we're still allowed to work since we're doing a hospital addition job. They want a letter saying I'm healthy enough to be on site with a mask. Is that something you do?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Work letter",
+              "date": "2020-03-31T08:15",
+              "author": "PCP",
+              "body": "Sure. Letter attached stating you have no medical restrictions for site work with the usual precautions. One honest note from me: smokers do worse with respiratory infections, and this would be a good time to cut down if you're ever going to. Stay safe out there."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "annual_physical",
+          "start": "2020-10-06T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              109,
+              68
+            ],
+            "hr": 68,
+            "spo2": 99,
+            "weight_kg": 81.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-10-06T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-10-06T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 221
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-10-06T07:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-06T08:30",
+              "author": "PCP",
+              "body": "Annual. Masked visit.\n\nHas been working all through the pandemic, no COVID that he knows of. Feels fine. Still smoking, \"probably closer to a pack and a half since spring, it's been a stressful year.\" No cough beyond usual morning, no dyspnea. Aches from work same as ever, ibuprofen a few times a week.\n\nMeds: OTC ibuprofen prn. NKDA.\n\nExam: BP and weight as charted. Heart regular. Lungs clear. Abdomen soft, nontender. Ext without edema. Skin normal.\n\nA/P\n- Tobacco: not ready. Gave quitline number anyway.\n- BMP and CBC today. Flu vaccine given.\n- PHQ-2 0.\n- Follow up next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-10-08a",
+          "kind": "portal_message",
+          "start": "2020-10-08T12:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP, CBC",
+              "date": "2020-10-08T12:10",
+              "author": "PCP",
+              "body": "Normal. Released to portal with a short note."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-28a",
+          "kind": "outside_records",
+          "start": "2021-05-28T14:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T10:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-08T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "State registry reconciliation",
+              "date": "2021-05-28T14:00",
+              "author": "MA",
+              "body": "Pulled state immunization registry: Pfizer COVID dose 1 4/17/21 and dose 2 5/8/21, both at a retail pharmacy. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-28T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-28T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-28T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-28T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-28T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-28T08:20",
+              "author": "PCP",
+              "body": "33M annual.\n\nGood year overall, a lot of overtime. Had both Pfizer shots in the spring, sore arm only. Smoking unchanged, 1 to 1.5 ppd. Tried cutting to half a pack in July and lasted about a week. Denies chest pain, dyspnea, cough change, abdominal pain, urinary symptoms.\n\nNKDA. Meds: OTC ibuprofen now and then.\n\nExam: vitals as charted, BP normal. Lungs clear bilaterally. Heart RRR. Abdomen benign. Ext warm, pulses intact.\n\nPlan: CMP and lipids. Flu shot today. He'll get a COVID booster at the pharmacy when eligible. Discussed varenicline again: he'd consider it \"after the season.\" PHQ-2 1 (tired from work), no concerns.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-19a",
+          "kind": "outside_records",
+          "start": "2021-11-19T09:40",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-13T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2021-11-19T09:40",
+              "author": "MA",
+              "body": "Pharmacy notification: Pfizer COVID booster given 11/13/21. Entered."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-04a",
+          "kind": "portal_message",
+          "start": "2022-05-04T21:12",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Headaches",
+              "date": "2022-05-04T21:12",
+              "author": "patient",
+              "body": "Hi, I've been getting headaches a lot since sometime around November, figured it was the job or not sleeping. Lately my heart also does a fluttery thing sometimes when I'm just sitting there. Doesn't last long. Can I come in? Mornings are best, I can be late to the site."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Headaches",
+              "date": "2022-05-05T08:05",
+              "author": "RN",
+              "body": "Thanks for writing. Any chest pain, fainting, weakness on one side, or the worst headache of your life? If so call right away or go to the ED. Otherwise we have Monday 5/9 at 7:45 with the doctor - booked you, reply if that doesn't work."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: RE: Headaches",
+              "date": "2022-05-05T12:30",
+              "author": "patient",
+              "body": "None of that. Monday works."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-09a",
+          "kind": "office_visit",
+          "start": "2022-05-09T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches and palpitations",
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4-6 hours as needed for shortness of breath",
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Exertional breathlessness"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              155,
+              95
+            ],
+            "hr": 72,
+            "spo2": 99,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-09T08:20",
+              "resulted": "2022-05-10T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-09T08:20",
+              "resulted": "2022-05-10T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-09T08:20",
+              "resulted": "2022-05-10T14:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Aldosterone",
+                  "value": 21
+                },
+                {
+                  "test": "Plasma Renin Activity",
+                  "value": 3.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-05-09T08:05",
+              "text": "Sinus rhythm, rate 74. Normal axis. PR, QRS and QT intervals normal. No ST or T wave abnormality. No ectopy captured.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-09T07:45"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2022-05-09T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-09T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "renal-us-2022",
+              "action": "placed",
+              "order": "Renal ultrasound",
+              "category": "imaging",
+              "reason": "Bilateral flank masses"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-05-09T08:45",
+              "author": "PCP",
+              "body": "34M with headaches and palpitations.\n\nHPI: Headaches since roughly last November - dull, both temples or band-like, come on in the afternoon, a few times a week, ibuprofen takes the edge off. No aura, no vision change, no weakness or numbness, not waking him from sleep. Separately, brief fluttering in the chest at rest, seconds at a time, a few times a week. No syncope, no chest pain with exertion. Asked about breathing: admits he gets winded hauling material up stairs on site more than he used to, \"like I'm older than I am.\" No wheeze he's noticed. No fever, no weight change. Caffeine: two large coffees a day.\n\nMeds: OTC ibuprofen prn. NKDA. Smoking 1-1.5 ppd.\n\nExam: BP 155/95 (rechecked after 5 min, same). HR and SpO2 as charted. Well appearing. Fundi grossly normal, no papilledema. Neck no bruit, thyroid normal. Heart regular, no murmur. Lungs clear, no wheeze. Abdomen: fullness in both flanks - large, smooth, nontender masses palpable bilaterally, ballotable. Soft bruit over the LUQ. No hepatomegaly. Ext no edema, pulses present. Neuro nonfocal.\n\nECG: sinus, normal.\n\nA/P\n1. Bilateral flank masses with elevated BP and a father with polycystic kidneys - this is polycystic kidney disease until proven otherwise. Renal ultrasound ordered. BMP, CBC.\n2. BP 155/95 today. Headaches/palpitations could ride along with it. Adding TSH, aldosterone and renin to the draw. Recheck in two weeks with results.\n3. Exertional breathlessness in a smoker: albuterol MDI prn for now, see if it helps. Lungs clear today.\n4. Smoking - linked it to all three issues today. He listened. Still not ready.\n\nRTC 2 wks."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.2,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "telephone",
+          "start": "2022-05-11T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results",
+              "date": "2022-05-11T09:30",
+              "author": "RN",
+              "body": "Called pt per PCP. Creatinine 1.2, upper end of normal. Aldosterone 21, a little above range; renin 3.4. Thyroid and blood count normal. PCP will go over at the 5/23 visit once the ultrasound is done. Ultrasound scheduled 5/17 at the imaging center, pt aware - drink water, full bladder not needed for this one. Pt verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "imaging",
+          "start": "2022-05-17T15:10",
+          "service": "Outside imaging center",
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2022-05-17T15:10",
+              "text": "Clinical history: bilateral flank masses. Technique: grayscale and color imaging of both kidneys and bladder. Right kidney measures 15.8 cm in length and left kidney 16.6 cm, both enlarged. Both kidneys contain multiple simple-appearing cysts of varying size throughout the cortex and medulla, replacing much of the normal parenchyma. No hydronephrosis. No shadowing stones. Bladder unremarkable. Liver normal in size and echotexture. Spleen normal in size.",
+              "conclusion": "Bilaterally enlarged kidneys with multiple bilateral renal cysts, compatible with polycystic kidney disease in the appropriate clinical setting. No hydronephrosis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "renal-us-2022",
+              "action": "done",
+              "date": "2022-05-17T15:10"
+            }
+          ]
+        },
+        {
+          "id": "2022-05-23a",
+          "kind": "office_visit",
+          "start": "2022-05-23T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up headaches, palpitations, flank masses",
+          "conditions": [
+            {
+              "label": "Polycystic kidney, adult type",
+              "action": "diagnosed",
+              "onset": "2022-05-17"
+            },
+            {
+              "label": "Elevated blood pressure reading, without diagnosis of hypertension",
+              "action": "diagnosed",
+              "onset": "2022-05-09",
+              "icd10": "R03.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              155,
+              95
+            ],
+            "hr": 70,
+            "spo2": 99,
+            "weight_kg": 82.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-23T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "nephro-2022",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "Autosomal dominant polycystic kidney disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-05-23T08:40",
+              "author": "PCP",
+              "body": "Follow-up, two weeks.\n\nStill getting the headaches, maybe a little less. Palpitations a couple of times since last visit, brief. Albuterol: used it 3-4 times on site, thinks it helps some.\n\nBP 155/95 again today, second visit in a row at that level. Exam unchanged - both flanks with large smooth masses, soft LUQ bruit, lungs clear, heart regular.\n\nData: ultrasound 5/17 - both kidneys enlarged (15.8 and 16.6 cm) and full of cysts, no hydronephrosis, liver normal. Creatinine 1.2. Aldosterone mildly high at 21 with renin 3.4. TSH normal.\n\nA/P\n1. Autosomal dominant polycystic kidney disease. Father has the same disease with kidney failure. Explained it's inherited, usually progresses slowly, and that BP control and kidney monitoring matter most. He was quiet, said he'd always figured it might be coming. Nephrology referral placed. The mildly high aldosterone fits the cystic kidneys rather than an adrenal problem.\n2. BP 155/95 on two occasions. Before labeling hypertension I want home numbers - he'll buy a cuff and log twice daily for 2 weeks and send it in.\n3. Headaches / palpitations: no red flags. Watch alongside BP. Less coffee.\n4. Ibuprofen: with the kidneys, would rather he use as little as possible. Nephrology will weigh in.\n5. Smoking: discussed again.\n\nPortal the log; RTC after nephrology."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "portal_message",
+          "start": "2022-06-08T20:40",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "BP numbers",
+              "date": "2022-06-08T20:40",
+              "author": "patient",
+              "body": "Here's two weeks of readings, morning and night. Average works out to 126/80, highest was 138/86 one night after a long day. Headaches have been better the last week or so."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: BP numbers",
+              "date": "2022-06-09T07:20",
+              "author": "PCP",
+              "body": "Thank you - that's a good log and those are normal numbers. No medication for now. Keep the cuff and check a few times a week. Your kidney appointment is set for July 20."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-20a",
+          "kind": "specialist_visit",
+          "start": "2022-07-20T13:30",
+          "service": "Nephrology",
+          "reason": "ADPKD consultation",
+          "orders": [
+            {
+              "id": "nephro-2022",
+              "action": "done",
+              "date": "2022-07-20T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology consultation",
+              "date": "2022-07-26T10:00",
+              "author": "nephrology",
+              "body": "OUTSIDE NEPHROLOGY GROUP - CONSULTATION\nDate of visit: 07/20/2022\nReason: new diagnosis of autosomal dominant polycystic kidney disease\n\nThank you for referring this 34-year-old construction worker. Ultrasound in May showed bilaterally enlarged kidneys (15.8 and 16.6 cm) with numerous cysts. His father has ADPKD and is on dialysis. With that family history and the imaging, the diagnosis is secure; genetic testing is not needed for diagnosis.\n\nCreatinine 1.2 in May. He brought a home BP log averaging in the mid-120s over 80. Office BP here 124/80. No gross hematuria, no flank pain episodes, no urinary infections.\n\nMedications: albuterol inhaler as needed; over-the-counter ibuprofen. Allergies: NKDA.\nSocial: smokes 1-1.5 packs per day, no alcohol.\n\nExam: palpable kidneys bilaterally, nontender. Lungs clear. No edema.\n\nImpression: ADPKD with preserved kidney function and normal home blood pressure.\nRecommendations:\n1. No antihypertensive at this time; continue home monitoring, target under 130/80.\n2. Please avoid NSAIDs including ibuprofen; acetaminophen is the safer choice for aches.\n3. Generous water intake through the day, moderate salt.\n4. Kidney function and urine albumin yearly - happy for these to be drawn with you.\n5. Strongly encourage stopping smoking.\n6. I will see him yearly.\n\nNKDA.\nNephrology"
+            },
+            {
+              "type": "Result Note",
+              "title": "Nephrology letter reviewed",
+              "date": "2022-07-27T07:40",
+              "author": "PCP",
+              "body": "Reviewed. Agree. Will add UACR to yearly labs."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-02a",
+          "kind": "office_visit",
+          "start": "2022-08-02T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after nephrology",
+          "conditions": [
+            {
+              "label": "Elevated blood pressure reading, without diagnosis of hypertension",
+              "action": "resolved",
+              "icd10": "R03.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 82.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-08-02T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-08-02T08:05",
+              "author": "PCP",
+              "body": "Follow-up.\n\nHeadaches have pretty much stopped over the last month; the fluttery heartbeats too. Cut back to one coffee. Home BPs 120s/70s-80s. Saw nephrology - normal BP at home, no medicine, avoid ibuprofen, yearly labs. He admits he still takes ibuprofen \"once in a while when my back's wrecked.\" Went over acetaminophen as the alternative.\n\nAlbuterol: uses maybe once a week at work.\n\nBP 128/80 today. Exam: lungs clear, heart regular.\n\nA/P\n- ADPKD: per nephrology; UACR with the physical labs.\n- Elevated BP readings in May: home log and today normal - resolved, keep monitoring.\n- Headaches/palpitations: settled.\n- Smoking: 1+ ppd. Not ready.\nPhysical in October."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "portal_message",
+          "start": "2022-09-12T06:50",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Inhaler refill",
+              "date": "2022-09-12T06:50",
+              "author": "patient",
+              "body": "Can I get another inhaler sent to the pharmacy on Route 9? Dropped mine somewhere on the job."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Inhaler refill",
+              "date": "2022-09-12T10:15",
+              "author": "MA",
+              "body": "Refill sent per protocol. Should be ready this afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "annual_physical",
+          "start": "2022-10-11T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              78
+            ],
+            "hr": 74,
+            "spo2": 99,
+            "weight_kg": 81.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-11T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.13
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-11T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-11T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-11T07:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-11T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-11T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T08:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-10-11T08:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T08:14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-11T08:35",
+              "author": "PCP",
+              "body": "Annual exam, 34M.\n\nInterval: ADPKD diagnosed in May, seen by nephrology in July, no meds. Home BPs fine. Headaches gone. Breathing about the same - albuterol a few times a week now, mostly carrying loads up ladders or stairs. No cough change, no wheeze at rest.\n\nMeds: albuterol MDI prn; ibuprofen OTC occasionally (counseled again). NKDA.\nSmoking 1-1.5 ppd.\n\nExam: vitals as charted. HEENT normal. Heart RRR. Lungs clear without wheeze. Abdomen: kidneys palpable both flanks, nontender. Ext no edema. Skin clear.\n\nPlan:\n- CMP, CBC, lipids, urine albumin/creatinine for nephrology.\n- Vaccines: flu, PCV20 (smoker), bivalent COVID booster - three shots, he was fine with it.\n- Breathlessness creeping up: would like breathing tests if this keeps going; he'd rather wait. Reassess at next visit.\n- PHQ-2 0.\n- Tobacco: same conversation, he knows."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Microalbumin/Creatinine Ratio": 9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "portal_message",
+          "start": "2022-10-13T17:20",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Physical labs",
+              "date": "2022-10-13T17:20",
+              "author": "PCP",
+              "body": "Labs look stable. Kidney function is about where it was in May, no protein in the urine, cholesterol and blood counts normal. I'll forward these to your kidney doctor."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "pharmacy",
+          "start": "2023-02-21T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2023-02-21T11:05",
+              "author": "MA",
+              "body": "Electronic refill request from pharmacy for albuterol HFA. Last filled 9/2022. Approved per standing protocol, 1 inhaler + 2 refills. Note to PCP: third inhaler in a year."
+            },
+            {
+              "type": "Result Note",
+              "title": "Refill review",
+              "date": "2023-02-21T16:30",
+              "author": "PCP",
+              "body": "Using more. Will bring up breathing testing again when he's in."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath",
+          "vitals": {
+            "bp": [
+              116,
+              78
+            ],
+            "hr": 73,
+            "spo2": 95,
+            "weight_kg": 82.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T07:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-2023",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Progressive exertional dyspnea; brother with alpha-1 antitrypsin deficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-18T08:25",
+              "author": "PCP",
+              "body": "35M, breathing.\n\nThe winded feeling on site has been building for about a year. Now it's every flight of stairs with a load, and he stops halfway up a ladder run that he used to do without thinking. Albuterol helps a little, using it most workdays. No fevers, no blood in sputum, no chest pain, no ankle swelling. Usual smoker's morning cough.\n\nThe real reason he called: his older brother, 37, was just diagnosed with alpha-1 antitrypsin deficiency after a lung workup. Their mother has emphysema too. He's worried this is the same thing.\n\nSmoking: still about a pack a day, \"down from a pack and a half some weeks.\"\n\nExam: SpO2 95% at rest. No distress. Lungs: air movement reduced at the bases, no wheeze or crackles. Heart regular. No clubbing, no edema.\n\nA/P\nProgressive exertional dyspnea in a 35 y/o smoker with a brother newly diagnosed with AATD and a mother with emphysema. Needs a proper workup - pulmonology referral placed (they'll do imaging, PFTs and the AAT level/phenotype together). Continue albuterol prn. Asked him again to stop smoking; for the first time he said he'd \"think hard about it.\" Gave quitline info and offered varenicline - wants to wait for the lung doctor's verdict."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "specialist_visit",
+          "start": "2023-05-30T09:00",
+          "service": "Pulmonology",
+          "reason": "Progressive dyspnea; family history of alpha-1 antitrypsin deficiency",
+          "conditions": [
+            {
+              "label": "Alpha-1-antitrypsin deficiency",
+              "action": "diagnosed",
+              "onset": "2023-05-30"
+            },
+            {
+              "label": "Panlobular emphysema",
+              "action": "diagnosed",
+              "onset": "2023-05-30",
+              "icd10": "J43.1"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-30T09:20",
+              "resulted": "2023-06-05T12:00",
+              "results": [
+                {
+                  "test": "Alpha-1 antitrypsin",
+                  "loinc": "1825-9",
+                  "unit": "mg/dL",
+                  "value": 28
+                },
+                {
+                  "test": "Alpha-1 antitrypsin phenotype",
+                  "loinc": "32769-2",
+                  "text": "Pi*ZZ"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-05-30T10:30",
+              "text": "Technique: noncontrast CT of the chest, thin-section reconstructions. Lungs: diffuse emphysema, predominantly in the lower lobes, with a panlobular pattern and relative sparing of the upper lobes. No consolidation, nodule or mass. No pleural effusion. Airways patent. Heart size normal, no pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen: both kidneys incompletely imaged, containing cysts, consistent with known polycystic kidney disease.",
+              "conclusion": "Diffuse basilar-predominant emphysema."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2023-05-30T09:40",
+              "text": "Acceptable and reproducible efforts. Post-bronchodilator FEV1/FVC 0.62. FEV1 71% of predicted. FVC within normal limits. Minimal bronchodilator response.",
+              "conclusion": "Airflow obstruction, FEV1 71% predicted."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-2023",
+              "action": "done",
+              "date": "2023-05-30T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2023-06-08T15:00",
+              "author": "pulmonology",
+              "body": "PULMONARY MEDICINE - OUTSIDE CONSULT LETTER\nVisit date: 05/30/2023\nReferred by: primary care\n\nDear colleague,\n\nI saw Mr. Webster for shortness of breath that has gradually worsened over the past year. His 37-year-old brother was recently found to have lung disease from alpha-1 antitrypsin deficiency; his mother has emphysema. He smokes about a pack a day and has since his late teens. He works construction. Medications: albuterol as needed, occasional ibuprofen. NKDA.\n\nOn examination breath sounds were reduced on both sides and the bases were hyperresonant to percussion. No wheeze, no clubbing.\n\nCT chest today shows diffuse emphysema that is worst at the bases. Spirometry: post-bronchodilator FEV1/FVC 0.62, FEV1 71% predicted. Serum alpha-1 antitrypsin returned at 28 mg/dL, and phenotyping shows Pi*ZZ.\n\nImpression: severe alpha-1 antitrypsin deficiency (ZZ) with basilar panlobular emphysema and moderate airflow obstruction, in an active smoker.\n\nPlan\n1. Smoking cessation is the single most important thing he can do. We talked frankly about how fast lungs decline in ZZ smokers. Nicotine replacement or varenicline are reasonable through your office.\n2. Augmentation therapy (weekly IV alpha-1 proteinase inhibitor) was discussed. We do not start it while he is smoking; we will revisit once he has quit.\n3. Continue albuterol as needed for now.\n4. Keep vaccines current (influenza, COVID, pneumococcal - I see PCV20 was given last fall).\n5. ZZ also affects the liver: a hepatic panel yearly would be appreciated, through your office.\n6. Avoid dusty work without a respirator where he can.\n7. Follow-up here in one year with repeat spirometry.\n\nAllergies: NKDA.\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up pulmonology results",
+          "vitals": {
+            "bp": [
+              110,
+              70
+            ],
+            "hr": 63,
+            "spo2": 98,
+            "weight_kg": 81.3
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-06-20T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-20T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-20T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-06-20T08:30",
+              "author": "PCP",
+              "body": "Here to go over the lung consult.\n\nAATD, ZZ, level 28; emphysema at both bases; FEV1 71%. He's read about it online since. Understands the brother and he share it.\n\nSmoking: the big topic. Cut to about 15 cigarettes a day the past week. Wants to try on his own first. Offered varenicline again - declines for now, worried about \"weird dreams\" a coworker had. Not interested in patch either. Set a loose goal of a quit date before summer ends. Augmentation therapy off the table until he quits - he knows.\n\nBreathing same. Albuterol most workdays.\n\nExam: vitals as charted. Lungs with diminished breath sounds at bases, no wheeze. Heart regular.\n\nA/P\n1. Alpha-1 antitrypsin deficiency, ZZ, with panlobular emphysema - per pulm. Hepatic panel today, then yearly.\n2. Tobacco - as above, revisit monthly by text if he's willing. He said yes.\n3. ADPKD - nephrology in September.\n4. Albuterol prn continues."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "portal_message",
+          "start": "2023-06-22T12:40",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Liver tests",
+              "date": "2023-06-22T12:40",
+              "author": "PCP",
+              "body": "Your liver tests are normal. We'll repeat them once a year with your physical. How are the cigarettes going?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Liver tests",
+              "date": "2023-06-22T20:15",
+              "author": "patient",
+              "body": "Good news. Cigarettes not great honestly, back to most of a pack. Still trying."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "specialist_visit",
+          "start": "2023-09-13T14:00",
+          "service": "Nephrology",
+          "reason": "ADPKD follow-up",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-13T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.25
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2023-09-19T09:30",
+              "author": "nephrology",
+              "body": "NEPHROLOGY FOLLOW-UP\nVisit: 09/13/2023\n\nADPKD, one year since diagnosis. Interval: diagnosed with alpha-1 antitrypsin deficiency and emphysema in the spring. Still smoking. No flank pain, no hematuria, no UTIs.\n\nHome BP 120s/70s. Office BP 122/76.\nCreatinine today 1.25 (1.2 last year). Urine albumin normal on your October draw.\n\nMeds: albuterol prn. He reports using ibuprofen rarely - reminded again to avoid it.\nNKDA.\n\nAssessment: ADPKD, stable kidney function, normotensive without medication.\nPlan: same - hydration, no NSAIDs, BP at home, labs yearly with PCP. Return 1 year.\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.25
+            }
+          }
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "annual_physical",
+          "start": "2023-10-03T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2023-10-03T08:10",
+              "author": "front desk",
+              "body": "Pt did not arrive for 7:30 physical. Called - he got pulled to an early pour on a job in Hatfield (crew lead called him in at 6). Apologized. Rebooked 10/17 7:30."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              107,
+              80
+            ],
+            "hr": 69,
+            "spo2": 99,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.27
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-17T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-17T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T08:30",
+              "author": "PCP",
+              "body": "Physical (rescheduled from 10/3).\n\n35M with ADPKD (normotensive, nephrology yearly), AATD ZZ with emphysema (pulm yearly), tobacco use.\n\nInterval: saw nephrology in Sept, creatinine 1.25, no changes. Breathing stable, albuterol most workdays. Smoking: \"between half and a whole pack.\" Quit for 4 days in August, irritable, went back. Still declines varenicline.\n\nNKDA. Meds: albuterol prn; ibuprofen rarely.\n\nExam: vitals as charted. Lungs diminished at bases, no wheeze, no crackles. Heart RRR. Abdomen: palpable kidneys, nontender. Ext warm, pulses palpable. No edema.\n\nPlan:\n- Labs: CMP (includes liver tests for AATD), CBC, lipids, UACR.\n- Flu and updated COVID vaccine today.\n- PHQ-2 1.\n- Tobacco: 4 days is a start. Door open on medication."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "portal_message",
+          "start": "2023-10-19T13:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2023-10-19T13:05",
+              "author": "PCP",
+              "body": "Creatinine at his recent level, liver tests normal, UACR normal, lipids and CBC fine. Released with comment."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "portal_message",
+          "start": "2024-01-09T06:35",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Refill",
+              "date": "2024-01-09T06:35",
+              "author": "patient",
+              "body": "Out of the inhaler. Same pharmacy please."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Refill",
+              "date": "2024-01-09T09:50",
+              "author": "MA",
+              "body": "Sent. You have 2 refills on file after this one - just call the pharmacy next time."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "portal_message",
+          "start": "2024-04-02T19:55",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Sores on my fingers",
+              "date": "2024-04-02T19:55",
+              "author": "patient",
+              "body": "Since around November my fingers go white and then kind of blue when it's cold out, I thought it was just from working outside all winter. Now I have little sores on a few fingertips that won't heal and hurt like crazy, and a couple on my toes. Also my feet and hands ache when I've been walking around the site a while, goes away if I sit. Sending a picture."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Sores on my fingers",
+              "date": "2024-04-03T07:15",
+              "author": "PCP",
+              "body": "Thanks for the photo - I want to see these in person. Booked you Tuesday 4/9 at 7:40. Keep them clean and covered, and keep your hands and feet warm."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "office_visit",
+          "start": "2024-04-09T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fingertip ulcers, extremity pain",
+          "vitals": {
+            "bp": [
+              111,
+              73
+            ],
+            "hr": 77,
+            "spo2": 98,
+            "weight_kg": 82.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-09T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 6
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 1.4
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-04-09T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-09T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-09T08:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "vasc-2024",
+              "action": "placed",
+              "order": "Vascular surgery referral",
+              "category": "referral",
+              "to": "Vascular Surgery",
+              "reason": "Digital ulcers and extremity claudication in a heavy smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-09T08:40",
+              "author": "PCP",
+              "body": "36M with ADPKD, AATD/emphysema, heavy smoker. Here for hand and foot symptoms.\n\nHPI: About five months of fingers blanching white then dusky blue in the cold. Over the last couple of months, painful sores at several fingertips and a couple of toe tips that won't heal. Hands and feet ache after walking around the site, settles with rest. No joint pain or swelling, no rash, no fever, no weight loss, no dry eyes or mouth, no heartburn or trouble swallowing. Smoking about 1.5 ppd - went back up over the winter.\n\nMeds: albuterol prn. Ibuprofen occasionally for the finger pain. NKDA.\n\nExam: vitals as charted. Shallow, punched-out ulcers at the tips of several fingers on both hands and two toes; no infection, no drainage. Fingers cool. Skin over fingers not thickened. Radial pulses present but weak; dorsalis pedis faint bilaterally. Cap refill sluggish. No joint synovitis.\n\nA/P\nDigital ischemic ulcers with cold-induced color change and limb claudication in a 36 y/o heavy smoker without diabetes or high cholesterol - thromboangiitis obliterans (Buerger) is the leading concern. Checking A1c, lipids, ESR, CRP and ANA to look for other causes. Urgent vascular surgery referral.\nUlcer care: wash daily, petrolatum and a dry dressing, gloves and warm socks. Return or text for redness, spreading, or any dark/black skin.\nSmoking: told him plainly that if this is Buerger, stopping completely is what saves the fingers and toes - even a few cigarettes keep it going. He was shaken. Nicotine patches/gum are not a good choice here; varenicline is. He wants to talk to the surgeon first.\nAcetaminophen better than ibuprofen for the pain."
+            }
+          ],
+          "state": {
+            "labs": {
+              "C Reactive Protein": 1.4,
+              "Erythrocyte Sedimentation Rate": 6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "portal_message",
+          "start": "2024-04-11T15:30",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Test results",
+              "date": "2024-04-11T15:30",
+              "author": "PCP",
+              "body": "Results: no diabetes (A1c 5.3), cholesterol normal, inflammation markers normal and the autoimmune screen (ANA) negative. That makes the smoking-related artery problem we talked about more likely. Vascular surgery has you on May 20 - the soonest they had. If any sore turns black, or a finger goes cold and won't warm up, call that day."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "specialist_visit",
+          "start": "2024-05-20T10:15",
+          "service": "Vascular Surgery",
+          "reason": "Digital ulcers, extremity pain",
+          "conditions": [
+            {
+              "label": "Thromboangiitis obliterans [Buerger's disease]",
+              "action": "diagnosed",
+              "onset": "2023-11-01",
+              "icd10": "I73.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ],
+            "hr": 76,
+            "rr": 14,
+            "temp_c": 36.8
+          },
+          "orders": [
+            {
+              "id": "vasc-2024",
+              "action": "done",
+              "date": "2024-05-20T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Vascular surgery consultation",
+              "date": "2024-05-24T11:20",
+              "author": "vascular surgery",
+              "body": "VASCULAR SURGERY - NEW PATIENT CONSULTATION\nDate of service: 05/20/2024\nReferring: primary care\n\nHPI: 36-year-old man referred by his primary care physician (who also follows his ADPKD and alpha-1 antitrypsin deficiency with emphysema, the latter managed by pulmonology). For roughly six months he has had pain in both hands and both feet that comes on with walking and eases at rest, painful sores at several fingertips, and fingers that turn white and then blue in cold weather. No fever, no joint pains, no weight loss.\n\nPMH: ADPKD (normal kidney function, followed by nephrology); alpha-1 antitrypsin deficiency with emphysema. No diabetes, hypertension or hyperlipidemia.\nPSH: tonsillectomy in childhood.\nMeds: albuterol inhaler prn; ibuprofen prn.\nAllergies: NKDA.\nFH: father ADPKD with ESRD; mother emphysema/COPD (ex-smoker); older brother AATD.\nSH: cigarettes 1.5 packs/day for 15 years, 22.5 pack-years. No alcohol. Construction laborer.\n\nVitals: T 36.8 C (98.2 F), BP 124/78, HR 76, RR 14.\nExam: shallow ulcerations at the tips of several fingers and several toes, bilaterally. No joint swelling or erythema. Radial and dorsalis pedis pulses diminished on both sides. Capillary refill delayed in fingers and toes. Remainder of the exam unremarkable.\n\nPCP labs April 2024: A1c 5.3, lipids normal, ESR/CRP normal, ANA negative.\n\nImpression: thromboangiitis obliterans (Buerger disease) - young heavy smoker, distal upper and lower limb ischemia with digital ulceration, no atherosclerotic risk factors, autoimmune screen negative.\n\nPlan:\n1. Complete abstinence from all tobacco and nicotine products. This is the treatment. Without it, progression and amputation risk are high. Discussed in detail; varenicline through PCP would be appropriate, not nicotine replacement.\n2. Local wound care: daily cleansing, nonadherent dressing; protect from cold and trauma.\n3. Arteriography of the hands and feet to confirm the pattern; scheduled.\n4. Follow-up one year, sooner for any nonhealing or worsening ulcer.\n\nNKDA.\nVascular Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "outside_records",
+          "start": "2024-06-12T10:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Vascular surgery letter - arteriogram",
+              "date": "2024-06-12T10:40",
+              "author": "vascular surgery",
+              "body": "VASCULAR SURGERY - INTERVAL LETTER\nRe: arteriography 06/06/2024\n\nUpper and lower extremity arteriography was performed via right common femoral access without complication.\nFindings: proximal arteries of both arms and legs are smooth with no atherosclerotic plaque and no source of emboli. There are segmental occlusions of the digital arteries of both hands and of the distal tibial arteries of both legs, with corkscrew collateral vessels around the occlusions.\nConclusion: findings typical of thromboangiitis obliterans. No lesion suitable for revascularization.\n\nPlan unchanged: total tobacco abstinence, wound care, follow-up in a year.\nNKDA.\nVascular Surgery"
+            },
+            {
+              "type": "Result Note",
+              "title": "Arteriogram letter reviewed",
+              "date": "2024-06-13T07:30",
+              "author": "PCP",
+              "body": "Confirms Buerger. Video visit booked to go over it and push cessation again."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "telehealth_visit",
+          "start": "2024-06-25T18:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review vascular findings; tobacco cessation",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-06-25T18:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-06-25T18:30",
+              "author": "PCP",
+              "body": "Video, pt in his truck after work, two identifiers confirmed.\n\nWent over vascular consult and arteriogram: Buerger disease confirmed. He'd looked it up and seen the amputation pictures. Says he's down to about a pack a day. Finger sores a little smaller with summer and the dressings; one toe still open but clean.\n\nWe talked through varenicline for 20 minutes - side effects, how it's taken. He still doesn't want a medicine, \"I want to do it myself.\" No nicotine products (explained why). Wants the quitline call-back - referral sent.\n\nA/P\n1. Buerger disease - vascular following, wound care per their plan.\n2. Tobacco use disorder - ~1 ppd, declines pharmacotherapy, quitline referral.\n3. AATD/emphysema - pulm in August.\n4. ADPKD - nephrology in the fall.\nText me photos of the toe if it changes."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "specialist_visit",
+          "start": "2024-08-21T09:30",
+          "service": "Pulmonology",
+          "reason": "AATD follow-up",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2024-08-21T09:45",
+              "text": "Good effort, reproducible. Post-bronchodilator FEV1/FVC 0.61. FEV1 70% of predicted. FVC normal.",
+              "conclusion": "Airflow obstruction, essentially unchanged from 2023 (FEV1 71%)."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology follow-up",
+              "date": "2024-08-27T14:10",
+              "author": "pulmonology",
+              "body": "PULMONARY FOLLOW-UP\nVisit 08/21/2024\n\nAlpha-1 antitrypsin deficiency (ZZ) with basilar emphysema. Since last year he has also been diagnosed with Buerger disease by vascular surgery. He reports smoking about a pack a day. Exertional breathlessness unchanged; albuterol on most workdays. No exacerbations, no hospital visits.\n\nSpirometry: FEV1/FVC 0.61, FEV1 70% predicted (71% in 2023).\nExam: diminished breath sounds at both bases, no wheeze.\n\nAssessment: stable lung function over a year, still smoking.\nPlan: augmentation remains deferred until he has stopped smoking. Continue albuterol as needed. Vaccines per PCP. Yearly hepatic panel per PCP. Return 1 year.\nNKDA.\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "specialist_visit",
+          "start": "2024-10-02T13:45",
+          "service": "Nephrology",
+          "reason": "ADPKD follow-up",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-02T14:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2024-10-08T09:00",
+              "author": "nephrology",
+              "body": "NEPHROLOGY FOLLOW-UP\nVisit 10/02/2024\n\nADPKD. Interval Buerger disease diagnosis (vascular surgery, arteriogram 6/2024). Still smoking ~1 ppd.\nHome BP fine. Office BP 124/78.\nCreatinine 1.3 today (1.25 in 2023, 1.2 in 2022).\nMeds: albuterol prn. Still takes ibuprofen now and then for pain - asked him again to stop it entirely.\nNKDA.\n\nAssessment: ADPKD with slowly rising creatinine, still within normal range, normotensive.\nPlan: unchanged. Labs with PCP, return 1 year.\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.3
+            }
+          }
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              75
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T07:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.07
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T07:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T08:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T08:25",
+              "author": "PCP",
+              "body": "Annual, 36M.\n\nProblems: ADPKD (Cr 1.3 at nephrology this month, normotensive); AATD ZZ with emphysema (FEV1 70% in Aug, augmentation deferred while smoking); Buerger disease (vascular, arteriogram June); tobacco use disorder.\n\nInterval: finger and toe sores healed over the summer. Cold weather coming and he's nervous about it - has heated gloves now. Breathing stable. Smoking \"a pack, some days less.\" Quitline called twice, he didn't call back. Pain: an ibuprofen \"maybe once every couple weeks.\"\n\nNKDA. Meds: albuterol prn, ibuprofen OTC rare.\n\nExam: vitals as charted. Lungs diminished at bases, no wheeze. Heart RRR. Abdomen: kidneys palpable. Hands: healed scars at several fingertips, no open ulcer; fingers cool. Feet: toes intact, healed tips, DP faint bilat. No edema.\n\nPlan: CMP, CBC, UACR. Flu + updated COVID today. PHQ-2 1. Tobacco: offered varenicline once more - no. Keep extremities warm, check feet daily. Any new sore: text a photo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T11:50",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2024-10-24T11:50",
+              "author": "PCP",
+              "body": "Creatinine in line with nephrology's 1.3. Liver tests normal. CBC normal. UACR normal. Released."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T06:20",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Inhaler + question",
+              "date": "2025-02-11T06:20",
+              "author": "patient",
+              "body": "Can you send the inhaler again. Also is there a doctor's note thing for work so I can do more inside jobs when it's below freezing? My foreman is ok with it but HR wants paper."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Inhaler + question",
+              "date": "2025-02-11T12:05",
+              "author": "PCP",
+              "body": "Inhaler sent. Letter attached recommending indoor or sheltered assignments when temperatures are below freezing because of a circulation condition, through the end of March. Let me know if HR needs different wording."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "portal_message",
+          "start": "2025-05-06T21:30",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "New sores",
+              "date": "2025-05-06T21:30",
+              "author": "patient",
+              "body": "Got new sores again, two fingers on my right hand and my left big toe. Started maybe a week or two ago. And now my feet and hands hurt at night in bed, not just walking, which is new. I have the vascular appointment the 29th. Should I come in before?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: New sores",
+              "date": "2025-05-07T08:40",
+              "author": "RN",
+              "body": "Spoke with the doctor. Keep the 5/29 vascular visit; we called their office and you're on their cancellation list. Same wound care as last year. If a sore turns black, gets red and spreading, drains pus, or you get a fever, call us the same day. Please send a photo of the toe."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: RE: New sores",
+              "date": "2025-05-07T17:10",
+              "author": "PCP",
+              "body": "Saw the photos - shallow and clean, no sign of infection. Agree with keeping the vascular date. Night pain is a sign this is progressing; we should talk about the cigarettes again after you see them."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-29a",
+          "kind": "specialist_visit",
+          "start": "2025-05-29T14:30",
+          "service": "Vascular Surgery",
+          "reason": "Buerger disease follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 68
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Vascular surgery follow-up",
+              "date": "2025-06-03T10:15",
+              "author": "vascular surgery",
+              "body": "VASCULAR SURGERY - FOLLOW-UP\nDate of service: 05/29/2025\n\n37-year-old with thromboangiitis obliterans (diagnosed here 05/2024, arteriogram 06/2024), alpha-1 antitrypsin deficiency and ADPKD, back about a year after his first visit. His symptoms have moved on: the hand and foot pain that used to come with walking is now there at rest, worst at night. In cold, the fingers go pale, then blue, then red and throbbing as they warm. Within the last month he has developed painful sores at the tips of two fingers and one toe. Denies fever, weight loss and joint pains.\n\nMeds: albuterol prn; ibuprofen prn.\nAllergies: NKDA.\nSocial: 15 years of smoking; now about 1 pack per day. No alcohol, no drugs.\n\nExam: small shallow ulcers at the right fingertips and at the tip of the left great toe, clean bases. Hair growth diminished over both lower legs. Dorsalis pedis pulses mildly decreased bilaterally. Radial and ulnar pulses palpable. Digital Allen test abnormal in both hands.\n\nImpression: Buerger disease, progressing to rest pain with new digital ulceration, in the setting of ongoing smoking.\n\nPlan:\n1. Smoking cessation once more - the only thing shown to halt this. He was told that continued smoking is likely to lead to digit loss.\n2. Wound care as before; protect from cold.\n3. No revascularization option per prior arteriogram.\n4. Return in one year, sooner for nonhealing ulcer, color change to black, or infection.\n\nNKDA.\nVascular Surgery"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buerger disease progression; tobacco",
+          "vitals": {
+            "bp": [
+              124,
+              84
+            ],
+            "hr": 76,
+            "spo2": 98,
+            "weight_kg": 82.1
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-06-10T08:25",
+              "author": "PCP",
+              "body": "Follow-up after vascular.\n\nNight pain in hands and feet most nights, gets up and dangles his feet. Ulcers right 2nd/3rd fingertips and left great toe, doing dressings. Vascular told him straight that he's on the road to losing fingers or toes. Smoking ~1 ppd. He was quieter today. Still says no to varenicline - \"I know, I know.\" Tried cold turkey again in April, three days.\n\nPain: takes ibuprofen at night a few times a week when it's bad. Reminded about the kidneys and nephrology's advice.\n\nExam: vitals as charted. Right 2nd and 3rd fingertip ulcers, small, clean, no surrounding erythema. Left great toe tip ulcer, clean, dry. Lower legs with sparse hair. DP faint bilat. Lungs diminished at bases.\n\nA/P\n1. Buerger disease with rest pain and new digital ulcers - per vascular; wound care; no infection today.\n2. Tobacco use disorder - motivational talk; quitline re-referred; prescription for varenicline offered and declined.\n3. ADPKD, AATD/emphysema - specialists in Aug/Oct.\nText photos every 2 weeks until healed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "specialist_visit",
+          "start": "2025-08-20T09:30",
+          "service": "Pulmonology",
+          "reason": "AATD follow-up",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2025-08-20T09:45",
+              "text": "Acceptable efforts. Post-bronchodilator FEV1/FVC 0.60. FEV1 67% of predicted.",
+              "conclusion": "Airflow obstruction; FEV1 67% predicted, down from 70% in 2024."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology follow-up",
+              "date": "2025-08-26T13:00",
+              "author": "pulmonology",
+              "body": "PULMONARY FOLLOW-UP\nVisit 08/20/2025\n\nAATD (Pi*ZZ) with basilar emphysema. Buerger disease progressing per vascular. Smoking about 1 ppd.\nSymptoms: exertional dyspnea about the same, albuterol most days. No exacerbations.\nSpirometry: FEV1/FVC 0.60, FEV1 67% predicted (70% last year, 71% in 2023).\nExam: diminished breath sounds at the bases, no wheeze.\n\nAssessment: slow decline in FEV1 with continued smoking.\nPlan: augmentation still deferred until tobacco-free; we would start it promptly once he has quit. Albuterol prn. Return 1 year.\nNKDA.\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "specialist_visit",
+          "start": "2025-10-08T13:30",
+          "service": "Nephrology",
+          "reason": "ADPKD follow-up",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-08T13:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.35
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 69
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2025-10-14T08:45",
+              "author": "nephrology",
+              "body": "NEPHROLOGY FOLLOW-UP\nVisit 10/08/2025\n\nADPKD. Still smoking; Buerger disease progressed this year per vascular.\nOffice BP 126/78. Home readings normal.\nCreatinine 1.35 (1.3 in 2024, 1.25 in 2023, 1.2 in 2022).\nMeds: albuterol prn. Continues some ibuprofen for night pain - reviewed the kidney risk once more.\nNKDA.\n\nAssessment: ADPKD with gradually rising creatinine, normotensive.\nPlan: unchanged; labs yearly with PCP; return 1 year.\nNephrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.35
+            }
+          }
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "ed_visit",
+          "start": "2026-05-18T10:40",
+          "end": "2026-05-19T09:30",
+          "service": "Emergency Medicine",
+          "reason": "Epigastric pain, dark stools",
+          "vitals": {
+            "bp": [
+              118,
+              77
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-18T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-18T11:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.46
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 63
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-18T11:20",
+              "results": [
+                {
+                  "test": "Stool occult blood",
+                  "loinc": "2335-8",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-05-18T10:40"
+            },
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2026-05-18T17:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2026-05-20T08:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN NOTE - OUTSIDE HOSPITAL\nDate of service: 05/18/2026\n\nCC: upper abdominal pain, black stools\n\nHPI: 38 y/o M with alpha-1 antitrypsin deficiency, ADPKD and Buerger disease. Burning pain in the upper abdomen for about 2 months. Comes on a few hours after he eats, eases for a while if he eats again or takes an antacid. For the last week his stools have been dark. No vomiting, no hematemesis, no lightheadedness or syncope. Takes ibuprofen on and off for muscle and night pain.\n\nPMH: AATD with emphysema, ADPKD, Buerger disease, tobacco use.\nPSH: tonsillectomy as a child.\nHome meds: albuterol inhaler prn. Ibuprofen OTC occasionally.\nAllergies: NKDA.\nFH: father ADPKD with ESRD; mother emphysema/COPD; older brother AATD.\nSH: 1 pack per day cigarettes. No alcohol.\n\nVitals: within normal limits throughout, see flowsheet.\nExam: alert, comfortable. Abdomen soft with mild epigastric tenderness, no guarding or rebound. Rectal: dark brown stool, guaiac positive. Lungs diminished at bases. Healing fingertip and toe ulcers.\n\nLabs: CBC normal, hemoglobin within range. BMP unremarkable apart from creatinine just above range, in keeping with his known polycystic kidney disease.\n\nCourse: Hemodynamically stable. GI consulted and performed upper endoscopy this afternoon (see GI report): 1.2 cm lesser-curvature gastric ulcer, biopsied. Observed overnight; tolerated diet, no further bleeding, hemoglobin stable on repeat. Discharged 05/19 in the morning.\n\nDiagnosis: gastric ulcer with bleeding.\nDischarge plan: omeprazole 40 mg twice daily. Stop ibuprofen and all NSAIDs. Biopsy results to PCP and GI. See PCP within 1 week. Return for vomiting blood, fainting, or black stools that worsen."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "date": "2026-05-20T08:05",
+              "author": "gastroenterology",
+              "body": "ESOPHAGOGASTRODUODENOSCOPY - OUTSIDE HOSPITAL GI\nDate: 05/18/2026\nIndication: epigastric pain, melena, guaiac-positive stool; NSAID use.\nSedation: moderate, monitored. Tolerated well.\n\nFindings:\n- Esophagus: normal.\n- Stomach: a single 1.2 cm clean-based ulcer along the lesser curvature of the gastric body, no visible vessel, no active bleeding. Surrounding mucosa mildly erythematous. Biopsies taken from the ulcer edge and from antrum and body for H. pylori.\n- Duodenum: normal to the second portion.\n\nImpression: gastric ulcer, lesser curvature, 1.2 cm, no stigmata of recent hemorrhage requiring treatment.\nRecommendations: PPI twice daily; avoid NSAIDs; follow biopsies; treat H. pylori if present; repeat EGD in 8-12 weeks to document healing.\nNKDA.\nGastroenterology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "outside_records",
+          "start": "2026-05-21T13:15",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-05-18T17:20",
+              "text": "Specimens: A. gastric ulcer edge, biopsy. B. gastric antrum and body, biopsies.\nMicroscopic: A. Ulcer edge with granulation tissue and fibrinopurulent debris; adjacent mucosa with chronic active gastritis. B. Chronic active gastritis with numerous curved rod-shaped organisms on the surface epithelium, confirmed by immunostain as Helicobacter pylori. No intestinal metaplasia. No dysplasia. No malignancy.",
+              "conclusion": "Gastric ulcer edge and gastric mucosa with Helicobacter pylori-associated chronic active gastritis. Negative for dysplasia and malignancy.",
+              "issued": "2026-05-21T11:00"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "procedure_visit",
+          "start": "2026-08-11T08:30",
+          "service": "Gastroenterology",
+          "reason": "Repeat upper endoscopy for gastric ulcer healing",
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2026-08-11T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Repeat upper endoscopy report",
+              "date": "2026-08-12T15:30",
+              "author": "gastroenterology",
+              "body": "ESOPHAGOGASTRODUODENOSCOPY - OUTSIDE GI\nDate: 08/11/2026\nIndication: follow-up of 1.2 cm lesser-curvature gastric ulcer (05/2026), H. pylori treated with bismuth quadruple therapy.\nMedications: omeprazole 40 mg daily; albuterol prn; acetaminophen prn.\nSedation: moderate. No complications.\n\nFindings:\n- Esophagus normal.\n- Stomach: the prior ulcer site on the lesser curvature has healed, leaving a small flat scar with converging folds. No active ulcer. Biopsies of the scar and of antrum and body.\n- Duodenum normal.\n\nImpression: healed gastric ulcer.\nPlan: await biopsies (healing and H. pylori status). If negative, PPI may be stopped by PCP provided NSAIDs remain avoided.\nNKDA.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "outside_records",
+          "start": "2026-08-14T14:00",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-08-11T08:45",
+              "text": "Specimens: A. gastric scar, lesser curvature, biopsy. B. gastric antrum and body, biopsies.\nMicroscopic: A. Gastric mucosa with mild regenerative change consistent with a healed ulcer site. B. Gastric mucosa without active inflammation. Immunostain for Helicobacter pylori negative. No intestinal metaplasia, dysplasia or malignancy.",
+              "conclusion": "Healed ulcer site. No Helicobacter pylori. Negative for dysplasia and malignancy.",
+              "issued": "2026-08-14T10:30"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Elevated blood pressure reading, without diagnosis of hypertension|R03.0": {
+        "code": "R03.0",
+        "display": "Elevated blood-pressure reading, without diagnosis of hypertension",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Panlobular emphysema|J43.1": {
+        "code": "J43.1",
+        "display": "Panlobular emphysema",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Thromboangiitis obliterans [Buerger's disease]|I73.1": {
+        "code": "I73.1",
+        "display": "Thromboangiitis obliterans [Buerger's disease]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Alpha-1 antitrypsin": {
+        "code": "1825-9",
+        "display": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Alpha-1 antitrypsin phenotype": {
+        "code": "32769-2",
+        "display": "Alpha 1 antitrypsin phenotype [Interpretation] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stool occult blood": {
+        "code": "2335-8",
+        "display": "Hemoglobin [Presence] in Stool from gastrointestinal",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

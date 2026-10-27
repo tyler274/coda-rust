@@ -110,3 +110,8 @@
 - 2026-06-16 portal message: refills and home weights (P)
 - 2026-08-26 chronic care visit; A1c and CMP pending (P)
 - 2026-11-17 booked chronic care follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002223 on 2025-11-13. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

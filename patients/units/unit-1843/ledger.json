@@ -1,0 +1,1852 @@
+{
+  "unit": "unit-1843",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\"",
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001843",
+      "given": "Maricel",
+      "family": "Chanthavong",
+      "birth_date": "1996-11-04",
+      "address_line": "212 Grattan Street, Apt 3",
+      "phone": "+1-646-555-0104",
+      "email": "maricel.chanthavong@example.test",
+      "marital_status": "married",
+      "summary": "Student with beta-thalassemia trait (promoter-region HBB variant) found on a 2019 fatigue workup, a 2022 marathon-associated hyponatremia ED stay, 2025 preconception genetics with her beta-zero carrier husband, and a 2025-26 pregnancy on empiric OB iron. Last seen 2026-04-03 at about 30 weeks; delivered in June 2026, known only by her message.",
+      "events": [
+        {
+          "id": "2017-08-10a",
+          "kind": "telephone",
+          "start": "2017-08-10T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2017-08-10T10:12",
+              "author": "front desk",
+              "body": "Caller is a 20 y/o student starting her third year at a nearby university, wants a primary care doctor close to her apartment. Has the student health insurance plan, card info taken. Prior care was a pediatric office back home; she will sign a release so we can request those records. Scheduled new patient visit 8/22 at 9:40. Membership info and portal invite emailed."
+            }
+          ]
+        },
+        {
+          "id": "2017-08-22a",
+          "kind": "establish_care",
+          "start": "2017-08-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "medications": [
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              58
+            ],
+            "hr": 56,
+            "spo2": 97,
+            "weight_kg": 52.2,
+            "height_cm": 157.0
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "College student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2017-08-22T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2017-08-22T10:30",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n20 year old woman, undergraduate, here to set up primary care now that she lives in the area year-round. No complaints today. Says she has been healthy; saw a pediatrician growing up, no hospital stays, no operations.\n\nMeds: one multivitamin a day, over the counter.\nAllergies: none to medications.\n\nFamily: Dad has been told he carries beta-thalassemia trait. His mother (pt's paternal grandmother) had beta-thalassemia major. Thalassemia runs in her father's Thai relatives. She has never been tested herself, as far as she knows.\n\nSocial: Full-time student, lives with a roommate. Never smoked. Does not drink. Runs a few times a week.\n\nROS: Negative for fever, weight change, chest pain, palpitations, dyspnea, abdominal pain, bowel change, urinary symptoms, rashes. Periods regular, not heavy.\n\nExam: Well-appearing, pleasant. BP and weight per flowsheet. HEENT unremarkable, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without pallor or rash. No edema.\n\nAssessment/Plan:\n1. Health maintenance, healthy young adult. Childhood vaccines reportedly complete; will request old records. Flu shot this fall. Cervical screening starts at 21, plan at next physical.\n2. Family history of thalassemia. Mentioned that she may carry the trait; no testing today, will revisit if any symptoms or when she is thinking about a family.\n\nRTC for physical next summer."
+            }
+          ],
+          "state": {
+            "bp": [
+              106,
+              68
+            ],
+            "weight_kg": 52.0,
+            "height_cm": 157.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2017-10-19a",
+          "kind": "nurse_visit",
+          "start": "2017-10-19T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-10-19T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2017-10-19T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2017-10-19T15:35",
+              "author": "RN",
+              "body": "Seasonal flu vaccine 0.5 mL IM left deltoid. Screening questions negative, no prior reactions. VIS reviewed. Tolerated, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-12a",
+          "kind": "annual_physical",
+          "start": "2018-06-12T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              66
+            ],
+            "hr": 74,
+            "spo2": 98,
+            "weight_kg": 51.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-06-12T09:30",
+              "resulted": "2018-06-14T11:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2018-06-12T09:15",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2018-06-18T09:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2018-06-12T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2018-06-12T09:45",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT\n\n21F, finished spring semester, staying local for a summer job on campus. Feels well. No new history since last August.\n\nMeds: multivitamin daily. NKDA.\nLMP 2 weeks ago, cycles regular. Sexually active with one partner, uses condoms.\nNo tobacco or alcohol.\n\nROS otherwise negative.\n\nExam: Vitals per flowsheet, normal. General well. Eyes, ears, throat normal. Neck supple, no nodes, thyroid normal. Heart regular, no murmur. Lungs clear bilaterally. Abdomen benign. Pelvic: normal external genitalia, cervix without lesions, Pap obtained. Skin normal. Mood bright.\n\nPHQ-2 0.\n\nPlan:\n- Pap today (first screen).\n- One-time HIV and hepatitis C screening, she agrees.\n- Flu vaccine in the fall.\n- Old pediatric records still not received; she will ask her mother for her vaccine card.\n- Physical yearly."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-06-18a",
+          "kind": "portal_message",
+          "start": "2018-06-18T16:05",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent results",
+              "date": "2018-06-18T16:05",
+              "author": "PCP",
+              "body": "Hi Maricel, your Pap came back normal and your HIV and hepatitis C screens were negative. Next Pap would be due in three years. Enjoy the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent results",
+              "date": "2018-06-18T21:40",
+              "author": "patient",
+              "body": "Great, thanks so much!"
+            }
+          ]
+        },
+        {
+          "id": "2018-11-02a",
+          "kind": "nurse_visit",
+          "start": "2018-11-02T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-11-02T13:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-11-02T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2018-11-02T13:30",
+              "author": "MA",
+              "body": "Flu shot given IM R deltoid, lot and expiration in the immunization record. No contraindications. Pt waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-08a",
+          "kind": "office_visit",
+          "start": "2019-05-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Mild fatigue",
+          "vitals": {
+            "bp": [
+              108,
+              64
+            ],
+            "hr": 70,
+            "spo2": 96,
+            "weight_kg": 53.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-05-08T14:55",
+              "resulted": "2019-05-08T18:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 68
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.78
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-08T14:55",
+              "resulted": "2019-05-09T07:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-08T14:55",
+              "resulted": "2019-05-14T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A2/Hemoglobin.total in Blood",
+                  "loinc": "4551-8",
+                  "unit": "%",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hemoglobin F/Hemoglobin.total in Blood",
+                  "loinc": "4576-5",
+                  "unit": "%",
+                  "value": 2.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "HBB gene analysis",
+              "loinc": "51969-4",
+              "performed": "2019-05-08T14:55",
+              "text": "Test: beta-globin (HBB) gene sequencing including promoter and flanking regions, with deletion/duplication analysis. Indication: microcytosis with elevated HbA2; family history of beta-thalassemia. Result: one heterozygous pathogenic variant identified in the HBB promoter region. Variants of this type lower transcription of the affected allele and are classed as beta-plus alleles. No second HBB variant and no large deletion detected.",
+              "conclusion": "Heterozygous for a promoter-region beta-plus HBB variant, consistent with beta-thalassemia trait (carrier). Genetic counseling is recommended for reproductive planning; partner carrier testing advised.",
+              "issued": "2019-06-04T09:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-05-08T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-05-08T15:20",
+              "author": "PCP",
+              "body": "CC: tired lately\n\nS: 22 y/o, end of semester. A few weeks of feeling a bit run down, mild, still running and getting through classes. Sleeping 6-7 h. No fever, weight loss, night sweats, cough, palpitations. Periods monthly, normal flow. Eats meat and vegetables, no restrictive diet. Mood fine, stress about finals.\nMeds: multivitamin. NKDA.\nFHx: father beta-thal trait; paternal grandmother beta-thal major; more thalassemia among her dad's Thai relatives.\nNever smoker, no EtOH.\n\nO: Vitals per flowsheet. Comfortable, not pale. No scleral icterus. Thyroid normal. No cervical adenopathy. Heart without murmur. Lungs clear. Abdomen soft, no spleen or liver edge felt. No edema.\nIn-office CBC result later today: Hgb 11.0, MCV 68.\n\nA/P:\n1. Mild fatigue with mild microcytic anemia. MCV is very low for so slight an anemia, and with her family history a thalassemia trait is the leading thought. Sent hemoglobin electrophoresis and beta-globin gene analysis (insurance prior auth started for the gene test). TSH with today's draw.\n2. Sleep, finals stress likely contributing. Will call with results; no iron for now."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.0,
+              "Mean Corpuscular Volume": 68,
+              "Red Blood Cells": 5.25,
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "portal_message",
+          "start": "2019-05-14T12:30",
+          "reason": "Electrophoresis result",
+          "conditions": [
+            {
+              "label": "Beta thalassemia minor",
+              "action": "diagnosed",
+              "onset": "2019-05-14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Hemoglobin electrophoresis",
+              "date": "2019-05-14T12:25",
+              "author": "PCP",
+              "body": "Electrophoresis: HbA2 5.4% (high), HbF 2.3% (mildly high), no abnormal hemoglobin bands. With Hgb 11.0 and MCV 68 this fits beta-thalassemia trait. TSH normal. Added to problem list. Gene analysis still pending. Pt messaged."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your blood tests",
+              "date": "2019-05-14T12:30",
+              "author": "PCP",
+              "body": "Hi Maricel, your thyroid test was normal. The hemoglobin test shows the pattern of beta-thalassemia trait (also called thalassemia minor), the same carrier state your dad has. It usually causes only a mild, lifelong anemia and small red cells, and it does not need iron or other treatment. The gene test should be back in a few weeks and will confirm it. Happy to talk by phone if you want."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-04a",
+          "kind": "portal_message",
+          "start": "2019-06-04T15:45",
+          "reason": "Gene test result",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "HBB gene analysis",
+              "date": "2019-06-04T15:40",
+              "author": "PCP",
+              "body": "HBB analysis: heterozygous promoter-region variant, beta-plus allele. Confirms beta-thal minor. Lab recommends counseling for reproductive planning. Will note for the future."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Gene test",
+              "date": "2019-06-04T15:45",
+              "author": "PCP",
+              "body": "Your gene test confirms that you carry one changed copy of the beta-globin gene. The kind you have reduces, rather than stops, production from that copy. Nothing to do for your own health. The one time it matters is if you plan a pregnancy someday: a partner would want to be tested, and we would send you both to genetics first. I've noted it in your chart."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gene test",
+              "date": "2019-06-05T09:02",
+              "author": "patient",
+              "body": "Thank you for explaining. Should I still take my multivitamin? And does this mean I should not run? I signed up for a 10k in the fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gene test",
+              "date": "2019-06-05T12:18",
+              "author": "PCP",
+              "body": "Yes, the multivitamin is fine. Running is fine too, the trait does not limit exercise for most people. Good luck in the race."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T11:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-22T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2019-10-22T11:55",
+              "author": "RN",
+              "body": "Influenza vaccine IM left arm. Afebrile, no allergy to vaccine components. Observed 15 minutes, fine. Reminded her that her annual physical is overdue; she will book over winter break."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-16a",
+          "kind": "office_visit",
+          "start": "2020-11-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, mild exertional dyspnea",
+          "vitals": {
+            "bp": [
+              106,
+              61
+            ],
+            "hr": 71,
+            "spo2": 96,
+            "weight_kg": 52.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-11-16T10:35",
+              "resulted": "2020-11-16T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 320
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2020-11-16T10:35",
+              "resulted": "2020-11-17T16:30",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 90
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 300
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 200
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-11-16T10:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-11-16T10:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-11-16T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-11-16T11:05",
+              "author": "PCP",
+              "body": "Reason: tired, winded on stairs\n\nHPI: 24F with known beta-thalassemia trait (electrophoresis and HBB testing 2019). About six months of feeling tired and a little short of breath going up the stairs to her lab building or jogging uphill. She blames her schedule: remote classes plus a part-time job, late nights. Says she eats a balanced diet. Denies bleeding from the gums, nosebleeds, or heavy menstrual bleeding. No chest pain, fainting, cough, fever, weight change, dark stools.\n\nMeds: daily multivitamin. NKDA.\nSH: never smoker, no alcohol.\n\nExam: masked, vitals per flowsheet. Looks well nourished, in no distress. Skin and conjunctivae without pallor. No jaundice. No lymph nodes in neck, axillae or groin. Heart regular without murmur. Lungs clear. Abdomen soft, liver and spleen not palpable.\n\nCBC back this afternoon: Hgb 10.2, MCV 72, RDW 12, plt 320, WBC 6.0.\n\nA/P:\n1. Fatigue and exertional dyspnea, mild. Hgb a little below her 2019 value, still microcytic with a normal RDW, which is the thalassemia trait pattern. Iron studies sent today to make sure there is no iron deficiency layered on top before saying more.\n2. Beta-thalassemia minor. Stable, no treatment.\n3. Flu vaccine given today.\nWill message results. If iron is normal, no iron supplement; return if symptoms worsen or new ones appear."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 200,
+              "Hemoglobin": 10.2,
+              "Mean Corpuscular Volume": 72,
+              "Red Blood Cells": 4.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-11-18a",
+          "kind": "portal_message",
+          "start": "2020-11-18T08:50",
+          "reason": "Iron results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Iron studies",
+              "date": "2020-11-18T08:45",
+              "author": "PCP",
+              "body": "Iron 90, TIBC 300, ferritin 200. Iron stores are replete; no iron deficiency. Anemia is from the trait. No iron. Pt informed."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Iron results",
+              "date": "2020-11-18T08:50",
+              "author": "PCP",
+              "body": "Hi Maricel, your iron levels are normal, so there is no iron deficiency and you should not take extra iron (with the trait, extra iron can build up). The mild anemia is the thalassemia trait, which can make hard exercise feel a bit harder. Sleep and a lighter week would help too. If you get more short of breath, feel faint, or anything new comes up, let me know and come in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron results",
+              "date": "2020-11-18T19:22",
+              "author": "patient",
+              "body": "Ok, good to know. Finals are in 3 weeks so hopefully things calm down after that."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "portal_message",
+          "start": "2021-05-11T20:14",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-08T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-29T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid vaccine card",
+              "date": "2021-05-11T20:14",
+              "author": "patient",
+              "body": "Hi, I got both Pfizer doses at the campus clinic, 4/8 and 4/29. Attaching a picture of my card for my file."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid vaccine card",
+              "date": "2021-05-12T09:31",
+              "author": "MA",
+              "body": "Thank you! Both doses are now in your immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "annual_physical",
+          "start": "2021-06-22T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              102,
+              66
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 51.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-22T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-06-22T09:35",
+              "text": "Liquid-based cervical specimen. Satisfactory for evaluation; transformation zone sampled. Negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2021-06-28T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-06-22T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-06-22T10:05",
+              "author": "PCP",
+              "body": "Physical, first in-person one since 2018.\n\n24 y/o. Energy better since winter; the stairs feel fine now. Running 3 mornings a week, training for a half marathon. COVID vaccine series done in April.\n\nPMH: beta-thalassemia trait.\nMeds: multivitamin. NKDA.\nLMP 6/10, regular. Same partner. Never smoker, no alcohol.\n\nROS negative.\n\nExam: vitals reviewed. Well. Conjunctivae pink. Neck without nodes or thyromegaly. Cardiac: RRR, no murmurs. Lungs clear. Abdomen soft, nontender, spleen not felt. Pelvic exam normal, Pap collected. Extremities normal. Affect normal. PHQ-2 1.\n\nPlan:\n- Pap today (3 years since last).\n- CBC to recheck her baseline.\n- Flu shot in the fall.\n- Talked about fueling and hydration for distance training: drink to thirst, don't force water."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.7,
+              "Mean Corpuscular Volume": 70,
+              "Red Blood Cells": 5.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-24a",
+          "kind": "portal_message",
+          "start": "2021-06-24T13:15",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2021-06-24T13:15",
+              "author": "PCP",
+              "body": "Your blood count looks like your usual: mild anemia with small red cells from the trait, unchanged. Pap result will follow next week."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-29a",
+          "kind": "portal_message",
+          "start": "2021-06-29T08:40",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2021-06-29T08:40",
+              "author": "RN",
+              "body": "Hello, your Pap test is normal. The next one is due in three years. Please reach out with any questions."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "nurse_visit",
+          "start": "2021-10-26T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-26T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-26T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2021-10-26T16:20",
+              "author": "MA",
+              "body": "Influenza vaccine 0.5 mL IM, left deltoid. Screening negative. No reaction during 15 min observation."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "annual_physical",
+          "start": "2022-06-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2022-06-13T17:05",
+              "author": "front desk",
+              "body": "Patient called to cancel her physical for tomorrow, out of town for a family event. Will call back to rebook after summer."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-11-14a",
+          "kind": "ed_visit",
+          "start": "2022-11-14T14:40",
+          "end": "2022-11-15T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Headache, nausea, confusion after marathon",
+          "conditions": [
+            {
+              "label": "Hyponatremia",
+              "action": "diagnosed",
+              "onset": "2022-11-14",
+              "icd10": "E87.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sodium chloride 30 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "100 mL IV bolus once",
+              "dose": {
+                "value": 100,
+                "unit": "mL"
+              },
+              "frequency": "ONCE",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "symptomatic exercise-associated hyponatremia"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-11-14T14:45",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-14T15:00",
+              "resulted": "2022-11-14T15:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 125
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 96
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 10
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-14T15:00",
+              "resulted": "2022-11-14T16:05",
+              "results": [
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 260
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-11-14T15:10",
+              "resulted": "2022-11-14T15:50",
+              "results": [
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.005
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-14T17:30",
+              "resulted": "2022-11-14T18:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-15T06:00",
+              "resulted": "2022-11-15T06:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2022-11-14T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (received 12/6/2022)",
+              "date": "2022-12-06T11:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nVisit 11/14/2022, arrival 14:40. Discharged from observation 11/15/2022 10:30.\n\nChief complaint: headache, nausea, confused after race.\n\nHPI: 26-year-old woman brought in by friends from the finish area of her first marathon. She felt she had prepared well and drank a large volume of water in the days before and at nearly every aid station. Friends report she took salt tablets only now and then during the race. Since finishing she has had a headache, nausea, and seemed confused to them. History of beta-thalassemia trait per patient.\n\nMeds: multivitamin. Allergies: NKDA. Never smoker, no alcohol.\nFamily history: father with beta-thalassemia trait, paternal grandmother with beta-thalassemia major.\n\nTriage: BP 130/85, HR 88, RR 16, T 37.2 C (99.0 F).\nExam: Disoriented to date and place, follows commands. No focal neurological deficit; pupils equal and reactive, strength and sensation symmetric, gait not tested at arrival. Mucous membranes moist. Heart regular. Lungs clear. No edema.\n\nLabs: Na 125, K 4.2, Cl 96, HCO3 24, BUN 10, Cr 0.9, glucose 90. Serum osmolality 260. Urine specific gravity 1.005.\n\nED course: Exercise-associated hyponatremia with neurologic symptoms. 100 mL of 3% saline given IV as a bolus, oral fluids held. Repeat sodium 129 at 17:30 with headache easing. Placed in observation overnight, free water restricted, urinating well. Morning sodium 133; fully oriented, eating, walking without difficulty.\n\nDiagnosis: Exercise-associated hyponatremia.\nDisposition: Discharged home. Drink only when thirsty for the next few days, no further salt tablets needed. Follow up with primary care in one week for a sodium recheck. Return for headache, vomiting, confusion or seizure."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "portal_message",
+          "start": "2022-11-16T07:55",
+          "reason": "ED follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit after my race",
+              "date": "2022-11-16T07:55",
+              "author": "patient",
+              "body": "Hi, I ran my first marathon on Monday and ended up in the ER afterward because my sodium was low from drinking too much water. They kept me overnight and gave me a salty IV. I feel completely fine now. They said to see you in a week for a blood test. Do you have anything next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit after my race",
+              "date": "2022-11-16T09:20",
+              "author": "front desk",
+              "body": "Glad you're feeling better. Booked you Monday 11/21 at 3:00 PM. We've sent a request to the hospital for your ER records."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "office_visit",
+          "start": "2022-11-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, low sodium",
+          "conditions": [
+            {
+              "label": "Hyponatremia",
+              "action": "resolved",
+              "onset": "2022-11-14",
+              "icd10": "E87.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              93,
+              71
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 52.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-21T15:30",
+              "resulted": "2022-11-21T18:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-11-21T15:25"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-21T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-11-21T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-11-21T15:50",
+              "author": "PCP",
+              "body": "ED follow-up.\n\n26F seen in the ED a week ago after her first marathon for headache, nausea and confusion with a sodium of 125 (per her and the discharge sheet she brought; full record requested). Treated with hypertonic saline and kept overnight, sodium up to 133 the next morning. Since then she has felt normal: no headache, nausea, confusion, swelling. Eating and drinking normally. Thinks she drank \"a bottle at every mile\" out of fear of dehydration.\n\nMeds: multivitamin. NKDA.\n\nExam: Vitals normal. Alert, oriented, conversant, good recall of the week. Cranial nerves intact, strength and gait normal. Heart and lungs normal. No edema.\n\nA/P:\n1. Exercise-associated hyponatremia, clinically resolved. BMP today to confirm sodium has normalized.\n2. Talked about next races: drink to thirst rather than on a schedule, weigh before and after long runs (should not gain weight during a race), electrolyte drinks are fine but not a fix for overdrinking.\n3. Beta-thalassemia trait, stable.\n4. Flu vaccine today.\n\nAddendum 11/21 18:50: Na 139. Resolved. Message sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              106,
+              75
+            ],
+            "hr": 63,
+            "spo2": 97,
+            "weight_kg": 52.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-16T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-05-16T10:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-20T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-05-16T11:10",
+              "author": "PCP",
+              "body": "ANNUAL EXAM\n\n26 y/o woman, now in a graduate program. Last physical 2021 (2022 visit cancelled). Seen in November after the marathon hyponatremia episode, sodium normal at recheck. No repeat episodes; ran two half marathons since, drinking to thirst, no problems.\nGot a COVID booster at the campus clinic in December 2021, added to her record today.\n\nProblems: beta-thalassemia trait.\nMeds: multivitamin daily. NKDA.\nGyn: regular cycles, Pap 2021 normal.\nSocial: student, lives with her partner. Never smoker. No alcohol.\n\nROS: no fatigue to speak of, no dyspnea, no chest pain, no GI or GU complaints.\n\nExam: Vitals normal. Well appearing. Conjunctivae without pallor. Thyroid normal. Heart RRR, no murmur. Lungs CTA. Abdomen soft, no splenomegaly. Skin normal. Neuro grossly normal. Mood good. PHQ-2 0.\n\nPlan:\n- CBC for baseline.\n- Pap next year.\n- Flu and COVID updates this fall.\n- When they start thinking about a pregnancy, come in first: her husband should be screened and we would refer to genetics."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-18a",
+          "kind": "portal_message",
+          "start": "2023-05-18T12:05",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab result",
+              "date": "2023-05-18T12:05",
+              "author": "PCP",
+              "body": "Your blood count is at your usual level for the trait. Nothing to change. See you next year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "portal_message",
+          "start": "2023-10-24T19:30",
+          "reason": "Outside vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-21T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shots",
+              "date": "2023-10-24T19:30",
+              "author": "patient",
+              "body": "FYI I got my flu shot and the new covid shot at the pharmacy on Saturday 10/21. Left arm was sore one day."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shots",
+              "date": "2023-10-25T08:15",
+              "author": "MA",
+              "body": "Thanks for letting us know, both have been entered in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              99,
+              70
+            ],
+            "hr": 61,
+            "spo2": 97,
+            "weight_kg": 52.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-05-21T14:05",
+              "text": "Liquid-based cervical cytology. Specimen adequate, endocervical cells present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2024-05-28T09:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-05-21T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-21T14:30",
+              "author": "PCP",
+              "body": "PHYSICAL\n\n27F. Doing well, busy with her thesis. Not planning a pregnancy this year, maybe next. Still running, no races planned.\n\nPMH: beta-thal trait (HBB promoter variant, 2019). Hyponatremia 2022 after marathon, resolved.\nMeds: MVI. NKDA.\nNo tobacco, no EtOH.\n\nROS negative.\n\nExam: normal vitals. Pleasant, well. HEENT normal, no pallor. Neck supple. CV regular rhythm. Lungs clear. Abd soft, nontender. Pelvic normal, Pap obtained. Ext warm. Psych normal. PHQ-2 0.\n\nPlan:\n- Pap today.\n- No labs needed this year.\n- Reminded her to come see us before trying to conceive (genetics, carrier testing for husband, prenatal vitamin).\n- Flu in fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "portal_message",
+          "start": "2024-05-29T10:10",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-05-29T10:10",
+              "author": "RN",
+              "body": "Hi Maricel, your Pap from last week is normal. Next one is due in 3 years, or co-testing in 5 years once you turn 30."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Preconception planning",
+          "medications": [
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "stop"
+            },
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              71
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 52.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-11T11:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "genetics-referral",
+              "action": "placed",
+              "order": "Medical genetics referral",
+              "category": "referral",
+              "to": "Medical Genetics",
+              "reason": "preconception counseling, maternal beta-thalassemia trait"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-11T12:00",
+              "author": "PCP",
+              "body": "Preconception visit.\n\n28F with beta-thalassemia trait. She and her husband would like to start trying for a pregnancy later this year. Wants to know what to do first. Feels well.\n\nMeds: multivitamin. NKDA. Cycles regular.\n\nExam: vitals normal, weight stable. General well. Heart and lungs normal.\n\nA/P:\n1. Beta-thalassemia trait, planning pregnancy. If her husband also carries a beta-thalassemia allele, a child could inherit two. Referred to medical genetics for preconception counseling; asked that her husband get a CBC and hemoglobin electrophoresis through his own doctor (or genetics can order it) before the appointment.\n2. Switch the multivitamin to a prenatal vitamin with folic acid now.\n3. Return when pregnant or with any questions."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "specialist_visit",
+          "start": "2025-05-19T09:00",
+          "service": "Medical Genetics",
+          "reason": "Preconception genetic counseling",
+          "orders": [
+            {
+              "id": "genetics-referral",
+              "action": "done",
+              "date": "2025-05-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Genetics Consultation (received 6/3/2025)",
+              "date": "2025-06-03T14:10",
+              "author": "medical genetics",
+              "body": "OUTSIDE MEDICAL GENETICS CLINIC\nDate of visit: 5/19/2025\nReferred by: primary care\nReason: preconception counseling, beta-thalassemia\n\nThank you for sending this 28-year-old woman, seen today with her husband before they try to conceive. They asked what a child of theirs could inherit for beta-globin production.\n\nHistory: beta-thalassemia trait identified in 2019 during a fatigue evaluation. Past exercise-associated hyponatremia (2022), resolved. Medications: multivitamin. No drug allergies. Never smoker, no alcohol. Family history: her father has beta-thalassemia trait; her paternal grandmother had beta-thalassemia major; other affected relatives on her father's Thai side.\n\nLaboratory: Both partners have an elevated HbA2 on hemoglobin electrophoresis.\n\nMolecular results: Her husband is heterozygous for a null HBB mutation; the allele produces no beta-globin (beta-zero). She is heterozygous for a different HBB allele, a promoter-region variant that lowers beta-globin output from that copy by roughly half (beta-plus).\n\nCounseling: Both are carriers of beta-thalassemia. In each pregnancy there is a 1 in 4 chance the child inherits both altered alleles (beta-zero/beta-plus), which can range from thalassemia intermedia to transfusion-dependent thalassemia major; a 1 in 2 chance the child is a carrier like either parent; and a 1 in 4 chance of neither. We reviewed the options: proceeding without testing, prenatal diagnosis by chorionic villus sampling or amniocentesis, and IVF with preimplantation genetic testing. They will think it over and would like to try naturally. We asked that she tell her obstetrician of these results early in any pregnancy so testing can be offered in time.\n\nAssessment: Couple at risk for a child with beta-thalassemia (compound heterozygous beta-zero/beta-plus).\nPlan: Summary letter to the couple. Available for follow-up counseling in pregnancy.\n\nMedical geneticist"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "outside_records",
+          "start": "2025-06-03T14:30",
+          "reason": "Genetics letter received",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside letter reviewed",
+              "date": "2025-06-03T14:30",
+              "author": "PCP",
+              "body": "Genetics consult letter from 5/19 reviewed. Husband is a beta-zero carrier; 25% risk per pregnancy of thalassemia intermedia/major. They plan to try naturally and know to tell OB early. Pt messaged that we have it."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "portal_message",
+          "start": "2025-10-06T07:48",
+          "reason": "Positive pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Good news",
+              "date": "2025-10-06T07:48",
+              "author": "patient",
+              "body": "Hi! I had a positive home pregnancy test this weekend. My last period started September 1. I called the OB office the genetics team recommended and my first appointment is November 6. Still taking the prenatal vitamin. Anything else I should do before then?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Good news",
+              "date": "2025-10-06T12:40",
+              "author": "PCP",
+              "body": "Congratulations! Keep taking the prenatal vitamin. At the first OB visit, bring up the genetics results so they can talk about testing options early. A flu shot is recommended in pregnancy; we can give it here any weekday. Call with any bleeding or severe pain."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2025-10-14T10:45",
+              "author": "RN",
+              "body": "Pt about 6 weeks pregnant per her. Inactivated flu vaccine 0.5 mL IM right deltoid, preservative-free. No egg or vaccine reactions. Watched 15 min, well."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "specialist_visit",
+          "start": "2025-11-06T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Initial prenatal visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Initial Prenatal Visit (received 4/16/2026)",
+              "date": "2026-04-16T10:05",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS AND GYNECOLOGY GROUP\nInitial prenatal visit, 11/6/2025\n\nG1, LMP 9/1/2025, about 9 weeks by dates.\n\nHistory: beta-thalassemia minor since 2019. Hyponatremia in 2022 (listed on intake). Genetics counseling in May; her partner is a beta-zero carrier, result on file. Medications: multivitamin daily; she has been taking a prenatal vitamin every day. NKDA. Never smoker, no alcohol.\nFamily history: father with thalassemia trait, paternal grandmother with thalassemia major.\n\nShe is happy about the pregnancy and feels well. Denies tiredness, lightheadedness or shortness of breath.\n\nVitals within normal limits.\nExam: Unremarkable except for mild pallor of the conjunctivae. No enlargement of liver or spleen, no lymph nodes.\n\nLabs: routine prenatal panel drawn today. Hemoglobin electrophoresis: HbA2 elevated, in keeping with her known beta-thalassemia trait.\n\nPlan:\n- Ferrous sulfate 325 mg by mouth daily, empirically.\n- Repeat blood count and iron studies in 3 weeks.\n- Partner's carrier result reviewed; referral back to genetics to discuss testing options in this pregnancy.\n- Continue prenatal vitamin. Return 3 weeks.\n\nObstetrician"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "specialist_visit",
+          "start": "2025-11-25T14:20",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Follow-up (received 4/16/2026)",
+              "date": "2026-04-16T10:06",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS AND GYNECOLOGY GROUP\nPrenatal visit, 11/25/2025, about 12 weeks.\n\nTaking the iron every day as directed. Says she feels the same as before starting it. No bleeding, cramping, nausea manageable.\nVitals normal.\nRepeat bloodwork compared with the initial labs: no meaningful change.\nPlan: continue ferrous sulfate and prenatal vitamin. Routine prenatal schedule.\n\nObstetrician"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-03a",
+          "kind": "office_visit",
+          "start": "2026-04-03T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia in pregnancy, iron question",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-09-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "started by obstetrics"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              97,
+              66
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-03T09:55",
+              "resulted": "2026-04-03T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 70
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.24
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 321
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-04-03T09:55",
+              "resulted": "2026-04-04T11:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 168
+                },
+                {
+                  "test": "Iron",
+                  "value": 110
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 349
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 32
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-03T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-records",
+              "action": "placed",
+              "order": "Records request, obstetrics",
+              "category": "procedure",
+              "to": "Obstetrics & Gynecology",
+              "reason": "prenatal records"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-03T10:15",
+              "author": "PCP",
+              "body": "S: 29F, G1 at about 30 weeks (LMP 9/1/25), prenatal care with an outside OB group, here with a question about iron. The OB started ferrous sulfate 325 mg daily at her first visit in November because her blood count was low; she has taken it every day since and feels no different, still a bit constipated from it. Wants to know if she really needs it given her thalassemia trait. Otherwise pregnancy going well per her, good fetal movement, no bleeding, headaches or swelling. We have not received any OB notes.\nMeds (reconciled): prenatal vitamin daily, ferrous sulfate 325 mg daily (OB). NKDA.\n\nO: Vitals normal. Gravid, comfortable. Conjunctivae slightly pale. Heart regular, no murmur. Lungs clear. No edema. Fundal height not measured (OB following).\n\nA/P:\n1. Pregnancy, about 30 weeks, followed by OB. Added to problem list.\n2. Beta-thalassemia trait with anemia in pregnancy. Her trait alone explains a low hemoglobin and small cells; her 2020 iron stores were full. Iron given without deficiency is of no benefit and can accumulate. CBC and ferritin today. If ferritin is normal I will send the result to her OB with a suggestion that the iron may not be needed; she should keep taking it until the OB decides.\n3. Records request sent to the OB office.\n\nPostpartum: plan a preventive visit in September; booked."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "labs": {
+              "Ferritin": 168,
+              "Hemoglobin": 10.0,
+              "Mean Corpuscular Volume": 70,
+              "Red Blood Cells": 4.55
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "portal_message",
+          "start": "2026-04-06T13:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC and ferritin",
+              "date": "2026-04-06T12:50",
+              "author": "PCP",
+              "body": "Hgb 10.0, MCV 70, ferritin 168. Consistent with her trait plus pregnancy; iron stores replete. Letter faxed to OB: ferritin 168 on daily ferrous sulfate, iron may not be needed given beta-thal trait without deficiency; defer to OB."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2026-04-06T13:00",
+              "author": "PCP",
+              "body": "Hi Maricel, your blood count is at your usual level for the trait (a little lower, which is normal in pregnancy), and your iron stores are full. I sent the results to your OB with a note that the iron may not be needed. Please keep taking it until you hear from them, and ask at your next visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your labs",
+              "date": "2026-04-06T18:22",
+              "author": "patient",
+              "body": "Thank you, I'll ask them next week."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "outside_records",
+          "start": "2026-04-16T10:10",
+          "reason": "OB records received",
+          "orders": [
+            {
+              "id": "ob-records",
+              "action": "done",
+              "date": "2026-04-16T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records received",
+              "date": "2026-04-16T10:10",
+              "author": "front desk",
+              "body": "Prenatal visit notes 11/6/25 and 11/25/25 received by fax from the OB group. Indexed to chart, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T21:05",
+          "reason": "Delivery update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2026-06-22T21:05",
+              "author": "patient",
+              "body": "Hi, just wanted to let you know I had the baby on June 10, regular delivery at full term at the regional hospital. We are both doing well. My OB is seeing me for the postpartum checkups. See you in September for the physical."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2026-06-22T22:10",
+              "author": "PCP",
+              "body": "Congratulations to you both! Glad everyone is well. We'll see you in September, and reach out sooner if you need anything."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-15a",
+          "kind": "annual_physical",
+          "start": "2026-09-15T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum preventive visit",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hyponatremia|E87.1": {
+        "code": "E87.1",
+        "display": "Hypo-osmolality and hyponatremia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "sodium chloride 30 MG/ML Injectable Solution": {
+        "code": "730781",
+        "display": "500 ML sodium chloride 30 MG/ML Injection",
+        "ingredient": "sodium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Hemoglobin A2/Hemoglobin.total in Blood": {
+        "code": "4551-8",
+        "display": "Hemoglobin A2/Hemoglobin.total in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin F/Hemoglobin.total in Blood": {
+        "code": "4576-5",
+        "display": "Hemoglobin F/Hemoglobin.total in Blood",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Serum or Plasma": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "HBB gene analysis": {
+        "code": "51969-4",
+        "display": "Genetic analysis report",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\"",
+      "drug \"prenatal multivitamin Oral Tablet\""
+    ]
+  }
+}

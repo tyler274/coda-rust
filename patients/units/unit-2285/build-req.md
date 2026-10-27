@@ -222,3 +222,8 @@ name, problem-list dump, "(diagnosed ...)" stamp or quiz text reaches the chart.
   discharges, transitional care visits after each hospital stay.
 - A booked visit after today: annual wellness and diabetes visit 2026-09-10.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002285 on 2024-11-22. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -1,0 +1,278 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002298",
+      "given": "Mark",
+      "family": "Parsons",
+      "birth_date": "1956-07-03",
+      "address_line": "41 Loudville Road",
+      "phone": "+1-860-555-0194",
+      "email": "mark.parsons@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired tire plant worker and active heavy smoker with ischemic cardiomyopathy, COPD, old treated TB and metastatic prostate cancer on ADT who joins in 2021. Over the next years he is found to have a low-grade bladder cancer, an aspergilloma in his old TB cavity, a combined small cell lung cancer with hypercalcemia and Lambert-Eaton syndrome, then a cost-driven heart failure admission and cauda equina compression from a prostate spinal metastasis.",
+      "events": [
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:20",
+          "end": "2021-09-14T10:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Coronary artery disease", "action": "diagnosed", "onset": "2016-04-01"},
+            {"label": "Old myocardial infarction", "action": "history", "onset": "2016-04-01", "note": "Stent placed at the time per patient; details unknown"},
+            {"label": "Presence of coronary artery stent", "action": "history", "onset": "2016-04-01"},
+            {"label": "Ischemic cardiomyopathy", "icd10": "I25.5", "action": "diagnosed", "onset": "2016-04-01"},
+            {"label": "Heart failure with reduced ejection fraction", "action": "diagnosed", "onset": "2016-04-01", "note": "Followed by outside cardiology; no EF value in hand"},
+            {"label": "Chronic obstructive pulmonary disease", "action": "diagnosed", "onset": "2014-01-01"},
+            {"label": "Personal history of tuberculosis", "action": "history", "onset": "1978-01-01", "note": "Treated as a young adult; inactive cavitary scarring right upper lobe"},
+            {"label": "Metastatic prostate adenocarcinoma", "icd10": "C61", "action": "diagnosed", "onset": "2019-05-01", "note": "Bone metastases at diagnosis; leuprolide via outside urology"},
+            {"label": "Secondary malignant neoplasm of bone", "icd10": "C79.51", "action": "diagnosed", "onset": "2019-05-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "1976-01-01"}
+          ],
+          "medications": [
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Ischemic cardiomyopathy"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Heart failure with reduced ejection fraction"},
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Heart failure with reduced ejection fraction"},
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 1-2 puffs every 4-6 hours as needed for shortness of breath", "dose": {"value": 90, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug_text": "leuprolide acetate 7.5 MG Injection", "action": "historical", "sig": "7.5 mg intramuscularly once a month (given at urology)", "dose": {"value": 7.5, "unit": "mg"}, "frequency": "MONTHLY", "route": "Intramuscular", "course": "chronic", "reason": "Metastatic prostate adenocarcinoma"},
+            {"drug_text": "oxycodone hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain", "dose": {"value": 5, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Bone pain from prostate metastases"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 84.0, "height_cm": 178.0, "labs": {"Low Density Lipoprotein": 82}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T10:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T10:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T10:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-09-14T10:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Retired tire manufacturing plant worker"},
+            {"item": "History of alcohol use", "value": "Occasional"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2021-09-14T10:25"}],
+          "orders": [
+            {"id": "ldct-2021", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Current smoker, 45 pack-years, age 65"},
+            {"id": "records-2021", "action": "placed", "order": "Outside records request: prior PCP, cardiology, urology", "category": "procedure", "reason": "New patient"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-14T10:25", "body": "New patient. 65M here to set up primary care; his old PCP retired and the replacement office was booking out months. Came alone, brought a paper med list and a bag of bottles.\n\nHeart: had a heart attack in 2016, says they 'put a stent in' but can't tell me which artery or anything else about it. Told afterward his heart pump was weak. Sees an outside cardiology group about once a year. Gets winded on the stairs to his apartment, unchanged for a long time, no chest pain since the stent. No orthopnea now, ankles fine most days.\n\nLungs: COPD diagnosed years ago by the old PCP. Uses the once-daily capsule inhaler most days and the rescue inhaler a few times a week. No hospital stays for breathing.\n\nTB: treated as a young man for 'a spot on the lung', took pills for many months, was told the scar would always show on x-rays. Never sick with it again.\n\nProstate: diagnosed 2019; scans at the time showed spread to bone. Since then a monthly leuprolide shot at his urology group. Uses oxycodone 5 mg now and then for the hip ache, maybe a few tablets a week, prescribed through urology/oncology. His brother also had prostate cancer.\n\nSmoking: roughly a pack a day since his late teens, 45 pack-years. Not interested in a quit date today but willing to talk about it again. Alcohol: a couple of beers on occasion. Worked most of his life at a tire plant (rubber compounding, then the curing line). Lives alone, divorced, drives.\n\nFamily: father MI at 68. Mother lung cancer. Brother prostate cancer.\n\nMeds: aspirin 81 daily, atorvastatin 40 daily, metoprolol succinate 50 daily, lisinopril 10 daily, furosemide 40 daily, tiotropium 18 mcg inhaled daily, albuterol MDI prn, leuprolide 7.5 mg IM monthly (urology), oxycodone 5 mg q6h prn. No Part D, so he pays cash at the counter; says the inhaler is the one that hurts.\nAllergies: none known.\n\nExam: well-appearing, pleasant, no distress. Vitals as charted. Clear speech. Neck: no JVD. Heart RRR, no murmur. Lungs: diminished throughout, no wheeze or crackles. Abd soft. No edema. Gait steady.\n\nA/P\n1. CAD s/p MI and stent; ischemic cardiomyopathy with reduced EF. Compensated today. Continue aspirin, atorvastatin, metoprolol, lisinopril, furosemide. Requesting cardiology records including last echo.\n2. COPD. Continue tiotropium/albuterol. Will get spirometry here.\n3. Metastatic prostate cancer on ADT. Urology/oncology manage. Records requested.\n4. Remote treated TB with residual scar.\n5. Tobacco: 45 pk-yr, current. Meets criteria for annual lung screening CT; ordered, he agreed. Advised quitting, brief counseling.\n6. Health maintenance: CMP, CBC, lipids, hep C and HIV once today. Flu and pneumococcal at a nurse visit in a few weeks. Colonoscopy: thinks one was done around 2018, records requested.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T14:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-09-16T14:05", "body": "Hi Mark, your blood work from Tuesday came back fine. Kidney function and potassium are normal on your water pill and lisinopril, your blood counts are normal, and the cholesterol numbers are where we want them on the atorvastatin. Hepatitis C and HIV screens were negative. Nothing to change. Nurse will call to set up the flu and pneumonia shots."}
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T11:40",
+          "orders": [{"id": "records-2021", "action": "done", "date": "2021-09-28T11:40"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Records received: prior primary care, cardiology, urology", "author": "RN", "date": "2021-09-28T11:40", "body": "Outside records received by fax, 61 pages, abstracted for the PCP.\n\nPrior PCP: problem list CAD s/p MI with stent 2016, cardiomyopathy, COPD, remote treated TB, prostate cancer. Screening colonoscopy 2018: normal to the cecum, no polyps, repeat in 10 years. Immunizations: influenza most years; no pneumococcal or shingles vaccine documented; Td more than 10 years ago.\n\nCardiology (outside group, last visit 05/2021): ischemic cardiomyopathy with reduced EF after 2016 MI treated with stent, euvolemic, NYHA II, continue current regimen, yearly follow-up. Echo report referenced but not included in what was sent.\n\nUrology (outside group): prostate adenocarcinoma diagnosed 2019 with bone metastases on imaging; on leuprolide monthly since diagnosis, given in their office. Oncology co-follows. Oxycodone prn for bone pain.\n\nSent to PCP for review. Cardiology asked again for the echo report."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-05T13:40"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-10-05T13:42"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-05T13:45"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T13:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Immunizations", "author": "RN", "date": "2021-10-05T13:55", "body": "Here for vaccines per PCP. Screening questions negative, afebrile. High-dose flu L deltoid, PCV20 R deltoid, COVID booster (Pfizer) L deltoid lower site. VIS given. Observed 15 min, no reaction. Reminded him the screening CT is scheduled next month."}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "imaging",
+          "start": "2021-11-09T08:15",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2021-11-09T08:15", "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING, BASELINE.\nIndication: 65-year-old current smoker, 45 pack-years.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: Right upper lobe fibrocavitary scarring, chronic in appearance, consistent with remote treated tuberculosis; several calcified granulomas in the right upper lobe. No solid or part-solid nodule elsewhere. Central airways patent. No pleural effusion. Heart size normal. Coronary stent noted. Visualized upper abdomen unremarkable.", "conclusion": "Chronic post-tuberculous fibrocavitary change right upper lobe with calcified granulomas. No suspicious nodule. Lung-RADS 2, benign appearance. Continue annual screening LDCT in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2021", "action": "done", "date": "2021-11-09T08:15"}]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "portal_message",
+          "start": "2021-11-10T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lung screening CT result", "author": "PCP", "date": "2021-11-10T16:20", "body": "Mark, the screening CT shows the old TB scar at the top of the right lung, which looks long-standing, and some calcified spots that are also old. No new nodule or anything suspicious. The radiologist's category is the benign one. We'll repeat it in a year. Best thing you can do for these lungs is still the cigarettes - I'm here when you want to talk about it."},
+            {"type": "Patient Message", "title": "RE: Lung screening CT result", "author": "patient", "date": "2021-11-10T19:02", "body": "Thanks doc. Good to hear. Cutting down some, no promises."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up heart failure and COPD; spirometry",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-12-14T11:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "reports": [
+            {"study": "Spirometry", "performed": "2021-12-14T10:55", "text": "Spirometry with bronchodilator. Acceptable and repeatable efforts. Post-bronchodilator FEV1/FVC 0.61. Post-bronchodilator FEV1 56% predicted. FVC within normal range. No significant bronchodilator response.", "conclusion": "Persistent airflow obstruction, moderate, consistent with COPD."}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2021-12-14T11:20"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-14T11:20"},
+            {"procedure": "Spirometry", "performed": "2021-12-14T10:55"},
+            {"procedure": "Immunization administration", "performed": "2021-12-14T11:20"}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-14T11:25", "body": "S: Follow-up. Feels the same as always. Stairs slow him, can do a flight then needs a breather, no change. No chest pain, no orthopnea, no swelling. Inhaler daily, rescue maybe 3x/wk. Smoking about 3/4 ppd now, he says.\nO: Vitals as charted. Lungs diminished, no wheeze. Heart regular. No JVD, no edema.\nSpirometry today: post-BD FEV1/FVC 0.61, FEV1 56% predicted. Fits his COPD, moderate obstruction.\nA/P: COPD with moderate obstruction, stable on tiotropium. HFrEF/ischemic CMP compensated. BMP today. Tdap given. Discussed quitting again, gave the state quitline card. Still no echo from cardiology - re-requested. RTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "telephone",
+          "start": "2022-01-11T09:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Medication cost", "author": "RN", "date": "2022-01-11T10:05", "body": "Pt called, his tiotropium capsule refill rang up at the counter for more than he can swing this month since he has no Part D. Reviewed with him: generic versions of his heart pills are on the low-cost list at most chains, asked him to have the pharmacist price each one. Gave him the number for the Medicare drug plan counselors (SHINE) about enrolling during open enrollment. PCP aware; okay to use a pharmacy discount card for the inhaler. Pt will call back if he can't get it."}
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "office_visit",
+          "start": "2022-03-23T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic care follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-23T14:55", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-23T14:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-23T14:50", "body": "Chronic f/u. Got the inhaler with a discount card, about half the price. Taking everything. Breathing at baseline, winter was okay, no urgent care trips. Hip ache comes and goes, uses oxycodone a couple times a week. Leuprolide shots monthly at urology, they told him his numbers are steady.\nExam: vitals as charted, weight stable. Chest quiet, no wheeze, scattered diminished sounds. Heart RRR. Legs without edema.\nPlan: same meds. BMP. Echo from cardiology still not received; will ask cardiology to send with their next visit note. Smoking ~3/4 ppd, not ready. Shingles vaccine at a nurse visit when he's ready, discussed cost (covered under Part B? no - Part D; he'll check pharmacy cash price). Medicare wellness visit this summer."}
+          ]
+        },
+        {
+          "id": "2022-06-09a",
+          "kind": "nurse_visit",
+          "start": "2022-06-09T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-06-09T11:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-06-09T11:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Shingrix #1", "author": "RN", "date": "2022-06-09T11:35", "body": "Shingrix dose 1 given IM L deltoid, from practice stock under the vaccine assistance program. Tolerated. Told him a sore arm or a day of feeling run down is common. Dose 2 due in 2-6 months, booked for August."}
+          ]
+        },
+        {
+          "id": "2022-07-20a",
+          "kind": "annual_physical",
+          "start": "2022-07-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Initial Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-07-20T09:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-20T09:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-07-20T09:35", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}, {"item": "Housing status", "value": "Lives alone in an apartment"}],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2022-07-20T09:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit (Initial)", "author": "PCP", "date": "2022-07-20T09:30", "body": "Initial AWV.\nHealth risk assessment reviewed: lives alone, independent with ADLs and IADLs, drives, no falls in the past year, hearing and vision adequate (readers). PHQ-9 = 2. Cognition: 3-word recall 3/3, clock normal.\nSmoking about 3/4 ppd, 45 pk-yr. Alcohol occasional. Walks to the corner store most days.\nNo new complaints. Breathing baseline. No chest pain.\nExam: Vitals as charted. Diminished breath sounds without wheeze. RRR. No edema.\nPreventive plan: colonoscopy 2018 normal, next 2028. Lung screening LDCT due again in November - will order at the fall visit. Shingrix #2 scheduled August. Flu and COVID updated in the fall. Pneumococcal complete (PCV20). Tdap 12/2021. Hep C/HIV done.\nAdvance directive: he wants his brother as health care proxy; form given to bring back.\nLabs today: CMP, CBC, lipids.\nRTC fall."}
+          ]
+        },
+        {
+          "id": "2022-08-19a",
+          "kind": "nurse_visit",
+          "start": "2022-08-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-08-19T10:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-08-19T10:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Shingrix #2", "author": "MA", "date": "2022-08-19T10:20", "body": "Second Shingrix IM R deltoid. Pt says the first one knocked him down for an evening, no other issues. Series complete, entered in the state registry."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "office_visit",
+          "start": "2022-10-04T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood in urine; chronic care follow-up",
+          "conditions": [{"label": "Gross hematuria", "icd10": "R31.0", "action": "diagnosed", "onset": "2022-06-01"}],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2022-10-04T15:45", "results": [
+              {"test": "Urine Blood", "text": "Large"},
+              {"test": "Urine Red Blood Cells", "text": "25-50 /HPF"},
+              {"test": "Urine Nitrite", "text": "Negative"},
+              {"test": "Urine Leukocyte Esterase", "text": "Negative"},
+              {"test": "Urine Protein", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2022-10-04T15:45", "resulted": "2022-10-06T09:10", "results": [{"test": "Urine Culture", "text": "No growth"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-04T15:45", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T16:07"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-10-04T16:00"},
+            {"procedure": "Immunization administration", "performed": "2022-10-04T16:07"}
+          ],
+          "orders": [
+            {"id": "uro-hematuria", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "Painless gross hematuria"},
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-10-04T16:00", "body": "CC: blood in urine.\nHPI: Since around June he has noticed the urine turning pink-to-red now and then, every couple of weeks, lasting a day, then clear again. No pain with it, no burning, no frequency or urgency, no flank pain, no clots he's seen. No injury, no catheter or scope recently. Didn't mention it to urology at his last shot because 'it had cleared up that week'.\nAlso here for routine f/u: breathing baseline, no chest pain, ankles fine.\nExam: Vitals as charted, afebrile. Abdomen soft, no CVA tenderness. No edema. Lungs diminished, no wheeze.\nUA in office: large blood, 25-50 RBC/hpf, nitrite neg, LE neg, protein neg. Culture sent.\nA/P:\n1. Painless gross hematuria in a 66 yo smoker who worked in rubber/tire manufacturing: needs cystoscopy and upper tract imaging. Sending back to his own urology group with a note asking for hematuria workup; culture pending. BMP today.\n2. Lung screening: annual LDCT ordered for November.\n3. HFrEF/CAD/COPD stable, no changes.\n4. High-dose flu and bivalent COVID booster given.\nRTC after urology."},
+            {"type": "Result Note", "title": "Urine culture", "author": "PCP", "date": "2022-10-06T12:30", "body": "Urine culture no growth - not an infection. Urology referral stands. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "telephone",
+          "start": "2022-11-08T09:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Screening CT scheduling", "author": "front desk", "date": "2022-11-08T09:35", "body": "Radiology scheduling called to book his yearly lung screening CT. Pt asked to hold off until after his urology appointment on 12/1, 'one thing at a time'. Told him we'd keep the order open and remind him in the new year. Routed to PCP FYI."}
+          ]
+        },
+        {
+          "id": "2022-12-01a",
+          "kind": "specialist_visit",
+          "start": "2022-12-01T13:00",
+          "service": "Urology",
+          "reason": "Hematuria evaluation",
+          "orders": [{"id": "uro-hematuria", "action": "done", "date": "2022-12-01T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology Consultation: Hematuria", "author": "urology", "date": "2022-12-08T10:15", "body": "OUTSIDE UROLOGY GROUP - CONSULTATION\nDate of visit: 12/01/2022\nReason: Painless hematuria, referred by PCP. Known to our practice for metastatic prostate adenocarcinoma on monthly leuprolide.\n\nHistory: Six months of intermittent visible blood in the urine without pain. Denies dysuria, urgency, frequency or flank discomfort. No trauma, no recent instrumentation. Smoker, about a pack a day on and off for decades; long employment in rubber and tire manufacturing.\n\nPMH: CAD with prior MI and PCI; ischemic cardiomyopathy; COPD; remote treated pulmonary TB; metastatic prostate adenocarcinoma (2019, bone).\nMedications: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, furosemide 40, tiotropium 18 mcg, albuterol prn, leuprolide 7.5 mg IM monthly, oxycodone 5 mg prn.\nAllergies: NKDA.\nFamily: father MI at 68; mother lung cancer; brother prostate cancer.\n\nExam: Vitals unremarkable. General and abdominal exam unremarkable; no CVA tenderness. External genitalia normal.\n\nData: UA today confirms hematuria; nitrite, leukocyte esterase and protein negative. Serum creatinine and BUN normal.\n\nOffice flexible cystoscopy (performed today): urethra normal; prostatic urethra without obstruction; a papillary-appearing tumor on the right lateral bladder wall; remaining mucosa without other lesions; ureteral orifices in normal position.\n\nImpression: Bladder tumor in a smoker with occupational exposure; urothelial carcinoma suspected.\nPlan: CT urogram for the upper tracts. Transurethral resection of bladder tumor under anesthesia, to be scheduled in January. Leuprolide continues on schedule. Cardiology clearance letter requested.\n\nThank you for the referral."}
+          ]
+        },
+        {
+          "id": "2022-12-12a",
+          "kind": "imaging",
+          "start": "2022-12-12T07:50",
+          "service": "Radiology",
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2022-12-12T07:50", "text": "CT UROGRAM (CT abdomen and pelvis without and with IV contrast, nephrographic and excretory phases).\nIndication: Gross hematuria; bladder tumor on cystoscopy.\nFindings: Kidneys normal in size and enhancement, no mass or calculus. No hydronephrosis. Collecting systems and ureters opacify fully on excretory images without filling defect. Bladder: 1.6 cm enhancing papillary lesion arising from the right lateral bladder wall, no perivesical stranding. No pelvic or retroperitoneal lymphadenopathy. Prostate small. Scattered sclerotic foci in the pelvis and lower lumbar spine, consistent with the known prostate metastases. Liver, spleen, pancreas and adrenals unremarkable. Abdominal aorta normal in caliber.", "conclusion": "1.6 cm papillary lesion of the right lateral bladder wall, consistent with the cystoscopic tumor. Normal upper tracts. Known sclerotic osseous metastases."}
+          ]
+        }
+      ]
+    }
+  ]
+}

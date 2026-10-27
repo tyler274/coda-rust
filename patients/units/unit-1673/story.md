@@ -73,3 +73,8 @@
 - 2026-08-17 annual physical: exclusive breastfeeding resolved (P, A14)
 - 2026-08-19 portal: labs normal (P)
 - 2026-10-07 booked: nurse visit, flu shot (P)
+
+
+## Last seen
+
+The practice last saw MRN00001673 on 2026-08-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

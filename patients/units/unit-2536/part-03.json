@@ -1,0 +1,440 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002536",
+      "events": [
+        {
+          "id": "2023-01-31a",
+          "kind": "office_visit",
+          "start": "2023-01-31T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Yellow eyes and skin",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-01-31T15:35", "results": [
+              {"test": "Bilirubin, Total", "value": 3.2},
+              {"test": "Bilirubin, Direct", "value": 0.5},
+              {"test": "Aspartate Aminotransferase", "value": 30},
+              {"test": "Alanine Aminotransferase", "value": 28},
+              {"test": "Alkaline Phosphatase", "value": 75}
+            ]},
+            {"panel": null, "collected": "2023-01-31T15:35", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 2.7}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-31T15:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-31T15:00"},
+            {"procedure": "Venipuncture", "performed": "2023-01-31T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-01-31T15:40",
+              "body": "S: Same-day slot. Two days of yellow eyes and a yellowish tinge to his skin. He has been studying for exams and skipping meals, not much sleep. Feels fine otherwise. No pain, no itching, urine and stool look normal. Sugars a little higher than usual with the odd eating, no lows. Same pattern as the spells GI has seen (Dubin-Johnson in 2021, then a Gilbert-type spell last May).\n\nMeds: glargine 16 u qhs, lispro scale, valacyclovir prn. NKDA.\n\nO: vitals as charted. Looks well. Scleral icterus. Abdomen soft, nontender, liver and spleen not enlarged.\n\nA/P\nRecurrent jaundice in known Gilbert and Dubin-Johnson syndromes, triggered by fasting and short sleep. Hepatic panel with fractionation and CBC today to make sure it looks like his usual. Regular meals even during exams - set alarms if needed, which also helps the diabetes. Expect it to clear in a few days; call if it lingers past 2 weeks or if he gets pain, dark urine or pale stool."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-02a",
+          "kind": "portal_message",
+          "start": "2023-02-02T09:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests",
+              "author": "PCP",
+              "date": "2023-02-02T09:20",
+              "body": "Bilirubin is 3.2, mostly the indirect kind, with normal liver enzymes and a normal blood count. Same picture GI saw last spring. Nothing to treat. Eat regularly and it should fade over the next several days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Liver tests",
+              "author": "patient",
+              "date": "2023-02-02T18:47",
+              "body": "Thanks. Already looking less yellow today. Back to actual meals."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "specialist_visit",
+          "start": "2023-03-07T10:15",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-03-07T10:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2023-03-13T12:00",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 03/07/2023\n\nType 1 diabetes since 05/2021. Steady control. Meter average stable, highest readings in late January during exams with irregular meals. No severe hypoglycemia. A1c today.\n\nGlargine 16 units at bedtime and lispro sliding scale continued. Discussed exercise snacks for the spring soccer season. Return 4 to 6 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "portal_message",
+          "start": "2023-05-16T07:58",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Valacyclovir refill",
+              "author": "patient",
+              "date": "2023-05-16T07:58",
+              "body": "Out of refills on the valacyclovir. No cold sore right now, I just like to have it in the drawer."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "author": "RN",
+              "date": "2023-05-16T11:40",
+              "body": "Valacyclovir 500 mg BID prn renewed per PCP, 30 tabs with 2 refills. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-13a",
+          "kind": "hospital_admission",
+          "start": "2023-07-13T01:50",
+          "end": "2023-07-14T11:30",
+          "service": "General Surgery",
+          "reason": "Acute appendicitis",
+          "conditions": [
+            {"label": "Acute appendicitis", "icd10": "K35.80", "action": "diagnosed", "onset": "2023-07-12"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for pain, no more than 6 tablets a day", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "short", "reason": "postoperative pain"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-07-13T02:20", "results": [{"test": "White Blood Cells", "value": 13.4}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-07-13T02:20", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-07-13T03:40", "issued": "2023-07-13T04:15", "text": "Indication: right lower quadrant pain.\nTechnique: axial CT of the abdomen and pelvis after intravenous contrast, with coronal and sagittal reformats.\nFindings: The appendix is dilated with wall enhancement and surrounding fat stranding. No appendicolith. No extraluminal gas, fluid collection or abscess. Liver, gallbladder, spleen, pancreas, adrenals and kidneys are normal. No bowel obstruction. No free fluid. Lung bases clear. No acute osseous abnormality.", "conclusion": "Acute uncomplicated appendicitis. No perforation or abscess."}
+          ],
+          "procedures": [
+            {"procedure": "Laparoscopic appendectomy", "performed": "2023-07-13T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: laparoscopic appendectomy",
+              "author": "general surgery",
+              "date": "2023-09-05T10:00",
+              "body": "REGIONAL HOSPITAL - OPERATIVE REPORT\nDate of surgery: 07/13/2023\nPreoperative diagnosis: acute appendicitis\nPostoperative diagnosis: same, uncomplicated\nProcedure: laparoscopic appendectomy\nAnesthesia: general endotracheal\nFindings: inflamed, nonperforated appendix; no abscess or purulent fluid.\nDescription: three-port technique with umbilical access. Mesoappendix divided with energy device, base secured with a stapler. Specimen retrieved in a bag. Ports closed, skin with absorbable suture and glue.\nEBL minimal. No complications. Insulin managed per perioperative protocol with endocrinology input by phone.\nPathology: acute appendicitis.\nAllergies: NKDA.\n\n[Scanned 09/05/2023]"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "author": "general surgery",
+              "date": "2023-09-05T10:05",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted: 07/13/2023 via the emergency department\nDischarged: 07/14/2023\n\n24-year-old man with type 1 diabetes, Gilbert and Dubin-Johnson syndromes, who came in overnight with right lower quadrant pain. WBC 13.4. CT showed uncomplicated acute appendicitis. Taken for laparoscopic appendectomy the same morning without complication. Pathology: acute appendicitis.\n\nHospital course: tolerated diet by the evening of surgery, pain controlled on acetaminophen, walking. Glucose managed on his home basal insulin with correction lispro. Discharged postoperative day 1.\n\nDischarge medications: home insulin glargine 16 units at bedtime and lispro sliding scale; valacyclovir as needed; acetaminophen 500 mg 1 to 2 tablets every 6 hours as needed.\nActivity: no heavy lifting or contact sports for 2 weeks.\nFollow-up: general surgery clinic in 1 week.\nAllergies: NKDA.\n\n[Received 09/05/2023 after second request]"
+            }
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "portal_message",
+          "start": "2023-07-17T12:30",
+          "reason": "Recent surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Had my appendix out",
+              "author": "patient",
+              "date": "2023-07-17T12:30",
+              "body": "Just letting you know I had my appendix out last Thursday at the hospital. Went in at night with bad pain on the right side, they did a CT and took it out laparoscopically that morning. Home since Friday, feeling ok, only taking Tylenol. I see the surgeon this week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Had my appendix out",
+              "author": "PCP",
+              "date": "2023-07-17T16:05",
+              "body": "Sorry you went through that, and glad it went smoothly. Keep an eye on your sugars while you're less active and eating less. We'll ask the hospital for the records. Let's do a short video check after you've seen the surgeon."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-21a",
+          "kind": "specialist_visit",
+          "start": "2023-07-21T09:40",
+          "service": "General Surgery",
+          "reason": "Postoperative follow-up",
+          "conditions": [
+            {"label": "Acute appendicitis", "icd10": "K35.80", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-07-21T10:10", "results": [
+              {"test": "Bilirubin, Total", "value": 3.1},
+              {"test": "Bilirubin, Direct", "value": 0.3},
+              {"test": "Aspartate Aminotransferase"},
+              {"test": "Alanine Aminotransferase"},
+              {"test": "Alkaline Phosphatase"}
+            ]},
+            {"panel": null, "collected": "2023-07-21T10:10", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 2.8}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-21T10:10", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery postoperative visit",
+              "author": "general surgery",
+              "date": "2023-07-26T14:30",
+              "body": "OUTSIDE GENERAL SURGERY CLINIC - POSTOPERATIVE VISIT\nDate of visit: 07/21/2023\n\nOne week out from laparoscopic appendectomy for uncomplicated acute appendicitis. Recovering well. For the last two days the whites of his eyes have looked yellow to him. No abdominal pain, nausea or vomiting; bowels normal; passing gas; eating well, appetite better than in the hospital. No fevers or chills, no dark urine or pale stools. Walks every day. A little tired. Using acetaminophen now and then.\nKnown Gilbert and Dubin-Johnson syndromes with previous yellow spells during exam periods in 2022 and early 2023. He mentions his father was once told of 'some liver enzyme issue' that was never treated.\n\nExam: afebrile. Scleral icterus, skin not jaundiced. Abdomen soft, nontender. Port sites healed, no erythema, no fluid collection.\n\nLabs: total bilirubin 3.1 mg/dL, indirect 2.8, direct 0.3. AST, ALT and alkaline phosphatase normal. Hemoglobin and hematocrit normal.\n\nImpression: normal recovery. Icterus is an unconjugated rise consistent with his Gilbert syndrome after surgery and reduced intake, not a surgical complication.\nPlan: resume full activity including soccer after 2 weeks from surgery. No further surgical follow-up needed.\n\nAllergies: NKDA.\nGeneral Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "telehealth_visit",
+          "start": "2023-08-08T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-op check",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-08-08T12:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2023-08-08T12:45",
+              "body": "Video visit, pt at home, identity confirmed.\n\nFollow-up after laparoscopic appendectomy 7/13 at the regional hospital. Surgeon's note received: normal recovery, eyes yellowed for a few days afterward with an unconjugated bilirubin rise that fit his Gilbert syndrome. Yellow gone now. Back to running, cleared for soccer next week. Done with acetaminophen. Sugars back to his usual.\n\nIncisions look healed on camera.\n\nA/P\n- s/p laparoscopic appendectomy - surgical history updated. Still waiting on hospital discharge paperwork; front desk to re-request.\n- T1DM, Gilbert/Dubin-Johnson - unchanged.\nPhysical next year; flu in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:10",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records re-requested",
+              "author": "front desk",
+              "date": "2023-08-22T10:10",
+              "body": "Hospital records not received from first request (7/18). Called the medical records office, re-faxed signed release for 7/13-7/14 admission: discharge summary, op note, CT and path."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T16:06"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T16:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID vaccines",
+              "author": "RN",
+              "date": "2023-10-03T16:25",
+              "body": "Flu (quadrivalent) left deltoid and 2023-24 COVID vaccine right deltoid, both IM. No acute illness. Observed 15 min, no reaction. Reminded him a sore arm and tiredness for a day can bump sugars a little."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "outside_records",
+          "start": "2023-11-14T09:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2023-11-14T09:00",
+              "body": "Diabetic eye exam report, outside optometry practice. Exam date 11/09/2023.\nAcuity 20/20 each eye uncorrected. Dilated exam: optic nerves healthy, maculae flat, no hemorrhages, exudates or microaneurysms. No diabetic retinopathy OU.\nNext dilated exam in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "specialist_visit",
+          "start": "2024-01-23T14:30",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.4}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-01-23T14:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2024-01-30T08:40",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 01/23/2024\n\nType 1 diabetes, 2.5 years. Appendectomy last July went smoothly. Busy term with a part-time job, more skipped lunches and evening highs. No severe lows. A1c today, a little above last year's.\n\nNo change: glargine 16 units at bedtime, lispro sliding scale with meals. Encouraged pre-bolusing and not skipping lunch. Return 6 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T22:14",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2024-03-12T22:14",
+              "body": "Can you renew the test strips and pen needles? Endo said to ask you since you sent them last time. Also low on valacyclovir."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills sent",
+              "author": "MA",
+              "date": "2024-03-13T09:30",
+              "body": "Per PCP: test strips (4x/day testing), pen needles 32G 4 mm, and valacyclovir 500 mg BID prn renewed to his pharmacy. Insulin pens stay with endocrinology. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "specialist_visit",
+          "start": "2024-05-22T11:15",
+          "service": "Dermatology",
+          "reason": "Painful lip and mouth sores",
+          "conditions": [
+            {"label": "Herpes simplex virus infection", "icd10": "B00.9", "action": "diagnosed", "onset": "2024-05-19"}
+          ],
+          "measure": ["bp", "hr"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology visit",
+              "author": "dermatology",
+              "date": "2024-06-04T13:15",
+              "body": "OUTSIDE DERMATOLOGY NOTE\nDate of visit: 05/22/2024\n\n25-year-old man with recurrent HSV-1, type 1 diabetes and Gilbert syndrome that flares with stress. Three days of painful sores on the lips and inside the mouth, with a mild fever. A tingling feeling in the area came first, then the blisters. He has had this a number of times, mostly with stress or short sleep.\n\nMeds: insulin glargine, insulin lispro, valacyclovir 500 mg twice daily as needed. NKDA.\n\nExam: grouped vesicles and shallow erosions limited to the perioral skin and the oral mucosa. No eye involvement. No lesions elsewhere.\n\nAssessment: herpes simplex virus infection, recurrence of his known HSV-1, clinical diagnosis.\nPlan: take his valacyclovir 500 mg twice daily as prescribed now; supportive care with fluids and soft foods. Return or call for any eye pain or redness, or if lesions spread.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-23a",
+          "kind": "portal_message",
+          "start": "2024-05-23T19:30",
+          "reason": "Mouth sores",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw dermatology",
+              "author": "patient",
+              "date": "2024-05-23T19:30",
+              "body": "FYI I saw dermatology yesterday, the cold sores this time went inside my mouth too and I had a low fever. They said it's my usual herpes and to take the valacyclovir. Eating is annoying but I'm ok. Sugars are running a bit high."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Saw dermatology",
+              "author": "PCP",
+              "date": "2024-05-24T08:10",
+              "body": "Thanks for letting me know. Stay on top of fluids, and keep checking more often while you're sick - follow your endocrinology sick-day plan for the highs. If you can't keep fluids down or you see ketones, call us right away. Let me know if it isn't clearly better in a week."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T14:00",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization: insulin lispro",
+              "author": "MA",
+              "date": "2024-07-09T14:00",
+              "body": "Pharmacy says the student plan changed preferred rapid-acting insulin. Endocrinology office handling the PA for lispro pens; pharmacy gave him a 7-day supply in the meantime. Pt aware. Nothing further needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {"label": "Herpes simplex virus infection", "icd10": "B00.9", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-18T09:05", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-18T09:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-18T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-18T09:05", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-18T09:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-18T09:21"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-18T08:40"},
+            {"procedure": "Venipuncture", "performed": "2024-09-18T09:05"},
+            {"procedure": "Immunization administration", "performed": "2024-09-18T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "author": "MA",
+              "date": "2024-09-18T08:45",
+              "body": "Physical. Med list reviewed: glargine 16 units at bedtime, lispro per sliding scale, valacyclovir prn. NKDA. PHQ-9 = 4. Requests flu and covid."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-18T09:30",
+              "body": "PHYSICAL\n\n25 y/o, still finishing his degree part-time while working. Overall well.\n\nInterval: dermatology in May for an HSV-1 flare that spread inside the mouth with a low fever - healed within about 10 days on his valacyclovir, nothing since. No yellow spells since the one after his appendectomy last summer. Endocrinology in January; says the A1c 'crept up a bit' with skipped lunches. Has had his eye exam reminder, says he'll go this winter.\n\nMeds: as rooming. NKDA.\nSocial: never smoker, no alcohol, playing soccer again.\n\nExam: vitals as charted. Well-appearing. No icterus. Lips and oral mucosa clear. Thyroid normal. Heart regular, no murmur; lungs clear. Abdomen soft, healed port scars, no organomegaly. Feet: intact skin, normal monofilament, pulses palpable. Mood normal.\n\nA/P\n1. HSV infection (May episode) - resolved. Recurrent HSV-1 continues with episodic valacyclovir.\n2. T1DM - with endocrinology. A1c, microalbumin, CMP, CBC, lipids today. Eye exam this winter.\n3. Gilbert / Dubin-Johnson - quiet.\n4. Flu and 2024-25 covid given. PHQ-9 4, exams and work stress, coping fine.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T11:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2024-09-20T11:50",
+              "body": "Labs look fine. A1c is a touch higher than a couple of years ago but close to where endocrinology has you; they'll fine-tune. Kidneys and urine protein normal, cholesterol normal, blood counts normal. Bilirubin mildly up with normal enzymes, your usual."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telephone",
+          "start": "2024-12-10T10:30",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance card",
+              "author": "front desk",
+              "date": "2024-12-10T10:30",
+              "body": "Pt uploaded new student health plan card for spring term. Same plan, new member ID. Demographics updated, eligibility verified."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

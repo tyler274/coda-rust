@@ -1,0 +1,1009 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001776",
+   "events": [
+    {
+     "id": "2020-01-07a",
+     "kind": "imaging",
+     "start": "2020-01-07T07:45",
+     "service": "Radiology — outside imaging center",
+     "reason": "DXA bone density",
+     "reports": [
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2020-01-07T07:45",
+       "text": "EXAM: Dual-energy x-ray absorptiometry, lumbar spine and left hip.\nINDICATION: 30-year-old woman (age 30 at study) with low body weight and family history of osteoporosis.\nTECHNIQUE: Standard acquisition on a fan-beam densitometer. L1–L4 analyzed; no vertebrae excluded. Left proximal femur.\nFINDINGS:\nLumbar spine L1–L4: BMD 0.871 g/cm2. T-score -1.7. Z-score -1.6.\nLeft femoral neck: BMD 0.715 g/cm2. T-score -1.4. Z-score -1.3.\nLeft total hip: T-score -1.1.\nNo prior study for comparison.",
+       "conclusion": "Low bone mass (osteopenia range) at the lumbar spine and femoral neck. In a premenopausal woman, Z-scores are preferred; secondary causes should be considered clinically."
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2020",
+       "action": "done",
+       "date": "2020-01-07T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "DXA Bone Density Report",
+       "author": "radiology",
+       "date": "2020-01-08T10:30",
+       "body": "Bone density study of 2020-01-07: lumbar spine T -1.7 / Z -1.6; left femoral neck T -1.4 / Z -1.3. Impression: low bone mass, osteopenia range. Consider evaluation for secondary causes in a premenopausal patient."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-09a",
+     "kind": "telephone",
+     "start": "2020-01-09T16:40",
+     "reason": "DXA result",
+     "conditions": [
+      {
+       "label": "Osteopenia",
+       "action": "diagnosed",
+       "onset": "2020-01-07"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily with food",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "osteopenia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "DXA Result Call",
+       "author": "PCP",
+       "date": "2020-01-09T16:40",
+       "body": "Reviewed bone density with Juniper by phone. Thinner bones than expected for 30 — the osteopenia range. Most likely tied to whatever is going on with her gut (poor absorption, low weight); GI visit is next month. Start calcium 600 mg with vitamin D 400 units twice a day with food, sent to her pharmacy. Weight-bearing exercise, which she already does. We'll recheck bone density in a few years."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-07a",
+     "kind": "outside_records",
+     "start": "2020-02-07T13:10",
+     "reason": "GI consultation letter received",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-02-03T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 74
+        },
+        {
+         "test": "Iron",
+         "value": 30
+        },
+        {
+         "test": "Total Iron-Binding Capacity",
+         "value": 400
+        },
+        {
+         "test": "Ferritin",
+         "value": 15
+        },
+        {
+         "test": "Calcium",
+         "value": 8.2
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 120
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "done",
+       "date": "2020-02-07T13:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Consultation",
+       "author": "gastroenterology",
+       "date": "2020-02-07T13:10",
+       "body": "GASTROENTEROLOGY — NEW PATIENT CONSULTATION\nDate of visit: 2020-02-03\nReferred by: primary care\n\nThank you for sending Ms. Nakamura, a 30-year-old teacher, seen for half a year of loose stools, bloating and weight loss with a painful tongue.\n\nShe describes stools that are loose and frequent, with abdominal distention that builds over the day. She has noticed she feels worse after bread or pasta. She is fatigued. She points to a smooth, sore, reddened area on the tongue. Her primary care physician recently obtained a bone density study showing osteopenia; she is now on calcium with vitamin D.\n\nPMH: osteopenia (DXA January 2020). Microcytic anemia on recent primary care labs.\nPSH: none.\nMedications: calcium carbonate 600 mg / vitamin D3 400 units twice daily.\nAllergies: no known drug allergies.\nFamily history: sister with celiac disease; mother with fibroids; maternal grandmother with osteoporosis.\nSocial: never smoker, no alcohol. Elementary school teacher.\n\nExam: pale, thin young woman. BMI 18. Atrophic glossitis. Abdomen soft, mildly distended, not tender. Neurologic: sensation diminished to the wrists and mid-shins in a stocking-glove pattern; strength normal.\n\nLabs drawn here today: hemoglobin 10 g/dL, MCV 74 fL, iron 30 ug/dL, TIBC 400 ug/dL, ferritin 15 ng/mL, calcium 8.2 mg/dL, alkaline phosphatase 120 U/L. Tissue transglutaminase IgA sent, result to follow.\n\nImpression: chronic diarrhea with weight loss, iron-poor microcytic anemia, low calcium and glossitis in a patient with a sister with celiac disease. Celiac disease is the leading consideration. The sensory findings may reflect nutritional deficiency.\n\nPlan:\n1. Await tTG-IgA.\n2. Upper endoscopy with duodenal biopsies — she should keep eating gluten until then.\n3. If confirmed, gluten-free diet with dietitian teaching.\n4. Iron repletion and bone health to be followed with her primary care physician.\n\nWe will send results as they return."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-14a",
+     "kind": "outside_records",
+     "start": "2020-02-14T09:30",
+     "reason": "GI result note received",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-02-03T11:20",
+       "resulted": "2020-02-10T15:00",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 96
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "GI Result Note — Celiac Serology",
+       "author": "gastroenterology",
+       "date": "2020-02-14T09:30",
+       "body": "FYI to primary care. Tissue transglutaminase IgA from 2/3/2020: 96 U/mL (reference <4). Strongly positive. EGD with duodenal biopsies scheduled for 2/26. Patient informed and asked to continue a normal diet until the procedure."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-06a",
+     "kind": "outside_records",
+     "start": "2020-03-06T11:45",
+     "reason": "EGD and pathology received",
+     "conditions": [
+      {
+       "label": "Celiac disease",
+       "action": "diagnosed",
+       "onset": "2020-02-03"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2020-02-26T08:30",
+       "issued": "2020-03-02T14:00",
+       "text": "SPECIMEN: Duodenum, bulb and second portion, cold forceps biopsies (6 fragments).\nGROSS: Multiple tan-pink soft tissue fragments, 0.2–0.3 cm, entirely submitted.\nMICROSCOPIC: Duodenal mucosa with total villous blunting, crypt hyperplasia and marked increase in intraepithelial lymphocytes (more than 40 per 100 enterocytes). Lamina propria with increased plasma cells. No granulomas, no dysplasia, no organisms identified.",
+       "conclusion": "Duodenum, biopsies: villous atrophy with crypt hyperplasia and intraepithelial lymphocytosis (Marsh 3), consistent with celiac disease in the setting of positive serology."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Upper endoscopy with biopsy",
+       "performed": "2020-02-26T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Upper Endoscopy Report",
+       "author": "gastroenterology",
+       "date": "2020-03-06T11:45",
+       "body": "ENDOSCOPY REPORT — date of procedure 2020-02-26\nProcedure: esophagogastroduodenoscopy with biopsy.\nIndication: positive tTG-IgA, chronic diarrhea, iron deficiency.\nSedation: monitored anesthesia care. Tolerated well.\nFindings: Esophagus normal. Stomach normal. Duodenal bulb and second portion with scalloped folds and a mosaic mucosal pattern. Biopsies x6 taken from bulb and distal duodenum.\nComplications: none.\nImpression: duodenal appearance suggestive of celiac disease; await pathology.\n\nADDENDUM (pathology): Marsh 3 villous atrophy with intraepithelial lymphocytosis. Diagnosis: celiac disease. Plan: strict gluten-free diet, dietitian visit arranged, repeat tTG in about 6 months. Primary care to follow anemia and bone health."
+      },
+      {
+       "type": "Result Note",
+       "title": "Celiac Confirmation Reviewed",
+       "author": "PCP",
+       "date": "2020-03-06T17:05",
+       "body": "GI scope and biopsies confirm celiac disease. Added to problem list. Portal message to Juniper: 'This confirms celiac. The gluten-free diet is the treatment and most people feel much better within a few months. Let's do a video visit in April to see how it's going.'"
+      }
+     ]
+    },
+    {
+     "id": "2020-04-21a",
+     "kind": "telehealth_visit",
+     "start": "2020-04-21T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Celiac follow-up",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-04-21T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit — Celiac Follow-up",
+       "author": "PCP",
+       "date": "2020-04-21T16:00",
+       "body": "Video visit from her kitchen; identity checked with date of birth. She is teaching her class over video from home and finds it exhausting but manageable.\n\nStrictly gluten-free since early March after the dietitian session; reads labels, replaced her toaster, eats at home. Stools now formed most days, bloating much better. Tongue no longer sore. Weight up by her bathroom scale. Still tired in the afternoons.\n\nTaking calcium/vitamin D twice daily.\n\nAssessment: celiac disease, early good response to diet. Osteopenia on calcium/D.\nPlan: office visit with labs in the summer when the office reopens to routine visits — blood count, iron, tTG. Keep going."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-27a",
+     "kind": "office_visit",
+     "start": "2020-07-27T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue and lightheadedness",
+     "state": {
+      "weight_kg": 62.6,
+      "labs": {
+       "Hemoglobin": 10.4,
+       "Mean Corpuscular Volume": 76,
+       "Ferritin": 11,
+       "Iron": 34,
+       "Total Iron-Binding Capacity": 430,
+       "Tissue Transglutaminase IgA": 41,
+       "Calcium": 8.5,
+       "Alkaline Phosphatase": 108
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Iron deficiency anemia",
+       "action": "diagnosed",
+       "onset": "2020-02-03"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ferrous sulfate 325 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth three times daily",
+       "dose": {
+        "value": 325,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "iron deficiency anemia"
+      },
+      {
+       "drug_text": "multivitamin Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "celiac disease"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-07-27T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.4
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 76
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2020-07-27T11:00",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 11
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-07-27T11:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-07-27T11:00",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 41
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-07-27T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2020-07-27T10:15",
+       "body": "OFFICE VISIT — in person, masked.\n\nCC: tired for months, woozy when she stands up fast.\n\nHPI: Six months now of fatigue — gets winded and worn out walking short distances or climbing the stairs to her classroom, which wasn't true a year ago. Brief lightheadedness if she pops up from the floor with the kids or out of bed. No fainting. Appetite good. GI symptoms have resolved on the gluten-free diet: no diarrhea, no change in bowel habits, no further weight loss — in fact weight is back up. No recent illness. Eats mixed meals including meat; not vegetarian. Periods every 28 days, 5 days, moderate flow, some cramps. No melena, no bright red blood, no blood in urine, no other bleeding.\n\nG0. Calcium/vitamin D twice daily — the only thing she takes.\n\nROS otherwise negative; thinking, vision and mood all fine.\n\nExam: BMI 23. Looks well, a bit pale. Conjunctival pallor. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no liver or spleen edge, no masses. No cervical, axillary or inguinal nodes. Neuro: intact today.\n\nA/P:\n1. Iron deficiency anemia — persistent microcytic anemia with low iron stores (GI's February iron studies; repeat today). Cause is malabsorption from celiac; menstrual losses sound modest. Start ferrous sulfate 325 mg three times daily; take with orange juice or vitamin C, separate from calcium by 2 hours. Counseled on dark stools and constipation.\n2. Celiac disease — doing well on diet. tTG today. Start a daily gluten-free multivitamin.\n3. Osteopenia — continue calcium/D.\n4. Orthostatic lightheadedness likely from anemia; fluids, rise slowly.\n\nRecheck CBC and iron in about 3 months."
+      },
+      {
+       "type": "Patient Instructions",
+       "title": "Iron Instructions",
+       "author": "PCP",
+       "date": "2020-07-27T10:50",
+       "body": "Ferrous sulfate 325 mg: one tablet three times a day. Take with a little vitamin C (juice is fine). Keep it 2 hours away from your calcium and from tea or coffee. Stools will turn dark — that is expected. If your stomach rebels, call and we can adjust. Daily multivitamin: choose one labeled gluten-free."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-29a",
+     "kind": "portal_message",
+     "start": "2020-07-29T08:10",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your Lab Results",
+       "author": "PCP",
+       "date": "2020-07-29T08:10",
+       "body": "Hi Juniper — hemoglobin 10.4, ferritin 11: still low on iron, which fits how tired you feel, so the iron pills are the right move. The celiac antibody has come down from 96 to 41, a real improvement on the diet. Kidney and liver tests fine; calcium on the low side of normal. Let's recheck the blood count in October."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Your Lab Results",
+       "author": "patient",
+       "date": "2020-07-29T19:44",
+       "body": "Thank you! Glad the number is going down. Started the iron yesterday, so far so good. See you in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-13a",
+     "kind": "nurse_visit",
+     "start": "2020-10-13T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and labs",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.6,
+       "Ferritin": 13,
+       "Iron": 38,
+       "Total Iron-Binding Capacity": 420
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-10-13T15:45",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.6
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2020-10-13T15:45",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 13
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-13T15:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-13T15:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-10-13T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Nurse Visit — Flu Vaccine and Lab Draw",
+       "author": "RN",
+       "date": "2020-10-13T16:00",
+       "body": "Screened at door, no COVID symptoms. Blood drawn for CBC and iron studies per PCP. Flu vaccine 0.5 mL IM left deltoid, VIS reviewed. Reports taking iron three times daily most days; occasionally misses the midday dose at school."
+      },
+      {
+       "type": "Result Note",
+       "title": "CBC and Iron Reviewed",
+       "author": "PCP",
+       "date": "2020-10-14T12:20",
+       "body": "Hgb 10.6, ferritin 13. Barely moved after nearly 3 months of oral iron. Asked front desk to book her for an in-person visit next month to talk about next steps."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-16a",
+     "kind": "office_visit",
+     "start": "2020-11-16T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Anemia not improving",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "placed",
+       "order": "Hematology referral",
+       "category": "referral",
+       "to": "Hematology",
+       "reason": "iron deficiency anemia not responding to oral iron"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-11-16T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2020-11-16T15:45",
+       "body": "Follow-up of anemia.\n\nOn ferrous sulfate three times daily since late July, misses the occasional midday dose. Some dark stools, mild nausea if she takes it on an empty stomach. Still tired. Gluten-free diet strict. Since September she has stopped eating meat and eats vegetarian, mostly beans, eggs, dairy, rice and gluten-free grains. Periods unchanged by her account.\n\nOctober labs: hemoglobin 10.6, ferritin 13 — little response.\n\nExam: pale conjunctivae. Heart regular. Abdomen benign. Weight steady.\n\nA/P: Iron deficiency anemia with poor response to oral iron in a patient with celiac disease (absorption) and now a vegetarian diet. Referring to hematology to weigh further evaluation and options. Continue oral iron, take with food if nauseated. Celiac — stable, tTG due in spring."
+      }
+     ],
+     "state": {
+      "weight_kg": 60.4
+     }
+    },
+    {
+     "id": "2021-01-29a",
+     "kind": "outside_records",
+     "start": "2021-01-29T10:20",
+     "reason": "Hematology consultation received",
+     "conditions": [
+      {
+       "label": "Restless legs syndrome",
+       "action": "diagnosed",
+       "onset": "2020-09-01"
+      },
+      {
+       "label": "Menorrhagia",
+       "action": "diagnosed",
+       "onset": "2021-01-22",
+       "note": "heavy menses 6-7 days per hematology",
+       "icd10": "N92.0"
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral",
+       "action": "done",
+       "date": "2021-01-29T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Consultation",
+       "author": "hematology",
+       "date": "2021-01-29T10:20",
+       "body": "HEMATOLOGY CONSULTATION\nDate of service: 2021-01-22\nReason for referral: iron deficiency anemia with limited response to oral iron.\n\nMs. Nakamura is a 31-year-old elementary school teacher with celiac disease (2020) and iron deficiency anemia (July 2020). The main thing she wanted to discuss today is her sleep, which has been broken for several months. When she lies down at night, particularly while resting quietly or watching TV, she gets a strong, unpleasant need to move her legs — a crawling feeling deep in the calves that is not painful but very irritating. Moving relieves it, so she gets up and walks around until it passes. It is an evening and night problem; daytime is free of it. She is tired during the day and blames the poor sleep. No snoring, choking or witnessed pauses in breathing.\n\nMenses are regular but heavy, lasting 6 to 7 days.\n\nMedications: ferrous sulfate 325 mg TID, multivitamin daily, calcium carbonate/vitamin D3 BID.\nAllergies: NKDA.\nFamily history: sister with celiac disease, mother with uterine fibroids, maternal grandmother with osteoporosis.\nSocial: teaches, exercises regularly, vegetarian diet, no alcohol, no drugs.\n\nExam: BMI 22. Unremarkable general exam. No neurologic deficit; normal tone and strength. Legs without edema; pulses and skin normal.\n\nNo sleep study has been done.\n\nAssessment:\n1. Restless legs syndrome — clinical diagnosis by the standard criteria; iron deficiency is a known contributor.\n2. Iron deficiency anemia with ongoing heavy menstrual losses (menorrhagia) and celiac malabsorption.\n\nRecommendations:\n- Continue oral iron as prescribed.\n- Sleep hygiene; avoid caffeine late in the day.\n- Follow up here in six months.\n\nThank you for this referral."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-02a",
+     "kind": "telephone",
+     "start": "2021-02-02T12:15",
+     "reason": "Hematology letter follow-up",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call Re: Hematology Visit",
+       "author": "PCP",
+       "date": "2021-02-02T12:15",
+       "body": "Spoke with Juniper about the hematology consult. Restless legs and heavy periods now on her problem list. Hematology wants her to stay on oral iron; she will try to be more consistent with the midday dose by keeping a bottle in her desk. Follow-up visit with me in May."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-12a",
+     "kind": "portal_message",
+     "start": "2021-04-12T19:30",
+     "reason": "COVID vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-20T10:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-10T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Vaccine Card",
+       "author": "patient",
+       "date": "2021-04-12T19:30",
+       "body": "Hi! Got both Pfizer shots through the educator clinic at a pharmacy — March 20 and April 10. Photo of my card attached. Sore arm and a tired day after the second one, fine now."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Vaccine Card",
+       "author": "MA",
+       "date": "2021-04-13T08:15",
+       "body": "Thanks Juniper, both doses entered in your immunization record."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-18a",
+     "kind": "office_visit",
+     "start": "2021-05-18T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Anemia and celiac follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.2,
+       "Mean Corpuscular Volume": 75,
+       "Ferritin": 12,
+       "Tissue Transglutaminase IgA": 22,
+       "Iron": 32
+      },
+      "weight_kg": 59.6
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-05-18T16:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.2
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Iron Studies",
+       "collected": "2021-05-18T16:30",
+       "results": [
+        {
+         "test": "Iron"
+        },
+        {
+         "test": "Total Iron-Binding Capacity"
+        },
+        {
+         "test": "Transferrin Saturation"
+        },
+        {
+         "test": "Ferritin",
+         "value": 12
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-05-18T16:30",
+       "results": [
+        {
+         "test": "Tissue Transglutaminase IgA",
+         "value": 22
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-05-18T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-05-18T15:50",
+       "body": "Routine follow-up. Back in the classroom full time. Saw hematology in January — note reviewed: restless legs, keep oral iron, sleep habits. Legs still bother her most nights; she stretches and walks laps of the apartment. Periods heavy as before. Bowels fine. Vaccinated for COVID.\n\nMeds: ferrous sulfate TID, MVI, calcium/D BID. Taking them.\n\nExam: mild pallor. Heart RRR. Lungs clear. Abd soft.\n\nA/P: iron deficiency anemia on oral iron, RLS, menorrhagia, celiac on GFD, osteopenia. Labs today. Hematology follow-up is due in July — she has it booked."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results",
+       "author": "PCP",
+       "date": "2021-05-20T07:55",
+       "body": "Hgb 10.2, ferritin 12, tTG 22 (continuing down). Portal note sent; she will discuss iron with hematology in July."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "annual_physical",
+     "start": "2021-09-14T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 55.4
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-14T16:25",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Red Cell Distribution Width"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-14T16:25",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2021-09-14T16:10",
+       "text": "Specimen: liquid-based cervical cytology with high-risk HPV testing. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+       "conclusion": "NILM, HPV negative."
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2021-09-14T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-09-14T15:40",
+       "body": "PHYSICAL\n\nSecond week of school. She saw hematology in July and says they found her blood count lower and that she has numbness in her hands and feet; she has also lost weight over the summer and had some loose stools again. We have not received that note — requesting it today. She isn't sure what the plan was beyond staying on iron.\n\nLegs still restless at night. Periods heavy.\n\nMeds: ferrous sulfate TID, MVI, calcium/D BID.\n\nExam: weight down about 4.5 kg since January. Pale. Thyroid normal. Heart regular. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, cervix normal, Pap with HPV collected. Skin normal.\n\nPHQ-2: 1.\n\nPlan: Pap/HPV sent. CBC, CMP. Hematology note requested. Flu shot next month at nurse visit. Will reach out once the hematology letter is in."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records Request — Hematology",
+       "author": "front desk",
+       "date": "2021-09-14T17:10",
+       "body": "Faxed request to outside hematology for July 2021 visit note and labs."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-27a",
+     "kind": "outside_records",
+     "start": "2021-09-27T14:00",
+     "reason": "Hematology follow-up letter received",
+     "conditions": [
+      {
+       "label": "Peripheral neuropathy",
+       "action": "diagnosed",
+       "onset": "2021-07-26"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-07-26T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.8
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 74
+        },
+        {
+         "test": "Iron",
+         "value": 30
+        },
+        {
+         "test": "Total Iron-Binding Capacity",
+         "value": 450
+        },
+        {
+         "test": "Calcium",
+         "value": 8.0
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 120
+        },
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 92
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Hematology Follow-up",
+       "author": "hematology",
+       "date": "2021-09-27T14:00",
+       "body": "HEMATOLOGY FOLLOW-UP\nDate of service: 2021-07-26\n(sent at request of primary care)\n\nReturning patient with celiac disease, iron deficiency anemia and restless legs syndrome. Over the past 6 months: fatigue, intermittent diarrhea, and more recently numbness and tingling in both hands and feet. She has lost 10 pounds over 3 months with no change in what she eats or how much she exercises. Anemia has not corrected on oral iron.\n\nMedications: ferrous sulfate 325 mg TID, multivitamin, calcium carbonate/vitamin D3 BID.\nAllergies: none known.\n\nExam: pallor. Abdomen mildly distended, nontender. Light-touch sensation reduced in a stocking-glove distribution.\n\nLabs: Hgb 9.8 g/dL, MCV 74 fL, serum iron 30 ug/dL, TIBC 450 ug/dL, calcium 8.0 mg/dL, alkaline phosphatase 120 U/L, intact PTH 92 pg/mL (ref 15-65).\n\nAssessment: iron deficiency anemia refractory to oral iron; peripheral neuropathy; low calcium with raised PTH.\n\nPlan: continue ferrous sulfate. Return in 6 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Hematology Letter Reviewed",
+       "author": "PCP",
+       "date": "2021-09-28T07:40",
+       "body": "July hematology letter reviewed. Peripheral neuropathy added to problem list. Plan per hematology is to continue oral iron. Copy to portal."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T15:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T15:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization — Influenza",
+       "author": "RN",
+       "date": "2021-10-19T15:45",
+       "body": "Influenza quadrivalent 0.5 mL IM, left arm. No contraindications. VIS given. Plans COVID booster at her pharmacy next month."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-22a",
+     "kind": "portal_message",
+     "start": "2021-11-22T20:05",
+     "reason": "COVID booster record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-20T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Booster",
+       "author": "patient",
+       "date": "2021-11-22T20:05",
+       "body": "Got my booster Saturday at the pharmacy (Pfizer). Could you add it?\n\nAlso — the leg thing at night is getting old. Some nights it's 1am before I can stay in bed. Can we talk about it?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "Re: Booster",
+       "author": "PCP",
+       "date": "2021-11-23T07:30",
+       "body": "Booster added. Yes — let's do a video visit in the next couple of weeks about the restless legs. The front desk will reach out."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-13a",
+     "kind": "telehealth_visit",
+     "start": "2021-12-13T16:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Restless legs",
+     "orders": [
+      {
+       "id": "neuro-referral",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "restless legs syndrome disrupting sleep"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2021-12-13T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit — Restless Legs",
+       "author": "PCP",
+       "date": "2021-12-13T16:15",
+       "body": "Video from home after school.\n\nRestless legs since about a year and a half ago, diagnosed by hematology in January. Evening urge to move, eased by walking, keeps her up most nights. Tried stretching, warm baths, no caffeine after noon. Still on iron TID; ferritin has stayed low.\n\nNo snoring or witnessed apneas.\n\nAssessment: restless legs syndrome with significant sleep disruption despite iron and sleep measures.\nPlan: neurology referral for treatment options; she prefers a video consult if they offer one. Keep iron going."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

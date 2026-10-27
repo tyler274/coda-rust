@@ -1,0 +1,653 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002200",
+   "events": [
+    {
+     "id": "2023-02-21a",
+     "kind": "pharmacy",
+     "start": "2023-02-21T11:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pharmacy call - metoprolol",
+       "author": "MA",
+       "date": "2023-02-21T11:30",
+       "body": "Pharmacy called: insurer's formulary update for the new plan year, metoprolol succinate ER 50 still covered but needs a new script with the generic manufacturer's NDC. Re-sent metoprolol succinate ER 50 mg daily, #90, 3 RF. No change in dose."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-16a",
+     "kind": "annual_physical",
+     "start": "2023-05-16T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 91.9,
+      "labs": {
+       "Hemoglobin A1c": 6.9,
+       "Low Density Lipoprotein": 84
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-05-16T08:45",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-05-16T08:45",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 84
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-05-16T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.9
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-05-16T08:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual lung screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-05-16T08:30",
+       "body": "Yearly visit, 63 next month. Fasting.\n\nHe feels well. Still walks to the cafe most days, stops once or twice on the way back for the calves. Right knee is getting stiffer in the mornings, loosens in 15 minutes. Acetaminophen most days now. No anginal symptoms. Sleeps ok. Mood good, PHQ-2 0.\n\nReview of meds: no changes; adherent, uses a weekly pill box. NKDA.\n\nExam: Pleasant. Eyes and ears normal. No carotid bruits. Heart regular, normal S1/S2, no extra sounds. Lungs clear. Abdomen benign. Extremities: no edema; shins with sparse hair; DP and PT pulses faint, feet warm. Monofilament intact. Right knee: crepitus with flexion, mild bony enlargement, no effusion, stable ligaments.\n\nImpression/plan:\n1. DM2 - A1c, urine albumin today. Eye exam due fall.\n2. HTN - fine.\n3. CAD/HLD - lipids today. Due for his yearly cardiology visit in August; reminded him to have them send us the letter.\n4. PAD - stable.\n5. R knee OA - activity as tolerated, quad strengthening handout, acetaminophen.\n6. Lung screening due July, ordered.\n7. Vaccines: flu/COVID in the fall.\nFollow up 6 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2023-05-17T13:05",
+       "body": "A1c 6.9. LDL 84. CMP and urine albumin normal. Portal note sent - stable, no changes."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-11a",
+     "kind": "imaging",
+     "start": "2023-07-11T09:15",
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "done",
+       "date": "2023-07-11T09:15"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2023-07-11T09:15",
+       "text": "Screening study, third annual. Compared with 2022-08-09. Lungs: no nodules or masses. No interstitial abnormality. Airways clear. Pleura normal. Heart normal in size; coronary calcification with stent. Thyroid and upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1. No evidence of lung cancer. Next annual low-dose CT in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lung screening 2023",
+       "author": "PCP",
+       "date": "2023-07-12T08:20",
+       "body": "Negative LDCT. Annual."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-04a",
+     "kind": "specialist_visit",
+     "start": "2023-08-04T10:00",
+     "service": "Cardiology",
+     "reason": "Routine cardiology follow-up",
+     "vitals": {
+      "bp": [
+       138,
+       78
+      ],
+      "hr": 72,
+      "weight_kg": 91.9
+     },
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-07-28T08:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 82
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 46
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-07-28T08:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-08-04T10:20",
+       "text": "Rate 70. Normal sinus rhythm. Normal axis. Normal intervals. No ST-segment or T-wave abnormality.",
+       "conclusion": "Normal sinus rhythm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up letter",
+       "author": "cardiology",
+       "date": "2023-10-03T09:30",
+       "body": "OUTSIDE CARDIOLOGY GROUP - OFFICE NOTE\nDate of service: 2023-08-04\nPatient: Charles Leblanc, DOB 1960-04-22\nReferring/PCP: primary care physician\n\nReason for visit: annual review of coronary disease and medicines.\n\nMr. Leblanc is a 63-year-old retired foreman we have followed since his myocardial infarction in 2016, treated with a coronary stent. He has been on the same regimen for years and has had no admissions since. He has continued daily aspirin since the infarct; he bruises a bit easily but tolerates it. He describes cramping in both calves after a few blocks of walking, relieved with rest, unchanged.\n\nROS: no chest pain, dyspnea, palpitations or syncope. No GI bleeding, black stools or vomiting of blood.\n\nMedications: aspirin 81 mg daily; metformin 1000 mg twice a day; lisinopril 20 mg daily; atorvastatin 40 mg daily; metoprolol succinate 50 mg daily.\nAllergies: NKDA.\nFamily history: father MI at 68; mother type 2 diabetes; brother with coronary artery disease.\nSocial: quit cigarettes about ten years ago, roughly 30 pack-years. No alcohol.\n\nExam: BP 138/78, HR 72, BMI 29. Lungs clear. Regular rhythm, no murmur. Feet warm; dorsalis pedis and posterior tibial pulses are reduced on both sides; there is loss of hair over both shins. Otherwise unremarkable.\n\nData: lipids from last week - LDL 82 mg/dL, HDL 46 mg/dL. Hemoglobin and platelet count normal. ECG today: sinus rhythm, normal.\n\nAssessment:\n1. Coronary artery disease, remote MI with stent, no angina.\n2. Peripheral arterial disease with stable claudication.\n3. Hypertension, hyperlipidemia, type 2 diabetes - managed by PCP.\n4. Long-term aspirin, minor bruising only.\n\nPlan: no changes. Continue aspirin, statin, beta-blocker and ACE inhibitor. Follow up in one year or sooner for symptoms.\n\nElectronically signed, cardiology attending."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "telephone",
+     "start": "2023-09-12T10:25",
+     "orders": [
+      {
+       "id": "records-cards-2023",
+       "action": "placed",
+       "order": "Request records from outside cardiology",
+       "category": "procedure",
+       "reason": "visit 2023-08-04"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Flu shot scheduling / cardiology note",
+       "author": "front desk",
+       "date": "2023-09-12T10:25",
+       "body": "Pt called to book flu and COVID shots - scheduled 9/26 nurse visit. Mentioned he saw his cardiologist early August and \"they said everything looked the same.\" No note from them in the chart. Records request faxed to the cardiology office for the 8/4 visit."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-26a",
+     "kind": "nurse_visit",
+     "start": "2023-09-26T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-09-26T15:52"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2023-09-26T15:54"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-26T15:52"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2023-09-26T15:50",
+       "body": "Influenza L deltoid, 2023-24 COVID (Moderna) R deltoid. No acute illness, no allergies. Waited 15 min, fine. Next due fall 2024."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-03a",
+     "kind": "outside_records",
+     "start": "2023-10-03T09:30",
+     "orders": [
+      {
+       "id": "records-cards-2023",
+       "action": "done",
+       "date": "2023-10-03T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Cardiology letter reviewed",
+       "author": "PCP",
+       "date": "2023-10-03T15:10",
+       "body": "Cardiology 8/4/23 note received after our request. Stable CAD, no angina, ECG normal, LDL 82. No med changes. Next cardiology visit in a year. Nothing for us to do."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-09a",
+     "kind": "outside_records",
+     "start": "2023-11-09T14:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2023-11-09T14:00",
+       "body": "Annual diabetic eye exam - optometry\nExam date: 2023-10-31\nVA with correction 20/20 each eye. IOP 15/16. Dilated: no retinopathy OU, maculae clear, discs healthy.\nImpression: type 2 diabetes without ophthalmic manifestation.\nRecall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "office_visit",
+     "start": "2023-12-12T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2023-12-12T09:35",
+       "body": "Pt did not arrive for 9:00 diabetes follow-up. Called home number, left message. He called back at noon - snowed in on his road, forgot to call. Rebooked for January 9."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-09a",
+     "kind": "office_visit",
+     "start": "2024-01-09T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 96.0,
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-01-09T09:30",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-01-09T09:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.0
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-01-09T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2024-01-09T09:00",
+       "body": "Rescheduled from December. Weight up about 4 kg since May - he has been walking less, the right knee has been sore most of the fall and the cold doesn't help. Eating the same, maybe more snacking at home. No chest pain, no breathlessness walking around the house or at the store. Calves unchanged.\n\nExam: vitals reviewed. RRR, lungs clear, no edema. Right knee crepitus, no effusion.\n\nA/P:\nDM2 - A1c today; talked about weight, he'd like to get back to the morning walk when the sidewalks clear.\nHTN, CAD - stable, same meds.\nR knee OA - acetaminophen; offered PT, he'd rather try on his own first.\nRTC summer with fasting labs."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2024-01-10T11:45",
+       "body": "A1c 7.0. BMP normal. Same plan."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "portal_message",
+     "start": "2024-04-16T07:48",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill",
+       "author": "patient",
+       "date": "2024-04-16T07:48",
+       "body": "Pharmacy says my atorvastatin and lisinopril need a new prescription. I have about a week left. Thank you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refill",
+       "author": "RN",
+       "date": "2024-04-16T11:20",
+       "body": "Both sent to your pharmacy, 90 days with refills. You're due for fasting labs and a visit in July - the front desk will reach out."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-24a",
+     "kind": "lab_only",
+     "start": "2024-07-24T07:40",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Total Cholesterol": 190,
+       "Low Density Lipoprotein": 100,
+       "High Density Lipoprotein": 40,
+       "Triglycerides": 150,
+       "Creatinine": 1.1,
+       "Glucose": 150
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-07-24T07:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Glucose",
+         "value": 158
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-07-24T07:40",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 190
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 100
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 40
+        },
+        {
+         "test": "Triglycerides",
+         "value": 150
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-24T07:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-07-24T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Lab draw",
+       "author": "MA",
+       "date": "2024-07-24T07:40",
+       "body": "Fasting since 8 pm. Venipuncture L antecubital, one attempt. Tubes to lab."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-30a",
+     "kind": "office_visit",
+     "start": "2024-07-30T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up; chest pain with exertion",
+     "conditions": [
+      {
+       "label": "Angina pectoris",
+       "action": "diagnosed",
+       "onset": "2024-06-20",
+       "note": "exertional, relieved by rest; stable, medical management"
+      },
+      {
+       "label": "Obesity, unspecified",
+       "action": "diagnosed",
+       "onset": "2024-01-01",
+       "note": "BMI 32"
+      }
+     ],
+     "state": {
+      "bp": [
+       142,
+       88
+      ],
+      "weight_kg": 101.4
+     },
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ],
+      "hr": 78,
+      "weight_kg": 101.4
+     },
+     "measure": [
+      "rr",
+      "temp_c",
+      "spo2"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-07-30T10:45",
+       "text": "Sinus rhythm, rate 76. Normal axis. PR, QRS and QT normal. No acute ST elevation or depression. No pathologic Q waves. Unchanged from the outside tracing of August 2023.",
+       "conclusion": "Sinus rhythm without acute ST changes or Q waves."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-07-30T10:20"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2024-07-30T10:45"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2024",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "new exertional chest pain, known CAD"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Follow-up",
+       "author": "PCP",
+       "date": "2024-07-30T10:20",
+       "body": "Booked as a diabetes check; the main thing today is his chest.\n\nHPI: 64M with CAD, MI and stent in 2016, last saw cardiology a year ago and was told all was stable. Over the past month or so he gets a tight, heavy feeling across the chest when he walks up the hill on the way home from the cafe or carries groceries up the porch steps. Stops, stands a couple of minutes, it goes. Never at rest, never woken by it. Has happened maybe eight or ten times. No sweats, no fainting, no palpitations. Says it feels \"like a smaller version\" of 2016. No cough, cold or fever lately; no other complaints. Taking all his meds.\n\nMeds: aspirin 81, metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, acetaminophen prn. NKDA.\n\nExam: BP 142/88, HR 78, BMI 32 (weight up again). Not in distress. JVP not elevated. Heart regular, no murmurs, rubs or gallops. Lungs clear. No edema. Pedal pulses diminished as before.\n\nECG in office: sinus, no acute ST changes, no Q waves; unchanged from cardiology's 2023 tracing.\n\nLabs 7/24: A1c 7.2, fasting glucose 158, TC 190, LDL 100, HDL 40, TG 150, creatinine 1.1.\n\nA/P:\n1. Exertional chest pain in a man with known CAD - stable angina pattern, no rest pain, ECG unchanged. Managing medically for now on his current beta-blocker, statin and aspirin; referral back to his cardiologist for evaluation, asked them to see him promptly. Reviewed red flags: pain at rest, lasting more than a few minutes, or with sweating or breathlessness - call 911.\n2. DM2 - A1c 7.2, a little higher. Continue metformin.\n3. HTN - 142/88 today; no change for now, recheck at next visit.\n4. Hyperlipidemia - LDL 100 on atorvastatin 40; continue.\n5. Obesity, BMI 32 - weight gain since last year tied to less walking with the knee. Brief counseling.\n6. PAD, R knee OA - unchanged.\nLung CT due August, ordered."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-20a",
+     "kind": "imaging",
+     "start": "2024-08-20T11:40",
+     "orders": [
+      {
+       "id": "ldct-2024",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual lung screening"
+      },
+      {
+       "id": "ldct-2024",
+       "action": "done",
+       "date": "2024-08-20T11:40"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2024-08-20T11:40",
+       "text": "Annual screening, prior 2023-07-11. No pulmonary nodule. No consolidation, effusion or pneumothorax. Central airways patent. Coronary calcification and stent noted. No lymphadenopathy. Upper abdominal organs unremarkable on limited views.",
+       "conclusion": "Lung-RADS 1: negative. Continue annual screening."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 2024",
+       "author": "PCP",
+       "date": "2024-08-21T09:00",
+       "body": "Negative. Annual."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-08T14:32"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T14:34"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-10-08T14:36"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T14:32"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2024-10-08T14:30",
+       "body": "Flu L deltoid, 2024-25 COVID R deltoid, RSV (single lifetime dose, recommended with his heart disease) L deltoid lower. All screened, VIS given. Pt asked about his cardiology appointment - the referral was sent in July; he hasn't heard. Gave him their number and a copy of the referral. Observed 15 min."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-14a",
+     "kind": "outside_records",
+     "start": "2024-11-14T09:15",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2024-11-14T09:15",
+       "body": "Optometry exam report, 2024-11-05.\nDiabetic eye screening, dilated.\nOD/OS: no microaneurysms, hemorrhages or exudates. Normal maculae and optic discs.\nImpression: no diabetic retinopathy.\nNext exam 12 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

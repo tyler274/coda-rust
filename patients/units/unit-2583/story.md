@@ -42,3 +42,8 @@
 - 2026-06-10 portal: PCP acknowledges cardiology letter (P)
 - 2026-08-17 pharmacy: metoprolol refill (P)
 - 2026-09-14 annual physical, booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002583 on 2026-03-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

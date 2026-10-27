@@ -1,0 +1,418 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002724",
+   "events": [
+    {
+     "id": "2022-01-18a",
+     "kind": "portal_message",
+     "start": "2022-01-18T19:22",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refills",
+       "author": "patient",
+       "date": "2022-01-18T19:22",
+       "body": "Hi, the pharmacy says my levothyroxine and metformin are out of refills. Could you send new ones? Same pharmacy as before."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill",
+       "author": "RN",
+       "date": "2022-01-19T08:15",
+       "body": "Levothyroxine 100 mcg #90 x3 and metformin 1000 mg #180 x3 e-prescribed per PCP protocol. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-17a",
+     "kind": "office_visit",
+     "start": "2022-03-17T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 6.9
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-03-17T16:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.9
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-03-17T15:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-03-17T16:15"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2022-03-17T16:55",
+       "body": "DM f/u. Doing ok. Tried a low-carb plan in January, lost a few pounds and found them again over February break. Metformin fine.\nNo foot symptoms. Bowels unchanged.\nExam: BP fine, wt stable. Heart and lungs normal.\nPlan: A1c. Mammogram order placed for spring. Eye exam reminder - she booked June.\nRTC 6 mo (physical)."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-21a",
+     "kind": "imaging",
+     "start": "2022-04-21T16:10",
+     "service": "Breast Imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2022-04-21T16:10",
+       "issued": "2022-04-22T09:05",
+       "text": "Bilateral 2D and tomosynthesis views. Compared with November 2020. Scattered fibroglandular densities. No new or suspicious masses, calcifications or areas of distortion. Stable.",
+       "conclusion": "BI-RADS 1, negative. Annual screening mammography."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2022",
+       "action": "done",
+       "date": "2022-04-21T16:10"
+      }
+     ]
+    },
+    {
+     "id": "2022-06-28a",
+     "kind": "outside_records",
+     "start": "2022-06-28T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2022-06-28T10:40",
+       "body": "Annual diabetic eye exam, seen 06/23/2022. Dilated OU. VA 20/20 OD, 20/20 OS with correction. Anterior segment quiet. Posterior pole and periphery without hemorrhage, exudate or neovascularization. No diabetic retinopathy OU. Return 1 year. NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-22a",
+     "kind": "annual_physical",
+     "start": "2022-09-22T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-22T16:25",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-22T16:25",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-22T16:25",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-22T16:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.8
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2022-09-22T16:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-09-22T15:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-22T16:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-09-22T16:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-09-22T17:15",
+       "body": "47F annual. No new concerns. Says school started smoothly, has a big class.\nMed list: metformin 1000 BID, levothyroxine 100 daily, multivitamin, ibuprofen as needed.\nROS neg, no abdominal pain, normal appetite.\nExam: NAD. Neck supple, thyroid normal. Heart RRR no murmurs. Lungs CTA. Abdomen soft, obese, NT. Ext warm, no swelling. Feet: sensation intact to monofilament, pulses 2+.\nPHQ-2: 1.\nA/P\n1. DM2 - labs. Eye exam June normal.\n2. Hypothyroid - TSH.\n3. Health maintenance: PCV20 today given diabetes. FIT kit again, returned today. Mammo April done. Pap due 2025.\n4. Flu/updated COVID at the October nurse clinic."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-13a",
+     "kind": "nurse_visit",
+     "start": "2022-10-13T15:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-13T15:40"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-13T15:42"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-13T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2022-10-13T15:55",
+       "body": "Influenza IM L deltoid; Pfizer bivalent booster IM R deltoid. Screening questions negative. Observed 15 minutes, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-28a",
+     "kind": "telephone",
+     "start": "2022-11-28T20:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Abdominal discomfort",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Text from patient",
+       "author": "PCP",
+       "date": "2022-11-28T20:10",
+       "body": "Texted: a few weeks of an ache under the right ribs after dinner with bloating, worse after anything fried. Not severe. Offered tomorrow after school."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-29a",
+     "kind": "office_visit",
+     "start": "2022-11-29T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Upper abdominal discomfort after meals",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-11-29T16:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "postprandial RUQ discomfort and bloating"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Acute Visit",
+       "author": "PCP",
+       "date": "2022-11-29T16:45",
+       "body": "S: About 4 weeks of intermittent discomfort RUQ/epigastric after meals, mostly evenings, bloated and full, lasts an hour or two. Fatty meals worse. No fever, no vomiting, no yellow skin or eyes, no change in urine or stool color. Bowels her usual. Father had gallstones.\nO: Afebrile, vitals reviewed. Sclerae anicteric. Abdomen soft, mild discomfort to deep palpation RUQ, no guarding, no masses, negative inspiratory arrest.\nA: Postprandial RUQ discomfort with bloating, suspect biliary.\nP: Referral to GI for evaluation; they prefer to order their own ultrasound and labs. Low-fat meals meanwhile. Ibuprofen sparingly. Call or text if fever, persistent pain, or yellowing."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-21a",
+     "kind": "specialist_visit",
+     "start": "2022-12-21T10:30",
+     "service": "Gastroenterology",
+     "reason": "RUQ discomfort with bloating",
+     "conditions": [
+      {
+       "label": "Cholelithiasis",
+       "action": "diagnosed",
+       "onset": "2022-11-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ursodiol 250 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth three times daily with meals",
+       "dose": {
+        "value": 250,
+        "unit": "mg"
+       },
+       "frequency": "TID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Gallstone dissolution",
+       "action": "start"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2022-12-21T10:10",
+       "resulted": "2022-12-21T14:00",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 28
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 25
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 79
+        },
+        {
+         "test": "Bilirubin, Total",
+         "value": 0.7
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2022-12-21T09:15",
+       "issued": "2022-12-21T11:40",
+       "text": "Complete abdominal ultrasound. Liver normal in size and echotexture, no focal lesion. Gallbladder contains multiple small mobile echogenic stones with posterior shadowing, the largest about 6 mm. No gallbladder wall thickening. No pericholecystic fluid. Common bile duct 4 mm. Pancreas unremarkable where seen. Spleen and kidneys normal. No ascites. Aorta normal caliber.",
+       "conclusion": "Cholelithiasis without sonographic evidence of acute cholecystitis. Normal bile duct caliber."
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-referral",
+       "action": "done",
+       "date": "2022-12-21T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Consultation",
+       "author": "gastroenterology",
+       "date": "2022-12-27T09:00",
+       "body": "Outpatient Gastroenterology Consultation\nDate of service: 12/21/2022\nReferring: Primary care\n\nReason: postprandial right upper quadrant discomfort with bloating.\n\nMs. Pomeroy is a 47-year-old teacher with type 2 diabetes, obesity, hypothyroidism and longstanding constipation. For several weeks she has had episodes of right upper abdominal discomfort after eating, with a bloated feeling, usually after larger or fattier evening meals. She has had no fever, no vomiting and no jaundice.\n\nPMH: T2DM, obesity, hypothyroidism, chronic constipation. PSH: none abdominal or pelvic.\nMedications: metformin 1000 mg twice daily, levothyroxine 100 mcg daily, multivitamin, ibuprofen as needed.\nAllergies: no known drug allergies.\nFamily: father with gallstones; mother diabetes and pelvic organ prolapse; grandmother hypothyroid.\nSocial: never smoker, no alcohol. She has been trying to lose weight with diet changes.\n\nExam: comfortable. Anicteric. Abdomen soft, nontender today, no hepatosplenomegaly. Exam otherwise unremarkable.\n\nData: AST 28, ALT 25, alkaline phosphatase 79, total bilirubin 0.7. Ultrasound today shows multiple small radiolucent-appearing gallstones without wall thickening or pericholecystic fluid; duct not dilated.\n\nImpression: symptomatic cholelithiasis, mild, without complication.\n\nPlan: We discussed laparoscopic cholecystectomy as the definitive treatment. She does not want surgery at this time. Given small stones and a functioning gallbladder, she will try oral dissolution with ursodiol 250 mg three times daily with meals, understanding that it is slow, may not work, and stones can recur. Low-fat diet; avoid rapid weight loss. Repeat ultrasound in about 12 months. She knows to seek care for fever, persistent pain, vomiting or yellowing.\n\nGastroenterology"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

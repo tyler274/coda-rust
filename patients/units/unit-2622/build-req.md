@@ -150,3 +150,8 @@ Allowed without listing, with ordinary normal results unless a level above says 
 - Booked visit after 2026-08-27: annual physical on 2026-12-08.
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002622 on 2025-12-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

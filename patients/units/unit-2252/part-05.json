@@ -1,0 +1,130 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002252",
+      "events": [
+        {
+          "id": "2025-10-30a",
+          "kind": "portal_message",
+          "start": "2025-10-30T07:15",
+          "reason": "Dizziness and palpitations",
+          "documents": [
+            {"type": "Patient Message", "title": "Dizzy spells", "author": "patient", "date": "2025-10-30T07:15", "body": "Morning doc. For about 2 weeks I get these dizzy spells, a few seconds, and my heart feels like it skips or flutters. Mostly sitting around in the evening. No chest pain, not short of breath, haven't passed out. Should I worry with my heart history?"},
+            {"type": "Patient Message", "title": "RE: Dizzy spells", "author": "PCP", "date": "2025-10-30T08:02", "body": "Thanks for telling me right away. With your aorta, valve infection this spring and the known slow conduction on your EKG, I want cardiology to look at this soon rather than at your routine visit. I just called their office - they have you Thursday 11/6 at 9:40 and will do an EKG. If you faint, have chest pain, or the spells get longer or more frequent before then, go to the ED. Don't drive if you feel lightheaded."},
+            {"type": "Patient Message", "title": "RE: Dizzy spells", "author": "patient", "date": "2025-10-30T09:20", "body": "Got the call. Will be there."}
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "specialist_visit",
+          "start": "2025-11-06T09:40",
+          "service": "Cardiology",
+          "reason": "Intermittent dizziness and palpitations for two weeks",
+          "vitals": {"bp": [130, 80], "hr": 68, "rr": 16},
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-11-06T09:55", "text": "Sinus rhythm with an atrial rate in the 70s. The PR interval lengthens progressively over successive beats until a P wave is not followed by a QRS complex; the next conducted beat has a shorter PR, and the sequence repeats. QRS narrow, normal axis. No ST-segment change.", "conclusion": "Second-degree AV block, Mobitz type I (Wenckebach)."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Clinic Note", "author": "cardiology", "date": "2025-11-06T11:00", "body": "Dear colleague,\n\nI saw Mr. Woodward, 67, back in clinic at your request for two weeks of intermittent dizziness and palpitations. He has a history of type A aortic dissection with cardiac tamponade (ascending graft and pericardial window, 2022) and, this spring, S. gallolyticus endocarditis of the aortic valve, now treated. He also has stage IIIB lung adenocarcinoma on durvalumab and a resected stage IIA colon cancer. HTN, HLD, longstanding first-degree AV block.\n\nThe spells last seconds, often at rest in the evening. He denies chest pain, dyspnea or syncope.\n\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily, multivitamin; durvalumab every 4 weeks.\nAllergies: NKDA.\nSH: former smoker, 40 pack-years, quit 2020. Social alcohol.\n\nExam: BP 130/80, HR 68 and irregular, RR 16. Irregular rhythm; no murmurs, rubs or gallops. Lungs clear. No edema.\n\nECG: progressive PR prolongation ending in a nonconducted P wave, then a shorter PR and repetition - Mobitz type I second-degree AV block.\n\nAssessment: Mobitz I (Wenckebach) AV block on a background of first-degree block, with dizziness and palpitations. Usually a benign, nodal-level block, but given prior aortic valve endocarditis I want to confirm there is no higher-grade block and no change at the valve.\n\nPlan:\n- 14-day ambulatory ECG monitor, applied today.\n- Transthoracic echocardiogram.\n- Avoid AV-nodal blocking drugs (beta-blockers, non-dihydropyridine calcium channel blockers, digoxin).\n- To the ED for syncope.\nWill write with results.\n\nCardiology"},
+            {"type": "Progress Notes", "title": "Outside Note Filed", "author": "MA", "date": "2025-11-10T14:00", "body": "Cardiology note from 11/6 received and filed. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "outside_records",
+          "start": "2025-12-11T10:00",
+          "service": "Cardiology",
+          "reason": "Cardiology follow-up: monitor and echo results",
+          "reports": [
+            {"study": "Holter monitor", "performed": "2025-11-06T10:15", "issued": "2025-11-26T12:00", "text": "14-day ambulatory ECG patch, 11/06-11/20/2025. Predominant rhythm sinus with first-degree AV block, average heart rate 66. Intermittent episodes of Mobitz type I second-degree AV block, predominantly at night. No Mobitz type II block. No complete heart block. No pauses longer than 2.5 seconds. No atrial fibrillation or flutter. Rare isolated premature beats. Patient-triggered events correlated with sinus rhythm or isolated nonconducted beats.", "conclusion": "Sinus rhythm with first-degree AV block and intermittent, mostly nocturnal Mobitz I. No high-grade block, no atrial fibrillation."},
+            {"study": "Transthoracic echocardiogram", "performed": "2025-11-20T13:30", "text": "LV normal size, normal systolic function, EF 60%. No regional wall motion abnormality. RV normal. Aortic valve trileaflet; no vegetation seen; trace aortic regurgitation. Mitral valve without vegetation. Ascending aortic graft intact, no perigraft collection. No pericardial effusion.", "conclusion": "Normal LV function. Aortic valve without vegetation, trace aortic regurgitation. Intact ascending graft."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up Letter", "author": "cardiology", "date": "2025-12-09T15:30", "body": "Dear colleague,\n\nFollow-up on Mr. Woodward's Mobitz I block.\n\nThe 14-day monitor showed sinus rhythm with first-degree AV block and intermittent Mobitz I, mostly overnight, with no Mobitz II, no complete block and no atrial fibrillation. His symptom triggers matched sinus rhythm or occasional single dropped beats. Echo shows normal LV function, no vegetation on the aortic valve, trace aortic regurgitation, and an intact ascending graft.\n\nHe tells me the dizziness has settled. BP 128/78, HR 64.\n\nImpression: Mobitz I AV block without high-grade conduction disease; no pacemaker indicated. Continue to avoid AV-nodal blocking drugs. Recheck in 6 months with an ECG, sooner for fainting or worsening spells.\n\nRegards,\nCardiology"},
+            {"type": "Progress Notes", "title": "Outside Letter Filed", "author": "MA", "date": "2025-12-11T10:05", "body": "Cardiology letter, monitor report and echo received and filed to chart. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-01-22a",
+          "kind": "outside_records",
+          "start": "2026-01-22T13:20",
+          "service": "Oncology",
+          "reason": "Oncology letter: completion of durvalumab",
+          "reports": [
+            {"study": "CT chest", "performed": "2026-01-08T08:40", "text": "CT chest, abdomen and pelvis with IV contrast. Comparison 01/06/2025 and prior. Chest: post-radiation scarring in the right upper lobe and medial right lung, stable; residual right upper lobe soft tissue stable. Mediastinal and hilar nodes not enlarged. No new nodule. No pleural effusion. Port in place. Postoperative ascending aorta. Abdomen and pelvis: postsurgical changes of left hemicolectomy with intact anastomosis. Liver, adrenals and bones without lesion. No adenopathy. No ascites.", "conclusion": "Stable treated right upper lobe lung cancer. Postoperative colon without recurrence. No new or metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Thoracic Oncology Letter", "author": "oncology", "date": "2026-01-20T14:00", "body": "Dear colleague,\n\nMr. Woodward completed consolidation durvalumab on 12/18/2025, with a hold from late April to early August for his endocarditis and colectomy. He tolerated it without immune-related toxicity; thyroid and liver tests stayed normal.\n\nCT chest, abdomen and pelvis 1/8/2026: stable treated lung primary, no new disease, no recurrence at the colon anastomosis.\n\nPlan: surveillance CT every 6 months; colonoscopy in July as planned by colorectal surgery. His port will stay in place for now and be flushed every 3 months here.\n\nRegards,\nThoracic oncology\ncc: PCP"},
+            {"type": "Progress Notes", "title": "Outside Letter Filed", "author": "MA", "date": "2026-01-22T13:25", "body": "Oncology letter and CT report filed. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Refill: lisinopril, atorvastatin", "author": "RN", "date": "2026-03-17T09:10", "body": "Mail-order request for lisinopril 20 mg and atorvastatin 40 mg, 90 days. Last PCP visit 9/2025 with normal BMP; cardiology and oncology labs since. Approved x1 with 1 refill; message sent asking him to book a check-up."},
+            {"type": "Patient Message", "title": "Time for a check-up", "author": "front desk", "date": "2026-03-17T09:30", "body": "Hi Mr. Woodward, your refills went through. The doctor would like to see you for a check-up - reply here or call and we'll find a time."},
+            {"type": "Patient Message", "title": "RE: Time for a check-up", "author": "patient", "date": "2026-03-19T18:05", "body": "Between the cancer center and the heart doctor I've been in a waiting room every other week. Can we do it late summer? I'll call."}
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "outside_records",
+          "start": "2026-05-14T11:00",
+          "service": "Cardiology",
+          "reason": "Cardiology 6-month follow-up",
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-05-12T10:00", "text": "Sinus rhythm, rate 70. Prolonged PR interval with 1:1 conduction throughout the tracing. No dropped beats. Narrow QRS. No ST-T change.", "conclusion": "Sinus rhythm with first-degree AV block."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology Follow-up Letter", "author": "cardiology", "date": "2026-05-12T12:00", "body": "Dear colleague,\n\nMr. Woodward returns six months after his Mobitz I evaluation. No dizziness or palpitations for several months. No syncope. Walking daily.\n\nBP 128/80, HR 70. Regular rhythm today, no murmur. Lungs clear.\nECG: sinus rhythm with first-degree AV block, no dropped beats on this tracing.\n\nImpression: intermittent Mobitz I, asymptomatic; stable first-degree AV block. Status post type A dissection repair and treated aortic valve endocarditis.\nPlan: no change. Avoid AV-nodal blockers. Aortic CT angiography due this year - his oncology CTs include the chest with contrast and have shown a stable graft, so we will use those. Yearly cardiology visit.\n\nRegards,\nCardiology"}
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "outside_records",
+          "start": "2026-06-18T15:30",
+          "service": "Oncology",
+          "reason": "Oncology surveillance",
+          "reports": [
+            {"study": "CT chest", "performed": "2026-06-11T09:00", "text": "CT chest, abdomen and pelvis with IV contrast. Comparison 01/08/2026. Stable post-radiation change in the right upper lobe without new soft tissue. No enlarged thoracic nodes. No new pulmonary nodule. No pleural effusion. Intact ascending aortic graft. Post-hemicolectomy changes without recurrence. No hepatic lesion. No adenopathy.", "conclusion": "No evidence of recurrent or metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Thoracic Oncology Surveillance Letter", "author": "oncology", "date": "2026-06-16T10:30", "body": "Dear colleague,\n\nSurveillance visit 18 months from completing chemoradiation for stage IIIB lung adenocarcinoma and 11 months after resection of a stage IIA colon cancer. He feels well, has regained weight and is active. No cough, no hemoptysis, no bowel change.\n\nCT 6/11/2026: no recurrent or metastatic disease.\n\nPlan: CT every 6 months. Colonoscopy scheduled in July. Port flushes continue.\n\nRegards,\nThoracic oncology\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "outside_records",
+          "start": "2026-07-09T14:00",
+          "service": "Gastroenterology",
+          "reason": "Surveillance colonoscopy after colon cancer resection",
+          "procedures": [{"procedure": "Colonoscopy, diagnostic", "performed": "2026-07-07T08:30"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2026-07-07T09:30", "body": "Indication: surveillance one year after left hemicolectomy for stage IIA descending colon adenocarcinoma.\nPrep: good. Cecum reached, identified by appendiceal orifice and ileocecal valve. Withdrawal time 11 minutes.\nFindings: healthy-appearing colo-colonic anastomosis without mass or ulceration. No polyps throughout the remaining colon. Normal rectum on retroflexion.\nImpression: normal surveillance colonoscopy; no recurrence.\nRecommendation: repeat colonoscopy in 3 years.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T16:45",
+          "reason": "Scheduling",
+          "documents": [
+            {"type": "Patient Message", "title": "Booking that check-up", "author": "patient", "date": "2026-08-11T16:45", "body": "Ready for that check-up now. Colonoscopy was clean, the cancer doctor and the heart doctor are both happy. Mornings are best. Also will need the flu shot."},
+            {"type": "Patient Message", "title": "RE: Booking that check-up", "author": "front desk", "date": "2026-08-12T09:05", "body": "Great to hear! You're booked Wednesday September 16 at 9:00 with the doctor. We'll have the flu vaccine by then."}
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "office_visit",
+          "start": "2026-09-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

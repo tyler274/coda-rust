@@ -96,3 +96,8 @@ hand therapy or splint; no analgesic. The chart does not add or remark on any of
 - Nothing open today except the booked nurse visit.
 - No acute illnesses, injuries, new diagnoses, medications or life events beyond the
   timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001953 on 2025-08-19. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

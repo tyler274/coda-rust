@@ -21,3 +21,8 @@
 - 2026-07-22 PCP office visit, grief follow-up, PHQ-9 3 (P)
 - 2026-08-18 portal: schedule physical and flu shot (P)
 - 2026-09-16 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001682 on 2026-05-20. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

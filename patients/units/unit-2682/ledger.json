@@ -1,0 +1,1385 @@
+{
+  "unit": "unit-2682",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"penicillin V potassium 250 MG Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002682",
+      "given": "Rodney",
+      "family": "Howland",
+      "birth_date": "1991-02-07",
+      "address_line": "218 Kittredge Road, Westfield, MA 01085",
+      "phone": "+1-508-555-0129",
+      "email": "rodney.howland@example.test",
+      "marital_status": "single",
+      "summary": "35-year-old high school math teacher with hereditary spherocytosis who joined in 2023, had an elective laparoscopic splenectomy in July 2024 after asplenia vaccines, and takes penicillin V prophylaxis and folic acid. Last seen at his December 2024 physical; a June 2026 ED visit for fever and sore throat in the setting of asplenia ended in discharge with negative blood cultures.",
+      "events": [
+        {
+          "id": "2023-09-11a",
+          "kind": "telephone",
+          "start": "2023-09-11T15:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-09-11T15:40",
+              "author": "front desk",
+              "body": "Caller wants to establish care with the practice. Teaches math at the high school, has hereditary spherocytosis, says his last blood work was a couple of years back. Membership info emailed. Next-day new patient slot offered after school, he took 9/12 at 3:30. Asked him to sign a records release for his old PCP office."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T15:30",
+          "end": "2023-09-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; hereditary spherocytosis",
+          "conditions": [
+            {
+              "label": "Hereditary spherocytosis",
+              "action": "history",
+              "note": "Known since childhood; father and paternal grandfather affected"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hereditary spherocytosis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              80
+            ],
+            "hr": 78,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 79.3,
+            "height_cm": 179.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-12T16:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "Hereditary spherocytosis, re-establish care, discuss splenectomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T16:45",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n32M, teaches high school math, here to set up primary care. Main issue is hereditary spherocytosis. Dad has it, so did his paternal grandfather. He was diagnosed as a kid, followed by pediatric then adult hematology for a while, takes folic acid 1 mg every day. Has not seen a hematologist in a few years and admits it slid. No transfusions he knows of. Feels fine, plays pickup basketball on weekends, no fatigue that limits him, no abdominal pain, no dark urine episodes recently.\n\nPMH: hereditary spherocytosis. PSH: none. Spleen still in.\nMeds: folic acid 1 mg daily.\nAllergies: none to medications.\nFH: father and paternal grandfather with spherocytosis. Nothing else he can name.\nSH: lives in Westfield, single. Has never smoked. A drink or two a month, socially. No other substances.\n\nROS otherwise negative.\n\nExam: vitals in flowsheet. Comfortable, well appearing. Sclerae anicteric today, conjunctivae pink. Oropharynx clear. No cervical nodes. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender; spleen tip felt on deep inspiration, did not try to measure it. No hepatomegaly. No edema. Skin without rash.\n\nA/P\n1. Hereditary spherocytosis - chronic, compensated by his report. CBC, CMP, LFTs with direct bili today. Continue folic acid. Referred to hematology to get re-established; he wants to revisit whether splenectomy makes sense now that he is an adult, says it came up years ago.\n2. Health maintenance - HIV and hep C screen today. Flu shot given. Records release signed for old PCP; will look for his Tdap date there.\n\nRTC yearly physical, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.2,
+            "height_cm": 180.0,
+            "labs": {
+              "Bilirubin, Direct": 0.3,
+              "Bilirubin, Total": 2.1,
+              "Hemoglobin": 11.2,
+              "Mean Corpuscular Volume": 92
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T07:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2023-09-14T07:55",
+              "author": "PCP",
+              "body": "Hi Rodney, your blood work is back. Hemoglobin is 11.2 and total bilirubin 2.1, mostly the indirect kind, which is what we expect with spherocytosis and fits with the steady, mild breakdown of red cells you have always had. Kidney and liver enzymes are normal, and the HIV and hepatitis C screens are negative. Hematology should reach out to schedule. Keep taking the folic acid."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:10",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-08-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-09-26T11:10",
+              "author": "MA",
+              "body": "Prior PCP chart received, 14 pages. Problem list: hereditary spherocytosis (since childhood). Medication: folic acid 1 mg daily. No drug allergies. Immunizations: Tdap 08/2018; childhood series documented. Last physical there 2021 with CBC showing his usual mild anemia. Abstracted to chart, PCP to review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine",
+          "vitals": {
+            "temp_c": 36.5
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-10T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Visit",
+              "date": "2023-10-10T15:40",
+              "author": "RN",
+              "body": "Here after school for the 2023-24 COVID shot. Afebrile, no current illness, no prior reactions. 0.5 mL IM left deltoid, lot and expiration in the immunization record. Observed 15 minutes, left feeling fine."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "specialist_visit",
+          "start": "2024-01-23T10:00",
+          "service": "Hematology",
+          "reason": "Hereditary spherocytosis consultation",
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "done",
+              "date": "2024-01-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2024-01-29T09:30",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY GROUP - CONSULTATION\nDate of visit: 01/23/2024\nReferring: primary care\n\nThank you for referring Mr. Howland, 32, with hereditary spherocytosis, which runs in his father's family. He was followed for this in childhood and early adulthood and has been off hematology follow-up for several years. He takes folic acid 1 mg daily. No drug allergies.\n\nHe has a chronic, compensated hemolytic picture, with the labs you sent in September and a palpable spleen today. We talked at length about splenectomy: the reduction in hemolysis and future pigment stone risk on one side, and lifelong infection risk after the spleen is removed on the other, with the vaccines and antibiotic prophylaxis that come with it. He would like to proceed and prefers the summer, when school is out.\n\nPlan:\n- Referral to general surgery for elective laparoscopic splenectomy, July target.\n- Vaccines for asplenia (pneumococcal, meningococcal ACWY and B, Hib) to be completed through primary care at least two weeks before the operation; we will send the list.\n- Continue folic acid.\n- See him again shortly before surgery.\n\nOutside hematology"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T20:12",
+          "reason": "Surgery date and vaccines",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery is booked",
+              "date": "2024-05-20T20:12",
+              "author": "patient",
+              "body": "Hi, surgery got scheduled for July 3. The hematologist said I need a bunch of shots from you guys a couple weeks before. When can I come in? Afternoons after 3 work best until school lets out on the 21st."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery is booked",
+              "date": "2024-05-21T09:05",
+              "author": "RN",
+              "body": "Hi Rodney, we have the list from hematology. You need 4 vaccines that day: pneumococcal (PCV20), meningococcal ACWY, meningococcal B dose 1, and Hib. I booked you Tuesday 6/18 at 3:15, which is 15 days before surgery. The second meningococcal B dose will be at your post-op visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "specialist_visit",
+          "start": "2024-06-14T09:30",
+          "service": "Hematology",
+          "reason": "Pre-operative visit before elective splenectomy",
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 37.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-14T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 218
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-14T09:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Pre-operative Visit",
+              "date": "2024-06-17T14:20",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY GROUP - FOLLOW-UP\nDate of visit: 06/14/2024\n\nMr. Howland returns ahead of his elective laparoscopic splenectomy, which general surgery has booked about three weeks from now, on 07/03/2024.\n\nDiagnosis: hereditary spherocytosis.\nMedications: folic acid 1 mg by mouth daily.\nAllergies: none known.\nFamily history: father and paternal grandfather with hereditary spherocytosis.\nSocial: math teacher at a high school; never smoker; alcohol a drink or two a month.\nImmunizations: current for the routine adult schedule. Asplenia vaccines are booked at his PCP's office for 06/18.\n\nVitals: T 37.2 C (99 F), BP 130/80, HR 78, RR 16.\nExam: spleen palpable 3 cm below the left costal margin. Otherwise unremarkable.\n\nLabs today: hemoglobin 11.2 g/dL, MCV 92 fL, total bilirubin 2.1 mg/dL with direct 0.3 mg/dL. LDH elevated and haptoglobin decreased.\n\nImpression: hereditary spherocytosis with ongoing hemolysis and splenomegaly, appropriate for splenectomy.\n\nPlan:\n- Proceed with surgery as scheduled.\n- After surgery he will start penicillin V 250 mg twice daily for prophylaxis; surgery will prescribe at discharge.\n- Continue folic acid.\n- Counsel on fever after splenectomy: any temperature at or above 38.3 C means same-day medical evaluation.\n- Hematology follow-up 2 to 3 months after surgery.\n\nOutside hematology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "nurse_visit",
+          "start": "2024-06-18T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-splenectomy vaccines",
+          "vitals": {
+            "bp": [
+              105,
+              81
+            ],
+            "hr": 65,
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-06-18T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-06-18T15:25"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2024-06-18T15:26"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2024-06-18T15:27"
+            },
+            {
+              "vaccine": "Haemophilus influenzae type b (PRP-T)",
+              "date": "2024-06-18T15:28"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Asplenia Vaccine Visit",
+              "date": "2024-06-18T15:55",
+              "author": "RN",
+              "body": "Vaccines ahead of planned splenectomy 7/3 (15 days out), per hematology list and PCP order.\nWell today, afebrile.\nGiven: PCV20 R deltoid; MenACWY R deltoid (separate site, 1 inch apart); MenB-4C dose 1 L deltoid; Hib L deltoid (separate site). VIS sheets provided. Lots in immunization record.\nWaited 15 min, no reaction. Reminded MenB dose 2 is due at the post-op visit, at least 1 month from today. Told him his arms will probably ache tomorrow."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "hospital_admission",
+          "start": "2024-07-03T06:30",
+          "end": "2024-07-05T11:00",
+          "service": "General Surgery",
+          "reason": "Elective laparoscopic splenectomy",
+          "conditions": [
+            {
+              "label": "Acquired absence of spleen",
+              "action": "diagnosed",
+              "onset": "2024-07-03",
+              "note": "Laparoscopic splenectomy for hereditary spherocytosis"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "penicillin V potassium 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Asplenia prophylaxis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - General Surgery",
+              "date": "2024-07-09T13:05",
+              "author": "general surgery",
+              "body": "REGIONAL HOSPITAL - GENERAL SURGERY DISCHARGE SUMMARY\nAdmitted: 07/03/2024  Discharged: 07/05/2024\n\nDiagnosis: hereditary spherocytosis with splenomegaly.\nProcedure: elective laparoscopic splenectomy, 07/03/2024.\nAllergies: NKDA.\n\nCourse: Operation without complication; minimal blood loss, no transfusion. Diet advanced on POD 1, pain controlled with oral medication, walking independently. Afebrile throughout. Discharged home POD 2.\n\nPre-operative vaccines confirmed given 06/18/2024 at primary care (PCV20, MenACWY, MenB-4C #1, Hib).\n\nDischarge medications:\n- Penicillin V potassium 250 mg by mouth twice daily (new; asplenia prophylaxis)\n- Folic acid 1 mg by mouth daily (continue)\n- Acetaminophen as needed for pain\n\nInstructions: no lifting over 10 lb for 4 weeks. Fever 38.3 C or higher, worsening abdominal pain or redness at incisions: call or go to the ED. Asplenia wallet card given. PCP follow-up in 2 weeks for the second MenB dose; surgery clinic in 2 to 3 weeks.\n\nOperative note attached separately (laparoscopic, 4 ports, spleen removed intact in a retrieval bag through an extended umbilical port site; no accessory spleen seen)."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-08a",
+          "kind": "pharmacy",
+          "start": "2024-07-08T10:20",
+          "reason": "New prescription fill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy fill check",
+              "date": "2024-07-08T10:20",
+              "author": "MA",
+              "body": "Med rec after hospital discharge. Pharmacy confirms penicillin VK 250 mg BID filled 7/5 (surgeon's Rx, 30 days, refills on file with us going forward). Added to med list. Folic acid unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "office_visit",
+          "start": "2024-07-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-splenectomy follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              75
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 77.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-07-19T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 11.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-19T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-07-19T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-19T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2024-07-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op Follow-up",
+              "date": "2024-07-19T10:50",
+              "author": "PCP",
+              "body": "S: Two weeks out from lap splenectomy (7/3) for HS. Went home day 2. Sore at the umbilicus mostly, stopped the acetaminophen a few days ago. Eating normally, BMs fine. No fevers. Taking penicillin VK twice a day, missed one evening dose last weekend. Folic acid daily.\n\nO: Vitals reviewed, afebrile. Incisions x4 healing, umbilical one slightly indurated but no drainage, no redness. Abdomen soft, appropriately tender near the umbilicus only. Lungs clear.\n\nA/P:\n1. Asplenia after splenectomy for hereditary spherocytosis. Long talk about overwhelming post-splenectomy infection: it is rare but can move fast, so a fever of 38.3 or higher, or shaking chills, means he calls us the same day or goes straight to the ED and tells them he has no spleen. He has the wallet card; suggested a medical alert tag. Penicillin VK 250 BID ongoing. Travel and animal bites: call before, not after.\n2. MenB-4C dose 2 given today, completes the series with the 6/18 vaccines. Flu every fall from now on.\n3. CBC today to see where his counts settle.\n4. Lifting limits per surgery. Surgery clinic visit next week.\n\nRTC for the physical in December."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.6,
+            "labs": {
+              "Hemoglobin": 12.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-22a",
+          "kind": "portal_message",
+          "start": "2024-07-22T08:10",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count after surgery",
+              "date": "2024-07-22T08:10",
+              "author": "PCP",
+              "body": "Rodney, hemoglobin is up to 12.6 already, compared with about 11 before surgery. White count and platelets are normal. Exactly the direction we hoped for. Hematology will recheck at your fall visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "specialist_visit",
+          "start": "2024-09-24T15:30",
+          "service": "Hematology",
+          "reason": "Follow-up after splenectomy",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T15:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-09-24T15:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "date": "2024-09-30T11:45",
+              "author": "hematology",
+              "body": "OUTSIDE HEMATOLOGY GROUP - FOLLOW-UP\nDate of visit: 09/24/2024\n\nMr. Howland is about 12 weeks past an uncomplicated laparoscopic splenectomy for hereditary spherocytosis. Back at work for the new school year, energy good. No fevers or infections since surgery. Taking penicillin V 250 mg twice daily and folic acid 1 mg daily. No drug allergies.\n\nExam: incisions well healed. No lymphadenopathy.\n\nLabs: hemoglobin 13.4 g/dL, total bilirubin 0.9 mg/dL.\n\nAssessment: hemolysis well controlled after splenectomy.\n\nPlan: continue penicillin V prophylaxis and folic acid. Asplenia vaccine series complete per primary care records. Annual influenza vaccine. Return to hematology in one year.\n\nOutside hematology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Direct": 0.2,
+              "Bilirubin, Total": 0.9,
+              "Hemoglobin": 13.4
+            }
+          }
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID-19 vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall Vaccines",
+              "date": "2024-10-08T15:55",
+              "author": "RN",
+              "body": "Flu (L arm) and 2024-25 COVID (R arm), both IM. Afebrile, no current symptoms. Asplenic, so flu shot reinforced as yearly. Tolerated, observed 15 min."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "annual_physical",
+          "start": "2024-12-19T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              104,
+              74
+            ],
+            "hr": 78,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 77.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-12-19T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 215
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.05
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-12-19T16:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-12-19T16:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-12-19T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-19T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-12-19T16:30",
+              "author": "PCP",
+              "body": "ANNUAL PE\n\n33M. Since last year: lap splenectomy 7/3 for hereditary spherocytosis, smooth recovery, hematology saw him in Sept and was pleased. No fevers or infections since. Takes penicillin VK 250 BID, honest that the evening dose gets missed maybe once a week. Folic acid daily. Grading exams this week, otherwise good. Sleep ok. Shoots hoops on weekends.\n\nMeds: penicillin VK 250 mg BID; folic acid 1 mg daily.\nAllergies: NKDA.\nSH: never smoker, alcohol 1-2 drinks/month, no drugs.\nFH: father and paternal grandfather with HS.\n\nROS: negative in full.\n\nExam: vitals in flowsheet, normal. Well appearing. Sclerae clear. TMs and throat normal. Neck supple, thyroid normal. Heart regular, no murmur. Lungs clear throughout. Abdomen soft, healed laparoscopic scars, no masses. Skin normal. No edema. Mood bright.\n\nPHQ-2: 0.\n\nA/P\n1. Asplenia s/p splenectomy - doing well. Continue penicillin prophylaxis; went over fever plan again and the pill box idea for the evening dose. Vaccines: PCV20, MenACWY, MenB x2, Hib all done in June/July; flu and COVID done in October. MenACWY booster due in 5 years (2029).\n2. Hereditary spherocytosis - expect counts near normal now. CBC, CMP today.\n3. Prevention - lipids today. HIV and HCV screens already done 2023. Tdap good until 2028.\n\nFollow up in a year, hematology yearly in between."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "portal_message",
+          "start": "2024-12-20T12:30",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-12-20T12:30",
+              "author": "PCP",
+              "body": "All of yesterday's labs look good: blood count stable at its new normal, bilirubin normal, kidney and liver tests normal, cholesterol fine. Nothing to change. Have a good break."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "pharmacy",
+          "start": "2025-03-04T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-03-04T09:15",
+              "author": "MA",
+              "body": "eRx refill request from pharmacy: penicillin VK 250 mg BID and folic acid 1 mg daily. Seen 12/2024. Sent 90 days x 1 refill each per PCP standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "portal_message",
+          "start": "2025-06-23T10:40",
+          "reason": "Physical reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time to book your physical",
+              "date": "2025-06-23T10:40",
+              "author": "front desk",
+              "body": "Hi Rodney, our records show your yearly physical is coming due in December. You're welcome to book any time; summer has plenty of morning openings. Reply here or call us."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time to book your physical",
+              "date": "2025-06-24T21:02",
+              "author": "patient",
+              "body": "Thanks, I'm coaching the summer math camp through July. I'll call once that wraps up."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "pharmacy",
+          "start": "2025-09-08T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-09-08T08:50",
+              "author": "MA",
+              "body": "Pharmacy requesting penicillin VK 250 mg and folic acid 1 mg refills. Approved by PCP, 90 days x 1. Note on the Rx and a portal message to patient: due for a physical, please schedule before the next refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "outside_records",
+          "start": "2025-10-14T13:30",
+          "reason": "Pharmacy immunization report",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-04T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine notification",
+              "date": "2025-10-14T13:30",
+              "author": "MA",
+              "body": "Notice from a community pharmacy: seasonal flu vaccine (trivalent, IM) given 10/04/2025. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-03-10T09:05",
+              "author": "MA",
+              "body": "Refill request penicillin VK 250 mg BID and folic acid 1 mg daily. Last visit 12/19/2024. PCP ok'd 90 days given asplenia, not to lapse. Left voicemail asking him to book a physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "ed_visit",
+          "start": "2026-06-12T19:20",
+          "end": "2026-06-13T00:45",
+          "service": "Emergency Medicine",
+          "reason": "Fever and sore throat",
+          "vitals": [
+            {
+              "time": "2026-06-12T19:30",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 39.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-12T19:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-12T19:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-06-16T10:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival: 06/12/2026 19:20\n\nCC: fever, sore throat.\n\nHPI: 35-year-old man without a spleen (laparoscopic splenectomy July 2024 for hereditary spherocytosis) with two days of sore throat and fever, 101.5 F (38.6 C) on his home thermometer. Took his usual penicillin. Came in because his doctors told him fever without a spleen means the ED.\n\nPMH: hereditary spherocytosis; asplenia after splenectomy.\nPSH: splenectomy, 2024.\nMeds: folic acid 1 mg PO daily; penicillin V potassium 250 mg PO BID.\nAllergies: no known drug allergies.\nFH: hereditary spherocytosis in father and paternal grandfather.\nSH: high school math teacher. Never smoker. Drinks socially, 1-2 per month.\n\nTriage vitals: T 39 C (102.2 F), BP 130/80, P 88, RR 16.\n\nExam: Alert, nontoxic. Posterior pharynx red, no exudate, tonsils not enlarged. No cervical lymphadenopathy. Lungs clear. Heart regular. Abdomen soft, nontender, healed port scars. No rash. Remainder normal.\n\nLabs: WBC 12,000/uL, hemoglobin 13.2 g/dL, platelets 250,000/uL. Blood cultures x2 drawn before antibiotics, pending.\n\nED course: Febrile asplenic patient. Ceftriaxone 2 g IV given after cultures. On reassessment comfortable and drinking without difficulty. Discussed with patient; discharged with strict return precautions for rigors, confusion, rash, or worsening.\n\nImpression: fever and sore throat in an asplenic patient.\nDisposition: home. Continue penicillin prophylaxis. Follow up with PCP. ED will call with culture results.\n\nEmergency medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-13a",
+          "kind": "portal_message",
+          "start": "2026-06-13T11:25",
+          "reason": "ED visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "date": "2026-06-13T11:25",
+              "author": "patient",
+              "body": "Hi Doc, just letting you know I had a fever of 101.5 and a bad sore throat so I went to the ER like you told me. They gave me an IV antibiotic and sent me home around midnight. Throat still hurts but the fever is gone this morning. They said they'd call about blood cultures."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2026-06-13T13:40",
+              "author": "PCP",
+              "body": "Rodney, that was exactly the right call. Glad the fever broke. Keep up the penicillin, fluids and rest. If the fever comes back, or you get chills, a rash or feel confused, go straight back in. I'll watch for the culture results, and it's been a while since your last physical, so let's get you in this summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "outside_records",
+          "start": "2026-06-18T09:30",
+          "reason": "ED blood culture result",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-12T19:55",
+              "resulted": "2026-06-17T19:55",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED blood culture final",
+              "date": "2026-06-18T09:30",
+              "author": "MA",
+              "body": "Final blood culture report from the ED visit of 06/12/2026, received by fax: two sets, no growth at 5 days. Scanned for PCP review."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "rejected": [
+      "drug \"penicillin V potassium 250 MG Oral Tablet\""
+    ]
+  }
+}

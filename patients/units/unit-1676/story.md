@@ -33,3 +33,8 @@
 - 2026-08-18 specialist_visit: OB postpartum letter, folic acid 4 mg advice (A7)
 - 2026-08-20 pharmacy: prenatal vitamin refill (P)
 - 2026-09-29 office_visit: booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00001676 on 2025-10-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

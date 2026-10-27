@@ -43,3 +43,8 @@
 - 2026-04-14 portal, patient on ENT result [P]
 - 2026-08-18 portal, schedule physical [P]
 - 2026-09-23 annual physical booked [P]
+
+
+## Last seen
+
+The practice last saw MRN00002782 on 2025-09-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

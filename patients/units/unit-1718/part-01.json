@@ -1,0 +1,224 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001718",
+      "given": "Sheila",
+      "family": "Wojcik",
+      "birth_date": "1990-08-20",
+      "address_line": "38 Ferry Landing Road",
+      "phone": "+1-617-555-0166",
+      "email": "sheila.wojcik@example.test",
+      "marital_status": "partnered",
+      "summary": "Healthy elementary school teacher who joined in 2020 and had three babies (2022, 2024, 2026). Her postpartum years carry postpartum thyroiditis and depression after the first, mastitis, IPV disclosure and lactational amenorrhea after the second, and endometritis with septic pelvic thrombophlebitis, recurrent postpartum depression on sertraline, recurrent mastitis and an LNG-IUD after the third.",
+      "events": [
+        {
+          "id": "2020-08-27a",
+          "kind": "telephone",
+          "start": "2020-08-27T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2020-08-27T10:40", "body": "Caller is a 30 y/o teacher in South Hadley, moving her care to us, a coworker recommended the membership. Previous PCP retired in the spring and she has not had a physical in about two years. BCBS PPO, card info taken. No active issues per caller, no meds. Membership agreement emailed. New patient physical set for 9/15 at 8:00 before school, she has a planning period that morning. Records release form sent to her email for the old practice."}
+          ]
+        },
+        {
+          "id": "2020-09-15a",
+          "kind": "establish_care",
+          "start": "2020-09-15T08:00",
+          "end": "2020-09-15T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 61.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Rare, about 1 drink per month"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-15T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-15T08:45", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-15T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-09-15T08:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2020-09-15T08:30", "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative. Routine co-testing interval."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2020-09-15T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2020-09-15T09:10", "body": "Sheila is 30, new to the practice. Teaches second grade in South Hadley. Lives with her partner. Old PCP retired; last physical about two years ago, last Pap she thinks around 2017 and normal.\n\nPMH: none. No hospitalizations. PSH: none. Never pregnant. Meds: none, no supplements. NKDA.\nFH: mother has rheumatoid arthritis. Father healthy as far as she knows. No known family history of early heart disease or cancer.\nSH: never smoked. Alcohol maybe once a month, a glass of wine. No drugs. Walks most evenings. Feels safe at home.\n\nROS: negative across systems; periods regular, monthly, not heavy.\n\nExam: BP and pulse in the vitals tab. BMI ~22. Well appearing. HEENT unremarkable. Thyroid smooth, not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Breasts symmetric, no masses. Pelvic: normal external genitalia, cervix without lesions, Pap/HPV collected. Skin no rashes. Mood bright.\n\nA/P: healthy 30 y/o establishing care.\n- Screening: Pap with HPV today. One-time HIV and hep C, she agrees. CBC, CMP, lipids.\n- Vaccines: flu shot when the clinic doses arrive in early October. Tdap she believes was 2015; will look in old records.\n- PHQ-2 0. AUDIT-C low.\n- Asked about future pregnancy: thinking about it in the next year or two.\nReturn yearly."}
+          ]
+        },
+        {
+          "id": "2020-09-18a",
+          "kind": "portal_message",
+          "start": "2020-09-18T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab and Pap results", "author": "PCP", "date": "2020-09-18T16:20", "body": "Hi Sheila, everything from Tuesday came back fine: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Your Pap was normal and the HPV test was negative, so the next one isn't due for five years. Good to meet you. Text me if anything comes up."}
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "nurse_visit",
+          "start": "2020-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-07T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-07T15:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2020-10-07T15:45", "body": "After school drop-in for flu vaccine. Screening questions negative, no egg or vaccine reactions. Quadrivalent 0.5 mL IM left deltoid. VIS given. Tolerated; left after 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2021-05-03a",
+          "kind": "outside_records",
+          "start": "2021-05-03T11:00",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-10T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-01T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "pharmacy", "date": "2021-05-03T11:00", "body": "Immunization record forwarded from a community pharmacy at patient request.\nPfizer-BioNTech COVID-19 vaccine, dose 1: 04/10/2021, left deltoid.\nPfizer-BioNTech COVID-19 vaccine, dose 2: 05/01/2021, left deltoid.\nNo adverse events reported.\n\nMA: entered into immunization history."}
+          ]
+        },
+        {
+          "id": "2021-10-20a",
+          "kind": "annual_physical",
+          "start": "2021-10-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-20T08:10"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-10-20T07:40"},
+            {"procedure": "Immunization administration", "performed": "2021-10-20T08:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-10-20T08:25", "body": "Yearly visit. Feels well. Busy fall with a class of 24. She and her partner plan to start trying for a baby this winter. Periods regular. Sleep fine.\n\nNo meds. NKDA. Never smoker, alcohol rare.\nOld records came in over the summer: Tdap documented 2015, nothing else of note.\n\nExam: vitals reviewed, BMI stable. Thyroid normal size, no nodules. Heart and lungs unremarkable. Abdomen benign. No edema.\n\nA/P: healthy adult.\n- Preconception: discussed; OB will review immunity at the first prenatal visit.\n- Labs were all normal last year, nothing needed today.\n- Flu vaccine given, R deltoid. COVID primary series done in the spring.\n- Pap/HPV next due 2025.\nCall when pregnant and we'll help her connect with an OB group."}
+          ]
+        },
+        {
+          "id": "2022-01-10a",
+          "kind": "portal_message",
+          "start": "2022-01-10T19:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Positive test!", "author": "patient", "date": "2022-01-10T19:05", "body": "Hi! I took a home test this morning and it was positive. My last period started December 6. Who would you recommend for OB? A friend liked the group by the hospital. Thanks!"},
+            {"type": "Patient Message", "title": "RE: Positive test!", "author": "PCP", "date": "2022-01-11T07:15", "body": "Congratulations to you both! That group is excellent. Call them directly, they usually see you around 8 weeks. OB will take the lead on the pregnancy; I'm here for anything else and will see you after the baby comes."}
+          ]
+        },
+        {
+          "id": "2022-09-04a",
+          "kind": "hospital_admission",
+          "start": "2022-09-04T21:30",
+          "end": "2022-09-06T13:00",
+          "service": "Obstetrics",
+          "reason": "labor at term",
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2022-09-14T09:00", "body": "REGIONAL HOSPITAL, LABOR AND DELIVERY\nAdmission 09/04/2022, discharge 09/06/2022.\n\nG1 now P1, 31 y/o, admitted in spontaneous labor at 39 weeks after an uncomplicated prenatal course. Prenatal labs unremarkable; Tdap given 07/2022 at the OB office.\nSpontaneous vaginal delivery 09/05/2022 of a healthy infant. EBL within normal. Postpartum course routine; afebrile; breastfeeding well with lactation support.\nDischarge medications: ibuprofen and acetaminophen as needed. Allergies: NKDA.\nFollow-up: OB postpartum visit in 6 weeks.\n\nReceived by fax. Filed to chart, PCP aware."}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-07-18T10:00"}]
+        },
+        {
+          "id": "2022-10-28a",
+          "kind": "office_visit",
+          "start": "2022-10-28T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "palpitations, feeling hot and jittery",
+          "state": {"weight_kg": 66.0},
+          "vitals": {"hr": 108},
+          "measure": ["bp", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-10-28T11:50", "resulted": "2022-10-28T16:40", "results": [{"test": "Thyroid Stimulating Hormone", "value": 0.02}, {"test": "Free Thyroxine", "value": 2.4}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-28T11:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "endo-referral-2022", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "suspected postpartum thyroiditis, hyperthyroid labs"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-10-28T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-day visit: palpitations", "author": "PCP", "date": "2022-10-28T12:15", "body": "Texted this morning; worked in at 11:20.\n\nS: Baby is 7.5 weeks, vaginal delivery 9/5, breastfeeding without trouble. Since yesterday her heart has been racing on and off, she feels hot when nobody else is, keyed up, and couldn't fall asleep last night even when the baby did. No chest pain, no syncope, no shortness of breath. No fever, no sore throat, no neck pain. Not taking anything, no decongestants, coffee one cup. Mood ok, \"just wired.\"\n\nO: HR 108 regular. Afebrile. Fine tremor of outstretched hands. Thyroid not tender, not enlarged. No exophthalmos or lid lag. Heart tachycardic, regular, no murmur. Lungs clear. Warm moist skin.\n\nA/P: Postpartum, new adrenergic symptoms, tremor, tachycardia. Leading concern is postpartum thyroiditis in the thyrotoxic phase; an autoimmune hyperthyroidism is less likely but needs to be excluded.\n- TSH and free T4 today, stat. CBC.\n- If abnormal, endocrinology this week; she prefers someone who will work around breastfeeding.\n- Return precautions: chest pain, fainting, fever.\n\nAddendum 16:55: TSH 0.02, free T4 2.4. Called her; endocrinology agreed to see her Monday 10/31. Referral faxed with labs."}
+          ]
+        },
+        {
+          "id": "2022-10-31a",
+          "kind": "specialist_visit",
+          "start": "2022-10-31T09:30",
+          "service": "Endocrinology",
+          "reason": "thyrotoxicosis, 8 weeks postpartum",
+          "vitals": {"temp_c": 37.0, "hr": 112, "bp": [120, 76]},
+          "conditions": [{"label": "Postpartum thyroiditis, hyperthyroid phase", "icd10": "O90.5", "action": "diagnosed", "onset": "2022-10-27"}],
+          "medications": [{"drug": "propranolol hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily as needed for palpitations or tremor", "dose": {"value": 10, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "postpartum thyroiditis, adrenergic symptoms"}],
+          "labs": [
+            {"panel": null, "collected": "2022-10-31T10:15", "results": [
+              {"test": "Free Triiodothyronine", "value": 6.1},
+              {"test": "Thyroid Peroxidase Antibody", "value": 210},
+              {"test": "TSH receptor antibody", "loinc": "5385-0", "unit": "[IU]/L", "value": 0.8}
+            ]}
+          ],
+          "orders": [{"id": "endo-referral-2022", "action": "done", "date": "2022-10-31T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Consultation", "author": "endocrinology", "date": "2022-11-03T14:00", "body": "OUTSIDE ENDOCRINOLOGY GROUP\nConsultation, date of service 10/31/2022\nReferring: primary care, membership internal medicine\n\nReason for consult: thyrotoxicosis 8 weeks postpartum.\n\nHistory: 32-year-old teacher, first baby delivered vaginally eight weeks ago after a full-term pregnancy without complications. Nursing well. For four days she has felt warm, anxious and on edge, with frequent palpitations, poor sleep, and sweating in rooms others find comfortable. Appetite up a little; weight unchanged by her report. No sore throat or recent viral illness. Takes no medications. Allergies: none known.\nFamily history: she knows of no thyroid disease in the family. Mother has rheumatoid arthritis.\nSocial: never smoker, alcohol rarely, about once a month. Teaches elementary school.\n\nExam: temperature 98.6 F, pulse 112, BP 120/76. Fine tremor of both hands. Thyroid gland normal in size, nontender, no nodules. No proptosis, lid retraction or periorbital change.\n\nData: outside TSH 0.02 mIU/L and free T4 2.4 ng/dL (10/28). Today free T3 6.1 pg/mL, TPO antibody 210 IU/mL, TSH receptor antibody 0.8 IU/L (negative).\n\nImpression: painless postpartum thyroiditis, thyrotoxic phase. The negative receptor antibody, nontender normal-sized gland, absent eye findings and timing all favor it over autoimmune hyperthyroidism. A radioiodine uptake study would confirm low uptake but would mean interrupting breastfeeding; we agreed to defer it since the labs answer the question.\n\nPlan:\n1. Propranolol 10 mg up to three times a day for palpitations and tremor; compatible with nursing. Stop once symptoms settle.\n2. No antithyroid drug; it does not help this phase.\n3. TSH and free T4 in about 6 weeks through primary care, then every 6 to 8 weeks for the first postpartum year, watching for a hypothyroid swing.\n4. Positive TPO antibody raises the long-term risk of hypothyroidism; yearly TSH after recovery and a check after any future delivery.\n\nThank you for the referral.\n\nScanned and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "portal_message",
+          "start": "2022-11-07T21:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Propranolol and nursing", "author": "patient", "date": "2022-11-07T21:10", "body": "The endocrinologist said propranolol is fine with breastfeeding but my mother-in-law is worried. I've been taking it twice a day and it really helps the pounding. Is it ok to keep going?"},
+            {"type": "Patient Message", "title": "RE: Propranolol and nursing", "author": "PCP", "date": "2022-11-08T06:50", "body": "Yes, keep going. Very little gets into milk at that dose and it's one of the preferred choices for nursing mothers. Watch the baby for unusual sleepiness, which would be rare. Bloodwork around December 12 and we'll see if you can come off it."}
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "nurse_visit",
+          "start": "2022-11-17T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-11-17T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-17T15:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-11-17T15:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2022-11-17T16:05", "body": "Here with baby in carrier. Breastfeeding, both vaccines safe while nursing, reviewed. Flu quadrivalent L deltoid, Pfizer bivalent booster R deltoid. Says palpitations much less, using propranolol about once a day now. Observed 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2022-12-14a",
+          "kind": "office_visit",
+          "start": "2022-12-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "thyroid recheck, postpartum",
+          "state": {"weight_kg": 64.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 14}, {"survey": "GAD-7 total score", "value": 8}],
+          "labs": [
+            {"panel": null, "collected": "2022-12-14T15:20", "resulted": "2022-12-14T15:35", "results": [{"test": "Thyroid Stimulating Hormone", "value": 0.9}, {"test": "Free Thyroxine", "value": 1.3}]}
+          ],
+          "conditions": [{"label": "Postpartum depression", "action": "diagnosed", "onset": "2022-11-20"}],
+          "medications": [{"drug": "propranolol hydrochloride 10 MG Oral Tablet", "action": "stop", "reason": "symptoms resolved, thyroid levels normalizing"}],
+          "orders": [{"id": "psych-referral-2022", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Perinatal psychiatry", "reason": "postpartum depression"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-14T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: thyroiditis, mood", "author": "PCP", "date": "2022-12-14T16:30", "body": "Lab drawn before the visit; TSH 0.9 and free T4 1.3 already back.\n\nThyroid: palpitations gone for about two weeks, hasn't needed propranolol in 10 days. Tremor gone. Sleeping when she can.\n\nMood: when I asked how she was really doing she teared up. For about 3–4 weeks: low most days, crying in the car on the way back to the house, guilt that she isn't enjoying the baby the way she expected, worrying constantly, lying awake after night feeds. Still caring for the baby well, eating, partner helping some. Denies any thoughts of harming herself or the baby. No prior depression before this year. Planning to return to school in January.\nPHQ-9 14, GAD-7 8.\n\nExam: pulse normal, regular. Tearful, organized, good eye contact. Thyroid normal. Tremor absent.\n\nA/P:\n1. Postpartum thyroiditis, thyrotoxic phase, resolving. Stop propranolol. TSH/free T4 again mid-February, then spring. Told her a low-thyroid phase can follow (tired, cold, constipated) and to tell me.\n2. Postpartum depression, moderate. Discussed therapy and medication; she wants to start with therapy and is open to meds if not better. Referral to the perinatal psychiatry clinic, they also run a therapy group. Postpartum support line number given. Safety plan reviewed; she will text or call if any thoughts of self-harm.\nCheck-in by phone in 2 weeks; see her in about 6 weeks."}
+          ]
+        },
+        {
+          "id": "2022-12-28a",
+          "kind": "telephone",
+          "start": "2022-12-28T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Mood check-in", "author": "RN", "date": "2022-12-28T10:25", "body": "Called per PCP. Intake call done with the perinatal psychiatry clinic, first appointment Jan 5. Says the holidays were hard but her mother has been staying with them. No thoughts of self-harm. Knows to text PCP or go to the ED if that changes."}
+          ]
+        }
+      ]
+    }
+  ]
+}

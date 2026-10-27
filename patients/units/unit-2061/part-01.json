@@ -1,0 +1,1403 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002061",
+      "given": "Philip",
+      "family": "Cummings",
+      "birth_date": "1968-05-21",
+      "address_line": "212 Bridge Road, Apt 3",
+      "phone": "+1-603-555-0160",
+      "email": "philip.cummings@example.test",
+      "marital_status": "single",
+      "summary": "58-year-old automotive parts manager with alcoholic cirrhosis, portal hypertension and ascites, two banded variceal bleeds before joining in 2021, hepatitis C cured by infectious diseases in 2022, and Kallmann syndrome on testosterone. Still drinking through 2025; last seen 2025-09-19, then a third variceal bleed with TIPS in early 2026 and hepatorenal syndrome in July 2026, both reaching the chart only as hospital records.",
+      "events": [
+        {
+          "id": "2021-06-02a",
+          "kind": "telephone",
+          "start": "2021-06-02T11:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2021-06-02T11:20",
+              "body": "Caller wants to establish primary care here. Says he was in the hospital twice in the past year for bleeding from veins in his esophagus and the discharge paperwork both times told him to get a local PCP. Has a liver doctor through an outside GI group already. Commercial PPO, card scanned. Booked new patient slot 6/8 at 9:00, long visit. Asked him to sign a release for his old PCP office and the hospital so we can pull records before he comes. Release sent by portal."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T09:00",
+          "end": "2021-06-08T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; cirrhosis; low libido",
+          "conditions": [
+            {
+              "label": "Alcoholic cirrhosis of liver",
+              "action": "diagnosed",
+              "onset": "2020-09-14",
+              "note": "diagnosed at first variceal bleed admission; followed by outside GI"
+            },
+            {
+              "label": "Portal hypertension",
+              "icd10": "K76.6",
+              "action": "diagnosed",
+              "onset": "2020-09-14"
+            },
+            {
+              "label": "Ascites due to cirrhosis",
+              "icd10": "R18.8",
+              "action": "diagnosed",
+              "onset": "2020-09-14",
+              "note": "on furosemide and spironolactone"
+            },
+            {
+              "label": "Secondary esophageal varices with bleeding",
+              "icd10": "I85.11",
+              "action": "history",
+              "onset": "2020-09-14",
+              "note": "banded twice, 2020-09 and 2021-03"
+            },
+            {
+              "label": "Chronic hepatitis C",
+              "action": "diagnosed",
+              "note": "known for years, never treated"
+            },
+            {
+              "label": "Alcohol use disorder, severe",
+              "icd10": "F10.20",
+              "action": "diagnosed",
+              "onset": "2006-01-01"
+            },
+            {
+              "label": "Testicular hypofunction",
+              "icd10": "E29.1",
+              "action": "diagnosed",
+              "onset": "1984-06-01",
+              "note": "on testosterone replacement since his teens"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ascites"
+            },
+            {
+              "drug_text": "spironolactone 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ascites"
+            },
+            {
+              "drug": "propranolol hydrochloride 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "variceal bleeding prophylaxis"
+            },
+            {
+              "drug_text": "testosterone cypionate 200 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "Inject 1 mL (200 mg) into the muscle every 2 weeks",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "Q2W",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "hypogonadism"
+            },
+            {
+              "drug_text": "phytonadione 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (10 mg) by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "coagulopathy of liver disease"
+            },
+            {
+              "drug_text": "lactulose 0.667 GM/ML Oral Solution",
+              "action": "historical",
+              "sig": "Take 30 mL by mouth twice daily as needed for constipation",
+              "dose": {
+                "value": 30,
+                "unit": "mL"
+              },
+              "frequency": "BID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "constipation"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0,
+            "height_cm": 178.0,
+            "bp": [
+              104,
+              64
+            ],
+            "hr": 62,
+            "labs": {
+              "Aspartate Aminotransferase": 160,
+              "Alanine Aminotransferase": 130,
+              "Bilirubin, Total": 3.0,
+              "Albumin": 2.9,
+              "Prothrombin Time-International Normalized Ratio": 1.5,
+              "Platelets": 90,
+              "Hemoglobin": 11.2,
+              "Sodium": 135,
+              "Creatinine": 0.95,
+              "Prostate Specific Antigen": 0.9,
+              "Testosterone, Total": 540,
+              "Bilirubin, Direct": 1.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T10:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-06-08T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-06-08T10:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About 6 beers daily for roughly 15 years"
+            },
+            {
+              "item": "Occupation",
+              "value": "Automotive parts manager"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-05-10T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-23T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-13T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2021-06-08T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "low libido and erectile dysfunction on testosterone replacement"
+            },
+            {
+              "id": "id-referral-2021",
+              "action": "placed",
+              "order": "Infectious Diseases referral",
+              "category": "referral",
+              "to": "Infectious Diseases",
+              "reason": "untreated chronic hepatitis C with cirrhosis"
+            },
+            {
+              "id": "us-hcc-2021-07",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "liver cancer surveillance in cirrhosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-06-08T10:05",
+              "body": "NEW PATIENT. 53M, parts manager at an auto supply, here to set up primary care. Old PCP retired; he has been getting refills through the GI office and urgent care in between.\n\nLiver: told he had cirrhosis at his first bleed in Sept 2020 — vomited blood at work, admitted, scoped and banded. Second bleed this March, banded again. Both admissions at an outside hospital. Followed by an outside GI group, last seen there in the spring. On furosemide and spironolactone for fluid, propranolol since the first bleed. Also takes vitamin K daily and lactulose when constipated. Has known he has hep C for years (brother has it too) and was never treated; says nobody ever pushed it.\n\nAlcohol: honest about it. Six beers a night most nights, has been that way about 15 years. Cut back for a few weeks after each admission and drifted back. Not interested in a program right now. Former smoker, quit 2016.\n\nHormones: says he was told as a teenager his body didn't make enough testosterone and has been on shots ever since. Injects 200 mg every 2 weeks at home. For about 4 months his interest in sex is way down and erections are unreliable. Wants it looked at.\n\nPSH: umbilical hernia as a kid. EGD with banding x2.\nFH: father died at 58 of alcoholic cirrhosis and liver cancer. Mother living, HTN and high cholesterol. Brother with chronic hep C. Paternal uncle drank heavily.\nAllergies: none known.\nImmunizations per pt: tetanus shot 2016, two COVID shots this spring. Doesn't recall any others.\n\nExam: thin man, looks older than stated age. BP 104/64 HR 62. Sclerae anicteric in this light. Palmar erythema. A few spider angiomata on the upper chest. Lungs clear. RRR. Abdomen distended, fluid wave present, nontender. No asterixis. Trace ankle edema.\n\nA/P\n1. Alcoholic cirrhosis with portal hypertension and ascites, 2 prior banded variceal bleeds. Continue furosemide 40, spironolactone 100, propranolol 20 bid. CMP/CBC/INR today. Records requested from the hospital and old PCP. Liver US every 6 months for cancer screening given cirrhosis and his father's history — first one ordered.\n2. Chronic hepatitis C, untreated. Referring to ID for treatment; cure would matter for him.\n3. Alcohol use disorder. AUDIT-C 10. Talked plainly about what alcohol is doing to his liver and the bleeding risk. Offered referral to addiction medicine and a medicine to help with cravings; he declined both today but listened. Will keep asking.\n4. Hypogonadism on testosterone, now low libido and ED. Liver disease and alcohol are likely part of it. Endocrinology referral to sort out what we're dealing with.\n5. HIV screen today, he agreed.\n6. Return 3 months, sooner if any bleeding, black stools, confusion or rapid belly swelling — go straight to the ED for vomiting blood."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              64
+            ],
+            "hr": 62
+          }
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "portal_message",
+          "start": "2021-06-09T16:40",
+          "conditions": [
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2021-06-08",
+              "note": "from portal hypertension"
+            },
+            {
+              "label": "Anemia, unspecified",
+              "action": "diagnosed",
+              "onset": "2021-06-08",
+              "note": "mild"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-06-09T16:40",
+              "body": "Hi Mr. Cummings, your labs from yesterday are back. Your liver numbers are what I expected with cirrhosis and active hep C — the liver enzymes are elevated, bilirubin is up and albumin (a protein the liver makes) is low. Your platelets are low, which goes with an enlarged spleen from the pressure in the liver's veins, and you are mildly anemic. Kidney function and sodium look fine on the water pills. HIV test negative. Nothing here changes the plan. I've added the low platelets and anemia to your list so we can track them."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-16a",
+          "kind": "outside_records",
+          "start": "2021-06-16T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital discharge summaries and prior PCP records",
+              "author": "outside hospital",
+              "date": "2021-06-16T14:00",
+              "body": "Records received by fax, 38 pages, filed to media.\n\nDischarge summary, admission 9/14/2020 to 9/18/2020. Presented with hematemesis. New diagnosis of cirrhosis, felt to be alcohol related with hepatitis C contributing. EGD: esophageal varices with stigmata of recent bleeding, band ligation performed. Discharged on propranolol 20 mg twice daily, furosemide 40 mg daily, spironolactone 100 mg daily, vitamin K, lactulose as needed. Advised complete abstinence. Allergies: no known drug allergies.\n\nDischarge summary, admission 3/2/2021 to 3/5/2021. Recurrent upper GI bleed. EGD with band ligation of esophageal varices. Home medications resumed unchanged. GI follow-up arranged.\n\nPrior PCP: last visit 2019. Tdap 5/2016. Testosterone cypionate continued from an endocrinologist he saw years ago, refills by PCP. No colonoscopy on file."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "imaging",
+          "start": "2021-07-13T08:30",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-07-13T09:10",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 4.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2021-07-13T08:30",
+              "text": "Indication: cirrhosis, hepatocellular carcinoma surveillance. The liver has a nodular contour and coarse echotexture. No focal hepatic lesion. Main portal vein patent with hepatopetal flow. No intrahepatic or extrahepatic biliary dilation. Gallbladder unremarkable. Spleen enlarged. Ascites present in the abdomen. Kidneys normal in size without hydronephrosis.",
+              "conclusion": "Cirrhotic liver without focal lesion. Splenomegaly and ascites."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2021-07",
+              "action": "done",
+              "date": "2021-07-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Ultrasound and AFP",
+              "author": "PCP",
+              "date": "2021-07-14T08:15",
+              "body": "Surveillance US: cirrhotic liver, no mass. Spleen big, fluid present, both known. AFP normal. Repeat both in 6 months — GI may do the next one. Pt notified by portal."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-02a",
+          "kind": "specialist_visit",
+          "start": "2021-08-02T13:30",
+          "service": "Endocrinology",
+          "reason": "decreased libido and erectile dysfunction",
+          "conditions": [
+            {
+              "label": "Kallmann syndrome",
+              "icd10": "E23.0",
+              "action": "diagnosed",
+              "onset": "1984-06-01",
+              "note": "congenital hypogonadotropic hypogonadism; hypogonadism now multifactorial"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-08-02T14:20",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 180
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-08-02T14:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-02T14:20",
+              "results": [
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2021",
+              "action": "done",
+              "date": "2021-08-02T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "author": "endocrinology",
+              "date": "2021-08-09T10:00",
+              "body": "OUTSIDE ENDOCRINOLOGY CONSULTATION — date of visit 08/02/2021, received 08/09/2021.\n\nReason for referral: low libido and erectile dysfunction in a man on testosterone replacement.\n\nHistory: 53-year-old man, referred by his primary care physician. Over roughly the last six months he has noticed reduced sexual desire and difficulty with erections. He was evaluated as an adolescent for absent pubertal development and has taken testosterone since; current dose testosterone cypionate 200 mg intramuscularly every 2 weeks, self-administered, no missed doses. Background of cirrhosis from alcohol with portal hypertension and prior variceal bleeding, and untreated hepatitis C. Drinks about six beers daily.\n\nMedications: furosemide 40 mg daily, spironolactone 100 mg daily, propranolol 20 mg twice daily, testosterone cypionate 200 mg IM every 2 weeks, vitamin K 10 mg daily, lactulose 30 mL twice daily as needed.\nAllergies: no known drug allergies.\nFamily history: father deceased at 58, alcoholic cirrhosis and hepatocellular carcinoma; mother with hypertension and hyperlipidemia; brother with hepatitis C; paternal uncle with alcohol use disorder.\n\nExamination: undernourished-appearing. Palmar erythema. Spider angiomata across the chest. Abdomen distended with a fluid wave. Genital exam with small, atrophic testes.\n\nLaboratory: albumin 2.9 g/dL, total bilirubin 3.2 mg/dL, alkaline phosphatase 120 U/L, AST 180 U/L, ALT 150 U/L, INR 1.6. Estradiol elevated.\n\nAssessment: His history is that of Kallmann syndrome, congenital hypogonadotropic hypogonadism, appropriately treated with testosterone for decades. The new symptoms are best explained by additional factors: advanced liver disease, ongoing alcohol use and excess estrogen from the liver disease, reflected in the elevated estradiol. His hypogonadism is now multifactorial.\n\nPlan: continue testosterone cypionate 200 mg every 2 weeks without change. The most effective step for his symptoms is stopping alcohol; discussed directly. No additional medication recommended at this time. Return as needed.\n\nThank you for this referral.\n\nAllergies reviewed: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "office_visit",
+          "start": "2021-09-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-21T14:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-21T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-09-21T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-21T14:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-21T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-21T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-09-21T14:35",
+              "body": "S: Back for 3-month check. Read the endocrine letter with him — they think his testosterone dose is fine and the drop in libido is mostly the liver and the drinking, plus estrogen running high. He took that better than I expected. Still drinking, \"maybe five most nights now.\" No bleeding, no black stools. Belly about the same. ID appointment is next month.\nO: BP 102/66 HR 60. Thin. Palmar erythema. Abdomen distended with fluid wave, nontender. No asterixis. Trace ankle edema.\nA/P:\n- Kallmann syndrome per endocrinology; on list. Testosterone unchanged, refills here.\n- Cirrhosis/portal HTN/ascites: stable. Same diuretics and propranolol. Labs today.\n- AUD: again offered addiction medicine or medication. Not yet. \"Let me get through the hep C stuff first.\"\n- Flu vaccine given L deltoid.\n- Return in 3 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              102,
+              66
+            ],
+            "hr": 60
+          }
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "specialist_visit",
+          "start": "2021-10-12T10:00",
+          "service": "Infectious Diseases",
+          "reason": "chronic hepatitis C",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-12T10:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "value": 1850000
+                },
+                {
+                  "test": "Hepatitis C virus genotype",
+                  "loinc": "32286-7",
+                  "text": "Genotype 1a"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral-2021",
+              "action": "done",
+              "date": "2021-10-12T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases consultation",
+              "author": "infectious diseases",
+              "date": "2021-10-19T09:30",
+              "body": "INFECTIOUS DISEASES CLINIC — NEW CONSULT. Seen 10/12/2021, letter sent 10/19/2021.\n\nReferred for treatment of chronic hepatitis C. He has known about the infection for several years and has never been treated. Cirrhosis with ascites on diuretics and two prior variceal bleeds (2020, 2021). Drinks daily. No injection drug use.\n\nAllergies: NKDA. Medications reviewed: furosemide, spironolactone, propranolol, testosterone cypionate, vitamin K, lactulose PRN. No interactions of concern with sofosbuvir/velpatasvir.\n\nExam: thin, mild ascites, palmar erythema.\n\nData: HCV RNA 1,850,000 IU/mL. Genotype 1a.\n\nImpression: chronic HCV genotype 1a with decompensated cirrhosis (ascites, prior variceal hemorrhage).\n\nPlan: sofosbuvir/velpatasvir 400/100 mg one tablet daily. Ribavirin would usually be added for decompensated disease, but he is already anemic; we will give 24 weeks without ribavirin instead. Prior authorization submitted. HCV RNA at end of treatment and 12 weeks after. Ongoing alcohol use does not prevent treatment but we encouraged him to stop. Liver care remains with his gastroenterologist."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-01a",
+          "kind": "pharmacy",
+          "start": "2021-11-01T09:00",
+          "medications": [
+            {
+              "drug_text": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily for 24 weeks",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic hepatitis C, prescribed by infectious diseases"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Specialty pharmacy notification",
+              "author": "MA",
+              "date": "2021-11-01T09:00",
+              "body": "Specialty pharmacy called: prior auth for sofosbuvir/velpatasvir approved by his plan last week, first 28-day fill delivered to the patient, start date today. Prescriber is ID. Added to his med list as an outside prescription."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-12-14T09:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-14T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-12-14T09:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-12-14T09:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-12-14T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-12-14T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-12-14T09:15",
+              "body": "6 weeks into the hep C pills. Taking them every morning with coffee, keeps the bottle at work so he doesn't forget. A little tired, no other side effects. Drinking \"less, honestly\" — 3 or 4 on weeknights, more on weekends. Belly and ankles same. No bleeding.\n\nBP 100/62 HR 64. Abdomen distended, fluid wave, nontender. No asterixis. Mild ankle edema.\n\n1) HCV on sof/vel via ID — continue.\n2) Cirrhosis/ascites — diuretics unchanged, labs today.\n3) Shingles vaccine #1 today, #2 in 2–6 months.\n4) AUD — cutting back on his own; encouraged. Declines program.\nRTC 3 mo."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              62
+            ],
+            "hr": 64
+          }
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "office_visit",
+          "start": "2022-01-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "rectal bleeding",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-01-11T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-rectal-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "rectal bleeding in cirrhosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-day visit: rectal bleeding",
+              "author": "PCP",
+              "date": "2022-01-11T15:55",
+              "body": "Texted this morning about blood after BMs, came in this afternoon. For a few weeks, bright red streaks on the paper and some in the bowl. Not a lot, no clots. Stools brown, not black. No vomiting blood, no lightheadedness.\n\nBP 104/66 HR 66. Not pale. Abdomen distended, soft. Deferred rectal exam today; GI will do a proper look and I'd rather they scope.\n\nA/P: Low-volume bright red rectal bleeding in a man with portal hypertension and low platelets — likely a hemorrhoidal or rectal varix source, but he needs GI. Called his GI office; they will see him in 2 weeks, sooner if it picks up. ED for black stools, heavy bleeding or dizziness. His labs from December were stable."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              104,
+              66
+            ],
+            "hr": 66
+          }
+        },
+        {
+          "id": "2022-01-26a",
+          "kind": "specialist_visit",
+          "start": "2022-01-26T11:00",
+          "service": "Gastroenterology",
+          "reason": "rectal bleeding",
+          "conditions": [
+            {
+              "label": "Hemorrhoids",
+              "action": "diagnosed",
+              "onset": "2022-01-26",
+              "note": "internal"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-01-26T09:30",
+              "text": "Liver nodular in contour with heterogeneous echotexture, consistent with cirrhosis. No focal hepatic mass. Portal vein patent. No biliary dilation. Spleen enlarged. Small volume ascites.",
+              "conclusion": "Nodular liver consistent with cirrhosis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-rectal-2022",
+              "action": "done",
+              "date": "2022-01-26T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology clinic note",
+              "author": "gastroenterology",
+              "date": "2022-01-31T13:00",
+              "body": "GASTROENTEROLOGY FOLLOW-UP — visit 1/26/2022, faxed 1/31/2022.\n\nKnown to our clinic for cirrhosis. Since his endocrine evaluation last summer he has noticed bright red blood with stools for several weeks — streaks on tissue, some in the water. He also mentions intermittent abdominal fullness, ankle swelling and bruising easily. Over the past few months he has felt progressively more tired and gets mildly short of breath with exertion. No abdominal pain, no diarrhea, no recent travel. Currently on sofosbuvir/velpatasvir through ID.\n\nMeds: furosemide 40, spironolactone 100, propranolol 20 BID, testosterone cypionate 200 mg q2wk, vitamin K 10 mg, lactulose PRN, sofosbuvir/velpatasvir. NKDA.\n\nExam: chronically ill appearance. Scleral icterus. Spider angiomas over the chest. Mild ascites. Spleen tip palpable below the left costal margin. Bilateral ankle edema. Rectal: no external lesions or fissure; stool guaiac positive.\n\nLabs: platelets low, mild anemia, INR elevated, transaminases elevated — consistent with his prior values.\nUltrasound today: nodular liver consistent with cirrhosis.\nAnoscopy in clinic: engorged internal hemorrhoidal veins in the distal rectum, no active bleeding.\n\nImpression: symptomatic internal hemorrhoids in the setting of portal hypertension and thrombocytopenia.\nPlan: colonoscopy to exclude another source given occult blood, then rubber band ligation in clinic. Continue current medications. Avoid straining; lactulose as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "procedure_visit",
+          "start": "2022-02-14T07:30",
+          "service": "Gastroenterology",
+          "reason": "colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2022-02-14T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "author": "gastroenterology",
+              "date": "2022-02-16T10:00",
+              "body": "COLONOSCOPY — 2/14/2022, report received 2/16.\nIndication: hematochezia, positive occult blood, cirrhosis.\nSedation: monitored anesthesia care. Prep: good.\nCecum reached and confirmed by appendiceal orifice and ileocecal valve; terminal ileum not entered. Withdrawal time 9 minutes.\nFindings: Colon mucosa normal throughout. No polyps, masses, diverticula or vascular lesions. Retroflexion shows non-bleeding internal hemorrhoids.\nImpression: internal hemorrhoids, otherwise normal exam.\nRecommendation: proceed with hemorrhoid banding in clinic. Next colonoscopy in 10 years. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "procedure_visit",
+          "start": "2022-03-07T13:00",
+          "service": "Gastroenterology",
+          "reason": "hemorrhoid banding",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Rubber band ligation, session 1",
+              "author": "gastroenterology",
+              "date": "2022-03-09T09:00",
+              "body": "Office procedure 3/7/2022. Rubber band ligation of internal hemorrhoids. Consent obtained. Anoscopy, single band applied to the largest column without pain. Tolerated well. Expect some fullness for a day or two and a small amount of blood when the band falls off. Second session in 4 weeks. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-15a",
+          "kind": "office_visit",
+          "start": "2022-03-15T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up; second shingles dose",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-15T09:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-15T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-03-15T09:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-15T09:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-15T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-15T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-03-15T09:50",
+              "body": "Colonoscopy clean apart from hemorrhoids. First band last week, bled a little when it came off, otherwise fine. Second session early April. Four months into hep C treatment, still no missed doses. Drinking a few beers most nights.\nBP 106/64, HR 61, wt stable. Abdomen distended w/ fluid wave, NT. No asterixis.\nPlan: Shingrix #2 given. Labs today. Same meds. RTC 3 months / physical in June."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              64
+            ],
+            "hr": 61
+          }
+        },
+        {
+          "id": "2022-04-04a",
+          "kind": "procedure_visit",
+          "start": "2022-04-04T13:30",
+          "service": "Gastroenterology",
+          "reason": "hemorrhoid banding",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Rubber band ligation, session 2",
+              "author": "gastroenterology",
+              "date": "2022-04-06T08:45",
+              "body": "Office procedure 4/4/2022. Second rubber band ligation. Bleeding has settled since the first session. One band placed on the remaining symptomatic column. No complications. Follow up as needed for hemorrhoids; routine cirrhosis follow-up in our clinic continues. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-25a",
+          "kind": "outside_records",
+          "start": "2022-04-25T10:30",
+          "medications": [
+            {
+              "drug_text": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "24-week course completed"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-18T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases: end of treatment",
+              "author": "infectious diseases",
+              "date": "2022-04-25T10:30",
+              "body": "ID clinic, visit 4/18/2022. Completed 24 weeks of sofosbuvir/velpatasvir today with excellent adherence. HCV RNA at end of treatment: not detected. Treatment stopped. Repeat HCV RNA in 12 weeks to confirm cure. Counseled that cure does not protect against reinfection and does not reverse cirrhosis; alcohol remains the main threat to his liver."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-03a",
+          "kind": "pharmacy",
+          "start": "2022-05-03T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: testosterone",
+              "author": "MA",
+              "date": "2022-05-03T11:10",
+              "body": "Pharmacy faxed refill request for testosterone cypionate 200 mg/mL 10 mL vial. Controlled — routed to PCP for e-sign. Last filled 2/22. PDMP checked, no other controlled fills. Signed by PCP, sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "annual_physical",
+          "start": "2022-06-21T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "labs": {
+              "Aspartate Aminotransferase": 85,
+              "Alanine Aminotransferase": 70,
+              "Bilirubin, Total": 2.4,
+              "Albumin": 3.1,
+              "Prothrombin Time-International Normalized Ratio": 1.3,
+              "Platelets": 105,
+              "Hemoglobin": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-21T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-06-21T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-06-21T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-21T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-21T08:40",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                },
+                {
+                  "test": "Testosterone, Total"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-06-21T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-06-21T08:50",
+              "body": "Annual exam, fasting.\n\nInterval: finished hep C treatment in April, end-of-treatment test negative, cure check in July. Hemorrhoids banded twice, no bleeding since. Energy a bit better. Working full time. Still drinks — \"four or five, but not every night.\" AUDIT-C 9. Mood fine, PHQ-2 0. No GI bleeding, no confusion.\n\nROS otherwise negative.\n\nExam: BP 106/66, HR 62. Thin. No icterus. Palmar erythema, spider angiomata on chest. Heart regular, no murmur. Lungs clear. Abdomen distended with fluid wave, nontender. No asterixis. Trace ankle edema. Skin otherwise unremarkable.\n\nHealth maintenance: colonoscopy 2/2022, repeat 2032. Shingrix complete. Tdap 2016. Flu each fall. HIV negative 2021. No hep A/B or pneumonia vaccines on record.\n\nA/P:\n- Cirrhosis/portal HTN/ascites: stable on current regimen. Labs incl INR. Due for 6-month liver US next month — ordered.\n- HCV: SVR12 lab in July with ID.\n- Kallmann syndrome on testosterone: total testosterone, hematocrit, PSA today.\n- AUD: discussed again. Not ready.\n- Lipids today.\nReturn in 3 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2022-07",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "liver cancer surveillance in cirrhosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              66
+            ],
+            "hr": 62
+          }
+        },
+        {
+          "id": "2022-06-22a",
+          "kind": "portal_message",
+          "start": "2022-06-22T12:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2022-06-22T12:05",
+              "body": "Good news on your labs — your liver enzymes have come down a lot since the hep C treatment, and the platelets and clotting test are a little better too. Cholesterol normal. Testosterone in the normal range on your current dose, blood count steady, PSA normal. Keep it up."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-18a",
+          "kind": "outside_records",
+          "start": "2022-07-18T09:40",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis C",
+              "action": "resolved",
+              "note": "sustained virologic response after sofosbuvir/velpatasvir"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-11T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases: cure confirmed",
+              "author": "infectious diseases",
+              "date": "2022-07-18T09:40",
+              "body": "ID clinic 7/11/2022. HCV RNA 12 weeks after completing sofosbuvir/velpatasvir: not detected. Sustained virologic response — hepatitis C cured. He should continue liver cancer surveillance with GI/primary care because cirrhosis persists. We will see him yearly for now. Annual HCV RNA if any ongoing risk."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "imaging",
+          "start": "2022-07-26T08:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-07-26T08:45",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 3.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-07-26T08:00",
+              "text": "Indication: cirrhosis, HCC surveillance. Comparison 7/13/2021. Liver nodular in contour, coarse echotexture, no focal lesion. Portal vein patent with forward flow. No biliary dilation. Gallbladder normal. Spleen enlarged, unchanged. Ascites again seen.",
+              "conclusion": "Cirrhosis without focal liver lesion. Stable splenomegaly and ascites."
+            }
+          ],
+          "orders": [
+            {
+              "id": "us-hcc-2022-07",
+              "action": "done",
+              "date": "2022-07-26T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Surveillance imaging",
+              "author": "PCP",
+              "date": "2022-07-26T15:30",
+              "body": "No liver mass. AFP normal. Next in 6 months. Letter from ID: hep C cured — marked resolved on problem list."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "office_visit",
+          "start": "2022-09-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up; vaccines",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-27T16:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-27T16:30",
+              "results": [
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-09-27T16:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-27T16:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-27T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-09-27T16:30",
+              "body": "Quick visit after work. Feels okay. Busy season at the parts counter. Hep C cured per ID. Drinking unchanged. No bleeding, no confusion, belly the same.\nVitals reviewed, BP soft as usual. Abd distended, fluid wave. Mild pedal edema.\nFlu L arm, bivalent COVID R arm. Labs. Same meds. Back in December."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cirrhosis follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-12-13T11:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-13T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-12-13T11:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-13T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-12-13T11:10",
+              "body": "S: Doing about the same. Belly maybe a little fuller the last couple weeks, not uncomfortable. Eating less at dinner. No fevers, no bleeding, bowels regular. Diuretics daily. Still drinking most nights.\nO: BP 100/60, HR 63. Abdomen distended with fluid wave, nontender. Trace edema.\nA/P: Cirrhosis with ascites, possibly a bit more fluid. Labs today. He'll message if the belly keeps growing — would want GI to see him and probably tap it. AUD: offered resources again; he took the handout this time. RTC 3 months."
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              60
+            ],
+            "hr": 63
+          }
+        }
+      ]
+    }
+  ]
+}

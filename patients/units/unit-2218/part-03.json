@@ -1,0 +1,932 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002218",
+   "events": [
+    {
+     "id": "2025-01-14a",
+     "kind": "office_visit",
+     "start": "2025-01-14T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and hypertension follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-14T09:15",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-01-14T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-01-14T09:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Chronic Care Visit",
+       "author": "PCP",
+       "date": "2025-01-14T09:45",
+       "body": "ED record from October arrived 11/20 after two requests: bladder scan 300 mL, creatinine 1.2, catheter, voiding trial later passed.\nSince then voiding on his own, slow stream, up twice a night. No UTI symptoms. Has not gone back to urology yet; says he will 'when the weather turns.'\nDM: fasting sugars 120s-140s. HTN: home BP fine. Occasional brief lightheadedness standing quickly, no falls.\nExam: BP/HR per flowsheet. Heart regular. Lungs clear. Abdomen soft. Feet normal.\nA/P: T2DM - A1c/BMP today, continue metformin. HTN - lisinopril. BPH with recurrent retention - tamsulosin; encouraged him to schedule urology. Orthostatic hypotension - same precautions. RTC April."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Review",
+       "author": "PCP",
+       "date": "2025-01-15T09:30",
+       "body": "A1c similar to July. BMP normal. Reinforced walking now that the knee is healed. No medication change."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11a",
+     "kind": "pharmacy",
+     "start": "2025-03-11T10:00",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill Authorization",
+       "author": "MA",
+       "date": "2025-03-11T10:00",
+       "body": "E-request from pharmacy: tamsulosin 0.4 mg #90, metformin 1000 mg #180, lisinopril 10 mg #90, atorvastatin 20 mg #90. Seen 1/14. Approved per refill protocol."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-18a",
+     "kind": "lab_only",
+     "start": "2025-04-18T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "pre-visit labs",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-04-18T08:15",
+       "resulted": "2025-04-18T17:40",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 5.8
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.4
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Glucose",
+         "value": 160
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-04-18T08:15"
+      }
+     ]
+    },
+    {
+     "id": "2025-04-21a",
+     "kind": "office_visit",
+     "start": "2025-04-21T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up; fatigue and weakness",
+     "conditions": [
+      {
+       "label": "Hyperkalemia",
+       "icd10": "E87.5",
+       "action": "diagnosed",
+       "onset": "2025-04-18"
+      },
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed",
+       "onset": "2025-04-13",
+       "note": "treated at urgent care 4/14"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 1,
+        "unit": "tablet"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection (urgent care)"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       135,
+       85
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2025-04-21T09:05",
+       "text": "Sinus rhythm, normal rate. Normal intervals. T waves normal in amplitude and morphology, no peaking. No conduction delay. Unchanged from 03/2024.",
+       "conclusion": "Normal sinus rhythm. No peaked T waves."
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-repeat-2025-04",
+       "action": "placed",
+       "order": "Basic metabolic panel",
+       "category": "lab",
+       "reason": "hyperkalemia recheck"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2025-04-21T08:40"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2025-04-21T09:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit: Fatigue, Hyperkalemia",
+       "author": "PCP",
+       "date": "2025-04-21T09:40",
+       "body": "Scheduled chronic care visit (diabetes, HTN, BPH with past retention).\nHe feels basically ok but for about two weeks has been more tired than usual and his legs and arms feel weak, e.g. carrying groceries in. Denies chest pain, palpitations, fainting.\nNew info: went to an urgent care Monday 4/14 for burning and frequency, was given sulfamethoxazole-trimethoprim DS twice daily for 7 days. Takes the last tablet tonight. We did not get a note from the urgent care; pharmacy fill history confirms the script. Urinary symptoms gone.\nMeds: metformin 1000 BID, lisinopril 10 daily, tamsulosin 0.4 qHS, atorvastatin 20, SMX-TMP as above.\n\nPre-visit labs Friday: K 5.8 (high), creatinine 1.4 (his usual is 1.0), BUN 18, Na 140, glucose 160.\n\nExam: BP 135/85. Exam unremarkable: heart regular, lungs clear, strength full on testing, reflexes normal, no edema.\nECG in office: NSR, no peaked T waves.\n\nA/P\n1. Hyperkalemia with a creatinine bump, most likely trimethoprim on top of lisinopril. ECG reassuring. Finish tonight's dose and stop; no refill. Avoid potassium supplements, salt substitutes, NSAIDs. Repeat BMP in 1 week. Lisinopril continued for now.\n2. Fatigue and weakness: likely related to #1; reassess with the repeat labs.\n3. UTI treated at urgent care, symptoms resolved.\n4. T2DM, HTN, BPH: no other changes."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-28a",
+     "kind": "lab_only",
+     "start": "2025-04-28T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "repeat potassium",
+     "conditions": [
+      {
+       "label": "Hyperkalemia",
+       "icd10": "E87.5",
+       "action": "resolved"
+      },
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-04-28T08:20",
+       "resulted": "2025-04-28T14:05",
+       "results": [
+        {
+         "test": "Potassium",
+         "value": 4.7
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "bmp-repeat-2025-04",
+       "action": "done",
+       "date": "2025-04-28T14:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-04-28T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Repeat BMP",
+       "author": "PCP",
+       "date": "2025-04-28T15:30",
+       "body": "Potassium back to 4.7 and creatinine 1.1 off the antibiotic. Hyperkalemia resolved. Messaged pt. If he needs an antibiotic for a urinary infection in the future, avoid trimethoprim while on lisinopril; added to the chart alert."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Your repeat labs",
+       "author": "PCP",
+       "date": "2025-04-28T15:35",
+       "body": "Good news, your potassium and kidney numbers are back to normal. It was the antibiotic interacting with your blood pressure pill. Energy should come back over the next week or so. If you ever get another bladder infection, please call us first so we can pick a different antibiotic."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your repeat labs",
+       "author": "patient",
+       "date": "2025-04-28T19:10",
+       "body": "Already feeling stronger. Lesson learned, I'll call you first next time."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-22a",
+     "kind": "annual_physical",
+     "start": "2025-07-22T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit and diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.3,
+       "Low Density Lipoprotein": 92
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-07-22T08:35",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-07-22T08:35",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-07-22T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-22T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2025-07-22T08:30"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-07-22T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit and Diabetes Review",
+       "author": "PCP",
+       "date": "2025-07-22T09:20",
+       "body": "AWV + chronic care.\nEnergy back to normal since April. No falls; still gets the odd lightheaded moment standing up fast. Walking 30-40 min most days on the new knee.\nGU: no retention since last October. Still hasn't seen urology this year.\nCognition screen normal. PHQ-2 0. Lives with wife, independent in all activities.\nExam: vitals per flowsheet. Heart RRR, lungs clear, abdomen soft, feet normal with intact monofilament.\nA/P: T2DM - yearly labs today. HTN - lisinopril 10. BPH - tamsulosin. Statin - continue. Vaccines: flu and COVID in the fall."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Review",
+       "author": "PCP",
+       "date": "2025-07-23T11:05",
+       "body": "Labs from the wellness visit: kidney function and potassium normal (good after April), liver tests normal, LDL at goal, urine albumin normal, A1c unchanged. Released to portal."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-26a",
+     "kind": "outside_records",
+     "start": "2025-08-26T14:30",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2025-08-26T14:30",
+       "body": "Report of diabetic eye examination 08/21/2025, pupils dilated. Corrected vision 20/30 right, 20/25 left. No diabetic retinopathy in either eye; maculae flat and dry. Next exam one year. Allergies: none known."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-23a",
+     "kind": "nurse_visit",
+     "start": "2025-09-23T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-09-23T10:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-09-23T10:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-23T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine Administration",
+       "author": "RN",
+       "date": "2025-09-23T10:55",
+       "body": "High-dose influenza left deltoid; 2025-26 Moderna COVID right deltoid. Screening questions negative. 15 min observation uneventful."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-16a",
+     "kind": "hospital_admission",
+     "start": "2025-10-16T20:30",
+     "end": "2025-10-19T12:10",
+     "service": "Emergency Medicine; Hospital Medicine",
+     "reason": "acute confusion",
+     "conditions": [
+      {
+       "label": "Delirium due to known physiological condition",
+       "icd10": "F05",
+       "action": "diagnosed",
+       "onset": "2025-10-14"
+      },
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed",
+       "onset": "2025-10-14"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cephalexin 500 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth four times daily to complete 10 days of antibiotic",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "QID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-10-16T20:41",
+       "temp_c": 37.8,
+       "bp": [
+        160,
+        90
+       ],
+       "hr": 102,
+       "rr": 18
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-10-16T21:05",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 140
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Chloride",
+         "value": 102
+        },
+        {
+         "test": "Bicarbonate",
+         "value": 24
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Glucose",
+         "value": 180
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-10-16T21:05",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 9.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.5
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-10-16T21:20",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Clarity",
+         "text": "Cloudy"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "value": 62
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-10-16T21:20",
+       "resulted": "2025-10-18T10:00",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible: ceftriaxone, cephalexin, nitrofurantoin. Resistant: ampicillin."
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2025-11-12T10:20",
+       "body": "EMERGENCY DEPARTMENT RECORD\nArrival 10/16/2025 20:30, brought by his wife.\n\nCC: confusion, agitation, seeing things for 2 days.\nHPI: History from wife. Patient with BPH and prior urinary retention. For two days he has become steadily more muddled and restless, and at night he has been seeing people in the room who are not there. Baseline he is fully independent and sharp.\nPMH: BPH, urinary retention, orthostatic hypotension, hyperkalemia (April), type 2 diabetes, hypertension, s/p right TKA.\nMeds: metformin, lisinopril, atorvastatin; tamsulosin 0.4 mg daily.\nAllergies: NKDA.\n\nVitals: T 37.8 C, BP 160/90, HR 102, RR 18.\nExam: not oriented to time or place; attention waxes and wanes. Mild tenderness above the pubis. Otherwise no focal findings; neck supple, lungs clear, heart regular.\nLabs: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 1.2, glucose 180. WBC 9.0, Hgb 13.5. UA: leukocyte esterase and nitrite positive. Urine culture sent.\nImpression: delirium due to urinary tract infection.\nPlan: ceftriaxone IV, admit to medicine."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "author": "hospital medicine",
+       "date": "2025-11-12T10:25",
+       "body": "DISCHARGE SUMMARY\nAdmitted 10/16/2025, discharged 10/19/2025.\nPrincipal diagnosis: delirium due to medical condition (urinary tract infection).\nSecondary: UTI; BPH with history of retention; type 2 diabetes; hypertension; orthostatic hypotension.\n\nHospital course: Admitted from the ED with two days of confusion and nocturnal visual hallucinations. Started on IV ceftriaxone. Urine culture grew E. coli, susceptible to ceftriaxone and cephalexin. Delirium precautions: lights on by day, glasses, wife at bedside, sleep protected. Mental status improved steadily and by hospital day 3 he was oriented, conversant and back to baseline per his wife. No antipsychotics required. Ambulating independently.\n\nDischarge medications: cephalexin 500 mg four times daily to complete 10 days total antibiotic therapy; metformin 1000 mg BID; lisinopril 10 mg daily; tamsulosin 0.4 mg daily; atorvastatin 20 mg daily.\nAllergies: NKDA.\nFollow-up: primary care within 1 week.\n\nHospital medicine"
+      }
+     ]
+    },
+    {
+     "id": "2025-10-17a",
+     "kind": "telephone",
+     "start": "2025-10-17T08:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Wife Calling: Admission",
+       "author": "RN",
+       "date": "2025-10-17T08:30",
+       "body": "Wife called. She took him to the ER last night; for two days he'd been confused and agitated and seeing things at night. They found a urine infection and admitted him. He is calmer this morning on IV antibiotics. She will call when discharge is planned. PCP notified. Will book post-discharge visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-20a",
+     "kind": "telephone",
+     "start": "2025-10-20T11:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-Discharge Call",
+       "author": "RN",
+       "date": "2025-10-20T11:00",
+       "body": "Interactive contact within 2 business days of discharge. Home since yesterday noon. Wife says he's himself again, sleeping normally. Taking cephalexin four times a day, plus his usual meds. Voiding ok. Visit booked Friday 10/24. We have no discharge paperwork yet; she'll bring the copy they gave her."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-24a",
+     "kind": "office_visit",
+     "start": "2025-10-24T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up",
+     "conditions": [
+      {
+       "label": "Delirium due to known physiological condition",
+       "icd10": "F05",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-10-24T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Transitional Care Visit",
+       "author": "PCP",
+       "date": "2025-10-24T10:45",
+       "body": "Hospitalized 10/16-10/19 with delirium from an E. coli UTI (per the discharge medication sheet his wife brought; full summary not yet received). IV ceftriaxone, then cephalexin to finish 10 days, last dose Sunday.\nToday: alert, oriented, joking. Wife agrees he is back to baseline. No dysuria, no fever. Voiding with his usual slow stream; no retention.\nMed reconciliation: metformin 1000 BID, lisinopril 10, tamsulosin 0.4 qHS, atorvastatin 20, cephalexin (short course). No trimethoprim, good.\nExam: afebrile, vitals per flowsheet. Oriented x3, attention normal. Abdomen soft, nontender. Heart regular, lungs clear.\nA/P\n1. Delirium due to UTI: resolved.\n2. UTI: finishing cephalexin, symptoms gone; will close after the course.\n3. BPH with recurrent retention: no retention this time. Urology follow-up still not done; strongly encouraged.\n4. Return precautions for confusion or fever given to wife."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-04a",
+     "kind": "telephone",
+     "start": "2025-11-04T09:20",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records Request and Check-in",
+       "author": "MA",
+       "date": "2025-11-04T09:20",
+       "body": "Requested ED record and discharge summary for 10/16-10/19 admission from the hospital HIM department; release on file. Pt confirms he finished the cephalexin, no symptoms."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "portal_message",
+     "start": "2025-12-09T07:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refill",
+       "author": "patient",
+       "date": "2025-12-09T07:40",
+       "body": "Can you send the tamsulosin again? The pharmacy says no refills left."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refill",
+       "author": "MA",
+       "date": "2025-12-09T09:05",
+       "body": "Sent a 90-day supply with refills. Should be ready later today."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "office_visit",
+     "start": "2026-01-20T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-20T09:05",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-20T09:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-01-20T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes and BP Follow-up",
+       "author": "PCP",
+       "date": "2026-01-20T09:35",
+       "body": "Doing well since the fall admission. Hospital records arrived 11/12, reviewed: culture E. coli, delirium cleared by day 3.\nGU: slow stream, nocturia twice. No retention, no infections since.\nDM: sugars ok. No lows.\nBP at home 120s-130s/70s-80s.\nExam: vitals per flowsheet. Heart regular, lungs clear, feet ok.\nPlan: A1c and BMP today. No med changes. AWV in April; we'll talk about urology then."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Review",
+       "author": "PCP",
+       "date": "2026-01-21T10:20",
+       "body": "A1c the best it has been in a while. BMP normal. Portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-17a",
+     "kind": "annual_physical",
+     "start": "2026-04-17T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit and chronic care",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0,
+       "Low Density Lipoprotein": 87
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-04-17T09:10",
+       "resulted": "2026-04-17T15:30",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-04-17T09:10",
+       "resulted": "2026-04-17T15:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-17T09:10",
+       "resulted": "2026-04-17T15:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-referral-2026",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "BPH with recurrent urinary retention and UTI-related delirium; discuss definitive treatment"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2026-04-17T09:00"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-04-17T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit and Chronic Care",
+       "author": "PCP",
+       "date": "2026-04-17T10:05",
+       "body": "AWV + follow-up, 74M.\nFunction: independent, drives, walks daily. No falls; stands up in stages. Brief cognitive screen normal, no lingering effects from the October delirium per wife. PHQ-2 0.\nGU: since 2023 he has had three episodes of acute retention (after hernia repair, after knee replacement, then spontaneous in Oct 2024) and an E. coli UTI that made him delirious last fall, all on tamsulosin alone. Beyond the catheter checks he has not had a urology visit since 2022. Talked plainly about why it's time to look at longer-term options; he agrees to go.\nDM, HTN, statin: as before, labs today.\nExam: vitals per flowsheet. Heart regular, lungs clear, abdomen soft, no bladder palpable. Feet: intact sensation, pulses present.\nA/P\n1. BPH with recurrent urinary retention: referral to urology to discuss definitive treatment. Continue tamsulosin.\n2. Orthostatic hypotension: same precautions.\n3. T2DM: A1c, CMP, urine albumin today. Continue metformin.\n4. HTN: continue lisinopril 10.\n5. Atorvastatin 20, lipids today.\n6. Prevention: flu and COVID in the fall; colonoscopy due 2027 per 2017 report, will discuss whether to continue at that point.\nRTC 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-20a",
+     "kind": "portal_message",
+     "start": "2026-04-20T12:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results from your visit",
+       "author": "PCP",
+       "date": "2026-04-20T12:10",
+       "body": "Hi Edward, your labs from Friday are fine: A1c steady, kidney function and potassium normal, cholesterol on target, urine protein normal. The urology office should be contacting you; if you don't hear in two weeks, call them or let us know."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-02a",
+     "kind": "portal_message",
+     "start": "2026-06-02T15:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Urology",
+       "author": "patient",
+       "date": "2026-06-02T15:20",
+       "body": "The urology office left me a voicemail but I haven't called back yet, we've been busy with the garden. I'll get to it this month."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Urology",
+       "author": "RN",
+       "date": "2026-06-02T16:45",
+       "body": "Thanks for the update. Please do call them back; the doctor really wants you to have that conversation with urology. Their number is on the referral letter we mailed you."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "pharmacy",
+     "start": "2026-06-16T09:15",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill Authorization",
+       "author": "MA",
+       "date": "2026-06-16T09:15",
+       "body": "Pharmacy requests 90-day refills: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 20 mg daily. Seen 4/17, labs current. Approved."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-28a",
+     "kind": "outside_records",
+     "start": "2026-07-28T13:00",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2026-07-28T13:00",
+       "body": "Dilated diabetic eye exam 07/23/2026. Vision 20/30 OD, 20/30 OS. No diabetic retinopathy. Return 1 year. NKDA."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

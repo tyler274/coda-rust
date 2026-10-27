@@ -1,0 +1,101 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002103",
+      "events": [
+        {
+          "id": "2026-01-22a",
+          "kind": "portal_message",
+          "start": "2026-01-22T07:55",
+          "documents": [
+            {"type": "Patient Communication", "title": "Refill Request", "author": "patient", "date": "2026-01-22T07:55", "body": "Hi, I need refills on the Advair-type one and the Spiriva capsules. Pharmacy says no refills left. Also new year so I guess my insurance card changed, same plans though. Thanks, Steve"},
+            {"type": "Patient Communication", "title": "Re: Refill Request", "author": "RN", "date": "2026-01-22T11:20", "body": "Both inhalers renewed for 90 days with refills through the spring. Please bring the new cards to your next visit or upload a photo in the portal. Your next COPD check should be in May; the front desk will reach out."}
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "office_visit",
+          "start": "2026-05-15T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and bronchiolitis obliterans follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-15T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2026-05-15T09:40", "body": "Spring check on his lungs. Got through another winter without a flare needing steroids. Breathing is about where it has been for the last year: one flight, then a rest. Coughs on waking and in the evenings, sometimes hard enough to bring tears. Albuterol 3 to 5 times a week.\n\nInhalers: tiotropium mornings, fluticasone/salmeterol twice a day, rinsing after. Technique reviewed with the HandiHaler and Diskus; both fine.\n\nTobacco: still a pack and a half a day. Asked about smoking; he knows where we stand and said he is not going to make promises.\n\nPulmonology: due for his next visit there; he has not heard from them about scheduling and will call.\n\nExam: alert, talking comfortably. Lungs: diminished breath sounds throughout, prolonged expiration, no wheeze, no crackles. Heart regular rate and rhythm. No edema. No clubbing.\n\nAssessment and plan:\n1. COPD, GOLD Group C, with occupational bronchiolitis obliterans. Stable, no exacerbations in more than a year on triple inhaled therapy. No changes.\n2. Tobacco dependence, 45 pack-years. Counseled.\n3. Health maintenance: wellness visit due in June, labs then. Turns 50 in November; we will talk about the screening CT and shingles shots then.\n\nRefills sent. Call or text with any change in breathing."}
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "telephone",
+          "start": "2026-06-16T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Scheduling", "author": "front desk", "date": "2026-06-16T10:05", "body": "Called to schedule his annual wellness visit. Pt said he would check dates and call back. Left on the recall list."}
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "ed_visit",
+          "start": "2026-08-05T16:42",
+          "end": "2026-08-05T18:35",
+          "service": "Emergency Medicine",
+          "reason": "Sudden severe shortness of breath and left chest pain after coughing",
+          "vitals": [
+            {"time": "2026-08-05T16:42", "bp": [90, 60], "hr": 122, "rr": 30, "spo2": 88, "temp_c": 37.2},
+            {"time": "2026-08-05T17:10", "bp": [112, 70], "hr": 104, "spo2": 95}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-08-05T16:52", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.32},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 50},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-08-05T16:50", "issued": "2026-08-05T17:04", "text": "Portable AP chest. Large left pneumothorax with collapse of the left lung. The mediastinum is shifted to the right. Right lung clear. No right-sided pneumothorax.", "conclusion": "Large left pneumothorax with mediastinal shift."},
+            {"study": "Chest X-ray, 1 view", "performed": "2026-08-05T17:35", "issued": "2026-08-05T17:52", "text": "Portable AP chest after intervention. Left chest tube in place with its tip toward the apex. Left lung re-expanded. Mediastinum returned to midline. Endotracheal tube tip above the carina. Right lung clear.", "conclusion": "Left lung re-expanded after chest tube placement; endotracheal tube in good position."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-08-05T16:42"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Physician Record", "author": "emergency medicine", "date": "2026-08-20T14:10", "body": "COMMUNITY MEDICAL CENTER, EMERGENCY SERVICES\nArrival 08/05/2026 16:42\nPatient: Steven Sears, 49 M\n\nHPI: 49-year-old man with COPD (GOLD Group C) and bronchiolitis obliterans diagnosed by his pulmonologist in February 2025, on fluticasone propionate/salmeterol since January 2025. Brought in after a violent bout of coughing at home, followed at once by severe breathlessness and pain in the left side of the chest. On arrival he is anxious and diaphoretic and can only get out a few words at a time.\n\nHome meds: tiotropium 18 mcg daily; fluticasone propionate/salmeterol 250/50 mcg twice daily; albuterol 90 mcg as needed.\nAllergies: NKDA.\nPMH: COPD; bronchiolitis obliterans. PSH: knee arthroscopy with meniscus repair, 2018.\nSocial: smokes 1.5 ppd, 45 pack-years. Former flavoring plant operator, on disability. Rare alcohol.\nFamily: father COPD; mother HTN and type 2 DM; brother asthma.\n\nTriage vitals: BP 90/60, HR 122, RR 30, SpO2 88% on room air, T 37.2 C.\n\nExam: distended neck veins. Trachea displaced to the right. Left hemithorax hyperresonant with markedly decreased breath sounds; right side with air movement. Tachycardic, no murmur.\n\nPortable CXR: large left pneumothorax with shift of the mediastinum.\nABG on room air: pH 7.32 / PaCO2 50 / PaO2 60 / HCO3 24.\n\nED course: clinical tension pneumothorax. Worsening rapidly. Needle decompression of the left chest at the second intercostal space, midclavicular line, with an audible rush of air and prompt improvement in blood pressure. Airway secured by rapid-sequence intubation for airway protection given his deterioration and fatigue. Left tube thoracostomy placed, connected to suction. Repeat film: left lung re-expanded, tube and ETT in good position. After decompression BP 112/70, HR 104, SpO2 95% on the ventilator.\n\nImpression: left tension pneumothorax in a patient with COPD and bronchiolitis obliterans.\nDisposition: admitted to the ICU, critical condition at time of transfer.\n\nEmergency Medicine"}
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "portal_message",
+          "start": "2026-08-14T19:20",
+          "documents": [
+            {"type": "Patient Communication", "title": "Was in the hospital", "author": "patient", "date": "2026-08-14T19:20", "body": "Wanted to let you know I was in the hospital last week. I had a bad coughing fit on the 5th and my left lung collapsed. They put a tube in my chest and a breathing tube down my throat and I was in the ICU. Breathing tube came out after 2 days, chest tube a few days after that, and I came home Wednesday the 12th. Same inhalers as before. They said no flying, quit smoking, and see my lung doctor and a chest surgeon about stopping it from happening again. I have some soreness where the tube was. Do you need to see me?"},
+            {"type": "Patient Communication", "title": "Re: Was in the hospital", "author": "PCP", "date": "2026-08-15T08:45", "body": "Steven, I'm sorry you went through that, and glad you're home. Yes, I want to see you. The front desk will call Monday to book a visit, and we will request the hospital records. Please keep the pulmonology and surgery appointments. If you get sudden shortness of breath or chest pain again, call 911 right away, don't wait. Soreness at the tube site should ease over a couple of weeks; tell us if it gets red, swollen or drains."}
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "telephone",
+          "start": "2026-08-17T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Hospital Records Request and Scheduling", "author": "front desk", "date": "2026-08-17T09:15", "body": "Requested ED record and discharge summary from the hospital for the 08/05-08/12 stay. Called pt, booked post-hospital visit 09/03. Pt has a pulmonology visit later this month, surgery visit date not yet set."}
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "outside_records",
+          "start": "2026-08-20T14:10",
+          "documents": [
+            {"type": "Outside Records", "title": "Hospital Records Received", "author": "front desk", "date": "2026-08-20T14:10", "body": "Received from the hospital: ED physician record, 08/05/2026 (4 pages). Discharge summary not included; hospital records office says it is not yet signed and will be faxed when finalized. Filed and routed to PCP."},
+            {"type": "Progress Notes", "title": "Outside Records Reviewed", "author": "PCP", "date": "2026-08-20T17:00", "body": "ED record reviewed: left tension pneumothorax 8/5, needle decompression, intubation, left chest tube, ICU. Awaiting discharge summary. Will go over everything at the 9/3 visit."}
+          ]
+        },
+        {
+          "id": "2026-09-03a",
+          "kind": "office_visit",
+          "start": "2026-09-03T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1304 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002827",
+   "given": "Joan",
+   "family": "Hughes",
+   "birth_date": "1955-09-21",
+   "address_line": "74 Quarry Ridge Road",
+   "phone": "+1-617-555-0175",
+   "email": "joan.hughes@example.test",
+   "marital_status": "single",
+   "summary": "Retired administrative assistant with type 2 diabetes on insulin, hypertension, CKD 3b and class II obesity who joins the practice after a post-cholecystectomy wound dehiscence. Over six years she accumulates secondary hyperparathyroidism, severe tricuspid regurgitation, left-knee pseudogout, right HZO, two travel-related left leg DVTs and a repaired paraesophageal hernia.",
+   "events": [
+    {
+     "id": "2020-10-05a",
+     "kind": "ed_visit",
+     "start": "2020-10-05T14:20",
+     "end": "2020-10-05T18:45",
+     "service": "Emergency Medicine",
+     "reason": "Drainage from abdominal incision after surgery",
+     "conditions": [
+      {
+       "label": "Superficial surgical wound dehiscence",
+       "icd10": "T81.31XA",
+       "action": "diagnosed",
+       "onset": "2020-10-04"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2020-10-05T14:32",
+       "bp": [
+        136,
+        78
+       ],
+       "hr": 84,
+       "rr": 16,
+       "temp_c": 36.8,
+       "spo2": 97
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-10-05T15:05",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 11.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-10-05T15:05",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 180,
+         "loinc": "2345-7",
+         "unit": "mg/dL"
+        },
+        {
+         "test": "C Reactive Protein",
+         "value": 15
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2020-10-05T18:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Provider Note",
+       "author": "emergency medicine",
+       "date": "2020-10-05T18:40",
+       "body": "Regional hospital ED.\n\nCC: wound leaking.\n\nHPI: 65 y/o woman, post-op day 10 from an open cholecystectomy done here on 9/25. Since yesterday the lower part of her incision has been leaking pinkish, blood-tinged fluid onto her dressing. No fevers, no chills, no belly pain. Eating and drinking fine. Known type 2 diabetes on insulin and hypertension.\n\nMeds: lisinopril 20 daily, amlodipine 5 daily, furosemide 40 daily, metformin 1000 BID, glargine 18 u qHS, atorvastatin 40 daily, acetaminophen 500 q6h prn.\nAllergies: NKDA.\n\nExam: vitals stable as charted, afebrile. Incision: edges have come apart over a short segment and a little subcutaneous fat is visible at the base. No bowel, no fascial defect seen or felt. Mild redness of the surrounding skin, not warm. No crepitus. Abdomen otherwise soft, nontender. Hemodynamically appropriate throughout.\n\nLabs: WBC 11.0, Hgb 13.2, glucose 180, CRP 15 (ref <10).\n\nMDM: superficial dehiscence of the skin and fat layer only; fascia intact on exam. No signs of a deep infection. Mildly raised WBC and CRP, nonspecific this soon after surgery.\n\nPlan: wound irrigated and loosely packed with saline-moistened gauze, to close from the bottom up. Visiting nurse referral for daily packing changes. No antibiotics. General surgery clinic in 2-3 weeks, sooner with fever, spreading redness or pus. She states she is changing primary care and will bring this record to her new doctor.\n\nDx: superficial surgical wound dehiscence."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-14a",
+     "kind": "outside_records",
+     "start": "2020-10-14T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Prior records received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2020-10-14T09:10",
+       "body": "38 pages received by fax from patient's previous primary care office, plus the 10/5/2020 ED note hand-carried by the patient.\n\nContents: visit notes 2016-2020, med list, lab flowsheets, immunization record, colonoscopy report.\n- Colonoscopy 3/2018: screening, prep good, cecum reached, no polyps. Next in 10 years.\n- Problems carried: type 2 diabetes (on insulin for several years), hypertension, CKD stage 3b, osteoarthritis of both knees, high cholesterol, obesity, reflux.\n- Surgical: L knee arthroscopy with debridement ~2010; open cholecystectomy 9/2020.\n- Immunizations: flu yearly through 2019; pneumococcal and Tdap dates not found.\n\nIndexed to chart for PCP review."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-14b",
+     "kind": "establish_care",
+     "start": "2020-10-14T10:00",
+     "end": "2020-10-14T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+       "action": "history",
+       "onset": "2009-06-01"
+      },
+      {
+       "label": "Hypertensive chronic kidney disease, stage 1-4",
+       "action": "history",
+       "onset": "2005-03-01"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "history",
+       "onset": "2018-01-01"
+      },
+      {
+       "label": "Bilateral primary osteoarthritis of knee",
+       "action": "history",
+       "onset": "2008-01-01"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "history",
+       "onset": "2009-06-01"
+      },
+      {
+       "label": "Obesity, class 2",
+       "icd10": "E66.812",
+       "action": "history",
+       "onset": "2005-01-01"
+      },
+      {
+       "label": "Gastroesophageal reflux disease without esophagitis",
+       "action": "history",
+       "onset": "2012-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension, CKD"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension, edema"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject 18 units under the skin at bedtime",
+       "dose": {
+        "value": 18,
+        "unit": "U"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Type 2 diabetes"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hyperlipidemia"
+      },
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 6 hours as needed for joint pain",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "Q6H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Knee osteoarthritis"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Rare, 1-2 glasses of wine monthly"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired administrative assistant"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       78
+      ],
+      "weight_kg": 98.2,
+      "height_cm": 162.0,
+      "labs": {
+       "Creatinine": 1.5,
+       "Blood Urea Nitrogen": 26,
+       "Glucose": 152,
+       "Hemoglobin A1c": 7.3,
+       "Low Density Lipoprotein": 78,
+       "Triglycerides": 168,
+       "High Density Lipoprotein": 46,
+       "Microalbumin/Creatinine Ratio": 190,
+       "Potassium": 4.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-10-14T11:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2020-10-14T11:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-10-14T11:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-10-14T11:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2020-10-14T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-10-14T12:30",
+       "body": "New patient. 65F transferring care; her old office is closing its doors. Here also because she's 19 days out from an open gallbladder operation and the bottom of the incision opened up last week (ED 10/5, record reviewed).\n\nWound: visiting nurse coming daily to repack. Less drainage now, no fever. Pain controlled with acetaminophen.\n\nDM2: dx around 2009, on glargine for years plus metformin. Checks sugars mornings, mostly 120s-160s. No lows she knows of. Eye exam last year, she thinks normal.\nHTN: on 3 agents incl. furosemide. Home cuff readings 130s.\nKidneys: told CKD stage 3b a couple of years ago. Was never sent to a kidney doctor.\nKnees: both ache, L worse, scope on the left ~10 yrs ago. Acetaminophen as needed. Avoids ibuprofen because of her kidneys.\nReflux: heartburn now and then after big meals, uses nothing for it.\n\nFHx: mother and maternal grandmother with type 2 diabetes. Father and a brother with high BP; father had a heart attack at 68. A maternal uncle was on dialysis.\nSHx: retired admin assistant. Quit cigarettes ~2008, about 20 pack-years before that. Wine a glass or two a month. Lives alone, independent.\nAllergies: NKDA.\n\nExam: BP and pulse as recorded. BMI ~37. Pleasant, in no distress.\nHEENT normal. Neck supple, no JVD. Heart RRR, no murmur. Lungs clear.\nAbdomen: right subcostal incision healed except a 2 cm open segment at the medial end, pink granulation at the base, packing in place, no pus, no surrounding redness.\nExt: no edema. Feet: skin intact, monofilament normal both feet, pulses 2+.\nPHQ-2 negative.\n\nA/P\n1. Wound dehiscence, healing by secondary intention. Continue VNA packing; surgery clinic visit already booked.\n2. DM2 with CKD: A1c, BMP, urine albumin today. Continue metformin and glargine 18 u.\n3. HTN: at goal. Same 3 meds.\n4. CKD 3b: labs today; will think about nephrology once I see her numbers.\n5. Lipids on atorvastatin 40: panel today.\n6. Prevention: colonoscopy 2018 clean. Needs mammogram, pneumococcal, Tdap - will catch up at a wellness visit. Flu shot once the wound settles, next few weeks.\n\nRTC 6-8 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-16a",
+     "kind": "portal_message",
+     "start": "2020-10-16T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your recent labs",
+       "author": "PCP",
+       "date": "2020-10-16T15:40",
+       "body": "Hi Ms. Hughes, your labs are back. Sugar control (A1c) is in a reasonable place for you. Kidney function is about what your old records show, stage 3b, and there is some protein leaking in the urine, which fits with diabetes affecting the kidneys. Blood counts are normal, and cholesterol is well controlled on atorvastatin. No changes for now. We'll talk more at the next visit."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your recent labs",
+       "author": "patient",
+       "date": "2020-10-16T19:02",
+       "body": "Thank you doctor. The nurse says the hole is getting smaller."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-29a",
+     "kind": "specialist_visit",
+     "start": "2020-10-29T13:30",
+     "service": "General Surgery",
+     "reason": "Post-operative wound check",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "General Surgery Clinic Letter",
+       "author": "general surgery",
+       "date": "2020-10-30T09:00",
+       "body": "Regional hospital, General Surgery Clinic\n\nRe: Joan Hughes, DOB 9/21/1955\nSeen 10/29/2020\n\nDear colleague,\n\nI saw Ms. Hughes in follow-up 5 weeks after her open cholecystectomy, complicated by a small superficial separation at the medial end of the incision that the ED packed on 10/5. She reports less drainage and no fever.\n\nOn exam the open segment is now about 1.5 cm long and shallow, with healthy granulation tissue and no slough. No erythema beyond the edge, no fluctuance. The fascia is intact.\n\nThe wound is progressing as expected. Visiting nursing will continue daily packing and then simple dressings once it is too shallow to pack. No antibiotics are needed. I will see her again only if it stalls.\n\nAllergies: no known drug allergies.\n\nSincerely,\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2020-11-09a",
+     "kind": "nurse_visit",
+     "start": "2020-11-09T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-11-09T09:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-11-09T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "RN",
+       "date": "2020-11-09T09:50",
+       "body": "Fluzone High-Dose given 0.7 mL IM L deltoid. VIS reviewed. No prior reactions. Pt says the incision is almost flat now, VNA still coming 3x/week. Tolerated, left ambulatory."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-23a",
+     "kind": "hospital_admission",
+     "start": "2020-11-23T16:10",
+     "end": "2020-11-27T12:30",
+     "service": "Internal Medicine — Hospital Medicine",
+     "reason": "Uremic symptoms with worsening kidney function",
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held for worsening kidney function"
+      },
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Held for worsening kidney function"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2020-11-23T16:25",
+       "bp": [
+        118,
+        64
+       ],
+       "hr": 96,
+       "rr": 18,
+       "temp_c": 36.7,
+       "spo2": 97
+      },
+      {
+       "time": "2020-11-27T08:00",
+       "bp": [
+        132,
+        74
+       ],
+       "hr": 78,
+       "rr": 16,
+       "temp_c": 36.6,
+       "spo2": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-11-23T16:40",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 4.3
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 67
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-11-27T05:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.2
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2020-11-23T20:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2020-11-27T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "author": "hospital medicine",
+       "date": "2020-11-27T13:00",
+       "body": "Regional hospital, Medicine service\nAdmitted 11/23/2020, discharged 11/27/2020\nPCP: Internal Medicine - Primary Care (copy sent)\n\nReason for admission: about a week of heavy fatigue, generalized itching and poor appetite. Since her surgery in late September she had been eating and drinking much less while continuing her furosemide and lisinopril.\n\nKey data: creatinine 4.3 and BUN 67 on arrival (her outpatient creatinine runs about 1.5). Course: acute worsening of her known stage 3b chronic kidney disease from poor intake on a diuretic and ACE inhibitor. Treated with IV fluids. Lisinopril, furosemide and metformin held. Nephrology consulted in house. Appetite and itching improved, creatinine down to 2.2 on the morning of discharge.\n\nDischarge medications: amlodipine 5 mg daily, metformin 1000 mg twice daily (resume), insulin glargine 18 units at bedtime, atorvastatin 40 mg daily, acetaminophen as needed.\nHOLD lisinopril and furosemide until seen by PCP with repeat labs.\n\nAllergies: NKDA.\n\nFollow-up: PCP within 1 week with BMP. Nephrology clinic in about 3 weeks.\nDischarge diagnosis: acute on chronic kidney disease stage 3b; type 2 diabetes; hypertension."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-30a",
+     "kind": "telephone",
+     "start": "2020-11-30T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-discharge call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-Discharge Call",
+       "author": "RN",
+       "date": "2020-11-30T10:30",
+       "body": "Called pt after discharge 11/27. Feels much better, eating again, itching mostly gone. Drinking fluids. Not taking lisinopril or furosemide per hospital. Mild ankle puffiness by evening, no SOB. Fasting sugars 140-170. Confirmed appt Wed 12/2 with BMP same day. Pt verbalized understanding."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-02a",
+     "kind": "office_visit",
+     "start": "2020-12-02T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "conditions": [
+      {
+       "label": "Superficial surgical wound dehiscence",
+       "icd10": "T81.31XA",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension, CKD"
+      },
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension, edema"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-12-02T13:20",
+       "resulted": "2020-12-02T15:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2020-12-02T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Follow-up",
+       "author": "PCP",
+       "date": "2020-12-02T16:20",
+       "body": "Seen after her 11/23-11/27 admission for acute on chronic kidney injury (creatinine 4.3, BUN 67 on arrival, 2.2 at discharge). Discharge summary reviewed. She felt wiped out and itchy for a week before going in; looking back, she was barely eating after the gallbladder surgery but kept taking her water pill.\n\nNow: energy better but not back to normal, still a little itchy at night. Eating normally. Off lisinopril and furosemide since admission. Some evening ankle swelling.\n\nExam: BP as charted. Looks well. Heart RRR. Lungs clear. Trace ankle edema. Incision fully closed, thin pink scar at the medial end.\n\nBMP drawn before the visit: creatinine back to her usual ~1.5, potassium normal.\n\nA/P\n1. AKI on CKD 3b, recovered to baseline. Restart lisinopril 20 and furosemide 40. Talked through sick-day rules: if she can't eat or drink, hold the furosemide and lisinopril and call. BMP again in 2 wks with nephrology.\n2. Wound dehiscence - healed. Closing this out.\n3. DM2: sugars fine, same regimen.\n4. Itching/fatigue: watching, nephrology visit 12/21.\n\nRTC 2-3 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-21a",
+     "kind": "specialist_visit",
+     "start": "2020-12-21T10:30",
+     "service": "Nephrology",
+     "reason": "Follow-up after hospitalization",
+     "conditions": [
+      {
+       "label": "Secondary hyperparathyroidism of renal origin",
+       "icd10": "N25.81",
+       "action": "diagnosed",
+       "onset": "2020-12-21"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cholecalciferol 0.05 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule (2,000 units) by mouth daily",
+       "dose": {
+        "value": 2000,
+        "unit": "[iU]"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Secondary hyperparathyroidism, low vitamin D"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Phosphorus": 4.2
+      }
+     },
+     "vitals": {
+      "bp": [
+       134,
+       76
+      ],
+      "hr": 80
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-12-21T11:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium",
+         "value": 9.0
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-12-21T11:15",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 148
+        },
+        {
+         "test": "Phosphorus",
+         "value": 4.4
+        },
+        {
+         "test": "25-hydroxy Vitamin D",
+         "value": 21
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Clinic Letter",
+       "author": "nephrology",
+       "date": "2020-12-23T08:30",
+       "body": "Outside Nephrology Group\n\nRe: Joan Hughes, 65 y/o F\nVisit 12/21/2020\n\nThank you for sharing her care. I met Ms. Hughes in hospital last month and saw her today in the office.\n\nShe was admitted in late November with uremic symptoms; creatinine was 4.3 with a BUN of 67 at that time, from volume depletion on diuretic and ACE inhibitor after surgery. She is better but still tired, and she still itches, mostly at night.\n\nMedications: lisinopril 20 mg, amlodipine 5 mg, furosemide 40 mg, metformin 1000 mg BID, insulin glargine 18 units qHS, atorvastatin 40 mg, acetaminophen prn. Allergies: none known.\n\nExamination: BP 134/76, pulse 80. Unremarkable exam; no edema today, no asterixis, no rub.\n\nToday's labs: creatinine at her baseline (CKD 3b), calcium 9.0, phosphorus 4.4, intact PTH 148 pg/mL, 25-OH vitamin D 21 ng/mL.\n\nImpression\n1. CKD stage 3b, diabetic and hypertensive, recovered from the November acute insult.\n2. Secondary hyperparathyroidism of renal origin, with low vitamin D contributing.\n3. Pruritus and fatigue, likely the tail of the acute episode; should keep improving.\n\nPlan: cholecalciferol 2,000 units daily. Repeat PTH and vitamin D with her yearly labs here. Avoid NSAIDs and keep up the sick-day rules her PCP reviewed. I would like to see her yearly, sooner if her creatinine drifts.\n\nNephrology"
+      }
+     ]
+    },
+    {
+     "id": "2021-02-10a",
+     "kind": "pharmacy",
+     "start": "2021-02-10T11:00",
+     "service": "Community Pharmacy",
+     "reason": "COVID-19 vaccine dose 1",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-10T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy Vaccine Administration Record",
+       "author": "pharmacist",
+       "date": "2021-02-10T11:20",
+       "body": "Pfizer-BioNTech COVID-19 vaccine, dose 1 of 2, 0.3 mL IM L deltoid. Observed 15 min, no reaction. Dose 2 scheduled 3/3/2021. Record sent to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-17a",
+     "kind": "office_visit",
+     "start": "2021-02-17T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fatigue, leg swelling and shortness of breath",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-02-17T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-02-17T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-02-17T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral-2021",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "Exertional dyspnea, edema, new murmur"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-02-17T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-02-17T12:10",
+       "body": "S: Over the past several months, slowly worsening tiredness and swelling of both ankles. Now gets winded with very little effort; a single flight of stairs means stopping halfway. No chest pain. Sleeps on one pillow. No cough. She had assumed it was left over from November.\n\nO: BP as charted. No distress at rest. Neck veins look full sitting up. Heart regular with a systolic murmur along the lower left sternal edge I did not hear in October. Lungs clear. 2+ pitting edema both legs to mid-shin.\n\nLabs today: creatinine at baseline, K normal, Hgb normal, A1c pending.\n\nA/P\nExertional dyspnea, bilateral edema, new murmur with full neck veins - right-sided process vs other valve disease. Referred to cardiology, asked them for an echo. Kidney numbers are stable so this isn't the CKD. Continue furosemide 40, keep salt down. If breathing worsens or any chest pain, call or go to ED.\nF/u after cardiology."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-03a",
+     "kind": "pharmacy",
+     "start": "2021-03-03T11:10",
+     "service": "Community Pharmacy",
+     "reason": "COVID-19 vaccine dose 2",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-03T11:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy Vaccine Administration Record",
+       "author": "pharmacist",
+       "date": "2021-03-03T11:30",
+       "body": "Pfizer-BioNTech COVID-19 vaccine, dose 2 of 2, 0.3 mL IM R deltoid. Observed, no reaction. Primary series complete. Record sent to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-23a",
+     "kind": "specialist_visit",
+     "start": "2021-03-23T08:40",
+     "service": "Cardiology",
+     "reason": "Dyspnea, edema, murmur",
+     "conditions": [
+      {
+       "label": "Nonrheumatic tricuspid valve insufficiency",
+       "icd10": "I36.1",
+       "action": "diagnosed",
+       "onset": "2020-11-01"
+      }
+     ],
+     "vitals": {
+      "temp_c": 37.0,
+      "bp": [
+       130,
+       80
+      ],
+      "hr": 88,
+      "rr": 18
+     },
+     "orders": [
+      {
+       "id": "cards-referral-2021",
+       "action": "done",
+       "date": "2021-03-23T08:40"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2021-03-23T08:55",
+       "text": "Sinus rhythm, rate 88. Right axis deviation. Right bundle branch block. No acute ST changes.",
+       "conclusion": "Sinus rhythm with right axis deviation and right bundle branch block."
+      },
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2021-03-23T09:30",
+       "text": "Left ventricle normal in size and wall thickness, normal systolic function, LVEF 60% by biplane. Right ventricle dilated with mildly reduced systolic function. Right atrium dilated. Tricuspid valve: severe regurgitation with a wide central jet. Estimated RV systolic pressure 38 mmHg. Mitral, aortic and pulmonic valves without significant disease. IVC dilated with reduced respiratory variation. No pericardial effusion.",
+       "conclusion": "Severe tricuspid regurgitation with dilated right heart and mildly reduced RV function. LVEF 60%."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2021-03-25T14:00",
+       "body": "Outside Cardiology Group - Consultation\n\nRe: Joan Hughes, DOB 9/21/1955\nDate of visit: 3/23/2021\nReferred by: primary care, for breathlessness, edema and a murmur.\n\nHistory: a few months of progressive breathlessness with minimal exertion; she now struggles with one flight of stairs. Fatigue and swelling in both legs over the same period. Seen by nephrology recently for CKD after a November admission. Medications include lisinopril, furosemide and metformin (full list per PCP). No known drug allergies.\n\nExam: T 37.0 C, BP 130/80, HR 88, RR 18. Jugular venous pressure up to the angle of the jaw. The liver edge is palpable and pulsatile. 2+ pitting edema to the shins bilaterally. Holosystolic murmur at the left lower sternal border. Lungs clear.\n\nECG: right axis deviation and right bundle branch block.\nEcho today: severe tricuspid regurgitation, dilated RA and RV, RV function mildly reduced, RVSP estimated 38 mmHg, LVEF 60%, no other significant valve lesion.\n\nAssessment: symptomatic severe tricuspid regurgitation with right-sided congestion; left heart normal.\n\nPlan: sodium under 2 g per day and daily morning weights, call if up 2 kg in a week. Continue furosemide 40 mg daily for now, given her kidney history I prefer not to push the diuretic harder. Not a candidate for valve intervention at this stage. Repeat echo in about a year, sooner with change. Follow up here yearly.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2021-03-26a",
+     "kind": "portal_message",
+     "start": "2021-03-26T08:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Question about salt",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "salt",
+       "author": "patient",
+       "date": "2021-03-26T08:12",
+       "body": "The heart doctor said under 2 grams of salt. Does that count the canned soup? I eat a lot of soup. Also do I weigh myself before or after breakfast"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: salt",
+       "author": "RN",
+       "date": "2021-03-26T11:40",
+       "body": "Good questions. Yes, canned soup counts and most cans run 800-1,000 mg sodium each, so look for low-sodium versions or make your own. Weigh first thing in the morning after using the bathroom, before breakfast, same scale each day. Write it down and bring the log to your next visit. Our dietitian handout is attached."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-18a",
+     "kind": "office_visit",
+     "start": "2021-05-18T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and kidney follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-05-18T11:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-05-18T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-05-18T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-05-18T13:00",
+       "body": "Follow-up. Cardiology note reviewed: severe TR with a big right heart, LV fine, medical mgmt.\n\nShe has cut way back on canned soup. Weight log is flat. Still short of breath on stairs but no worse. Ankles a bit puffy by evening. Sugars 120-150 fasting. Itching gone.\n\nExam: BP at goal. JVP up. Holosystolic murmur LLSB. Lungs clear. 1+ ankle edema. Feet intact.\n\nA1c stable, creatinine at baseline.\n\nA/P\n1. Severe TR - cardiology following. Salt and weights going well.\n2. DM2 w/ CKD - steady, same doses.\n3. CKD 3b / secondary HPT - on vit D per nephrology.\n4. Wellness visit late summer for vaccines and mammogram.\n\nRTC ~3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-20a",
+     "kind": "portal_message",
+     "start": "2021-05-20T16:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Labs from Tuesday",
+       "author": "PCP",
+       "date": "2021-05-20T16:30",
+       "body": "Kidney function and potassium are steady at your usual level and the A1c is right where it was. Nice work on the soup. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-22a",
+     "kind": "outside_records",
+     "start": "2021-06-24T09:00",
+     "service": "Optometry",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2021-06-24T09:00",
+       "body": "Community optometry practice\nExam 6/22/2021, dilated.\nAcuity 20/25 each eye with correction. Pressures normal. Lenses clear. Fundi: no diabetic retinopathy either eye, maculae flat.\nRecommend repeat dilated exam in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-24a",
+     "kind": "annual_physical",
+     "start": "2021-08-24T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-08-24T10:05"
+      },
+      {
+       "vaccine": "Tdap",
+       "date": "2021-08-24T10:07"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-24T08:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2021-08-24T08:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-24T08:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-24T08:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      },
+      {
+       "id": "dxa-2021",
+       "action": "placed",
+       "order": "DXA bone density, hip and spine",
+       "category": "imaging",
+       "reason": "Osteoporosis screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2021-08-24T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-08-24T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-08-24T12:40",
+       "body": "Initial Medicare AWV.\n\nHealth risk assessment: lives alone in a single-floor apartment, drives, manages her own meds with a weekly pillbox. No falls this year. Hearing OK. Sleep fair. Walks to the mailbox and the corner store, stairs are her limit.\nFunctional: independent with all daily tasks.\nCognition: clock draw and 3-word recall normal.\nMood: PHQ-9 2.\nAdvance directives: has a health care proxy form at home; asked her to bring a copy.\n\nProblem review: DM2 w/ CKD, HTN, CKD 3b, secondary hyperparathyroidism, severe TR, knee OA, hyperlipidemia, obesity, reflux.\n\nExam: BP and weight as charted. JVP up, holosystolic murmur LLSB, lungs clear, trace ankle edema. Monofilament intact both feet, no calluses or sores.\n\nPrevention:\n- Colonoscopy 3/2018 normal, due 2028.\n- Mammogram ordered; none found in old records since 2017.\n- DXA ordered (never had one).\n- PCV20 and Tdap today.\n- Hep C and HIV once - drawn today.\n- Flu in fall; COVID booster when eligible.\n\nLabs today: CMP, CBC, lipids, A1c, urine albumin.\n\nRTC 3 months for diabetes."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-26a",
+     "kind": "portal_message",
+     "start": "2021-08-26T16:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Wellness labs",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from your wellness visit",
+       "author": "PCP",
+       "date": "2021-08-26T16:05",
+       "body": "Your blood work from Tuesday: kidney function steady at your usual level, A1c about the same, cholesterol at goal. Urine protein still mildly up, same range as last year. Hepatitis C and HIV screens negative. Mammogram and bone density scheduling will call you."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "imaging",
+     "start": "2021-09-14T13:00",
+     "service": "Radiology",
+     "reason": "Screening mammogram and bone density",
+     "orders": [
+      {
+       "id": "mammo-2021",
+       "action": "done",
+       "date": "2021-09-14T13:00"
+      },
+      {
+       "id": "dxa-2021",
+       "action": "done",
+       "date": "2021-09-14T13:40"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2021-09-14T13:00",
+       "text": "Bilateral 3D screening mammogram. No prior studies available for comparison. Breasts are scattered fibroglandular density. No suspicious mass, calcification or architectural distortion in either breast.",
+       "conclusion": "BI-RADS 1, negative. Routine annual screening."
+      },
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2021-09-14T13:40",
+       "text": "Lumbar spine L1-L4 T-score +0.4. Left femoral neck T-score -0.6. Left total hip T-score -0.2.",
+       "conclusion": "Normal bone density."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-28a",
+     "kind": "pharmacy",
+     "start": "2021-09-28T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "90-day refills",
+       "author": "MA",
+       "date": "2021-09-28T10:10",
+       "body": "Pt switched to mail order for her plan's better copay. New 90-day scripts requested: lisinopril 20, amlodipine 5, furosemide 40, metformin 1000 BID, atorvastatin 40. Sent to PCP queue, signed same day, transmitted to mail-order pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T09:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-05T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "RN",
+       "date": "2021-10-05T09:40",
+       "body": "High-dose flu L arm, Pfizer booster (dose 3) R arm. Waited 15 min. No issues. Next DM visit is on the books for November."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "office_visit",
+     "start": "2021-11-16T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Administrative Note",
+       "title": "Missed Appointment",
+       "author": "front desk",
+       "date": "2021-11-16T10:30",
+       "body": "Pt did not arrive for 10:00. Called home and cell, left VM. Pt called back at 2 pm, she had the date wrong on her calendar. Rebooked 11/30."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-30a",
+     "kind": "office_visit",
+     "start": "2021-11-30T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-11-30T10:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-30T10:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-11-30T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2021-11-30T12:15",
+       "body": "Sorry about the mixup on the 16th, she says. Doing fine. Weights holding within a pound or two. Still stops on the stairs; same as spring. Sugars OK, one reading in the 70s after skipping supper, felt shaky, ate, fine.\n\nExam: BP at goal. Murmur unchanged. Trace edema. Feet fine.\n\nA/P\nDM2: one mild low after a skipped meal - don't skip dinner on glargine nights. A1c today.\nHTN/CKD: BMP today, nephrology visit 12/13.\nTR: stable, cardiology in spring.\nRTC 3 mo."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-13a",
+     "kind": "specialist_visit",
+     "start": "2021-12-13T09:45",
+     "service": "Nephrology",
+     "reason": "Annual CKD follow-up",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-12-13T10:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-12-13T10:20",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 131
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Clinic Letter",
+       "author": "nephrology",
+       "date": "2021-12-15T08:15",
+       "body": "Outside Nephrology Group\n\nRe: Joan Hughes, seen 12/13/2021\n\nShe is well; the itching resolved over the winter. Cardiology has diagnosed severe tricuspid regurgitation since I last saw her, managed with salt restriction and her current furosemide.\n\nMedications reviewed (now including cholecalciferol 2,000 units). Allergies none known.\n\nCreatinine remains in her stage 3b range. Calcium and phosphorus normal. PTH 131, down from 148.\n\nPlan: continue cholecalciferol, lisinopril, current diuretic. Same yearly labs. See again in 12 months.\n\nNephrology"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

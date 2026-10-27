@@ -43,3 +43,8 @@
 - 2026-08-11 office_visit: chronic-care follow-up, CMP, CBC (P)
 - 2026-08-12 portal_message: PCP result note (P)
 - 2026-09-16 annual_physical: booked wellness visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00002194 on 2025-11-24. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -88,3 +88,8 @@ One line per contact, date order. Tag = build-req letter the contact rests on.
 - 2026-07-20 pharmacy: refills [P]
 - 2026-08-17 portal: asks to book fall follow-up [P]
 - 2026-10-21 booked: routine blood pressure follow-up [P]
+
+
+## Last seen
+
+The practice last saw MRN00001103 on 2025-10-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

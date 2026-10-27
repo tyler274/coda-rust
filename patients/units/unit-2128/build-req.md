@@ -139,3 +139,8 @@ further anemia workup after 2022; no diabetes label, A1c at diagnosis or glucose
   portal messages about results, refills, forms and scheduling, a cancelled visit.
 - A booked visit 2026-09-15; the August 2026 glucagon pending.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002128 on 2026-02-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

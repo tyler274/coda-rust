@@ -9,14 +9,67 @@
           "start": "2025-04-08T08:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Annual physical",
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-04-08T09:00", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": "Lipid Panel", "collected": "2025-04-08T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2025-04-08T09:00", "results": [{"test": "Hemoglobin A1c"}]}
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
           ],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
-          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-04-08T08:20"}],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-08T09:00",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-08T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-08T08:20"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -50,24 +103,121 @@
           "service": "Internal Medicine — Inpatient",
           "reason": "Fever, mouth sores, neutropenia",
           "vitals": [
-            {"time": "2025-05-22T21:20", "temp_c": 38.9}
+            {
+              "time": "2025-05-22T21:20",
+              "temp_c": 38.9
+            }
           ],
           "conditions": [
-            {"label": "Cutaneous abscess", "icd10": "L02.91", "action": "diagnosed", "onset": "2025-05-12", "note": "Treated at urgent care 5/12/25 with TMP-SMX"},
-            {"label": "Febrile neutropenia", "icd10": "D70.9", "action": "diagnosed", "onset": "2025-05-19"},
-            {"label": "Drug-induced agranulocytosis", "icd10": "D70.2", "action": "diagnosed", "onset": "2025-05-19", "note": "Attributed to trimethoprim-sulfamethoxazole; on clozapine"}
+            {
+              "label": "Cutaneous abscess",
+              "icd10": "L02.91",
+              "action": "diagnosed",
+              "onset": "2025-05-12",
+              "note": "Treated at urgent care 5/12/25 with TMP-SMX"
+            },
+            {
+              "label": "Febrile neutropenia",
+              "icd10": "D70.9",
+              "action": "diagnosed",
+              "onset": "2025-05-19"
+            },
+            {
+              "label": "Drug-induced agranulocytosis",
+              "icd10": "D70.2",
+              "action": "diagnosed",
+              "onset": "2025-05-19",
+              "note": "Attributed to trimethoprim-sulfamethoxazole; on clozapine"
+            }
           ],
           "medications": [
-            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 1, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Skin abscess (urgent care, 5/12/25)"},
-            {"drug_text": "clozapine 100 MG Oral Tablet", "action": "stop", "reason": "Held for agranulocytosis"}
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Skin abscess (urgent care, 5/12/25)"
+            },
+            {
+              "drug_text": "clozapine 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held for agranulocytosis"
+            }
           ],
           "allergies": [
-            {"substance": "Trimethoprim-sulfamethoxazole", "reaction": "Agranulocytosis", "severity": "severe", "criticality": "high", "type": "allergy"}
+            {
+              "substance": "Trimethoprim-sulfamethoxazole",
+              "reaction": "Agranulocytosis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
           ],
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-05-22T21:40", "results": [{"test": "White Blood Cells", "value": 1.4}, {"test": "Absolute Neutrophil Count", "value": 0.1}, {"test": "Neutrophils %", "value": 7}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2025-05-22T21:45", "results": [{"test": "Blood Culture", "text": "No growth at 5 days"}]},
-            {"panel": "CBC with Differential", "collected": "2025-05-28T05:30", "results": [{"test": "White Blood Cells", "value": 3.4}, {"test": "Absolute Neutrophil Count", "value": 1.6}, {"test": "Neutrophils %", "value": 47}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-22T21:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 1.4
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 7
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-22T21:45",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-28T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.4
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 47
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -100,17 +250,70 @@
           "start": "2025-06-02T11:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, neutropenia",
-          "state": {"labs": {"Absolute Neutrophil Count": 2.6, "White Blood Cells": 4.9}},
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 2.6,
+              "White Blood Cells": 4.9
+            }
+          },
           "conditions": [
-            {"label": "Cutaneous abscess", "icd10": "L02.91", "action": "resolved", "note": "Site healed"},
-            {"label": "Febrile neutropenia", "icd10": "D70.9", "action": "resolved"},
-            {"label": "Drug-induced agranulocytosis", "icd10": "D70.2", "action": "resolved", "note": "Counts recovered; TMP-SMX listed as allergy"}
+            {
+              "label": "Cutaneous abscess",
+              "icd10": "L02.91",
+              "action": "resolved",
+              "note": "Site healed"
+            },
+            {
+              "label": "Febrile neutropenia",
+              "icd10": "D70.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Drug-induced agranulocytosis",
+              "icd10": "D70.2",
+              "action": "resolved",
+              "note": "Counts recovered; TMP-SMX listed as allergy"
+            }
           ],
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-06-02T11:30", "results": [{"test": "White Blood Cells", "value": 4.9}, {"test": "Absolute Neutrophil Count", "value": 2.6}, {"test": "Neutrophils %", "value": 53}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-06-02T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 53
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2025-06-02T11:00"}],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-06-02T11:00"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -142,7 +345,19 @@
           "start": "2025-06-06T14:00",
           "reason": "Outside medication restarted",
           "medications": [
-            {"drug_text": "clozapine 100 MG Oral Tablet", "action": "historical", "sig": "Retitrate per psychiatry from 12.5 mg to 300 mg by mouth at bedtime", "dose": {"value": 300, "unit": "mg"}, "frequency": "NIGHTLY", "route": "Oral", "course": "chronic", "reason": "Treatment-resistant schizophrenia (outside psychiatry)"}
+            {
+              "drug_text": "clozapine 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Retitrate per psychiatry from 12.5 mg to 300 mg by mouth at bedtime",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "NIGHTLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Treatment-resistant schizophrenia (outside psychiatry)"
+            }
           ],
           "documents": [
             {
@@ -166,9 +381,37 @@
           "kind": "outside_records",
           "start": "2025-07-15T09:40",
           "reason": "Outside lab copy, clozapine monitoring",
-          "state": {"labs": {"Absolute Neutrophil Count": 2.4, "White Blood Cells": 4.6}},
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 2.4,
+              "White Blood Cells": 4.6
+            }
+          },
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-07-14T08:05", "results": [{"test": "White Blood Cells", "value": 4.6}, {"test": "Absolute Neutrophil Count", "value": 2.4}, {"test": "Neutrophils %", "value": 52}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-14T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 52
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -193,12 +436,25 @@
           "start": "2025-09-30T16:05",
           "service": "Internal Medicine — Primary Care",
           "reason": "Vaccines",
-          "measure": ["temp_c"],
-          "immunizations": [
-            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-30T16:09"},
-            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-30T16:11"}
+          "measure": [
+            "temp_c"
           ],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-09-30T16:09"}],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-30T16:09"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-30T16:11"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-30T16:09"
+            }
+          ],
           "documents": [
             {
               "type": "Nursing Note",
@@ -215,8 +471,18 @@
           "start": "2025-10-14T15:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Routine follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-10-14T15:40"}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-10-14T15:40"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -234,10 +500,39 @@
           "service": "Psychiatry",
           "reason": "Scheduled follow-up, hallucinations and medication tolerability",
           "medications": [
-            {"drug_text": "clozapine 100 MG Oral Tablet", "action": "stop", "reason": "Interrupted for ANC 800/mm3"}
+            {
+              "drug_text": "clozapine 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Interrupted for ANC 800/mm3"
+            }
           ],
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-11-28T09:45", "results": [{"test": "White Blood Cells", "value": 3.2}, {"test": "Absolute Neutrophil Count", "value": 0.8}, {"test": "Neutrophils %", "value": 25}, {"test": "Hemoglobin", "value": 14.0}, {"test": "Platelets", "value": 250}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-28T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.2
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 25
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -256,9 +551,37 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "ANC recheck for psychiatry",
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-12-01T08:15", "results": [{"test": "White Blood Cells", "value": 3.5}, {"test": "Absolute Neutrophil Count", "value": 0.95}, {"test": "Neutrophils %", "value": 27}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-01T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.5
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 0.95
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 27
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2025-12-01T08:15"}],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-01T08:15"
+            }
+          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -276,9 +599,37 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "ANC recheck for psychiatry",
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-12-02T08:08", "results": [{"test": "White Blood Cells", "value": 3.9}, {"test": "Absolute Neutrophil Count", "value": 1.2}, {"test": "Neutrophils %", "value": 31}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-02T08:08",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.9
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 31
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2025-12-02T08:08"}],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-02T08:08"
+            }
+          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -303,12 +654,52 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "ANC recheck for psychiatry",
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2025-12-04T08:22", "results": [{"test": "White Blood Cells", "value": 4.4}, {"test": "Absolute Neutrophil Count", "value": 1.6}, {"test": "Neutrophils %", "value": 36}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-04T08:22",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 1.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 36
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "medications": [
-            {"drug_text": "clozapine 100 MG Oral Tablet", "action": "historical", "sig": "Retitrate per psychiatry from 12.5 mg to 300 mg by mouth at bedtime", "dose": {"value": 300, "unit": "mg"}, "frequency": "NIGHTLY", "route": "Oral", "course": "chronic", "reason": "Treatment-resistant schizophrenia (outside psychiatry)"}
+            {
+              "drug_text": "clozapine 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Retitrate per psychiatry from 12.5 mg to 300 mg by mouth at bedtime",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "NIGHTLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Treatment-resistant schizophrenia (outside psychiatry)"
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2025-12-04T08:22"}],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-04T08:22"
+            }
+          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -325,8 +716,19 @@
           "start": "2026-01-20T14:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Follow-up after clozapine interruption",
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-01-20T14:20"}],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-20T14:20"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -342,9 +744,37 @@
           "kind": "outside_records",
           "start": "2026-02-17T10:25",
           "reason": "Outside lab copy, clozapine monitoring",
-          "state": {"labs": {"Absolute Neutrophil Count": 2.1, "White Blood Cells": 4.3}},
+          "state": {
+            "labs": {
+              "Absolute Neutrophil Count": 2.1,
+              "White Blood Cells": 4.3
+            }
+          },
           "labs": [
-            {"panel": "CBC with Differential", "collected": "2026-02-16T07:55", "results": [{"test": "White Blood Cells", "value": 4.3}, {"test": "Absolute Neutrophil Count", "value": 2.1}, {"test": "Neutrophils %", "value": 49}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-16T07:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 49
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -353,95 +783,8 @@
               "author": "front desk",
               "date": "2026-02-17T10:25",
               "body": "Fax rec'd from outside lab: CBC w diff 2/16/26, ordered by psychiatry, cc PCP. Scanned and routed."
-            },
-            {
-              "type": "Telephone Encounter",
-              "title": "Result Note",
-              "author": "PCP",
-              "date": "2026-02-17T16:30",
-              "body": "Reviewed, ANC in range. No action from our side."
             }
           ]
-        },
-        {
-          "id": "2026-04-21a",
-          "kind": "annual_physical",
-          "start": "2026-04-21T08:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual physical",
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-04-21T09:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": "Lipid Panel", "collected": "2026-04-21T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2026-04-21T09:05", "results": [{"test": "Hemoglobin A1c"}]}
-          ],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
-          "social": [
-            {"item": "Tobacco smoking status", "value": "Never smoker"},
-            {"item": "History of alcohol use", "value": "None"}
-          ],
-          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-04-21T08:30"}],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Annual Preventive Visit",
-              "author": "PCP",
-              "date": "2026-04-21T09:20",
-              "body": "Annual exam. 29 y/o man.\n\nInterval: clozapine 300 mg qhs, resumed in December after a brief hold; CBCs through psychiatry, now every 2 weeks he says. No hospital or ED visits since last May. Voices rare. Steady at the warehouse part-time. Roommate same.\n\nMeds: clozapine 300 mg qhs; docusate 100 mg daily.\nAllergies: trimethoprim-sulfamethoxazole (agranulocytosis); haloperidol (oculogyric crisis/acute dystonia).\nFHx: father - schizophrenia; maternal aunt - bipolar disorder.\nSocial: no tobacco, alcohol or drugs.\n\nROS: no fevers, sores, infections. Otherwise neg.\n\nExam: VS in flowsheet, weight stable at about 80 kg. NAD. HEENT normal, mucosa intact. Neck supple, no nodes. CV RRR. Lungs clear. Abd soft, NT, no HSM. Ext no edema. Neuro nonfocal, no abnormal involuntary movements. Psych: good eye contact, organized, appropriate affect.\n\nPHQ-9: 2.\n\nA/P\n1. Schizophrenia, treatment-resistant, on clozapine - psychiatry. Hx agranulocytosis/neutropenia.\n2. Metabolic monitoring: fasting CMP, lipids, A1c today.\n3. HM: Tdap 2021, flu/COVID this past fall, HIV/HCV done.\nRTC early fall."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-23a",
-          "kind": "portal_message",
-          "start": "2026-04-23T08:40",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Your labs",
-              "author": "PCP",
-              "date": "2026-04-23T08:40",
-              "body": "Hi Miles, your labs from the physical are normal (A1c, cholesterol, kidney and liver). Keep up what you're doing."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Your labs",
-              "author": "patient",
-              "date": "2026-04-23T18:15",
-              "body": "Thank you. Can I get a copy of my vaccine record sent to the portal?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Your labs",
-              "author": "MA",
-              "date": "2026-04-24T09:02",
-              "body": "Hi Miles, your immunization record is now under Documents in the portal."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-11a",
-          "kind": "telephone",
-          "start": "2026-08-11T11:50",
-          "reason": "Scheduling",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Scheduling",
-              "author": "front desk",
-              "date": "2026-08-11T11:53",
-              "body": "Pt called to book his fall follow-up. Wants a weekday afternoon after his shift. Booked Tue 9/22 3:00 PM with PCP. Reminder set for flu shot at same visit."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "office_visit",
-          "start": "2026-09-22T15:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Routine follow-up",
-          "appointment": "booked"
         }
       ]
     }

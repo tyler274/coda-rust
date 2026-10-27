@@ -1,0 +1,1036 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002825",
+      "events": [
+        {
+          "id": "2022-01-11a",
+          "kind": "imaging",
+          "start": "2022-01-11T15:00",
+          "service": "Outside radiology",
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2022-01-11T15:00",
+              "issued": "2022-01-12T10:00",
+              "text": "Outside study ordered by neurology, copy to PCP. Multiplanar multisequence MRI of the brain without contrast. Generalized parenchymal volume loss with disproportionate atrophy of both hippocampi. Scattered small foci of white matter T2 hyperintensity typical for age. No acute infarct on diffusion imaging. No mass, hemorrhage or extra-axial collection. Ventricles proportionate to sulci. Major flow voids preserved.",
+              "conclusion": "Generalized volume loss with bilateral hippocampal atrophy, a pattern supporting Alzheimer disease in the right clinical setting. No infarct, mass or hemorrhage."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; new dementia diagnosis",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-08T11:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-08T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Alzheimer disease",
+              "action": "history",
+              "onset": "2019-11-01",
+              "note": "Confirmed by outside neurology 12/2021, MMSE 18/30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-02-08T11:45",
+              "body": "Follow-up after neurology. Neurology letter and MRI reviewed with daughter: Alzheimer-type dementia, MMSE 18, hippocampal atrophy on MRI. Daughter tearful but not surprised given her aunt's course.\nDonepezil 5 mg at night for six weeks: some loose stools the first week, now fine. No dizziness or slow pulse. Evenings still rough a few times a week.\nDiabetes: no lows. Daughter now sets out the pills weekly and checks the insulin pen at night.\nExam: pulse regular in the 70s. Lungs without wheeze. No edema.\nPlan: A1c, BMP today. Neurology follow-up next month for the dose increase. Gave daughter information on the local caregiver support group and adult day options. Advance directive conversation started; she wants her daughter as decision-maker - will formalize at the wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "specialist_visit",
+          "start": "2022-03-08T14:00",
+          "service": "Neurology (outside)",
+          "reason": "Dementia follow-up",
+          "medications": [
+            {
+              "drug": "donepezil hydrochloride 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "donepezil hydrochloride 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Alzheimer disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "author": "neurology",
+              "date": "2022-03-11T09:00",
+              "body": "Neurology follow-up, 3/8/2022. Ms. Mayhew returns with her daughter. Donepezil 5 mg tolerated after brief GI upset. Daughter sees no change in memory, slightly fewer evening outbursts. MRI reviewed: generalized and hippocampal atrophy, no vascular lesion of note. Exam unchanged, nonfocal. Plan: increase donepezil to 10 mg at bedtime. Follow up in 6 months or as needed. Medications otherwise as listed by PCP. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "annual_physical",
+          "start": "2022-04-26T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-04-26T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-04-26T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-04-26T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-04-26T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-04-26T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2022-04-26T09:55",
+              "body": "Yearly wellness visit, daughter present for the whole visit.\nFunction: needs reminders for meals and meds; daughter or son stop by most days. Still dresses and bathes herself. No falls. Not driving since winter.\nMood: PHQ-2 1, not depressed per daughter, more 'quiet'.\nCognition: known Alzheimer's, on donepezil 10 since March.\nSafety: stove use supervised; smoke detectors checked by son.\nPrevention: mammogram due this fall (last one at 74). Vaccines current through the fall booster.\nExam: no distress, BP and weight as recorded. Chest without wheeze. RRR. Monofilament intact.\nPlan: CMP, CBC, lipids, urine microalbumin today. Yearly eye exam on schedule. Follow-up in 4-5 weeks for diabetes check (A1c deferred to then)."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-31a",
+          "kind": "office_visit",
+          "start": "2022-05-31T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pelvic pressure and urinary difficulty",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-05-31T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-05-31T10:40",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-31T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2022",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Symptomatic pelvic organ prolapse"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Pelvic pressure",
+              "author": "PCP",
+              "date": "2022-05-31T11:00",
+              "body": "Daughter brought her after Mom admitted to 'something falling down there.' Over about a year a heavy, dragging feeling in the pelvis, worse by evening, and she can feel a bulge when washing. Urine stream weak and she feels she never quite empties. No leakage of stool, no rectal bulge. No fever or burning.\nExam (chaperoned by MA): external exam shows vaginal tissue at the introitus at rest, more with bearing down. No ulceration visible. Abdomen soft, bladder not palpable.\nUA dip negative for infection.\nAssessment: symptomatic pelvic organ prolapse with voiding difficulty.\nPlan: gynecology referral. A1c also due - drawn today.\n\nAddendum 6/1: A1c 7.8, a touch above her usual. Will look at it with her at the next diabetes visit; no change today."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "specialist_visit",
+          "start": "2022-06-28T13:30",
+          "service": "Gynecology (outside)",
+          "reason": "Pelvic organ prolapse",
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "weight_kg": 81.9
+          },
+          "conditions": [
+            {
+              "label": "Severe symptomatic pelvic organ prolapse",
+              "icd10": "N81.4",
+              "action": "diagnosed",
+              "onset": "2021-06-01"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2022",
+              "action": "done",
+              "date": "2022-06-28T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "author": "gynecology",
+              "date": "2022-07-05T10:00",
+              "body": "Urogynecology/gynecology consult, date of service 6/28/2022. Thank you for this referral.\nMs. Mayhew is 74 and came with her daughter. Her neurologist diagnosed Alzheimer's disease in December. For about a year the pressure and the bulge have steadily progressed; she reports a slow stream and a sense of residual urine. She denies stool incontinence or anything protruding from the rectum. Not sexually active.\nPMH: T2DM, HTN, COPD, CKD 3, hyperlipidemia, osteoporosis, CAD, gastroparesis, Alzheimer's. No prior surgery. Meds: metformin, glargine, lisinopril, HCTZ, atorvastatin, aspirin, tiotropium, metoclopramide, donepezil. NKDA. Most recent A1c 7.8 (PCP, 5/31).\nBP 145/90. BMI 32.\nPelvic exam: with straining, the cervix and both vaginal walls descend past the introitus. Cervix atrophic-appearing without ulceration or lesion. Last Pap normal.\nImpression: severe symptomatic pelvic organ prolapse.\nDiscussion: surgical repair and pessary reviewed. She is clear that she wants to stay away from an operation; she is frightened of anesthesia and worries about her many medical problems. Daughter supports that.\nPlan: pessary fitting visit in 3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "procedure_visit",
+          "start": "2022-07-19T11:00",
+          "service": "Gynecology (outside)",
+          "reason": "Pessary fitting",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Pessary fitting",
+              "author": "gynecology",
+              "date": "2022-07-26T08:30",
+              "body": "Pessary fitting 7/19/2022. A ring pessary with support was placed after trial of two sizes; retained with cough and walking around the office. She voided easily afterward with a stronger stream and said the heaviness was gone. Daughter shown what to watch for (bleeding, discharge, pain, trouble voiding). Office removal and cleaning about every 4 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "portal_message",
+          "start": "2022-08-09T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pessary update",
+              "author": "patient",
+              "date": "2022-08-09T20:15",
+              "body": "From Frances's daughter - just wanted you to know the pessary is working. Mom says she can pee 'like a normal person' again. Gyn will do the cleanings every 4 months, first one in November."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Pessary update",
+              "author": "PCP",
+              "date": "2022-08-10T07:50",
+              "body": "That's great news. Thanks for letting me know."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "office_visit",
+          "start": "2022-09-13T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-13T10:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-13T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "author": "PCP",
+              "date": "2022-09-13T11:05",
+              "body": "Doing well with the pessary. Diabetes: May A1c 7.8. For someone her age with dementia I'm aiming for under 8 and avoiding lows; daughter agrees. No hypoglycemia.\nNausea now and then after bigger meals.\nExam: vitals reviewed; lungs clear without wheeze; regular heart; feet with good sensation, no wounds.\nPlan: same regimen, A1c and BMP today. Flu and bivalent COVID at a nurse visit next month. Mammogram ordered (last screening one)."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "to": "Breast imaging",
+              "reason": "Routine screening"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-11T13:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T13:48"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2022-10-11T14:00",
+              "body": "High-dose flu left arm and Pfizer bivalent booster right arm. No prior reactions beyond sore arm. Observed, discharged with daughter."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T10:15",
+          "service": "Breast imaging",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-08T10:15",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2020. Breasts are heterogeneously fatty with scattered fibroglandular tissue. No new mass, suspicious calcification or distortion. Stable appearance.",
+              "conclusion": "BI-RADS 2, benign. Routine follow-up."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-11-08T10:15"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-16a",
+          "kind": "specialist_visit",
+          "start": "2022-11-16T10:00",
+          "service": "Gynecology (outside)",
+          "reason": "Pessary check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pessary check",
+              "author": "gynecology",
+              "date": "2022-11-21T09:00",
+              "body": "Pessary visit 11/16/2022. Ring pessary removed, cleaned and replaced. Vaginal walls without erosion or bleeding. Voiding well, no discharge. Next check in 4 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "office_visit",
+          "start": "2022-11-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Upper abdominal pain",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-11-22T14:35",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-22T14:35",
+              "results": [
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 58
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-22T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2022",
+              "action": "placed",
+              "order": "Abdominal ultrasound, complete",
+              "category": "imaging",
+              "to": "Radiology",
+              "reason": "Epigastric pain radiating to back"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Abdominal pain",
+              "author": "PCP",
+              "date": "2022-11-22T14:50",
+              "body": "Three months of on-and-off upper belly pain, a dull ache she points to just under the breastbone, which she says goes 'straight through to my back.' Comes and goes, not clearly tied to meals. Weight steady, appetite the same, bowels the same. No vomiting, no black stools. Daughter had thought it was her usual stomach trouble.\nExam: no jaundice. Abdomen soft, not distended, mildly tender in the epigastrium, no mass, no rebound. Weight unchanged on our scale.\nAssessment: epigastric pain radiating to the back, persistent. Gastroparesis does not quite fit the pattern.\nPlan: hepatic panel and amylase today, abdominal ultrasound. Will call with results."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "imaging",
+          "start": "2022-11-29T08:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-11-29T08:30",
+              "issued": "2022-11-29T13:10",
+              "text": "Complete abdominal ultrasound. Liver normal in size and echotexture without focal lesion. Gallbladder without stones or wall thickening. No biliary ductal dilatation; common bile duct normal caliber. In the head of the pancreas there is a cystic lesion measuring 4 cm with a thickened, irregular wall and calcifications. The main pancreatic duct is not visualized. Pancreatic body and tail partly obscured by bowel gas. Spleen normal. Kidneys normal in size without hydronephrosis. Aorta normal caliber. No ascites.",
+              "conclusion": "4 cm cystic lesion in the pancreatic head with a thickened irregular wall and calcifications. No biliary dilatation. Main pancreatic duct not seen. Further evaluation with gastroenterology recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "abd-us-2022",
+              "action": "done",
+              "date": "2022-11-29T08:30"
+            }
+          ]
+        },
+        {
+          "id": "2022-11-30a",
+          "kind": "telephone",
+          "start": "2022-11-30T09:15",
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Pancreatic head cystic lesion with high-risk features"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Ultrasound result",
+              "author": "PCP",
+              "date": "2022-11-30T09:15",
+              "body": "Called daughter (patient on speaker). Liver tests and amylase normal. Ultrasound shows a 4 cm cyst in the head of the pancreas with a thick, irregular wall and calcium in it. Explained that some pancreatic cysts are harmless and some are precancerous, and this one has features that need a specialist look. Urgent GI referral placed; they will likely want an MRI and possibly an endoscopic ultrasound. Daughter will take her to all appointments. Questions answered."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "outside_records",
+          "start": "2022-12-06T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam letter",
+              "author": "optometry",
+              "date": "2022-12-06T10:30",
+              "body": "Diabetic eye exam 11/30/2022, dilated. No diabetic retinopathy either eye. Cataracts early and stable. Next exam in a year. Allergies: none known."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "specialist_visit",
+          "start": "2022-12-19T10:00",
+          "service": "Gastroenterology (outside)",
+          "reason": "Pancreatic cyst",
+          "conditions": [
+            {
+              "label": "Pancreatic cystic neoplasm with high-risk features",
+              "icd10": "D37.8",
+              "action": "diagnosed",
+              "onset": "2022-11-29"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2022-12-19T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2022-12-27T15:00",
+              "body": "Gastroenterology consultation, 12/19/2022.\nReferred for a pancreatic head cyst. Ms. Mayhew (Alzheimer's dementia since December 2021, pelvic prolapse managed by gynecology since June) has had about three months of intermittent dull upper abdominal pain that travels to her back. No change in weight, appetite or bowel pattern.\nHistory: diabetes and blood pressure are reasonably controlled on metformin, glargine and lisinopril; also HCTZ, atorvastatin, aspirin, tiotropium, metoclopramide, donepezil. NKDA. No surgeries. Mother had breast cancer. Former smoker, no alcohol.\nExam: abdomen soft, not distended, mild epigastric tenderness, no jaundice, no palpable mass.\nData: liver tests and amylase normal (PCP, 11/22). Ultrasound 11/29: 4 cm cystic lesion in the pancreatic head with thick, irregular wall and calcifications; no biliary dilatation; main duct not visualized.\nImpression: pancreatic cystic neoplasm with high-risk imaging features.\nPlan: MRI abdomen with MRCP, serum CA 19-9, then EUS with fine-needle aspiration for cyst fluid analysis and cytology. Depending on results, surgical opinion. Daughter understands the plan."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "imaging",
+          "start": "2023-01-17T07:45",
+          "service": "Outside radiology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-17T07:30",
+              "results": [
+                {
+                  "test": "CA 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI abdomen with MRCP",
+              "author": "radiology",
+              "date": "2023-01-24T09:00",
+              "body": "Outside report, study date 1/17/2023, copy to PCP.\nMRI abdomen with and without contrast and MRCP.\nPancreatic head: 4.0 cm cystic lesion with a thick enhancing wall and peripheral calcification. No solid enhancing component. Main pancreatic duct 4 mm. Common bile duct normal caliber without dilatation. Pancreatic body and tail otherwise unremarkable. Liver without focal lesion. No lymphadenopathy. No ascites.\nImpression: 4.0 cm thick-walled cystic lesion of the pancreatic head with peripheral calcification. Recommend EUS correlation.\nSerum CA 19-9 drawn same day: 22 U/mL (normal)."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "procedure_visit",
+          "start": "2023-02-14T08:00",
+          "end": "2023-02-14T12:30",
+          "service": "Gastroenterology (outside)",
+          "reason": "EUS with FNA of pancreatic cyst",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-02-14T09:10",
+              "issued": "2023-02-17T14:00",
+              "text": "Specimen: pancreatic head cyst, EUS-guided fine-needle aspiration. Received viscous fluid; cell block and smears prepared. Smears show thick mucinous material with scattered benign-appearing ductal epithelium and histiocytes. No atypical or malignant cells identified. Cyst fluid CEA 412 ng/mL.",
+              "conclusion": "Mucinous cyst contents. Negative for malignant cells. Elevated cyst fluid CEA (412 ng/mL)."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Endoscopic ultrasound with FNA",
+              "author": "gastroenterology",
+              "date": "2023-02-21T11:00",
+              "body": "EUS with FNA, 2/14/2023, under monitored anesthesia care (patient anxious about sedation; reassured, tolerated well).\nFindings: thick-walled cyst in the pancreatic head, about 4 cm, as on MRI, with peripheral calcification and no mural nodule or solid component seen. No ductal dilatation. FNA with a 22-gauge needle: viscous clear fluid aspirated, sent for CEA and cytology. No immediate complications.\nResults: cyst fluid CEA 412 ng/mL; cytology mucinous material, no malignant cells.\nImpression: mucinous pancreatic cystic neoplasm with high-risk features. Referral to pancreatic surgery for an opinion. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "specialist_visit",
+          "start": "2023-03-14T13:00",
+          "service": "Surgical oncology (outside)",
+          "reason": "Pancreatic cyst, surgical opinion",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pancreatic surgery consultation",
+              "author": "surgical oncology",
+              "date": "2023-03-20T10:00",
+              "body": "Surgical consultation, 3/14/2023. Seen with daughter and son.\nReviewed ultrasound, MRI/MRCP, EUS and cytology: 4.0 cm mucinous cyst of the pancreatic head with thick enhancing wall and calcification, CEA 412, cytology negative, CA 19-9 22. These are high-risk features and resection (pancreaticoduodenectomy) would usually be recommended in a fit patient.\nHer context: 75, moderate Alzheimer's dementia, CAD, COPD, CKD 3, insulin-requiring diabetes, gastroparesis. Operative risk and recovery burden would be substantial.\nShe said plainly she does not want an operation and is afraid of anesthesia. Her children agree with her choice. She appeared to understand that she was declining surgery and why.\nPlan: no surgery. Surveillance MRI/MRCP in 6 months with gastroenterology, then every 6-12 months depending on stability. Return to us if new symptoms, jaundice, weight loss or interval change. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "office_visit",
+          "start": "2023-03-28T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; pancreatic cyst decision",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-28T11:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-28T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-28T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-03-28T11:30",
+              "body": "Reviewed the surgical letter with patient and daughter. Frances again said 'no operation' without hesitation; I think this is a sound and consistent choice for her. Surveillance MRI in September with GI.\nPain: belly ache much less often since the new year, maybe once every week or two, mild, no meds needed.\nDiabetes/BP: no issues. EUS sedation went fine.\nExam: abdomen soft, minimal epigastric tenderness, no jaundice. Lungs without wheeze, regular rhythm.\nPlan: A1c, BMP. Wellness visit in May; will do advance care planning then with both children if possible."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T09:00",
+          "end": "2023-05-23T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit, advance care planning",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-23T10:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-23T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-05-23T10:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-23T10:00",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-05-23T09:00"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2023-05-23T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit and Advance Care Planning",
+              "author": "PCP",
+              "date": "2023-05-23T10:20",
+              "body": "Wellness visit with daughter; son joined by phone for the planning part.\nFunction: needs prompting for meals and pills, help with appointments and money; independent with toileting, dressing and walking. No falls this year. Pessary checks at gyn every 4 months.\nMood: PHQ-2 0.\nAdvance care planning (about 35 minutes): Frances can say what matters to her - staying in her own house, not being 'kept alive on machines', no big operations. Health care proxy form completed naming her daughter, son as alternate. She would want hospital treatment for things that can be fixed. MOLST not done today; family would like to think it over.\nExam: vitals as charted, lungs without wheeze, heart regular, no edema, feet intact.\nPlan: yearly labs today. Fall vaccines in October. Copy of proxy to daughter and scanned."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "specialist_visit",
+          "start": "2023-07-18T10:30",
+          "service": "Gynecology (outside)",
+          "reason": "Pessary check",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pessary check",
+              "author": "gynecology",
+              "date": "2023-07-24T09:00",
+              "body": "Routine pessary check 7/18/2023. Patient with daughter, no complaints, no bleeding. Device removed and cleaned; mucosa intact, no ulceration. Reinserted, comfortable. Continue every 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-22T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-08-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2023-08-22T10:35",
+              "body": "Quiet summer. No lows. Belly pain rare. Breathing fine in the heat. Daughter reports the evening restlessness comes and goes.\nExam: unremarkable today apart from known findings; chest without wheeze, RRR, abdomen soft.\nA1c and BMP drawn. Continue. GI surveillance MRI in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "specialist_visit",
+          "start": "2023-09-12T11:00",
+          "service": "Gastroenterology (outside)",
+          "reason": "Pancreatic cyst surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up",
+              "author": "gastroenterology",
+              "date": "2023-09-19T09:30",
+              "body": "GI follow-up, 9/12/2023. Surveillance MRI/MRCP 9/5/2023: pancreatic head cyst unchanged at 4.0 cm with thick wall and peripheral calcification; no solid component; main duct 4 mm, unchanged; no biliary dilatation. Clinically, abdominal pain now infrequent and mild. No weight loss or jaundice. Plan: continue surveillance, repeat MRI in about 9 months. Medications reviewed as per her list, including metoclopramide before meals for gastroparesis. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T14:07"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-10T14:09"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2023-10-10T14:25",
+              "body": "Per PCP standing order: high-dose flu (L), updated COVID (R), RSV (L, 1 inch below flu site). Daughter consented with patient. Tolerated, no immediate reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "outside_records",
+          "start": "2023-12-05T09:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam letter",
+              "author": "optometry",
+              "date": "2023-12-05T09:00",
+              "body": "Dilated diabetic eye exam on 11/28/2023. No retinopathy, no macular edema. Mild cataracts unchanged. Next visit 1 year. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tremor and stiffness",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-12T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2023",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "New tremor, rigidity and slowness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Tremor",
+              "author": "PCP",
+              "date": "2023-12-12T14:20",
+              "body": "Daughter concerned about a change over the last few weeks: shaking in both hands at rest, right worse; she seems stiff getting up and slow at everything - takes ages to button a cardigan, needs help with cooking she used to manage. Daughter says her face looks 'blank' and she doesn't swing her arms when walking. No falls. Memory per daughter no different from summer.\nExam: reduced facial expression. Resting tremor of the right hand, slight on the left. Increased tone at both elbows and wrists. Walks slowly with short steps and little arm swing. Strength normal.\nAssessment: new parkinsonism. She has been on metoclopramide for years - a likely culprit.\nPlan: asked neurology to see her before the holidays if they can, since they know her; not changing meds until they weigh in."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-29a",
+          "kind": "specialist_visit",
+          "start": "2023-12-29T10:30",
+          "service": "Neurology (outside)",
+          "reason": "Parkinsonism",
+          "conditions": [
+            {
+              "label": "Drug-induced parkinsonism due to metoclopramide",
+              "icd10": "G21.19",
+              "action": "diagnosed",
+              "onset": "2023-11-20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2023",
+              "action": "done",
+              "date": "2023-12-29T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up consultation",
+              "author": "neurology",
+              "date": "2024-01-25T10:00",
+              "body": "Neurology note, date of service 12/29/2023 (received 1/25/2024).\nMs. Mayhew, 75, known to our clinic since her Alzheimer's diagnosis in 2021, is back with progressive motor symptoms over the past month after a recent visit with her gastroenterologist. She has a resting tremor of the hands, stiffness, and slowness that interferes with cooking and dressing. Her daughter has noticed a fixed facial expression, less smiling, and diminished arm swing. No falls, hallucinations or change in mood. Cognition at her known baseline per daughter.\nMedications: insulin glargine, metformin, lisinopril, hydrochlorothiazide, atorvastatin, aspirin, tiotropium, donepezil 10 mg, metoclopramide 10 mg three times daily before meals (several years). NKDA.\nExam: hypomimia, reduced blink rate, mild stooped posture. Cogwheel rigidity in both arms. Decreased arm swing bilaterally. Resting tremor right hand at about 4 Hz. Slow, short-stepped gait. Strength and reflexes normal, sensation intact.\nImpression: drug-induced parkinsonism due to metoclopramide.\nPlan: metoclopramide stopped today; daughter instructed. For gastroparesis, small frequent low-fat meals; no other prokinetic recommended from our side. Expect improvement over weeks to months. Return in about 4 months. Please update her medication list."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

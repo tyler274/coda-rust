@@ -1,0 +1,396 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002682",
+      "given": "Rodney",
+      "family": "Howland",
+      "birth_date": "1991-02-07",
+      "address_line": "218 Kittredge Road, Westfield, MA 01085",
+      "phone": "+1-508-555-0129",
+      "email": "rodney.howland@example.test",
+      "marital_status": "single",
+      "summary": "35-year-old high school math teacher with hereditary spherocytosis who joined in 2023, had an elective laparoscopic splenectomy in July 2024 after asplenia vaccines, and takes penicillin V prophylaxis and folic acid. Last seen at his December 2024 physical; a June 2026 ED visit for fever and sore throat in the setting of asplenia ended in discharge with negative blood cultures.",
+      "events": [
+        {
+          "id": "2023-09-11a",
+          "kind": "telephone",
+          "start": "2023-09-11T15:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-09-11T15:40",
+              "body": "Caller wants to establish care with the practice. Teaches math at the high school, has hereditary spherocytosis, says his last blood work was a couple of years back. Membership info emailed. Next-day new patient slot offered after school, he took 9/12 at 3:30. Asked him to sign a records release for his old PCP office."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T15:30",
+          "end": "2023-09-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; hereditary spherocytosis",
+          "conditions": [
+            {"label": "Hereditary spherocytosis", "action": "history", "note": "Known since childhood; father and paternal grandfather affected"}
+          ],
+          "medications": [
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hereditary spherocytosis"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 79.2, "height_cm": 180.0, "labs": {"Hemoglobin": 11.2, "Mean Corpuscular Volume": 92, "Bilirubin, Total": 2.1, "Bilirubin, Direct": 0.3}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "High school mathematics teacher"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-12T16:20", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-12T16:20", "results": [{"test": "Creatinine"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-09-12T16:20", "results": [{"test": "Bilirubin, Total"}, {"test": "Bilirubin, Direct"}]},
+            {"panel": null, "collected": "2023-09-12T16:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-12T16:25"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T15:30"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T16:20"}
+          ],
+          "orders": [
+            {"id": "heme-referral", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "Hereditary spherocytosis, re-establish care, discuss splenectomy"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T16:45",
+              "body": "NEW PATIENT\n\n32M, teaches high school math, here to set up primary care. Main issue is hereditary spherocytosis. Dad has it, so did his paternal grandfather. He was diagnosed as a kid, followed by pediatric then adult hematology for a while, takes folic acid 1 mg every day. Has not seen a hematologist in a few years and admits it slid. No transfusions he knows of. Feels fine, plays pickup basketball on weekends, no fatigue that limits him, no abdominal pain, no dark urine episodes recently.\n\nPMH: hereditary spherocytosis. PSH: none. Spleen still in.\nMeds: folic acid 1 mg daily.\nAllergies: none to medications.\nFH: father and paternal grandfather with spherocytosis. Nothing else he can name.\nSH: lives in Westfield, single. Has never smoked. A drink or two a month, socially. No other substances.\n\nROS otherwise negative.\n\nExam: vitals in flowsheet. Comfortable, well appearing. Sclerae anicteric today, conjunctivae pink. Oropharynx clear. No cervical nodes. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender; spleen tip felt on deep inspiration, did not try to measure it. No hepatomegaly. No edema. Skin without rash.\n\nA/P\n1. Hereditary spherocytosis - chronic, compensated by his report. CBC, CMP, LFTs with direct bili today. Continue folic acid. Referred to hematology to get re-established; he wants to revisit whether splenectomy makes sense now that he is an adult, says it came up years ago.\n2. Health maintenance - HIV and hep C screen today. Flu shot given. Records release signed for old PCP; will look for his Tdap date there.\n\nRTC yearly physical, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T07:55",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2023-09-14T07:55",
+              "body": "Hi Rodney, your blood work is back. Hemoglobin is 11.2 and total bilirubin 2.1, mostly the indirect kind, which is what we expect with spherocytosis and fits with the steady, mild breakdown of red cells you have always had. Kidney and liver enzymes are normal, and the HIV and hepatitis C screens are negative. Hematology should reach out to schedule. Keep taking the folic acid."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:10",
+          "reason": "Prior primary care records",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2018-08-21T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2023-09-26T11:10",
+              "body": "Prior PCP chart received, 14 pages. Problem list: hereditary spherocytosis (since childhood). Medication: folic acid 1 mg daily. No drug allergies. Immunizations: Tdap 08/2018; childhood series documented. Last physical there 2021 with CBC showing his usual mild anemia. Abstracted to chart, PCP to review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID-19 vaccine",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-10T15:25"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2023-10-10T15:40",
+              "body": "Here after school for the 2023-24 COVID shot. Afebrile, no current illness, no prior reactions. 0.5 mL IM left deltoid, lot and expiration in the immunization record. Observed 15 minutes, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "specialist_visit",
+          "start": "2024-01-23T10:00",
+          "service": "Hematology",
+          "reason": "Hereditary spherocytosis consultation",
+          "orders": [
+            {"id": "heme-referral", "action": "done", "date": "2024-01-23T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "author": "hematology",
+              "date": "2024-01-29T09:30",
+              "body": "OUTSIDE HEMATOLOGY GROUP - CONSULTATION\nDate of visit: 01/23/2024\nReferring: primary care\n\nThank you for referring Mr. Howland, 32, with hereditary spherocytosis, which runs in his father's family. He was followed for this in childhood and early adulthood and has been off hematology follow-up for several years. He takes folic acid 1 mg daily. No drug allergies.\n\nHe has a chronic, compensated hemolytic picture, with the labs you sent in September and a palpable spleen today. We talked at length about splenectomy: the reduction in hemolysis and future pigment stone risk on one side, and lifelong infection risk after the spleen is removed on the other, with the vaccines and antibiotic prophylaxis that come with it. He would like to proceed and prefers the summer, when school is out.\n\nPlan:\n- Referral to general surgery for elective laparoscopic splenectomy, July target.\n- Vaccines for asplenia (pneumococcal, meningococcal ACWY and B, Hib) to be completed through primary care at least two weeks before the operation; we will send the list.\n- Continue folic acid.\n- See him again shortly before surgery.\n\nOutside hematology"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "portal_message",
+          "start": "2024-05-20T20:12",
+          "reason": "Surgery date and vaccines",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery is booked",
+              "author": "patient",
+              "date": "2024-05-20T20:12",
+              "body": "Hi, surgery got scheduled for July 3. The hematologist said I need a bunch of shots from you guys a couple weeks before. When can I come in? Afternoons after 3 work best until school lets out on the 21st."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery is booked",
+              "author": "RN",
+              "date": "2024-05-21T09:05",
+              "body": "Hi Rodney, we have the list from hematology. You need 4 vaccines that day: pneumococcal (PCV20), meningococcal ACWY, meningococcal B dose 1, and Hib. I booked you Tuesday 6/18 at 3:15, which is 15 days before surgery. The second meningococcal B dose will be at your post-op visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-14a",
+          "kind": "specialist_visit",
+          "start": "2024-06-14T09:30",
+          "service": "Hematology",
+          "reason": "Pre-operative visit before elective splenectomy",
+          "vitals": {"temp_c": 37.2, "bp": [130, 80], "hr": 78, "rr": 16},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-14T09:10", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Mean Corpuscular Volume", "value": 92}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-06-14T09:10", "results": [{"test": "Bilirubin, Total", "value": 2.1}, {"test": "Bilirubin, Direct", "value": 0.3}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Pre-operative Visit",
+              "author": "hematology",
+              "date": "2024-06-17T14:20",
+              "body": "OUTSIDE HEMATOLOGY GROUP - FOLLOW-UP\nDate of visit: 06/14/2024\n\nMr. Howland returns ahead of his elective laparoscopic splenectomy, which general surgery has booked about three weeks from now, on 07/03/2024.\n\nDiagnosis: hereditary spherocytosis.\nMedications: folic acid 1 mg by mouth daily.\nAllergies: none known.\nFamily history: father and paternal grandfather with hereditary spherocytosis.\nSocial: math teacher at a high school; never smoker; alcohol a drink or two a month.\nImmunizations: current for the routine adult schedule. Asplenia vaccines are booked at his PCP's office for 06/18.\n\nVitals: T 37.2 C (99 F), BP 130/80, HR 78, RR 16.\nExam: spleen palpable 3 cm below the left costal margin. Otherwise unremarkable.\n\nLabs today: hemoglobin 11.2 g/dL, MCV 92 fL, total bilirubin 2.1 mg/dL with direct 0.3 mg/dL. LDH elevated and haptoglobin decreased.\n\nImpression: hereditary spherocytosis with ongoing hemolysis and splenomegaly, appropriate for splenectomy.\n\nPlan:\n- Proceed with surgery as scheduled.\n- After surgery he will start penicillin V 250 mg twice daily for prophylaxis; surgery will prescribe at discharge.\n- Continue folic acid.\n- Counsel on fever after splenectomy: any temperature at or above 38.3 C means same-day medical evaluation.\n- Hematology follow-up 2 to 3 months after surgery.\n\nOutside hematology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "nurse_visit",
+          "start": "2024-06-18T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pre-splenectomy vaccines",
+          "measure": ["temp_c", "bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-06-18T15:25"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2024-06-18T15:26"},
+            {"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2024-06-18T15:27"},
+            {"vaccine": "Haemophilus influenzae type b (PRP-T)", "date": "2024-06-18T15:28"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-06-18T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Asplenia Vaccine Visit",
+              "author": "RN",
+              "date": "2024-06-18T15:55",
+              "body": "Vaccines ahead of planned splenectomy 7/3 (15 days out), per hematology list and PCP order.\nWell today, afebrile.\nGiven: PCV20 R deltoid; MenACWY R deltoid (separate site, 1 inch apart); MenB-4C dose 1 L deltoid; Hib L deltoid (separate site). VIS sheets provided. Lots in immunization record.\nWaited 15 min, no reaction. Reminded MenB dose 2 is due at the post-op visit, at least 1 month from today. Told him his arms will probably ache tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-03a",
+          "kind": "hospital_admission",
+          "start": "2024-07-03T06:30",
+          "end": "2024-07-05T11:00",
+          "service": "General Surgery",
+          "reason": "Elective laparoscopic splenectomy",
+          "conditions": [
+            {"label": "Acquired absence of spleen", "action": "diagnosed", "onset": "2024-07-03", "note": "Laparoscopic splenectomy for hereditary spherocytosis"}
+          ],
+          "medications": [
+            {"drug_text": "penicillin V potassium 250 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 250, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Asplenia prophylaxis"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - General Surgery",
+              "author": "general surgery",
+              "date": "2024-07-09T13:05",
+              "body": "REGIONAL HOSPITAL - GENERAL SURGERY DISCHARGE SUMMARY\nAdmitted: 07/03/2024  Discharged: 07/05/2024\n\nDiagnosis: hereditary spherocytosis with splenomegaly.\nProcedure: elective laparoscopic splenectomy, 07/03/2024.\nAllergies: NKDA.\n\nCourse: Operation without complication; minimal blood loss, no transfusion. Diet advanced on POD 1, pain controlled with oral medication, walking independently. Afebrile throughout. Discharged home POD 2.\n\nPre-operative vaccines confirmed given 06/18/2024 at primary care (PCV20, MenACWY, MenB-4C #1, Hib).\n\nDischarge medications:\n- Penicillin V potassium 250 mg by mouth twice daily (new; asplenia prophylaxis)\n- Folic acid 1 mg by mouth daily (continue)\n- Acetaminophen as needed for pain\n\nInstructions: no lifting over 10 lb for 4 weeks. Fever 38.3 C or higher, worsening abdominal pain or redness at incisions: call or go to the ED. Asplenia wallet card given. PCP follow-up in 2 weeks for the second MenB dose; surgery clinic in 2 to 3 weeks.\n\nOperative note attached separately (laparoscopic, 4 ports, spleen removed intact in a retrieval bag through an extended umbilical port site; no accessory spleen seen)."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-08a",
+          "kind": "pharmacy",
+          "start": "2024-07-08T10:20",
+          "reason": "New prescription fill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy fill check",
+              "author": "MA",
+              "date": "2024-07-08T10:20",
+              "body": "Med rec after hospital discharge. Pharmacy confirms penicillin VK 250 mg BID filled 7/5 (surgeon's Rx, 30 days, refills on file with us going forward). Added to med list. Folic acid unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "office_visit",
+          "start": "2024-07-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-splenectomy follow-up",
+          "state": {"weight_kg": 77.6, "labs": {"Hemoglobin": 12.6}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-07-19T10:35", "results": [{"test": "Hemoglobin", "value": 12.6}, {"test": "Platelets"}, {"test": "White Blood Cells"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2024-07-19T10:30"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-07-19T10:00"},
+            {"procedure": "Immunization administration", "performed": "2024-07-19T10:30"},
+            {"procedure": "Venipuncture", "performed": "2024-07-19T10:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op Follow-up",
+              "author": "PCP",
+              "date": "2024-07-19T10:50",
+              "body": "S: Two weeks out from lap splenectomy (7/3) for HS. Went home day 2. Sore at the umbilicus mostly, stopped the acetaminophen a few days ago. Eating normally, BMs fine. No fevers. Taking penicillin VK twice a day, missed one evening dose last weekend. Folic acid daily.\n\nO: Vitals reviewed, afebrile. Incisions x4 healing, umbilical one slightly indurated but no drainage, no redness. Abdomen soft, appropriately tender near the umbilicus only. Lungs clear.\n\nA/P:\n1. Asplenia after splenectomy for hereditary spherocytosis. Long talk about overwhelming post-splenectomy infection: it is rare but can move fast, so a fever of 38.3 or higher, or shaking chills, means he calls us the same day or goes straight to the ED and tells them he has no spleen. He has the wallet card; suggested a medical alert tag. Penicillin VK 250 BID ongoing. Travel and animal bites: call before, not after.\n2. MenB-4C dose 2 given today, completes the series with the 6/18 vaccines. Flu every fall from now on.\n3. CBC today to see where his counts settle.\n4. Lifting limits per surgery. Surgery clinic visit next week.\n\nRTC for the physical in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-22a",
+          "kind": "portal_message",
+          "start": "2024-07-22T08:10",
+          "reason": "CBC result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count after surgery",
+              "author": "PCP",
+              "date": "2024-07-22T08:10",
+              "body": "Rodney, hemoglobin is up to 12.6 already, compared with about 11 before surgery. White count and platelets are normal. Exactly the direction we hoped for. Hematology will recheck at your fall visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "specialist_visit",
+          "start": "2024-09-24T15:30",
+          "service": "Hematology",
+          "reason": "Follow-up after splenectomy",
+          "state": {"labs": {"Hemoglobin": 13.4, "Bilirubin, Total": 0.9, "Bilirubin, Direct": 0.2}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T15:10", "results": [{"test": "Hemoglobin", "value": 13.4}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-09-24T15:10", "results": [{"test": "Bilirubin, Total", "value": 0.9}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2024-09-30T11:45",
+              "body": "OUTSIDE HEMATOLOGY GROUP - FOLLOW-UP\nDate of visit: 09/24/2024\n\nMr. Howland is about 12 weeks past an uncomplicated laparoscopic splenectomy for hereditary spherocytosis. Back at work for the new school year, energy good. No fevers or infections since surgery. Taking penicillin V 250 mg twice daily and folic acid 1 mg daily. No drug allergies.\n\nExam: incisions well healed. No lymphadenopathy.\n\nLabs: hemoglobin 13.4 g/dL, total bilirubin 0.9 mg/dL.\n\nAssessment: hemolysis well controlled after splenectomy.\n\nPlan: continue penicillin V prophylaxis and folic acid. Asplenia vaccine series complete per primary care records. Annual influenza vaccine. Return to hematology in one year.\n\nOutside hematology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID-19 vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T15:36"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall Vaccines",
+              "author": "RN",
+              "date": "2024-10-08T15:55",
+              "body": "Flu (L arm) and 2024-25 COVID (R arm), both IM. Afebrile, no current symptoms. Asplenic, so flu shot reinforced as yearly. Tolerated, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "annual_physical",
+          "start": "2024-12-19T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-12-19T16:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-12-19T16:10", "results": [{"test": "Creatinine"}, {"test": "Bilirubin, Total"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-12-19T16:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-12-19T15:30"},
+            {"procedure": "Venipuncture", "performed": "2024-12-19T16:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-12-19T16:30",
+              "body": "ANNUAL PE\n\n33M. Since last year: lap splenectomy 7/3 for hereditary spherocytosis, smooth recovery, hematology saw him in Sept and was pleased. No fevers or infections since. Takes penicillin VK 250 BID, honest that the evening dose gets missed maybe once a week. Folic acid daily. Grading exams this week, otherwise good. Sleep ok. Shoots hoops on weekends.\n\nMeds: penicillin VK 250 mg BID; folic acid 1 mg daily.\nAllergies: NKDA.\nSH: never smoker, alcohol 1-2 drinks/month, no drugs.\nFH: father and paternal grandfather with HS.\n\nROS: negative in full.\n\nExam: vitals in flowsheet, normal. Well appearing. Sclerae clear. TMs and throat normal. Neck supple, thyroid normal. Heart regular, no murmur. Lungs clear throughout. Abdomen soft, healed laparoscopic scars, no masses. Skin normal. No edema. Mood bright.\n\nPHQ-2: 0.\n\nA/P\n1. Asplenia s/p splenectomy - doing well. Continue penicillin prophylaxis; went over fever plan again and the pill box idea for the evening dose. Vaccines: PCV20, MenACWY, MenB x2, Hib all done in June/July; flu and COVID done in October. MenACWY booster due in 5 years (2029).\n2. Hereditary spherocytosis - expect counts near normal now. CBC, CMP today.\n3. Prevention - lipids today. HIV and HCV screens already done 2023. Tdap good until 2028.\n\nFollow up in a year, hematology yearly in between."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "portal_message",
+          "start": "2024-12-20T12:30",
+          "reason": "Physical results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2024-12-20T12:30",
+              "body": "All of yesterday's labs look good: blood count stable at its new normal, bilirubin normal, kidney and liver tests normal, cholesterol fine. Nothing to change. Have a good break."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

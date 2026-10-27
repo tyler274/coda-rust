@@ -118,3 +118,8 @@ the condom use the source records; no prescription drug for constipation.
   question about cranberry, scheduling and a booked visit after today.
 - Weight 59.8 kg (2022) drifting to about 61 kg (2025 on); height 165 cm.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001895 on 2026-07-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

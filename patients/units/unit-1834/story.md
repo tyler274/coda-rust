@@ -59,3 +59,8 @@
 - 2026-06-23 annual physical (P)
 - 2026-08-18 portal: school year, refill (P)
 - 2026-09-22 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00001834 on 2025-12-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

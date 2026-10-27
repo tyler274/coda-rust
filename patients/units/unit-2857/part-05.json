@@ -1,0 +1,783 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002857",
+      "events": [
+        {
+          "id": "2025-03-19a",
+          "kind": "office_visit",
+          "start": "2025-03-19T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-19T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-03-19T10:40",
+              "body": "Doing well. Breathing same, albuterol a handful of times all winter. Back and knees, usual. No falls. Asked whether she still needs mammograms at 79; she wants to keep going every other year, which is reasonable in good health.\n\nExam: vitals as charted. Lungs clear, decreased at bases. Heart regular. Kyphosis.\n\nA/P\nCOPD stable. Osteoporosis on calcium/D. Knee OA. Mammogram ordered. AWV summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "imaging",
+          "start": "2025-04-09T08:50",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-04-09T08:50",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 2023 and 2021. Scattered fibroglandular densities. No suspicious findings. Stable.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-04-09T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "MA",
+              "date": "2025-04-11T10:00",
+              "body": "Negative screening mammogram, released to portal, pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "annual_physical",
+          "start": "2025-07-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-08T09:45",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-08T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-08T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-08T09:45",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 35
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-07-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-08T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-07-08T09:40",
+              "body": "AWV, moved to summer this year at her request.\n\nNo ED or hospital visits since 2022. No falls. Independent with all ADLs and IADLs, still drives locally. Balance class, garden.\nPHQ-2 0. Cognition intact.\nAdvance care planning: proxies on file (husband, then eldest child). Reviewed briefly, no changes.\n\nExam: vitals as charted. Kyphosis. Lungs distant, no wheeze. Heart regular. No edema.\n\nPrevention: mammogram April negative. Flu and COVID in the fall. Labs today incl. lipids.\nRTC for vaccines in October, and next spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "portal_message",
+          "start": "2025-07-10T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-07-10T12:20",
+              "body": "All your labs are normal, Ruth, including cholesterol and vitamin D (35). Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T14:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2025-10-07T14:15",
+              "body": "High-dose flu L arm, 2025-26 COVID R arm. No prior reactions beyond soreness. Observed, left well."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Holiday travel",
+              "author": "patient",
+              "date": "2025-12-09T10:05",
+              "body": "We are driving to our daughter's for Christmas week. Anything I should bring or know? I have my inhaler."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Holiday travel",
+              "author": "RN",
+              "date": "2025-12-09T13:40",
+              "body": "Sounds lovely. Bring your inhaler and supplements, take breaks to walk every couple of hours in the car, and watch for icy steps. Have a wonderful trip."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T08:40",
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "stop",
+              "reason": "renewal"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze or shortness of breath",
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Albuterol renewal",
+              "author": "MA",
+              "date": "2026-01-20T08:40",
+              "body": "Electronic renewal request, albuterol HFA. Last filled 2024. Approved per PCP, 1 inhaler, 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-02a",
+          "kind": "telephone",
+          "start": "2026-03-02T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Vaginal bleeding",
+              "author": "RN",
+              "date": "2026-03-02T09:15",
+              "body": "Pt called, upset. Saturday she noticed bright red vaginal bleeding, enough to need a pad for part of the day. Nothing since. No injury, no pain, no fever. No bleeding at all since menopause in her 50s. Not on blood thinners. Explained any bleeding after menopause needs evaluation. Booked with PCP Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "office_visit",
+          "start": "2026-03-04T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postmenopausal bleeding",
+          "conditions": [
+            {
+              "label": "Postmenopausal bleeding",
+              "action": "diagnosed",
+              "onset": "2026-02-28"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-04T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "postmenopausal bleeding, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Vaginal Bleeding",
+              "author": "PCP",
+              "date": "2026-03-04T11:00",
+              "body": "One episode of vaginal bleeding on Saturday 2/28, came on suddenly, bright red, lasted part of the day. None since. No trauma or injury. No pelvic pain, no discharge, no urinary symptoms, no weight loss. Menopause at 51, no hormones ever. She is frightened by it; her grandmother had ovarian cancer.\nMeds unchanged: calcium, vitamin D3, multivitamin, acetaminophen prn, albuterol prn.\n\nExam: vitals as charted. Abdomen soft, nontender, no mass. Deferred pelvic exam to gynecology at her preference, since she'll need an exam and ultrasound there anyway.\n\nA/P\nPostmenopausal bleeding, single episode. Needs endometrial evaluation. Urgent gynecology referral; staff called and got her in next week. I told her honestly that most often this turns out to be something benign, but it has to be looked at.\nCall if bleeding recurs heavily, dizziness, or pain."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "specialist_visit",
+          "start": "2026-03-12T13:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postmenopausal bleeding",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-12T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-12T14:40",
+              "resulted": "2026-03-13T11:00",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2026-03-12T13:45",
+              "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, normal size for age, smooth contour. Endometrial stripe is thickened. Right ovary contains a 1.3 cm heterogeneous solid-appearing mass. Left ovary small and atrophic, unremarkable. No free fluid.",
+              "conclusion": "Thickened endometrial stripe in a postmenopausal patient. 1.3 cm heterogeneous right ovarian mass."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "done",
+              "date": "2026-03-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2026-03-16T09:30",
+              "body": "Outside gynecology group. Visit 3/12/2026. Thank you for referring Mrs. McKenna.\n\nReason: postmenopausal bleeding.\n\nHPI: 80-year-old woman with one abrupt episode of vaginal bleeding on 2/28 that upset her a good deal. No recent trauma. History of osteoporotic fractures (T12 twice, left hip). Menopause at 51, no HRT. G3P3, all vaginal deliveries. Mammograms every two years, all normal. Sexually active, monogamous with her husband of 55 years.\nPMH: osteoporosis, COPD, prior pill esophagitis, C. difficile x2, L THA.\nMeds: calcium, vitamin D, multivitamin, acetaminophen, albuterol prn.\nAllergies: NKDA.\nFamily: maternal grandmother with ovarian cancer; mother osteoporotic hip fracture; father COPD.\n\nExam: vitals normal. External genitalia atrophic, no lesions. Speculum: atrophic vaginal mucosa, cervix normal, no active bleeding. Bimanual: uterus small, nontender; no palpable adnexal mass.\n\nUltrasound today: thickened endometrial stripe; 1.3 cm heterogeneous mass in the right ovary.\nCBC normal today.\n\nProcedure: office endometrial biopsy with a Pipelle after verbal and written consent; tolerated well, scant tissue sent.\nCA-125 drawn.\n\nAssessment: postmenopausal bleeding with thickened endometrium and a small complex right ovarian mass.\nPlan: await biopsy and CA-125. Given the solid-appearing ovarian lesion, referring to gynecologic oncology regardless of biopsy result. Will send results."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "outside_records",
+          "start": "2026-03-19T10:00",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-03-12T14:20",
+              "issued": "2026-03-17T15:00",
+              "text": "Specimen: endometrium, office biopsy. Gross: scant fragments of tan tissue and blood. Microscopic: fragments of inactive endometrium with weakly formed glands in compact stroma. No hyperplasia. No atypia. No malignancy identified.",
+              "conclusion": "Inactive endometrium. Negative for hyperplasia and malignancy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Gynecology Results Letter",
+              "author": "gynecology",
+              "date": "2026-03-19T10:00",
+              "body": "Results follow-up for Mrs. McKenna (seen 3/12/2026):\n- Endometrial biopsy: inactive endometrium, no hyperplasia or cancer.\n- CA-125: 31 U/mL (reference under 35).\nDiscussed by phone with the patient. Because of the solid component in the 1.3 cm right ovarian mass she is scheduled with gynecologic oncology on 4/2. Please call with questions."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with patient",
+              "author": "PCP",
+              "date": "2026-03-19T17:10",
+              "body": "Called Ruth after the gyn letter came in. She knew the biopsy was fine and that she's seeing the cancer surgeons on April 2. Anxious but organized, her husband and eldest are going with her. Told her I'm here and to message any time."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "specialist_visit",
+          "start": "2026-04-02T09:00",
+          "service": "Gynecologic Oncology",
+          "reason": "Right ovarian mass",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "staging-ct-2026",
+              "action": "placed",
+              "order": "CT chest and CT abdomen and pelvis with contrast",
+              "category": "imaging",
+              "reason": "preoperative evaluation of right ovarian mass"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Consultation",
+              "author": "gynecologic oncology",
+              "date": "2026-04-06T12:15",
+              "body": "Regional cancer center, gynecologic oncology. Seen 4/2/2026. Copy to PCP.\n\nReferred for a 1.3 cm heterogeneous right ovarian mass found on ultrasound during workup of a single episode of postmenopausal bleeding. Endometrial biopsy benign (inactive). CA-125 31.\n\nHealth: independent, active, walks daily. COPD without recent exacerbation. Osteoporosis with prior fractures and L THA. Two prior C. difficile infections, noted for perioperative antibiotic planning. NKDA. Former smoker.\nFamily: maternal grandmother ovarian cancer.\n\nExam: well appearing. Abdomen soft, no mass, no ascites. Pelvic: atrophic changes, no palpable adnexal mass. No inguinal or supraclavicular nodes.\n\nAssessment: small solid-appearing right adnexal mass in a postmenopausal woman, indeterminate. Bleeding unexplained by biopsy.\nPlan:\n1. CT chest, abdomen and pelvis.\n2. If no distant disease, laparoscopic hysterectomy, bilateral salpingo-oophorectomy, frozen section, and staging if malignant.\n3. Anesthesia evaluation given COPD.\n4. Genetic counseling after surgery depending on pathology.\nPatient and husband agree."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "imaging",
+          "start": "2026-04-08T11:00",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-04-08T11:00",
+              "text": "CT chest with IV contrast. Emphysematous changes in both upper lobes. No pulmonary nodule or mass. No pleural effusion. No mediastinal, hilar or axillary adenopathy. Heart normal size. Old T12 compression deformity, kyphosis.",
+              "conclusion": "No evidence of thoracic metastatic disease. Emphysema."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-04-08T11:00",
+              "text": "CT abdomen and pelvis with oral and IV contrast. Liver, spleen, pancreas, adrenals and kidneys unremarkable. No ascites. No peritoneal nodularity or omental thickening. No retroperitoneal or pelvic adenopathy. Uterus normal in size for age. 1.3 cm right adnexal lesion corresponding to the ultrasound finding. Left adnexa unremarkable. Left hip arthroplasty with streak artifact. Old T12 compression deformity.",
+              "conclusion": "1.3 cm right adnexal lesion. No ascites, adenopathy or metastatic disease."
+            }
+          ],
+          "orders": [
+            {
+              "id": "staging-ct-2026",
+              "action": "done",
+              "date": "2026-04-08T11:00"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "portal_message",
+          "start": "2026-04-20T16:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery next week",
+              "author": "patient",
+              "date": "2026-04-20T16:10",
+              "body": "My surgery is next Tuesday. The cancer center said to stop my multivitamin a week before. Is it all right to keep taking the calcium and vitamin D?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery next week",
+              "author": "PCP",
+              "date": "2026-04-21T08:05",
+              "body": "Yes, keep the calcium and vitamin D unless the surgical team tells you otherwise, and follow their instructions about the morning of surgery. Thinking of you, let us know how it goes."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "hospital_admission",
+          "start": "2026-04-28T06:30",
+          "end": "2026-04-29T12:00",
+          "service": "Gynecologic Oncology",
+          "reason": "Planned surgery for right ovarian mass",
+          "vitals": [
+            {
+              "time": "2026-04-28T06:40",
+              "temp_c": 36.5,
+              "bp": [
+                134,
+                80
+              ],
+              "hr": 76,
+              "rr": 16,
+              "spo2": 95
+            },
+            {
+              "time": "2026-04-29T08:00",
+              "temp_c": 36.9,
+              "bp": [
+                126,
+                74
+              ],
+              "hr": 80,
+              "rr": 16,
+              "spo2": 95
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-28T06:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-28T06:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic total hysterectomy",
+              "performed": "2026-04-28T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Gynecologic Oncology",
+              "author": "gynecologic oncology",
+              "date": "2026-05-01T09:00",
+              "body": "Regional cancer center. Admitted 4/28/2026 for planned surgery, discharged home 4/29/2026.\n\nProcedure 4/28: robotic-assisted laparoscopic total hysterectomy, bilateral salpingo-oophorectomy, pelvic washings, infracolic omentectomy and bilateral pelvic lymph node sampling.\nFindings: 1.3 cm firm lesion within the right ovary, capsule intact, ovarian surface smooth. No ascites. Peritoneal surfaces, diaphragm, bowel and omentum without visible disease. Uterus, left ovary and both tubes grossly normal. Frozen section of the right ovary: carcinoma, favor serous; staging completed as above.\nEBL 50 mL. No complications.\nPerioperative cefazolin single dose only, per her C. difficile history.\n\nCourse: ambulating evening of surgery, tolerating diet, voiding. Pain controlled with acetaminophen; no opioids needed after PACU.\n\nDischarge: acetaminophen as needed. No lifting over 10 lb for 6 weeks. Resume calcium, vitamin D, multivitamin, albuterol prn. Final pathology to follow; post-op visit in 3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "outside_records",
+          "start": "2026-05-05T14:00",
+          "conditions": [
+            {
+              "label": "Serous cystadenocarcinoma of ovary",
+              "icd10": "C56.1",
+              "action": "diagnosed",
+              "onset": "2026-04-28",
+              "note": "Right ovary, low grade, 1.3 cm, FIGO stage IA"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-04-28T08:15",
+              "issued": "2026-05-05T13:30",
+              "text": "Specimens: uterus, cervix, bilateral tubes and ovaries; omentum; right and left pelvic lymph nodes; pelvic washings.\nRight ovary: serous cystadenocarcinoma, low grade, 1.3 cm. Tumor confined to the ovary. Capsule intact. No ovarian surface involvement. No lymphovascular invasion identified.\nLeft ovary and both fallopian tubes: benign, no tumor.\nUterus and cervix: inactive endometrium; benign myometrium; cervix without dysplasia.\nOmentum: no tumor.\nLymph nodes: 0 of 8 involved (right pelvic 0/4, left pelvic 0/4).\nPelvic washings: negative for malignant cells.",
+              "conclusion": "Low-grade serous cystadenocarcinoma of the right ovary, 1.3 cm, confined to the ovary with intact capsule. Washings and lymph nodes negative. Pathologic stage pT1a pN0, FIGO IA."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pathology received",
+              "author": "PCP",
+              "date": "2026-05-05T17:30",
+              "body": "Final path from gyn onc: low-grade serous carcinoma of R ovary, 1.3 cm, confined, nodes and washings negative, FIGO IA. Uterus benign. Gyn onc reviewed with her by phone today, per her message. Added to problem list. Will see her after her post-op visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T10:00",
+          "service": "Gynecologic Oncology",
+          "reason": "Post-operative visit",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Post-operative Visit",
+              "author": "gynecologic oncology",
+              "date": "2026-05-21T08:45",
+              "body": "Seen 5/19/2026, three weeks after laparoscopic hysterectomy, BSO and staging.\n\nRecovering well. Port sites healed. Mild fatigue. Bowels and bladder normal. No vaginal bleeding.\nExam: incisions healed. Abdomen soft. Vaginal cuff intact on gentle exam.\n\nPathology reviewed with patient and husband: low-grade serous carcinoma of the right ovary, stage IA, completely removed.\n\nPlan:\n1. No adjuvant chemotherapy recommended for stage IA low-grade disease.\n2. Surveillance: visit with exam and CA-125 every 3 months for the first 2 years; next in mid-August.\n3. Germline genetic testing recommended for all ovarian cancers and with her grandmother's history; consented, sample sent today.\n4. Resume normal activity; lifting restriction until 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "outside_records",
+          "start": "2026-06-02T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Germline Genetic Testing Report",
+              "author": "genetic counseling",
+              "date": "2026-06-02T11:00",
+              "body": "Multigene hereditary cancer panel (including BRCA1, BRCA2, mismatch repair genes, RAD51C, RAD51D, BRIP1, PALB2 and others), blood sample collected 5/19/2026.\nResult: NEGATIVE. No pathogenic or likely pathogenic variants identified. No variants of uncertain significance reported.\nInterpretation: does not exclude hereditary risk entirely; family members' risk based on family history. Results discussed with the patient by the genetic counselor 6/2/2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "annual_physical",
+          "start": "2026-07-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit and post-surgery follow-up",
+          "conditions": [
+            {
+              "label": "Postmenopausal bleeding",
+              "action": "resolved",
+              "onset": "2026-02-28"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2026-04-28"
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-06T09:50",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-06T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-06T09:50",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 33
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-07-06T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-06T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2026-07-06T09:45",
+              "body": "AWV, also first visit here since her surgery.\n\nInterval: single episode of postmenopausal bleeding in Feb; gyn found thickened endometrium (biopsy benign) and a 1.3 cm R ovarian mass. CT no spread. 4/28 laparoscopic hysterectomy, BSO, staging: low-grade serous carcinoma of the right ovary, stage IA. No chemo. Germline panel negative. Gyn onc surveillance every 3 months, next in August. Records all reviewed.\n\nHow she's doing: energy nearly back. Weight 54, down a bit since surgery, eating well now. No bleeding, no pelvic pain, bowels normal. Back to the balance class last week. Walking daily. She says the hardest part was the waiting. Husband has been a rock.\nPHQ-2 1 (a few low days in the spring), not depressed now.\nFunction: independent in ADLs and IADLs. No falls. Cognition intact.\n\nMeds: calcium carbonate 1250 mg bid, vitamin D3 1000 units daily, multivitamin, acetaminophen prn, albuterol prn (rare).\n\nExam: vitals as charted. Thin, well. Kyphosis. Lungs distant, clear. Heart regular. Abdomen: healed port sites, soft, nontender. No edema.\n\nA/P\n1. Ovarian serous carcinoma, stage IA, s/p surgery. Surveillance with gyn onc.\n2. Postmenopausal bleeding, resolved after hysterectomy.\n3. COPD stable.\n4. Osteoporosis: calcium and vitamin D. Fall prevention.\n5. Knee OA.\n6. Weight: protein with each meal; recheck in fall.\nPrevention: flu and COVID at the October visit. Labs today.\nRTC October."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T11:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-07-09T11:30",
+              "body": "Ruth, your labs from Monday all look normal: blood count, kidneys, liver, calcium, and vitamin D at 33. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "portal_message",
+          "start": "2026-07-27T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "October appointment",
+              "author": "patient",
+              "date": "2026-07-27T14:05",
+              "body": "Hello, can my October appointment be in the morning? My husband has his own doctor visits in the afternoons that month. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: October appointment",
+              "author": "front desk",
+              "date": "2026-07-28T09:20",
+              "body": "Hi Ruth, you're now booked Tuesday, October 13 at 9:30 am, and we'll have your flu and COVID vaccines ready."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "specialist_visit",
+          "start": "2026-08-18T10:30",
+          "service": "Gynecologic Oncology",
+          "reason": "Surveillance visit",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-18T10:15",
+              "resulted": "2026-08-18T16:00",
+              "results": [
+                {
+                  "test": "Cancer Antigen 125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 14
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic Oncology Surveillance Visit",
+              "author": "gynecologic oncology",
+              "date": "2026-08-24T10:00",
+              "body": "Surveillance visit 8/18/2026, about 4 months after surgery for stage IA low-grade serous carcinoma of the right ovary.\n\nFeels well. No abdominal bloating, pain, early satiety or vaginal bleeding. Weight stable.\nExam: no supraclavicular or inguinal adenopathy. Abdomen soft, no mass, no ascites. Pelvic: vaginal cuff well healed, no nodularity or mass.\nCA-125: 14 U/mL.\n\nAssessment: no evidence of disease.\nPlan: next surveillance visit with CA-125 in 3 months (November)."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "office_visit",
+          "start": "2026-10-13T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up and flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

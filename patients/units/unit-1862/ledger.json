@@ -1,0 +1,2401 @@
+{
+  "unit": "unit-1862",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001862",
+      "given": "Hailey",
+      "family": "Roy",
+      "birth_date": "1992-01-24",
+      "address_line": "27 Brookhollow Lane, Apt 2",
+      "phone": "+1-413-555-0169",
+      "email": "hailey.roy@example.test",
+      "marital_status": "married",
+      "summary": "Young woman with type 1 diabetes since childhood and autoimmune hypothyroidism, chronically above A1c goal, who joins in 2022. In February 2025 a stomach bug and heavy water drinking end in a sodium of 118 with a seizure and a short admission; that spring she is pregnant and delivers a son at 35 weeks in October 2025 after limited prenatal care.",
+      "events": [
+        {
+          "id": "2022-09-07a",
+          "kind": "telephone",
+          "start": "2022-09-07T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-09-07T10:20",
+              "author": "front desk",
+              "body": "Caller would like to transfer her primary care here. Current office is closing its adult panel and she says she can never get a callback about insulin questions. Has type 1 diabetes and a thyroid condition. Insurance Medicaid, verified active. Booked new patient slot 9/14 at 9:00. Emailed the release form for her old office; she signed and sent it back while still on the line. Asked her to bring all insulin pens and pill bottles to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T09:00",
+          "end": "2022-09-14T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care, type 1 diabetes, hypothyroidism",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2003-06-01"
+            },
+            {
+              "label": "Autoimmune hypothyroidism",
+              "action": "history",
+              "onset": "2017-04-01",
+              "icd10": "E06.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 24 units under the skin at bedtime",
+              "dose": {
+                "value": 24,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin before meals per sliding scale",
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes"
+            },
+            {
+              "drug": "levothyroxine sodium 0.088 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 88,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypothyroidism"
+            },
+            {
+              "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              78
+            ],
+            "hr": 59,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 63.1,
+            "height_cm": 164.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-14T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-14T10:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 88
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.1
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 10
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Customer service representative"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-09-14T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-14T10:05",
+              "author": "PCP",
+              "body": "30F here to establish. Transferring from another primary care office in the area; records release done last week, nothing received yet.\n\nType 1 DM since age 11. Uses glargine 24 units every night and lispro with meals off a correction scale her old endocrinologist wrote years ago; she lost touch with endocrine when she aged off the pediatric clinic and her prior PCP has been managing since. Fingersticks 2-3 times a day, more like twice on work days. Says morning sugars run 150s-220s, worse after late dinners. Remembers her last A1c as \"in the 8s.\" Has had a few lows into the 60s, always awake, treats with juice. No DKA admissions as an adult. No numbness or tingling in the feet. Last eye exam about a year ago, told it was fine.\n\nHypothyroid since 2017, antibodies positive at the time per her report. Levothyroxine 88 mcg, takes it before coffee. No dose change in years.\n\nAlso takes a prenatal vitamin with iron daily, has for years, likes that it is one pill.\n\nPSH: T&A as a child.\nMeds: as above. Allergies: none to medications.\nFH: younger brother with type 1 DM. Mother hypothyroid, autoimmune. Maternal grandmother had a baby early, details unknown.\nSH: married. Works phones in a customer service center, mostly day shift. Never smoked. Does not drink. No drug use.\n\nROS: no polyuria or polydipsia beyond baseline, no weight loss, no palpitations, no heat or cold intolerance, no vision change.\n\nExam: well appearing, pleasant. Thyroid not enlarged, no nodules. Heart RRR, no murmur. Lungs clear. Abdomen soft, injection sites on abdomen and thighs without lipohypertrophy. Feet: skin intact, no calluses, DP pulses 2+ bilat, monofilament intact both feet.\n\nA/P\n1. Type 1 diabetes, above goal by history. A1c, CMP, lipids, urine microalbumin today. Talked about rotating sites and checking before every meal so the correction scale actually has a number to work from. Will look at her meter log next time. Eye exam due within the year; she will book with her optometrist.\n2. Hypothyroidism on levothyroxine 88. TSH today.\n3. Health maintenance: hep C and HIV screening today, she agrees. Pap was 2021 per her, normal; will confirm in records. Flu shot next month when we get stock.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.6,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 8.9,
+              "Microalbumin/Creatinine Ratio": 9,
+              "Thyroid Stimulating Hormone": 2.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-09-16T13:40",
+              "author": "PCP",
+              "body": "Hi Hailey, your labs are in. Kidney function, liver tests, blood counts and cholesterol all look good, and the urine protein test is normal. Thyroid level is right where we want it, so no change to the levothyroxine. Hepatitis C and HIV screens were negative.\n\nThe A1c is higher than we want it. That is your 3-month sugar average, and it lines up with the morning numbers you described. Let's work on it together at your December visit. In the meantime, try to check before each meal and write the numbers down or bring the meter.\n\nTalk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "outside_records",
+          "start": "2022-10-05T11:00",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-10-05T11:00",
+              "author": "outside primary care",
+              "body": "Records received by fax, 41 pages, covering 2017-2022.\n\nProblem list on their system: diabetes mellitus type 1 (childhood onset), hypothyroidism (antithyroid peroxidase antibody positive, 2017).\nMedications: insulin glargine 24 units nightly; insulin lispro per correction scale before meals; levothyroxine 88 mcg daily; prenatal multivitamin daily.\nAllergies: NKDA.\nScreening: Pap cytology 06/2021 negative for intraepithelial lesion. Last lipid panel 2021 within normal limits.\nImmunizations: childhood series complete including hepatitis B x3; Tdap 2019; COVID-19 mRNA primary series 2021 (two doses).\nRecent A1c values per their flowsheet ranged 8.3 to 9.0 over the last two years.\n\nScanned to chart. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-20T16:25",
+              "author": "RN",
+              "body": "Came after work for vaccines. Denies fever or illness today. No prior vaccine reactions.\nFlu (quadrivalent) 0.5 mL IM left deltoid.\nCOVID bivalent booster IM right deltoid.\nVIS sheets offered. Observed 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              113,
+              76
+            ],
+            "hr": 64,
+            "weight_kg": 64.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-06T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-06T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2022-12-06T09:20",
+              "author": "PCP",
+              "body": "Brought her meter this time. About 60% of fasting readings 160-230, dinner-time readings all over, a couple of 300s after holiday parties at work. Two lows (58, 64) mid-afternoon on days she skipped lunch. Checking more like 3 times a day now.\n\nNo other complaints. Taking all meds.\n\nExam: NAD. Weight stable. Feet unchanged.\n\nA1c point of care drawn today; sent out.\n\nPlan: no dose change today. Went over the afternoon lows (don't correct with lispro at lunch then skip the meal) and carrying glucose tabs at her desk. She is willing to see endocrinology again at some point but would rather work on it here first. Records from old office reviewed, nothing new. Eye exam booked for January per pt. RTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "outside_records",
+          "start": "2023-01-18T14:00",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye examination",
+              "date": "2023-01-18T14:00",
+              "author": "optometry",
+              "body": "Diabetic eye examination, date of exam 01/12/2023.\nPatient: Hailey Roy. Referring: primary care.\nHistory: type 1 diabetes. No visual complaints.\nVA cc 20/20 OD, 20/20 OS. IOP 15/16. Pupils normal, no APD.\nDilated fundus exam: clear media, cup-to-disc 0.3 both eyes, macula flat with good foveal reflex, vessels normal caliber, no hemorrhages, exudates or neovascularization OU.\nImpression: diabetes without diabetic retinopathy either eye.\nRecommend annual dilated exam. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "office_visit",
+          "start": "2023-03-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              105,
+              83
+            ],
+            "hr": 71,
+            "weight_kg": 64.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-09T11:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-09T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-09T11:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-09T11:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-09T11:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-03-09T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-09T12:05",
+              "author": "PCP",
+              "body": "S: DM1 f/u. Has been better about checking before meals since December, misses the bedtime check most nights. Fasting mostly 140-190 on her log. No lows below 70 this quarter. Eye exam done in January, report received, no retinopathy.\n\nO: vitals as charted. Alert, well. Feet: sensation intact to monofilament, pulses normal.\n\nA/P:\nDM1 - modest improvement on her log. A1c and BMP today. Same glargine and lispro scale. Reviewed sick-day basics: never skip basal insulin, check more often when ill.\nHypothyroid - stable, TSH at physical.\nPneumococcal vaccine indicated with diabetes: PCV20 given today, one and done.\nPhysical in September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-10a",
+          "kind": "portal_message",
+          "start": "2023-03-10T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2023-03-10T08:15",
+              "author": "PCP",
+              "body": "A1c came down a little from December. Still above where we'd like, but the direction is right and your kidney and salt levels are fine. Keep doing what you're doing with the pre-meal checks."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-07a",
+          "kind": "office_visit",
+          "start": "2023-06-07T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2023-06-07T16:30",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3:40 appt. Called, no answer, left VM to reschedule. Texted the scheduling link."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "office_visit",
+          "start": "2023-06-21T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up (rescheduled)",
+          "vitals": {
+            "bp": [
+              115,
+              76
+            ],
+            "hr": 70,
+            "weight_kg": 64.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-21T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-06-21T12:55",
+              "author": "PCP",
+              "body": "Apologized for missing the 7th, mandatory overtime at work that week. Over her lunch break today.\n\nSugars: no meter today, reports mornings \"mostly in the 150s\". Says her pharmacy flagged that the glargine pens may need a new approval when her plan renews next month.\n\nExam brief: well, BP fine, feet intact.\n\nPlan: no lab today (A1c at physical in September). Will watch for the PA request from pharmacy and handle it. Refills sent for 90 days of both insulins and levothyroxine."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "pharmacy",
+          "start": "2023-07-12T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization - insulin glargine",
+              "date": "2023-07-12T09:30",
+              "author": "MA",
+              "body": "Fax from pharmacy: Medicaid requires renewed PA for insulin glargine pens for new benefit year. PA form completed with dx type 1 DM, current dose 24 units qHS, duration of therapy since childhood. Submitted through the plan portal. Approval received 7/13, valid 12 months. Pharmacy notified, pt texted that pens are ready."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 75,
+            "rr": 16,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 86
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-19T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-19T08:50",
+              "author": "PCP",
+              "body": "Annual exam, 31F.\n\nInterval: no ER visits, no new meds. Works days at the call center, walks the dog evenings. Sleep OK. Mood good. PHQ-2 0.\n\nDiabetes: checks 3x daily most days. No severe lows. Still no endocrinologist; prefers to keep it here.\nThyroid: no symptoms.\n\nMeds: glargine 24u qhs, lispro scale with meals, levothyroxine 88 mcg, prenatal MVI. NKDA.\nPrevention: Pap 2021 normal, next due 2024. Pneumococcal done March. Flu/COVID next month at nurse visit. Tdap 2019.\n\nExam: Well-appearing. HEENT normal, TMs clear, oropharynx with tonsils surgically absent. Neck supple, thyroid normal size, no nodules. Heart regular rate, no murmurs. Lungs clear to auscultation. Abdomen soft, nontender. Skin: injection sites clean. Ext without edema. Diabetic foot exam: normal skin and nails, monofilament 10/10 sites bilaterally, pulses intact. Neuro grossly normal.\n\nA/P: healthy 31yo with long-standing DM1 above goal and hypothyroidism.\n- Fasting labs today: CMP, CBC, lipids, A1c, TSH, urine microalbumin.\n- Continue current regimen pending A1c.\n- Annual eye exam due January.\nReturn in 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2023-09-21T17:05",
+              "author": "PCP",
+              "body": "Hailey - everything from the physical is normal except the A1c, which is a little lower than March but still well above goal. Thyroid, kidneys, cholesterol and blood counts all fine. Nothing to change today; we'll look at your meter together in December and see where the highs are coming from."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "date": "2023-09-21T19:40",
+              "author": "patient",
+              "body": "ok thanks. will bring the meter"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-12T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2023-10-12T16:40",
+              "author": "RN",
+              "body": "Seasonal flu IM L deltoid and 2023-24 COVID vaccine IM R deltoid. Screening questions negative. Tolerated both. Watched 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "telehealth_visit",
+          "start": "2023-12-14T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-12-14T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2023-12-14T12:35",
+              "author": "PCP",
+              "body": "Video from her car on lunch break; she consented to a video visit and confirmed her date of birth.\n\nUploaded meter download beforehand. 14-day average about 185. Highest readings late evening after dinner. Fasting 130-170. One reading of 66 before lunch, treated.\n\nNo symptoms. Taking everything.\n\nA: DM1, persistently above goal, evening pattern.\nP: Talked through carb counting at dinner and using the full correction on the scale rather than half of it, which she admits she does to avoid lows. No dose change to glargine. In-person with A1c in February. Eye exam due next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "office_visit",
+          "start": "2024-02-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              107,
+              82
+            ],
+            "hr": 69,
+            "weight_kg": 63.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-12T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-12T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-12T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-12T10:40",
+              "author": "PCP",
+              "body": "Subjective\nType 1 diabetes recheck. Using the full correction dose at dinner most nights since December. Evening numbers now mostly under 200. Fasting 120s to 170s. No lows under 60. Eye exam was last week at her optometrist, she was told no changes; asked her to have them send it.\n\nObjective\nVitals reviewed. Comfortable. Feet: no lesions, sensation intact.\n\nAssessment and plan\n1. DM1 - slightly better on the meter. A1c and BMP drawn.\n2. Hypothyroidism - on levothyroxine 88, TSH normal in September.\nNext in about 3 months, video is fine."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "portal_message",
+          "start": "2024-03-06T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eye exam report",
+              "date": "2024-03-06T09:10",
+              "author": "MA",
+              "body": "Hi Hailey, we haven't received the report from your eye exam in February. Could you send us the name of the office, or ask them to fax it to us? Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eye exam report",
+              "date": "2024-03-06T18:22",
+              "author": "patient",
+              "body": "Same place as last year. They told me everything looked normal, no diabetes damage. I'll call them again."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "telehealth_visit",
+          "start": "2024-05-21T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-05-21T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-05-21T17:50",
+              "author": "PCP",
+              "body": "Video visit, she is at home, two identifiers verified.\n\nFeb A1c a touch lower than September. Since then sugars about the same per her report; she forgot to upload the meter. No hypoglycemia needing help. No symptoms of thyroid over- or under-replacement.\n\nEye report from February still not here despite her calling; she was told it was normal. Documented as patient-reported.\n\nPlan: continue all meds. Physical in September with Pap and full labs. Message me the meter download when she can."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-07a",
+          "kind": "pharmacy",
+          "start": "2024-08-07T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-08-07T11:05",
+              "author": "MA",
+              "body": "Pharmacy refill request: levothyroxine 88 mcg #90 with 3 refills. Last TSH 9/2023 normal, physical scheduled 9/17. Routed to PCP, approved and sent."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, Pap",
+          "vitals": {
+            "bp": [
+              104,
+              82
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 67
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.3
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-09-17T08:40",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-testing. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2024-09-24T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-17T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T09:15",
+              "author": "PCP",
+              "body": "32 y/o woman, annual.\n\nNo interval illness. Same job. Married, lives with her husband. No tobacco, no alcohol.\nDiabetes: checks 2-4x a day; describes highs mainly after dinner still. No severe lows. Eye exam Feb, normal per pt, report never sent.\nThyroid: fine. Mood fine, PHQ-2 1 (some tiredness).\n\nMeds unchanged: glargine 24 units nightly, lispro scale AC, levothyroxine 88, prenatal vitamin. NKDA.\n\nPE: NAD. HEENT clear. Thyroid smooth, not enlarged. RRR, no murmur. CTAB. Abdomen benign. Pelvic: normal external genitalia, vaginal mucosa normal, cervix without lesions; Pap/HPV collected. Extremities without edema. Feet: intact skin, monofilament normal, pulses 2+.\n\nA/P\n- Health maintenance: Pap with HPV today. Flu and COVID in October. Tdap 2019.\n- DM1: labs today. If A1c isn't moving, revisit an endocrinology referral or a sensor; she would like to think about it.\n- Hypothyroid: TSH.\nRTC December."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and lab results",
+              "date": "2024-09-24T16:30",
+              "author": "PCP",
+              "body": "Hi Hailey, your Pap smear is normal and HPV was not detected, so the next one isn't due for 5 years. Blood work is normal apart from the A1c, which jumped back up from February. Thyroid level is good. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T16:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2024-10-08T17:05",
+              "author": "RN",
+              "body": "Afebrile, no acute illness. Flu (trivalent 2024-25) given IM left arm, COVID 2024-25 given IM right arm. No issues after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "office_visit",
+          "start": "2024-12-12T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              83
+            ],
+            "hr": 70,
+            "weight_kg": 63.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-12T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-12T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-12T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-12-12T10:20",
+              "author": "PCP",
+              "body": "DM1 visit. Rough fall: short-staffed at work, eating at her desk, often forgets the lunch dose. Meter: mid-day and dinner readings 200-280 on many days, fasting 150-190. No lows.\n\nWell appearing. Feet normal.\n\nA1c drawn. Poorly controlled type 1 diabetes; she knows and is frustrated. Talked about setting a phone alarm for the lunch dose. She'd like to revisit endocrine/sensor after the holidays, will message. Continue glargine 24 units and lispro scale. 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 9.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-13a",
+          "kind": "portal_message",
+          "start": "2024-12-13T12:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "date": "2024-12-13T12:00",
+              "author": "PCP",
+              "body": "Your A1c is still high, close to where it was in September, which fits the tough fall you described. Let's regroup after the holidays. Message me whenever you're ready to talk about next steps."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "ed_visit",
+          "start": "2025-02-26T13:40",
+          "end": "2025-02-26T18:30",
+          "service": "Emergency Medicine",
+          "reason": "confusion and seizure at home",
+          "conditions": [
+            {
+              "label": "Gastroenteritis",
+              "action": "history",
+              "onset": "2025-02-22",
+              "icd10": "K52.9"
+            },
+            {
+              "label": "Hyponatremia",
+              "action": "diagnosed",
+              "onset": "2025-02-26",
+              "icd10": "E87.1"
+            },
+            {
+              "label": "Seizure",
+              "action": "diagnosed",
+              "onset": "2025-02-26",
+              "icd10": "R56.9"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-02-26T13:45",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-26T14:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 118
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 88
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Glucose",
+                  "value": 180
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-26T14:05",
+              "results": [
+                {
+                  "test": "Osmolality of Serum",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 240
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-26T14:30",
+              "results": [
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 500
+                },
+                {
+                  "test": "Sodium, Urine",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 40
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-26T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "date": "2025-03-24T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED. Visit 02/26/2025 13:40. Copy released to primary care on request.\n\nCC: altered, seized at home.\n\nHPI: 33-year-old woman with type 1 diabetes and hypothyroidism arrives by private car with her husband. About four days of a stomach bug with lots of vomiting and loose stools, now easing. Husband says she has been forcing water all week, several large bottles a day, trying to keep up with the fluid losses. This morning she was muddled and slow to answer, and around noon he watched her go stiff and then shake all over for about a minute. Slept afterward, still not herself. No head strike reported. Diabetes control has been poor per husband.\n\nPMH: DM1, autoimmune hypothyroidism. PSH: T&A.\nMeds: glargine 24 u at bedtime, lispro sliding scale with meals, levothyroxine 88 mcg, prenatal vitamin w/ iron.\nAllergies: NKDA.\nSocial: no tobacco, no ETOH. Works customer service.\nFamily: brother DM1, mother thyroid disease, maternal grandmother delivered preterm.\n\nTriage VS: T 37.1, BP 130/85, HR 88, RR 16.\n\nExam: drowsy, opens eyes and answers to voice, knows her name but not place or date. Moves all extremities, globally weak, no focal deficit, no facial asymmetry. No tongue laceration. Mucous membranes moist. Heart regular. Lungs clear. Abdomen soft, nontender.\n\nLabs: Na 118, K 4.2, Cl 88, HCO3 24, glucose 180. Serum osm 240. Urine osm 500, urine Na 40. Urine hCG negative.\n\nMDM: severe hypotonic hyponatremia with a seizure. Heavy free-water intake on top of GI losses; urine is concentrated, so ADH is active (likely from the vomiting illness). Glucose only modestly high, does not explain the sodium. 100 mL of 3% saline given as a bolus here, then fluid restriction. Seizure provoked by the low sodium; no antiepileptic. Admit to medicine, step-down, sodium q4-6h with a correction limit.\n\nDispo: admitted."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-26b",
+          "kind": "hospital_admission",
+          "start": "2025-02-26T18:30",
+          "end": "2025-03-01T11:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "hyponatremia with seizure",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-27T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-28T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-01T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-02-26T19:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-03-01T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-03-24T10:20",
+              "author": "hospital medicine",
+              "body": "Admission 02/26/2025 - Discharge 03/01/2025. Hospital medicine service.\n\nPrincipal diagnosis: acute symptomatic hyponatremia.\nSecondary: provoked generalized seizure; recent viral gastroenteritis; type 1 diabetes mellitus; autoimmune hypothyroidism.\n\nCourse: admitted from the ED after a single generalized seizure with a serum sodium of 118, in the setting of a vomiting and diarrheal illness and very large water intake. Received one 100 mL 3% saline bolus in the ED. Managed on the step-down unit with free-water restriction and serial sodium checks. Sodium 123 on the morning of 2/27, 131 on 2/28 and 134 on 3/1, within the daily correction limit. Mental status cleared fully by hospital day 2. No further seizure activity; no antiseizure medication started. GI symptoms resolved and she was eating normally by 2/28. Home basal and correction insulin continued with standard inpatient monitoring. Levothyroxine continued.\n\nDischarge medications (unchanged): insulin glargine 24 units at bedtime; insulin lispro per sliding scale before meals; levothyroxine 88 mcg daily; prenatal vitamin with iron daily.\nAllergies: NKDA.\n\nInstructions: drink to thirst rather than by the bottle; with any future vomiting or diarrhea use salt-containing fluids and call primary care early. Follow up with PCP within one week with a repeat sodium.\nCondition at discharge: good, alert and oriented."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hailey in hospital",
+              "date": "2025-02-27T07:55",
+              "author": "patient",
+              "body": "This is Hailey's husband writing from her account. She had a seizure at home yesterday and is admitted, they said her sodium was really low from all the water she drank after being sick. She is more awake today. Just wanted you to know. They said she should see you after she gets out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hailey in hospital",
+              "date": "2025-02-27T09:10",
+              "author": "PCP",
+              "body": "Thank you so much for letting me know, and I'm sorry you both went through that. I'm glad she's more awake. When she's discharged, please have the front desk book her with me within the week, and ask the hospital to send her discharge paperwork to our office. Bring whatever papers they give you."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "office_visit",
+          "start": "2025-03-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, hyponatremia and seizure",
+          "conditions": [
+            {
+              "label": "Gastroenteritis",
+              "action": "resolved",
+              "icd10": "K52.9"
+            },
+            {
+              "label": "Hyponatremia",
+              "action": "resolved",
+              "icd10": "E87.1"
+            },
+            {
+              "label": "Seizure",
+              "action": "resolved",
+              "icd10": "R56.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 62,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 63.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-04T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-04T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-04T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-03-04T14:45",
+              "author": "PCP",
+              "body": "Here with husband after a 2/26-3/1 admission. Formal records not yet received; working from her discharge instruction sheet and what they tell me.\n\nStory: GI bug for several days, vomiting and diarrhea. Was told to keep hydrated and took that to mean as much water as possible, plain water only. Became confused and had a generalized seizure at home. Sodium 118 in the ED per her paperwork, given hypertonic saline, fluid restricted, sodium 134 the day she left. No seizure since. Memory of 2/26 is patchy; otherwise feels back to herself. No headache, no weakness. Eating normally. Sugars ran high in the hospital, back to her usual now. Back to work next Monday.\n\nExam: alert, oriented x3, conversant, normal speech. Cranial nerves intact, strength 5/5 throughout, gait normal. Mucous membranes moist. No edema.\n\nA/P\n1. Hyponatremia with provoked seizure - resolved clinically. BMP today to confirm sodium is normal. Explained what happened in plain terms: large amounts of plain water while the body is holding on to water during a vomiting illness. Going forward: drink to thirst, use broth or an electrolyte drink when sick, and call or text me early with any vomiting illness so we can manage insulin and fluids together.\n2. DM1 - no change today; sick-day plan reviewed again.\n3. Requesting full hospital records.\nFollow-up as scheduled in spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-05a",
+          "kind": "portal_message",
+          "start": "2025-03-05T10:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium level",
+              "date": "2025-03-05T10:40",
+              "author": "PCP",
+              "body": "Good news: your sodium is back in the normal range and your kidney numbers are fine. No more blood tests needed for this. Take it easy this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "telephone",
+          "start": "2025-03-10T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-03-10T11:15",
+              "author": "MA",
+              "body": "Called hospital HIM for ED record and discharge summary, admission 2/26-3/1. Told request was not on file. Faxed request with signed release. Will follow up in two weeks if not received.\n\nAddendum 3/24: ED record and discharge summary received, scanned, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "office_visit",
+          "start": "2025-05-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed period, positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2025-02-14",
+              "icd10": "Z33.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              78
+            ],
+            "hr": 64,
+            "weight_kg": 64.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-08T09:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-08T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.8
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-08T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-08T09:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "High-risk obstetrics referral",
+              "category": "referral",
+              "to": "Maternal-Fetal Medicine",
+              "reason": "pregnancy with type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-08T10:05",
+              "author": "PCP",
+              "body": "Texted last night: two positive home tests. LMP 2/14/25 (sure of the date), so 11w6d today, EDD 11/21/25. Some nausea in the mornings, no vomiting, keeping fluids and food down. No bleeding or cramping.\n\nStill on glargine 24 units nightly and lispro by scale, levothyroxine 88, and the prenatal vitamin she has been on for years.\n\nUrine hCG positive in office.\n\nExam: well. BP normal. Abdomen soft, nontender.\n\nA/P\n1. Intrauterine pregnancy by dates, about 12 weeks. Diabetes in pregnancy needs a high-risk OB/maternal-fetal medicine team; referral placed today, front desk will help her get the first appointment soon. A1c and TSH today.\n2. Talked about why tight sugars matter now and about calling right away for any vomiting (after February). She plans to keep checking 4 times a day.\n3. Continue prenatal vitamin."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.2,
+            "labs": {
+              "Hemoglobin A1c": 9.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "portal_message",
+          "start": "2025-05-09T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-05-09T15:20",
+              "author": "PCP",
+              "body": "Hi Hailey, thyroid level is in a good range for early pregnancy, so the levothyroxine stays at 88. The A1c is still on the high side. The OB team will want to work on that with you; please keep your appointment with them, and send me your sugars any time."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "portal_message",
+          "start": "2025-06-04T20:10",
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-06-04T20:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "OB appointment",
+              "date": "2025-06-04T20:10",
+              "author": "patient",
+              "body": "Had my first appointment with the high risk OB today. They checked everything and said the baby looks ok. They want to see me every 2 weeks which is going to be hard with work, it's 45 minutes each way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: OB appointment",
+              "date": "2025-06-05T09:00",
+              "author": "RN",
+              "body": "Thanks for the update, Hailey! Glad the first visit went well. If the travel is a problem, ask them whether some visits can be by video or whether your plan covers rides to appointments. We'll ask their office to send us the visit note."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-10T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes in pregnancy check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-07-10T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2025-07-10T12:40",
+              "author": "PCP",
+              "body": "Video, at work break room, ID confirmed. About 21 weeks.\n\nHas only made it to the first OB visit; missed the next two (couldn't get the time off, then car trouble). Has not rescheduled. No note from OB has reached us despite our request.\n\nSugars from her log: fasting 140s-180s, after meals often over 200. Nausea gone. Feeling movement. No bleeding, no headaches, no swelling.\n\nA: Pregnancy at ~21 weeks with type 1 diabetes, glucose above pregnancy targets, prenatal care limited by access.\nP: Strongly encouraged rebooking with the OB team this week; front desk will call their office with her to find a slot. In-person here late August with A1c. She will send sugars weekly by portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "outside_records",
+          "start": "2025-07-23T13:30",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye examination",
+              "date": "2025-07-23T13:30",
+              "author": "optometry",
+              "body": "Exam date 07/18/2025. Type 1 diabetic, currently pregnant (second trimester), referred by PCP for dilated exam.\nVision 20/20 each eye with correction. Pressures normal. Anterior segment quiet.\nDilated fundus: optic nerves healthy, macula normal, no microaneurysms, hemorrhages or exudates, no neovascularization, both eyes.\nAssessment: no diabetic retinopathy OU.\nPlan: repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "office_visit",
+          "start": "2025-08-26T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up in pregnancy",
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 69,
+            "weight_kg": 69.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-26T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-26T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-08-26T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-26T15:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-08-26T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-08-26T15:50",
+              "author": "PCP",
+              "body": "27w4d by LMP. Went to one more OB visit in late July, missed one in August. Their notes still haven't come to us. Says they told her the baby is measuring fine.\n\nSugars by log: fasting 150-190, post-dinner 200s. No lows. Same insulin doses, same levothyroxine. Prenatal vitamin daily.\n\nGood fetal movement. No bleeding, leaking fluid, contractions or headaches.\n\nVitals as charted; BP normal. Weight up appropriately. Gravid abdomen, nontender. No edema.\n\nA/P\n- Pregnancy 27 weeks, type 1 diabetes poorly controlled, limited prenatal care. A1c today. Asked her again to get the remaining OB visits on the calendar before she leaves the building; MA helped her call.\n- Tdap given today (recommended each pregnancy, 27-36 weeks).\n- Flu and COVID vaccines when available in the fall; both are safe in pregnancy."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "portal_message",
+          "start": "2025-08-28T11:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "date": "2025-08-28T11:10",
+              "author": "PCP",
+              "body": "Your A1c is 9.2%. That's higher than the target for pregnancy, and the OB team needs to see this number - I've sent it to their office as well. Please keep the appointment they gave you on Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "nurse_visit",
+          "start": "2025-10-02T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-02T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-02T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-02T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunizations",
+              "date": "2025-10-02T16:35",
+              "author": "RN",
+              "body": "About 33 weeks pregnant. No fever or illness. Inactivated flu vaccine IM L deltoid, 2025-26 COVID vaccine IM R deltoid. Monitored 15 minutes, no reaction. Reminded to keep her OB appointment next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "hospital_admission",
+          "start": "2025-10-17T04:50",
+          "end": "2025-10-19T12:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "preterm labor at 35 weeks",
+          "conditions": [
+            {
+              "label": "Preterm labor with preterm delivery, third trimester",
+              "action": "diagnosed",
+              "onset": "2025-10-17",
+              "icd10": "O60.14X0"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "icd10": "Z33.1"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-17T05:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-12-10T09:40",
+              "author": "obstetrics",
+              "body": "Labor and delivery, regional hospital. Admit 10/17/2025, discharge 10/19/2025.\n\n33-year-old woman presented in active labor at 35w0d by LMP. Prenatal care limited (intake visit at our clinic in June, few visits after). Pregnancy complicated by pregestational type 1 diabetes with poor glycemic control (most recent A1c 9.2%, drawn by her primary care in August) and autoimmune hypothyroidism. Hyponatremia with a provoked seizure in February 2025, resolved before pregnancy.\n\nOn arrival anxious but not in distress, vital signs stable. Fetal heart tones normal. Glucose managed per labor protocol. Spontaneous vaginal delivery of a liveborn male, 2500 g.\n\nNewborn: respiratory distress right after birth with grunting, nasal flaring and intercostal retractions; one- and five-minute scores 5 and 7. Saturation 85% on room air, up to 92% with supplemental oxygen. Chest film showed diffuse bilateral ground-glass atelectasis consistent with respiratory distress syndrome of prematurity. Admitted to the newborn intensive care unit on oxygen; ongoing care under the neonatal team.\n\nMaternal postpartum course: uncomplicated. Insulin and levothyroxine continued at home doses.\n\nDischarge medications: insulin glargine 24 units at bedtime, insulin lispro sliding scale before meals, levothyroxine 88 mcg daily, prenatal vitamin with iron daily.\nAllergies: NKDA.\nFollow-up: postpartum visit with obstetrics in 6 weeks; PCP for diabetes within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-18a",
+          "kind": "portal_message",
+          "start": "2025-10-18T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby came early",
+              "date": "2025-10-18T21:05",
+              "author": "patient",
+              "body": "Wanted to tell you I had the baby yesterday, a boy, 5 lb 8 oz. He came at 35 weeks. He needed help breathing and is in the NICU but they say he's doing better. I'm ok, going home tomorrow. Do I need to change my insulin?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby came early",
+              "date": "2025-10-19T08:30",
+              "author": "PCP",
+              "body": "Congratulations, Hailey, and I'm glad you're both being looked after. Insulin needs often drop fast after delivery, so check before every meal and at bedtime for the next couple of weeks and text me any reading under 80. Stay on the same doses unless you see lows. Let's see you next week - front desk will call with a time."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "office_visit",
+          "start": "2025-10-28T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum diabetes follow-up",
+          "conditions": [
+            {
+              "label": "Preterm labor with preterm delivery, third trimester",
+              "action": "resolved",
+              "icd10": "O60.14X0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 61,
+            "temp_c": 36.8,
+            "weight_kg": 66.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-28T10:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-28T10:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-28T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-28T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Visit",
+              "date": "2025-10-28T11:10",
+              "author": "PCP",
+              "body": "11 days after a vaginal delivery at 35 weeks (her report and her message; hospital summary not received). Son was in the NICU for breathing problems; she is visiting daily and tired but coping. Bleeding tapering. No fever, no calf pain, no headache.\n\nSugars since delivery: fasting 110s-150s, a couple of 75-85s overnight, nothing lower. On glargine 24 units and lispro scale, unchanged. Levothyroxine 88. Still taking the prenatal vitamin.\n\nPHQ-9 3. Has her husband and her mother helping. No thoughts of self-harm.\n\nExam: tired-appearing, comfortable. BP normal, afebrile. Thyroid normal. Heart and lungs normal. Abdomen soft, fundus nontender. No calf tenderness or edema.\n\nA/P\n1. Postpartum after preterm delivery - recovering. OB postpartum visit in 6 weeks; she has the appointment.\n2. DM1 - sugars running lower than during pregnancy, no hypoglycemia below 70. Keep same doses for now, check overnight once or twice a week, call with lows.\n3. Hypothyroid - TSH today, postpartum check.\n4. Mood screen reassuring; will recheck at next visit.\nDiabetes visit with A1c in January. Hospital summary requested."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.4,
+            "labs": {
+              "Hemoglobin A1c": 8.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "telephone",
+          "start": "2025-12-10T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside records received",
+              "date": "2025-12-10T09:45",
+              "author": "MA",
+              "body": "Obstetric discharge summary from October admission finally received after second request. Scanned and routed to PCP. Still nothing from the OB clinic visits or her postpartum visit. Pt says postpartum check with OB went fine."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 65,
+            "weight_kg": 63.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-01-20T13:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-01-20T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-20T13:50",
+              "author": "PCP",
+              "body": "Diabetes follow-up, about 3 months postpartum. Back at work part-time since the new year. Son home and followed by the pediatric team.\n\nSugars: fasting 140-180, evenings variable, misses the lunch check on work days. No lows since November. Same insulin doses. Says she ran out of the prenatal vitamin after the holidays and hasn't restarted.\n\nPHQ-9 2.\n\nExam: well. Weight close to pre-pregnancy. Feet normal, monofilament intact.\n\nOB discharge summary from October reviewed - consistent with her account.\n\nA/P\nDM1 - A1c today. Same regimen. We talked again about an endocrinology referral or a sensor; she wants to wait until work settles.\nHypothyroid - postpartum TSH in October was normal; recheck at physical.\nPhysical in April."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "outside_records",
+          "start": "2026-06-10T14:10",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye examination",
+              "date": "2026-06-10T14:10",
+              "author": "optometry",
+              "body": "Date of service 06/05/2026. Annual dilated exam for type 1 diabetes.\nBest corrected acuity 20/20 right and left. Tonometry within normal limits.\nFundus, dilated: discs pink and sharp, maculae clear, no retinal hemorrhage, microaneurysm, exudate or new vessels in either eye.\nImpression: no evidence of diabetic retinopathy.\nReturn one year."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Autoimmune hypothyroidism|E06.3": {
+        "code": "E06.3",
+        "display": "Autoimmune thyroiditis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Gastroenteritis|K52.9": {
+        "code": "K52.9",
+        "display": "Noninfective gastroenteritis and colitis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyponatremia|E87.1": {
+        "code": "E87.1",
+        "display": "Hypo-osmolality and hyponatremia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Preterm labor with preterm delivery, third trimester|O60.14X0": {
+        "code": "O60.14X0",
+        "display": "Preterm labor third trimester with preterm delivery third trimester, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Seizure|R56.9": {
+        "code": "R56.9",
+        "display": "Unspecified convulsions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Osmolality of Serum": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Urine": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sodium, Urine": {
+        "code": "2955-3",
+        "display": "Sodium [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin with iron Oral Tablet\""
+    ]
+  }
+}

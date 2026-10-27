@@ -9,7 +9,10 @@
           "start": "2026-01-19T10:20",
           "service": "Obstetrics & Gynecology",
           "reason": "Routine prenatal visit, decreased fetal movement",
-          "measure": ["bp", "hr"],
+          "measure": [
+            "bp",
+            "hr"
+          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -27,7 +30,12 @@
           "end": "2026-02-05T11:15",
           "service": "Obstetrics — Labor & Delivery",
           "reason": "Spontaneous labor at term",
-          "conditions": [{"label": "Supervision of normal pregnancy", "action": "resolved"}],
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved"
+            }
+          ],
           "documents": [
             {
               "type": "Discharge Summary",
@@ -82,14 +90,87 @@
           "end": "2026-02-13T15:55",
           "service": "Emergency Medicine",
           "reason": "Insomnia, paranoid thoughts, agitation 10 days postpartum",
-          "conditions": [{"label": "Postpartum psychosis", "icd10": "F53.1", "action": "diagnosed", "onset": "2026-02-10"}],
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-13T08:55", "results": [{"test": "White Blood Cells", "value": 7.0}, {"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets", "value": 250}]},
-            {"panel": null, "collected": "2026-02-13T08:55", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}]},
-            {"panel": "Urinalysis", "collected": "2026-02-13T09:10", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}, {"test": "Urine Ketones", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          "conditions": [
+            {
+              "label": "Postpartum psychosis",
+              "icd10": "F53.1",
+              "action": "diagnosed",
+              "onset": "2026-02-10"
+            }
           ],
-          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-02-13T08:20"}],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-13T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T08:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-02-13T09:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-13T08:20"
+            }
+          ],
           "documents": [
             {
               "type": "ED Notes",
@@ -108,9 +189,26 @@
           "service": "Inpatient Psychiatry",
           "reason": "Postpartum psychosis",
           "medications": [
-            {"drug_text": "olanzapine 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 10, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "postpartum psychosis"}
+            {
+              "drug_text": "olanzapine 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "postpartum psychosis"
+            }
           ],
-          "procedures": [{"procedure": "Psychiatric diagnostic evaluation with medical services", "performed": "2026-02-13T17:00"}],
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2026-02-13T17:00"
+            }
+          ],
           "documents": [
             {
               "type": "Discharge Summary",
@@ -127,9 +225,23 @@
           "start": "2026-02-23T13:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up",
-          "state": {"weight_kg": 70.5},
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-02-23T13:30"}],
+          "state": {
+            "weight_kg": 70.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-02-23T13:30"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -146,11 +258,36 @@
           "start": "2026-02-24T11:00",
           "service": "Obstetrics & Gynecology",
           "reason": "Right breast pain, redness and fever",
-          "vitals": {"temp_c": 38.7, "hr": 96},
-          "measure": ["bp", "rr"],
-          "conditions": [{"label": "Lactational mastitis, right breast", "icd10": "O91.23", "action": "diagnosed", "onset": "2026-02-22"}],
+          "vitals": {
+            "temp_c": 38.7,
+            "hr": 96
+          },
+          "measure": [
+            "bp",
+            "rr"
+          ],
+          "conditions": [
+            {
+              "label": "Lactational mastitis, right breast",
+              "icd10": "O91.23",
+              "action": "diagnosed",
+              "onset": "2026-02-22"
+            }
+          ],
           "medications": [
-            {"drug": "cephalexin 500 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth 4 times daily for 10 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "lactational mastitis"}
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth 4 times daily for 10 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "lactational mastitis"
+            }
           ],
           "documents": [
             {
@@ -206,23 +343,82 @@
           "start": "2026-03-13T10:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Postpartum follow-up",
-          "state": {"weight_kg": 68.2},
-          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 17}],
+          "state": {
+            "weight_kg": 68.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 17
+            }
+          ],
           "conditions": [
-            {"label": "Postpartum depression", "action": "diagnosed", "onset": "2026-02-27"},
-            {"label": "Lactational mastitis, right breast", "icd10": "O91.23", "action": "resolved"}
+            {
+              "label": "Postpartum depression",
+              "action": "diagnosed",
+              "onset": "2026-02-27"
+            },
+            {
+              "label": "Lactational mastitis, right breast",
+              "icd10": "O91.23",
+              "action": "resolved"
+            }
           ],
           "medications": [
-            {"drug": "sertraline 50 MG Oral Tablet", "action": "start", "sig": "Take 1/2 tablet by mouth daily for 7 days, then 1 tablet daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "postpartum depression"}
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1/2 tablet by mouth daily for 7 days, then 1 tablet daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "postpartum depression"
+            }
           ],
           "labs": [
-            {"panel": null, "collected": "2026-03-13T11:30", "resulted": "2026-03-14T07:10", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.5}]}
+            {
+              "panel": null,
+              "collected": "2026-03-13T11:30",
+              "resulted": "2026-03-14T07:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            }
           ],
-          "orders": [{"id": "therapy-referral-2026", "action": "placed", "order": "Perinatal psychotherapy referral", "category": "referral", "to": "Perinatal Behavioral Health", "reason": "postpartum depression"}],
+          "orders": [
+            {
+              "id": "therapy-referral-2026",
+              "action": "placed",
+              "order": "Perinatal psychotherapy referral",
+              "category": "referral",
+              "to": "Perinatal Behavioral Health",
+              "reason": "postpartum depression"
+            }
+          ],
           "procedures": [
-            {"procedure": "Office visit, established patient, high MDM", "performed": "2026-03-13T10:40"},
-            {"procedure": "Venipuncture", "performed": "2026-03-13T11:30"}
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-03-13T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-13T11:30"
+            }
           ],
           "documents": [
             {
@@ -270,9 +466,23 @@
           "start": "2026-04-10T14:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Postpartum depression follow-up",
-          "measure": ["bp", "hr", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 12}],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-10T14:00"}],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-10T14:00"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -288,7 +498,13 @@
           "kind": "outside_records",
           "start": "2026-04-14T16:30",
           "reason": "Therapy intake letter",
-          "orders": [{"id": "therapy-referral-2026", "action": "done", "date": "2026-04-14T16:30"}],
+          "orders": [
+            {
+              "id": "therapy-referral-2026",
+              "action": "done",
+              "date": "2026-04-14T16:30"
+            }
+          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -321,17 +537,84 @@
           "start": "2026-05-22T08:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Mood follow-up, olanzapine labs",
-          "state": {"weight_kg": 67.0},
-          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "state": {
+            "weight_kg": 67.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
           "labs": [
-            {"panel": "Lipid Panel", "collected": "2026-05-22T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2026-05-22T08:45", "results": [{"test": "Hemoglobin A1c"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-22T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-05-22T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-22T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-22T08:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-22T08:20"},
-            {"procedure": "Venipuncture", "performed": "2026-05-22T08:45"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-22T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-22T08:45"
+            }
           ],
           "documents": [
             {
@@ -379,10 +662,26 @@
           "start": "2026-07-17T09:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Mood follow-up",
-          "state": {"weight_kg": 66.4},
-          "measure": ["bp", "hr", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-07-17T09:40"}],
+          "state": {
+            "weight_kg": 66.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-17T09:40"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -406,28 +705,6 @@
               "author": "psychiatry",
               "date": "2026-07-24T10:20",
               "body": "Perinatal Psychiatry, outside clinic\nDate of service: 07/22/2026\n\nDear Doctor,\nMs. Murphy continues to do well. Her psychosis has stayed in full remission since February and her depression has largely resolved. Sleep and mood steady; no hypomanic features. Thank you for the metabolic labs in May, which were normal.\n\nCurrent medications: olanzapine 10 mg at bedtime, sertraline 50 mg daily, prenatal vitamin.\n\nPlan: continue olanzapine 10 mg until she is at least 9 months postpartum, then we will discuss a slow taper. Continue sertraline per your management. Next visit here in 3 months.\n\nPerinatal Psychiatry"
-            }
-          ]
-        },
-        {
-          "id": "2026-08-18a",
-          "kind": "portal_message",
-          "start": "2026-08-18T20:15",
-          "reason": "90-day supply, scheduling",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "sertraline + appointment",
-              "author": "patient",
-              "date": "2026-08-18T20:15",
-              "body": "Hi! My insurance will do a 90 day supply by mail for the sertraline now, could you send it there? Also I need to set up my next visit, the 18th of September works if you have it."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: sertraline + appointment",
-              "author": "MA",
-              "date": "2026-08-19T09:05",
-              "body": "Hi Isabelle, the 90-day sertraline 50 mg went to the mail-order pharmacy this morning. You're booked Friday 9/18 at 3:20 with the doctor. We'll do your physical then too."
             }
           ]
         },

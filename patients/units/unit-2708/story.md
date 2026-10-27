@@ -105,3 +105,8 @@
 - 2026-07-20 visit; labs (A10)
 - 2026-08-24 labs drawn, pending (P)
 - 2026-09-14 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002708 on 2026-04-20. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

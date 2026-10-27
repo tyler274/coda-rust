@@ -1,0 +1,1145 @@
+{
+  "unit": "unit-2604",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00002604/2023-09-12a: allergen \"Seasonal pollens (tree, grass, ragweed)\" not in catalog (text only)",
+    "MRN00002604/2023-09-12a: allergen \"Dust mites\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002604",
+      "given": "Wyatt",
+      "family": "Galvin",
+      "birth_date": "2000-12-22",
+      "address_line": "27 Bay Road, Apt 3",
+      "phone": "+1-774-555-0152",
+      "email": "wyatt.galvin@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with lifelong atopy (seasonal allergic rhinitis, mild persistent asthma on as-needed albuterol, atopic dermatitis) who joins in 2023. A dermatology consult for a winter eczema flare in 2025 is followed by solid-food dysphagia, eosinophilic esophagitis on biopsy, an ED visit for vomiting, and swallowed budesonide from GI in 2026.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:20",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2023-08-29T10:20",
+              "author": "front desk",
+              "body": "Caller is starting a grad program this fall and moved to the area last month. Wants an internist here instead of driving back to his old doctor. Uses student health PPO, card info entered. Has asthma, allergies and eczema, takes an inhaler and a daily allergy pill. Booked new patient visit 9/12 at 8:40. Sent portal invite and the records release form to sign."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "history",
+              "onset": "2008-04-01",
+              "note": "spring-predominant; tree, grass, ragweed; also dust mites"
+            },
+            {
+              "label": "Mild persistent asthma",
+              "action": "history",
+              "onset": "2007-06-01"
+            },
+            {
+              "label": "Atopic dermatitis",
+              "action": "history",
+              "onset": "2002-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath",
+              "dose": {
+                "value": 180,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Mild persistent asthma"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Allergic rhinitis"
+            },
+            {
+              "drug": "triamcinolone acetonide 1 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected skin twice daily as needed for eczema flares",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Atopic dermatitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Seasonal pollens (tree, grass, ragweed)",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Dust mites",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              71
+            ],
+            "hr": 62,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 74.0,
+            "height_cm": 180.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-09-12T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-12T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-12T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T08:40",
+              "author": "PCP",
+              "body": "22 y/o man here to set up primary care. Just started a graduate program and is renting nearby. Prior care was with a family practice back home; release signed today.\n\nHISTORY\nAsthma since early grade school. Calls it mild but it is more than occasional: uses albuterol a few times most weeks, more in spring and with colds. No ED visits or oral steroids he can recall. Never on a daily inhaler that he remembers.\nAllergic rhinitis, spring worst. Tree, grass and ragweed pollen plus dust mites. Cetirizine every day, sneezing and itchy eyes controlled.\nEczema since infancy. Mostly the elbow creases. Triamcinolone 0.1% cream when it flares, works.\nNo surgeries. No hospital stays.\n\nMEDS: albuterol HFA 90 mcg 2 puffs prn; cetirizine 10 mg daily; triamcinolone 0.1% cream bid prn flares.\nALLERGIES: pollens (tree/grass/ragweed), dust mites - environmental. No drug reactions reported.\nFAMILY: Mom has seasonal allergies and eczema. Dad has asthma. One sister with atopic dermatitis. Everyone allergic, he says.\nSOCIAL: Graduate student. Has never smoked. No alcohol, no drugs. Lives with one roommate. Bikes to campus.\n\nROS: no current wheeze. No chest pain, palpitations, GI or urinary complaints. Mood good, PHQ-2 0.\n\nEXAM\nVitals as charted. Well appearing.\nHEENT: nasal turbinates mildly pale, no polyps. TMs clear. Oropharynx clear.\nNeck: no nodes, thyroid normal.\nLungs: good air movement, no wheeze, no prolonged expiration.\nCV: RRR, no murmur.\nAbd: soft, nontender.\nSkin: antecubital fossae dry, no active patches.\n\nASSESSMENT / PLAN\n1. Mild persistent asthma - stable by his report. Albuterol refilled as he runs low. Asthma action plan handout reviewed.\n2. Allergic rhinitis, seasonal + dust mite - continue cetirizine.\n3. Atopic dermatitis - quiet. Continue triamcinolone for flares.\n4. Prevention - HIV and hep C screening today. Tdap given (last booster date unknown). Records will show childhood shots.\nRTC for a physical next year, earlier if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.2,
+            "height_cm": 180.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "date": "2023-09-14T16:05",
+              "author": "PCP",
+              "body": "Hi Wyatt, your HIV and hepatitis C screening tests were both negative. Nothing else needed there. Welcome to the practice."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "outside_records",
+          "start": "2023-09-27T11:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior family practice",
+              "date": "2023-09-27T11:40",
+              "author": "family medicine",
+              "body": "RECORDS RELEASE - prior family medicine office, pages 1-14 of 14\nPatient: Wyatt Galvin   DOB 12/22/2000\n\nProblem summary carried from that office: asthma, mild persistent, since childhood; seasonal allergic rhinitis (tree, grass and ragweed pollen; dust mite); atopic dermatitis since infancy.\nMedications at last visit: albuterol HFA prn; cetirizine 10 mg daily; triamcinolone 0.1% cream prn.\nAllergies: environmental only as above.\nImmunizations: childhood series complete per state registry printout; HPV series completed in adolescence; MenACWY completed; influenza most years.\nLast well visit summary: normal growth, normal exam, no concerns raised.\n\nScanned and indexed by HIM. Reviewed - nothing new. PCP"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2023-10-10T15:30",
+              "author": "RN",
+              "body": "Here for flu and covid. Afebrile, feels well. Screening questions negative, no egg or vaccine reactions. Flu 0.5 mL IM left deltoid, 2023-24 COVID mRNA 0.3 mL IM right deltoid. VIS given. Waited 15 min, no reaction, left for class."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T21:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler refill",
+              "date": "2024-03-26T21:12",
+              "author": "patient",
+              "body": "Hi, the trees are starting and my inhaler is almost empty. Could you send a refill to the pharmacy on file? Thanks, Wyatt"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Inhaler refill",
+              "date": "2024-03-27T09:02",
+              "author": "RN",
+              "body": "Albuterol sent with one refill. If you find yourself needing it more than a couple of times a week this spring, let us know and we can get you in."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 65,
+            "temp_c": 37.2,
+            "spo2": 97,
+            "weight_kg": 73.6
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 84
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-17T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T08:20",
+              "author": "PCP",
+              "body": "Annual exam. Second year of his program, teaching a section this fall.\n\nAsthma: spring was the usual, albuterol a few times a week in April and May, quiet since. No night waking now. No urgent visits.\nRhinitis: cetirizine daily, fine.\nEczema: one small flare at the elbows last winter, triamcinolone cleared it.\nNo new symptoms. Sleeping ok. PHQ-9 2.\nMeds unchanged. Allergies: pollens, dust mites.\nNever smoker, no alcohol.\n\nExam: vitals as charted, weight steady. Nose mildly boggy. Lungs clear, no wheeze. Heart RRR without murmur. Abdomen soft. Skin: elbow creases dry, no active patches. No lymphadenopathy.\n\nPlan\n- Asthma mild persistent, symptoms seasonal; albuterol as needed, refills on file.\n- Rhinitis and eczema stable, same regimen.\n- One-time lipid panel today.\n- Flu and covid at a nurse visit in October.\nNext physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Cholesterol result",
+              "date": "2024-09-19T12:30",
+              "author": "PCP",
+              "body": "Your cholesterol numbers are all in a good range. No need to repeat for several years."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T16:14"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T16:14"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T16:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-08T16:10",
+              "author": "MA",
+              "body": "Flu (2024-25 trivalent) L deltoid and 2024-25 covid R deltoid, both IM. No prior reactions. Tolerated well, observed 15 min. Next due fall 2025."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eczema cream",
+              "date": "2025-01-21T19:48",
+              "author": "patient",
+              "body": "My elbows are flaring again with the cold. I'm out of the triamcinolone. Can I get more? Using drugstore lotion in the meantime."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eczema cream",
+              "date": "2025-01-22T08:15",
+              "author": "PCP",
+              "body": "Refilled, 80 g tube. Twice a day on the patches for up to two weeks, then stop and keep moisturizing. If it keeps coming back in the same spots, come in."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "office_visit",
+          "start": "2025-04-07T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "recurring eczema",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 59,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 74.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-07T13:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-07T13:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-07T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-07T13:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "recurrent atopic dermatitis flares"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - eczema",
+              "date": "2025-04-07T13:20",
+              "author": "PCP",
+              "body": "S: Eczema has been bad all winter. Itchy patches keep coming back in the same places, both elbow creases mostly. Worse in the cold months and after long hot showers, which he admits he takes. Triamcinolone helps while he's on it, plus drugstore creams and lotions, but it comes right back once he stops. No oozing, no fevers. Breathing fine, albuterol only a couple times in March.\n\nO: Vitals as charted. Afebrile.\nSkin: erythematous, scratched patches in both antecubital fossae. No pustules, crusting or vesicles. Rest of skin unremarkable.\nLungs clear.\n\nA/P: Atopic dermatitis, flaring repeatedly this winter despite intermittent mid-potency steroid.\n- Dermatology referral for a second opinion on maintenance.\n- Continue triamcinolone bid to active areas, then stop.\n- He has not had bloodwork in a while and asked for a check before the derm visit: CBC and CMP today.\n- Shorter, cooler showers; plain thick moisturizer after."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "portal_message",
+          "start": "2025-04-08T17:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count and chemistry",
+              "date": "2025-04-08T17:40",
+              "author": "PCP",
+              "body": "Blood count, kidney and liver tests and electrolytes are all normal. I'll forward these to dermatology with the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "specialist_visit",
+          "start": "2025-04-28T10:00",
+          "service": "Dermatology",
+          "reason": "chronic itchy rash",
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2025-04-28T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2025-05-05T09:30",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY GROUP - CONSULTATION LETTER\nDate of visit: 04/28/2025\nRe: Wyatt Galvin, DOB 12/22/2000\nReferred by the primary care physician for recurring eczema.\n\nThank you for sending this 24-year-old graduate student. He describes a long-standing pruritic eruption that is clearly worse through the winter and after hot showers. Over-the-counter creams give him some relief, and he uses triamcinolone 0.1% for flares, but the rash keeps returning to the same sites. He has not traveled recently, started anything new, or been around anyone ill.\n\nHistory: seasonal allergic rhinitis, mild persistent asthma, atopic dermatitis since infancy. No surgeries.\nMedications: albuterol HFA as needed; cetirizine 10 mg daily; triamcinolone 0.1% cream twice daily as needed.\nAllergies: tree, grass and ragweed pollen; dust mites.\nFamily history: mother with seasonal allergies and eczema; father with asthma; sister with atopic dermatitis.\n\nExamination: Several erythematous patches with overlying excoriation in the flexural folds of both elbows. No pustules, vesicles or drainage. The rest of the skin examination is normal, as is the general examination. Clinical photographs were taken for our record.\n\nData: CBC and metabolic panel from your office earlier this month, unremarkable.\n\nImpression: Atopic dermatitis, flexural, in flare.\n\nRecommendations:\n1. Continue triamcinolone 0.1% cream twice daily to active patches during flares.\n2. Fragrance-free emollient liberally after short, lukewarm showers.\nHappy to see him again if flares do not settle.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical; trouble swallowing",
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "1 capsule by mouth daily (over the counter, self-started)",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "presumed heartburn"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              62
+            ],
+            "hr": 65,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 74.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-16T08:00"
+            },
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-16T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "solid-food dysphagia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T08:00",
+              "author": "PCP",
+              "body": "Physical, plus one new issue.\n\nNEW: Since around April, solid food sometimes hangs up behind the breastbone. Meat and bread mostly. Happens maybe once or twice a week, he drinks water and it goes down. Thought it was heartburn, tried Tums-type antacids and then OTC omeprazole 20 mg daily for a few weeks this summer. No change, so he stopped it. Liquids fine. Has not lost weight. No vomiting. Bowels normal. No pain with swallowing.\n\nChronic: Asthma quiet over the summer, albuterol rarely. Cetirizine daily. Eczema settled after the dermatology visit, moisturizing more.\nPHQ-9 3.\nMeds: albuterol prn, cetirizine 10 daily, triamcinolone cream prn. Not taking omeprazole.\nNever smoker, no alcohol.\n\nEXAM: vitals as charted, weight unchanged from last year. Oropharynx clear. Neck supple, no masses. Lungs clear. Heart regular, no murmur. Abdomen soft and nontender, no masses. Skin: elbows clear today.\n\nA/P\n1. Intermittent dysphagia to solids, about five months, not helped by acid suppression. Young atopic man - want an endoscopy. GI referral placed. Advised small bites, chew well, liquids with meals.\n2. Asthma, rhinitis, eczema - stable, no changes.\n3. Flu/covid at a nurse visit next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "temp_c": 37.0
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:54"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:54"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T15:56"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2025-10-07T15:50",
+              "author": "RN",
+              "body": "2025-26 flu, trivalent, IM left arm; 2025-26 covid mRNA IM right arm. Feeling well, no fever. Observed, no issues. He mentioned the GI appointment is set for later this month."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "specialist_visit",
+          "start": "2025-10-27T09:30",
+          "service": "Gastroenterology",
+          "reason": "dysphagia to solids",
+          "conditions": [
+            {
+              "label": "Eosinophilic esophagitis",
+              "action": "diagnosed",
+              "onset": "2025-04-01"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-27T11:10",
+              "text": "Specimens: (A) proximal esophagus, biopsies; (B) distal esophagus, biopsies; (C) stomach, biopsies; (D) duodenum, biopsies.\nA, B: Squamous mucosa with intraepithelial eosinophils exceeding 15 per high-power field. No viral cytopathic change. PAS stain negative for fungal organisms.\nC: Gastric mucosa without significant abnormality.\nD: Duodenal mucosa with normal villous architecture.",
+              "conclusion": "Esophagus, proximal and distal: eosinophil-predominant esophagitis, more than 15 eosinophils per high-power field, consistent with eosinophilic esophagitis in the appropriate clinical setting. Stomach and duodenum: no abnormality.",
+              "issued": "2025-10-30T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2025-10-27T11:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2025-10-27T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation and endoscopy",
+              "date": "2025-11-04T10:20",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP\nConsultation and procedure, 10/27/2025\nPatient: Wyatt Galvin, 24 y/o M\nReason: solid-food dysphagia, referred by PCP\n\nHPI: Six months of on-and-off trouble getting solids down, with a feeling that food lodges in the chest. He self-treated with antacids and then a PPI on the assumption it was heartburn; neither changed anything. Denies weight loss, vomiting or change in bowel habit.\nBackground: allergic rhinitis, mild persistent asthma, atopic dermatitis seen by dermatology this spring. No surgeries.\nMeds: albuterol as needed; cetirizine 10 mg daily; triamcinolone 0.1% cream as needed.\nAllergies: pollens (tree, grass, ragweed), dust mites.\nFamily: mother with atopic dermatitis.\nSocial: never smoker, no alcohol, graduate student.\nExam: unremarkable.\n\nPROCEDURE: EGD with biopsies, same day. Moderate sedation. Scope passed to the second part of the duodenum. Esophageal mucosa without stated abnormality on inspection; stomach and duodenum normal. Biopsies from proximal and distal esophagus, stomach and duodenum.\n\nPATHOLOGY (resulted 10/30): esophageal squamous epithelium with more than 15 eosinophils per HPF, no viral inclusions or fungal organisms; gastric and duodenal biopsies normal.\n\nIMPRESSION: Eosinophilic esophagitis.\nWe will see him back in clinic.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "portal_message",
+          "start": "2025-11-06T20:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about my scope results",
+              "date": "2025-11-06T20:31",
+              "author": "patient",
+              "body": "GI says I have eosinophilic esophagitis. Is that connected to my allergies and eczema? Is it something serious?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about my scope results",
+              "date": "2025-11-07T07:50",
+              "author": "PCP",
+              "body": "Good question. Yes, it belongs to the same allergic family as your asthma, hay fever and eczema - allergy-type white cells collect in the lining of the esophagus and make it stiff and irritable, which is why food hangs up. It is not cancer and it is very manageable. GI will go over options with you at the follow-up. Until then keep the small bites and plenty of liquid with meals."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "telephone",
+          "start": "2026-01-19T08:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2026-01-19T08:45",
+              "author": "front desk",
+              "body": "Pt cancelled 1/20 follow-up, start of semester and he's TA-ing. Says he'll reschedule after things calm down. Left open."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "pharmacy",
+          "start": "2026-03-24T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Albuterol refill",
+              "date": "2026-03-24T09:10",
+              "author": "MA",
+              "body": "Pharmacy e-request for albuterol HFA. Last fill October. Approved per protocol, 1 inhaler + 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "ed_visit",
+          "start": "2026-04-22T18:40",
+          "end": "2026-04-22T23:05",
+          "service": "Emergency Medicine",
+          "reason": "vomiting after meals, worsening dysphagia",
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-22T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-04-22T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-04-24T13:15",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL ED - PHYSICIAN RECORD (received by fax)\nArrival 04/22/2026 18:40   Disposition: home 23:05\n\nCC: vomiting after eating, food getting stuck\n\nHPI: 25 yo M, allergic rhinitis, mild persistent asthma, atopic dermatitis, eosinophilic esophagitis diagnosed by GI in the fall. Intermittent trouble swallowing solids for about a year, getting worse over the last six months, with food that feels stuck in the chest. Occasional epigastric discomfort. Two times in the past month he has vomited after a meal; came in tonight after the second. Not currently impacted, tolerating sips of water here.\n\nPMH as above. No surgeries.\nMeds: albuterol prn, cetirizine 10 mg daily, triamcinolone 0.1% cream prn.\nAllergies: seasonal pollens, dust mites.\nFHx: non-contributory.\nSHx: no tobacco, alcohol or drugs.\n\nExam: well appearing, no distress. Oropharynx clear, handling secretions. Neck supple, no crepitus. Lungs clear. Heart regular. Abdomen soft, nontender. No pallor. Weight stable by his account.\n\nLabs: CBC within normal range, no anemia.\n\nMDM: Progressive dysphagia with post-prandial vomiting in a patient with known EoE. No impaction, no signs of perforation, stable. Needs endoscopic reassessment.\n\nDispo: discharged. Soft diet, cut food small, sit upright. Call GI tomorrow for an urgent appointment - message left for the on-call GI group. Return for food stuck and unable to swallow saliva, chest pain, or blood in vomit.\n\nEmergency Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "rr"
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "office_visit",
+          "start": "2026-04-29T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 73.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "date": "2026-04-29T11:00",
+              "author": "PCP",
+              "body": "Seen after his ED visit last Wednesday, record reviewed. Swallowing still the same - solids catch most days now, mostly chicken and rice. Has not vomited since the ED. Eating soft food and taking his time. Epigastric discomfort off and on, mild. No food stuck that would not pass.\nGI called him after the ED and he has a repeat endoscopy next Wednesday.\nAsthma and allergies fine. Tree pollen starting, cetirizine helping.\n\nExam: vitals as charted, weight same as fall. Comfortable. Lungs clear. Abdomen soft, nontender, no masses.\n\nA/P\nEosinophilic esophagitis, worsening, with recent post-meal vomiting. Repeat EGD 5/6 with GI; treatment to follow from them. Soft diet in the meantime. Return or ED if food impacts.\nAsthma, rhinitis, eczema stable.\nFollow up in about two months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "specialist_visit",
+          "start": "2026-05-06T08:30",
+          "service": "Gastroenterology",
+          "reason": "repeat endoscopy, eosinophilic esophagitis",
+          "medications": [
+            {
+              "drug_text": "budesonide 0.2 MG/ML Oral Suspension",
+              "action": "historical",
+              "sig": "Swallow 10 mL (2 mg) twice daily; nothing to eat or drink for 30 minutes afterward",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Eosinophilic esophagitis"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-05-06T08:45",
+              "text": "Specimens: (A) proximal esophagus, biopsies; (B) distal esophagus, biopsies.\nA, B: Squamous mucosa with dense intraepithelial eosinophilic infiltrate, more than 20 eosinophils per high-power field. No viral cytopathic effect; no fungal organisms identified.",
+              "conclusion": "Esophageal mucosa: active eosinophilic esophagitis, more than 20 eosinophils per high-power field.",
+              "issued": "2026-05-08T15:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2026-05-06T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Gastroenterology endoscopy and follow-up letter",
+              "date": "2026-05-13T09:05",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP\nProcedure date 05/06/2026\nPatient: Wyatt Galvin\nIndication: eosinophilic esophagitis with progressive solid dysphagia and two episodes of post-meal vomiting, ED visit 04/22.\nAllergies: pollens (tree, grass, ragweed), dust mites.\n\nEGD: Moderate sedation. Multiple concentric rings and linear furrows along the length of the esophagus. Scope passed without resistance. Stomach and duodenum normal. Biopsies from proximal and distal esophagus.\n\nPathology 05/08: more than 20 eosinophils per HPF in esophageal mucosa.\n\nAssessment: Eosinophilic esophagitis, active, with rings and furrows on endoscopy.\n\nPlan:\n- Started budesonide oral suspension 2 mg (10 mL) swallowed twice daily. Nothing by mouth for 30 minutes after each dose.\n- Repeat endoscopy with biopsies after the course to assess response.\n- Clinic visit in about 10 weeks.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI letter received",
+              "date": "2026-05-14T12:10",
+              "author": "PCP",
+              "body": "Got the GI letter and biopsy results. I've added the budesonide to your medication list here. Swallow it, don't rinse, and hold food and drink for half an hour after. Let me know how swallowing is going over the next few weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI letter received",
+              "date": "2026-05-14T18:44",
+              "author": "patient",
+              "body": "Thanks. Pharmacy had it ready after the GI office sorted the insurance. Started Monday."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "office_visit",
+          "start": "2026-07-07T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, esophagitis and asthma",
+          "vitals": {
+            "bp": [
+              122,
+              71
+            ],
+            "hr": 69,
+            "spo2": 96,
+            "weight_kg": 74.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-07T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2026-07-07T09:20",
+              "author": "PCP",
+              "body": "Two-month follow-up.\n\nEsophagus: about eight weeks into budesonide. Food catches much less - maybe once a week, and passes easily. No vomiting at all since May. Taking it twice a day, waits the half hour. No mouth soreness or white patches.\nAsthma: spring went ok, albuterol a few times a week in May, now rarely. No night symptoms.\nAllergies: cetirizine daily, fine.\nSkin: elbows quiet this summer.\n\nMeds reviewed: budesonide oral suspension 2 mg bid; albuterol HFA prn; cetirizine 10 mg daily; triamcinolone 0.1% cream prn.\n\nExam: vitals as charted, weight stable. Mouth and throat without thrush. Lungs clear, no wheeze. Heart regular. Abdomen soft, nontender.\n\nA/P\n1. Eosinophilic esophagitis - responding on swallowed budesonide. GI follow-up later this month, repeat scope after the course.\n2. Mild persistent asthma - unchanged, albuterol as needed.\n3. Allergic rhinitis, atopic dermatitis - stable.\nSee him in September, after the repeat scope. Flu and covid due this fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "specialist_visit",
+          "start": "2026-07-22T14:00",
+          "service": "Gastroenterology",
+          "reason": "eosinophilic esophagitis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2026-07-29T10:40",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP - CLINIC FOLLOW-UP\nVisit 07/22/2026\nRe: Wyatt Galvin\nAllergies: pollens (tree, grass, ragweed), dust mites.\n\nInterval: on budesonide oral suspension 2 mg twice daily since mid-May. Reports far fewer episodes of food sticking and no vomiting. Tolerating the medication.\nExam: comfortable; oropharynx clear; abdomen benign.\n\nAssessment: Eosinophilic esophagitis, clinically improved on topical steroid.\nPlan: Continue budesonide 2 mg twice daily until repeat EGD with biopsies, scheduled for September 2026. Further plan per histology.\n\nGastroenterology\n\n[Received 7/29, scanned. Filed - PCP]"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T15:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2026-08-11T15:22",
+              "author": "patient",
+              "body": "Just confirming I'm on for 9/22. My scope is the week before so the results should be in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2026-08-12T09:05",
+              "author": "front desk",
+              "body": "Yes, you're set for Tuesday 9/22 at 9:40. We'll ask GI to send the report over."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after repeat endoscopy",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "budesonide 0.2 MG/ML Oral Suspension": {
+        "code": "2675280",
+        "display": "budesonide 0.2 MG/ML Oral Suspension",
+        "ingredient": "budesonide",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

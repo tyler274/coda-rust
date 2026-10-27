@@ -148,3 +148,8 @@ spine surgery consult and no repeat MRI.
   no-show (2024-06-11 nurse visit) and one cancelled visit (2025-06-24).
 - A primary-care visit booked 2026-09-24 (follow-up after the cefazolin course).
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002287 on 2026-08-13. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

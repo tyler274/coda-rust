@@ -34,3 +34,8 @@
 - 2026-04-21 portal: pollen season again, cetirizine. [S, P]
 - 2026-08-18 portal: college health form before fall; physical booked. [P]
 - 2026-09-10 annual physical booked. [P]
+
+
+## Last seen
+
+The practice last saw MRN00002578 on 2026-02-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

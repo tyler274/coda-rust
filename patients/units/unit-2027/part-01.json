@@ -1,0 +1,807 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002027",
+   "given": "David",
+   "family": "Donovan",
+   "birth_date": "1964-02-19",
+   "address_line": "41 Ridgewood Terrace",
+   "phone": "+1-201-555-0109",
+   "email": "david.donovan@example.test",
+   "marital_status": "married",
+   "summary": "Project manager with long-standing hypertension and stage 3b CKD who joins in 2021; LVH found in 2022, metastatic ileal carcinoid with carcinoid syndrome in 2023, an incisional hernia in 2024, ALS in 2024, and hyperkalemia under nephrology in 2026. Outside records arrive unevenly.",
+   "events": [
+    {
+     "id": "2021-09-08a",
+     "kind": "telephone",
+     "start": "2021-09-08T10:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2021-09-08T10:12",
+       "body": "Caller wants to become a patient. 57 y/o man, project manager, says his old doctor retired and the new group is hard to reach. Has blood pressure and a kidney issue he says is being \"watched.\" Explained membership, he signed up over the phone. New patient slot booked next Tuesday 9:00. Asked him to bring pill bottles and the name of the old office so we can request records."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "establish_care",
+     "start": "2021-09-14T09:00",
+     "end": "2021-09-14T09:55",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care; hypertension; kidney disease",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2009-06-01",
+       "note": "Long-standing, variable control per patient"
+      },
+      {
+       "label": "Chronic kidney disease, stage 3b",
+       "action": "history",
+       "onset": "2019-04-01",
+       "note": "Attributed to hypertensive nephrosclerosis by prior practice"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "history",
+       "onset": "2014-01-01",
+       "note": "20 pack-years, quit 2014"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       146,
+       92
+      ],
+      "weight_kg": 86.0,
+      "height_cm": 180.0,
+      "labs": {
+       "Creatinine": 1.74,
+       "Potassium": 4.5
+      }
+     },
+     "vitals": {
+      "bp": [
+       146,
+       92
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-14T09:50",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.74
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-14T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-14T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-14T09:50",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 72
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 1.8
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 1
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Project manager"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-09-14T09:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "20 pack-year former smoker, quit 2014"
+      }
+     ],
+     "documents": [
+      {
+       "type": "History and Physical Note",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-09-14T10:40",
+       "body": "NEW PATIENT\n\nDavid is 57, here to establish. His previous internist retired and he did not take to the group that absorbed the panel. Works as a project manager, hybrid, desk-heavy.\n\nHypertension: told he had high pressure in his mid-40s. Has been on lisinopril 10 and amlodipine 5 for several years. Home cuff readings he describes as \"all over the place,\" some 130s, some 150s. Admits he misses a dose here and there when traveling for work. No headaches, chest pain, palpitations or leg swelling.\n\nKidneys: in 2019 the old office told him his kidney function was reduced and put it down to blood pressure. Says he had an ultrasound then that was fine. No nephrologist. Avoids ibuprofen since then, uses acetaminophen for the odd backache.\n\nPMH: hypertension; CKD stage 3 (hypertensive per prior office).\nPSH: none.\nMeds: lisinopril 10 mg daily, amlodipine 5 mg daily.\nAllergies: none known.\nFH: father had high blood pressure and a heart attack at 67. Mother type 2 diabetes, stroke at 72. One brother with high blood pressure. Nobody with dementia, motor neuron disease or bowel tumors that he knows of.\nSH: married, lives with his wife. Smoked about a pack a day for 20 years, stopped in 2014. Rare drink, one or two a month. No drugs.\nScreening: colonoscopy 2019 at the old office, told normal.\n\nROS: negative except as above.\n\nExam: BP 146/92 (repeat similar), see vitals. Well appearing, overweight. Neck supple, no thyroid enlargement, no bruits. Heart regular, S1 S2 normal, no murmur. Lungs clear. Abdomen soft, nontender, no masses, no bruit. No edema. Pulses 2+ throughout. Neuro grossly intact.\n\nA/P\n1. Essential hypertension, above goal today. He is honest about missed doses. Same regimen for now, home log twice daily for two weeks and send it in. Low-salt diet reviewed.\n2. CKD 3 by history. CMP, urine albumin/creatinine today. Keep avoiding NSAIDs. Records from prior office requested.\n3. Former smoker, 20 pack-years, quit 7 years ago. Qualifies for lung screening; discussed what it can and can't find and the chance of a false alarm. He wants it. Low-dose CT ordered.\n4. Health maintenance: CBC, lipids, TSH, hep C and HIV screens with today's blood. Flu shot and pneumococcal vaccine at a nurse visit next month when the flu shot arrives.\n\nFollow up 3 months."
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2021-09-14T11:05",
+       "body": "Signed release on file. Request faxed to prior internal medicine office for notes, labs and imaging 2016 to present."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-17a",
+     "kind": "portal_message",
+     "start": "2021-09-17T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-09-17T16:20",
+       "body": "Hi David, your labs are back. Kidney function is reduced, creatinine 1.74, which puts the filtration rate in the mid 40s. That fits what your old office described, and now we have our own starting point to follow. There is a small amount of protein (albumin) in the urine, 72, which is common with blood-pressure-related kidney disease and one more reason to get the pressure down. Potassium, blood count, cholesterol, thyroid all fine. Hep C and HIV screens negative. Keep the home log going. Talk soon."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "outside_records",
+     "start": "2021-10-05T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Prior practice records received",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior internal medicine records (summary)",
+       "author": "PCP",
+       "date": "2021-10-05T13:30",
+       "body": "Outside records received from prior internist, 38 pages, scanned to media.\n\nReviewed:\n- Hypertension on problem list since 2009. Lisinopril and amlodipine in place since at least 2016.\n- Creatinine rose into the 1.6 to 1.7 range in 2019; CKD stage 3 entered, felt to be hypertensive nephrosclerosis. No nephrology referral.\n- Renal ultrasound 2019: both kidneys normal in size, no hydronephrosis, no stones or masses.\n- Screening colonoscopy 2019: normal to the cecum, no polyps, repeat at 10 years.\n- Tobacco history consistent with what he gave us.\nNothing that changes the plan."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "nurse_visit",
+     "start": "2021-10-19T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T08:40"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-10-19T08:42"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit: vaccines",
+       "author": "RN",
+       "date": "2021-10-19T08:55",
+       "body": "In for flu and pneumococcal per PCP plan (CKD). Screening questions negative. Flu IM left deltoid, PCV20 IM right deltoid. Tolerated. Dropped off a two-week home BP log; averages 142/88 mornings, 138/86 evenings. Placed in chart for PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "imaging",
+     "start": "2021-11-16T14:00",
+     "service": "Radiology",
+     "reason": "Lung cancer screening",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2021-11-16T14:00",
+       "text": "Baseline low-dose CT of the chest without contrast. Lungs: no pulmonary nodules. No consolidation or effusion. Airways patent. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "done",
+       "date": "2021-11-16T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lung screening result",
+       "author": "PCP",
+       "date": "2021-11-18T09:10",
+       "body": "David, the screening CT of your lungs was clear, no nodules. We repeat it once a year. Also saw your BP log, mostly high 130s to low 140s. Better than in the office. We'll look again at your visit in December."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "office_visit",
+     "start": "2021-12-14T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hypertension follow-up",
+     "appointment": "cancelled"
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "office_visit",
+     "start": "2022-02-08T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after appendectomy; blood pressure",
+     "state": {
+      "bp": [
+       152,
+       94
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-02-08T11:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Bicarbonate"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-08T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Office Visit",
+       "author": "PCP",
+       "date": "2022-02-08T11:30",
+       "body": "S: Rescheduled from December. Since we last saw him he had his appendix out. Started with belly pain on a Sunday in early January, went to the regional hospital ED the next day, operated on that day through an incision in the right lower abdomen (he says open, not the camera). Home after three nights. Pain is gone, back at work from home. Did not get any paperwork to us. No fever, eating normally, bowels normal.\nBP at home 140s.\n\nO: BP 152/94. Incision right lower quadrant well healed, no redness, no bulge, nontender. Heart and lungs normal. No edema.\n\nA/P:\n1. Status post open appendectomy, January. Healing well. Will request the hospital records.\n2. Hypertension, still above goal. Pain and missed doses around the surgery likely contribute. He'd rather not add a pill right now. Recheck in a few months with the home log.\n3. CKD 3b: BMP today."
+      },
+      {
+       "type": "Administrative Note",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2022-02-08T12:00",
+       "body": "Request faxed to regional hospital medical records for January admission (appendectomy): discharge summary, op note, path."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-11a",
+     "kind": "pharmacy",
+     "start": "2022-03-11T12:00",
+     "service": "Pharmacy",
+     "reason": "Vaccine given at pharmacy",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-03-11T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Outside vaccine entered",
+       "author": "MA",
+       "date": "2022-03-14T09:20",
+       "body": "State registry shows Shingrix dose 1 at a retail pharmacy 3/11/22. Entered. Dose 2 due in 2 to 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-20a",
+     "kind": "outside_records",
+     "start": "2022-04-20T14:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital records received",
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Regional hospital discharge summary (received)",
+       "author": "general surgery",
+       "date": "2022-04-20T14:10",
+       "body": "DISCHARGE SUMMARY\nAdmitted 01/10/2022, discharged 01/13/2022.\nService: General Surgery\n\nAdmission diagnosis: acute appendicitis.\nProcedure 01/10/2022: open appendectomy via right lower quadrant incision.\n\nCourse: 57-year-old man presented with one day of periumbilical pain migrating to the right lower quadrant. Taken to the operating room the day of admission. Uncomplicated postoperative course. Tolerating a regular diet, ambulating, pain controlled on oral agents at discharge. Home blood pressure medicines resumed. Creatinine at his reported baseline.\n\nAllergies: NKDA.\nDischarge medications: lisinopril 10 mg daily, amlodipine 5 mg daily, acetaminophen as needed.\nFollow-up: surgery clinic 2 weeks, primary care.\n\n[Received by fax after records request.]"
+      }
+     ]
+    },
+    {
+     "id": "2022-05-20a",
+     "kind": "pharmacy",
+     "start": "2022-05-20T12:00",
+     "service": "Pharmacy",
+     "reason": "Vaccine given at pharmacy",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-05-20T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Outside vaccine entered",
+       "author": "MA",
+       "date": "2022-05-23T08:45",
+       "body": "Shingrix #2 given at pharmacy 5/20/22 per registry. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "office_visit",
+     "start": "2022-06-14T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hypertension and kidney follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-06-14T08:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-06-14T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Office Visit",
+       "author": "PCP",
+       "date": "2022-06-14T09:05",
+       "body": "Routine BP/CKD check. Feels fine. Says he has been better about the evening dose since putting the pills by the coffee maker. Home readings 138-148/84-92.\n\nBP today as charted, above goal. Heart RRR, lungs clear, no edema. Appendectomy scar flat.\n\nHTN: still running above where I want him with his kidneys. Talked about raising lisinopril; he wants another stretch of steady adherence first. OK, recheck at physical in September.\nCKD 3b: BMP drawn.\nShingrix done."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-09a",
+     "kind": "pharmacy",
+     "start": "2022-08-09T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2022-08-09T09:40",
+       "body": "Pharmacy fax: the old prescriber's lisinopril and amlodipine scripts are out of refills. Pended 90-day supplies with 3 refills under our PCP, same doses. Approved and sent."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "annual_physical",
+     "start": "2022-09-20T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-20T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-20T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-20T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-20T09:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 81
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-09-20T09:45"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-09-20T09:47"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2022-09-20T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-20T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-09-20T10:15",
+       "body": "ANNUAL EXAM, age 58\n\nInterval: appendectomy in January, recovered. Working full time. Walks the dog most evenings. No complaints today.\n\nMeds: lisinopril 10, amlodipine 5. NKDA.\n\nROS: no chest pain, no palpitations, no shortness of breath, no change in bowels, no urinary symptoms.\n\nExam: as charted vitals. HEENT normal. Neck no nodes, thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, healed RLQ scar, no hernia felt. No edema. Skin no concerning lesions. Neuro nonfocal.\n\nPlan:\n- HTN: borderline-high again. Same meds, he is keeping a log.\n- CKD 3b: CMP and urine albumin today.\n- Lipids, CBC.\n- Flu and bivalent COVID booster today.\n- Colon screening up to date (2019). Lung screen due again in winter.\n- PHQ-2 negative."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-17a",
+     "kind": "office_visit",
+     "start": "2022-10-17T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shortness of breath with exertion",
+     "state": {
+      "bp": [
+       158,
+       96
+      ]
+     },
+     "vitals": {
+      "bp": [
+       158,
+       96
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c",
+      "rr"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-10-17T14:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "Worsening exertional dyspnea, uncontrolled hypertension"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Office Visit",
+       "author": "PCP",
+       "date": "2022-10-17T14:45",
+       "body": "CC: getting winded.\n\nHPI: Over about two months he notices he gets out of breath on the stairs to his office and on the hill on his dog walk, which never used to bother him. Seems to be getting a bit worse. Settles quickly with rest. No chest pain or pressure, no palpitations, no lightheadedness or fainting. No cough, no fever. Sleeps flat on one pillow. No ankle swelling. Has not checked BP in a couple of weeks.\n\nExam: BP 158/96 left arm seated, repeat 156/94. Sat normal at rest. Comfortable talking. JVP not elevated. Heart regular, S1 S2, no murmur or gallop. Lungs clear throughout. No edema. Calves soft.\n\nA/P: Exertional dyspnea in a man with years of suboptimally controlled hypertension and CKD, family history of early-ish MI in his father. Need to look at the heart. Referring to cardiology for evaluation and echo; they can decide on any stress testing. Go to the ED for chest pain, breathlessness at rest or fainting. Same BP meds until he's seen."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-04a",
+     "kind": "specialist_visit",
+     "start": "2022-11-04T13:00",
+     "service": "Cardiology",
+     "reason": "Worsening shortness of breath on exertion",
+     "conditions": [
+      {
+       "label": "Left ventricular hypertrophy",
+       "icd10": "I51.7",
+       "action": "diagnosed",
+       "onset": "2022-11-04"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       168,
+       96
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2022-11-04T13:45",
+       "text": "Complete 2D, M-mode and Doppler study. Left ventricle: normal chamber size, LV internal diameter in diastole 4.9 cm. Increased wall thickness, interventricular septum 1.4 cm and posterior wall 1.3 cm, concentric. LVEF 60% by biplane method, no regional wall motion abnormality. Mitral inflow and tissue Doppler show an impaired relaxation pattern consistent with reduced LV compliance. Right ventricle normal size and function. Atria normal size. Aortic, mitral, tricuspid and pulmonic valves structurally normal without stenosis or regurgitation. Aortic root normal. No pericardial effusion.",
+       "conclusion": "Left ventricular hypertrophy with reduced compliance (impaired relaxation), normal LV size and systolic function, LVEF 60%. No valvular disease."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-referral",
+       "action": "done",
+       "date": "2022-11-04T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology consultation (received)",
+       "author": "cardiology",
+       "date": "2022-11-14T11:20",
+       "body": "Outside cardiology group\nDate of service: 11/04/2022\n\nThank you for the referral of Mr. Donovan, 58, for exertional breathlessness.\n\nHistory: Over roughly two months, progressive breathlessness climbing stairs and walking uphill, improving with rest. Denies angina, palpitations, presyncope, orthopnea or edema. Long history of hypertension with uneven control. CKD stage 3 per PCP. Former smoker, 20 pack-years, quit 2014. Father with hypertension and MI at 67.\n\nMedications: lisinopril 10 mg daily, amlodipine 5 mg daily. Allergies: NKDA.\n\nExam: BP 168/96. Regular rhythm. PMI palpable and displaced laterally. S1 and S2 normal, no murmur, rub or gallop. Lungs clear. No JVD, no peripheral edema.\n\nData: Recent labs reviewed: electrolytes and blood count normal, creatinine at his known CKD baseline.\nEchocardiogram today: thickened LV walls with reduced compliance, normal cavity size, preserved systolic function (EF 60%), no valve disease.\n\nImpression: Left ventricular hypertrophy from long-standing hypertension, with reduced LV compliance, which I suspect accounts for his exertional symptoms. No evidence of valvular disease or systolic dysfunction.\n\nRecommendations: blood pressure control is the main treatment for the hypertrophy; continue current regimen and follow with primary care. Return to cardiology as needed.\n\nOutside cardiology consultant"
+      }
+     ]
+    },
+    {
+     "id": "2022-11-16a",
+     "kind": "telephone",
+     "start": "2022-11-16T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Review of cardiology results",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call re: echo",
+       "author": "PCP",
+       "date": "2022-11-16T12:30",
+       "body": "Called David after the cardiology letter came in. Explained thickened heart muscle from years of high pressure, pump strength normal, valves fine. He took it seriously. Will keep logging BP. Next visit January."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "imaging",
+     "start": "2022-12-06T15:30",
+     "service": "Radiology",
+     "reason": "Lung cancer screening, annual",
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "Annual lung screening"
+      },
+      {
+       "id": "ldct-2022",
+       "action": "done",
+       "date": "2022-12-06T15:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2022-12-06T15:30",
+       "text": "Annual low-dose CT chest. Comparison 11/16/2021. No pulmonary nodules. No consolidation, effusion or pneumothorax. Central airways clear. Heart size normal, no pericardial effusion. No lymphadenopathy. Upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lung screening result",
+       "author": "PCP",
+       "date": "2022-12-07T08:40",
+       "body": "Annual LDCT negative, Lung-RADS 1. Released to portal with a note. Repeat next December."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

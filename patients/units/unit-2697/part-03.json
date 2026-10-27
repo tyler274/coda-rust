@@ -1,0 +1,332 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002697",
+      "events": [
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "abdominal pain, bloating, weight loss",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "state": {"weight_kg": 75.2},
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-02-13T13:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-13T13:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "gi-referral-2024", "action": "placed", "order": "Gastroenterology referral, urgent", "category": "referral", "to": "Gastroenterology", "reason": "abdominal pain, change in bowel habit, rectal bleeding, weight loss"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-13T13:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Abdominal Symptoms", "author": "PCP", "date": "2024-02-13T14:20", "body": "S: About three months of low abdominal pain that has slowly gotten worse, with bloating and feeling full after a few bites. Bowels have changed - constipated now, which is new for her, and a few times bright red blood on the paper or in the bowl. Down about 10 pounds since the fall without trying. No fever. No vomiting. Reflux quiet. Last gyn onc check in December was clear and estradiol normal.\n\nO: Wt per flowsheet, 10 lb below October. Abdomen soft, not distended, mildly tender throughout the lower abdomen, no guarding. Rectal deferred to GI.\n\nA/P: Lower abdominal pain, early satiety, new constipation, hematochezia and unintended weight loss in a woman five months out from an ovarian granulosa cell tumor. Needs GI evaluation and the pelvis re-imaged. Urgent GI referral (2/27). Messaged her gyn oncologist so they are aware ahead of her next surveillance visit. CMP and CBC today."},
+            {"type": "Result Note", "title": "Lab result", "author": "PCP", "date": "2024-02-14T11:40", "body": "CBC and CMP normal - no anemia, albumin and liver tests fine. Patient told via portal."}
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "specialist_visit",
+          "start": "2024-02-27T10:40",
+          "service": "Gastroenterology",
+          "reason": "abdominal pain, weight loss, hematochezia",
+          "labs": [
+            {"panel": null, "collected": "2024-02-27T11:30", "results": [{"test": "Cancer Antigen 125", "loinc": "10334-1", "unit": "U/mL", "value": 250}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2024-02-27T12:15", "text": "Transvaginal pelvic ultrasound. Left ovary surgically absent. Complex right adnexal mass measuring 6.0 cm with solid and cystic components. Uterus normal in size. No free fluid.", "conclusion": "6 cm complex right adnexal mass."}
+          ],
+          "orders": [
+            {"id": "gi-referral-2024", "action": "done", "date": "2024-02-27T10:40"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2024-03-01T09:30", "body": "GASTROENTEROLOGY - CONSULT NOTE\nDate of visit: 02/27/2024\n\nMs. Merrill, now 58, last saw us in 2022 for reflux with a hiatal hernia, which remains controlled on omeprazole. She returns on her PCP's referral with progressive lower abdominal pain, bloating and early satiety over three months, a 10-pound unintended weight loss, new constipation and occasional hematochezia. No fever, nausea or vomiting. Her ovarian granulosa cell tumor was diagnosed about five months ago (laparoscopic left salpingo-oophorectomy 09/2023, stage IA).\n\nMeds: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, acetaminophen, topical diclofenac. NKDA. Never smoker, no alcohol. No family history of GI or gynecologic cancers.\n\nExam: abdomen soft, not distended, mildly tender diffusely, no rebound or guarding. Pelvic exam reveals a fixed, irregular pelvic mass.\n\nCA-125 today 250 U/mL (reference 0-35). Same-day transvaginal ultrasound: 6 cm complex adnexal mass on the right with solid and cystic areas.\n\nImpression: her symptoms are most likely explained by recurrent pelvic disease.\n\nPlan: I have spoken directly with her gynecologic oncologist, who will see her next week. Further GI workup deferred pending their evaluation. Continue omeprazole.\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "specialist_visit",
+          "start": "2024-03-05T14:00",
+          "service": "Gynecologic Oncology",
+          "reason": "recurrent ovarian tumor",
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology Follow-up", "author": "gynecologic oncology", "date": "2024-03-07T12:10", "body": "GYNECOLOGIC ONCOLOGY\nDate: 03/05/2024\n\nAdult granulosa cell tumor, left ovary, IA, s/p laparoscopic LSO 09/19/2023. Now with three months of pelvic pain, bloating, early satiety, constipation and 10 lb weight loss. GI evaluation 02/27: fixed irregular pelvic mass, CA-125 250, 6 cm complex right adnexal mass on ultrasound.\n\nPSH: laparoscopic left salpingo-oophorectomy with staging, 09/2023. Meds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen, diclofenac gel. NKDA.\n\nExam: abdomen soft, mildly tender in the lower quadrants. Pelvic: firm, fixed right adnexal mass.\n\nImpression: recurrent disease in the right adnexa.\n\nPlan: carboplatin AUC 5 and paclitaxel 175 mg/m2 every 21 days for six cycles at our infusion center, starting 03/14/2024. Chemotherapy teaching completed; antiemetics and premedications per protocol from our pharmacy. Labs before each cycle. Reassess with exam, CA-125 and ultrasound after cycle 6.\n\nGynecologic Oncology"}
+          ]
+        },
+        {
+          "id": "2024-03-21a",
+          "kind": "telephone",
+          "start": "2024-03-21T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Check-in after first chemo", "author": "RN", "date": "2024-03-21T11:30", "body": "Called per PCP to check in one week after cycle 1. Tired for three days, some queasiness controlled with the oncology antiemetics, eating small meals. No fever. Aware to call the oncology triage line for temp 100.4 or higher. Taking her BP meds. Has taken leave from work through the summer. Has rides arranged to infusions. No needs from us right now."}
+          ]
+        },
+        {
+          "id": "2024-04-30a",
+          "kind": "telehealth_visit",
+          "start": "2024-04-30T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-04-30T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit - During Chemotherapy", "author": "PCP", "date": "2024-04-30T16:35", "body": "Video, she is at home. Three cycles of carboplatin/paclitaxel done. Fatigue the week after each, hair thinning, tingling fingertips that oncology is watching. Pelvic pain is less. Bowels better with fiber. Home BP 112-128/68-78; some lightheadedness standing quickly in the days after infusion. Eating less.\n\nA/P: Recurrent granulosa cell tumor on chemo - managed by gyn onc. HTN - running lower with less intake; continue both agents for now but told her she may skip the HCTZ on a day she is lightheaded or not drinking well, and to text me readings under 100 systolic. GERD controlled. Mammogram is due in May; fine to go ahead between cycles."}
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "imaging",
+          "start": "2024-05-21T08:20",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-05-21T08:20", "text": "Bilateral screening tomosynthesis, compared with prior exams through 04/2023. Scattered fibroglandular density. No suspicious findings in either breast.", "conclusion": "BI-RADS 1: Negative."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening Mammogram", "author": "radiology", "date": "2024-05-22T08:00", "body": "Breast center report received. BI-RADS 1, negative."}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "specialist_visit",
+          "start": "2024-08-06T09:00",
+          "service": "Gynecologic Oncology",
+          "reason": "end of treatment assessment",
+          "labs": [
+            {"panel": null, "collected": "2024-08-06T09:30", "results": [{"test": "Cancer Antigen 125", "loinc": "10334-1", "unit": "U/mL", "value": 17}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2024-08-06T10:00", "text": "Transvaginal ultrasound. Uterus normal in size with a thin endometrial stripe. Left ovary surgically absent. Right adnexa without mass; the previously seen complex mass is no longer identified. No free fluid.", "conclusion": "No adnexal mass."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology - End of Treatment", "author": "gynecologic oncology", "date": "2024-08-08T14:00", "body": "GYNECOLOGIC ONCOLOGY\nDate: 08/06/2024\n\nRecurrent adult granulosa cell tumor (right adnexa), s/p six cycles carboplatin/paclitaxel completed 06/27/2024. Tolerated with fatigue and mild fingertip neuropathy, improving. Pelvic pain resolved; bowels back to normal; appetite returning.\n\nExam: abdomen soft, nontender. Pelvic: no palpable adnexal mass.\nCA-125 17 U/mL. Ultrasound today: no adnexal mass.\n\nImpression: complete clinical response.\nPlan: surveillance every 3 months with exam and labs.\n\nGynecologic Oncology"}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {"weight_kg": 77.6},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-17T11:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-17T11:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-17T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-17T11:01"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-17T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Follow-up", "author": "PCP", "date": "2024-09-17T11:30", "body": "First in-person visit since chemo. Gyn onc in August: complete response, CA-125 17, ultrasound clear. Back at the library full time since Labor Day. Energy most of the way back, fingertip tingling nearly gone. Appetite back, has regained some weight. Hasn't needed to skip HCTZ in months.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen PRN, diclofenac gel PRN. NKDA.\n\nBP per flowsheet, back at goal. Heart regular. Lungs clear. Abdomen soft, nontender. No edema. Knees unchanged.\n\nA/P: HTN controlled - continue. Recurrent granulosa cell tumor in remission after chemo - gyn onc surveillance. Counts and BMP today to make sure everything has recovered. Flu and COVID today. PHQ-2 0. Physical in February; Pap due then."},
+            {"type": "Result Note", "title": "Lab result", "author": "PCP", "date": "2024-09-18T13:00", "body": "Blood counts recovered to normal; kidney function and potassium fine."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "specialist_visit",
+          "start": "2024-11-19T11:20",
+          "service": "Gynecologic Oncology",
+          "reason": "surveillance",
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology Surveillance", "author": "gynecologic oncology", "date": "2024-11-21T10:00", "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate: 11/19/2024\n\nRecurrent adult granulosa cell tumor, in complete response after carboplatin/paclitaxel (completed 06/2024). Feels well, no pain, no bleeding, no bowel change.\nExam: abdomen soft, no mass. Pelvic: no palpable mass; uterus normal size.\nPlan: continue surveillance every 3 months.\nAllergies: NKDA.\n\nGynecologic Oncology"}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T09:30",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill request", "author": "MA", "date": "2024-12-10T09:30", "body": "Pharmacy e-request: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, 90 days each. Seen 9/17, BP at goal, BMP normal. Sent with 3 refills."}
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "annual_physical",
+          "start": "2025-02-04T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Postmenopausal bleeding", "action": "diagnosed", "onset": "2025-01-05"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "state": {"weight_kg": 79.5},
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-02-04T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-04T09:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-02-04T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-02-04T09:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2025-02-04T09:05", "issued": "2025-02-10T15:00", "text": "Liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. Endometrial cells present in a woman 45 years of age or older. High-risk HPV: not detected.", "conclusion": "NILM; endometrial cells present; HPV negative."}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-02-04T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-02-04T10:20", "body": "59F, annual. Overall feeling well, working full time. Mentions light spotting off and on for about a month - not much, no pain. Has not had any bleeding since the 2023 surgery until this. Next gyn onc surveillance visit is in March. Reflux quiet. Knees same; gel helps.\n\nMeds: HCTZ 25, amlodipine 5, omeprazole 20, acetaminophen PRN, diclofenac gel PRN. NKDA.\n\nExam: BP per flowsheet, at goal. Heart regular, no murmur. Lungs clear. Breasts without masses or nodes. Abdomen soft, no mass. Pelvic: normal external genitalia, small amount of old blood at the os, cervix appears normal; Pap with HPV collected. Bimanual: uterus not enlarged, no adnexal mass. Knees crepitus. No edema.\n\nPlan:\n1. Spotting after menopause, history of granulosa cell tumor - Pap/HPV done today as screening was due. Will speak to gyn onc and push for an earlier gynecology look and endometrial sampling rather than waiting for March.\n2. HTN at goal - continue, labs.\n3. Health maintenance: mammogram May 2024 normal, next May. Colonoscopy 2028. Vaccines up to date for season."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "portal_message",
+          "start": "2025-02-11T12:30",
+          "orders": [
+            {"id": "gyn-referral-2025", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "postmenopausal spotting, endometrial cells on Pap"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Your Pap result", "author": "PCP", "date": "2025-02-11T12:30", "body": "Bernice, the Pap itself showed no abnormal cervical cells and HPV was negative. It did show endometrial cells - cells from the lining of the uterus - which in someone past menopause, together with the spotting, means the lining needs to be sampled. Gynecology has an opening March 3 and I've sent the referral. Your other labs were all fine."},
+            {"type": "Patient Message", "title": "RE: Your Pap result", "author": "patient", "date": "2025-02-11T18:02", "body": "Thank you. I'll be there on the 3rd. Trying not to read too much into it."}
+          ]
+        },
+        {
+          "id": "2025-03-03a",
+          "kind": "specialist_visit",
+          "start": "2025-03-03T13:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postmenopausal spotting",
+          "state": {"weight_kg": 79.7},
+          "vitals": {"bp": [132, 86]},
+          "orders": [
+            {"id": "gyn-referral-2025", "action": "done", "date": "2025-03-03T13:40"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Consultation", "author": "gynecology", "date": "2025-03-05T08:45", "body": "GYNECOLOGY\nDate of visit: 03/03/2025\n\nReferred for intermittent vaginal spotting for two months, painless, found at her annual exam; Pap 02/04/2025 with endometrial cells present (NILM, HPV negative). She had no bleeding from her 2023 surgery until this. History of adult granulosa cell tumor: laparoscopic left salpingo-oophorectomy 09/2023 (IA), right adnexal recurrence treated with carboplatin/paclitaxel in 2024 with complete response. Also hypertension, obesity, osteoarthritis, hiatal hernia. Never used hormone therapy. No family history of cancer.\n\nMeds: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, acetaminophen, diclofenac gel. NKDA.\n\nExam: BP 132/86. BMI 30. Uterus normal in size, without masses or tenderness. Adnexa not palpable. Cervix normal.\nMost recent mammogram (05/2024) normal.\n\nProcedure: office endometrial biopsy with a pipelle after informed consent; adequate tissue obtained, tolerated well.\n\nPlan: will call with pathology and coordinate with her gynecologic oncologist.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "outside_records",
+          "start": "2025-03-10T15:30",
+          "reason": "endometrial biopsy pathology",
+          "conditions": [
+            {"label": "Malignant neoplasm of endometrium", "action": "diagnosed", "onset": "2025-03-03", "note": "endometrioid adenocarcinoma, FIGO grade 1"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2025-03-03T14:05", "issued": "2025-03-07T16:20", "text": "Endometrium, pipelle biopsy: endometrioid adenocarcinoma, FIGO grade 1, in a background of proliferative-pattern endometrium. Specimen adequate.", "conclusion": "Endometrioid adenocarcinoma, FIGO grade 1."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Endometrial biopsy pathology", "author": "pathology", "date": "2025-03-10T15:30", "body": "Endometrial biopsy report from gynecology filed. Endometrioid adenocarcinoma, FIGO grade 1. Added to problem list. Patient already informed by gynecology, gyn onc appointment 3/20. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "specialist_visit",
+          "start": "2025-03-20T10:30",
+          "service": "Gynecologic Oncology",
+          "reason": "endometrial carcinoma",
+          "medications": [
+            {"drug_text": "megestrol acetate 40 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets (80 mg) by mouth twice daily", "dose": {"value": 80, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "endometrial carcinoma, grade 1"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology Consultation", "author": "gynecologic oncology", "date": "2025-03-21T16:00", "body": "GYNECOLOGIC ONCOLOGY\nDate: 03/20/2025\n\nNew diagnosis: grade 1 endometrioid adenocarcinoma on endometrial biopsy 03/03/2025, in the setting of a known estrogen-producing adult granulosa cell tumor (left ovary 2023, right adnexal recurrence 2024, complete response to chemotherapy). PSH: laparoscopic LSO and staging 09/2023.\n\nExam today: abdomen soft. Pelvic: uterus normal size, mobile; no adnexal mass.\n\nDiscussion: recommended total hysterectomy with removal of the right adnexa as definitive treatment. After a long conversation she does not want another operation at this point and prefers hormonal treatment with close sampling. Grade 1 disease makes a progestin approach reasonable; we went over the chance of persistence and the need to proceed to surgery if it fails.\n\nPlan:\n- Megestrol acetate 80 mg by mouth twice daily.\n- Repeat endometrial sampling in about 6 months.\n- Continue granulosa surveillance every 3 months.\n- Reviewed side effects including fluid retention, appetite increase and clot risk; call with any leg swelling or breathlessness.\nAllergies: NKDA.\n\nGynecologic Oncology"}
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "telephone",
+          "start": "2025-03-24T12:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "PCP call", "author": "PCP", "date": "2025-03-24T12:30", "body": "Spoke with her about the endometrial cancer and the gyn onc plan. She chose megestrol over surgery for now and feels settled with the decision; knows surgery is the backup. Added megestrol to her list. Reviewed: watch BP and weight, leg swelling. She'll send home BP readings in a month. Mammogram due May."}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "imaging",
+          "start": "2025-05-20T09:00",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-05-20T09:00", "text": "Bilateral screening tomosynthesis compared with 05/2024 and earlier. Scattered fibroglandular density. No suspicious mass, calcification or distortion.", "conclusion": "BI-RADS 1: Negative."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening Mammogram", "author": "radiology", "date": "2025-05-21T08:00", "body": "Mammogram report filed, BI-RADS 1."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "state": {"weight_kg": 81.2},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-10T15:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-10T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Hypertension", "author": "PCP", "date": "2025-06-10T15:45", "body": "On megestrol 80 mg BID since late March. Appetite up, weight up about 3 lb. Spotting stopped within a few weeks. No leg swelling, no breathlessness. Home BP readings 120s-130s/70s-80s. Gyn onc surveillance in May unremarkable per her. Reflux ok. Knees ok.\n\nBP per flowsheet. Heart regular, lungs clear, calves soft and nontender, no edema.\n\nA/P: HTN controlled on HCTZ/amlodipine - BMP today. Endometrial cancer on progestin, gyn onc following. Granulosa cell tumor surveillance ongoing. Flu shot in the fall. Follow-up 6 months."}
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "specialist_visit",
+          "start": "2025-08-26T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "bleeding and increasing abdominal girth",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-26T11:40", "results": [{"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2025-08-26T11:40", "results": [
+              {"test": "Cancer Antigen 125", "loinc": "10334-1", "unit": "U/mL", "value": 35},
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 450},
+              {"test": "Follicle Stimulating Hormone", "value": 7.1},
+              {"test": "Luteinizing Hormone", "loinc": "10501-5", "unit": "mIU/mL", "value": 6.9}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-08-26T12:10", "text": "Transvaginal and transabdominal ultrasound. Left ovary surgically absent. Solid right ovarian mass with internal vascular flow. Uterus normal in size. No free fluid.", "conclusion": "Solid vascular right ovarian mass."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Follow-up", "author": "gynecology", "date": "2025-08-28T09:15", "body": "GYNECOLOGY\nDate of visit: 08/26/2025\n\n59-year-old seen for ongoing oncologic surveillance. History: adult granulosa cell tumor (left ovary, LSO 09/2023), right adnexal recurrence with complete response to carboplatin/paclitaxel in 2024; grade 1 endometrioid endometrial carcinoma on megestrol since 03/2025. Menopause eight years ago. Bleeding has returned recently, irregular, and over the last few months her abdomen has gotten bigger with a feeling of pressure in the pelvis. No significant weight loss, fevers or night sweats.\n\nMeds: hydrochlorothiazide, amlodipine 5 mg, omeprazole, megestrol 80 mg twice daily, acetaminophen, diclofenac gel. NKDA. No family history of cancer.\n\nExam: abdomen distended; palpable nontender mass in the lower abdomen. Pelvic: a 10 cm mobile, smooth, firm mass arising from the pelvis.\n\nLabs: hemoglobin 12.5 g/dL, platelets 250 K/uL, CA-125 35 U/mL (normal under 35), estradiol 450 pg/mL (postmenopausal range under 20), FSH 7.1 mIU/mL (postmenopausal 25.8-134.8), LH 6.9 mIU/mL (postmenopausal 7.7-58.5).\n\nTransvaginal ultrasound: solid ovarian mass with internal blood flow.\n\nImpression: findings consistent with a second recurrence of the estrogen-secreting granulosa cell tumor.\nPlan: expedited return to gynecologic oncology (seen 09/04). Continue megestrol until then.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "specialist_visit",
+          "start": "2025-09-04T13:00",
+          "service": "Gynecologic Oncology",
+          "reason": "recurrent granulosa cell tumor",
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecologic Oncology Follow-up", "author": "gynecologic oncology", "date": "2025-09-05T17:10", "body": "GYNECOLOGIC ONCOLOGY\nDate: 09/04/2025\n\nSecond recurrence of adult granulosa cell tumor: 10 cm solid right ovarian mass, estradiol 450 (08/26). Prior: LSO 09/2023 (IA); right adnexal recurrence 02/2024, complete response to six cycles carboplatin/paclitaxel ending 06/2024. Also grade 1 endometrioid endometrial carcinoma on megestrol since 03/2025.\n\nExam: abdomen distended, firm lower abdominal mass, nontender.\n\nPlan: after discussion she agrees to resume chemotherapy - carboplatin AUC 5 and paclitaxel 175 mg/m2 every 21 days for six cycles, starting 09/11/2025, given the prior response more than 12 months ago. Continue megestrol for the endometrium. Reassess after cycle 6; surgery remains on the table and she understands it may be needed.\nAllergies: NKDA.\n\nGynecologic Oncology"}
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T21:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Back on chemo", "author": "patient", "date": "2025-09-16T21:05", "body": "Wanted you to hear it from me - the tumor came back and I started the same chemo again last Thursday. I know the routine this time. Should I get my flu shot before the next round or wait?"},
+            {"type": "Patient Message", "title": "RE: Back on chemo", "author": "PCP", "date": "2025-09-17T07:50", "body": "I'm sorry, Bernice. Thank you for telling me. Yes to the flu shot - best timed between cycles, about a week before the next one. The nurse can do it here and check your blood pressure at the same time. Front desk will reach out."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine and BP check",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T09:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-14T09:31"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T09:30"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2025-10-14T09:50", "body": "Between chemo cycles 2 and 3, oncology okayed vaccines this week. Afebrile. Flu (L arm) and current COVID (R arm) given, VIS reviewed, waited 15 min, no reaction. BP in range today. Reports fatigue but eating. Reminded to use oncology triage line for fever."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telehealth_visit",
+          "start": "2025-11-18T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-11-18T12:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2025-11-18T12:55", "body": "Video from home. Four cycles done. Tolerating about like last year - tired, some nausea the first days, neuropathy has not come back much. Abdomen still feels full; oncology says the mass has not grown. Home BP 116-130/70-80. Still on megestrol. No leg swelling.\n\nA/P: HTN controlled, continue. Oncology care per gyn onc. GERD fine on omeprazole. Will see her after chemo finishes."}
+          ]
+        }
+      ]
+    }
+  ]
+}

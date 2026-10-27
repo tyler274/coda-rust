@@ -1,0 +1,320 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002095",
+      "events": [
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Miscellaneous", "title": "No-show", "author": "front desk", "date": "2023-01-17T14:30", "body": "Pt did not arrive for 2pm follow-up. Called, no answer, left message with callback number. Texted reschedule link."}
+          ]
+        },
+        {
+          "id": "2023-01-31a",
+          "kind": "office_visit",
+          "start": "2023-01-31T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up (rescheduled)",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-31T11:25"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-01-31T12:05", "body": "Missed the 1/17 slot - truck wouldn't start in the cold, he says.\n\nNo new problems. Swallowing steady on nifedipine ER, eats slowly, sleeps propped up. Legs about the same. Using acetaminophen a few times a week for aches. Still 1-1.5 ppd with the patch.\n\nBP/HR as charted. Lungs clear. Heart regular. No edema.\n\nPlan: no changes. Patch refilled. Physical in May. ID visit due in spring - he has it booked."},
+            {"type": "Medication Refill", "title": "Nicotine patch refill", "author": "PCP", "date": "2023-01-31T12:06", "body": "Nicotine 21 mg/24 hr patch #28 x 2 refills sent."}
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-23T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-23T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-05-23T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2023-05-23T09:05", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}, {"test": "Urine Glucose"}]},
+            {"panel": null, "collected": "2023-05-23T09:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-05-23T09:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-05-23T09:00"},
+            {"procedure": "Immunization administration", "performed": "2023-05-23T09:15"}
+          ],
+          "orders": [
+            {"id": "fit-2023", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-05-23T09:50", "body": "Physical, age 47.\n\nSaw ID in April - he says it went fine, numbers good, same pills; we never got a note. Neuro not since last August, he plans to call. GI: still on nifedipine, nothing else planned.\n\nNo new complaints. Weight steady. Smoking the same; not interested in medication to quit, patch is enough for him. PHQ-9 2.\n\nExam: vitals reviewed. Alert, in no distress. Oral mucosa pink, no lesions. Neck without adenopathy. Lungs clear. RRR, no murmur. Abdomen benign. Skin: no rash, no lesions on legs or trunk. Rises from chair using arms. No edema.\n\nHealth maintenance:\n- FIT again this year, kit given.\n- Tdap today; no record of one.\n- Shingrix complete 2022. PCV20 2021.\n- Labs: CBC, CMP, lipids, A1c, UA.\n- Lung screening: from age 50.\n\nRTC fall for shots."},
+            {"type": "Miscellaneous", "title": "Records request", "author": "front desk", "date": "2023-05-23T10:10", "body": "Faxed request to ID clinic for April 2023 visit note and labs."}
+          ]
+        },
+        {
+          "id": "2023-05-25a",
+          "kind": "portal_message",
+          "start": "2023-05-25T10:15",
+          "documents": [
+            {"type": "Patient Communication", "title": "Physical results", "author": "PCP", "date": "2023-05-25T10:15", "body": "Hi Todd, everything from your physical came back in the normal range again. Stool kit whenever you get to it."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "lab_only",
+          "start": "2023-06-13T10:30",
+          "labs": [
+            {"panel": null, "collected": "2023-06-09T07:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [{"id": "fit-2023", "action": "done", "date": "2023-06-13T10:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "RN", "date": "2023-06-13T14:00", "body": "FIT negative, letter mailed and posted to portal. Due again 6/2024."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T16:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T16:07"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2023-10-17T16:20", "body": "Influenza 0.5 mL IM L deltoid, 2023-24 COVID (Pfizer) 0.3 mL IM R deltoid. No reactions. Pt asked about his ID note request - still nothing from them, refaxed."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T13:20",
+          "end": "2024-02-06T14:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Purple spots in mouth and on legs, cough, weight loss",
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-06T14:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-02-06T14:10", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-02-06T14:00"}],
+          "orders": [
+            {"id": "ct-chest-2024-02", "action": "placed", "order": "CT chest", "category": "imaging", "reason": "chronic cough, weight loss, night sweats in HIV"},
+            {"id": "derm-referral", "action": "placed", "order": "Dermatology referral, urgent", "category": "referral", "to": "Dermatology", "reason": "violaceous lesions palate and lower legs, HIV"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-02-06T14:40", "body": "S: Came in because of purple spots. For several weeks he has had dark purple spots on the roof of his mouth and on both lower legs. Not painful. Also a dry cough that won't quit, several weeks, no blood. Waking up soaked at night. Pants are loose - down about 7 kg since last year on our scale. No fever he knows of. Still taking his HIV pill every day.\n\nO: Vitals as charted; weight 71.0 kg (78 last spring). Thin. Several violaceous macules and papules on the hard palate. Multiple similar purple papules on both shins and calves, non-blanching. No adenopathy felt in the neck or axillae. Lungs: clear to auscultation, no crackles. Heart regular. Abdomen soft.\n\nA/P: violaceous skin and palate lesions with cough, night sweats and weight loss in a man with AIDS. Kaposi sarcoma is high on the list; infection needs to be excluded too.\n- Urgent dermatology referral for biopsy - called and got him in on 2/19.\n- CT chest ordered.\n- CBC, CMP today.\n- Messaged his ID clinic, they will move his visit up.\n- Return precautions for fever or shortness of breath.\nI'll call with results."},
+            {"type": "Telephone Encounter", "title": "ID clinic notified", "author": "RN", "date": "2024-02-06T15:30", "body": "Called ID clinic nurse line per PCP, relayed lesions, cough, weight loss, night sweats. They will see pt 2/27 with labs and want derm and CT results faxed."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "imaging",
+          "start": "2024-02-13T08:30",
+          "reports": [
+            {"study": "CT chest", "performed": "2024-02-13T08:30", "issued": "2024-02-13T16:20", "text": "OUTSIDE IMAGING CENTER\nCT chest without contrast.\nIndication: chronic cough, weight loss, night sweats; HIV.\nComparison: none.\n\nFindings: Bilateral perihilar infiltrates. Small bilateral pleural effusions. No pneumothorax. Central airways patent. Heart size normal, no pericardial effusion. No mediastinal mass. Visualized upper abdomen unremarkable. Bones without suspicious lesion.", "conclusion": "Bilateral perihilar infiltrates with small bilateral pleural effusions."}
+          ],
+          "orders": [{"id": "ct-chest-2024-02", "action": "done", "date": "2024-02-13T08:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "CT chest result", "author": "PCP", "date": "2024-02-14T08:15", "body": "CT: bilateral perihilar infiltrates and small effusions. Called pt - discussed, no fever or dyspnea. Faxed to derm and ID ahead of their visits. Labs from 2/6 fine."}
+          ]
+        },
+        {
+          "id": "2024-02-19a",
+          "kind": "specialist_visit",
+          "start": "2024-02-19T10:30",
+          "service": "Dermatology",
+          "reason": "Violaceous lesions of hard palate and lower extremities",
+          "conditions": [
+            {"label": "Kaposi sarcoma", "icd10": "C46.9", "action": "diagnosed", "onset": "2024-02-19"}
+          ],
+          "procedures": [{"procedure": "Punch skin biopsy, single lesion", "performed": "2024-02-19T10:55"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-02-19T10:55", "issued": "2024-02-22T12:00", "text": "Specimen: skin, left lower leg, 4 mm punch biopsy.\nMicroscopic: dermal proliferation of spindle-shaped cells forming slit-like vascular spaces, with neovascularization and extravasated red blood cells.\nComment: diagnostic of Kaposi sarcoma in this clinical setting.", "conclusion": "Kaposi sarcoma."}
+          ],
+          "orders": [{"id": "derm-referral", "action": "done", "date": "2024-02-19T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Consultation", "author": "dermatology", "date": "2024-02-26T09:45", "body": "OUTSIDE DERMATOLOGY\nDate of service: 02/19/2024\nReferred urgently by PCP.\n\n48-year-old man with HIV on ART and achalasia, seen for purple lesions of the palate and legs. He also has a dry cough lasting weeks, with weight loss and drenching night sweats over the same period.\n\nAllergies: penicillin (rash).\nMeds: bictegravir/emtricitabine/TAF, nifedipine ER 30 mg, acetaminophen prn, nicotine patch.\n\nExam: numerous red-violet papules that do not blanch, on the hard palate and over both lower legs.\nChest CT from 02/13 reviewed: bilateral perihilar infiltrates, small effusions.\n\nProcedure: 4 mm punch biopsy, left lower leg, after consent; hemostasis with pressure, one suture.\n\nPathology (02/22): spindle cell proliferation with new vessel formation and red cells outside the vessels - Kaposi sarcoma.\n\nAssessment: Kaposi sarcoma involving skin and oral mucosa; the chest CT raises concern for lung involvement.\nPlan: urgent oncology referral placed; ID aware. Suture out in 10 to 14 days at PCP or here.\n\nDermatology"}
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "specialist_visit",
+          "start": "2024-02-27T09:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up, new Kaposi sarcoma",
+          "labs": [
+            {"panel": null, "collected": "2024-02-27T09:20", "results": [
+              {"test": "CD4 Count", "value": 291, "unit": "cells/uL"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2024-03-05T11:30", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 02/27/2024\n\nSeen sooner than planned for biopsy-proven Kaposi sarcoma of skin and palate, with perihilar infiltrates and small effusions on CT, cough, night sweats and weight loss.\n\nAdherent to bictegravir/emtricitabine/TAF.\nCD4 291 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nAssessment: KS despite viral suppression. Infection must be excluded as a cause of the lung findings before they are attributed to KS. Pulmonary referral for bronchoscopy with BAL arranged; oncology referral already placed by dermatology. CD4 above 200: no PJP prophylaxis.\nPlan: continue ART unchanged through chemotherapy, no interactions of concern with liposomal doxorubicin. Labs again in 6 months."}
+          ]
+        },
+        {
+          "id": "2024-03-01a",
+          "kind": "nurse_visit",
+          "start": "2024-03-01T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Suture removal",
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Suture removal", "author": "RN", "date": "2024-03-01T10:30", "body": "Single suture removed from left lower leg biopsy site. Site clean and healed, no drainage. Pt has bronchoscopy next week and oncology the week after."}
+          ]
+        },
+        {
+          "id": "2024-03-07a",
+          "kind": "procedure_visit",
+          "start": "2024-03-07T07:30",
+          "end": "2024-03-07T11:30",
+          "service": "Pulmonology",
+          "reason": "Bronchoscopy with BAL, perihilar infiltrates",
+          "documents": [
+            {"type": "Procedure Note", "title": "Bronchoscopy with Bronchoalveolar Lavage", "author": "pulmonology", "date": "2024-03-14T13:00", "body": "OUTSIDE PULMONARY - BRONCHOSCOPY REPORT\nDate of procedure: 03/07/2024\nIndication: bilateral perihilar infiltrates and small effusions in a man with HIV and newly diagnosed cutaneous/oral Kaposi sarcoma; exclude infection.\nAllergies: penicillin.\nSedation: moderate, monitored.\n\nFindings: vocal cords normal. Trachea and main bronchi patent. Airway mucosa without focal lesion. Scant clear secretions.\nBAL right middle lobe, returns clear.\n\nBAL results (final 03/13): bacterial culture no growth. AFB smear negative; AFB culture no growth so far, final at 6 weeks. Pneumocystis stain negative.\n\nImpression: no infection identified on BAL. Results to oncology and ID.\nNo complications; discharged home same day.\n\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T13:00",
+          "service": "Oncology",
+          "reason": "Kaposi sarcoma",
+          "medications": [
+            {"drug_text": "doxorubicin hydrochloride liposomal 2 MG/ML Injectable Suspension", "action": "historical", "sig": "20 mg/m2 IV every 3 weeks for 6 cycles, given at oncology infusion center", "dose": {"value": 20, "unit": "mg/m2"}, "frequency": "EVERY 3 WEEKS", "route": "Intravenous", "course": "chronic", "reason": "Kaposi sarcoma, oncology"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Consultation", "author": "oncology", "date": "2024-03-20T08:50", "body": "OUTSIDE HEMATOLOGY/ONCOLOGY\nDate of service: 03/12/2024\n\nReason: Kaposi sarcoma, referred by dermatology.\n\nHistory: HIV on ART with suppressed viral load, CD4 291 last month. Several weeks of red-violet lesions on the palate and lower legs, punch biopsy 02/19 Kaposi sarcoma. Dry cough, night sweats, weight loss of about 7 kg. CT chest 02/13: bilateral perihilar infiltrates with small pleural effusions. Bronchoscopy 03/07 with BAL negative for bacteria, AFB and Pneumocystis.\nOther history: hereditary myopathy, achalasia on nifedipine ER, tobacco use (35 pack-years, current), remote IVDU in remission.\nAllergies: penicillin (rash).\n\nExam: palate and bilateral lower-leg violaceous papules as described. Lungs clear. No hepatosplenomegaly.\n\nAssessment: AIDS-related Kaposi sarcoma involving skin and oral mucosa, with pulmonary involvement - with infection excluded, the perihilar infiltrates and effusions are attributed to KS. Systemic therapy indicated.\n\nPlan: liposomal doxorubicin 20 mg/m2 IV every 3 weeks, 6 cycles, starting 03/18/2024. Continue ART per ID. CBC before each cycle here. Restaging CT chest after cycle 6. Discussed hair, mouth sores, low counts, hand-foot reaction, infusion reactions.\n\nOncology"}
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "office_visit",
+          "start": "2024-03-26T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, Kaposi sarcoma on chemotherapy",
+          "state": {"weight_kg": 71.5},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-26T11:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-03-26T11:45", "body": "Interval: bronch BAL negative for infection; oncology calls the lung findings KS along with skin and palate. Cycle 1 of liposomal doxorubicin 3/18. Tired for a few days after, appetite ok, no fever. Next cycle 4/8. Still smoking about a pack a day, patch on.\n\nExam: vitals as charted, weight holding since February. Palate and shin lesions unchanged in appearance. Lungs clear. Heart regular. No edema. Biopsy site healed.\n\nA/P:\n- Kaposi sarcoma (skin, palate, lung) - on liposomal doxorubicin per oncology; CBCs there. Fever = call oncology same day.\n- HIV - ART unchanged per ID.\n- Achalasia - nifedipine ER, soft diet is helping him keep weight on.\n- Myopathy - unchanged.\n- Tobacco - encouraged cutting down during treatment.\nRTC after chemo course, around August."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "portal_message",
+          "start": "2024-05-14T18:40",
+          "documents": [
+            {"type": "Patient Communication", "title": "update", "author": "patient", "date": "2024-05-14T18:40", "body": "4 treatments done, 2 to go. the spots on my legs are flatter and lighter. cough is mostly gone. just tired. need my patches refilled please"},
+            {"type": "Patient Communication", "title": "RE: update", "author": "PCP", "date": "2024-05-15T08:20", "body": "That's great to hear, Todd. Patch refill sent. Keep oncology posted if the tiredness gets worse or you run a fever."},
+            {"type": "Medication Refill", "title": "Nicotine patch refill", "author": "PCP", "date": "2024-05-15T08:21", "body": "Nicotine 21 mg/24 hr patch #28 x 2 refills."}
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "specialist_visit",
+          "start": "2024-07-01T12:30",
+          "service": "Oncology",
+          "reason": "Kaposi sarcoma, cycle 6",
+          "medications": [
+            {"drug_text": "doxorubicin hydrochloride liposomal 2 MG/ML Injectable Suspension", "action": "stop", "reason": "planned 6 cycles complete"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Progress Note", "author": "oncology", "date": "2024-08-13T15:20", "body": "OUTSIDE HEMATOLOGY/ONCOLOGY\nDate of service: 07/01/2024\n\nCycle 6 of 6 liposomal doxorubicin 20 mg/m2 given today; course complete.\n\nTolerated treatment with fatigue only; no delays. Counts adequate before each cycle.\nSkin and palate lesions are now flat and faded. Cough has resolved; no night sweats for about two months. Weight coming back.\n\nPlan: restaging CT chest in 4-5 weeks. Surveillance visits every 6 months after that. Continue ART.\n\nOncology"},
+            {"type": "Miscellaneous", "title": "Oncology note received", "author": "front desk", "date": "2024-08-13T15:25", "body": "Oncology note from 7/1 received by fax after pt mentioned it at check-in scheduling. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "imaging",
+          "start": "2024-08-05T09:00",
+          "reports": [
+            {"study": "CT chest", "performed": "2024-08-05T09:00", "issued": "2024-08-05T15:00", "text": "OUTSIDE IMAGING CENTER\nCT chest without contrast.\nIndication: Kaposi sarcoma, restaging after chemotherapy.\nComparison: 02/13/2024.\n\nFindings: The previously seen bilateral perihilar infiltrates have resolved. No pleural effusion. No new consolidation. Central airways patent. Heart normal in size. No mediastinal mass.", "conclusion": "Resolution of perihilar infiltrates and pleural effusions since 02/2024. No new findings."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "CT chest report received", "author": "front desk", "date": "2024-08-07T09:30", "body": "Restaging CT report (ordered by oncology) received and scanned. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "office_visit",
+          "start": "2024-08-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after chemotherapy",
+          "state": {"weight_kg": 74.5},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T09:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T09:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-08-20T09:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-08-20T10:30", "body": "Here after finishing 6 cycles of liposomal doxorubicin (last 7/1). Oncology note and restaging CT in chart: lung infiltrates and effusions gone. Lesions faded. He feels like himself again - eating better within the limits of the achalasia, no cough, no sweats.\n\nWeight up about 3.5 kg since March.\n\nExam: palate with faint flat purplish discoloration only. Shins with flat brown-violet macules, no raised lesions. Lungs clear. Heart regular. No edema.\n\nA/P:\n- Kaposi sarcoma - treatment complete, good response. Oncology surveillance every 6 months.\n- HIV - ID visit in October.\n- Achalasia, myopathy - unchanged.\n- Tobacco - 1 ppd. Again offered help; he'll stay on the patch.\n- CBC, CMP today after chemo.\n- FIT overdue (due June) - kit given.\nFlu/COVID in October. Check in late fall."}
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T11:00",
+          "documents": [
+            {"type": "Patient Communication", "title": "Labs", "author": "PCP", "date": "2024-08-22T11:00", "body": "Your blood counts have recovered nicely after chemo and your kidney and liver tests are normal."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T15:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T15:37"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "MA", "date": "2024-10-08T15:45", "body": "Flu (trivalent) 0.5 mL IM L deltoid and 2024-25 COVID 0.3 mL IM R deltoid given. Tolerated. Reminded pt about the FIT kit, he says it is still on the counter."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "specialist_visit",
+          "start": "2024-10-22T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2024-10-22T10:20", "results": [
+              {"test": "CD4 Count", "value": 318, "unit": "cells/uL"},
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2024-10-29T14:10", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nVisit date: 10/22/2024\n\nFollow-up after completing liposomal doxorubicin for KS in July; lesions faded and restaging CT clear per oncology.\nMarch BAL AFB culture final: no growth.\nAdherent to bictegravir/emtricitabine/TAF.\nCD4 318 cells/uL. HIV-1 RNA not detected (<20 copies/mL).\n\nPlan: continue ART. Labs and visit in 6 months. Smoking cessation advised."}
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-11-28T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2024-11-28T10:40", "body": "Video visit, pt at home, ID verified by name and DOB.\n\nShort check-in. ID note from October in chart: viral load undetectable, CD4 318. No new skin spots he can see, the old ones keep fading. No cough. Swallowing the same on nifedipine ER - slow meals, sleeps propped up. Legs about the same; uses acetaminophen now and then.\nStill smoking around a pack a day. Needs patches.\n\nExam limited to video: comfortable, speaking full sentences, no visible lesions on the face or lips.\n\nA/P:\n- Kaposi sarcoma s/p liposomal doxorubicin - oncology surveillance due February.\n- HIV - ID every 6 months.\n- Achalasia - GI, nifedipine.\n- Hereditary myopathy - stable by report; reminded him to rebook neurology.\n- Tobacco - patch refilled.\n- Turns 50 in December 2025 - lung screening CT then.\n- FIT still not returned; he'll mail it.\nOffice visit in the spring."},
+            {"type": "Medication Refill", "title": "Nicotine patch refill", "author": "PCP", "date": "2024-11-28T10:41", "body": "Nicotine 21 mg/24 hr patch #28 x 5 refills."}
+          ]
+        }
+      ]
+    }
+  ]
+}

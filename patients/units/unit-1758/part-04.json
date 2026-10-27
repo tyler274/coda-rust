@@ -1,0 +1,625 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001758",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "portal_message",
+          "start": "2024-01-16T17:35",
+          "conditions": [
+            {
+              "label": "Pulmonary embolism",
+              "icd10": "I26.99",
+              "action": "resolved"
+            },
+            {
+              "label": "History of pulmonary embolism",
+              "action": "diagnosed",
+              "onset": "2023-10-14"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "3 months completed"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Done with the shots",
+              "author": "patient",
+              "date": "2024-01-16T17:35",
+              "body": "Hematology said I can stop the enoxaparin as of last Friday - three months done. Celebrated by not stabbing myself tonight. Wanted you to know so it comes off my list."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Done with the shots",
+              "author": "PCP",
+              "date": "2024-01-17T07:05",
+              "body": "Great news - taken off your list. The PE goes into your history now. If you ever have new leg swelling or sudden breathlessness, don't wait on it."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "pharmacy",
+          "start": "2024-03-05T11:15",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Cabergoline prior authorization",
+              "author": "MA",
+              "date": "2024-03-05T11:15",
+              "body": "Pharmacy faxed a PA request for cabergoline 0.5 mg (new plan year formulary). Prescriber is endocrinology - called their office, they will submit. Pt aware, has 10 days of tablets left."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "telehealth_visit",
+          "start": "2024-04-16T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in during leukemia consolidation",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-04-16T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-04-16T16:30",
+              "body": "Video, she's at home, baby napping.\n\nCheck-in. Consolidation going according to plan per heme/onc - arsenic cycles on and off, ATRA by mouth, counts holding up, ECGs before infusions fine per her. On leave from school this year, plans to go back in the fall. Tired some afternoons. No fevers, no bleeding. Thyroid meds and cabergoline unchanged, endo saw her in March. No seizures. Asthma fine.\n\nMood: some worry before each marrow/PCR check but sleeping and enjoying the baby. PHQ-9 3, GAD-7 4.\n\nPlan: nothing to change from my side. Physical in the fall once consolidation is done. Message any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "outside_records",
+          "start": "2024-07-30T09:50",
+          "medications": [
+            {
+              "drug_text": "tretinoin 10 MG Oral Capsule",
+              "action": "stop",
+              "reason": "consolidation complete"
+            },
+            {
+              "drug_text": "arsenic trioxide 1 MG/ML Injectable Solution",
+              "action": "stop",
+              "reason": "consolidation complete"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology letter",
+              "author": "hematology-oncology",
+              "date": "2024-07-30T09:50",
+              "body": "Re: Morgan Sheehan - acute promyelocytic leukemia, t(15;17)\n\nDear Doctor,\n\nMs. Sheehan has completed consolidation with tretinoin and arsenic trioxide, last doses in late July. Peripheral blood PML-RARA PCR on 07/23/2024 is negative; she is in molecular remission. Both drugs are now stopped.\n\nWe will see her every 3 months with a CBC for surveillance. Please contact us with any unexplained bruising, bleeding, or fevers.\n\nHematology/Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Acute promyelocytic leukemia with t(15;17)",
+              "icd10": "C92.40",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute promyelocytic leukemia, in remission",
+              "icd10": "C92.41",
+              "action": "diagnosed",
+              "onset": "2024-07-23"
+            }
+          ],
+          "state": {
+            "weight_kg": 56.0,
+            "labs": {
+              "Hemoglobin": 13.1,
+              "White Blood Cells": 6.2,
+              "Platelets": 236
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Absolute Neutrophil Count"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T16:10",
+              "results": [
+                {
+                  "test": "Phenytoin",
+                  "loinc": "3968-5",
+                  "unit": "ug/mL",
+                  "value": 13.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T16:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T16:02"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-17T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-17T16:25",
+              "body": "Annual - after school, first week back teaching.\n\nYear in review: postpartum PE 10/2023 (anticoagulation completed Jan). APL dx 11/2023, induction complicated by DIC, consolidation ATRA/arsenic finished July - PCR negative 7/23, molecular remission per onc letter. Surveillance with them every 3 months.\n\nNow: energy most of the way back. Toddler on the move. No bruising, no fevers. Thyroid/pituitary followed by endo, no changes. No seizures. Asthma: albuterol a handful of times this summer.\n\nMeds: phenytoin 300 daily, methimazole 10 daily, cabergoline 0.5 twice weekly, prenatal vitamin daily, albuterol prn.\nAllergies: seasonal pollen.\n\nExam: vitals reviewed. Well-appearing, color good. Thyroid normal size. Heart regular. Lungs clear. Abdomen soft, no spleen tip. No bruising or petechiae. Calves soft.\nPHQ-2 1.\n\nA/P\n- APL in remission: onc surveillance; CBC with diff today for our records.\n- History of PE.\n- Epilepsy: phenytoin level.\n- Endocrine: endo.\n- HM: flu and updated COVID today. Pap 2022 normal/HPV neg, next 2027.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-19a",
+          "kind": "portal_message",
+          "start": "2024-09-19T12:45",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2024-09-19T12:45",
+              "body": "Your blood counts are completely normal - hemoglobin back to 13. Chemistry and cholesterol normal, phenytoin 13.6. Good way to start the school year."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "ed_visit",
+          "start": "2025-01-06T18:40",
+          "service": "Emergency Medicine",
+          "reason": "Mouth ulcers, spreading blistering rash, red painful eyes",
+          "conditions": [
+            {
+              "label": "Stevens-Johnson syndrome",
+              "icd10": "L51.1",
+              "action": "diagnosed",
+              "onset": "2025-01-03"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "phenytoin sodium 100 MG Extended Release Oral Capsule",
+              "action": "stop",
+              "reason": "Stevens-Johnson syndrome"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Phenytoin",
+              "reaction": "Stevens-Johnson syndrome",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-06T18:50",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-06T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-06T19:20",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 50
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-01-06T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-01-08T08:30",
+              "body": "ED PROVIDER NOTE (abbreviated)\n\n32F with epilepsy on phenytoin, pituitary macroadenoma, Graves, APL in remission (DIC during induction 2023). Three days of painful mouth sores and a rash that started on the trunk and has spread to the face, arms and legs; some areas blistered and broke open. Eyes red and painful.\n\nAllergies: seasonal pollen. Meds per pt: phenytoin, methimazole, cabergoline, prenatal vitamin, albuterol prn.\n\nT 38.9 C (102 F), BP 100/60, HR 110, RR 22.\nErythematous macules and atypical target lesions with dusky purpuric centers and blistering over trunk, face and extremities. Nikolsky positive. Hemorrhagic crusting of lips, oral erosions, bilateral conjunctival injection.\n\nWBC 15.0, Hgb 13.2, Plt 250, ALT 45, AST 50, BUN 18, Cr 1.0.\n\nImpression: Stevens-Johnson syndrome, phenytoin most likely culprit.\nPlan: phenytoin stopped, added to allergies. IV fluids, analgesia, ophthalmology and dermatology called. Transfer to regional burn unit accepted."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-06b",
+          "kind": "hospital_admission",
+          "start": "2025-01-06T23:55",
+          "end": "2025-01-19T11:00",
+          "service": "Burn Surgery",
+          "reason": "Stevens-Johnson syndrome",
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Burn Unit Discharge Summary",
+              "author": "burn surgery",
+              "date": "2025-01-24T14:20",
+              "body": "Burn/Wound ICU - Brief Discharge Summary\nAdmit 01/06/2025 - Discharge 01/19/2025\n\nDx: Stevens-Johnson syndrome attributed to phenytoin.\n\nSupportive care in the burn unit: wound care with non-adherent dressings, fluids, nutrition, pain control, daily ophthalmology lubrication and eye care, oral care. Her tachycardia on arrival settled as fever and fluid losses were controlled. Skin re-epithelializing well at discharge.\n\nNeurology consulted for antiseizure therapy off phenytoin: levetiracetam 500 mg BID started. No seizures during the stay.\n\nDischarge meds: levetiracetam 500 mg BID, methimazole 10 mg daily, cabergoline 0.5 mg twice weekly, prenatal vitamin, albuterol prn, emollients.\nALLERGY: PHENYTOIN - Stevens-Johnson syndrome. Avoid aromatic antiseizure drugs.\n\nFollow-up: PCP 1-2 weeks; ophthalmology and dermatology as outpatient."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, Stevens-Johnson syndrome",
+          "state": {
+            "weight_kg": 55.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-01-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-01-28T11:40",
+              "body": "TCM after 2 weeks in the burn unit for SJS from phenytoin (ED 1/6, discharged 1/19). Summaries reviewed.\n\nSkin is new and pink where it peeled, tender, using the emollients. Mouth healed enough to eat normally. Eyes comfortable with drops, has her outpatient eye appointment next week. Switched to levetiracetam by inpatient neurology - no seizures, a little tired on it, no mood change. Lost a little weight.\n\nMeds reconciled: levetiracetam 500 BID, methimazole 10, cabergoline 0.5 twice weekly, prenatal vitamin, albuterol prn. Phenytoin OFF.\nAllergies: phenytoin (SJS) - confirmed on our list in red. Seasonal pollen.\n\nExam: afebrile, vitals as charted. Skin: healing re-epithelialized areas trunk, arms, face, no open erosions, no signs of infection. Lips healed. Conjunctivae quiet. Lungs clear. Heart regular.\n\nA/P\n1. SJS - healing well. Keep eye/derm follow-up.\n2. Epilepsy - on levetiracetam now. Seizure precautions reviewed; she can drive per neurology since no seizures.\n3. Work - back to teaching 2/10; note sent.\n4. Others unchanged.\nSee in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "portal_message",
+          "start": "2025-01-29T08:10",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Work note",
+              "author": "PCP",
+              "date": "2025-01-29T08:10",
+              "body": "To whom it may concern: Morgan Sheehan was hospitalized and under my care from January 6, 2025. She may return to work on February 10, 2025 without restrictions. Please contact our office with any questions. - Primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, Stevens-Johnson syndrome and seizure medication",
+          "conditions": [
+            {
+              "label": "Stevens-Johnson syndrome",
+              "icd10": "L51.1",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "prescription moved to primary care"
+            },
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-11T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-03-11T16:05",
+              "body": "Six-week check. Back at school since 2/10, tiring but good. Skin fully healed. Eye doctor released her. Mouth fine.\n\nLevetiracetam: no seizures, the tiredness has worn off, no irritability. Neurology asked us to take over refills.\n\nOnc surveillance in February normal per her. Endo stable.\n\nExam: vitals as charted. Skin healed, no blisters or erosions. Oral mucosa normal. Conjunctivae clear. Lungs clear. Heart regular.\n\nA/P\n- SJS: resolved. Phenytoin allergy on file; avoid related aromatic antiseizure drugs.\n- Epilepsy: levetiracetam 500 BID, now prescribed here, 90-day supply.\n- Rest per endo/onc.\nAnnual in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Levetiracetam refill",
+              "author": "RN",
+              "date": "2025-06-10T10:05",
+              "body": "Refill levetiracetam 500 mg BID #180. Seen 3/2025, seizure-free. Approved, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 57.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T16:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-23T16:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-23T16:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-23T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-23T16:35",
+              "body": "Physical. Good year compared with the last two.\n\nAPL: remission, onc every 3 months, last visit August normal per her. Endo: cabergoline and methimazole unchanged. Epilepsy: seizure-free on levetiracetam. Asthma: albuterol in May/June, a few times a week at worst, otherwise rare. SJS healed.\n\nMeds: levetiracetam 500 BID, methimazole 10 daily, cabergoline 0.5 twice weekly, prenatal vitamin, albuterol prn.\nAllergies: PHENYTOIN (SJS); seasonal pollen.\n\nExam: vitals reviewed. Well. Thyroid not enlarged. Heart regular. Lungs clear. Abdomen soft, no organomegaly. Skin normal, no bruising.\nPHQ-9 2.\n\nPlan: flu + COVID today. CBC/CMP. Pap next 2027. RTC 1 yr, sooner as needed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

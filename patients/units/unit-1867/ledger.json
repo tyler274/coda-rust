@@ -1,0 +1,2430 @@
+{
+  "unit": "unit-1867",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001867",
+      "given": "Andrea",
+      "family": "Brooks",
+      "birth_date": "1989-07-23",
+      "address_line": "27 Barton Hill Road, Granby, MA 01033",
+      "phone": "+1-646-555-0138",
+      "email": "andrea.brooks@example.test",
+      "marital_status": "single",
+      "summary": "37-year-old retail sales associate with bipolar I disorder on lithium and quetiapine through outside psychiatry, a member since 2022. In 2025 she had a manic episode seen at psychiatry and the ED, then a psychiatric admission that changed the diagnosis to schizoaffective disorder, bipolar type, which the practice knows only from the late discharge summary.",
+      "events": [
+        {
+          "id": "2022-05-31a",
+          "kind": "telephone",
+          "start": "2022-05-31T10:42",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2022-05-31T10:42",
+              "author": "front desk",
+              "body": "Caller would like to move her primary care here. Her old office in town is closing its adult panel. Has Medicaid, card info taken. Sees an outside psychiatrist who handles her meds and wants to keep that arrangement. Offered first new-patient slot 6/16 at 9:00, she accepted. Asked her to sign the release so we can pull records from the old office. Portal invite sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-16a",
+          "kind": "establish_care",
+          "start": "2022-06-16T09:00",
+          "end": "2022-06-16T09:55",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish primary care",
+          "conditions": [
+            {
+              "label": "Bipolar I disorder",
+              "action": "history",
+              "note": "followed by outside psychiatry",
+              "icd10": "F31.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules (600 mg) by mouth twice daily",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bipolar I disorder, prescribed by psychiatry"
+            },
+            {
+              "drug_text": "quetiapine 300 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (300 mg) by mouth at bedtime",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bipolar I disorder, prescribed by psychiatry"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              74
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 73.1,
+            "height_cm": 165.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-06-16T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 25
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-16T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-06-16T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.7
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail sales associate"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-06-16T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-06-16T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-06-16T09:00",
+              "author": "PCP",
+              "body": "32F here to set up primary care, transferring from an office in town that is closing its adult panel.\n\nPMH: bipolar I disorder. Managed by her outside psychiatrist, who writes both her meds; visits every couple of months and feels it is well controlled right now. Good insight, knows her early warning signs. Surgical: wisdom teeth out at 18.\nMeds: lithium carbonate 600 mg BID, quetiapine 300 mg qhs (both via psychiatry). Takes them reliably, uses a weekly pillbox.\nAllergies: NKDA.\nFHx: mother has bipolar I. Maternal grandmother had schizophrenia.\nSHx: works retail sales at a store in the area. Never a smoker, does not drink, no drug use. Single. Close with her sister.\n\nROS: sleeping well, energy normal, no tremor she has noticed, no excess thirst or urination, no weight change on the quetiapine lately. Periods regular.\n\nExam: BP and pulse as recorded. Pleasant, well kempt, speech normal rate and volume, mood 'good', affect full, thinking linear. Thyroid not enlarged. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender. No tremor of the outstretched hands. No ankle swelling.\n\nA/P:\n1. Bipolar I disorder, stable on lithium + quetiapine per psychiatry. Will do the medical side of lithium monitoring here (level, kidney function, calcium, TSH) about every 6 months and send copies to her psychiatrist. Quetiapine metabolic labs yearly (A1c, lipids, weight).\n2. Health maintenance: baseline CBC, CMP, lipids, A1c, TSH, lithium level today; one-time HIV and hep C screening, she agreed. Pap history to come from the old office. Flu and COVID in the fall.\nRecords release signed. Follow up for physical next spring, labs again in about 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.4,
+            "height_cm": 165.0,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Hemoglobin A1c": 5.3,
+              "Lithium": 0.8,
+              "Low Density Lipoprotein": 88,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-06-17a",
+          "kind": "portal_message",
+          "start": "2022-06-17T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-06-17T16:20",
+              "author": "PCP",
+              "body": "Hi Andrea, everything from yesterday came back fine. Your lithium level is right in the target range, kidney function and calcium are normal, and your thyroid test is normal. Cholesterol and A1c look good. HIV and hepatitis C screens were negative. I am sending a copy to your psychiatrist's office as we discussed. Next lithium check around December."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-20a",
+          "kind": "telephone",
+          "start": "2022-06-20T09:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results faxed to psychiatry",
+              "date": "2022-06-20T09:35",
+              "author": "front desk",
+              "body": "Faxed 6/16 labs to outside psychiatry per PCP. Their office line confirmed fax number. Release scanned under media."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "outside_records",
+          "start": "2022-07-12T11:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-07-12T11:05",
+              "author": "outside primary care",
+              "body": "Prior primary care office, records 2016 through 2022 (summary pages received).\nProblem list: bipolar I disorder, care by psychiatry.\nMedications at last visit: lithium carbonate 600 mg twice daily; quetiapine 300 mg at bedtime (psychiatry).\nAllergies: no known drug allergies.\nSurgical: third molar extraction, age 18.\nPreventive: cervical cytology 2020, negative for intraepithelial lesion or malignancy. Influenza vaccine most years.\nLabs on file from that office: lithium levels within range, renal and thyroid function normal on each check."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T20:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "flu shot",
+              "date": "2022-09-27T20:41",
+              "author": "patient",
+              "body": "When can I get my flu shot and the new covid booster? Afternoons are better, I'm at work till 3."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: flu shot",
+              "date": "2022-09-28T08:55",
+              "author": "front desk",
+              "body": "Hi Andrea, the nurse has 3:30 on Thursday 10/13. You're on the schedule - reply if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 59
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-13T15:30",
+              "author": "RN",
+              "body": "Here after her shift for vaccines. Screening questions negative, no prior reactions. Flu 0.5 mL IM left deltoid, bivalent COVID booster IM right deltoid. VIS given. Waited 15 min, felt fine, left ambulatory."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "lab_only",
+          "start": "2022-12-08T08:10",
+          "reason": "lithium monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-08T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-08T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-08T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Lab Note",
+              "title": "Lab draw",
+              "date": "2022-12-08T08:10",
+              "author": "MA",
+              "body": "Trough lithium draw, last dose last night about 9:30 pm per patient. BMP and TSH drawn with it. One stick, tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-09a",
+          "kind": "portal_message",
+          "start": "2022-12-09T12:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "December labs",
+              "date": "2022-12-09T12:48",
+              "author": "PCP",
+              "body": "Andrea - lithium level, kidneys, calcium and thyroid all normal again. Copy faxed to psychiatry. Have a good holiday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: December labs",
+              "date": "2022-12-09T19:05",
+              "author": "patient",
+              "body": "thank you!! happy holidays to everyone there"
+            }
+          ]
+        },
+        {
+          "id": "2023-02-28a",
+          "kind": "portal_message",
+          "start": "2023-02-28T10:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Upcoming physical",
+              "date": "2023-02-28T10:15",
+              "author": "MA",
+              "body": "Reminder: annual physical Thursday 3/9 at 8:40. Please come fasting and take your morning lithium after your blood draw. Bring your insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "annual_physical",
+          "start": "2023-03-09T08:40",
+          "end": "2023-03-09T09:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              109,
+              76
+            ],
+            "hr": 60,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 73.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-09T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-09T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-09T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 107
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-09T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2023-03-09T09:05",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2023-03-13T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-03-09T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-09T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-09T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-03-09T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-09T08:40",
+              "author": "PCP",
+              "body": "Annual exam, 33F.\n\nInterval: no ER visits or hospital stays. Psychiatry visits every 8 to 10 weeks, no med changes this past year. Work is busy, she picked up extra weekend shifts. Sleeping 7 hrs. Walks on her breaks.\n\nMeds: lithium 600 BID, quetiapine 300 qhs (psychiatry). NKDA.\n\nExam: vitals as charted. Well appearing. Eyes and throat clear. Thyroid smooth, not enlarged. No adenopathy. Heart regular rate, no murmurs. Lungs clear to auscultation. Abdomen soft, no masses. Pelvic: external genitalia normal, cervix without lesions, Pap with HPV collected. Skin without rash. No hand tremor. Mood euthymic, speech normal rate.\n\nA/P:\n- Bipolar I, stable per patient and psychiatry. Lithium level, CMP, TSH, CBC today. Lipids and A1c for quetiapine monitoring.\n- Cervical screening: co-test today.\n- Tdap given today, unsure of her last tetanus shot.\n- PHQ-9 2.\nRTC 1 year, lithium labs again in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "portal_message",
+          "start": "2023-03-14T09:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2023-03-14T09:12",
+              "author": "PCP",
+              "body": "Hi Andrea, your Pap was normal and the HPV test was negative, so that is done for 5 years. Blood work is all normal: lithium level in range, kidneys, calcium, thyroid, sugar and cholesterol fine. Copy to your psychiatrist."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "telephone",
+          "start": "2023-06-20T14:03",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab copy request from psychiatry",
+              "date": "2023-06-20T14:03",
+              "author": "front desk",
+              "body": "Her psychiatrist's office called, they did not get the March labs. Release on file. Refaxed March results (lithium, CMP, TSH, CBC, lipids, A1c) to the number they gave. They confirmed receipt at 2:20."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lithium monitoring",
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 68,
+            "weight_kg": 72.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-12T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-09-12T16:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-09-12T16:10",
+              "author": "PCP",
+              "body": "S: Six-month lithium check. Doing well. No tremor, no GI upset, drinking plenty of water at work. Saw psychiatry in August, same doses. Took her last lithium dose at 7 am today, so level today is not a true trough - she would rather not come back.\nO: BP/HR/wt as charted, weight about the same as March. Calm, conversational. No tremor. Heart RRR, lungs clear.\nA/P: Bipolar I on lithium/quetiapine. Lithium level, BMP, TSH today; will read the level knowing it was about 9 hours post dose. Next set in March with the physical. Flu/COVID at a nurse visit in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "portal_message",
+          "start": "2023-09-13T17:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-09-13T17:35",
+              "author": "PCP",
+              "body": "Labs normal across the board, lithium level fine even though it was a little early. Sent to psychiatry. See you in March."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "bp": [
+              116,
+              67
+            ],
+            "hr": 61
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-10-19T15:45",
+              "author": "RN",
+              "body": "Flu (L deltoid) and 2023-24 COVID (R deltoid) given IM. Denies fever or illness today. VIS reviewed. Observed 15 minutes, no reaction."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "telephone",
+          "start": "2023-12-05T12:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance update",
+              "date": "2023-12-05T12:20",
+              "author": "front desk",
+              "body": "Pt called, her Medicaid plan changed with renewal. New member ID entered, card image uploaded from portal. Eligibility verified active."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "portal_message",
+          "start": "2024-02-27T10:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment reminder",
+              "date": "2024-02-27T10:02",
+              "author": "MA",
+              "body": "Reminder of your physical on Tuesday 3/5 at 8:20. Fasting please, and hold the morning lithium until after labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "annual_physical",
+          "start": "2024-03-05T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-05b",
+          "kind": "telephone",
+          "start": "2024-03-05T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed physical",
+              "date": "2024-03-05T11:30",
+              "author": "front desk",
+              "body": "Called re missed 8:20 physical. She was scheduled to open the store this morning and forgot to cancel, apologized. Rebooked 3/26 8:40. Reminded her to fast and hold the morning lithium until after the draw."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "annual_physical",
+          "start": "2024-03-26T08:40",
+          "end": "2024-03-26T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              69
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 73.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-03-26T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-26T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-26T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 81
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-26T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-26T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-26T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-26T08:40",
+              "author": "PCP",
+              "body": "34 yo F, yearly visit (rescheduled from 3/5).\n\nSince last year: no acute issues. Psychiatry follow-ups on schedule, lithium 600 twice a day and quetiapine 300 at night unchanged. Still at the store, now training new hires. Fasting today, held AM lithium.\nNKDA. Never smoker, no alcohol.\n\nExam: vitals reviewed. NAD. HEENT clear. Neck supple, thyroid normal size. RRR, no murmur or gallop. Clear lungs. Abd soft, NT. Extremities without edema. No tremor. Neuro grossly intact. Mental status: euthymic, organized.\n\nPlan:\n- Lithium monitoring labs + quetiapine metabolic labs today.\n- Pap/HPV done 2023, next 2028.\n- PHQ-9 1.\n- Flu and COVID this fall.\n- Lithium/BMP/TSH again in September; standing order placed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "portal_message",
+          "start": "2024-03-27T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-03-27T13:15",
+              "author": "PCP",
+              "body": "Hi Andrea, all normal - lithium level, kidney function, calcium, thyroid, blood counts, A1c and cholesterol. Faxed to psychiatry. Lab orders for September are already in, just stop by in the morning before your lithium dose."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "lab_only",
+          "start": "2024-09-17T07:55",
+          "reason": "lithium monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-17T07:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T07:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Lab Note",
+              "title": "Lab draw",
+              "date": "2024-09-17T07:55",
+              "author": "MA",
+              "body": "Standing-order draw. Pt reports last lithium 10 pm. Lithium, BMP, TSH collected L antecubital."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-18T08:40",
+              "author": "PCP",
+              "body": "Lithium level, kidney function, calcium and thyroid normal. Copy to psychiatry. You can book flu and COVID vaccines with the nurse any time now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-09-18T12:02",
+              "author": "patient",
+              "body": "Great. Can I do the shots on a weekday after 3? I work mornings most of October"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2024-09-18T14:26",
+              "author": "front desk",
+              "body": "Yes - booked you Tuesday 10/22 at 3:20 with the nurse."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "bp": [
+              115,
+              71
+            ],
+            "hr": 63
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-22T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2024-10-22T15:20",
+              "author": "RN",
+              "body": "Influenza (trivalent) IM left arm, 2024-25 COVID IM right arm. No contraindications on screening. Tolerated, observed 15 min."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "vaccine record",
+              "date": "2024-12-03T18:30",
+              "author": "patient",
+              "body": "My manager is asking for proof of my flu shot. Can you send something?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: vaccine record",
+              "date": "2024-12-04T09:20",
+              "author": "MA",
+              "body": "Attached your immunization record showing the 10/22 flu shot. You can also print it any time from the Health Summary tab."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "annual_physical",
+          "start": "2025-02-25T08:40",
+          "end": "2025-02-25T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              75
+            ],
+            "hr": 69,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-02-25T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-02-25T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 23
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-02-25T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-25T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-02-25T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-02-25T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-02-25T08:40",
+              "author": "PCP",
+              "body": "Preventive visit. 35F.\n\nNo new concerns. Last psychiatry visit in January, regimen unchanged. Works full time. Sleeping fine. Never smoked, no alcohol.\nMeds: lithium carbonate 600 mg BID, quetiapine 300 mg qhs. NKDA.\n\nExam: vitals in flowsheet; weight steady over three years. Alert, well groomed, normal speech and affect. HEENT normal. Thyroid not palpable. Cor regular, no murmur. Lungs clear. Abdomen benign. No edema, no tremor.\n\nAssessment/plan:\n1. Bipolar I disorder - stable. Annual lithium and quetiapine monitoring labs drawn.\n2. Prevention: cervical screening current through 2028. Vaccines up to date for this season. PHQ-9 3.\nLithium labs again late summer; physical next February."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-26a",
+          "kind": "portal_message",
+          "start": "2025-02-26T15:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-02-26T15:50",
+              "author": "PCP",
+              "body": "Andrea, your results are all within normal limits again this year, including the lithium level. Forwarded to psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "specialist_visit",
+          "start": "2025-05-08T14:00",
+          "service": "Psychiatry",
+          "reason": "bipolar disorder follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Progress Note (received)",
+              "date": "2025-08-20T10:30",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY - OUTPATIENT PROGRESS NOTE\nDate of visit: 05/08/2025. Faxed in response to records request.\n\nReason for visit: scheduled medication management, bipolar I disorder.\n\nInterval history: Patient describes her mood as extremely good, feels on top of the world. For roughly the past week she has been getting 3 to 4 hours of sleep a night and does not feel tired. She has made several large purchases recently that she acknowledges she cannot afford.\n\nCurrent medications: lithium carbonate 600 mg PO BID; quetiapine 300 mg PO QHS.\nAllergies: NKDA.\nFamily psychiatric history: mother, bipolar I disorder; maternal grandmother, schizophrenia.\nSocial: retail sales associate. Never smoker. No alcohol.\n\nMental status: cheerful, elevated mood. Speech rapid. Easily distracted during the interview. Near the end of the session she thanked the writer effusively and offered a new high-end laptop as a gift, which was declined.\n\nAssessment: Bipolar disorder, current episode manic.\nPlan: continue lithium carbonate 600 mg twice daily and quetiapine 300 mg at bedtime. Return to clinic."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-06a",
+          "kind": "ed_visit",
+          "start": "2025-06-06T19:40",
+          "end": "2025-06-07T01:15",
+          "service": "Emergency Medicine",
+          "reason": "erratic behavior, brought by sister",
+          "conditions": [
+            {
+              "label": "Bipolar I disorder, current episode manic, moderate",
+              "action": "diagnosed",
+              "onset": "2025-05-08",
+              "icd10": "F31.12"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              77
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-06T20:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-06T20:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-06T20:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-06-06T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note (received)",
+              "date": "2025-06-10T09:20",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD - regional hospital\nArrival 06/06/2025 19:40. Copy sent to primary care.\n\nCC: brought in by sister for erratic behavior.\n\nHPI: 35-year-old woman with bipolar I disorder. Per patient and sister, the past two weeks she has felt on top of the world, sleeping about 3 hours a night, and has been spending large amounts of money online that she cannot afford. Sister reports she is much more talkative than her baseline and has been describing grand plans to start her own business. About a month ago she saw her outpatient psychiatrist for similar symptoms: elevated mood, little sleep, overspending.\n\nMeds: lithium carbonate 600 mg BID, quetiapine 300 mg QHS. Allergies: NKDA.\nPMH: bipolar I disorder. PSH: wisdom tooth extraction age 18.\nFHx: mother bipolar I; maternal grandmother schizophrenia.\nSHx: retail sales. Never smoker, no alcohol.\n\nExam: vital signs within normal limits. Well groomed. Speech rapid; easily pulled off topic by activity in the room. Thought process goal directed. Denies suicidal ideation. Recognizes she needs treatment and states she would like to avoid admission. General physical exam unremarkable: heart regular, lungs clear, abdomen soft, neuro nonfocal.\n\nLabs: CBC normal. Basic metabolic panel normal. Thyroid studies normal.\n\nImpression: bipolar I disorder, current episode manic, moderate.\n\nDisposition: not felt to require inpatient admission; no suicidal ideation, goal-directed, engaged with care, sister able to stay with her. Discharged home with her sister to follow up with her outpatient psychiatrist. Home medications continued."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "telephone",
+          "start": "2025-06-11T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "date": "2025-06-11T10:05",
+              "author": "RN",
+              "body": "Called after ED record came in. Spoke with patient; sister also on the line. Pt says she is sleeping more, is staying at her sister's for now, and has a psychiatry appointment set up. Taking both meds. Denies thoughts of harming herself. Booked follow-up with PCP 7/1 4:00. Gave her the crisis line number and told her to go back to the ED for any safety concern."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "office_visit",
+          "start": "2025-07-01T16:00",
+          "end": "2025-07-01T16:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "vitals": {
+            "bp": [
+              105,
+              66
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 72.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-01T16:30",
+              "resulted": "2025-07-02T07:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-01T16:30",
+              "resulted": "2025-07-02T07:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-01T16:30",
+              "resulted": "2025-07-02T07:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-01T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-01T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED Follow-up",
+              "date": "2025-07-01T16:00",
+              "author": "PCP",
+              "body": "Seen after ED visit 6/6, record reviewed.\n\nHPI: Sister brought her to the ED early June for two weeks of very little sleep, overspending online and big business plans. ED dx bipolar I, current episode manic, moderate; labs (CBC, BMP, thyroid) were normal and she went home with her sister. She tells me she had also seen her psychiatrist in early May for the same symptoms - we never got a note from that visit. She has seen psychiatry again since the ED and is on the same doses: lithium 600 BID, quetiapine 300 qhs. Says she is sleeping longer now. No SI.\n\nExam: vitals as recorded. Casually dressed, cooperative, makes good eye contact. Speech normal rate today. Thought process linear. Heart RRR, lungs clear. No tremor.\n\nA/P:\n1. Bipolar I disorder, current episode manic, moderate, per ED - care by psychiatry. No lithium level was drawn in the ED; checking lithium level, BMP, TSH and CBC today, results to her and psychiatry.\n2. Records request to psychiatry for the May note and recent visits.\n3. Physical due February. She knows to call or message any time."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-02a",
+          "kind": "portal_message",
+          "start": "2025-07-02T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Tuesday",
+              "date": "2025-07-02T12:30",
+              "author": "PCP",
+              "body": "Hi Andrea, your lithium level is in range and kidney function, calcium, thyroid and blood counts are all normal. Copies sent to your psychiatrist. Glad you are feeling more rested."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-07-02T14:10",
+              "author": "front desk",
+              "body": "Faxed records request to outside psychiatry office for office notes 5/2025 to present, per PCP. Release on file."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20b",
+          "kind": "telephone",
+          "start": "2025-08-20T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Psychiatry records received",
+              "date": "2025-08-20T10:45",
+              "author": "front desk",
+              "body": "Psychiatry office note from 5/8/25 received by fax after July request. Only the one visit sent. Scanned and routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Psychiatry records reviewed",
+              "date": "2025-08-21T07:50",
+              "author": "PCP",
+              "body": "Reviewed the May psychiatry note: manic symptoms, doses continued. Consistent with what she and the ED told us. No action needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "hospital_admission",
+          "start": "2025-11-19T13:30",
+          "end": "2025-12-04T11:00",
+          "service": "Psychiatry",
+          "reason": "auditory hallucinations and delusional thinking",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-19T15:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 213
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-19T15:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-19T15:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-19T13:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-12-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Psychiatry Discharge Summary (received)",
+              "date": "2026-01-22T15:40",
+              "author": "inpatient psychiatry",
+              "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmitted 11/19/2025. Discharged 12/04/2025.\n\nReason for admission: 36-year-old woman with known bipolar I disorder, previously evaluated in May and June 2025 for manic symptoms with grandiosity and overspending, admitted for a month of auditory hallucinations and delusional thinking. She holds the belief that she is a prophet who has been given a special mission to save the world, and this has seriously impaired her social functioning.\n\nHistory: She also describes intermittent spells lasting several days of elevated mood, high energy and reduced need for sleep. Her sister, who participated in the history, observes that these mood spells are separated by weeks in which the patient functions fairly well, but the hallucinations and delusions do not go away during those weeks.\n\nMedications on admission: lithium carbonate 600 mg PO twice daily; quetiapine fumarate 300 mg PO at bedtime.\nAllergies: NKDA.\nFamily history: mother with bipolar I disorder; maternal grandmother with schizophrenia.\nSubstance use: none.\n\nPhysical examination: unremarkable.\nLaboratory: CBC, comprehensive metabolic panel and thyroid function within normal limits.\n\nDischarge diagnosis: schizoaffective disorder, bipolar type (psychotic symptoms persisting outside of mood episodes).\n\nDischarge medications: lithium carbonate 600 mg PO twice daily; quetiapine 300 mg PO at bedtime.\nFollow-up: outpatient psychiatry.\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "portal_message",
+          "start": "2025-12-10T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "was in the hospital",
+              "date": "2025-12-10T21:14",
+              "author": "patient",
+              "body": "Hi, just wanted you to know I was in the psych unit for a couple weeks, got out last Thursday. I'm at my sister's. Same meds. I have follow up with my psychiatrist next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: was in the hospital",
+              "date": "2025-12-11T08:05",
+              "author": "PCP",
+              "body": "Thank you for letting me know, Andrea. I'm glad you're home and with your sister. We'll request the hospital summary so your chart here is current. Message me any time, and let's plan to see you for your physical in the new year."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-12-11T10:30",
+              "author": "front desk",
+              "body": "Discharge summary requested from the hospital's inpatient psychiatry unit (admit 11/19/25). Release signed electronically by pt."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "telephone",
+          "start": "2026-01-13T13:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records follow-up",
+              "date": "2026-01-13T13:45",
+              "author": "front desk",
+              "body": "Discharge summary from December request still not here. Called the hospital medical records line, they had the request in queue. Resent release. Told 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-22b",
+          "kind": "telephone",
+          "start": "2026-01-22T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Discharge summary received",
+              "date": "2026-01-22T16:05",
+              "author": "front desk",
+              "body": "Inpatient psychiatry discharge summary (11/19 to 12/4/25) received. Scanned and routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Discharge summary reviewed",
+              "date": "2026-01-23T08:15",
+              "author": "PCP",
+              "body": "Read the discharge summary. Discharge diagnosis schizoaffective disorder, bipolar type; same lithium and quetiapine doses; following with psychiatry. Will go over it and update her list when she comes in."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "pharmacy",
+          "start": "2026-02-17T11:20",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Pharmacy inquiry",
+              "date": "2026-02-17T11:20",
+              "author": "front desk",
+              "body": "Pharmacy faxed asking whether we prescribe her lithium and quetiapine - patient asked them to check refills. Replied by fax: both are prescribed by her outside psychiatrist, not this office. Pharmacy will contact psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for a checkup",
+              "date": "2026-04-21T12:40",
+              "author": "PCP",
+              "body": "Hi Andrea, checking in. You are due for your physical and lithium blood work - last labs here were in July. Please call or use the portal to book a time that works with your schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "portal_message",
+          "start": "2026-08-13T19:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "appointment",
+              "date": "2026-08-13T19:52",
+              "author": "patient",
+              "body": "Hi I know I missed my physical this year. Can I get in sometime in September? Thursdays are best"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: appointment",
+              "date": "2026-08-14T09:10",
+              "author": "front desk",
+              "body": "Hi Andrea, you're booked Thursday 9/10 at 9:20 for a physical and follow-up. Please come fasting."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:20",
+          "reason": "follow-up and physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Bipolar I disorder, current episode manic, moderate|F31.12": {
+        "code": "F31.12",
+        "display": "Bipolar disorder, current episode manic without psychotic features, moderate",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Bipolar I disorder|F31.9": {
+        "code": "F31.9",
+        "display": "Bipolar disorder, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "lithium carbonate 300 MG Oral Capsule": {
+        "code": "197889",
+        "display": "lithium carbonate 300 MG Oral Capsule",
+        "ingredient": "lithium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "quetiapine 300 MG Oral Tablet": {
+        "code": "312745",
+        "display": "quetiapine 300 MG Oral Tablet",
+        "ingredient": "quetiapine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Lithium": {
+        "code": "14334-7",
+        "display": "Lithium [Moles/volume] in Serum or Plasma",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

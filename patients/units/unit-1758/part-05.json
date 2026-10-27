@@ -1,0 +1,121 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001758",
+      "events": [
+        {
+          "id": "2026-01-15a",
+          "kind": "ed_visit",
+          "start": "2026-01-15T09:10",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath and wheezing after pollen exposure",
+          "conditions": [
+            {"label": "Status asthmaticus with impending respiratory failure", "icd10": "J45.902", "action": "diagnosed", "onset": "2026-01-15"}
+          ],
+          "vitals": [
+            {"time": "2026-01-15T09:15", "bp": [130, 75], "hr": 110, "rr": 28, "temp_c": 37.1, "spo2": 92}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-01-15T09:30", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 75},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-01-15T09:10"},
+            {"procedure": "Nebulizer treatment", "performed": "2026-01-15T09:20"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2026-01-20T13:40", "body": "ED NOTE - brief\n\n33F, asthma (rescue inhaler only), epilepsy on levetiracetam, pituitary macroadenoma, Graves, APL in remission. Two hours of wheeze and breathlessness that began on a morning walk with pollen around. Albuterol x2 at home, little relief. No fever, chills or recent illness.\n\nAllergies: phenytoin (SJS), seasonal pollen.\nMeds: levetiracetam, methimazole, cabergoline, prenatal vitamin, albuterol.\n\nSpO2 92% RA, T 37.1 C, BP 130/75, HR 110, RR 28.\nAnxious, tachypneic, accessory muscle use. Diffuse expiratory wheeze.\nABG: pH 7.45, PaCO2 32, PaO2 75, HCO3 24.\n\nImpression: status asthmaticus with impending respiratory failure.\nTreatment: continuous albuterol with ipratropium, IV methylprednisolone, IV magnesium, supplemental O2. Admitted to step-down for monitoring."}
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "office_visit",
+          "start": "2026-01-21T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after asthma admission",
+          "conditions": [
+            {"label": "Status asthmaticus with impending respiratory failure", "icd10": "J45.902", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (40 mg) by mouth daily for 5 days", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Asthma exacerbation"},
+            {"drug": "120 ACTUAT budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs twice daily; rinse mouth after use", "frequency": "BID", "route": "Inhalation", "course": "chronic", "reason": "Asthma"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2026-01-21T15:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-01-21T15:55", "body": "Seen 6 days after an ED visit and overnight step-down stay for a severe asthma attack (1/15-1/17). ED note not here yet - history from her and her discharge paperwork.\n\nTriggered on a walk. Albuterol didn't touch it. Treated with continuous nebs, IV steroids and magnesium; never needed the ventilator. Discharged 1/17 on prednisone 40 mg x5 days (finishes today) and budesonide-formoterol 160/4.5, 2 puffs twice daily, a new controller. Her inhaler technique looked fine when she showed me.\n\nNow: breathing back to normal, walking without trouble, sleeping through. No fever. Albuterol once since discharge.\n\nMeds: budesonide-formoterol 2 puffs BID, prednisone (last dose today), albuterol prn, levetiracetam 500 BID, methimazole 10, cabergoline 0.5 twice weekly, prenatal vitamin.\nAllergies: phenytoin (SJS); seasonal pollen.\n\nExam: speaking full sentences, vitals as charted, sats normal on RA. Lungs clear, good air entry, no wheeze. Heart regular.\n\nA/P\n1. Status asthmaticus - resolved. That was a dangerous attack for someone on rescue inhaler alone; agree with daily controller going forward. Asthma action plan written with her. Rinse after use.\n2. Steroid burst - finishing. No glucose concerns.\n3. Others unchanged.\nMessage me if she needs albuterol more than twice a week."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T14:25",
+          "medications": [
+            {"drug": "120 ACTUAT budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Metered Dose Inhaler", "action": "stop", "reason": "prescription moved to primary care"},
+            {"drug": "120 ACTUAT budesonide 0.16 MG/ACTUAT / formoterol fumarate 0.0045 MG/ACTUAT Metered Dose Inhaler", "action": "start", "sig": "Inhale 2 puffs twice daily; rinse mouth after use", "frequency": "BID", "route": "Inhalation", "course": "chronic", "reason": "Asthma"}
+          ],
+          "documents": [
+            {"type": "Prior Authorization", "title": "Budesonide-formoterol prior authorization", "author": "MA", "date": "2026-03-10T14:25", "body": "Hospital script for budesonide-formoterol 160/4.5 ran out; pharmacy says plan needs PA for the brand inhaler. Submitted PA with diagnosis and recent admission for status asthmaticus. New Rx from PCP sent, 3 inhalers/90 days. Approved same day, pt notified."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T19:50",
+          "documents": [
+            {"type": "Patient Communication", "title": "Oncology update", "author": "patient", "date": "2026-05-12T19:50", "body": "Quick update - saw oncology today for my 3-month check and counts were normal again. They said they'll start spacing visits out after this year. Breathing has been good all spring with the daily inhaler, only used the rescue one twice."},
+            {"type": "Patient Communication", "title": "RE: Oncology update", "author": "PCP", "date": "2026-05-13T07:15", "body": "Wonderful on both fronts. Keep the controller going through pollen season even when you feel great. See you in August."}
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "office_visit",
+          "start": "2026-08-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up before the school year",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-08-07T10:55", "resulted": "2026-08-07T16:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-08-07T10:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-08-07T10:20"},
+            {"procedure": "Venipuncture", "performed": "2026-08-07T10:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-08-07T11:05", "body": "Mid-year check before school starts back.\n\nAsthma: on budesonide-formoterol twice daily since January, albuterol twice all summer. No night waking. No ED visits since.\nEpilepsy: levetiracetam 500 BID, no seizures.\nAPL: remission, onc visit in May fine, next in August.\nEndocrine: endo in June, staying on cabergoline 0.5 twice weekly and methimazole 10.\n\nMeds: budesonide-formoterol 160/4.5 2 puffs BID, albuterol prn, levetiracetam 500 BID, methimazole 10 daily, cabergoline 0.5 twice weekly, prenatal vitamin daily.\nAllergies: phenytoin (SJS); seasonal pollen.\n\nExam: vitals as charted. Well. Thyroid not enlarged. Lungs clear, no wheeze. Heart regular. Abdomen soft. Skin normal, no bruising or petechiae.\n\nA/P\n- Asthma, now on daily controller: well controlled. Refilled.\n- Epilepsy: stable.\n- APL in remission: CBC today for our records alongside onc.\n- Endocrine: per endo.\n- HM: flu and COVID at the physical in October; Pap due 2027.\nPhysical booked for 10/6."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:20",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results", "author": "PCP", "date": "2026-08-11T12:20", "body": "Morgan - blood counts normal, kidney and liver tests normal. Have a great start to the year."}
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "pharmacy",
+          "start": "2026-08-19T09:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Levetiracetam refill", "author": "RN", "date": "2026-08-19T09:30", "body": "Pharmacy request levetiracetam 500 mg #180. Seen 8/7, seizure-free. Approved x1 refill."}
+          ]
+        },
+        {
+          "id": "2026-10-06a",
+          "kind": "annual_physical",
+          "start": "2026-10-06T15:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

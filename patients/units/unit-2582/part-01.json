@@ -1,0 +1,120 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002582",
+      "given": "August",
+      "family": "Pratt",
+      "birth_date": "2002-12-06",
+      "address_line": "118 Plain St, Easthampton, MA 01027",
+      "phone": "+1-201-555-0175",
+      "email": "august.pratt@example.test",
+      "marital_status": "single",
+      "summary": "Healthy active-duty Army infantryman who joined in 2023 at 20. Over 17 months he survives a gunshot wound with hemorrhagic shock and coagulopathy, a lake submersion with ARDS, and a high-speed collision with an unstable pelvic fracture and fat embolism syndrome; the last discharge summary has not arrived as of today.",
+      "events": [
+        {
+          "id": "2023-08-28a",
+          "kind": "telephone",
+          "start": "2023-08-28T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2023-08-28T10:20", "body": "Caller is a 20 y/o man asking to become a patient. Active duty Army, lives in Easthampton, nearest military clinic is far enough that he is on TRICARE Prime Remote and was told to pick a local PCM. Confirmed we accept TRICARE for outside services and explained the membership piece; he is fine with it. No current meds, no health problems he knows of. New patient physical booked 9/12 at 8:40. Asked him to bring or upload his shot record from the Army if he can get it."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 80.4, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "U.S. Army infantryman, active duty"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 drinks weekly"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-12T09:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T09:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T09:15", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-12T09:15", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T09:15", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-12T09:25"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-09-12T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T09:15"},
+            {"procedure": "Immunization administration", "performed": "2023-09-12T09:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2023-09-12T08:40", "body": "20 y/o M establishing care. Infantry, active duty, assigned locally and covered under TRICARE Prime Remote, so we are his PCM for anything off post. Says he has never really had a doctor since basic; just the unit physicals.\n\nPMH: none. No hospitalizations, no surgeries. Meds: none, no supplements. Allergies: none to drugs.\nFamily: nothing he knows of on either side.\nSocial: single, lives alone in Easthampton. Never smoked or vaped. 1-2 beers a week, socially. No drugs. Runs and rucks for work, lifts 3x/wk.\nROS: negative across the board.\n\nExam: well, fit-appearing young man. Vitals as charted. HEENT normal, TMs clear. Neck supple, no nodes or thyroid enlargement. Heart RRR, no murmurs. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without concerning lesions. Ext without edema, full ROM. Neuro grossly intact.\n\nA/P\n- Healthy adult, preventive care. Baseline CBC, CMP, lipids. One-time HIV and hep C screening, he agrees.\n- Immunizations: flu today. Will look at the Army record when it comes in for the rest.\n- PHQ-2 0. AUDIT-C low.\n- Return yearly or as needed."}
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:05",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your Lab Results", "author": "PCP", "date": "2023-09-14T16:05", "body": "Hi August, everything from Tuesday came back normal: blood counts, kidney and liver numbers, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "outside_records",
+          "start": "2023-09-20T11:30",
+          "reason": "immunization record",
+          "documents": [
+            {"type": "Outside Records", "title": "Military Immunization Record (received)", "author": "front desk", "date": "2023-09-20T11:30", "body": "Army immunization record uploaded by patient to the portal and scanned to chart. Shows childhood series complete, HPV series complete, meningococcal conjugate and hepatitis B series complete, tetanus booster current at accession. Forwarded to PCP for review."},
+            {"type": "Progress Notes", "title": "Records Review", "author": "PCP", "date": "2023-09-21T07:50", "body": "Reviewed Army shot record. Up to date for his age apart from yearly flu, which he got here. Nothing further needed."}
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "office_visit",
+          "start": "2024-04-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-04-09b",
+          "kind": "telephone",
+          "start": "2024-04-09T16:40",
+          "reason": "missed appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2024-04-09T16:40", "body": "Pt did not come to 3:20 appt. Left VM. He texted back that he was in the field all week and forgot to cancel. Nothing urgent per pt; will just come for his physical in the fall."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-08T08:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-10-08T08:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T08:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T08:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-10-08T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-10-08T08:35"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-08T08:00", "body": "Yearly visit. 21 y/o, active duty infantry. Feels great, no complaints. Passed his unit PT test last month. Sleeping ok. Still no tobacco, a couple of drinks a week at most.\nMeds none. NKDA.\n\nExam: vitals as charted. Healthy-appearing. Eyes, ears, throat normal. No adenopathy. Cardiac regular without murmur. Lungs clear throughout. Abd soft, benign. Skin clear. Extremities normal, no edema. Neuro normal.\n\nA/P: well adult.\n- CBC and BMP for his unit's paperwork, he asked.\n- Flu and updated COVID shot today, left and right arm.\n- PHQ-2 negative.\n- Back next fall."},
+            {"type": "Patient Message", "title": "Lab Results", "author": "RN", "date": "2024-10-09T13:10", "body": "Your blood count and chemistry panel from yesterday are normal. A printed copy is at the front desk if your unit needs it."}
+          ]
+        }
+      ]
+    }
+  ]
+}

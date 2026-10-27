@@ -27,3 +27,8 @@
 - 2026-07-14 portal_message: results, forwarded to endocrinology (A4)
 - 2026-08-11 portal_message: books annual physical (P)
 - 2026-09-22 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001858 on 2025-10-09. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

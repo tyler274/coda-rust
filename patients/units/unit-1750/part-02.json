@@ -1,0 +1,296 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001750",
+      "events": [
+        {
+          "id": "2025-01-08a",
+          "kind": "portal_message",
+          "start": "2025-01-08T13:02",
+          "documents": [
+            {"type": "Patient Communication", "title": "Insurance Update", "author": "patient", "date": "2025-01-08T13:02", "body": "My dad's job switched carriers for the new year so I have a new card. Front and back photos attached. Same plan type, still through him."},
+            {"type": "Patient Communication", "title": "Insurance Updated", "author": "front desk", "date": "2025-01-08T15:40", "body": "Got it, new coverage is entered and verified. Thanks Juniper."}
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "telephone",
+          "start": "2025-08-05T16:25",
+          "orders": [{"id": "gyn-referral", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "fever with pelvic pain and discharge"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Phone Call", "author": "PCP", "date": "2025-08-05T16:40", "body": "Called back after her text. Three days of fevers and shaking chills, aching low in the pelvis, a new discharge, and pain with sex. Last period about two weeks ago. No vomiting, eating and drinking.\n\nNeeds a pelvic exam and probably same-day treatment. Our office has no speculum slots left today; spoke with the gynecology clinic downtown, who can see her at 9:30 tomorrow. Told her to go to the ED tonight if pain gets much worse, she can't keep fluids down, or she feels faint. She agreed."}
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "specialist_visit",
+          "start": "2025-08-06T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Fever, pelvic pain, vaginal discharge",
+          "vitals": {"temp_c": 38.8},
+          "measure": ["bp", "hr"],
+          "conditions": [
+            {"label": "Gonococcal pharyngitis and pelvic inflammatory disease", "icd10": "A54.24", "action": "diagnosed", "onset": "2025-08-03", "note": "Endocervical and pharyngeal NAAT positive for gonorrhea"},
+            {"label": "High risk sexual behavior", "icd10": "Z72.51", "action": "diagnosed", "onset": "2025-08-06"}
+          ],
+          "medications": [
+            {"drug_text": "ceftriaxone 500 MG Injection", "action": "start", "sig": "500 mg IM once in clinic", "dose": {"value": 500, "unit": "mg"}, "frequency": "ONCE", "route": "Intramuscular", "course": "short", "reason": "Pelvic inflammatory disease"},
+            {"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 14 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Pelvic inflammatory disease"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-08-06T09:50", "resulted": "2025-08-06T10:05", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": null, "collected": "2025-08-06T10:00", "resulted": "2025-08-08T07:30", "results": [
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Detected (endocervical swab); Detected (pharyngeal swab)"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "orders": [{"id": "gyn-referral", "action": "done", "date": "2025-08-06T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Clinic Letter", "author": "gynecology", "date": "2025-08-08T13:00", "body": "Date of visit: 08/06/2025\nReason: urgent referral from primary care, fever and pelvic pain\n\nThank you for sending Ms. Hanlon, 22. For three days she has had fevers with chills, lower abdominal pain, a vaginal discharge, and deep pain with intercourse. LMP two weeks prior. She reports several partners over the past year and says condoms are not used every time. No sore throat.\n\nMeds: none. Allergies: NKDA. FH: mother hypothyroid (dx mid-40s), father hypertensive (dx about 50); no autoimmune or recurrent-infection history in the family.\n\nExam: T 101.8 F (38.8 C). Abdomen soft, tender in both lower quadrants without peritoneal signs. Speculum: purulent discharge from the os. Bimanual: cervical motion tenderness, bilateral adnexal tenderness, no mass. Incidentally a single small pustule on the left finger. Oropharynx unremarkable.\n\nUrine hCG negative in clinic. Endocervical and pharyngeal swabs sent for GC/CT NAAT.\n\nAssessment: pelvic inflammatory disease, mild to moderate, suitable for outpatient treatment.\nPlan: ceftriaxone 500 mg IM given in clinic. Doxycycline 100 mg PO BID x14 days. Avoid intercourse until she and partners are treated; she will notify recent partners. Condoms discussed at length.\n\nAddendum 08/08: NAAT returned. Gonorrhea detected at both the endocervical and pharyngeal sites; chlamydia not detected. Final diagnosis gonococcal PID with gonococcal pharyngitis; treatment above covers both. Patient informed by phone.\n\nAllergies: NKDA.\nGynecology clinic"}
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "portal_message",
+          "start": "2025-08-11T08:50",
+          "documents": [
+            {"type": "Patient Communication", "title": "Checking In", "author": "PCP", "date": "2025-08-11T08:50", "body": "Hi Juniper, I got the gynecology letter and the swab results. How are you feeling? Make sure you finish all 14 days of the doxycycline, take it with a full glass of water and stay upright for a bit after."},
+            {"type": "Patient Communication", "title": "Re: Checking In", "author": "patient", "date": "2025-08-11T12:14", "body": "Much better, thank you. No fever since Friday and the cramping is mostly gone. On day 6 of the pills. I told the people I needed to tell."}
+          ]
+        },
+        {
+          "id": "2025-09-14a",
+          "kind": "ed_visit",
+          "start": "2025-09-14T13:10",
+          "end": "2025-09-14T19:45",
+          "service": "Emergency Medicine",
+          "reason": "Right upper quadrant pain and fever",
+          "vitals": [{"time": "2025-09-14T13:18", "temp_c": 38.2, "hr": 110, "bp": [125, 75]}],
+          "conditions": [{"label": "Fitz-Hugh-Curtis syndrome", "icd10": "A54.85", "action": "diagnosed", "onset": "2025-09-12"}],
+          "medications": [
+            {"drug_text": "ceftriaxone 1000 MG Injection", "action": "start", "sig": "1 g IV once in the ED", "dose": {"value": 1, "unit": "g"}, "frequency": "ONCE", "route": "Intravenous", "course": "short", "reason": "Fitz-Hugh-Curtis syndrome"},
+            {"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 14 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Fitz-Hugh-Curtis syndrome"},
+            {"drug_text": "metronidazole 500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 14 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Fitz-Hugh-Curtis syndrome"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-09-14T13:40", "resulted": "2025-09-14T14:20", "results": [
+              {"test": "White Blood Cells", "value": 12.0},
+              {"test": "Hemoglobin", "value": 13.2},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-14T13:40", "resulted": "2025-09-14T14:45", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 70},
+              {"test": "Alanine Aminotransferase", "value": 85},
+              {"test": "Bilirubin, Total", "value": 1.2},
+              {"test": "Alkaline Phosphatase", "value": 120}
+            ]},
+            {"panel": null, "collected": "2025-09-14T13:40", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2025-09-14T15:20", "text": "Technique: transabdominal and transvaginal grayscale and color flow imaging. Uterus anteverted, normal size and contour; endometrium thin and uniform. Both ovaries normal in size with normal follicles and arterial and venous flow present bilaterally. No adnexal mass, no tubo-ovarian abscess, no free fluid. No intrauterine or extrauterine gestation.", "conclusion": "No ectopic pregnancy. No ovarian torsion. Normal pelvic ultrasound."},
+            {"study": "Right upper quadrant ultrasound", "performed": "2025-09-14T15:45", "text": "Liver normal in size and echotexture without focal lesion. Gallbladder thin-walled without stones, sludge or pericholecystic fluid; no focal tenderness over the gallbladder with the probe. Common bile duct 3 mm. No intrahepatic ductal dilatation. Right kidney unremarkable. No ascites.", "conclusion": "Normal right upper quadrant ultrasound. No cholecystitis."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-09-14T13:10"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-09-15T09:30", "body": "ED provider note, 09/14/2025\n\n23F, treated about a month ago by gynecology for gonococcal PID with pharyngeal involvement (ceftriaxone, doxycycline). Now with sharp, steady right upper quadrant pain that catches when she breathes in, a week of low fevers, and a dull cramping ache in the lower abdomen. LMP three weeks ago, normal. Reports multiple partners, condoms not consistent.\n\nMeds: none currently. Allergies: NKDA.\n\nVS: T 38.2 C (100.8 F), HR 110, BP 125/75.\nExam: uncomfortable but nontoxic. RUQ tender, no rebound, no guarding. Lungs clear. Pelvic: cervical motion tenderness.\n\nLabs: WBC 12.0, Hgb 13.2, Plt 250. AST 70, ALT 85, T bili 1.2, alk phos 120. Urine hCG negative.\nImaging: TVUS without ectopic or torsion; RUQ US normal, gallbladder unremarkable.\n\nMDM: perihepatitis in a patient with recent gonococcal PID; Fitz-Hugh-Curtis syndrome. Cholecystitis and ectopic excluded by imaging. Tolerating PO, pain controlled.\n\nTx: ceftriaxone 1 g IV given. Discharged on doxycycline 100 mg BID and metronidazole 500 mg BID, 14 days each. Abstain until course done. See PCP within a few days; return for worsening pain, vomiting, high fever.\n\nAllergies: NKDA.\nRegional ED"}
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "office_visit",
+          "start": "2025-09-17T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, Fitz-Hugh-Curtis syndrome",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-09-17T11:35", "resulted": "2025-09-18T16:00", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Rapid Plasma Reagin", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-09-17T11:00"},
+            {"procedure": "Venipuncture", "performed": "2025-09-17T11:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-09-17T11:50", "body": "Seen in the ED Sunday with right upper belly pain that hurt on inspiration; diagnosed with Fitz-Hugh-Curtis perihepatitis after last month's gonococcal PID. Got IV ceftriaxone there; now on doxycycline plus metronidazole, day 3 of 14. No missed doses, tolerating both. Fever broke Monday. RUQ ache is maybe half of what it was; breathing deep is less sore.\n\nExam: afebrile, HR down to normal range. Mildly tender RUQ, no guarding. Lower abdomen soft.\n\nA/P\n1. Fitz-Hugh-Curtis syndrome, improving on treatment. Finish both antibiotics. No alcohol while on metronidazole and for 3 days after. Recheck liver enzymes in a few weeks at her physical.\n2. Gonococcal PID/pharyngitis, treated in August.\n3. High-risk sexual exposure. HIV and RPR today. Long talk about condoms every time; she was receptive.\n\nCall or text if fever returns."}
+          ]
+        },
+        {
+          "id": "2025-09-19a",
+          "kind": "portal_message",
+          "start": "2025-09-19T09:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results Message", "author": "PCP", "date": "2025-09-19T09:05", "body": "HIV and syphilis tests both negative. Keep going with the antibiotics, and we'll check your liver numbers at your October physical."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, follow-up after perihepatitis",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "conditions": [
+            {"label": "Gonococcal pharyngitis and pelvic inflammatory disease", "icd10": "A54.24", "action": "resolved"},
+            {"label": "Fitz-Hugh-Curtis syndrome", "icd10": "A54.85", "action": "resolved"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-10-07T16:05", "resulted": "2025-10-08T13:20", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 21},
+              {"test": "Alanine Aminotransferase", "value": 18},
+              {"test": "Alkaline Phosphatase", "value": 74},
+              {"test": "Bilirubin, Total", "value": 0.6}
+            ]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T16:00"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-10-07T15:30"},
+            {"procedure": "Venipuncture", "performed": "2025-10-07T16:05"},
+            {"procedure": "Immunization administration", "performed": "2025-10-07T16:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-07T16:20", "body": "Physical, combined with follow-up of the late-summer infections.\n\nFinished doxycycline and metronidazole late September. Pain completely gone, both pelvic and under the ribs. No discharge, no fevers. Periods normal. Third year of the program, teaching a section this term.\n\nPHQ-9 3. Never smoker; drinking one or two a week again.\n\nExam: well. Vitals as charted. Throat clear. Heart regular, no murmur; lungs clear. Abdomen soft, no RUQ tenderness, no lower quadrant tenderness. Skin without lesions.\n\nAssessment/plan:\n- Gonococcal PID with pharyngeal infection: treated, resolved.\n- Fitz-Hugh-Curtis syndrome: resolved clinically; hepatic panel today.\n- Sexual health: condoms reviewed again; she knows to come in for testing with any new partner or symptoms.\n- Flu vaccine today. COVID at the pharmacy.\n- Pap due fall 2026.\n- See in a year."}
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T07:55",
+          "documents": [
+            {"type": "Patient Communication", "title": "Liver Tests", "author": "PCP", "date": "2025-10-09T07:55", "body": "Your liver tests are back to completely normal. That fits with the inflammation around the liver having healed. Nothing more to do here."}
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "pharmacy",
+          "start": "2025-10-22T18:10",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-22T18:10"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy Immunization Record", "author": "MA", "date": "2025-10-24T09:20", "body": "Registry update: 2025-2026 COVID-19 vaccine, community pharmacy, 10/22/2025. Added to immunization history."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "telephone",
+          "start": "2026-02-12T07:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Phone Call", "author": "PCP", "date": "2026-02-12T07:55", "body": "Texted at 7:20, called her back. Since the weekend: high fevers, joints that hurt and puff up and seem to move around (wrists, then knees, now ankles), and this morning she can barely walk to the bathroom. Also small red bumps with white tops on her chest and arms.\n\nWith her history this needs blood cultures, a joint tap and IV antibiotics today. Told her to go straight to the ED; a friend is driving her. I called ahead to the ED attending."}
+          ]
+        },
+        {
+          "id": "2026-02-12b",
+          "kind": "ed_visit",
+          "start": "2026-02-12T08:35",
+          "end": "2026-02-12T14:20",
+          "service": "Emergency Medicine",
+          "reason": "Fever, migratory joint pain, pustular rash",
+          "vitals": [{"time": "2026-02-12T08:42", "temp_c": 39.2, "hr": 110, "bp": [120, 75]}],
+          "conditions": [{"label": "Disseminated gonococcal infection", "icd10": "A54.89", "action": "diagnosed", "onset": "2026-02-08"}],
+          "labs": [
+            {"panel": null, "collected": "2026-02-12T10:15", "resulted": "2026-02-12T11:20", "results": [
+              {"test": "White Blood Cells, Synovial Fluid", "loinc": "26469-7", "unit": "/uL", "value": 20000},
+              {"test": "Neutrophils %, Synovial Fluid", "loinc": "26522-3", "unit": "%", "value": 90},
+              {"test": "Synovial fluid stain for organisms", "loinc": "664-3", "text": "No organisms seen"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-02-12T08:35"},
+            {"procedure": "Arthrocentesis or injection, major joint", "performed": "2026-02-12T10:15"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-02-13T10:00", "body": "ED provider note, 02/12/2026. PCP called ahead.\n\n23F with gonococcal PID last August and Fitz-Hugh-Curtis perihepatitis in September, both treated. Several days of high fever; pain and swelling that has moved between the wrists, knees and ankles, now hard to bear weight. New small red pustules over the trunk and arms. Takes no medications. NKDA. Multiple partners, condom use inconsistent.\n\nVS: T 39.2 C (102.5 F), HR 110, BP 120/75.\nSkin: scattered pustules on an erythematous base, trunk and extremities. MSK: affected joints tender and swollen; passive range painful. Abdomen soft.\n\nProcedure: knee arthrocentesis, sterile technique, cloudy yellow fluid. Synovial fluid WBC 20,000/uL, 90% neutrophils. Stain without organisms. Culture sent, pending. Blood cultures x2 and genital/pharyngeal/rectal swabs sent before antibiotics.\n\nMDM: fever, migratory polyarthritis and pustular dermatitis in a young woman with prior gonorrhea; disseminated gonococcal infection. Admit to medicine for IV ceftriaxone.\n\nAllergies: NKDA.\nRegional ED"}
+          ]
+        },
+        {
+          "id": "2026-02-12c",
+          "kind": "hospital_admission",
+          "start": "2026-02-12T14:20",
+          "end": "2026-02-19T11:30",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Disseminated gonococcal infection",
+          "medications": [
+            {"drug_text": "ceftriaxone 1000 MG Injection", "action": "start", "sig": "1 g IV every 24 hours for 7 days", "dose": {"value": 1, "unit": "g"}, "frequency": "DAILY", "route": "Intravenous", "course": "short", "reason": "Disseminated gonococcal infection"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-02-12T09:05", "resulted": "2026-02-17T09:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days (2 of 2 sets)"}]},
+            {"panel": null, "collected": "2026-02-12T10:15", "resulted": "2026-02-15T10:30", "results": [{"test": "Synovial fluid culture", "loinc": "6463-4", "text": "No growth, final"}]},
+            {"panel": null, "collected": "2026-02-12T09:20", "resulted": "2026-02-14T08:00", "results": [
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Detected (endocervical swab); Not detected (pharyngeal swab); Not detected (rectal swab)"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"},
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-02-12T15:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-02-19T10:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2026-02-20T08:15", "body": "Admitted 02/12/2026, discharged 02/19/2026\nDiagnosis: disseminated gonococcal infection (arthritis-dermatitis form)\n\nCourse: admitted from the ED after knee aspiration showed inflammatory fluid (WBC 20,000, 90% PMNs, no organisms on stain). Started ceftriaxone 1 g IV q24h and completed 7 days. Afebrile from hospital day 2. Joint swelling settled over the first several days; walking the halls by day 4. Pustules dried and crusted.\n\nMicro: blood cultures 2/2 no growth. Synovial culture no growth, final. Endocervical NAAT positive for gonorrhea; pharyngeal and rectal NAAT negative. Chlamydia negative. HIV Ag/Ab nonreactive.\n\nDischarge meds: none.\nAllergies: NKDA.\nCondition: good.\nInstructions: no sex until seen by PCP; partners from the past 60 days need testing and treatment (health department notified per routine). Follow up with PCP in about a week; retest for gonorrhea in 3 months.\n\nHospital medicine"}
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, disseminated gonococcal infection",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2026-02-24T10:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-02-24T10:55", "body": "Home since Thursday after a week inpatient for disseminated gonorrhea. Read the discharge summary; cultures all negative, cervical NAAT positive, HIV negative. Finished the full 7 days of IV ceftriaxone in the hospital, nothing to take at home.\n\nToday: no fevers. Joints feel close to normal; knees and ankles no longer swollen, wrists fine for typing. Walked in from the lot without trouble. Spots on her arms have faded to small brown marks.\n\nExam: afebrile. Wrists, knees and ankles without effusion or warmth, full range without pain. A few flat healing macules on the forearms, no pustules.\n\nA/P\n1. Disseminated gonococcal infection, treated, clinically resolving.\n2. High-risk sexual behavior. Second gonococcal infection in six months. Talked frankly and without judgment about condoms with every partner, fewer partners, and testing with any new partner. She says the hospital stay scared her. Retest for gonorrhea and chlamydia in about 3 months.\n\nVideo check-in in a month."}
+          ]
+        },
+        {
+          "id": "2026-03-31a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-31T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, disseminated gonococcal infection",
+          "conditions": [{"label": "Disseminated gonococcal infection", "icd10": "A54.89", "action": "resolved"}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2026-03-31T12:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2026-03-31T12:50", "body": "Video from her office on campus. Feels entirely back to herself. No joint pain or swelling, running again a couple of times a week. Skin marks gone. No fevers since discharge. No pelvic symptoms.\n\nDisseminated gonococcal infection resolved. Plan retest swabs in June when she's in for a visit, about 4 months out from treatment. Condoms, she says, every time now."}
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "office_visit",
+          "start": "2026-06-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "STI retest after treatment",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-06-18T09:25", "resulted": "2026-06-20T07:45", "results": [
+              {"test": "Neisseria gonorrhoeae NAAT", "text": "Not detected (endocervical swab); Not detected (pharyngeal swab)"},
+              {"test": "Chlamydia trachomatis NAAT", "text": "Not detected"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-06-18T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-06-18T09:40", "body": "Here for the post-treatment retest. Feeling well; no pelvic pain, discharge, sore throat, joint symptoms or rash. Using condoms consistently, she reports.\n\nExam: vitals as noted. Oropharynx clear. Joints without swelling. Skin clear.\n\nPlan: endocervical and pharyngeal swabs for GC/CT NAAT today. Results by portal. Pap is due in the fall along with her physical and flu shot; front desk to send a reminder in August."}
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T08:30",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results Message", "author": "PCP", "date": "2026-06-22T08:30", "body": "Good news, both swabs were negative for gonorrhea and chlamydia. Enjoy the summer."},
+            {"type": "Patient Communication", "title": "Re: Results Message", "author": "patient", "date": "2026-06-22T09:47", "body": "Thank you!! Huge relief."}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "portal_message",
+          "start": "2026-07-14T16:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Records Request", "author": "patient", "date": "2026-07-14T16:05", "body": "Could I get a printout of my vaccine record? I'm applying for a research assistant job for the fall and they want proof."},
+            {"type": "Patient Communication", "title": "Re: Records Request", "author": "front desk", "date": "2026-07-15T10:10", "body": "Your immunization record is attached as a PDF here in your messages. Let us know if they need it on a specific form."}
+          ]
+        }
+      ]
+    }
+  ]
+}

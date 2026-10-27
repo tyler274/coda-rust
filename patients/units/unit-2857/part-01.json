@@ -1,0 +1,453 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002857",
+      "given": "Ruth",
+      "family": "McKenna",
+      "birth_date": "1946-01-30",
+      "address_line": "14 Lathrop Woods Road",
+      "phone": "+1-617-555-0183",
+      "email": "ruth.mckenna@example.test",
+      "marital_status": "married",
+      "summary": "Retired elementary school teacher with COPD who joins the practice in 2016, is diagnosed with osteoporosis in 2018, and then has pill esophagitis on alendronate, two T12 compression fractures, a left hip fracture, two C. difficile infections and, in 2026, an early-stage serous ovarian carcinoma treated surgically. No osteoporosis drug follows the alendronate.",
+      "events": [
+        {
+          "id": "2016-09-13a",
+          "kind": "establish_care",
+          "start": "2016-09-13T09:30",
+          "end": "2016-09-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2012-06-01",
+              "note": "Diagnosed at prior practice by spirometry; no inhaler in use"
+            },
+            {
+              "label": "Asymptomatic menopausal state",
+              "icd10": "Z78.0",
+              "action": "history",
+              "onset": "1997-06-01",
+              "note": "Menopause at 51, no hormone therapy"
+            },
+            {
+              "label": "Osteoarthritis of knee",
+              "icd10": "M17.9",
+              "action": "history",
+              "onset": "2010-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 to 2 tablets by mouth as needed for knee pain (over the counter, occasional)",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "knee osteoarthritis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 58.0,
+            "height_cm": 158.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About one glass of wine a week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired elementary school teacher"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2016-09-13T10:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2016-09-13T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2016-09-13T10:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2016-09-13T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.84
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2016-09-13T10:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-09-13T10:25"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2016-09-13T10:28"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2016-09-13T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2016-09-13T10:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2016-09-13T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2016",
+              "action": "placed",
+              "order": "Request outside records from prior primary care practice",
+              "category": "procedure",
+              "reason": "transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2016-09-13T10:35",
+              "body": "70 y/o retired elementary school teacher here to establish. Her previous internist retired this summer and a neighbor sent her our way. Brought a handwritten list.\n\nPMH (per pt, records to follow):\n- COPD. Told about four years ago after a breathing test at the old office. Gets winded on hills, otherwise fine. Never put on an inhaler. No hospital stays for her lungs.\n- Knee arthritis; knees ache after gardening; takes OTC ibuprofen a couple of times a month. Not every week.\n- Postmenopausal since 51. Never took hormones.\n\nPSH: none. 3 vaginal deliveries.\nMeds: multivitamin daily. Ibuprofen OTC occasional as above.\nAllergies: NKDA.\n\nFHx: mother broke her hip, told it was from thin bones. Father had COPD. Maternal grandmother died of ovarian cancer.\n\nSHx: married, husband retired too. Three grown children, two in state. Former smoker, quit in her mid-50s. Glass of wine on a Saturday night, that's it. No regular exercise, walks the dog some. Eats well. No calcium or vitamin D.\n\nROS: no cough or sputum day to day. No chest pain. No GI complaints. Sleeps ok. Mood good.\n\nExam: vitals as charted. Pleasant, slim. HEENT unremarkable. Lungs with mildly decreased breath sounds at the bases, no wheeze, no crackles. Heart RRR, no murmur. Abdomen soft. Knees with bony enlargement and crepitus, full ROM, no effusion. No edema. Neuro grossly intact.\n\nA/P\n1. COPD by history, mild symptoms, no exacerbations. Will look at old spirometry when records come. No inhaler for now.\n2. Knee OA. Occasional ibuprofen ok at this frequency, take with food.\n3. Health maintenance: Tdap and Prevnar 13 today. PPSV23 next year. Flu shot once in stock. Labs today incl. lipids, TSH, hep C screen. Colonoscopy and mammograms were done at the old office, will confirm dates from records. Bone density: asked her to think about it, will bring up at her wellness visit.\n4. Records release signed.\n\nRTC 6 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2016-09-20a",
+          "kind": "portal_message",
+          "start": "2016-09-20T14:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2016-09-20T14:12",
+              "body": "Hi Mrs. McKenna, your blood work from last week came back fine. Kidney and liver tests, blood count, thyroid and cholesterol are all in the normal range, and the hepatitis C screen was negative. Nothing to change. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2016-10-11a",
+          "kind": "nurse_visit",
+          "start": "2016-10-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2016-10-11T11:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2016-10-11T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2016-10-11T11:15",
+              "body": "High-dose flu vaccine given IM left deltoid. Screening questions negative, no prior reactions. Tolerated well, VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2016-10-24a",
+          "kind": "outside_records",
+          "start": "2016-10-24T09:00",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2014-05-20T10:00",
+              "text": "Outside pulmonary function study (prior practice, scanned). Pre-bronchodilator FEV1/FVC 0.66. FEV1 74% of predicted. FVC within normal limits. No significant change after bronchodilator. Effort and reproducibility acceptable.",
+              "conclusion": "Persistent airflow obstruction consistent with COPD, mild to moderate. No significant bronchodilator response."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "author": "front desk",
+              "date": "2016-10-24T09:00",
+              "body": "58 pages received from prior internist's office, scanned to media.\n\nPCP review of highlights:\n- Spirometry 5/2014: obstruction, FEV1 74% predicted, ratio 0.66, no bronchodilator response. That's the COPD diagnosis.\n- Colonoscopy 2013: normal to the terminal ileum, no polyps. Prior office recommended 10 years.\n- Screening mammograms every other year, most recent 2015, all negative.\n- Paps normal through her 60s, then stopped.\n- No DXA on file.\n- Med list there: multivitamin only. Allergies NKDA.\nNothing in here that changes the plan."
+            }
+          ]
+        },
+        {
+          "id": "2017-03-15a",
+          "kind": "office_visit",
+          "start": "2017-03-15T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2017-03-15T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2016",
+              "action": "done",
+              "date": "2017-03-15T10:15"
+            },
+            {
+              "id": "mammo-2017",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2017-03-15T10:40",
+              "body": "S: Doing well over the winter. No chest colds. Gets a little short of breath carrying laundry up from the basement, same as always. Knees cranky in the cold; still only takes ibuprofen now and then. Walking the dog most days.\n\nReviewed old records with her: spirometry from 2014 confirms COPD. Colonoscopy 2013 normal.\n\nO: Vitals as charted. Lungs clear, slightly diminished at bases, no wheeze. Heart regular. Knees with crepitus, no effusion.\n\nA/P\nCOPD, stable, mild. Discussed an albuterol inhaler to have at home; she'd rather not, doesn't feel she needs it. Fine.\nKnee OA, stable.\nMammogram due, ordered.\nWellness visit in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2017-04-04a",
+          "kind": "imaging",
+          "start": "2017-04-04T08:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2017-04-04T08:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison with prior outside studies. Breasts are heterogeneously dense in part (scattered fibroglandular density). No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2017",
+              "action": "done",
+              "date": "2017-04-04T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "MA",
+              "date": "2017-04-06T13:20",
+              "body": "Called pt with normal mammogram result per PCP. She was glad to hear it."
+            }
+          ]
+        },
+        {
+          "id": "2017-06-12a",
+          "kind": "telephone",
+          "start": "2017-06-12T15:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone call",
+              "author": "RN",
+              "date": "2017-06-12T15:05",
+              "body": "Pt called asking whether she needs a shingles shot before a summer trip to see her daughter. Explained the newer shingles vaccine isn't available here yet; PCP will offer it when it is. No other concerns."
+            }
+          ]
+        },
+        {
+          "id": "2017-09-19a",
+          "kind": "annual_physical",
+          "start": "2017-09-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2017-09-19T09:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2017-09-19T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2017-09-19T09:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2017-09-19T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-09-19T09:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2017-09-19T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2018",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "osteoporosis screening, postmenopausal woman over 65"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2017-09-19T09:40",
+              "body": "Initial AWV.\n\nFunctional: independent with all daily tasks, drives, manages her own medications and money. Lives with husband in a two-story house. No falls in the past year. Hearing and vision fine with readers.\nMood: PHQ-2 negative.\nCognition: no concerns from her or her husband; recall 3/3.\nHabits: former smoker, wine about once a week, walks some.\n\nExam brief: vitals as charted. Lungs with distant sounds at bases, no wheeze. Heart regular.\n\nPrevention:\n- PPSV23 today (PCV13 done last year).\n- Flu shot next month at a nurse visit.\n- Mammogram done in April, normal.\n- Colonoscopy 2013 normal; one more possible before 75, she'd like to wait.\n- Never had a bone density test. Mother's hip fracture noted. Ordered DXA; she says she'll schedule it after the holidays.\n- Advance directive: she and her husband have health care proxies naming each other. Copy requested.\n\nLabs today. Follow up 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2017-10-12a",
+          "kind": "nurse_visit",
+          "start": "2017-10-12T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2017-10-12T14:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-10-12T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2017-10-12T14:40",
+              "body": "Fluzone High-Dose IM R deltoid. No egg or vaccine reactions. Pt tolerated, left after brief observation."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

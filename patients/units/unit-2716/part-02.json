@@ -1,0 +1,190 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002716",
+      "events": [
+        {
+          "id": "2024-01-29a",
+          "kind": "specialist_visit",
+          "start": "2024-01-29T10:30",
+          "service": "Gastroenterology",
+          "reason": "Dysphagia and non-cardiac chest pain",
+          "conditions": [
+            {"label": "Dyskinesia of esophagus", "icd10": "K22.4", "action": "diagnosed", "onset": "2023-07-01", "note": "diffuse esophageal spasm pattern on esophagram and manometry"}
+          ],
+          "orders": [
+            {"id": "gi-2023", "action": "done", "date": "2024-01-29T10:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology consultation", "author": "gastroenterology", "date": "2024-03-04T09:00", "body": "Outside gastroenterology practice. Initial visit 01/29/2024; studies completed in February.\n\nDear colleague,\nI saw Ms. Marino, 57, for half a year of on-and-off difficulty swallowing and chest pain your office judged non-cardiac. The pain is crampy, stays in the chest, sometimes comes with eating, and antacids have not helped. Your ECG from November was normal.\nCurrent medicines: hydrochlorothiazide, haloperidol, benztropine, raloxifene, vitamin D, acetaminophen as needed. No drug allergies.\nExamination was normal.\n\nBarium esophagram: intermittent segments of simultaneous contraction producing a corkscrew configuration of the esophagus.\nHigh-resolution esophageal manometry: multiple simultaneous contractions in the mid and distal esophagus.\n\nImpression: esophageal dysmotility, diffuse esophageal spasm pattern.\nRecommendations: small bites, eat slowly and sitting upright, drink fluids with meals, avoid very hot or cold drinks. Follow up here as needed if symptoms worsen.\n\nSincerely,\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "portal_message",
+          "start": "2024-03-04T17:30",
+          "documents": [
+            {"type": "Patient Message", "title": "GI letter", "author": "patient", "date": "2024-03-04T17:30", "body": "Did you get the letter from the stomach doctor? They said my food pipe squeezes all at once instead of in a wave. They didn't give me a pill, just told me how to eat. Is that right?"},
+            {"type": "Patient Message", "title": "Re: GI letter", "author": "PCP", "date": "2024-03-05T08:15", "body": "Yes, it came in yesterday. That's a fair summary: the muscle of your esophagus contracts in a spasm pattern. Eating slowly, small bites and sitting up are the first step. Let's talk about how it's going at your physical on the 19th."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T09:00",
+          "end": "2024-03-19T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-03-19T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-19T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-03-19T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-03-19T09:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-03-19T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-03-19T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-03-19T09:45", "body": "AWV, subsequent.\nInterval: GI work-up done: esophagram with corkscrew segments, manometry with simultaneous contractions, called esophageal dysmotility with spasm pattern; diet measures only. She says eating slowly has helped some; still gets the crampy chest episodes now and then. R hip: finished PT, does the exercises most days, stairs still the hardest part. Raloxifene going fine. Psych stable.\nFunctional: independent at home, partner helps with heavy shopping because of the hip. No falls in the past year. Hearing and vision fine by report.\nPHQ-9 3. AUDIT-C 1.\nMeds reviewed, unchanged: HCTZ 25, haloperidol 5, benztropine 1, raloxifene 60, D3 1000, acetaminophen prn.\nExam: BP at goal. Heart regular, lungs clear, abdomen soft. R hip internal rotation painful and limited. No edema. Skin without rash.\nA/P\n- HTN: controlled.\n- Esophageal dysmotility: continue GI's measures.\n- Severe R hip OA: home program, acetaminophen. Ortho prn.\n- Osteoporosis: raloxifene; DXA due early 2025.\n- Schizophrenia: psychiatry; annual metabolic labs today with CBC/CMP/lipids/A1c.\n- HCM: mammogram 11/23 negative, colonoscopy 2019 normal, Pap due next year.\nAdvance directive packet given; she wants to talk to her partner first."},
+            {"type": "Result Note", "title": "Annual labs", "author": "PCP", "date": "2024-03-20T12:30", "body": "CBC, CMP, lipids and A1c all within normal limits. Sent to patient via portal and copy faxed to psychiatry."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "pharmacy",
+          "start": "2024-05-14T09:10",
+          "documents": [
+            {"type": "Pharmacy", "title": "Refill request", "author": "MA", "date": "2024-05-14T09:10", "body": "Electronic refill requests: hydrochlorothiazide 25 mg and raloxifene 60 mg, 90-day supplies. Last BP visit within the year, labs current. Sent per protocol, 3 refills each. Raloxifene PA renewed through the plan portal last month."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "office_visit",
+          "start": "2024-07-16T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weakness",
+          "state": {"labs": {"Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2024-07-16T09:20", "resulted": "2024-07-17T07:50", "results": [{"test": "Creatine Kinase", "value": 980}]},
+            {"panel": null, "collected": "2024-07-16T09:20", "resulted": "2024-07-17T07:50", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 40}]},
+            {"panel": null, "collected": "2024-07-16T09:20", "resulted": "2024-07-17T07:50", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-16T09:20", "resulted": "2024-07-17T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-07-16T08:40"},
+            {"procedure": "Venipuncture", "performed": "2024-07-16T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - weakness", "author": "PCP", "date": "2024-07-16T09:25", "body": "Since early May her arms and legs feel weak, close to the body: hard to get up from a low chair without pushing off, hard to hold her arms up to wash her hair, and the stairs are worse in a way that feels different from the hip. Not sore muscles so much as no power. No rash. No double vision, swallowing about the same as before, no numbness. No new medicines; no statin. Afebrile.\nExam: hip flexors and deltoids 4/5 both sides, distal strength full and symmetric. Reflexes 2+ and equal. Sensation intact. Skin: no rash on face, hands or chest. Neck flexion slightly weak.\nA/P: Symmetric proximal weakness over ~10 weeks. Concern for an inflammatory myopathy; also checking thyroid and electrolytes. CK, ESR, TSH, BMP today. Will call with results and move rheumatology up if CK is high."}
+          ]
+        },
+        {
+          "id": "2024-07-17a",
+          "kind": "telephone",
+          "start": "2024-07-17T12:15",
+          "orders": [
+            {"id": "rheum-2024", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "proximal weakness with CK 980 and ESR 40"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results - CK", "author": "PCP", "date": "2024-07-17T12:15", "body": "Called pt. CK 980, ESR 40; TSH and BMP normal. Explained this points to inflammation of the muscles and that she needs rheumatology soon. Urgent referral sent with labs attached; I spoke with their triage nurse, who offered 8/6. Pt agreeable. Return precautions: trouble swallowing liquids, breathing difficulty or rapidly worsening weakness, go to the ED."}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "specialist_visit",
+          "start": "2024-08-06T13:00",
+          "service": "Rheumatology",
+          "reason": "Proximal weakness and rash",
+          "conditions": [
+            {"label": "Other dermatomyositis, organ involvement unspecified", "icd10": "M33.10", "action": "diagnosed", "onset": "2024-05-01"}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 3 tablets (60 mg) by mouth daily", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "dermatomyositis; prescribed by rheumatology"},
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "start", "sig": "Take 6 tablets (15 mg) by mouth once a week", "dose": {"value": 15, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "dermatomyositis; prescribed by rheumatology"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "with methotrexate; prescribed by rheumatology"}
+          ],
+          "orders": [
+            {"id": "rheum-2024", "action": "done", "date": "2024-08-06T13:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology consultation", "author": "rheumatology", "date": "2024-08-12T10:00", "body": "Outside rheumatology. Visit 08/06/2024.\n\nReferred for proximal weakness and elevated CK. Ms. Marino reports three months of weakness in her shoulders and hips. About two weeks ago a rash came up over her knuckles and on her eyelids. No travel, no sick contacts, no new medications.\nMeds: HCTZ 25, haloperidol 5, benztropine 1, raloxifene 60, vitamin D, acetaminophen prn. NKDA.\n\nExam: red rash across the backs of the fingers over the knuckles; violaceous discoloration of both upper eyelids. Symmetric proximal muscle weakness of shoulder and hip girdles.\n\nLabs: CK 980 and ESR 40 (your 7/16 draw). Here: aldolase 23.5 U/L (ref 1.0-7.5); ANA positive; anti-Jo-1 negative.\n\nAssessment: dermatomyositis.\nPlan:\n1. Prednisone 60 mg daily, with a slow taper planned once CK and strength respond.\n2. Methotrexate 15 mg once weekly with folic acid 1 mg daily. Baseline CBC and liver tests here; we will monitor every 8-12 weeks. Limit alcohol.\n3. Age-appropriate cancer screening plus CT chest, abdomen and pelvis given the association of dermatomyositis with malignancy; ordered.\n4. Sun protection for the rash.\n5. Return in two months.\nGiven her osteoporosis, continuing vitamin D and her current bone agent is reasonable during the steroid course; defer to you."},
+            {"type": "Progress Notes", "title": "Chart update - rheumatology", "author": "PCP", "date": "2024-08-12T16:40", "body": "Rheum letter reviewed. Dermatomyositis diagnosed; prednisone 60 daily, MTX 15 weekly, folic acid started by rheumatology. Added to med list and problem list. CT CAP pending through them. She is on raloxifene + D for osteoporosis; continue. Will check in by portal."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "portal_message",
+          "start": "2024-08-20T19:45",
+          "documents": [
+            {"type": "Patient Message", "title": "New medicines", "author": "patient", "date": "2024-08-20T19:45", "body": "The rheumatologist put me on prednisone and methotrexate. Is it ok with my psych meds? My psychiatrist said to ask you too. Also I have a CT next week."},
+            {"type": "Patient Message", "title": "Re: New medicines", "author": "PCP", "date": "2024-08-21T08:30", "body": "Hi Bernice. There's no major interaction between those and your haloperidol or benztropine. Prednisone at a high dose can affect mood and sleep in some people, so tell me or your psychiatrist if you notice a change. Methotrexate is once a WEEK, same day each week, never daily. Keep the folic acid every day. Good luck with the CT."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "specialist_visit",
+          "start": "2024-10-08T13:30",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis follow-up",
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "dose": {"value": 60, "unit": "mg"}, "reason": "taper"},
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet (20 mg) by mouth daily; taper per rheumatology", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "dermatomyositis; prescribed by rheumatology"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology follow-up", "author": "rheumatology", "date": "2024-10-21T10:00", "body": "Outside rheumatology follow-up, 10/08/2024.\nDermatomyositis, two months into treatment. Strength is coming back: she can rise from a chair without using her arms. Hand and eyelid rash fading. Tolerating methotrexate.\nCK today 310 U/L.\nCT chest, abdomen and pelvis (08/27/2024): no evidence of malignancy.\nPlan: prednisone down to 20 mg daily, continuing the taper toward off over the next several months. Methotrexate 15 mg weekly and folic acid unchanged. Monitoring labs every 8-12 weeks. RTC 3 months.\nMeds per our list: prednisone, methotrexate, folic acid, HCTZ, haloperidol, benztropine, raloxifene, vitamin D, acetaminophen."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu, COVID and pneumococcal vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T15:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T15:06"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-10-22T15:08"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-22T15:05"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2024-10-22T15:25", "body": "Per PCP order: inactivated flu (trivalent) L deltoid, 2024-25 COVID R deltoid, PCV20 L deltoid lower site, since she is now on methotrexate and prednisone. Inactivated vaccines only. Waited 15 minutes, no reaction. She says she is on prednisone 20 now and feeling stronger."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "imaging",
+          "start": "2024-12-03T09:15",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-12-03T09:15", "text": "Bilateral digital screening mammogram with tomosynthesis. Compared with 11/28/2023 and 11/08/2022. Scattered fibroglandular density. No suspicious mass, calcification or distortion. No change.", "conclusion": "BI-RADS 1, negative."}
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "office_visit",
+          "start": "2024-12-17T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dizzy spells",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-17T14:20"}
+          ],
+          "orders": [
+            {"id": "neuro-2024", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "recurrent brief positional vertigo"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - vertigo", "author": "PCP", "date": "2024-12-17T14:50", "body": "Few weeks of short spells where the room spins, lasting under a minute, when she rolls over in bed or tips her head back to reach a cupboard. No hearing change, ringing or ear pressure. No headache, no weakness or numbness, no trouble speaking. Has not fallen.\nMeds now: HCTZ, haloperidol, benztropine, raloxifene, D3, prednisone 20 (tapering per rheum), methotrexate weekly, folic acid, acetaminophen prn.\nExam: BP and HR as charted, no orthostatic drop. Cranial nerves intact, no spontaneous nystagmus, finger-nose normal, gait steady. Ears: TMs normal. Strength improved from summer, proximal 4+/5.\nA/P: Brief positional vertigo, history sounds like BPPV. With her medication list and the recent myositis she'd like a neurologist to look, which is reasonable; referral placed. Meanwhile get up slowly, sit on the edge of the bed first. Fall precautions given her osteoporosis. ED for any vertigo with headache, weakness, speech or vision change."}
+          ]
+        }
+      ]
+    }
+  ]
+}

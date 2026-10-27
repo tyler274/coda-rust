@@ -1,0 +1,1497 @@
+{
+  "unit": "unit-1917",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001917",
+      "given": "Tracy",
+      "family": "Leblanc",
+      "birth_date": "1989-02-18",
+      "address_line": "214 Bisbee Road, Chesterfield, MA 01012",
+      "phone": "+1-347-555-0191",
+      "email": "tracy.leblanc@example.test",
+      "marital_status": "single",
+      "summary": "Healthy elementary school teacher who joined the practice in 2022. Three episodes of Bell palsy (right January 2025, left September 2025, right again May 2026) handled through the ED and outside neurology; last seen at her 2025 physical.",
+      "events": [
+        {
+          "id": "2022-08-03a",
+          "kind": "telephone",
+          "start": "2022-08-03T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-08-03T10:20",
+              "author": "front desk",
+              "body": "Ms. Leblanc phoned wanting to transfer her primary care here. Moved her care because her prior office is a long drive from Chesterfield. Membership terms explained and agreement emailed. Insurance BCBS, card copied at intake. Signed release for her old office obtained by e-sign; request for records sent this morning. New patient physical booked for 8/16 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-11a",
+          "kind": "outside_records",
+          "start": "2022-08-11T14:05",
+          "reason": "Records from prior primary care office",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-08-22T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-09T15:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-30T15:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-04T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2022-08-11T14:05",
+              "author": "front desk",
+              "body": "Chart copy from her previous primary care office came in, 14 pages, indexed to media.\n\nContents: annual exam notes 2018-2021, immunization history, one cervical screening result.\n- Problem list: none active.\n- Meds: none.\n- Allergies: NKDA.\n- Cervical cytology 2019: NILM, high-risk HPV negative.\n- Immunizations: Tdap 8/2017; Pfizer COVID x2 March 2021, booster December 2021.\n- Surgical: third molars removed around age 22.\n\nFlagged for PCP review before the 8/16 visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical, establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 62.8,
+            "height_cm": 165.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 157
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 85
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 104
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-08-16T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-16T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-16T09:00",
+              "author": "PCP",
+              "body": "33 y/o woman joining the practice. Here to get set up; nothing bothering her.\n\nPMH: none. No hospitalizations.\nPSH: wisdom teeth out at 22.\nMeds: none, no supplements.\nAllergies: NKDA.\nFH: mom has type 2 DM, dad has HTN. One sister, who had a Bell palsy some years back, recovered.\nSH: teaches elementary school (2nd grade this fall). Lives on her own in Chesterfield. Never a smoker. Wine a glass or two a month at most. No drugs. Walks and does a yoga class twice a week.\nGYN: regular cycles. Last cervical screen 2019 normal with neg HPV per old chart.\nImm: Tdap 2017, COVID x3. Flu shot most years.\n\nROS: negative on a full screen.\n\nExam: well appearing, BMI ~23. HEENT normal, TMs clear, no thyroid enlargement or nodes. Heart RRR no murmur. Lungs clear bilaterally. Abdomen benign. Skin without concerning lesions. Neuro: CN II-XII intact, face symmetric, gait normal. Mood bright.\nPHQ-2: 0.\n\nAssessment/plan: healthy adult, establishing care.\n- Baseline CBC, CMP, lipids. One-time HIV and hep C screens; she agreed.\n- Cervical cancer screening next due 2024 (co-test, 5 yr).\n- Flu and the bivalent COVID booster when they arrive; she'll come to a nurse visit.\n- Family hx of DM noted; screen A1c at a future physical.\n- Physical yearly. She has my cell for anything sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Low Density Lipoprotein": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-08-18T16:40",
+              "author": "PCP",
+              "body": "Hi Tracy, everything from Tuesday's blood work came back fine: blood counts, kidney and liver tests, sugar and cholesterol all in the normal range, and the HIV and hepatitis C screens were negative. Nothing to do. Enjoy the rest of summer break."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2022-08-18T19:12",
+              "author": "patient",
+              "body": "Great, thank you! Will watch for the email about the fall vaccine clinic."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "hr": 74,
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-04T15:45",
+              "author": "RN",
+              "body": "Came after school for vaccines. Afebrile, feels well, no prior vaccine reactions. Screening questions negative.\nFlu (quadrivalent) 0.5 mL IM left deltoid.\nPfizer bivalent COVID booster 0.3 mL IM right deltoid.\nVIS sheets given. Observed 15 min, no reaction. Immunization record updated; copy printed for her school nurse at her request."
+            }
+          ],
+          "measure": [
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "portal_message",
+          "start": "2023-03-07T07:15",
+          "reason": "Immunization record request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record for district",
+              "date": "2023-03-07T07:15",
+              "author": "patient",
+              "body": "Good morning, our district HR is updating staff files and wants a current immunization printout. Could you upload one here so I can forward it? Thanks so much."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record for district",
+              "date": "2023-03-07T11:30",
+              "author": "MA",
+              "body": "Hi Tracy, your full immunization history is attached as a PDF under Letters. It includes the outside entries from your previous office. Let us know if HR needs anything signed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-15a",
+          "kind": "annual_physical",
+          "start": "2023-08-15T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              70
+            ],
+            "hr": 77,
+            "spo2": 97,
+            "weight_kg": 63.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-15T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-15T09:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-15T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-15T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-15T08:30",
+              "author": "PCP",
+              "body": "Yearly exam. Doing well. Classroom prep starts in two weeks; spent July hiking with friends. No new symptoms on a full ROS.\n\nMeds: none. Allergies: NKDA.\nFH unchanged (mom T2DM, dad HTN, sister remote Bell palsy).\nNever smoker; alcohol rare.\n\nExam: vitals reviewed, weight stable. Pleasant, no distress. Eyes, ears, oropharynx normal. Neck supple, no adenopathy. RRR without murmur; lungs clear. Abdomen soft, nontender. No edema. Skin: scattered benign-appearing nevi, none irregular. Neuro grossly intact, face symmetric.\nPHQ-2 0.\n\nA/P: well adult.\n- CBC and CMP today (she asked to stay on yearly labs). Lipids were fine last year; recheck in 2024 with an A1c.\n- Cervical screening due next year.\n- Vaccines this fall; fine to get them at her pharmacy and send us the record.\n- Sunscreen, seatbelt, exercise all reviewed. RTC one year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "portal_message",
+          "start": "2023-08-17T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-17T12:10",
+              "author": "PCP",
+              "body": "Tracy, your blood counts and chemistry panel from Tuesday are normal. Nothing further needed. Have a good first week back with the kids."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "outside_records",
+          "start": "2023-10-12T09:00",
+          "reason": "Pharmacy immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-07T11:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-07T11:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine administration record",
+              "date": "2023-10-12T09:00",
+              "author": "pharmacy",
+              "body": "Community pharmacy immunization notice. Patient: Tracy Leblanc, DOB 02/18/1989.\nAdministered 10/07/2023:\n- Influenza vaccine, quadrivalent, 0.5 mL IM, left arm.\n- COVID-19 vaccine, Pfizer 2023-2024 formula, 0.3 mL IM, right arm.\nNo adverse event reported at the pharmacy. Entered into the practice immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "telephone",
+          "start": "2024-02-06T13:05",
+          "reason": "Membership billing question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Billing question",
+              "date": "2024-02-06T13:05",
+              "author": "front desk",
+              "body": "Pt asked whether the annual membership fee can be paid from her HSA card and whether we provide an itemized receipt. Explained the fee is not a covered insurance service; receipt emailed for her own records, she will check with her plan administrator. Card on file updated by her through the billing portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27b",
+          "kind": "portal_message",
+          "start": "2024-08-27T06:50",
+          "reason": "Reschedule physical",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Need to move my physical",
+              "date": "2024-08-27T06:50",
+              "author": "patient",
+              "body": "So sorry for the late notice. Our building had a last-minute staff meeting called for this morning and I can't miss it. Could I come in after school some day in the next couple weeks instead?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Need to move my physical",
+              "date": "2024-08-27T08:05",
+              "author": "front desk",
+              "body": "No problem at all. You're rebooked for Tuesday 9/10 at 3:45. If you can, skip food after lunch that day so we can draw the cholesterol panel."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "annual_physical",
+          "start": "2024-08-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, cervical screening",
+          "vitals": {
+            "bp": [
+              111,
+              73
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 63.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T16:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T16:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-09-10T16:10",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.",
+              "conclusion": "NILM. High-risk HPV negative.",
+              "issued": "2024-09-13T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T16:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-10T15:45",
+              "author": "PCP",
+              "body": "Rescheduled physical, seen after her school day. Feels well. Busy fall with a larger class but sleeping fine, mood good. No complaints on review of systems. Cycles regular.\n\nMeds none. NKDA. Never smoker. Alcohol unchanged, rare.\nFH: as before.\n\nExam: BP and pulse in range, weight about where it was. Alert, comfortable. HEENT unremarkable. No thyroid enlargement. Cardiac exam regular, no murmur. Clear lungs. Abdomen nontender. Breasts: no masses, no axillary nodes. Pelvic: normal external genitalia, cervix without lesion; co-test obtained. Extremities warm, no swelling. Face symmetric, CN grossly intact.\nPHQ-2 = 1.\n\nPlan:\n- Pap with HPV co-test sent (last 2019).\n- CMP, lipids, A1c given family history of diabetes; drawn ~4.5 h after lunch.\n- Flu vaccine today. COVID at the pharmacy when the fall formula is out.\n- Mammogram discussion at 40.\n- RTC 1 yr."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 5.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-13a",
+          "kind": "portal_message",
+          "start": "2024-09-13T15:20",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work results",
+              "date": "2024-09-13T15:20",
+              "author": "PCP",
+              "body": "Hi Tracy, good news all around. Your Pap was normal and the HPV test negative, so the next cervical screen isn't due for five years. A1c (the diabetes screening test) is normal, and your cholesterol, kidney and liver numbers are all where we'd like them. Talk soon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and blood work results",
+              "date": "2024-09-13T20:02",
+              "author": "patient",
+              "body": "Thank you! That's a relief with my mom's diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "outside_records",
+          "start": "2024-10-08T09:30",
+          "reason": "Pharmacy immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-05T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine administration record",
+              "date": "2024-10-08T09:30",
+              "author": "pharmacy",
+              "body": "Immunization notice from community pharmacy for Tracy Leblanc (DOB 02/18/1989). COVID-19 vaccine, Pfizer 2024-2025 formula, 0.3 mL IM left deltoid, given 10/05/2024. Tolerated. Recorded in the practice chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "ed_visit",
+          "start": "2025-01-30T07:25",
+          "end": "2025-01-30T10:40",
+          "service": "Emergency Medicine",
+          "reason": "Right-sided facial weakness",
+          "conditions": [
+            {
+              "label": "Bell palsy",
+              "action": "diagnosed",
+              "onset": "2025-01-30",
+              "note": "Right side."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth once daily for 7 days",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Bell palsy"
+            },
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "1-2 drops in the right eye every 2 hours while awake",
+              "frequency": "Q2H",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "Incomplete eye closure"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 92,
+            "rr": 17,
+            "temp_c": 36.3,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-01-30T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Physician Record",
+              "date": "2025-01-31T08:15",
+              "author": "emergency medicine",
+              "body": "Emergency Department, community hospital. Visit 01/30/2025, arrival 07:25. Copy sent to PCP.\n\nCC: R face weak since waking.\n\nHPI: 35F, no medical history, awoke today unable to fully shut the R eye; smile pulls to the left. Was normal at bedtime. No URI or other illness lately, no head or face injury. Denies limb weakness, numbness, speech or vision change, headache, ear pain, rash.\n\nPMH none. PSH third molar extraction age 22. Meds none. Allergies: NKDA.\nFH: mother type 2 DM, father HTN, sister had a Bell palsy.\nSH: elementary teacher; never smoker; alcohol 1-2/month.\n\nExam: VS as charted, afebrile. Alert, fluent speech. R face: forehead does not wrinkle, eyelid closure incomplete, cannot show teeth on the R. Remaining cranial nerves intact. External auditory canals clear, no vesicles. Hearing grossly intact bilaterally. Strength, sensation, coordination and gait normal. No other abnormal findings.\n\nMDM: isolated R lower motor neuron facial nerve palsy, forehead involved, normal remainder of the neuro exam, onset within hours. Consistent with idiopathic facial palsy; no features of stroke, no zoster findings, no imaging indicated.\n\nDx: Bell palsy, right.\n\nDisposition: home.\n- Prednisone 60 mg PO daily x 7 days, first dose given here.\n- Lubricating drops to R eye frequently while awake; tape eyelid closed at night; sunglasses outdoors.\n- See PCP within 1 week. Return for new weakness elsewhere, eye pain or redness, worsening.\nDischarged 10:40 in stable condition."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-01-30b",
+          "kind": "portal_message",
+          "start": "2025-01-30T12:35",
+          "reason": "ED visit this morning",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the ER this morning",
+              "date": "2025-01-30T12:35",
+              "author": "patient",
+              "body": "Hi, wanted you to know I woke up with the right side of my face not working and went straight to the ER because I was scared it was a stroke. They said it's Bell's palsy like my sister had and gave me prednisone and eye drops. They told me to see you this week. I'm home from school today and tomorrow."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the ER this morning",
+              "date": "2025-01-30T13:10",
+              "author": "PCP",
+              "body": "Tracy, I'm glad you went in, that was the right call. Take the prednisone every morning with food until it's finished, and be diligent about the drops and taping the eye at night, because the eye is the thing we most need to protect right now. Most people recover well over weeks. Let's see you Tuesday the 4th at 8:15. Message or call me sooner if you notice weakness anywhere else, eye pain, or it gets worse."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for facial palsy",
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 83,
+            "temp_c": 36.5,
+            "weight_kg": 63.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-04T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2025-02-04T08:15",
+              "author": "PCP",
+              "body": "Seen after ED visit 1/30 for R Bell palsy (ED record reviewed). On prednisone 60 mg day 6 of 7, taking it with breakfast. Using drops many times a day and taping at night; no eye pain or redness. Weakness unchanged to slightly better per her. No new symptoms elsewhere. Back at work tomorrow; worried about the kids noticing.\n\nExam: vitals fine. R peripheral facial weakness persists, forehead included; R eye closes incompletely with effort, cornea clear, no injection. Left face normal. Other CN normal. Limbs normal.\n\nA/P: R Bell palsy, ~1 wk, early in expected course.\n- Finish prednisone, no taper needed for 7 days.\n- Keep up eye protection until closure is complete.\n- Note for school given for absence 1/30-2/4.\n- Expect gradual return over weeks to a few months; message me with progress. If not clearly improving by 3 months, refer to neurology."
+            },
+            {
+              "type": "Letter",
+              "title": "Work note",
+              "date": "2025-02-04T08:50",
+              "author": "PCP",
+              "body": "To whom it may concern: Ms. Tracy Leblanc was under medical care and unable to work from January 30 through February 4, 2025. She may return to full duties on February 5, 2025."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T19:40",
+          "reason": "Facial palsy update",
+          "conditions": [
+            {
+              "label": "Bell palsy",
+              "action": "resolved",
+              "note": "Right side recovered fully by April 2025."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Face update",
+              "date": "2025-04-22T19:40",
+              "author": "patient",
+              "body": "You asked me to report back, so: my face is totally back to normal! The eye closes all the way, the smile is even, and I stopped the drops a couple weeks ago. Took longer than I wanted but I'm so happy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Face update",
+              "date": "2025-04-22T21:05",
+              "author": "PCP",
+              "body": "That's wonderful to hear, Tracy. I'll mark it as resolved in your chart. Nothing else needed. See you for your physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "telephone",
+          "start": "2025-09-22T07:05",
+          "reason": "New left facial weakness",
+          "orders": [
+            {
+              "id": "neuro-referral-2025",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Facial palsy, now on the left after a right-sided episode in January"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Left facial weakness",
+              "date": "2025-09-22T07:05",
+              "author": "PCP",
+              "body": "Pt called before school. Since yesterday morning water dribbles out the L corner of her mouth when she drinks and food tastes flat at the front of the tongue. L eye doesn't feel like it closes as tight. Arms, legs, speech, vision fine. No headache, fever, ear pain or rash. R side fully recovered after the January episode.\n\nThis is the opposite side, so I'd like neurology eyes on it within the treatment window. Called the outside neurology office directly; they can see her tomorrow (9/23) at 1:30. Referral faxed. Told her to go to the ED instead if any arm/leg weakness, speech trouble or sudden severe headache. Restart eye drops now and tape at night. She keeps her physical here Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "specialist_visit",
+          "start": "2025-09-23T13:30",
+          "service": "Neurology",
+          "reason": "Left facial weakness and taste change",
+          "conditions": [
+            {
+              "label": "Bell palsy",
+              "action": "diagnosed",
+              "onset": "2025-09-21",
+              "note": "Left side; prior right-sided episode January 2025."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth once daily for 7 days",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Bell palsy"
+            },
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "1-2 drops in the left eye every 2 hours while awake",
+              "frequency": "Q2H",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "Incomplete eye closure"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              81
+            ],
+            "hr": 78
+          },
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2025-09-23T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2025",
+              "action": "done",
+              "date": "2025-09-23T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2025-09-26T10:20",
+              "author": "neurology",
+              "body": "Outpatient neurology, consultation of 09/23/2025. Requested by her primary care physician. Copy to PCP.\n\nReason: left facial weakness and altered taste.\n\nHistory: 36-year-old teacher, otherwise healthy, with a right-sided idiopathic facial palsy in late January 2025, treated with steroids in the ED and fully recovered by spring. Roughly eight months later, since the morning of 9/21, she has trouble keeping fluids in on the left when drinking and finds food bland on the front of her tongue while the back tastes normal. No headache, fever or recent infection.\n\nMedications: none prior to today. Allergies: no known drug allergies.\nFamily: sister with a prior Bell palsy; mother type 2 diabetes; father hypertension.\nSocial: never smoker, alcohol 1-2 drinks per month, elementary school teacher.\n\nExamination: alert, fluent. Taste diminished over the left anterior tongue. Left eyelid closure incomplete. Smile mildly asymmetric, weaker on the left. Facial sensation intact in all divisions. Tongue protrudes midline. Masseter and pterygoid strength normal. Remaining cranial nerves and limb examination normal.\n\nImpression: acute left peripheral facial palsy, a contralateral recurrence of Bell palsy within 48 hours of onset.\n\nPlan:\n1. Prednisone 60 mg daily for 7 days, started today.\n2. Artificial tears every 2 hours while awake to the left eye, lid taping at night.\n3. Recovery usually follows over weeks. Return to clinic for any further episode or if no improvement in 3 months.\n\nThank you for this referral."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "annual_physical",
+          "start": "2025-09-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; left facial palsy follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 63.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-24T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-24T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-24T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-24T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-24T15:30",
+              "author": "PCP",
+              "body": "Scheduled physical, also our follow-up after yesterday's neurology consult.\n\nInterval: R Bell palsy Jan 2025, recovered fully by April. L-sided facial palsy began 9/21; neurology saw her 9/23, agreed it's a Bell palsy on the other side, started prednisone 60 mg x7 d (took dose 2 this morning) and lubricating drops. Formal letter not yet in; she brought the after-visit summary. Some trouble with drinking from a cup and taste at the tongue tip; L eye a bit dry. Otherwise well. Frustrated that it happened again, sleeping OK, teaching through it.\n\nMeds: prednisone 60 mg daily (through 9/29), artificial tears. NKDA.\nFH/SH unchanged.\n\nExam: vitals in range, weight stable. L lower motor neuron facial weakness: incomplete eyelid closure, mild smile asymmetry. L cornea clear. R face normal. Remaining CN, strength and gait normal. HEENT otherwise normal; neck without nodes. Heart regular without murmur; lungs clear. Abdomen soft. No edema.\nPHQ-9: 3.\n\nAssessment/plan:\n1. Bell palsy, left, day 3. Agree with neurology plan. Eye protection reinforced. Prednisone may raise sugars and disturb sleep for the week; take it in the morning. Neurology to see her again for any further episode.\n2. Health maintenance: flu and 2025-26 COVID vaccines today. Pap/HPV current (2024, next 2029). Labs not repeated today on steroids; all normal last year.\n3. RTC one year, sooner by message."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "portal_message",
+          "start": "2025-11-12T18:25",
+          "reason": "Facial palsy update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Left side update",
+              "date": "2025-11-12T18:25",
+              "author": "patient",
+              "body": "Quick update: the left side is coming back. I can close my eye now and only notice my smile in photos. Taste is mostly back. Teaching full days with no trouble."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Left side update",
+              "date": "2025-11-12T19:00",
+              "author": "PCP",
+              "body": "Really glad it's moving the right way. Keep using drops if the eye feels dry. Reach out if it stalls or anything new shows up."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T16:15",
+          "reason": "Membership renewal",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Renewal invoice",
+              "date": "2026-02-10T16:15",
+              "author": "patient",
+              "body": "Hi, I got the renewal invoice for this year. Can I split it into two payments like last time?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Renewal invoice",
+              "date": "2026-02-11T09:20",
+              "author": "front desk",
+              "body": "Yes, you're set up for two installments, February and August. The first is posted to your card on file. Thanks, Tracy!"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-24a",
+          "kind": "portal_message",
+          "start": "2026-05-24T08:10",
+          "reason": "Facial weakness again",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "It's happening again",
+              "date": "2026-05-24T08:10",
+              "author": "patient",
+              "body": "Sorry to bother you on a Sunday. Yesterday morning my smile felt off on the RIGHT side again and today it's worse, the eye won't shut all the way. No other weakness, no headache. Third time now. What should I do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: It's happening again",
+              "date": "2026-05-24T08:45",
+              "author": "PCP",
+              "body": "Not a bother. I just spoke with the neurology office's on-call doctor; they will see you tomorrow morning at 9:00 even though it's the holiday, which keeps you inside the window for treatment. Start drops and tape tonight like before. If you get weakness in an arm or leg, slurred speech, or a severe headache, go to the ED instead. Send me a note after you see them."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-25a",
+          "kind": "specialist_visit",
+          "start": "2026-05-25T09:00",
+          "service": "Neurology",
+          "reason": "Recurrent right facial weakness",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 78
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-25T09:50",
+              "resulted": "2026-05-25T13:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-25T09:50",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-25T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "loinc": "2345-7",
+                  "unit": "mg/dL",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-25T09:50",
+              "resulted": "2026-05-27T11:00",
+              "results": [
+                {
+                  "test": "Lyme Disease Antibody with Reflex to Immunoblot",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-25T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-brain-2026",
+              "action": "placed",
+              "order": "MRI brain and internal auditory canals with and without contrast",
+              "category": "imaging",
+              "reason": "Recurrent alternating facial palsy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2026-05-28T14:40",
+              "author": "neurology",
+              "body": "Outpatient neurology, visit of 05/25/2026. Copy to PCP.\n\nInterval history: now 37, seen in September 2025 for a left Bell palsy (prior right-sided episode January 2025), both recovered. Two days ago she woke with a lopsided smile; over the next day the right side weakened further and the right eye will not close fully. No preceding illness, injury, or other neurological complaint. No current medications. No known drug allergies.\n\nExamination: no forehead movement on the right; right eye closure incomplete; right side of the mouth does not elevate. Taste reduced across the front two-thirds of the right tongue. Other cranial nerves normal. Ear canals and tympanic membranes normal on otoscopy. No vesicles or rash at the ear, face or oral mucosa. Strength, sensation, reflexes and gait normal; general examination otherwise unremarkable.\n\nLabs drawn today: CBC normal. ESR 15 mm/hr (ref 0-20). Glucose 90 mg/dL (ref 70-100). Lyme antibody negative (resulted 5/27).\n\nImpression: third episode of idiopathic peripheral facial palsy, right side, alternating sides over 16 months; normal screening labs.\n\nPlan:\n1. Prednisone 60 mg daily for 7 days (prescribed today).\n2. Lubricating drops every 2 hours while awake, lid taping at night.\n3. Given recurrence on alternating sides, MRI of the brain with gadolinium including the internal auditory canals.\n4. Follow-up in about 10 weeks with the MRI result."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "portal_message",
+          "start": "2026-05-28T17:30",
+          "reason": "Neurology visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw neurology",
+              "date": "2026-05-28T17:30",
+              "author": "patient",
+              "body": "Saw neurology Monday, same steroids and drops as last time, and they did blood work and want an MRI. Scheduled for June 9."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Saw neurology",
+              "date": "2026-05-28T18:15",
+              "author": "PCP",
+              "body": "Thanks, Tracy. Their note just came in and your blood tests look normal, including the Lyme test. The MRI is a sensible step after a third episode. I'll keep an eye out for the report."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "imaging",
+          "start": "2026-06-09T07:30",
+          "reason": "Recurrent alternating facial palsy",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2026-06-09T07:30",
+              "text": "Outside imaging center. Received by the practice 06/11/2026.\nClinical indication: recurrent facial palsy on alternating sides.\nTechnique: multiplanar, multisequence MR imaging of the brain with thin sections through the internal auditory canals, before and after intravenous gadolinium.\nFindings: Brain parenchyma normal in signal and volume. No mass, hemorrhage or restricted diffusion. Ventricles and sulci normal for age. Both facial nerves follow a normal course through the cerebellopontine angles, internal auditory canals and temporal bones without abnormal enhancement or thickening. Vestibulocochlear nerves normal. No cerebellopontine angle mass. Normal postcontrast enhancement pattern intracranially. Parotid glands normal where imaged. Mastoids and middle ears clear.",
+              "conclusion": "Normal MRI of the brain and internal auditory canals. No enhancing lesion along either facial nerve and no mass.",
+              "issued": "2026-06-11T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mri-brain-2026",
+              "action": "done",
+              "date": "2026-06-09T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging",
+              "title": "MRI brain and IACs, outside report",
+              "date": "2026-06-11T09:10",
+              "author": "radiology",
+              "body": "Outside MRI report for study of 06/09/2026 received and filed. Normal brain and internal auditory canals; no lesion along either facial nerve. Ordered by outside neurology."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T20:05",
+          "reason": "MRI question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI",
+              "date": "2026-06-16T20:05",
+              "author": "patient",
+              "body": "Did you get my MRI? The portal says normal but I don't know what half the words mean. Is it okay that they didn't find a reason?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: MRI",
+              "date": "2026-06-16T21:00",
+              "author": "PCP",
+              "body": "I did, and it's a reassuring scan: no tumor, nothing pressing on either facial nerve, and the brain itself looks normal. Not finding a cause is actually the usual answer with Bell palsy, even when it comes back. Neurology will go over it with you at the August visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T10:30",
+          "service": "Neurology",
+          "reason": "Follow-up recurrent facial palsy",
+          "vitals": {
+            "bp": [
+              114,
+              71
+            ],
+            "hr": 76
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-08-11T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2026-08-13T11:50",
+              "author": "neurology",
+              "body": "Outpatient neurology, visit of 08/11/2026. Copy to PCP.\n\nSeen 11 weeks after the third episode (right side, May 2026). Completed the steroid course. Steady improvement; eye now closes fully and she has stopped the drops except on windy days.\n\nExam: right eye closure complete; forehead movement returned; slight residual asymmetry of the right side of the smile on full effort. Remaining neurological examination normal.\n\nMRI brain and internal auditory canals with contrast (6/9/2026) reviewed: normal.\n\nImpression: recurrent idiopathic facial palsy, three episodes on alternating sides, recovering well from the most recent; screening labs and MRI normal.\n\nPlan: no further testing. Return promptly with any new episode. Otherwise follow up as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution": {
+        "code": "1188426",
+        "display": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+        "ingredient": "carboxymethylcellulose",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

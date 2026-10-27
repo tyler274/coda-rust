@@ -1,0 +1,1605 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002827",
+   "events": [
+    {
+     "id": "2024-03-12a",
+     "kind": "office_visit",
+     "start": "2024-03-12T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-03-12T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-03-12T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-03-12T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-03-12T11:00",
+       "body": "Leaves next week for her trip overseas, two and a half weeks. Asked about her insulin on the plane and across time zones: keep glargine at the same clock time from home for the first night, then shift by an hour or two a day; pens in carry-on, not checked. Wrote a letter for security.\n\nSugars good, 110s-130s fasting. Breathing usual.\n\nExam: BP fine. Weight stable. Murmur, trace edema as always. Feet ok.\n\nA1c fine. Kidney stable. No changes. RTC after the trip, ~3 mo."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-04a",
+     "kind": "ed_visit",
+     "start": "2024-04-04T09:40",
+     "end": "2024-04-05T13:15",
+     "service": "Emergency Medicine",
+     "reason": "Left calf swelling and pain",
+     "conditions": [
+      {
+       "label": "Acute iliofemoral deep vein thrombosis of left lower extremity",
+       "icd10": "I82.412",
+       "action": "diagnosed",
+       "onset": "2024-04-04"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "0.6 ML fondaparinux sodium 12.5 MG/ML Prefilled Syringe",
+       "action": "start",
+       "sig": "Inject 7.5 mg under the skin once daily",
+       "dose": {
+        "value": 7.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Left iliofemoral DVT"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-04-04T09:50",
+       "bp": [
+        138,
+        80
+       ],
+       "hr": 86,
+       "rr": 16,
+       "temp_c": 36.9,
+       "spo2": 97
+      },
+      {
+       "time": "2024-04-05T08:00",
+       "bp": [
+        132,
+        76
+       ],
+       "hr": 78,
+       "rr": 16,
+       "temp_c": 36.7,
+       "spo2": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2024-04-04T10:10",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-04-04T10:10",
+       "results": [
+        {
+         "test": "Activated partial thromboplastin time",
+         "loinc": "14979-9",
+         "unit": "s"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-04-04T10:10",
+       "results": [
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-04-04T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Lower extremity venous duplex",
+       "performed": "2024-04-04T11:30",
+       "text": "Left lower extremity venous duplex. The left common femoral vein and proximal femoral vein are non-compressible and distended with echogenic intraluminal thrombus and absent color flow. Popliteal vein and calf veins compress normally. Contralateral common femoral vein compressible with normal phasic flow.",
+       "conclusion": "Acute deep vein thrombosis of the left common femoral and proximal femoral veins."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2024-04-04T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Note and Observation Discharge",
+       "author": "emergency medicine",
+       "date": "2024-04-05T13:30",
+       "body": "Regional hospital ED / observation unit\nArrived 4/4/2024 09:40, discharged 4/5/2024 13:15\n\n68F, CKD 3b, DM2, class II obesity, longstanding bilateral ankle swelling from tricuspid regurgitation. Woke today with the left calf suddenly swollen and throbbing, tight, worse to walk on. Landed two days ago from a 12-hour flight home from abroad. No injury. Denies chest pain, breathlessness, coughing blood.\n\nVitals stable as charted.\nExam: left leg visibly bigger than right, pitting to the knee, calf tender, Homans positive. Rest of exam unremarkable apart from her known murmur.\n\nLabs: PT/INR, aPTT, platelets normal. Creatinine at her stage 3b baseline.\nDuplex: acute thrombus L common femoral and proximal femoral veins.\n\nAssessment: acute left iliofemoral DVT, provoked by long-haul travel. No features of PE.\n\nPlan: fondaparinux 7.5 mg SC daily (weight 98 kg; dose acceptable at her CrCl, with monitoring). Kept overnight in observation to teach injections and watch for bleeding - none; pain already easing. Thigh-high compression stockings. Expected treatment course 3 months, PCP to manage. Return for chest pain, shortness of breath, bleeding.\n\nNKDA."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Activated partial thromboplastin time": 28.6
+      }
+     }
+    },
+    {
+     "id": "2024-04-05b",
+     "kind": "pharmacy",
+     "start": "2024-04-05T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Prior authorization, fondaparinux",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "PA - fondaparinux",
+       "author": "MA",
+       "date": "2024-04-05T15:20",
+       "body": "Pharmacy says Part D plan needs PA for fondaparinux 7.5 mg syringes. Submitted with ED duplex and dx (acute L iliofemoral DVT), 90 days requested. Approved 4/5 at 16:40 through 7/10/24. Pt has 3 syringes from the hospital, picking up the rest tonight."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-09a",
+     "kind": "office_visit",
+     "start": "2024-04-09T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, left leg DVT",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-04-09T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-04-09T15:00",
+       "body": "ED/obs records reviewed: L common femoral and proximal femoral DVT after the long flight home, started fondaparinux 7.5 daily.\n\nDoing the injections herself into the belly, small bruises, no other bleeding. Leg still swollen but less tender, wearing the stocking. No chest pain or breathlessness beyond her usual stairs.\n\nExam: SpO2 normal. L leg larger than R, pitting to knee, mild calf tenderness. Lungs clear. Murmur as before.\n\nA/P: provoked L iliofemoral DVT. 3 months of fondaparinux, then stop. Watch for bleeding, keep acetaminophen only for pain (no NSAIDs, no aspirin). Walk as tolerated. Recheck in early July."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-15a",
+     "kind": "portal_message",
+     "start": "2024-04-15T07:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Bruising from injections",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "bruises",
+       "author": "patient",
+       "date": "2024-04-15T07:50",
+       "body": "My belly has bruises where I do the shots, some as big as a quarter. Is that normal? No other bleeding."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: bruises",
+       "author": "RN",
+       "date": "2024-04-15T10:30",
+       "body": "Small bruises at the injection spots are common with this medicine. Rotate sides, stay 2 inches from the belly button, don't rub after the shot. Call us right away for bleeding from gums or nose that won't stop, blood in urine or stool, black stools, or a bruise that keeps growing."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-14a",
+     "kind": "specialist_visit",
+     "start": "2024-05-14T09:45",
+     "service": "Cardiology",
+     "reason": "Tricuspid regurgitation follow-up",
+     "vitals": {
+      "bp": [
+       130,
+       78
+      ],
+      "hr": 80
+     },
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2024-05-14T08:50",
+       "text": "Compared with 4/2022. LV normal size, LVEF 55-60%. RV dilated, mildly reduced function, unchanged. RA dilated. Severe tricuspid regurgitation, unchanged. RVSP estimated 38 mmHg. No pericardial effusion.",
+       "conclusion": "Severe TR, stable. LVEF 55-60%."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2024-05-16T12:15",
+       "body": "Outside Cardiology Group\n\nRe: Joan Hughes, seen 5/14/2024\n\nInterval left leg DVT in April after a long flight, on fondaparinux, planned 3 months. No chest symptoms. Breathing unchanged.\n\nBP 130/78, HR 80. JVP up, LLSB holosystolic murmur, L leg slightly fuller than R.\n\nEcho: TR and right heart unchanged since 2022.\n\nNo changes from a valve standpoint. Next echo 2 years, clinic yearly. NKDA.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2024-06-18a",
+     "kind": "outside_records",
+     "start": "2024-06-20T09:00",
+     "service": "Optometry",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2024-06-20T09:00",
+       "body": "Community optometry. 6/18/2024 dilated: 20/25 OU corrected. No diabetic retinopathy either eye. See in 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-08a",
+     "kind": "office_visit",
+     "start": "2024-07-08T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "DVT 3-month follow-up",
+     "conditions": [
+      {
+       "label": "Acute iliofemoral deep vein thrombosis of left lower extremity",
+       "icd10": "I82.412",
+       "action": "resolved"
+      },
+      {
+       "label": "History of deep vein thrombosis",
+       "action": "diagnosed",
+       "onset": "2024-04-04"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "0.6 ML fondaparinux sodium 12.5 MG/ML Prefilled Syringe",
+       "action": "stop",
+       "reason": "Completed 3 months for provoked DVT"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-07-08T10:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-08T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-07-08T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-07-08T11:20",
+       "body": "3 months since the L leg clot. Leg back to its old size, no pain. Done with injections as of the weekend - glad.\n\nExam: legs symmetric, trace ankle edema both sides as is her baseline, calves soft and nontender.\n\nA/P\n1. Provoked L iliofemoral DVT - 3 months complete, stop fondaparinux. History of DVT on the list. For any future long flight: aisle seat, walk every 1-2 hours, stockings, fluids; let me know before she books.\n2. DM2: A1c today.\n3. CKD 3b: BMP today."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-27a",
+     "kind": "annual_physical",
+     "start": "2024-08-27T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-08-27T08:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-08-27T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-08-27T08:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-08-27T08:30",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2024-08-27T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2024-08-27T11:40",
+       "body": "AWV, 68 (69 next month).\n\nHRA: no falls. Cane some days. Pillbox. Independent, drives. PHQ-2 0.\n\nThis year: provoked L leg DVT in April, 3 months treated, done. TR stable on May echo. No knee flares.\n\nExam: BP ok, BMI 37. JVP up, holosystolic LLSB murmur, lungs clear, trace ankle edema, legs symmetric. Feet intact.\n\nPrevention: RSV vaccine at pharmacy this fall (age and heart/kidney/diabetes). Flu in Oct. Mammogram due 2025. Colonoscopy 2028. Shingrix done.\n\nLabs today."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "pharmacy",
+     "start": "2024-09-17T14:10",
+     "service": "Community Pharmacy",
+     "reason": "RSV vaccine",
+     "immunizations": [
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-09-17T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy Vaccine Administration Record",
+       "author": "pharmacist",
+       "date": "2024-09-17T14:25",
+       "body": "RSV vaccine (adjuvanted) 0.5 mL IM R deltoid. Single dose. No reaction. Record transmitted to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and COVID vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-10-08T09:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T09:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "MA",
+       "date": "2024-10-08T09:35",
+       "body": "Fluzone HD trivalent L deltoid, Pfizer 2024-25 R deltoid. Observed. Fine."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-26a",
+     "kind": "office_visit",
+     "start": "2024-11-26T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-11-26T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-11-26T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-11-26T11:50",
+       "body": "Feels well. Some heartburn after big meals this fall, not every day. No vomiting. Sugars ok.\n\nExam: BP at goal. Abd soft. Murmur same. Legs symmetric.\n\nA1c in her usual range. Reflux: smaller meals, nothing late at night, head of bed up. Nephrology January.\nRTC Feb."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-13a",
+     "kind": "specialist_visit",
+     "start": "2025-01-13T09:30",
+     "service": "Nephrology",
+     "reason": "Annual CKD follow-up",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-13T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-01-13T10:05",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 129
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Clinic Letter",
+       "author": "nephrology",
+       "date": "2025-01-15T08:10",
+       "body": "Outside Nephrology Group\n\nRe: Joan Hughes, visit 1/13/2025\n\nVisit moved from December by the holidays. Left leg DVT in April 2024 treated with fondaparinux, which she tolerated without problems; course finished in July.\n\nCreatinine stable in her stage 3b range. Calcium and phosphorus normal. PTH 129.\n\nContinue present regimen and cholecalciferol. Annual follow-up. NKDA.\n\nNephrology"
+      }
+     ]
+    },
+    {
+     "id": "2025-02-25a",
+     "kind": "office_visit",
+     "start": "2025-02-25T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-25T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-02-25T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-02-25T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-02-25T10:30",
+       "body": "Routine winter check. Sugars fine. Heartburn a bit better with smaller dinners. Breathing at baseline.\n\nExam: BP ok. Murmur, trace edema, legs symmetric. Feet: monofilament intact.\n\nA1c and BMP today. No changes. RTC late spring."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-03a",
+     "kind": "hospital_admission",
+     "start": "2025-04-03T07:50",
+     "end": "2025-04-06T12:00",
+     "service": "General Surgery",
+     "reason": "Sudden chest pain and shortness of breath",
+     "conditions": [
+      {
+       "label": "Paraesophageal hiatal hernia",
+       "icd10": "K44.9",
+       "action": "diagnosed",
+       "onset": "2024-04-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily before breakfast",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Paraesophageal hiatal hernia, reflux"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-04-03T08:00",
+       "bp": [
+        150,
+        90
+       ],
+       "hr": 98,
+       "rr": 22,
+       "spo2": 94,
+       "temp_c": 36.9
+      },
+      {
+       "time": "2025-04-06T08:00",
+       "bp": [
+        134,
+        78
+       ],
+       "hr": 80,
+       "rr": 16,
+       "spo2": 96,
+       "temp_c": 36.7
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-04-03T08:15",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 9.0
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-04-03T08:15",
+       "results": [
+        {
+         "test": "Glucose",
+         "value": 180
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.52
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 30
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 28
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-03T08:15",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-03T11:15",
+       "results": [
+        {
+         "test": "Troponin I, High Sensitivity"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2025-04-03T08:30",
+       "text": "Portable AP chest. Air-fluid level projecting behind the cardiac silhouette. Reduced aeration at the left base. No pneumothorax.",
+       "conclusion": "Retrocardiac air-fluid level, suggesting an intrathoracic stomach/hiatal hernia. CT recommended."
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2025-04-03T08:05",
+       "text": "Sinus rhythm, rate 98. Right bundle branch block, unchanged from 2021. No acute ST elevation or depression.",
+       "conclusion": "Sinus rhythm, RBBB, no acute ischemic change."
+      },
+      {
+       "study": "CT chest",
+       "performed": "2025-04-03T10:20",
+       "text": "CT angiogram of the chest with IV contrast. No filling defect in the pulmonary arteries. Large paraesophageal hiatal hernia with most of the stomach above the diaphragm, compressing the adjacent left lower lobe. The stomach enhances normally; no organoaxial or mesenteroaxial twist, no wall thickening, pneumatosis or free air. Right heart chambers dilated. No pleural effusion.",
+       "conclusion": "No pulmonary embolism. Large paraesophageal hiatal hernia with intrathoracic stomach, no volvulus or ischemia."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-04-03T12:00"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2025-04-03T15:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2025-04-06T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Provider Note",
+       "author": "emergency medicine",
+       "date": "2025-04-03T12:30",
+       "body": "Regional hospital ED\n\n69F, reflux, prior L leg DVT (2024), severe TR, CKD 3b, DM2. Four hours of abrupt, severe, sharp chest pain with shortness of breath; worse lying back, better leaning forward/sitting up. On questioning, about a year of food sticking now and then and feeling full quickly after meals, which she chalked up to reflux.\n\nBP 150/90, HR 98, RR 22, SpO2 94% RA.\nAbdomen soft, nontender. Breath sounds reduced at the L base. Known LLSB murmur.\n\nLabs: Hgb 13.2, WBC 9.0, plt 250, glucose 180, Cr 1.52, ALT 30, AST 28. hs-troponin normal x2. ECG: RBBB, old.\nCXR: retrocardiac air-fluid level.\nCTA chest: no PE. Large paraesophageal hernia, most of the stomach in the chest, no volvulus or ischemia.\n\nAssessment: symptomatic large paraesophageal hiatal hernia. PE excluded. Surgery consulted, admitting.\nStarted pantoprazole 40 daily. NKDA."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital Discharge Summary",
+       "author": "general surgery",
+       "date": "2025-04-06T13:00",
+       "body": "Regional hospital, General Surgery\nAdmitted 4/3/2025 via ED, discharged 4/6/2025\n\nDiagnosis: large paraesophageal hiatal hernia, symptomatic, without volvulus or strangulation.\n\nCourse: kept NPO initially with IV fluids; insulin glargine reduced while not eating, metformin held. Pain settled within 24 hours. Diet advanced to soft solids, tolerated. Breathing comfortable, SpO2 mid-90s on room air. Creatinine stable.\n\nGiven her symptoms and the size of the hernia, we recommend elective laparoscopic repair with fundoplication. She agrees; surgery scheduled for 5/19/2025.\n\nDischarge medications: home medications at prior doses (lisinopril 20, amlodipine 5, furosemide 40, metformin 1000 BID, glargine 18 u, atorvastatin 40, cholecalciferol, acetaminophen prn), plus NEW pantoprazole 40 mg daily.\nDiet: small soft meals, upright 2 hours after eating.\nReturn for recurrent severe chest pain, vomiting, inability to swallow.\nNKDA.\nGeneral Surgery"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Troponin I, High Sensitivity": 4
+      }
+     }
+    },
+    {
+     "id": "2025-04-10a",
+     "kind": "office_visit",
+     "start": "2025-04-10T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-04-10T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Follow-up",
+       "author": "PCP",
+       "date": "2025-04-10T12:20",
+       "body": "Seen after 4/3-4/6 admission: large paraesophageal hernia found on CXR/CT, PE ruled out. ED and surgery summaries reviewed.\n\nNo chest pain since discharge. Eating small soft meals, no sticking. Taking pantoprazole. Sugars a little high the first days home, settling.\n\nExam: BP and SpO2 as charted. Breath sounds slightly reduced L base. Abdomen soft. Murmur as before.\n\nA/P\n1. Paraesophageal hiatal hernia - elective lap repair 5/19. Continue pantoprazole, small meals, upright after eating. ED if severe chest pain or can't keep food down.\n2. DM2: back on usual regimen. Around surgery follow the surgeon's insulin instructions.\n3. Med rec done with her bottles."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-08a",
+     "kind": "portal_message",
+     "start": "2025-05-08T13:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Insulin before surgery",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "surgery on the 19th",
+       "author": "patient",
+       "date": "2025-05-08T13:10",
+       "body": "The surgeon's office gave me a sheet that says take half my long insulin the night before surgery and no metformin that morning. Is that ok with you?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: surgery on the 19th",
+       "author": "PCP",
+       "date": "2025-05-08T16:45",
+       "body": "Yes, that plan is fine. Half the glargine (9 units) the night before, skip metformin the morning of surgery, and check your sugar when you wake up. Good luck, we'll call you the week after."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-19a",
+     "kind": "hospital_admission",
+     "start": "2025-05-19T06:00",
+     "end": "2025-05-21T11:30",
+     "service": "General Surgery",
+     "reason": "Elective paraesophageal hernia repair",
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Operative and Discharge Summary",
+       "author": "general surgery",
+       "date": "2025-05-21T12:00",
+       "body": "Regional hospital, General Surgery\nAdmitted 5/19/2025, discharged 5/21/2025\n\nProcedure 5/19: laparoscopic paraesophageal hernia repair with reduction of the stomach and sac, crural closure and fundoplication. Prior upper abdominal (open cholecystectomy) adhesions taken down. No complications. Port sites closed.\n\nCourse: clear liquids POD0, full liquids POD1. Pain controlled with acetaminophen. Glucose managed with reduced glargine while on liquids. Ambulating. Sequential compression devices in house given her DVT history.\n\nDischarge: post-fundoplication diet (liquids 1 week, then soft for 3 weeks). Continue pantoprazole 40 mg daily until clinic. Resume home medications; glargine 18 units once eating soft foods.\nClinic in 4-5 weeks.\nNKDA.\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-05-27a",
+     "kind": "telephone",
+     "start": "2025-05-27T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Check-in after surgery",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "RN Check-in",
+       "author": "RN",
+       "date": "2025-05-27T10:15",
+       "body": "Called pt 1 week after hernia surgery. Port sites clean, small amount of bruising. On full liquids, moving to soft food Wednesday per surgeon. Fasting sugars 100-130, back on full glargine since yesterday per discharge instructions, no lows. No calf pain or swelling, walking hallway several times daily. Reminded to call with fever, vomiting, inability to swallow."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "specialist_visit",
+     "start": "2025-06-10T10:00",
+     "service": "Cardiology",
+     "reason": "Tricuspid regurgitation follow-up",
+     "vitals": {
+      "bp": [
+       128,
+       74
+      ],
+      "hr": 78
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2025-06-12T13:20",
+       "body": "Outside Cardiology Group\n\nRe: Joan Hughes, seen 6/10/2025\n\nEventful spring: April admission with a large paraesophageal hernia (CT excluded PE), repaired laparoscopically 5/19. Recovering well. From a cardiac view, no change in breathing, edema stable.\n\nBP 128/74, HR 78. JVP up, LLSB holosystolic murmur, trace edema.\n\nPlan: no changes; echo next year. NKDA.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2025-06-25a",
+     "kind": "specialist_visit",
+     "start": "2025-06-25T14:00",
+     "service": "General Surgery",
+     "reason": "Post-operative visit",
+     "conditions": [
+      {
+       "label": "Paraesophageal hiatal hernia",
+       "icd10": "K44.9",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+       "action": "stop",
+       "reason": "Stopped by surgery after repair and fundoplication"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "General Surgery Post-operative Letter",
+       "author": "general surgery",
+       "date": "2025-06-26T09:00",
+       "body": "Regional hospital, General Surgery Clinic\n\nRe: Joan Hughes, seen 6/25/2025, 5 weeks after laparoscopic paraesophageal hernia repair and fundoplication.\n\nSwallowing is normal and she is back on a regular diet in smaller portions. No heartburn, no bloating. Port sites well healed.\n\nShe may stop pantoprazole. Follow up with us as needed. NKDA.\n\nGeneral Surgery"
+      }
+     ]
+    },
+    {
+     "id": "2025-07-15a",
+     "kind": "outside_records",
+     "start": "2025-07-17T09:00",
+     "service": "Optometry",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2025-07-17T09:00",
+       "body": "Community optometry. Dilated exam 7/15/2025. Corrected acuity 20/25 OD, 20/25 OS. No diabetic retinopathy. Annual recall."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-26a",
+     "kind": "annual_physical",
+     "start": "2025-08-26T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-08-26T08:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-08-26T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-08-26T08:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-08-26T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2025",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "Breast cancer screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2025-08-26T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2025-08-26T11:30",
+       "body": "AWV. Turning 70 next month.\n\nHRA: no falls, cane occasionally. Independent. Still drives. PHQ-9 3, says the spring was a lot but she is fine now.\n\nThis year: paraesophageal hernia admission April, lap repair May, off pantoprazole since June, eating normally. Cardiology June stable. Nephrology January.\n\nExam: BP and weight as charted (BMI ~37). JVP up, LLSB murmur, lungs clear today, trace ankle edema, legs symmetric. Healed port sites. Feet intact.\n\nPrevention: mammogram ordered. Flu + COVID in October. Colonoscopy 2028 - at 72-73 we'll discuss whether to keep going. Vaccines otherwise up to date.\n\nLabs today."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-16a",
+     "kind": "imaging",
+     "start": "2025-09-16T13:30",
+     "service": "Radiology",
+     "reason": "Screening mammogram",
+     "orders": [
+      {
+       "id": "mammo-2025",
+       "action": "done",
+       "date": "2025-09-16T13:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2025-09-16T13:30",
+       "text": "Bilateral screening tomosynthesis, compared with 2023 and 2021. Scattered fibroglandular densities. No suspicious findings in either breast.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-07a",
+     "kind": "nurse_visit",
+     "start": "2025-10-07T09:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and COVID vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-10-07T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-07T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-07T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization Visit",
+       "author": "RN",
+       "date": "2025-10-07T09:40",
+       "body": "High-dose trivalent flu R deltoid; Moderna 2025-26 L deltoid. Tolerated. Next visit December."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-02a",
+     "kind": "office_visit",
+     "start": "2025-12-02T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-12-02T10:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-12-02T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-12-02T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2025-12-02T11:15",
+       "body": "Doing well. No reflux at all since the repair. Sugars 110-140. Knees the usual. Thinking about another trip abroad in the spring; reviewed travel clot precautions again - walk the aisle, stockings, fluids.\n\nExam: BP at goal. Murmur, trace edema. Feet fine.\n\nA1c in her usual range. No changes. Nephrology January. RTC Feb."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-12a",
+     "kind": "specialist_visit",
+     "start": "2026-01-12T09:30",
+     "service": "Nephrology",
+     "reason": "Annual CKD follow-up",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-01-12T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-01-12T10:05",
+       "results": [
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 133
+        },
+        {
+         "test": "Phosphorus"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology Clinic Letter",
+       "author": "nephrology",
+       "date": "2026-01-14T08:30",
+       "body": "Outside Nephrology Group\n\nRe: Joan Hughes, visit 1/12/2026\n\nHernia repaired in May 2025; IV contrast for her April CT did not change her kidney function. Otherwise a quiet year.\n\nCreatinine stable, stage 3b. Calcium, phosphorus normal. PTH 133.\n\nNo changes. Return in 12 months. NKDA.\n\nNephrology"
+      }
+     ]
+    },
+    {
+     "id": "2026-02-24a",
+     "kind": "office_visit",
+     "start": "2026-02-24T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-02-24T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-02-24T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-02-24T10:20",
+       "body": "Flying out mid-March, 12 hours each way. Has her stockings. Insulin travel plan same as 2024, letter reprinted.\n\nFeels well. Sugars ok.\n\nExam: BP fine. Murmur, trace edema, calves soft and symmetric.\n\nA1c today. Safe travels. RTC after she's back."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-27a",
+     "kind": "ed_visit",
+     "start": "2026-03-27T10:15",
+     "end": "2026-03-28T12:40",
+     "service": "Emergency Medicine",
+     "reason": "Left calf swelling and pain",
+     "conditions": [
+      {
+       "label": "Acute deep vein thrombosis of lower extremity",
+       "action": "diagnosed",
+       "onset": "2026-03-27"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "0.6 ML fondaparinux sodium 12.5 MG/ML Prefilled Syringe",
+       "action": "start",
+       "sig": "Inject 7.5 mg under the skin once daily",
+       "dose": {
+        "value": 7.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "Recurrent left DVT"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-03-27T10:25",
+       "bp": [
+        136,
+        78
+       ],
+       "hr": 84,
+       "rr": 16,
+       "temp_c": 36.8,
+       "spo2": 97
+      },
+      {
+       "time": "2026-03-28T08:00",
+       "bp": [
+        130,
+        74
+       ],
+       "hr": 76,
+       "rr": 16,
+       "temp_c": 36.6,
+       "spo2": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2026-03-27T10:40",
+       "results": [
+        {
+         "test": "Prothrombin Time"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-27T10:40",
+       "results": [
+        {
+         "test": "Activated partial thromboplastin time",
+         "loinc": "14979-9",
+         "unit": "s"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-03-27T10:40",
+       "results": [
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-03-27T10:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Lower extremity venous duplex",
+       "performed": "2026-03-27T12:00",
+       "text": "Left lower extremity venous duplex, compared with 4/2024. Common femoral vein now compressible with normal flow. The proximal femoral vein is non-compressible and distended with echogenic thrombus and no color flow. Popliteal and calf veins compressible.",
+       "conclusion": "Acute deep vein thrombosis of the left proximal femoral vein."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-03-27T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Note and Observation Discharge",
+       "author": "emergency medicine",
+       "date": "2026-03-28T13:00",
+       "body": "Regional hospital ED / observation\nArrived 3/27/2026 10:15, discharged 3/28/2026 12:40\n\n70F with DM2, CKD 3b, class II obesity and a prior L iliofemoral DVT (2024), now with the left calf again: abrupt swelling and throbbing since this morning, tight, hurts to walk. Got back two days ago from another 12-hour international flight. No injury. No chest pain, no dyspnea, no hemoptysis.\n\nVitals stable as charted.\nExam: L leg swollen with pitting to the knee, calf tender, Homans positive. Otherwise unremarkable apart from her known murmur.\n\nCoags normal at baseline, platelets normal, creatinine at her baseline.\nDuplex: acute thrombus L proximal femoral vein.\n\nAssessment: recurrent left lower extremity DVT after long-haul travel.\n\nPlan: fondaparinux 7.5 mg SC daily restarted (she used it in 2024). Observed overnight, no bleeding, pain improving. Compression stockings. Second VTE - duration of anticoagulation to be decided with her PCP. Return precautions for chest pain, SOB, bleeding. NKDA."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Activated partial thromboplastin time": 28.6
+      }
+     }
+    },
+    {
+     "id": "2026-03-31a",
+     "kind": "office_visit",
+     "start": "2026-03-31T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, recurrent DVT",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-03-31T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-03-31T15:30",
+       "body": "ED records reviewed: new L proximal femoral DVT 3/27, two days after the flight home despite stockings and walking. Back on fondaparinux.\n\nLeg less tight, still swollen. Injecting fine, minor bruising. No chest pain, breathing her usual.\n\nExam: SpO2 normal. L calf larger and mildly tender. Lungs clear.\n\nA/P: second DVT in 2 years, both after long flights. Continue fondaparinux. Because this is the second one, I'm leaning toward long-term anticoagulation rather than stopping at 3 months; she'd prefer a pill over shots. We'll decide at the 3-4 month mark. No NSAIDs/aspirin. Bleeding precautions reviewed.\nRTC ~4 months, sooner prn."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-02a",
+     "kind": "portal_message",
+     "start": "2026-04-02T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Compression stockings",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "stockings",
+       "author": "patient",
+       "date": "2026-04-02T11:20",
+       "body": "My old stockings from 2024 are stretched out. Can you send a new order to the medical supply store? Thigh high."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: stockings",
+       "author": "MA",
+       "date": "2026-04-02T14:05",
+       "body": "Order for 2 pairs of thigh-high 20-30 mmHg stockings faxed to the supply store, they will call you to arrange fitting."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-21a",
+     "kind": "pharmacy",
+     "start": "2026-04-21T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fondaparinux refill and authorization",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "PA renewal - fondaparinux",
+       "author": "MA",
+       "date": "2026-04-21T11:30",
+       "body": "Pharmacy request: fondaparinux 7.5 mg/0.6 mL #30, needs new PA (2024 auth expired). Submitted with 3/27/26 duplex. Approved for 6 months. Pt notified by phone, picking up tomorrow."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-09a",
+     "kind": "specialist_visit",
+     "start": "2026-06-09T09:30",
+     "service": "Cardiology",
+     "reason": "Tricuspid regurgitation follow-up",
+     "vitals": {
+      "bp": [
+       132,
+       76
+      ],
+      "hr": 80
+     },
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2026-06-09T08:40",
+       "text": "Compared with 5/2024. LVEF 55-60%. RV dilated with mildly reduced function, unchanged. RA dilated. Severe tricuspid regurgitation, unchanged. Estimated RVSP 38 mmHg. No effusion.",
+       "conclusion": "Severe TR, stable since 2021. LVEF 55-60%."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2026-06-11T14:00",
+       "body": "Outside Cardiology Group\n\nRe: Joan Hughes, seen 6/9/2026\n\nSecond left leg DVT in March after a long flight, on fondaparinux; her PCP is planning extended anticoagulation, which I agree with. Breathing unchanged. Hernia repaired last year.\n\nBP 132/76, HR 80. Exam stable.\n\nEcho: unchanged.\n\nPlan: continue medical therapy. Clinic next year, echo in 2 years. NKDA.\n\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2026-07-31a",
+     "kind": "office_visit",
+     "start": "2026-07-31T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "DVT and diabetes follow-up",
+     "medications": [
+      {
+       "drug_text": "0.6 ML fondaparinux sodium 12.5 MG/ML Prefilled Syringe",
+       "action": "stop",
+       "reason": "Changed to oral anticoagulant for extended therapy"
+      },
+      {
+       "drug": "apixaban 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Recurrent DVT, extended anticoagulation"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-07-31T10:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-31T10:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-31T10:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-07-31T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-07-31T11:40",
+       "body": "4 months out from the second L leg DVT. Swelling down to her usual, no pain. Tired of daily shots. No bleeding other than injection bruises.\n\nExam: BP and weight as charted. Calves soft, symmetric, trace ankle edema as always. Murmur unchanged. Lungs clear.\n\nA/P\n1. Recurrent DVT (2024, 2026), both travel-related. Two events - recommend indefinite anticoagulation; she agrees. Switch fondaparinux to apixaban 5 mg BID: take the first tablet tomorrow at the time her next injection would be due, then no more injections. Apixaban fine at her kidney function. Discussed bleeding signs, no NSAIDs/aspirin, tell dentists. Will reassess dose and need yearly.\n2. DM2: A1c today, same regimen.\n3. CKD 3b: BMP, CBC today (also baseline on apixaban).\n4. HTN at goal. TR stable per June echo.\n\nRTC October."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-03a",
+     "kind": "portal_message",
+     "start": "2026-08-03T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results and apixaban",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Started the new blood thinner",
+       "author": "patient",
+       "date": "2026-08-03T09:20",
+       "body": "Started the apixaban Saturday morning like you said. No problems so far. Did my blood work come back ok?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Started the new blood thinner",
+       "author": "PCP",
+       "date": "2026-08-03T12:05",
+       "body": "Glad it's going smoothly. Your labs from Friday are fine: kidney function at your usual level, blood count normal, A1c in your usual range. Keep taking it twice a day, about 12 hours apart. See you in October."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "outside_records",
+     "start": "2026-08-13T09:00",
+     "service": "Optometry",
+     "reason": "Diabetic eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2026-08-13T09:00",
+       "body": "Community optometry. Dilated exam 8/11/2026. 20/25 OU with correction. No diabetic retinopathy either eye. Next exam 1 year. Scanned to chart."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-14a",
+     "kind": "pharmacy",
+     "start": "2026-08-14T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Apixaban 90-day supply",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "apixaban mail order",
+       "author": "MA",
+       "date": "2026-08-14T10:40",
+       "body": "Mail-order pharmacy requests 90-day script for apixaban 5 mg BID (30-day local fill from 7/31). PCP signed, sent. Tier copay explained to pt by phone; she is ok with it."
+      }
+     ]
+    },
+    {
+     "id": "2026-10-06a",
+     "kind": "office_visit",
+     "start": "2026-10-06T10:00",
+     "reason": "Diabetes and kidney follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

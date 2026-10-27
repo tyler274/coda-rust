@@ -1,0 +1,121 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001700",
+      "given": "Maricel", "family": "Srisai", "birth_date": "1994-05-22",
+      "address_line": "61 Mulberry Lane",
+      "phone": "+1-646-555-0157", "email": "maricel.srisai@example.test",
+      "marital_status": "partnered",
+      "summary": "Kindergarten teacher with alpha-thalassemia trait who joined in 2021; rheumatic mitral stenosis found at a 2023 ED visit for atrial fibrillation. Second pregnancy 2025-2026 with fetal effusions, a left popliteal DVT on enoxaparin, meralgia paresthetica, and a cesarean for arrest of labor after a Category III tracing.",
+      "events": [
+        {
+          "id": "2021-05-25a",
+          "kind": "telephone",
+          "start": "2021-05-25T10:20",
+          "reason": "new patient scheduling",
+          "documents": [{"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2021-05-25T10:20",
+            "body": "Caller is a 27 y/o teacher looking to switch primary care doctors, a coworker recommended us. Explained membership and how insurance still covers labs and specialists. Booked new patient visit 6/8 at 8:40. Asked her to fill out the intake forms online and sign a release so we can pull records from her old doctor and her OB."}]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit, establish care",
+          "conditions": [{"label": "Alpha-thalassemia trait", "icd10": "D56.3", "action": "history", "onset": "2019-01-10", "note": "found on testing during first pregnancy"}],
+          "medications": [
+            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "alpha-thalassemia trait"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 56.0, "height_cm": 157.0, "labs": {"Hemoglobin": 11.8, "Hematocrit": 37.1, "Mean Corpuscular Volume": 66, "Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2021-06-08T09:30", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Red Blood Cells"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-08T09:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-06-08T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Iron Studies", "collected": "2021-06-08T09:30", "results": [{"test": "Ferritin"}, {"test": "Iron"}]},
+            {"panel": null, "collected": "2021-06-08T09:30", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2021-06-08T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-06-08T09:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [{"item": "Tobacco smoking status", "value": "Never smoker"}, {"item": "History of alcohol use", "value": "None"}, {"item": "Occupation", "value": "Kindergarten teacher"}],
+          "reports": [{"study": "Cervical cytology (Pap)", "performed": "2021-06-08T09:10", "issued": "2021-06-16T14:00", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-06-08T08:40"}],
+          "orders": [{"id": "rec-prior-2021", "action": "placed", "order": "Outside records request, prior primary care and OB", "category": "procedure", "reason": "establishing care"}],
+          "documents": [{"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-06-08T09:25",
+            "body": "27 y/o F here to establish care. Teaches kindergarten. Switching from her old PCP, last physical about 2 yrs ago with her old PCP.\n\nPMH: alpha-thalassemia trait, told during her pregnancy in 2019. No other medical problems. Never told of a heart murmur.\nOB: G1P1, term vaginal delivery 2019, no complications.\nPSH: none other.\nMeds: prenatal vitamin daily, folic acid 1 mg daily, started by her OB and she kept taking them; may want another child at some point.\nAllergies: NKDA.\nFH: mother has rheumatic heart disease. Alpha-thal trait in her immediate family. Mother's pregnancies were all fine.\nSH: lives with partner and their 2 y/o. Never smoker, no alcohol, no drugs. Both she and partner were born outside the US.\n\nROS: negative, no dyspnea, palpitations, edema, heavy menses.\n\nExam: well appearing. Vitals as recorded. HEENT nl, thyroid not enlarged. Heart RRR, S1 S2 normal, no murmurs. Lungs clear. Abd soft NT. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Ext warm without edema. Skin no rashes.\n\nA/P\n1. Preventive: Pap today. CBC, CMP, lipids, TSH, iron studies to sort out trait vs iron. HIV and hep C once, she agreed. PHQ-2 0.\n2. Alpha-thal trait: expect mild microcytosis, ferritin to make sure no iron deficiency on top. Continue folic acid, I'll take over the Rx.\n3. Records: release signed for old PCP and OB, want the 2019 hemoglobin workup.\n4. Flu this fall. COVID primary series done in the spring per her card.\nRTC 1 yr or sooner."}]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T16:45",
+          "documents": [{"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-06-10T16:45",
+            "body": "Hi Maricel, your labs are back. Blood counts show the small red cells we expected from the thalassemia trait, and your iron level is normal, so there is no iron deficiency to treat. Kidney, liver, thyroid and cholesterol are all fine. HIV and hepatitis C negative. The Pap result usually takes another week. Keep taking the folic acid."}]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "portal_message",
+          "start": "2021-06-17T09:05",
+          "documents": [{"type": "Result Note", "title": "Pap result", "author": "PCP", "date": "2021-06-17T09:05",
+            "body": "Pap smear normal. Next one due in 3 years. Released to patient with a short note."}]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "outside_records",
+          "start": "2021-06-22T11:30",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-03-20T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-30T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T15:00"}
+          ],
+          "orders": [{"id": "rec-prior-2021", "action": "done", "date": "2021-06-22T11:30"}],
+          "documents": [{"type": "Outside Records", "title": "Prior primary care and obstetric records", "author": "outside obstetrics", "date": "2021-06-22T11:30",
+            "body": "Records received from prior PCP and prior obstetric practice (34 pages), scanned.\n\nObstetric summary, 2019: G1, prenatal course without complications. Initial CBC with microcytosis, ferritin normal. Hemoglobin electrophoresis: normal pattern, HbA2 and HbF within reference range. Alpha-globin gene analysis: two-gene deletion on one chromosome, consistent with alpha-thalassemia trait. Spontaneous vaginal delivery at 39 weeks, 2019, uncomplicated. Postpartum visit normal. Tdap given 3/2019 at 30 weeks.\n\nPrior primary care: 2018 Pap normal. MMR x2 in childhood per school record. COVID vaccine x2 spring 2021 (pharmacy card). Allergies: none known. Medications: prenatal vitamin, folic acid 1 mg daily.\n\nPCP review: trait confirmed by gene testing, nothing else new. Partner's testing not in these records."}]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T15:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T15:45"}],
+          "documents": [{"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2021-10-19T15:50",
+            "body": "Came in after school. No fever today, no prior vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid, VIS given. Waited 15 min, fine. Says half her class is already sniffling."}]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "pharmacy",
+          "start": "2021-12-07T13:10",
+          "documents": [{"type": "Refill Encounter", "title": "Folic acid refill", "author": "RN", "date": "2021-12-07T13:10",
+            "body": "Pharmacy request for folic acid 1 mg, old OB's prescription out of refills. Per PCP, sent new Rx folic acid 1 mg daily #90 x3 refills."}]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "annual_physical",
+          "start": "2022-06-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 56.8},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [{"panel": "Complete Blood Count (CBC)", "collected": "2022-06-14T15:55", "results": [{"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Red Blood Cells"}, {"test": "Platelets"}]}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-06-14T15:20"}],
+          "documents": [{"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-06-14T16:05",
+            "body": "Annual. School just let out for the summer, she is relieved. No concerns. Taking prenatal vitamin and folic acid. No plans for another pregnancy this year.\nROS negative: no exertional dyspnea, palpitations, chest pain, edema.\nExam: vitals as charted. HEENT normal. Heart regular rate, no murmur appreciated. Lungs clear. Abdomen soft. No edema. Mood and affect normal.\nPHQ-2 0.\nA/P: healthy 28 y/o with alpha-thal trait. CBC today to keep a baseline. Pap next 2024. Flu in the fall. Follow up 1 yr."}]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "portal_message",
+          "start": "2022-10-04T19:30",
+          "documents": [{"type": "Patient Message", "title": "Flu shot", "author": "patient", "date": "2022-10-04T19:30",
+            "body": "Hi, got the reminder about flu shots. I think I will skip it this year, last time my arm hurt for days and I could not lift the kids at school. Thank you!"},
+            {"type": "Patient Message", "title": "RE: Flu shot", "author": "RN", "date": "2022-10-05T08:15",
+            "body": "Understood, we'll note that you declined for now. The offer stands all season if you change your mind, especially with little ones coughing on you at work."}]
+        }
+      ]
+    }
+  ]
+}

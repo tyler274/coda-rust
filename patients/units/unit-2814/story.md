@@ -60,3 +60,8 @@
 - 2026-07-21 gynecologic oncology post-op letter (A5)
 - 2026-08-04 portal tiotropium refill; confirms September physical (P)
 - 2026-09-15 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00002814 on 2025-09-24. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -1,0 +1,581 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001925",
+      "events": [
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T21:16",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cough that won't quit",
+              "author": "patient",
+              "date": "2025-03-20T21:16",
+              "body": "Hi, I've had a dry cough for about 10 days now plus a headache and I just feel wiped out. Low fevers on and off for about a week. Half my building has had the same thing. Could someone take a listen? Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cough that won't quit",
+              "author": "RN",
+              "date": "2025-03-21T07:48",
+              "body": "Hi Chloe, the doctor can see you this morning at 9:20. If you get short of breath before then, call the cell line."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-21a",
+          "kind": "office_visit",
+          "start": "2025-03-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough, headache, malaise",
+          "vitals": {
+            "temp_c": 37.8,
+            "hr": 88,
+            "rr": 18,
+            "bp": [
+              120,
+              75
+            ]
+          },
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-21T09:55",
+              "resulted": "2025-03-21T12:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-21T09:55",
+              "resulted": "2025-03-21T12:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 21
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2025-03",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "cough, crackles, low-grade fever"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Atypical pneumonia",
+              "icd10": "J18.9",
+              "action": "diagnosed",
+              "onset": "2025-03-11"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth on day 1, then 1 tablet daily on days 2 through 5",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "atypical pneumonia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-21T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-21T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "author": "PCP",
+              "date": "2025-03-21T13:05",
+              "body": "CC: cough x10 days.\n\nS: Dry, hacking cough for ten days with a dull frontal headache and general malaise. Low-grade temps for about a week. No known sick contact by name, but several people in her graduate housing building have had a similar illness lately. No hemoptysis, no pleuritic pain. Not short of breath at rest. No meds, NKDA, never smoker.\n\nO: T 37.8 C (100.0 F), HR 88, RR 18, BP 120/75, SpO2 as charted. Tired but not toxic, speaking full sentences. Pharynx mildly injected, no exudate. No adenopathy. Lungs: fine crackles at both bases, no wheeze, no rhonchi, good air movement. Heart regular. Remainder of the exam normal.\n\nA/P: subacute dry cough with low-grade fever and bibasilar crackles in a healthy 25 y/o, with an outbreak in her building. Suspect atypical (walking) pneumonia.\n- CBC w/ diff and CRP drawn here. CXR PA/lat sent to imaging this morning.\n\nAddendum 13:00: CXR with interstitial infiltrates in both lower lobes, no consolidation. WBC 7.5 with a normal differential, Hgb 13.8, plt 250. CRP 21, mildly up. Fits atypical pneumonia. Azithromycin 500 mg today then 250 mg daily x4 days sent to her pharmacy. Called her with results. Rest, fluids, cough should lag a week or two behind the rest. Message or call if fevers are not better in 72 h or breathing gets harder. RN to check in Monday."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-21b",
+          "kind": "imaging",
+          "start": "2025-03-21T11:10",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-03-21T11:10",
+              "issued": "2025-03-21T12:35",
+              "text": "CLINICAL INDICATION: Cough for 10 days, low-grade fever, crackles.\nCOMPARISON: None.\nTECHNIQUE: PA and lateral views of the chest.\nFINDINGS: Interstitial opacities in both lower lobes. No lobar consolidation. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal. Bones unremarkable.",
+              "conclusion": "Bilateral lower lobe interstitial infiltrates without consolidation."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2025-03",
+              "action": "done",
+              "date": "2025-03-21T12:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Chest X-ray, PA and lateral",
+              "author": "radiology",
+              "date": "2025-03-21T12:35",
+              "body": "Outpatient imaging center. PA and lateral chest. Interstitial opacities in both lower lobes without consolidation, effusion or pneumothorax. Normal heart size and mediastinum. Impression: bilateral lower lobe interstitial infiltrates."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "telephone",
+          "start": "2025-03-24T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "RN follow-up call",
+              "author": "RN",
+              "date": "2025-03-24T10:30",
+              "body": "Called pt on day 4 of azithromycin. No fever since Saturday night, headache gone. Still coughing, less often. Eating and drinking ok. No SOB. Will finish the last dose tomorrow. Knows to message if the fever returns."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-07a",
+          "kind": "portal_message",
+          "start": "2025-04-07T12:02",
+          "conditions": [
+            {
+              "label": "Atypical pneumonia",
+              "icd10": "J18.9",
+              "action": "resolved",
+              "onset": "2025-03-11"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling better",
+              "author": "patient",
+              "date": "2025-04-07T12:02",
+              "body": "Just an update, I'm basically back to normal. Tiny cough in the mornings but I went for a run this weekend and was fine. Thanks for getting me in so fast."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling better",
+              "author": "PCP",
+              "date": "2025-04-07T17:40",
+              "body": "Great to hear. The morning cough can hang on a few more weeks. If it is still there in a month, or you get fevers again, let me know."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "portal_message",
+          "start": "2025-06-17T18:51",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sick again",
+              "author": "patient",
+              "date": "2025-06-17T18:51",
+              "body": "Ugh, I think it's the same thing as March. Cough and fevers since Friday and it's getting worse, I get winded on the stairs. Is there a slot tomorrow?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sick again",
+              "author": "PCP",
+              "date": "2025-06-17T19:20",
+              "body": "Yes, come at 10:40 tomorrow. If you are struggling to breathe tonight, go to the emergency department."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "office_visit",
+          "start": "2025-06-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and fever",
+          "vitals": {
+            "temp_c": 38.5,
+            "hr": 96,
+            "rr": 18,
+            "bp": [
+              112,
+              70
+            ],
+            "spo2": 95
+          },
+          "measure": [
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "cxr-2025-06",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "fever, cough, right basilar crackles"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Atypical pneumonia",
+              "icd10": "J18.9",
+              "action": "diagnosed",
+              "onset": "2025-06-13"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "erythromycin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "atypical pneumonia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-18T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "author": "PCP",
+              "date": "2025-06-18T15:10",
+              "body": "Reason: cough, fever x5 days.\n\nHx: About three months out from the March pneumonia, which cleared fully. Five days of cough and fevers with malaise, worse each day. Cough started dry and is now more constant but still produces nothing. Mildly winded climbing stairs. No blood in the sputum, no real chest pain. No meds, NKDA.\n\nExposures, since this is round two: grew up in upstate New York; her family has a place in Montana where she spends long stretches outdoors year round, snowmobiling and ice climbing trips in winter, horseback riding, canoeing and fishing in the warmer months, ATV trips with overnight camping in the fall. She feels the outdoor life keeps her resilient and expects to bounce back.\n\nExam: T 38.5 (101.3 F), P 96, RR 18, BP 112/70, SpO2 95% RA. Looks unwell but comfortable at rest. Lungs: scattered crackles at the right base, no wheezing, no rhonchi. Heart regular, no murmurs, rubs or gallops. Remainder of the exam normal.\n\nImpression: recurrent pneumonia, presumed atypical, right lower lobe.\nPlan: CXR today. Will treat with a macrolide.\n\nAddendum 15:05: CXR shows a patchy RLL infiltrate, read as community-acquired pneumonia. Erythromycin 500 mg QID x7 days sent. Reviewed by phone: take every dose to finish the course, stomach upset is common and taking it with a snack can help. She agrees to start tonight. RN check-in early next week; follow-up visit in about 3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18b",
+          "kind": "imaging",
+          "start": "2025-06-18T12:15",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-06-18T12:15",
+              "issued": "2025-06-18T14:40",
+              "text": "CLINICAL INDICATION: Fever and cough, right basilar crackles.\nCOMPARISON: 03/21/2025.\nTECHNIQUE: PA and lateral views.\nFINDINGS: Patchy airspace opacity in the right lower lobe. The previously seen lower lobe interstitial opacities have cleared. No pleural effusion or pneumothorax. Normal cardiomediastinal silhouette.",
+              "conclusion": "Patchy right lower lobe infiltrate consistent with community-acquired pneumonia."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2025-06",
+              "action": "done",
+              "date": "2025-06-18T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Chest X-ray, PA and lateral",
+              "author": "radiology",
+              "date": "2025-06-18T14:40",
+              "body": "Outpatient imaging center. Compared with March. New patchy right lower lobe opacity; March interstitial changes resolved. No effusion. Impression: right lower lobe pneumonia, community-acquired pattern."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "pharmacy",
+          "start": "2025-06-19T08:50",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill confirmation",
+              "author": "pharmacy",
+              "date": "2025-06-19T08:50",
+              "body": "Erythromycin 500 mg tablets, #28, filled 06/18/2025 evening, picked up by patient. Counseled on four-times-daily dosing."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "telephone",
+          "start": "2025-06-23T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "RN follow-up call",
+              "author": "RN",
+              "date": "2025-06-23T11:15",
+              "body": "Spoke with pt. Fever broke over the weekend. Cough improving, stairs ok again. Taking all four doses a day, 2 days left on the bottle. Follow-up 7/8 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumonia follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Atypical pneumonia",
+              "icd10": "J18.9",
+              "action": "resolved",
+              "onset": "2025-06-13"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "two pneumonias in three months"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-07-08T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-07-08T14:35",
+              "body": "Here to follow up the June pneumonia. Finished erythromycin. Feels like herself, back to running, cough gone.\n\nExam: afebrile, vitals as charted. Lungs clear throughout, no crackles. Heart regular.\n\nA/P: right lower lobe pneumonia, resolved clinically.\nTwo pneumonias in three months in an otherwise healthy nonsmoker. Both looked atypical and both responded quickly, which is reassuring, but I would like a pulmonologist to weigh in on whether anything else should be looked at. Referral placed. She is fine waiting for a routine slot as long as she stays well. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "telephone",
+          "start": "2025-07-10T13:22",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduling",
+              "author": "front desk",
+              "date": "2025-07-10T13:22",
+              "body": "Pulmonology referral and the two CXR reports faxed to the outside pulmonary group. Earliest new patient opening is Monday 12/29/2025, 1:00 pm; on their cancellation list. Pt notified by text and accepted."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "annual_physical",
+          "start": "2025-09-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-10T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-10T09:00",
+              "body": "Annual exam. Starting the last year of her master's; thesis is on stream sediment. No illness since the June pneumonia. Still waiting on the pulmonology appointment in December, no cancellation calls yet.\n\nMeds: none. NKDA. Never smoker, wine on weekends only.\n\nROS negative. PHQ-2 0.\n\nExam: vitals as charted. Well appearing. HEENT normal. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen benign. Skin clear. No edema.\n\nA/P: well adult.\n- Baseline labs last year normal, nothing needed today.\n- Pap due next year (2023 normal).\n- Flu and COVID once this season's vaccines arrive; nurse visit in October.\n- Keep the pulmonology appointment.\nSee her next September."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "nurse_visit",
+          "start": "2025-10-06T16:00",
+          "reason": "Flu and COVID vaccines",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T16:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "RN",
+              "date": "2025-10-14T16:45",
+              "body": "Rescheduled from 10/6 (field day ran late). Screening questions negative, feels well. Trivalent flu 0.5 mL IM left deltoid. Updated COVID 0.3 mL IM right arm. VIS reviewed. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "specialist_visit",
+          "start": "2025-12-29T13:00",
+          "end": "2025-12-29T16:30",
+          "service": "Pulmonology",
+          "reason": "Recurrent pneumonia",
+          "vitals": {
+            "temp_c": 38.1,
+            "hr": 92,
+            "bp": [
+              112,
+              68
+            ],
+            "spo2": 96
+          },
+          "measure": [
+            "rr"
+          ],
+          "conditions": [],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-29T13:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-29T13:40",
+              "resulted": "2025-12-31T10:00",
+              "results": [
+                {
+                  "test": "Immunoglobulin G",
+                  "loinc": "2465-3",
+                  "unit": "mg/dL",
+                  "value": 1040
+                },
+                {
+                  "test": "Immunoglobulin A",
+                  "loinc": "2458-8",
+                  "unit": "mg/dL",
+                  "value": 210
+                },
+                {
+                  "test": "Immunoglobulin M",
+                  "loinc": "2472-9",
+                  "unit": "mg/dL",
+                  "value": 115
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-12-29T13:20",
+              "text": "CLINICAL INDICATION: Third pneumonia this year, fever and cough.\nCOMPARISON: Outside films 03/2025 and 06/2025 (reports).\nTECHNIQUE: PA and lateral views.\nFINDINGS: Patchy airspace opacity in the left upper lobe. Right lower lobe clear. No pleural effusion. No pneumothorax. Heart and mediastinum normal.",
+              "conclusion": "Patchy left upper lobe infiltrate. No effusion."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Bronchoscopy with bronchoalveolar lavage",
+              "performed": "2025-12-29T15:10"
+            }
+          ],
+          "medications": [],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2025-12-29T13:00"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

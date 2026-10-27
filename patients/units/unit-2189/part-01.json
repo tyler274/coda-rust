@@ -1,0 +1,307 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002189",
+      "given": "Frederick",
+      "family": "Lindqvist",
+      "birth_date": "1952-03-29",
+      "address_line": "27 Hawley Lane",
+      "phone": "+1-802-555-0101",
+      "email": "frederick.lindqvist@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction foreman on home oxygen for COPD, with alcohol-related cirrhosis, hypertension and diabetes, who joins in 2020. Over six years he is diagnosed with IPF, a Zenker diverticulum, a basal cell carcinoma, an ablated HCC and an unresectable pancreatic adenocarcinoma treated with radiation, and survives three ICU-level admissions and a tension pneumothorax.",
+      "events": [
+        {
+          "id": "2020-06-16a",
+          "kind": "establish_care",
+          "start": "2020-06-16T09:00",
+          "end": "2020-06-16T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "onset": "2015-01-01"},
+            {"label": "Chronic respiratory failure with hypoxia", "icd10": "J96.11", "action": "history", "onset": "2017-01-01"},
+            {"label": "Dependence on supplemental oxygen", "action": "history", "onset": "2017-01-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2010-01-01"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history", "onset": "2012-01-01"},
+            {"label": "Alcoholic cirrhosis of liver", "action": "history", "onset": "2018-01-01"},
+            {"label": "History of Clostridioides difficile infection", "action": "history", "onset": "2019-01-01"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2014-01-01"}
+          ],
+          "medications": [
+            {"drug_text": "oxygen 100 % Gas for Inhalation", "action": "historical", "sig": "2 L/min by nasal cannula, continuous", "route": "Inhalation", "course": "chronic", "reason": "Chronic hypoxemic respiratory failure"},
+            {"drug_text": "albuterol 0.83 MG/ML Inhalation Solution", "action": "historical", "sig": "2.5 mg (one 3 mL vial) by nebulizer every 4 to 6 hours as needed for wheezing", "dose": {"value": 2.5, "unit": "mg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic"},
+            {"drug_text": "salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler", "action": "historical", "sig": "Inhale 1 puff twice daily", "dose": {"value": 50, "unit": "mcg"}, "frequency": "BID", "route": "Inhalation", "course": "chronic"},
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [128, 78], "spo2": 93, "weight_kg": 84.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 6.8, "Platelets": 124, "Albumin": 3.5, "Prothrombin Time-International Normalized Ratio": 1.2, "Bilirubin, Total": 1.3, "Aspartate Aminotransferase": 44, "Alanine Aminotransferase": 33, "Hemoglobin": 13.4, "Creatinine": 1.0, "Low Density Lipoprotein": 116, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-06-16T10:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-06-16T10:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2020-06-16T10:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": "Lipid Panel", "collected": "2020-06-16T10:15", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-06-16T10:15", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"}, {"test": "Hepatitis B Surface Antibody", "text": "Nonreactive"}]}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Former heavy drinker, abstinent since January 2019"},
+            {"item": "Occupation", "value": "Retired construction foreman"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2020-06-16T09:00"}, {"procedure": "Venipuncture", "performed": "2020-06-16T10:15"}],
+          "orders": [{"id": "prior-records", "action": "placed", "order": "Records request, prior primary care practice", "category": "procedure", "reason": "transfer of care"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-06-16T10:10", "body": "68M here to establish. Previous PCP retired; wife found us through a neighbor. Came in on his portable tank, 2 L.\n\nLungs: told he has COPD several years back, on continuous O2 2 L by concentrator at home since about 2017, portable for outings. Uses tiotropium every morning and salmeterol twice a day, nebulized albuterol a couple of times a week, more in winter. Gets winded with a flight of stairs, gets the mail fine. No recent steroid bursts that he recalls.\n\nLiver: alcohol-related cirrhosis found on an ultrasound in 2018. Has not had a drink since January 2019. Sees an outside hepatology group twice a year for ultrasound and AFP. Says he was told there were no varices on a scope. Never had fluid or confusion.\n\nBP and sugar: on lisinopril 20, HCTZ 25 and metformin 1000 bid for years. Does not check sugars at home.\n\nC. diff 2019 - hospitalized about a week at an outside hospital, \"the worst I've ever felt.\" No recurrence.\n\nSmoking about 45 pack-years, quit 2014, went back to it for a few months in 2019 and stopped again. Alcohol as above, 4-6 drinks a day for decades before quitting. Retired construction foreman. Married, wife Ingrid.\nFHx: father COPD and lung cancer. Mother T2DM. Brother cirrhosis.\nPSH: none. NKDA.\n\nExam: thin, pleasant, mildly dyspneic after walking from the lot, speaking full sentences. BP and SpO2 as charted, on 2 L. No scleral icterus. Distant breath sounds, no wheeze. RRR, no murmur. Abdomen soft, nontender, no ascites appreciated. No asterixis. No edema.\n\nA/P\n1. COPD with chronic hypoxemic resp failure on 2 L - continue current inhalers and O2. Will take over DME orders once records are in.\n2. Alcoholic cirrhosis, compensated, abstinent - continue hepatology surveillance. Check hep B status for vaccination; will need hep A/B.\n3. HTN - at goal. Continue lisinopril/HCTZ.\n4. T2DM - A1c today.\n5. Hx severe C. diff - noted. Avoid unnecessary antibiotics.\n6. Screening: HCV, HIV today. Asking for prior colonoscopy report.\n\nLabs today. Records request sent. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "outside_records",
+          "start": "2020-06-23T14:00",
+          "service": "Health Information Management",
+          "reason": "Records from prior primary care practice",
+          "orders": [{"id": "prior-records", "action": "done", "date": "2020-06-23T14:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Practice Records Summary", "author": "PCP", "date": "2020-06-23T16:30", "body": "Records from his prior internist, 41 pages, reviewed.\n\n- 2018 abdominal ultrasound: nodular liver contour consistent with cirrhosis, no focal mass, no ascites. Cirrhosis attributed to alcohol.\n- 2019 upper endoscopy (outside GI): no esophageal or gastric varices.\n- 2019 discharge summary, outside hospital: severe C. difficile colitis, treated, discharged after 7 days.\n- 2018 colonoscopy: complete exam, no polyps.\n- Home oxygen started 2017 by his prior pulmonary provider, 2 L continuous.\n- Med list matches what he told me. Allergies: none.\n\nNothing else actionable. Colon screening done; with his other issues I do not plan to repeat it."}
+          ]
+        },
+        {
+          "id": "2020-06-24a",
+          "kind": "portal_message",
+          "start": "2020-06-24T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2020-06-24T08:40", "body": "Mr. Lindqvist, your labs are back. Sugar control is good (A1c in a fine range). Kidney function is normal. Your liver numbers and platelet count look the way they usually do with cirrhosis and are stable compared to the old records. Hepatitis C and HIV tests are negative. You are not immune to hepatitis B, so I would like to start the combined hepatitis A and B vaccine at your next visit. Talk soon."}
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "telephone",
+          "start": "2020-07-21T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Oxygen supplier paperwork",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "DME oxygen recertification", "author": "RN", "date": "2020-07-21T11:20", "body": "Oxygen supplier called, needs new prescriber on file for his concentrator and portable tanks. Order and certificate of medical necessity filled out for PCP signature, 2 L/min continuous, rest and exertion. Faxed back after signature. Pt aware."}
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "office_visit",
+          "start": "2020-09-29T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertension and diabetes",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-09-29T11:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2020-09-29T11:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-09-29T11:05"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2020-09-29T11:06"},
+            {"vaccine": "Hepatitis A and B (Twinrix)", "date": "2020-09-29T11:07"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-09-29T10:30"}, {"procedure": "Immunization administration", "performed": "2020-09-29T11:05"}, {"procedure": "Venipuncture", "performed": "2020-09-29T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2020-09-29T11:15", "body": "F/u BP/DM. Doing about the same. Breathing at his usual, uses the nebulizer maybe twice a week. Staying home a lot with the pandemic, wife does the shopping. Still no alcohol.\nMeds reviewed, no changes. Taking metformin with breakfast and dinner, no GI upset.\n\nBP and sat as charted on 2 L. Lungs distant, no wheeze. Heart regular. No edema. Feet: skin intact, monofilament normal both feet, DP pulses 2+.\n\nA/P: HTN at goal. DM - A1c today. COPD stable on current regimen. Cirrhosis - hepatology ultrasound due next month.\nVaccines: high-dose flu, PCV20 and first Twinrix today. Twinrix #2 in one month at a nurse visit, #3 at 6 months.\nRTC 3 months, video is fine."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "specialist_visit",
+          "start": "2020-10-20T13:00",
+          "service": "Hepatology",
+          "reason": "Cirrhosis surveillance",
+          "labs": [{"panel": null, "collected": "2020-10-20T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 3.9}]}],
+          "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2020-10-20T12:00", "text": "Liver: coarsened echotexture with a nodular contour. No focal hepatic mass. Portal vein patent with hepatopetal flow. Gallbladder without stones. Common bile duct 4 mm. No ascites.", "conclusion": "Cirrhotic liver morphology. No focal liver lesion."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2020-10-26T09:00", "body": "Outside hepatology follow-up, visit date 10/20/2020.\n\nThank you for allowing us to continue seeing Mr. Lindqvist for alcohol-associated cirrhosis. He remains abstinent since January 2019. No ascites, bleeding or confusion.\n\nSurveillance ultrasound today shows a cirrhotic liver without focal lesion. AFP 3.9. Child-Pugh class A.\n\nRecommendations: continue abstinence; surveillance ultrasound and AFP every 6 months; hepatitis A/B vaccination, which we understand you have started. Variceal screening was negative in 2019; we will repeat endoscopy in the future as indicated.\n\nAllergies: NKDA.\n\nHepatology"}
+          ]
+        },
+        {
+          "id": "2020-10-27a",
+          "kind": "nurse_visit",
+          "start": "2020-10-27T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Twinrix dose 2",
+          "immunizations": [{"vaccine": "Hepatitis A and B (Twinrix)", "date": "2020-10-27T09:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-27T09:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Immunization", "author": "RN", "date": "2020-10-27T09:35", "body": "Here for 2nd dose hep A/B vaccine. No reaction to the first dose. Given IM left deltoid, tolerated. On 2 L via portable. Third dose due late March; scheduled."}
+          ]
+        },
+        {
+          "id": "2020-12-15a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-15T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2020-12-15T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2020-12-15T14:25", "body": "Video from home, wife helping with the tablet.\n\nBreathing stable, no fevers, has not needed extra albuterol. Home BP cuff readings he reads off: mostly 120s/70s. Hepatology letter from October reviewed - ultrasound clear, AFP normal.\n\nA1c from September in range.\n\nA/P: COPD, HTN, DM, cirrhosis all stable. No med changes. Encouraged COVID vaccine when his age group opens up; he is willing. RTC spring, sooner if any trouble."}
+          ]
+        },
+        {
+          "id": "2021-02-04a",
+          "kind": "pharmacy",
+          "start": "2021-02-04T10:00",
+          "service": "Community Pharmacy",
+          "reason": "COVID-19 vaccine dose 1",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-04T10:00"}],
+          "documents": [{"type": "Outside Records", "title": "Pharmacy Immunization Record", "author": "pharmacy", "date": "2021-02-05T08:00", "body": "Immunization record received from community pharmacy: COVID-19 mRNA vaccine (Pfizer-BioNTech) dose 1 given 02/04/2021. Dose 2 scheduled."}]
+        },
+        {
+          "id": "2021-02-25a",
+          "kind": "pharmacy",
+          "start": "2021-02-25T10:30",
+          "service": "Community Pharmacy",
+          "reason": "COVID-19 vaccine dose 2",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-25T10:30"}],
+          "documents": [{"type": "Outside Records", "title": "Pharmacy Immunization Record", "author": "pharmacy", "date": "2021-02-26T08:00", "body": "Immunization record received from community pharmacy: COVID-19 mRNA vaccine (Pfizer-BioNTech) dose 2 given 02/25/2021. Primary series complete."}]
+        },
+        {
+          "id": "2021-03-30a",
+          "kind": "nurse_visit",
+          "start": "2021-03-30T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Twinrix dose 3",
+          "immunizations": [{"vaccine": "Hepatitis A and B (Twinrix)", "date": "2021-03-30T09:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-03-30T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Immunization", "author": "RN", "date": "2021-03-30T09:20", "body": "Third and final hep A/B dose given IM right deltoid. Series complete. Pt mentioned he has had a dry cough lately, \"probably the dry winter air.\" Advised to bring it up with PCP; offered a visit, he will call."}
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "specialist_visit",
+          "start": "2021-04-20T13:30",
+          "service": "Hepatology",
+          "reason": "Cirrhosis surveillance",
+          "labs": [{"panel": null, "collected": "2021-04-20T13:00", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.4}]}],
+          "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2021-04-20T12:30", "text": "Nodular liver surface and heterogeneous echotexture, unchanged. No focal mass. Patent portal vein. No ascites. Gallbladder unremarkable.", "conclusion": "Stable cirrhotic liver. No focal lesion."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2021-04-23T10:00", "body": "Hepatology visit 4/20/2021. Mr. Lindqvist remains well from a liver standpoint and abstinent. Ultrasound shows no focal lesion; AFP 4.4. Compensated, Child-Pugh A. Hep A/B series completed in your office - thank you. Continue 6-month surveillance. NKDA.\n\nHepatology"}
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "office_visit",
+          "start": "2021-05-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and worsening shortness of breath",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-05-18T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-18T10:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2021-05-18T10:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "progressive exertional dyspnea, dry cough, clubbing and crackles"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-05-18T09:30"}, {"procedure": "Venipuncture", "performed": "2021-05-18T10:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2021-05-18T10:15", "body": "S: Dry cough for roughly 3 months, nonproductive, no fever. Breathing is worse with exertion than it was in the fall - now stops halfway up his porch steps, used to do them in one go. No chest pain. No sputum change, no wheeze episodes, nebulizer does not help the cough much. Still on 2 L. No sick contacts.\n\nO: Afebrile. Sat as charted on 2 L, dips with the walk down the hall. Fingers - clubbing, which I do not see documented in his old records. Fine inspiratory crackles at both bases, no wheeze. Heart regular. No edema.\n\nA/P: Progressive exertional dyspnea and dry cough with new clubbing and basal crackles in a former heavy smoker with COPD. This is not his usual COPD picture; concern for an interstitial process. Referring to pulmonology for evaluation (HRCT and full PFTs per them). Continue current inhalers and O2. Labs routine today.\nRTC after pulm."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "annual_physical",
+          "start": "2021-06-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2021-06-22T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2021-06-22T09:40", "body": "Initial AWV.\nFunctional: independent with self-care, drives short distances, wife manages finances jointly. Uses portable O2 out of the house. No falls in the past year. Hearing fine in conversation. Vision: sees optometry, due for a diabetic eye exam - reminded.\nCognition: clock draw and 3-word recall normal.\nMood: PHQ-2 negative. AUDIT-C 0.\nHome safety: no smoking in the home, oxygen safety reviewed, smoke detectors in place.\nAdvance directives: none on file; he and Ingrid will think about a health care proxy form, given to him.\nPrevention: colon screening done 2018, not repeating. PCV20 given 2020. Hep A/B complete. COVID primary series complete. Shingrix and Tdap to do - plan Shingrix in the fall with flu.\nPulmonology appointment is in August.\nCare plan given."}
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "specialist_visit",
+          "start": "2021-08-11T10:00",
+          "service": "Pulmonology",
+          "reason": "Progressive dyspnea on exertion and nonproductive cough",
+          "conditions": [{"label": "Idiopathic pulmonary fibrosis", "action": "diagnosed", "onset": "2021-02-01"}],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2021-08-11T10:00"}],
+          "reports": [
+            {"study": "CT chest", "performed": "2021-07-28T09:00", "text": "High-resolution technique with prone and expiratory images. Reticular opacities with honeycombing, predominantly at the lung bases and in the subpleural regions bilaterally. No pulmonary embolism. No consolidation, effusion or other acute process. Heart size normal. No mediastinal adenopathy. No suspicious pulmonary nodule.", "conclusion": "Basal and subpleural-predominant reticulation with honeycombing, a usual interstitial pneumonia pattern. No acute process."},
+            {"study": "Spirometry", "performed": "2021-08-11T09:00", "text": "Full pulmonary function testing with lung volumes and diffusion. FEV1 preserved. FVC preserved. FEV1/FVC ratio increased. Total lung capacity, functional residual capacity and residual volume decreased. DLCO reduced. No significant bronchodilator response.", "conclusion": "Restrictive physiology with reduced diffusing capacity."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Consultation", "author": "pulmonology", "date": "2021-08-16T15:00", "body": "Outside pulmonology consultation, date of service 08/11/2021.\nReferred by primary care for progressive breathlessness.\n\nHistory: About six months of steadily increasing shortness of breath with exertion and a dry, nonproductive cough. He has had no fevers, no chest pain and no recent travel. Long-standing COPD on 2 L continuous oxygen, tiotropium and salmeterol, albuterol by nebulizer as needed. Former smoker, around 45 pack-years, quit 2014. Former heavy alcohol use, abstinent since 2019, with compensated cirrhosis. Retired construction foreman; no known asbestos or silica exposure beyond the usual job-site dust. Father had COPD and lung cancer.\nMedications: as listed by primary care, plus lisinopril, hydrochlorothiazide and metformin. Allergies: NKDA.\n\nExam: Digital clubbing. Fine inspiratory crackles at both lung bases. No wheeze. Heart regular, no edema.\n\nData: HRCT shows reticulation with honeycombing at the bases and in a subpleural distribution, with no embolism or acute process. Full PFTs show reduced lung volumes (TLC, FRC and RV all decreased) with preserved FEV1 and FVC and a raised FEV1/FVC ratio; DLCO is reduced.\n\nImpression:\n1. Idiopathic pulmonary fibrosis. The CT pattern is typical, there is no clear exposure or connective tissue history, and the physiology is restrictive. In my view the fibrosis now dominates his lung mechanics, which is why the obstruction expected from his COPD is not evident on this study.\n2. COPD with chronic hypoxemic respiratory failure, on oxygen.\n\nPlan:\n- Antifibrotic therapy (nintedanib or pirfenidone) discussed. Both carry hepatic risk and are not advised with his cirrhosis; we agreed not to start either for now.\n- Continue oxygen 2 L and current inhalers.\n- Repeat HRCT in about one year; follow-up here every 6 months.\n- Vaccinations per primary care.\n\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2021-08-31a",
+          "kind": "office_visit",
+          "start": "2021-08-31T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pulmonology",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-08-31T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2021-08-31T11:30", "body": "Here with Ingrid to go over the pulmonology consult. Diagnosis IPF on HRCT and PFTs. Antifibrotics not being started because of the liver. He took the news calmly, asked mostly whether he can keep getting out of the house (yes, with the portable).\n\nCough the same. Sat as charted on 2 L. Crackles at bases. No edema.\n\nA/P: IPF, new from pulm - added to problem list, pulm following q6 mo. COPD/O2 unchanged. HTN at goal. DM - May A1c in range.\nFlu and first Shingrix at a nurse visit in October. RTC December."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and shingles vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-05T09:35"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-10-05T09:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T09:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Immunizations", "author": "MA", "date": "2021-10-05T09:50", "body": "High-dose flu left arm, Shingrix #1 right arm. Warned the shingles shot can make him achy a day or two. Observed, no issues. #2 at his December visit."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "pharmacy",
+          "start": "2021-10-12T15:00",
+          "service": "Community Pharmacy",
+          "reason": "COVID-19 booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-12T15:00"}],
+          "documents": [{"type": "Outside Records", "title": "Pharmacy Immunization Record", "author": "pharmacy", "date": "2021-10-13T08:00", "body": "Community pharmacy record: COVID-19 mRNA (Pfizer-BioNTech) booster given 10/12/2021."}]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "specialist_visit",
+          "start": "2021-10-19T13:00",
+          "service": "Hepatology",
+          "reason": "Cirrhosis surveillance",
+          "labs": [{"panel": null, "collected": "2021-10-19T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.1}]}],
+          "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2021-10-19T12:00", "text": "Cirrhotic morphology with nodular contour. No focal liver mass. Portal vein patent. No ascites. Gallbladder normal.", "conclusion": "No focal liver lesion. Stable cirrhosis."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2021-10-25T09:30", "body": "Hepatology follow-up 10/19/2021. Interval diagnosis of IPF noted; we agree with avoiding antifibrotics given hepatic metabolism. Liver compensated, abstinent. Ultrasound without focal lesion, AFP 4.1. Continue 6-month surveillance. NKDA.\n\nHepatology"}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; trouble swallowing",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-12-14T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2021-12-14T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-12-14T10:35"}],
+          "orders": [{"id": "gi-referral-dysphagia", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "solid-food dysphagia with regurgitation"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-14T10:00"}, {"procedure": "Immunization administration", "performed": "2021-12-14T10:35"}, {"procedure": "Venipuncture", "performed": "2021-12-14T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2021-12-14T10:45", "body": "Routine f/u, but the main thing today: since about July, food sticks - meat and bread mostly, liquids fine. Sometimes undigested food comes back up hours later, especially when he lies down at night. Feels a lump in his throat. Ingrid says his breath has been bad. No weight loss by our scale. No pain with swallowing.\n\nExam: neck supple, no mass felt. Oropharynx clear. Lungs - crackles at bases as before. Heart regular.\n\nA/P\n1. Dysphagia to solids with regurgitation of undigested food and halitosis - sounds oropharyngeal/upper esophageal, Zenker on the list. Referred to GI (he already knows the liver group's GI colleagues). Small bites, sit up after meals meanwhile.\n2. COPD/IPF - stable, pulm in February.\n3. HTN, DM - labs today.\nShingrix #2 today. RTC 3 mo."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001716",
+      "events": [
+        {
+          "id": "2023-02-14a",
+          "kind": "lab_only",
+          "start": "2023-02-14T07:50",
+          "reason": "Monitoring labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-02-14T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-14T07:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "author": "PCP",
+              "date": "2023-02-15T07:35",
+              "body": "Platelets 118, new - she has always been normal. Hgb and WBC at her baseline. No new meds. Repeat CBC in 4 weeks; will copy rheum."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-15a",
+          "kind": "portal_message",
+          "start": "2023-02-15T07:45",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Platelet count",
+              "author": "PCP",
+              "date": "2023-02-15T07:45",
+              "body": "Hi Wendy, one number was off this time: your platelets (the clotting cells) were a bit low at 118, when they are usually normal. That can happen with a recent virus or just lab variation. Any unusual bruising, blood spots on the skin, or nosebleeds worse than your usual? If not, let's simply repeat it in about a month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Platelet count",
+              "author": "patient",
+              "date": "2023-02-15T20:10",
+              "body": "No bruising, nosebleeds are the same as always. I had a cold at the end of January. Will go in mid March."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "lab_only",
+          "start": "2023-03-14T07:45",
+          "reason": "Repeat CBC",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-14T07:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 205
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Repeat CBC",
+              "author": "PCP",
+              "date": "2023-03-14T15:20",
+              "body": "Platelets back to 205. No explanation for the February dip. Messaged pt. Routine monitoring only."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal pain and loose stools",
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-04-18T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-18T16:25",
+              "results": [
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-expedite-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral (expedited)",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Crohn disease, possible flare"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - GI symptoms",
+              "author": "PCP",
+              "date": "2023-04-18T16:50",
+              "body": "S: Since about January, on and off crampy lower abdominal pain and loose stools, 3-5 a day on bad days, then a few good days. No blood she has seen. Pants are looser; down about 2.5 kg from her usual. No fever. No travel, no antibiotics, nobody sick at home. Her GI follow-up isn't until late summer.\nO: vitals as charted, afebrile. Abdomen soft, mild tenderness in the lower abdomen, no guarding, no mass. Weight down from her baseline.\nA/P: Probable Crohn's flare. She is already on prednisone 10 and mesalamine; no change until GI sees her. Called GI office - visit moved up to 6/30, the soonest they have, with instruction to call them sooner if pain worsens or bleeding starts. CBC, CMP today. Hydrate. If fever or severe pain, ED."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to GI office",
+              "author": "PCP",
+              "date": "2023-04-18T17:10",
+              "body": "Spoke with GI scheduler and their nurse. Next available new-symptom slot 6/30. Patient added to waitlist. Our note faxed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-07a",
+          "kind": "outside_records",
+          "start": "2023-07-07T12:30",
+          "reason": "Gastroenterology consult letter received",
+          "conditions": [],
+          "medications": [],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-30T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-30T11:00",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                },
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated. Ova and parasites: none seen."
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-expedite-2023",
+              "action": "done",
+              "date": "2023-07-07T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2023-07-07T12:30",
+              "body": "Outside gastroenterology - visit 06/30/2023 (letter dictated 07/05).\n\nHPI: Ms. Hastings, 33, with Crohn's disease for about nine years on mesalamine and long-term low-dose prednisone, plus SLE and hereditary hemorrhagic telangiectasia. For roughly six months she has had episodic abdominal pain and diarrhea with weight loss she did not intend. Over the last several weeks she has also had a foul-smelling tan vaginal discharge and has occasionally passed gas through the vagina.\n\nMeds: mesalamine 1.2 g three times daily, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol as needed, ferrous sulfate daily. NKDA.\n\nExam: afebrile. Weight 73 kg. Abdomen tender in the right lower quadrant, no rebound, no guarding, no mass. Perianal skin intact. Speculum and digital exam with chaperone: a small lesion on the posterior vaginal wall in keeping with a fistula opening.\n\nLabs today: hemoglobin 12.1, WBC 9.0, CRP 24 mg/L (ref <5). Stool culture negative for enteric pathogens; no ova or parasites.\n\nImpression: active Crohn's disease complicated by a rectovaginal fistula.\n\nPlan:\n1. MRI pelvis (fistula protocol).\n2. Colorectal surgery referral for exam under anesthesia and drainage.\n3. Metronidazole 500 mg three times daily for 4 weeks.\n4. Prednisone 40 mg daily, decreasing by 5 mg each week back to her 10 mg dose.\n5. Continue mesalamine. Follow-up after surgery."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "outside_records",
+          "start": "2023-07-26T09:30",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hydroxychloroquine retinal screening",
+              "author": "ophthalmology",
+              "date": "2023-07-26T09:30",
+              "body": "Outside ophthalmology - exam 07/19/2023. Hydroxychloroquine screening, year 4 in our office. Acuity 20/20 OU, normal dilated exam, fields full, OCT normal. No retinopathy. Next in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "outside_records",
+          "start": "2023-08-24T13:50",
+          "reason": "Colorectal surgery letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Colorectal surgery operative letter",
+              "author": "colorectal surgery",
+              "date": "2023-08-24T13:50",
+              "body": "Outside colorectal surgery - consult 07/27/2023; procedure 08/10/2023.\n\nMRI pelvis 07/18/2023 (fistula protocol): low rectovaginal fistula from the anterior lower rectum to the posterior vaginal wall. No abscess or collection. No other fistula tracks.\n\nProcedure: examination under anesthesia, placement of a loose draining seton through the rectovaginal fistula. Findings: single low tract, no abscess. No complications. Discharged same day.\n\nPost-op plan: sitz baths, keep stools soft; seton to remain long-term while Crohn's therapy is optimized by GI; follow-up in clinic in 6 weeks.\n\nMedications at discharge: unchanged home medications; completing metronidazole course. Allergies: NKDA."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

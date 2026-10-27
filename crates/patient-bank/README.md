@@ -8,6 +8,9 @@ works.
 ## Pipeline
 
 ```text
+import --db benchmark_v1.3.db  adds each adult's source.md and a seed drawn from
+                               it (name from data/name-pool.json, town, practice
+                               dates, last seen, booked); never overwrites
 patients/units/<unit>/
   seed.json                    who the patient is in the practice
   source.md                    the synthetic_hospital patient the unit is made from
@@ -22,6 +25,7 @@ patients/units/<unit>/
 ```
 
 ```bash
+cargo run -q -p patient-bank -- import --db <synthetic_hospital benchmark_v1.3.db>
 cargo run -q -p patient-bank -- brief|check|preview <unit>
 cargo run -q -p patient-bank -- build
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
@@ -60,7 +64,9 @@ the terminology cache, the bank and the schema live under the ignored
   writes each author a `taken.md` from every other chart.
 - **The check.** `check` holds chronology and codes only: the patient matches
   the seed, every label is the catalog's, nothing is after today but pending
-  results and booked visits, nothing stops, resolves or closes before it started,
+  results and booked visits, the last held practice visit is the seed's
+  `last_seen` and nothing after it changes the practice's lists, a visit is booked
+  only when the seed says so, nothing stops, resolves or closes before it started,
   results come after their draw, and lab arithmetic is what an analyzer reports.
   It does not judge how a chart reads; the author's reread of `chart.txt` does.
 - **Numbers.** `measure` makes every number the chart shows, at `check`, and

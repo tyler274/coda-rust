@@ -1,0 +1,313 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002063",
+      "given": "Steven",
+      "family": "Brooks",
+      "birth_date": "1963-08-19",
+      "address_line": "118 Haydenville Road",
+      "phone": "+1-201-555-0194",
+      "email": "steven.brooks@example.test",
+      "marital_status": "single",
+      "summary": "Retired police officer with long-standing, poorly controlled type 2 diabetes on metformin and basal-bolus insulin, and epilepsy on phenytoin, who joins in 2020 and develops a run of diabetic neuropathy diagnoses (painful sensorimotor, neurogenic bladder, autonomic). Recurrent UTIs follow self-catheterization, and a 2025 course of TMP-SMX tips him into phenytoin toxicity. Lifestyle change in 2024 brings his A1c to about 7.",
+      "events": [
+        {
+          "id": "2020-08-18a",
+          "kind": "establish_care",
+          "start": "2020-08-18T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient; diabetes care; burning feet",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with hyperglycemia", "action": "history", "onset": "2009-06-01", "note": "diagnosed 2009; on metformin and basal-bolus insulin"},
+            {"label": "Epilepsy", "action": "history", "onset": "1998-01-01", "note": "on phenytoin for years; no seizures in a long time"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 24 units under the skin at bedtime", "dose": {"value": 24, "unit": "[iU]"}, "frequency": "QHS", "route": "Subcutaneous", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "3 ML insulin lispro 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject under the skin with meals per sliding scale", "frequency": "TID", "route": "Subcutaneous", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug_text": "phenytoin sodium 100 MG Extended Release Oral Capsule", "action": "historical", "sig": "Take 3 capsules (300 mg) by mouth once daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Epilepsy"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for pain", "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "foot pain"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"bp": [126, 78], "weight_kg": 97.0, "height_cm": 180.0, "labs": {"Hemoglobin A1c": 8.0, "Microalbumin/Creatinine Ratio": 12, "Thyroid Stimulating Hormone": 1.8, "Prostate Specific Antigen": 1.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2020-08-18T10:05", "results": [{"test": "Hemoglobin A1c", "value": 8.0}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-18T10:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "CBC with Differential", "collected": "2020-08-18T10:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-08-18T10:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-08-18T10:05", "results": [{"test": "Microalbumin/Creatinine Ratio"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2020-08-18T10:05", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 13}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Never"},
+            {"item": "Occupation", "value": "Retired law enforcement officer"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-08-18T09:20"}],
+          "orders": [{"id": "endo-referral-2020", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "painful feet, diabetes control"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-08-18T09:20", "body": "New patient, 56, establishing care. Moving his care here after years at another office; records release signed today.\n\nDM2: diagnosed around 2009. Takes metformin 1000 twice a day, glargine 24 units at night and lispro on a sliding scale with meals. Admits control has never been good. Checks sugars most mornings, numbers mostly 150s-200s by his report. No lows that he knows of.\n\nFeet: about 4 months of burning and pins-and-needles in both feet, worse once he's in bed. Has tried Tylenol and ibuprofen, neither does much.\n\nSeizure disorder: on phenytoin 300 mg daily for many years, prescribed by his old PCP. Can't recall his last seizure, it's been that long.\n\nNKDA. No surgeries. Quit cigarettes ~20 yrs ago, about 10 pack-years. Has never drunk alcohol. Retired from police work.\nFHx: father had type 2 diabetes and an MI at 62. Mother: HTN, kidney disease from diabetes. A sibling had diabetes in pregnancy.\n\nExam: BP and pulse as recorded. Well appearing, pleasant. Heart RRR, no murmur. Lungs clear. Abdomen soft. Feet: skin intact, no ulcers, pulses 2+ DP bilaterally. Reduced sensation to monofilament at the toes both sides.\n\nA/P\n1. DM2, uncontrolled by history. A1c, CMP, CBC, lipids, urine albumin today. Continue current regimen for now.\n2. Burning feet, likely diabetic neuropathy. Referring to endocrinology for neuropathy eval and help with the insulin regimen.\n3. Epilepsy, controlled. Phenytoin level with labs. Continue 300 mg daily.\n4. Health maintenance: hep C and HIV screen once. PHQ-2 negative. Will get prior records for colonoscopy and vaccine history. Flu shot in the fall.\nReturn in about 3-4 months, after endocrinology."}
+          ]
+        },
+        {
+          "id": "2020-08-20a",
+          "kind": "portal_message",
+          "start": "2020-08-20T14:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2020-08-20T14:10", "body": "Hi Mr. Brooks, your labs are back. A1c is 8.0%, which is above where we want it but it gives us a starting point. Kidney function, blood counts and thyroid are normal, and your phenytoin level is in range. Hepatitis C and HIV screens were negative. I sent the endocrinology referral; their office should call you to schedule."}
+          ]
+        },
+        {
+          "id": "2020-09-08a",
+          "kind": "outside_records",
+          "start": "2020-09-08T11:30",
+          "immunizations": [{"vaccine": "Tdap", "date": "2016-05-10T10:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "front desk", "date": "2020-09-08T11:30", "body": "Received from previous PCP office (34 pages), scanned.\nIncludes office notes 2016-2020, med lists (metformin, glargine, lispro, phenytoin), immunization record (Tdap 05/2016), and a screening colonoscopy report from 2014: normal exam, repeat in 10 years. No allergies listed. Abstracted to chart."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T08:40",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T08:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T08:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2020-10-06T08:45", "body": "Seasonal flu vaccine 0.5 mL IM left deltoid. VIS given. Tolerated well, waited 15 minutes, no reaction. Reminded of endocrinology appt later this month."}
+          ]
+        },
+        {
+          "id": "2020-11-12a",
+          "kind": "telephone",
+          "start": "2020-11-12T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Consult letter request", "author": "front desk", "date": "2020-11-12T10:15", "body": "Pt says he saw endocrinology 10/23. No consult note in our inbox. Called their office and asked for the letter to be faxed. They say it's waiting on signature."}
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "outside_records",
+          "start": "2020-11-19T13:00",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with diabetic polyneuropathy", "action": "diagnosed", "onset": "2020-10-23", "note": "painful, symmetric, lower extremities"},
+            {"label": "Diabetic motor neuropathy", "icd10": "E11.49", "action": "diagnosed", "onset": "2020-10-23", "note": "motor component of sensorimotor polyneuropathy; diminished ankle reflexes"}
+          ],
+          "labs": [{"panel": null, "collected": "2020-10-23T10:30", "results": [{"test": "Hemoglobin A1c", "value": 7.8}]}],
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "orders": [{"id": "endo-referral-2020", "action": "done", "date": "2020-11-19T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology consultation", "author": "endocrinology", "date": "2020-11-19T13:00", "body": "ENDOCRINOLOGY CONSULTATION\nDate of visit: 10/23/2020\nReferred by: primary care, for painful feet and diabetes management\n\nThank you for sending Mr. Brooks, a 57-year-old man with type 2 diabetes since about 2009 on metformin plus glargine and lispro, and epilepsy on phenytoin.\n\nHe has had burning and tingling in both feet for roughly six months. It is worst at night. He calls the pain sharp, like an electric jolt, and at times it climbs into the lower legs. No injury and no recent medication changes. Acetaminophen and ibuprofen have helped very little.\n\nMedications: metformin 1000 mg BID; insulin glargine 24 units qHS; insulin lispro sliding scale with meals; phenytoin 300 mg daily.\nAllergies: NKDA.\nSocial: former smoker (quit ~20 yrs, 10 pk-yr), no alcohol, retired law enforcement.\nFamily: father T2DM and MI at 62; mother hypertension and diabetic nephropathy; sibling with gestational diabetes.\n\nExam: Alert, comfortable. Feet without ulceration or deformity. Light touch and pinprick reduced in a stocking-glove pattern. Ankle jerks diminished bilaterally. Strength full in the lower extremities.\n\nLab: HbA1c 7.8% today.\n\nImpression:\n1. Painful, symmetric distal diabetic polyneuropathy of the lower extremities, sensorimotor, with a motor component (reduced ankle reflexes) consistent with diabetic motor neuropathy.\n2. Type 2 diabetes, suboptimally controlled.\n\nRecommendations: Continue present insulin and metformin doses. Daily foot inspection and proper footwear reviewed. Will see him back as needed; happy to reassess at any time.\n\nEndocrinology"},
+            {"type": "Telephone Encounter", "title": "Consult received", "author": "PCP", "date": "2020-11-19T16:40", "body": "Endo letter reviewed. Neuropathy dx added to problem list. Will go over at his December visit."}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "office_visit",
+          "start": "2020-12-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-12-08T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2020-12-08T14:00", "body": "F/u after endocrinology.\nS: Saw endo in October; their note came in last month. A1c there 7.8. Feet still burn at night, unchanged. He takes acetaminophen most evenings. No new symptoms. Insulin doses unchanged; morning sugars 140s-190s.\nO: Vitals as charted. Feet: no skin breakdown, monofilament reduced distally both feet.\nA/P\n- DM2 with painful polyneuropathy and motor component per endo. Continue metformin, glargine 24 u, lispro scale. Foot care reviewed again. A1c next spring.\n- Epilepsy, stable on phenytoin.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2021-02-12a",
+          "kind": "pharmacy",
+          "start": "2021-02-12T11:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-12T11:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization record from pharmacy", "author": "pharmacy", "date": "2021-02-12T11:00", "body": "COVID-19 vaccine dose 1 administered at community pharmacy. Reported to state registry."}
+          ]
+        },
+        {
+          "id": "2021-03-05a",
+          "kind": "pharmacy",
+          "start": "2021-03-05T11:20",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-05T11:20"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization record from pharmacy", "author": "pharmacy", "date": "2021-03-05T11:20", "body": "COVID-19 vaccine dose 2 administered. Primary series complete."}
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "office_visit",
+          "start": "2021-03-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Trouble starting urine stream",
+          "state": {"labs": {"Hemoglobin A1c": 9.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-03-09T11:15", "results": [{"test": "Hemoglobin A1c", "value": 9.4}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-03-09T11:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Urinalysis", "collected": "2021-03-09T11:15", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}]},
+            {"panel": null, "collected": "2021-03-09T11:15", "results": [{"test": "Prostate Specific Antigen"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-03-09T10:40"}],
+          "orders": [{"id": "uro-referral-2021", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "hesitancy, weak stream, possible retention"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-03-09T10:40", "body": "S: About four months of having to wait for the stream to start, and it's weak when it comes. Feels like he doesn't fully empty. Some dribbling after. No pain with urination, no blood, no fever. Night trips about twice. Sugars running higher this winter, 180s-250s, less walking with the weather.\nO: Vitals as charted. Abdomen soft, nontender, no obvious distension. Deferred prostate exam today at his request, will leave to urology.\nA/P\n1. Voiding difficulty with incomplete emptying in a man with diabetic neuropathy. Concern for retention/bladder dysfunction vs prostate. UA, PSA, BMP. Urology referral.\n2. DM2, A1c result pending. Continue regimen; we talked about getting back to walking.\nRTC after urology."},
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2021-03-10T09:05", "body": "Your urine test showed no infection and your PSA and kidney tests are normal. The A1c came back at 9.4%, higher than last fall. Let's keep working on it at your next visit. Urology has your referral."}
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "pharmacy",
+          "start": "2021-04-13T15:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization, insulin pens", "author": "MA", "date": "2021-04-13T15:30", "body": "Pharmacy faxed PA request for glargine pens (plan formulary change). Submitted PA through portal with A1c and diagnosis. Approved same day for 12 months. Pharmacy notified."}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "office_visit",
+          "start": "2021-06-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; after urology",
+          "state": {"labs": {"Hemoglobin A1c": 9.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-06-08T09:40", "results": [{"test": "Hemoglobin A1c", "value": 9.1}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-06-08T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2021-06-08T09:00", "body": "S: Saw urology in late April. He says they checked how much was left in his bladder after voiding, said it was a lot, and called it a nerve problem of the bladder from the diabetes. They taught him to self-cath, he's doing it twice a day and getting the hang of it. Stream no better but he feels emptier. No urinary infection symptoms. We have not received a note from urology.\nSugars: still high, mostly 170-240.\nO: Vitals as charted. Abd soft. Feet unchanged.\nA/P\n1. Neurogenic bladder per urology (patient report), on intermittent self-catheterization. Records request sent to urology. Will need catheter supplies paperwork.\n2. DM2, A1c 9.1 today. Discussed adding to his regimen vs better adherence to the lispro scale. He'd like to work on meals and the scale first. Revisit in fall.\n3. Epilepsy stable.\nRTC 3-4 months."},
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2021-06-08T13:20", "body": "Faxed records request to urology for 4/26/21 visit note and any bladder testing."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "telephone",
+          "start": "2021-06-22T11:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Catheter supplies", "author": "MA", "date": "2021-06-22T11:10", "body": "Medical supply company called for signed order for intermittent straight catheters, 14 Fr, quantity for twice-daily use. Order and face sheet signed by PCP and faxed back. Pt aware."}
+          ]
+        },
+        {
+          "id": "2021-08-03a",
+          "kind": "outside_records",
+          "start": "2021-08-03T10:00",
+          "conditions": [
+            {"label": "Neurogenic bladder", "action": "diagnosed", "onset": "2021-04-26", "note": "diabetic; post-void residual 300 mL; on clean intermittent self-catheterization"}
+          ],
+          "orders": [{"id": "uro-referral-2021", "action": "done", "date": "2021-08-03T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Urology consultation", "author": "urology", "date": "2021-08-03T10:00", "body": "UROLOGY OFFICE NOTE\nDate of service: 04/26/2021\nReason for referral: voiding difficulty\n\n57 y/o M with T2DM, painful diabetic polyneuropathy seen by endocrinology about six months ago, and epilepsy. For six months he has had hesitancy and a weak stream, a feeling that the bladder does not empty, and dribbling after he believes he is done. No hematuria, no dysuria.\n\nMeds: metformin, insulin glargine, insulin lispro, phenytoin. Allergies: none known.\nSurgical history: none.\n\nExam: Bladder palpable and percussible above the pubic symphysis. Genitalia normal. Prostate smooth, normal size, without nodules.\nBladder scan post-void residual: 300 mL.\n\nAssessment: Incomplete emptying with an elevated residual in the setting of long-standing diabetic neuropathy, consistent with neurogenic bladder.\nPlan: Clean intermittent self-catheterization taught in clinic; he demonstrated good technique. Catheterize twice daily, more if he feels full. Supplies to be ordered through his PCP. Return as needed.\n\nUrology"},
+            {"type": "Telephone Encounter", "title": "Urology note reviewed", "author": "PCP", "date": "2021-08-03T15:15", "body": "Urology note finally arrived. PVR 300, neurogenic bladder, CIC BID. Matches what he told us. Problem list updated."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "annual_physical",
+          "start": "2021-09-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T09:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T09:10", "results": [{"test": "Microalbumin/Creatinine Ratio"}, {"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 15}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-09-14T09:20"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-09-14T09:22"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2021-09-14T08:30"},
+            {"procedure": "Immunization administration", "performed": "2021-09-14T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2021-09-14T08:30", "body": "Initial annual wellness visit.\nHealth risk assessment reviewed with patient. Lives independently, manages own meds and insulin. No falls in the past year. Hearing and vision OK by his report; due for eye exam, encouraged to schedule with his optometrist. PHQ-2 0. Cognition: no concerns, recall 3/3.\nCurrent problems: DM2 with painful sensorimotor polyneuropathy, neurogenic bladder on CIC, epilepsy.\nMeds reviewed and reconciled: metformin 1000 BID, glargine 24 u qHS, lispro scale, phenytoin 300 daily, acetaminophen prn.\nScreening: colonoscopy 2014 normal (due 2024). Hep C/HIV done 2020. Not a lung screening candidate (10 pack-years).\nVaccines: PCV20 and first Shingrix today. Flu next month. COVID primary series done.\nExam: vitals as charted. Heart and lungs unremarkable. Feet: intact skin, reduced monofilament distally.\nLabs: CMP, lipids, urine albumin, phenytoin level.\nAdvance directive: will think about a health care proxy; form given.\nShingrix #2 in 2 months."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "office_visit",
+          "start": "2021-10-19T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Loose stools",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2021-10-19T15:55", "results": [{"test": "Stool culture", "loinc": "625-4", "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing organisms isolated"}], "resulted": "2021-10-22T09:00"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T16:00"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-10-19T15:20"},
+            {"procedure": "Immunization administration", "performed": "2021-10-19T16:00"}
+          ],
+          "orders": [{"id": "gi-colonoscopy-2021", "action": "placed", "order": "Gastroenterology referral for colonoscopy", "category": "referral", "to": "Gastroenterology", "reason": "persistent diarrhea"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-10-19T15:20", "body": "S: About four weeks of loose, watery stools, several a day, sometimes urgent. No blood, no black stool, no fever. No travel, no new foods, no antibiotics this year. Appetite okay. No one sick at home.\nO: Vitals as charted, afebrile. Abdomen soft, nontender, no masses.\nA/P\n1. Diarrhea x 4 weeks. Stool culture today. Given duration, will send to GI for colonoscopy; his last one was 2014. Hydration reviewed; watch sugars with any change in eating.\n2. Flu vaccine today.\nCall if fever, bleeding, or he can't keep up with fluids."}
+          ]
+        },
+        {
+          "id": "2021-10-22a",
+          "kind": "portal_message",
+          "start": "2021-10-22T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Stool test", "author": "PCP", "date": "2021-10-22T12:30", "body": "Your stool culture was negative for the usual bacterial infections. GI should be calling you to set up the colonoscopy."},
+            {"type": "Patient Message", "title": "RE: Stool test", "author": "patient", "date": "2021-10-22T18:02", "body": "Thanks. They called, I'm scheduled for the end of November. Still going a lot."}
+          ]
+        },
+        {
+          "id": "2021-11-12a",
+          "kind": "nurse_visit",
+          "start": "2021-11-12T09:10",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-11-12T09:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-05T13:00"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-11-12T09:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #2", "author": "RN", "date": "2021-11-12T09:15", "body": "Second shingles vaccine 0.5 mL IM right deltoid. Series complete. Pt reports he got a COVID booster at the pharmacy on 11/5; added to immunization record. Prep instructions for colonoscopy reviewed with him, including holding metformin and adjusting insulin the day before as GI instructed."}
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "outside_records",
+          "start": "2021-11-30T10:45",
+          "reports": [
+            {"study": "Colonoscopy", "loinc": "18746-8", "performed": "2021-11-29T08:30", "text": "Indication: diarrhea for two months. Prep: good. Cecum reached, appendiceal orifice and ileocecal valve identified; terminal ileum intubated briefly and appeared normal. The colonic mucosa was normal throughout, without inflammation, ulceration or mass. No polyps. No diverticula. Retroflexion in the rectum normal.", "conclusion": "Normal colonoscopy. No structural or inflammatory cause for diarrhea found."}
+          ],
+          "procedures": [{"procedure": "Colonoscopy, diagnostic", "performed": "2021-11-29T08:30"}],
+          "orders": [{"id": "gi-colonoscopy-2021", "action": "done", "date": "2021-11-30T10:45"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2021-11-30T10:45", "body": "COLONOSCOPY\nDate of procedure: 11/29/2021\nReferring: primary care\nAllergies: NKDA\nSedation: monitored anesthesia care, tolerated well.\nFindings: normal colon to the cecum and a short look at the terminal ileum. No inflammation, no polyps.\nImpression: normal study. No structural explanation for his diarrhea. Suggest continued evaluation with his PCP; diabetes-related bowel dysmotility is a consideration.\nNext colonoscopy for screening: 10 years.\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "lab_only",
+          "start": "2021-12-20T07:50",
+          "state": {"labs": {"Hemoglobin A1c": 8.9}},
+          "labs": [
+            {"panel": null, "collected": "2021-12-20T07:50", "results": [{"test": "Hemoglobin A1c", "value": 8.9}], "resulted": "2021-12-21T10:00"},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-12-20T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2021-12-20T07:50"}]
+        },
+        {
+          "id": "2021-12-27a",
+          "kind": "office_visit",
+          "start": "2021-12-27T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ongoing diarrhea, bloating, lightheaded after meals",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with diabetic autonomic (poly)neuropathy", "icd10": "E11.43", "action": "diagnosed", "onset": "2021-09-25", "note": "gastrointestinal (diarrhea) and cardiovascular (postprandial lightheadedness)"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-27T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-27T13:40", "body": "58M with DM2, painful polyneuropathy and neurogenic bladder, f/u diarrhea.\nS: Diarrhea now about 3 months and he'd call it severe, several loose stools a day. Bloated after he eats, and he gets lightheaded after meals, has to sit down for a bit. No travel, no antibiotics. No fever, no blood, weight about the same.\nData: stool culture 10/22 negative. Colonoscopy 11/29 normal, no inflammation or structural lesion. A1c 8.9 from last week (down from 9.1).\nO: Vitals as charted. Heart regular, no murmur. Abdomen soft and nontender, bowel sounds mildly hypoactive, no distension or masses. Feet: pinprick reduced both feet.\nA/P\n1. Diarrhea with bloating and postprandial lightheadedness, negative workup, in long-standing poorly controlled DM with known neuropathy. Diabetic autonomic neuropathy involving gut and cardiovascular system. Added to problem list.\n   - Smaller, more frequent meals, lower fat; keep fluids up.\n   - Sit or lie a few minutes after larger meals, get up slowly.\n   - Keep a log of stools and sugars.\n2. DM2: A1c 8.9, slowly better. Same regimen.\n3. Neurogenic bladder: CIC going fine. No UTIs.\nRTC 3 months, sooner if worse."}
+          ]
+        }
+      ]
+    }
+  ]
+}

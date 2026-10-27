@@ -1,0 +1,219 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001985",
+      "events": [
+        {
+          "id": "2022-01-03a",
+          "kind": "portal_message",
+          "start": "2022-01-03T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2022-01-03T12:40", "body": "Happy new year Derek. Your urine microalbumin from the physical came back normal, and the kidney panel is fine. A1c 6.5 is right where we want it on metformin. See you in the summer."}
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "office_visit",
+          "start": "2022-07-01T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cholesterol follow-up, medication review",
+          "conditions": [{"label": "Mixed hyperlipidemia", "action": "diagnosed", "onset": "2022-07-01"}],
+          "state": {"labs": {"Hemoglobin A1c": 7.2, "Fasting Glucose": 154, "Glucose": 154, "Low Density Lipoprotein": 140, "High Density Lipoprotein": 40, "Triglycerides": 250}},
+          "vitals": {"bp": [132, 84]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2022-07-01T07:20", "resulted": "2022-07-01T10:40", "results": [{"test": "Total Cholesterol", "value": 210}, {"test": "Low Density Lipoprotein", "value": 140}, {"test": "High Density Lipoprotein", "value": 40}, {"test": "Triglycerides", "value": 250}]},
+            {"panel": null, "collected": "2022-07-01T07:20", "resulted": "2022-07-01T10:40", "results": [{"test": "Hemoglobin A1c", "value": 7.2}, {"test": "Fasting Glucose", "value": 154}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-07-01T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: Lipids and Medication Adherence", "author": "PCP", "date": "2022-07-01T16:05", "body": "Back to go over cholesterol and make sure the meds are working for him. Summer break started. No new symptoms of any kind. Takes metformin twice a day and lisinopril every morning, rarely misses.\n\nFamily history reviewed again: father with type 2 diabetes diagnosed at 58; mother with hypertension and high cholesterol; maternal grandfather had an MI at 65.\nNonsmoker. Weekend drinks, one or two.\n\nBP 132/84.\n\nFasting labs from this morning: A1c 7.2% (up from 6.5 in December), glucose 154. TC 210, LDL 140, HDL 40, triglycerides 250.\n\nAssessment\n- Mixed hyperlipidemia: LDL and triglycerides both up, HDL low. Adding to the problem list.\n- T2DM, A1c drifted up over six months.\n- HTN stable on lisinopril.\n\nPlan: we talked about cutting back refined carbs and the weekend beer, more walking now that school is out. I'll send him the dietitian handout. Same metformin and lisinopril. Recheck labs before a visit around the holidays."}
+          ]
+        },
+        {
+          "id": "2022-07-05a",
+          "kind": "portal_message",
+          "start": "2022-07-05T09:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Eating plan handout", "author": "PCP", "date": "2022-07-05T09:10", "body": "As promised, attached is the handout on carbohydrate portions and triglycerides. The big levers for you are sweet drinks, white bread and pasta portions, and beer. We'll recheck everything in December."},
+            {"type": "Patient Message", "title": "Re: Eating plan handout", "author": "patient", "date": "2022-07-05T20:32", "body": "Got it, thanks. Already switched to seltzer. Eye doctor is booked for October this year."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T15:40"},
+            {"vaccine": "COVID-19, mRNA, Moderna, bivalent", "date": "2022-10-11T15:42"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T15:40"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2022-10-11T15:55", "body": "Flu vaccine L deltoid and Moderna bivalent booster R deltoid. Denies fever today. Observed 15 minutes. Says he saw the eye doctor last week and was told all is well; will ask them to fax the report."}
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "lab_only",
+          "start": "2022-12-19T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fasting labs before visit",
+          "state": {"labs": {"Low Density Lipoprotein": 130}},
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2022-12-19T07:15", "results": [{"test": "Total Cholesterol", "value": 210}, {"test": "Low Density Lipoprotein", "value": 130}, {"test": "High Density Lipoprotein", "value": 40}, {"test": "Triglycerides", "value": 250}]},
+            {"panel": null, "collected": "2022-12-19T07:15", "results": [{"test": "Hemoglobin A1c", "value": 7.2}, {"test": "Fasting Glucose", "value": 154}, {"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-19T07:15", "results": [{"test": "Creatinine"}, {"test": "Glucose", "value": 154}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-12-19T07:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Lab Draw", "author": "MA", "date": "2022-12-19T07:25", "body": "Fasting since 9 pm. Venipuncture R antecubital, one attempt. Urine sample collected. Visit with PCP on 12/26."}
+          ]
+        },
+        {
+          "id": "2022-12-26a",
+          "kind": "office_visit",
+          "start": "2022-12-26T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; question about a lipid drug trial",
+          "vitals": {"bp": [132, 84]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-26T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Follow-up", "author": "PCP", "date": "2022-12-26T13:15", "body": "53 y/o with HTN, T2DM, mixed hyperlipidemia. Feels well, nothing new to report. Compliant with metformin and lisinopril.\n\nHis main question today: a colleague forwarded him an ad for a study of an investigational cholesterol drug, randomized against placebo, and he wants to know if it is worth his time.\n\nBP 132/84. Exam unremarkable: heart and lungs normal, abdomen benign, legs without swelling.\n\nLabs 12/19 reviewed: A1c 7.2%, fasting glucose 154. TC 210, LDL 130, HDL 40, TG 250. Urine microalbumin normal.\n\nDiscussion re trial: went over what placebo-controlled means, that he might get the inactive pill for the length of the study, and what randomization protects against. Pointed out that the planned enrollment is small, so a single study like this can't tell us much on its own, though his participation would still be voluntary and closely monitored. Suggested he read the consent carefully and bring questions to the study team; happy to look at the consent with him. He will think it over.\n\nPlan: same medications. Keep working on diet and walking. Physical in the spring or summer."}
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "annual_physical",
+          "start": "2023-06-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-22T08:00", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-22T08:00", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-22T08:00", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-06-22T08:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-06-22T09:00"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-06-22T08:20"}, {"procedure": "Immunization administration", "performed": "2023-06-22T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-22T12:50", "body": "Yearly exam. Doing well. No chest discomfort, shortness of breath, numbness in the feet, or vision change. Meds: metformin 1000 mg twice daily, lisinopril 20 mg daily.\n\nEye exam: went in October, no report ever reached us. He'll ask them again.\n\nExam: vitals reviewed. Pleasant, fit-appearing. Oropharynx clear, no adenopathy. Heart regular without murmur or gallop. Lungs clear to bases. Abdomen soft. Lower legs without swelling. Foot check: sensation normal to filament, pulses 2+, no skin breakdown.\n\nPHQ-2 = 0.\n\nPlan:\n- Labs today: CMP, CBC, lipids, A1c, urine microalbumin.\n- Pneumococcal: PCV20 today given diabetes.\n- Colonoscopy 2019 normal, next 2029.\n- Same meds. Diabetes check in about 6 months."}
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "portal_message",
+          "start": "2023-06-23T15:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs", "author": "PCP", "date": "2023-06-23T15:10", "body": "Hi Derek, results from yesterday are in. Kidney and liver tests, blood count and urine protein are all normal. A1c is about the same as December. Enjoy the summer."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "specialist_visit",
+          "start": "2023-09-12T16:00",
+          "service": "Optometry",
+          "reason": "Diabetic eye examination",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic Eye Exam Report", "author": "optometry", "date": "2023-09-19T08:40", "body": "Exam 9/12/2023 at our office. Patient with type 2 diabetes for routine dilated examination.\nBest corrected acuity 20/20 each eye. Pressures normal.\nAnterior segments quiet. Lenses clear.\nDilated retinal exam: no microaneurysms, dot-blot hemorrhages, cotton wool spots or edema in either eye. Optic nerves healthy.\nImpression: no diabetic retinopathy. See in one year."}
+          ]
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "nurse_visit",
+          "start": "2023-10-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-13T15:34"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-13T15:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-13T15:34"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Fall Vaccines", "author": "MA", "date": "2023-10-13T15:50", "body": "Influenza IM L arm, updated Moderna COVID IM R arm. Both tolerated. Diabetes follow-up booked for 12/12."}
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed Appointment", "author": "front desk", "date": "2023-12-12T16:30", "body": "Did not arrive for 3:40 visit. Called, he apologized, had parent conferences run late and forgot to cancel. Rebooked for January 11."}
+          ]
+        },
+        {
+          "id": "2024-01-11a",
+          "kind": "office_visit",
+          "start": "2024-01-11T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-11T08:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-01-11T08:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-01-11T07:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes Follow-up", "author": "PCP", "date": "2024-01-11T12:05", "body": "Rescheduled from December. Nothing new. No lows, no thirst, no foot symptoms. Lisinopril and metformin unchanged.\nOptometry letter from September: no retinopathy.\nExam: vitals ok. Cardiopulmonary exam normal. Feet intact.\nPlan: A1c and BMP today. Continue. Physical in July."}
+          ]
+        },
+        {
+          "id": "2024-01-12a",
+          "kind": "portal_message",
+          "start": "2024-01-12T12:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "RN", "date": "2024-01-12T12:20", "body": "Hi Derek, your doctor reviewed yesterday's labs: kidney function and potassium normal, A1c filed for your physical in July. No medication changes."}
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "pharmacy",
+          "start": "2024-05-07T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy Refill Request", "author": "RN", "date": "2024-05-07T10:20", "body": "Electronic refill request from his pharmacy for metformin 1000 mg #180 and lisinopril 20 mg #90. Seen in January, labs fine. Approved both with 3 refills."}
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "annual_physical",
+          "start": "2024-07-18T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-18T08:50", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2024-07-18T08:50", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-07-18T08:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-07-18T09:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-07-18T13:30", "body": "Here for yearly physical. Summer school teaching, otherwise relaxing. Feels good. Same two medications, taken reliably. NKDA. Still never smoked, still a couple of drinks on the weekend.\n\nReview of systems is negative.\n\nVitals in range. Exam: alert, well. Eyes, ears, throat normal. Neck supple, thyroid not enlarged. Heart sounds normal, no murmur. Breath sounds clear. Abdomen nontender, no masses. Extremities warm, no swelling. Diabetic foot exam normal. Mood and affect normal, PHQ-2 0.\n\nPlan: CMP, lipids, A1c, urine microalbumin today. Immunizations current; flu and COVID in the fall. Colonoscopy due 2029. Return in 6 months for diabetes."}
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "nurse_visit",
+          "start": "2024-10-04T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-04T15:24"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-04T15:26"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-04T15:24"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2024-10-04T15:40", "body": "Trivalent flu L deltoid and 2024-25 COVID (Pfizer) R deltoid. No prior reactions apart from a tired day after his second Moderna in 2021. Fine after observation. He has not booked his eye exam yet this year; reminder given."}
+          ]
+        }
+      ]
+    }
+  ]
+}

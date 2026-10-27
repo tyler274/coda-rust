@@ -16,7 +16,13 @@
               "conclusion": "Low bone mass (osteopenia) with significant decline at the hip since 2023. Ten-year hip fracture probability 3.2% meets the treatment threshold of 3% or greater."
             }
           ],
-          "orders": [{"id": "dxa-2025", "action": "done", "date": "2025-11-17T08:30"}]
+          "orders": [
+            {
+              "id": "dxa-2025",
+              "action": "done",
+              "date": "2025-11-17T08:30"
+            }
+          ]
         },
         {
           "id": "2025-11-19a",
@@ -53,14 +59,23 @@
           "start": "2025-12-01T14:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Osteopenia, discuss treatment",
-          "state": {"weight_kg": 61.1},
-          "measure": ["bp", "hr", "weight_kg"],
+          "state": {
+            "weight_kg": 61.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
           "medications": [
             {
               "drug_text": "alendronate sodium 70 MG Oral Tablet",
               "action": "start",
               "sig": "Take 1 tablet by mouth once weekly on rising, with a full glass of plain water, at least 30 minutes before food, drink or other medicines. Stay upright for 30 minutes.",
-              "dose": {"value": 70, "unit": "mg"},
+              "dose": {
+                "value": 70,
+                "unit": "mg"
+              },
               "frequency": "WEEKLY",
               "route": "Oral",
               "course": "chronic",
@@ -68,12 +83,49 @@
             }
           ],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-01T14:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]},
-            {"panel": null, "collected": "2025-12-01T14:40", "results": [{"test": "25-hydroxy Vitamin D"}]}
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-01T14:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-01T14:40",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-12-01T14:00"},
-            {"procedure": "Venipuncture", "performed": "2025-12-01T14:40"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-12-01T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-01T14:40"
+            }
           ],
           "documents": [
             {
@@ -84,163 +136,6 @@
               "body": "71F here to discuss DXA 11/17/25.\n\nDXA: femoral neck T -2.1 (from -1.6 in 2023), total hip -1.8 (from -1.3), spine -1.4. FRAX major 14%, hip 3.2%. No fractures, no height loss she knows of, no back pain. Family hx: mother osteoporosis, maternal aunt hip fracture at 78. Still walking daily, though the garden is put to bed for the winter.\nDental: cleaning in October, no extractions or implants planned. No reflux or swallowing problems.\nMeds: none. NKDA.\nResearch PFTs 10/2025 normal for age per study letter.\n\nExam: vitals as charted, weight steady. Heart regular. Lungs clear. No thoracic or lumbar spinous tenderness. Gait steady.\n\nA/P: Osteopenia, now with hip fracture probability above the treatment threshold.\n- Reviewed options. She prefers a weekly pill. Alendronate 70 mg once weekly, 90-day supply. Went through dosing: first thing in the morning, full glass of plain water, nothing else for 30 minutes, stay upright. Rare jaw and thigh-bone problems discussed; tell her dentist she's on it.\n- CMP and vitamin D today before she starts; start once I confirm calcium and kidney function are normal.\n- Dietary calcium is adequate (daily yogurt, cheese). Continue walking; balance work.\n- Plan DXA again in 2 years on treatment.\nFollow up at AWV in spring."
             }
           ]
-        },
-        {
-          "id": "2025-12-02a",
-          "kind": "portal_message",
-          "start": "2025-12-02T15:30",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Lab Results",
-              "author": "PCP",
-              "date": "2025-12-02T15:30",
-              "body": "Calcium, kidney function and vitamin D are all normal, so you're clear to start the alendronate. It's at your pharmacy. Pick a day of the week that's easy to remember."
-            }
-          ]
-        },
-        {
-          "id": "2025-12-10a",
-          "kind": "portal_message",
-          "start": "2025-12-10T07:18",
-          "reason": "Medication question",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Question about the bone pill",
-              "author": "patient",
-              "date": "2025-12-10T07:18",
-              "body": "Took my second one this morning (Wednesdays). No problems with my stomach. How long exactly do I have to wait for coffee? I've been holding out a full hour to be safe."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Question about the bone pill",
-              "author": "RN",
-              "date": "2025-12-10T10:02",
-              "body": "Thirty minutes is the minimum, an hour is even better for absorption, so you're doing it right. Plain water only with the pill, and stay sitting or standing until you eat. Glad it's agreeing with you."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-23a",
-          "kind": "pharmacy",
-          "start": "2026-02-23T09:40",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Refill Request",
-              "title": "Refill: alendronate",
-              "author": "RN",
-              "date": "2026-02-23T09:40",
-              "body": "Pharmacy request for alendronate 70 mg weekly, #12. Started 12/2025, tolerating per patient message. Refilled x1 per protocol, 90 days."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-13a",
-          "kind": "annual_physical",
-          "start": "2026-04-13T09:00",
-          "end": "2026-04-13T10:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Medicare annual wellness visit",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-04-13T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": "CBC with Differential", "collected": "2026-04-13T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Neutrophils %"}]},
-            {"panel": "Lipid Panel", "collected": "2026-04-13T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2026-04-13T10:05", "results": [{"test": "Hemoglobin A1c"}]}
-          ],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "immunizations": [{"vaccine": "Tdap", "date": "2026-04-13T09:50"}],
-          "procedures": [
-            {"procedure": "Annual wellness visit, subsequent", "performed": "2026-04-13T09:00"},
-            {"procedure": "Immunization administration", "performed": "2026-04-13T09:50"},
-            {"procedure": "Venipuncture", "performed": "2026-04-13T10:05"}
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Annual Wellness Visit",
-              "author": "PCP",
-              "date": "2026-04-13T09:00",
-              "body": "AWV. 71F.\n\nOn alendronate weekly since early December, Wednesday mornings. No heartburn, no trouble swallowing, no jaw or thigh pain. Saw her dentist, who knows she's on it.\nMemory: name recall about the same as last year, not worse. Still doing everything for herself, driving, managing her own bills and schedule.\nWalking daily again now that the weather has turned. No falls.\n\nHRA: independent in ADLs and IADLs. PHQ-2 0.\nMeds: alendronate 70 mg weekly. NKDA.\n\nMoCA 26/30, same as 4/2025.\n\nExam: vitals as charted, weight stable. Alert, fluent, good historian. Heart regular. Lungs clear. No edema. Spine nontender. Gait normal, single-leg stance steady.\n\nA/P:\n1. Osteopenia on alendronate: tolerating, good technique. Continue. DXA late 2027.\n2. Age-related cognitive decline: stable, function intact. Recheck MoCA next year.\n3. Health maintenance: Tdap today (last 2016). Annual CMP, CBC, lipids, A1c. Mammogram fall 2027. Flu and COVID in the fall.\nRTC fall for alendronate check, then AWV next spring."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-15a",
-          "kind": "portal_message",
-          "start": "2026-04-15T16:10",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "Lab Results",
-              "author": "PCP",
-              "date": "2026-04-15T16:10",
-              "body": "All normal this year as well: kidneys, calcium, liver, blood counts, cholesterol and A1c. Continue the alendronate as you are."
-            }
-          ]
-        },
-        {
-          "id": "2026-05-18a",
-          "kind": "pharmacy",
-          "start": "2026-05-18T11:25",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Refill Request",
-              "title": "Refill: alendronate",
-              "author": "RN",
-              "date": "2026-05-18T11:25",
-              "body": "Alendronate 70 mg weekly #12 refilled, 90-day supply. Seen 4/13, labs normal."
-            }
-          ]
-        },
-        {
-          "id": "2026-06-08a",
-          "kind": "portal_message",
-          "start": "2026-06-08T19:30",
-          "reason": "Scheduling",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Fall appointment",
-              "author": "patient",
-              "date": "2026-06-08T19:30",
-              "body": "The doctor said to come back in the fall to check on the bone medicine. Could I have a Monday in late September? Mornings are best."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Fall appointment",
-              "author": "front desk",
-              "date": "2026-06-09T08:45",
-              "body": "You're booked Monday, September 21 at 9:30. We can give your flu shot that day too if it's in by then."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-10a",
-          "kind": "pharmacy",
-          "start": "2026-08-10T10:05",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Refill Request",
-              "title": "Refill: alendronate",
-              "author": "RN",
-              "date": "2026-08-10T10:05",
-              "body": "Electronic refill request, alendronate 70 mg weekly. Refilled #12, 90 days. Follow-up already scheduled 9/21."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-21a",
-          "kind": "office_visit",
-          "start": "2026-09-21T09:30",
-          "reason": "Osteopenia follow-up on alendronate",
-          "appointment": "booked"
         }
       ]
     }

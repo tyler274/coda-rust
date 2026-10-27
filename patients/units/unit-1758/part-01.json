@@ -1,0 +1,158 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001758",
+      "given": "Morgan",
+      "family": "Sheehan",
+      "birth_date": "1992-08-29",
+      "address_line": "41 Cape Street",
+      "phone": "+1-802-555-0162",
+      "email": "morgan.sheehan@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with asthma and epilepsy who joins in 2019, then develops a prolactin- and TSH-secreting pituitary adenoma and Graves disease, a postpartum PE, acute promyelocytic leukemia with DIC, phenytoin-induced Stevens-Johnson syndrome, and status asthmaticus. Outside records are sparse.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Mild intermittent asthma", "action": "history", "note": "albuterol only, a few times a month in pollen season"},
+            {"label": "Epilepsy", "action": "history", "onset": "2008-03-01", "note": "seizure-free for years on phenytoin"}
+          ],
+          "medications": [
+            {"drug_text": "phenytoin sodium 100 MG Extended Release Oral Capsule", "action": "historical", "sig": "Take 3 capsules (300 mg) by mouth daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Epilepsy"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze", "dose": {"value": 180, "unit": "mcg"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "Asthma"}
+          ],
+          "allergies": [
+            {"substance": "Pollen (seasonal)", "type": "allergy", "criticality": "low"}
+          ],
+          "state": {"weight_kg": 56.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T09:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T09:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 14.2}]},
+            {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No alcohol use"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-09-10T09:20"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-10T08:40"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T09:20"},
+            {"procedure": "Venipuncture", "performed": "2019-09-10T09:25"}
+          ],
+          "orders": [
+            {"id": "prior-records-2019", "action": "placed", "order": "Records request, prior primary care", "category": "procedure", "reason": "establish care"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T09:30", "body": "27 yo teacher (2nd grade, local elementary) here to set up care. Moving her records over from her old office in the spring, wanted a practice she could reach by text.\n\nPMH\n- Asthma since childhood. Uses albuterol a few times a month, mostly May-June and again late summer when pollen is bad. Never intubated, no steroid bursts she can remember in adulthood. No daily inhaler.\n- Epilepsy, onset in her teens. Followed by a neurologist through high school/college, on phenytoin 300 mg daily ever since. Last seizure many years ago, she can't put a year on it. Drives. Has not seen neurology in a few years - happy to stay on what works.\nPSH: none.\nMeds: phenytoin ER 100 mg x3 daily; albuterol HFA prn.\nAllergies: seasonal pollen (hay fever type). No drug allergies.\nFH: mom hypothyroid. Dad asthma. Older sister has lupus. Maternal aunt with some kind of thyroid problem.\nSH: married, lives in Goshen. Never smoker, does not drink, no drugs. Teaches second grade.\nGYN: periods monthly, no pregnancies.\n\nROS otherwise negative.\n\nExam: well, thin. HEENT normal, no thyroid enlargement. Heart RRR without murmur. Lungs clear, good air movement. Abd soft. Skin clear. Neuro grossly normal, gait normal.\n\nA/P\n1. Asthma, mild intermittent - fine on rescue inhaler alone. Refilled.\n2. Epilepsy, well controlled on phenytoin - level today. Discussed calcium/vit D intake and gum care on phenytoin. Will refill here.\n3. Health maintenance - flu shot today. One-time HIV and hep C screens with baseline labs. Pap last year at old office per her, will confirm from records.\n\nRecords release signed. Return for a physical next fall."}
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2019-09-12T16:05", "body": "Hi Morgan - your blood counts, kidney and liver tests all look normal. Phenytoin level is right in range at 14.2. HIV and hepatitis C screens were negative. Nice to have you with us."}
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "outside_records",
+          "start": "2019-09-26T11:10",
+          "orders": [
+            {"id": "prior-records-2019", "action": "done", "date": "2019-09-26T11:10"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2019-09-26T11:10", "body": "14 pages received from prior PCP office. Includes: visit notes 2015-2019 (asthma, epilepsy, refills), immunization record, cervical cytology 06/2018 negative for intraepithelial lesion, and a 2016 neurology follow-up letter: seizure-free, continue phenytoin 300 mg daily, routine levels. Filed under outside records for PCP review.\n\nPCP addendum: reviewed. Pap 2018 normal, next due 2021. Nothing new."}
+          ]
+        },
+        {
+          "id": "2020-01-14a",
+          "kind": "pharmacy",
+          "start": "2020-01-14T10:20",
+          "documents": [
+            {"type": "Refill Request", "title": "Phenytoin refill", "author": "RN", "date": "2020-01-14T10:20", "body": "Pharmacy fax for phenytoin ER 100 mg #270, 90-day supply. Last level 9/2019 14.2, seen 9/2019. Approved per refill protocol, 3 refills."}
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "office_visit",
+          "start": "2020-06-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nipple discharge, irregular periods",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-06-09T15:20"}
+          ],
+          "orders": [
+            {"id": "endo-referral-2020", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "galactorrhea and oligomenorrhea"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2020-06-09T15:55", "body": "Masked visit (clinic COVID protocol).\n\nS: Since around November she has noticed milky fluid from both nipples, sometimes on its own, sometimes on her bra in the morning. Never bloody. At the same time her periods spread out, now every 6-8 weeks and lighter than they used to be. Home pregnancy tests negative. No headaches, no change in vision. She was waiting for school to end to deal with it.\n\nMeds: phenytoin 300 daily, albuterol prn.\n\nO: Vitals as charted. Breasts symmetric, no masses, no skin change, no axillary nodes. Did not express. Thyroid normal size. Visual fields full to confrontation.\n\nA/P: Galactorrhea with oligomenorrhea in a 27 yo, not pregnant by home test. Needs prolactin, pregnancy test and likely pituitary imaging - referring to endocrinology, who can get all of that in one go and will want to read the MRI themselves. Their first opening is July; she's fine to wait. Call if headaches or vision changes."}
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "specialist_visit",
+          "start": "2020-07-14T10:00",
+          "service": "Endocrinology",
+          "reason": "Galactorrhea and irregular menses",
+          "conditions": [
+            {"label": "Prolactinoma", "action": "diagnosed", "onset": "2020-07-14"},
+            {"label": "Oligomenorrhea", "icd10": "N91.5", "action": "diagnosed", "onset": "2019-11-01"}
+          ],
+          "medications": [
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice weekly", "dose": {"value": 0.5, "unit": "mg"}, "frequency": "TWICE WEEKLY", "route": "Oral", "course": "chronic", "reason": "Prolactinoma"}
+          ],
+          "orders": [
+            {"id": "endo-referral-2020", "action": "done", "date": "2020-07-24T13:40"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Consultation", "author": "endocrinology", "date": "2020-07-24T13:40", "body": "Outpatient Endocrinology - Consultation Letter\n\nReason for referral: galactorrhea, irregular menses.\n\nThank you for sending Ms. Sheehan, 27. For roughly eight months she has had spontaneous milky, non-bloody discharge from both breasts. Cycles now come every 6 to 8 weeks and are lighter. She has never been pregnant. She reports no change in weight, no headaches and no visual complaints.\n\nOther history: asthma, epilepsy on phenytoin 300 mg daily (seizure-free). Allergies: seasonal pollen. Non-smoker, no alcohol.\n\nExamination: gentle pressure on either breast produces milky fluid from the nipple. No masses, skin change or signs of inflammation. Visual fields normal on formal confrontation testing.\n\nResults: serum hCG negative. Prolactin elevated. Pituitary MRI: 6 mm lesion in the anterior pituitary.\n\nImpression: prolactinoma (microadenoma) with galactorrhea and oligomenorrhea.\n\nPlan: cabergoline 0.5 mg twice weekly, prescribed today. Repeat prolactin in about 3 months and follow-up visit in 6 months. She knows to report headache or visual change.\n\nEndocrinology"}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-22T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-22T08:35", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-22T08:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-09-22T08:35", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 12.8}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T08:30"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-09-22T08:00"},
+            {"procedure": "Immunization administration", "performed": "2020-09-22T08:30"},
+            {"procedure": "Venipuncture", "performed": "2020-09-22T08:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-09-22T08:45", "body": "Annual. Back in the classroom in person with masks and plexiglass, stressful but OK.\n\nInterval: saw endocrinology in July - prolactinoma on MRI, 6 mm. On cabergoline twice a week since, tolerating it, a little queasy the first couple of doses. Discharge less. Periods still irregular. No headaches or vision change. Asthma quiet this summer, used albuterol maybe twice. No seizures.\n\nMeds: phenytoin 300 mg daily, cabergoline 0.5 mg twice weekly, albuterol prn.\nAllergies: pollen.\n\nExam: Vitals reviewed. NAD. Thyroid not enlarged. Heart regular, no murmur. Lungs clear throughout. Breast exam deferred to endo follow-up per her preference. Abdomen benign. Skin and gums fine.\nPHQ-2 negative.\n\nA/P\n- Prolactinoma on cabergoline: endo managing, repeat prolactin with them.\n- Oligomenorrhea: expect improvement as prolactin normalizes.\n- Epilepsy: level today.\n- Asthma: rescue only.\n- HM: flu today. Pap due next year. Routine labs.\n\nFollow up in a year, sooner prn."}
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T12:30",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results", "author": "PCP", "date": "2020-09-24T12:30", "body": "Morgan, everything from Tuesday came back normal, cholesterol included. Phenytoin 12.8, still in the target range. Enjoy the fall."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -9,10 +9,28 @@
           "start": "2024-12-27T11:00",
           "service": "Gastroenterology (outside)",
           "reason": "Dysphagia and regurgitation",
-          "orders": [{"id": "gi-referral", "action": "done", "date": "2024-12-27T11:00"}],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2024-12-27T11:00"
+            }
+          ],
           "documents": [
-            {"type": "Consult Note", "title": "Gastroenterology consultation", "author": "gastroenterology", "date": "2025-01-07T09:15", "body": "GASTROENTEROLOGY CONSULTATION\nDate of visit: 12/27/2024\n\nThank you for referring Mr. Fleming, a 78-year-old man with multi-infarct dementia, prostate cancer on hormone therapy, aortic valve stenosis and prior strokes, seen with his daughter. For six months he has had on-and-off difficulty swallowing, mostly solids, and nighttime regurgitation of food that comes back undigested. He describes a lump in the throat and his daughter notes persistent bad breath. He was treated with antibiotics for pneumonia twice in the past year.\n\nMedications: hydrochlorothiazide 25 mg daily, metformin 500 mg twice daily, atorvastatin 20 mg nightly, loratadine 10 mg as needed, leuprolide every 3 months.\nAllergies: NKDA.\nSocial: never smoker; long abstinent from alcohol.\n\nExam: small, soft, nontender, compressible fullness in the left side of the neck. No cervical lymphadenopathy. Abdomen benign.\n\nImpression: history and exam suggest a pharyngoesophageal (Zenker) diverticulum with aspiration.\n\nPlan: barium swallow, then review. Meanwhile, upright for 2 hours after meals, small bites, soft diet.\n\nGastroenterology"},
-            {"type": "Result Note", "title": "GI letter", "author": "PCP", "date": "2025-01-08T08:30", "body": "GI consult received. Suspected Zenker diverticulum; barium swallow scheduled."}
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2025-01-07T09:15",
+              "body": "GASTROENTEROLOGY CONSULTATION\nDate of visit: 12/27/2024\n\nThank you for referring Mr. Fleming, a 78-year-old man with multi-infarct dementia, prostate cancer on hormone therapy, aortic valve stenosis and prior strokes, seen with his daughter. For six months he has had on-and-off difficulty swallowing, mostly solids, and nighttime regurgitation of food that comes back undigested. He describes a lump in the throat and his daughter notes persistent bad breath. He was treated with antibiotics for pneumonia twice in the past year.\n\nMedications: hydrochlorothiazide 25 mg daily, metformin 500 mg twice daily, atorvastatin 20 mg nightly, loratadine 10 mg as needed, leuprolide every 3 months.\nAllergies: NKDA.\nSocial: never smoker; long abstinent from alcohol.\n\nExam: small, soft, nontender, compressible fullness in the left side of the neck. No cervical lymphadenopathy. Abdomen benign.\n\nImpression: history and exam suggest a pharyngoesophageal (Zenker) diverticulum with aspiration.\n\nPlan: barium swallow, then review. Meanwhile, upright for 2 hours after meals, small bites, soft diet.\n\nGastroenterology"
+            },
+            {
+              "type": "Result Note",
+              "title": "GI letter",
+              "author": "PCP",
+              "date": "2025-01-08T08:30",
+              "body": "GI consult received. Suspected Zenker diverticulum; barium swallow scheduled."
+            }
           ]
         },
         {
@@ -21,10 +39,29 @@
           "start": "2025-01-08T13:00",
           "service": "Radiology (outside)",
           "reason": "Barium swallow",
-          "conditions": [{"label": "Zenker diverticulum", "icd10": "K22.5", "action": "diagnosed", "onset": "2024-06-15"}],
+          "conditions": [
+            {
+              "label": "Zenker diverticulum",
+              "icd10": "K22.5",
+              "action": "diagnosed",
+              "onset": "2024-06-15"
+            }
+          ],
           "documents": [
-            {"type": "Imaging Report", "title": "Barium swallow", "author": "radiology", "date": "2025-01-14T10:00", "body": "BARIUM ESOPHAGRAM (01/08/2025)\nIndication: solid dysphagia, regurgitation, recurrent pneumonia.\n\nTechnique: single-contrast thin and thick barium swallow in frontal and lateral projections.\n\nFindings: posterior outpouching arising just above the cricopharyngeus at the pharyngoesophageal junction, about 3 cm, filling with and retaining barium after the swallow. The cervical esophagus below it and the thoracic esophagus have normal caliber and motility. No stricture or mass. Gastroesophageal junction unremarkable. No aspiration observed during the study.\n\nImpression: Zenker diverticulum, approximately 3 cm, with barium retention. Esophagus otherwise normal."},
-            {"type": "Result Note", "title": "Esophagram", "author": "PCP", "date": "2025-01-14T16:00", "body": "Barium swallow: 3 cm Zenker diverticulum. Added to problem list. GI will discuss treatment."}
+            {
+              "type": "Imaging Report",
+              "title": "Barium swallow",
+              "author": "radiology",
+              "date": "2025-01-14T10:00",
+              "body": "BARIUM ESOPHAGRAM (01/08/2025)\nIndication: solid dysphagia, regurgitation, recurrent pneumonia.\n\nTechnique: single-contrast thin and thick barium swallow in frontal and lateral projections.\n\nFindings: posterior outpouching arising just above the cricopharyngeus at the pharyngoesophageal junction, about 3 cm, filling with and retaining barium after the swallow. The cervical esophagus below it and the thoracic esophagus have normal caliber and motility. No stricture or mass. Gastroesophageal junction unremarkable. No aspiration observed during the study.\n\nImpression: Zenker diverticulum, approximately 3 cm, with barium retention. Esophagus otherwise normal."
+            },
+            {
+              "type": "Result Note",
+              "title": "Esophagram",
+              "author": "PCP",
+              "date": "2025-01-14T16:00",
+              "body": "Barium swallow: 3 cm Zenker diverticulum. Added to problem list. GI will discuss treatment."
+            }
           ]
         },
         {
@@ -33,18 +70,82 @@
           "start": "2025-01-21T10:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Diabetes follow-up, yearly labs",
-          "state": {"labs": {"Hemoglobin A1c": 6.7}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-01-21T10:30", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
-            {"panel": "Lipid Panel", "collected": "2025-01-21T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
-            {"panel": "CBC with Differential", "collected": "2025-01-21T10:30", "results": [{"test": "Hemoglobin"}]},
-            {"panel": null, "collected": "2025-01-21T10:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-21T10:00"}],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-21T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-01-21T10:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-01-21T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-21T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-21T10:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2025-01-21T10:45", "body": "With daughter. Barium swallow showed a Zenker pouch; GI has offered an endoscopic procedure to divide it, scheduled February. Soft diet, sleeping propped up, less nighttime regurgitation. No fevers since fall.\n\nExam: vitals per flowsheet, weight steady since October. Soft fullness left neck. Lungs clear. Systolic murmur. Mild left weakness.\n\nA/P: Zenker diverticulum, procedure pending; reasonable. Metformin and others unchanged; A1c, yearly labs. Prostate cancer: next urology April."},
-            {"type": "Result Note", "title": "Yearly labs", "author": "PCP", "date": "2025-01-23T11:00", "body": "A1c a little lower with the weight loss. Albumin, kidney and liver tests, counts and lipids fine. No changes. Portal to daughter."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-01-21T10:45",
+              "body": "With daughter. Barium swallow showed a Zenker pouch; GI has offered an endoscopic procedure to divide it, scheduled February. Soft diet, sleeping propped up, less nighttime regurgitation. No fevers since fall.\n\nExam: vitals per flowsheet, weight steady since October. Soft fullness left neck. Lungs clear. Systolic murmur. Mild left weakness.\n\nA/P: Zenker diverticulum, procedure pending; reasonable. Metformin and others unchanged; A1c, yearly labs. Prostate cancer: next urology April."
+            },
+            {
+              "type": "Result Note",
+              "title": "Yearly labs",
+              "author": "PCP",
+              "date": "2025-01-23T11:00",
+              "body": "A1c a little lower with the weight loss. Albumin, kidney and liver tests, counts and lipids fine. No changes. Portal to daughter."
+            }
           ]
         },
         {
@@ -55,8 +156,20 @@
           "service": "Gastroenterology (outside)",
           "reason": "Endoscopic treatment of Zenker diverticulum",
           "documents": [
-            {"type": "Procedure Note", "title": "Flexible endoscopic septotomy", "author": "gastroenterology", "date": "2025-03-04T10:30", "body": "PROCEDURE: flexible endoscopic Zenker diverticulotomy (septotomy), 02/18/2025\nIndication: symptomatic 3 cm Zenker diverticulum with recurrent aspiration pneumonia.\nSedation: monitored anesthesia care.\n\nFindings: diverticulum at the pharyngoesophageal junction with a cricopharyngeal septum. Septum divided with a needle-knife to near the base; clips placed at the apex. Esophagus beyond normal. No bleeding or perforation.\n\nPost-procedure: observed, tolerated clear liquids that afternoon, discharged home with his daughter. Liquids for 2 days, then soft foods for a week, then regular diet as tolerated.\n\nGastroenterology"},
-            {"type": "Result Note", "title": "GI procedure note", "author": "PCP", "date": "2025-03-05T08:00", "body": "Septotomy note received; uncomplicated."}
+            {
+              "type": "Procedure Note",
+              "title": "Flexible endoscopic septotomy",
+              "author": "gastroenterology",
+              "date": "2025-03-04T10:30",
+              "body": "PROCEDURE: flexible endoscopic Zenker diverticulotomy (septotomy), 02/18/2025\nIndication: symptomatic 3 cm Zenker diverticulum with recurrent aspiration pneumonia.\nSedation: monitored anesthesia care.\n\nFindings: diverticulum at the pharyngoesophageal junction with a cricopharyngeal septum. Septum divided with a needle-knife to near the base; clips placed at the apex. Esophagus beyond normal. No bleeding or perforation.\n\nPost-procedure: observed, tolerated clear liquids that afternoon, discharged home with his daughter. Liquids for 2 days, then soft foods for a week, then regular diet as tolerated.\n\nGastroenterology"
+            },
+            {
+              "type": "Result Note",
+              "title": "GI procedure note",
+              "author": "PCP",
+              "date": "2025-03-05T08:00",
+              "body": "Septotomy note received; uncomplicated."
+            }
           ]
         },
         {
@@ -64,8 +177,20 @@
           "kind": "portal_message",
           "start": "2025-03-18T19:00",
           "documents": [
-            {"type": "Patient Message", "title": "Swallowing", "author": "patient", "date": "2025-03-18T19:00", "body": "Daughter writing. A month after the throat procedure he is eating regular food again and the nighttime coming-up has stopped. His breath is better too. GI said no need to see them again unless it comes back."},
-            {"type": "Patient Message", "title": "RE: Swallowing", "author": "PCP", "date": "2025-03-19T09:10", "body": "Wonderful. Thank you for letting me know. Let's watch his weight at the next visit."}
+            {
+              "type": "Patient Message",
+              "title": "Swallowing",
+              "author": "patient",
+              "date": "2025-03-18T19:00",
+              "body": "Daughter writing. A month after the throat procedure he is eating regular food again and the nighttime coming-up has stopped. His breath is better too. GI said no need to see them again unless it comes back."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Swallowing",
+              "author": "PCP",
+              "date": "2025-03-19T09:10",
+              "body": "Wonderful. Thank you for letting me know. Let's watch his weight at the next visit."
+            }
           ]
         },
         {
@@ -75,10 +200,25 @@
           "service": "Urology (outside)",
           "reason": "ADT follow-up",
           "labs": [
-            {"panel": null, "collected": "2025-04-15T09:40", "results": [{"test": "Prostate Specific Antigen", "value": 0.6}]}
+            {
+              "panel": null,
+              "collected": "2025-04-15T09:40",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 0.6
+                }
+              ]
+            }
           ],
           "documents": [
-            {"type": "Letter", "title": "Urology follow-up", "author": "urology", "date": "2025-04-29T09:00", "body": "Dear colleague,\n\nUpdate on Mr. Fleming: remains on leuprolide 22.5 mg every 3 months, two years of treatment. PSA 0.6 today (0.8 last spring). Voiding stable with mild nocturia; no further retention. Injection given. Continue; PSA every 6 months.\n\nUrology"}
+            {
+              "type": "Letter",
+              "title": "Urology follow-up",
+              "author": "urology",
+              "date": "2025-04-29T09:00",
+              "body": "Dear colleague,\n\nUpdate on Mr. Fleming: remains on leuprolide 22.5 mg every 3 months, two years of treatment. PSA 0.6 today (0.8 last spring). Voiding stable with mild nocturia; no further retention. Injection given. Continue; PSA every 6 months.\n\nUrology"
+            }
           ]
         },
         {
@@ -87,11 +227,32 @@
           "start": "2025-05-13T10:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Annual wellness visit",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
-          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-05-13T10:00"}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-05-13T10:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-05-13T10:50", "body": "WELLNESS VISIT, daughter present.\n\nSwallowing much better since February; regular diet, weight holding. No pneumonias since September.\nFunction: dresses, bathes, eats on his own; daughter does finances, medications, shopping, appointments. Lives alone, she visits daily. No falls this year.\nCognition: Mini-Cog 1/3, conversation pleasant, repeats stories.\nPHQ-9 3. Abstinent.\nHearing aids; cataracts stable.\nFall prevention: night lights, bath mat; daughter considering a shower chair.\n\nExam: mild left weakness, gait steady. Systolic murmur. Lungs clear.\n\nPlan: follow-up in fall with labs and vaccines."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-05-13T10:50",
+              "body": "WELLNESS VISIT, daughter present.\n\nSwallowing much better since February; regular diet, weight holding. No pneumonias since September.\nFunction: dresses, bathes, eats on his own; daughter does finances, medications, shopping, appointments. Lives alone, she visits daily. No falls this year.\nCognition: Mini-Cog 1/3, conversation pleasant, repeats stories.\nPHQ-9 3. Abstinent.\nHearing aids; cataracts stable.\nFall prevention: night lights, bath mat; daughter considering a shower chair.\n\nExam: mild left weakness, gait steady. Systolic murmur. Lungs clear.\n\nPlan: follow-up in fall with labs and vaccines."
+            }
           ]
         },
         {
@@ -101,18 +262,65 @@
           "end": "2025-07-01T12:00",
           "service": "Emergency Medicine and Neurosurgery (outside)",
           "reason": "Arm weakness after fall",
-          "conditions": [{"label": "Central cord syndrome", "icd10": "S14.129A", "action": "diagnosed", "onset": "2025-06-26"}],
-          "measure": ["bp", "hr", "spo2"],
+          "conditions": [
+            {
+              "label": "Central cord syndrome",
+              "icd10": "S14.129A",
+              "action": "diagnosed",
+              "onset": "2025-06-26"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-26T08:10", "results": [{"test": "Hemoglobin"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-26T08:10", "results": [{"test": "Creatinine"}, {"test": "Sodium"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-26T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-26T08:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "CT head without contrast", "performed": "2025-06-26T08:30", "text": "No acute intracranial hemorrhage, mass effect or extra-axial collection. Old infarcts with chronic small-vessel white matter change. Ventricles proportionate. No skull fracture.", "conclusion": "No acute intracranial abnormality. Old infarcts and chronic small-vessel change."}
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-06-26T08:30",
+              "text": "No acute intracranial hemorrhage, mass effect or extra-axial collection. Old infarcts with chronic small-vessel white matter change. Ventricles proportionate. No skull fracture.",
+              "conclusion": "No acute intracranial abnormality. Old infarcts and chronic small-vessel change."
+            }
           ],
           "documents": [
-            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2025-07-08T15:00", "body": "DISCHARGE SUMMARY\nAdmitted: 06/26/2025 via ED. Discharged: 07/01/2025 to inpatient rehabilitation.\n\nPresentation: 79-year-old man with cervical spondylosis, prior strokes and multi-infarct dementia, treated six months ago for a Zenker diverticulum. Early this morning he lost his balance in the bathroom and hit his chin on the sink, without loss of consciousness. Afterward he could not use his hands well and felt clumsy doing up buttons, with a burning feeling over his shoulders and upper arms. He denied neck pain, leg weakness, and any change in bladder or bowel function.\n\nExam in ED: strength 4/5 in both arms, weaker in the hands than at the shoulders; legs 5/5. Pain and temperature sensation reduced over the shoulders and arms on both sides; vibration and joint position sense preserved.\n\nImaging: CT head without acute findings (old infarcts). CT cervical spine: no fracture or malalignment; multilevel degenerative spondylosis. MRI cervical spine: multilevel spondylotic canal narrowing, most marked at C4-C5, with cord edema at that level; no ligamentous injury or epidural collection.\n\nDiagnosis: central cord syndrome after a fall, on a background of cervical spondylosis.\n\nCourse: neurosurgery consulted; nonoperative management recommended. Soft collar for comfort. Blood pressure kept in a good range. PT/OT daily; hand function and burning pain improving by discharge. No bladder retention.\n\nMedications at discharge: unchanged home medications (hydrochlorothiazide 25 mg, metformin 500 mg twice daily, atorvastatin 20 mg, loratadine as needed, leuprolide per urology).\nAllergies: NKDA.\n\nDisposition: inpatient rehabilitation. Neurosurgery clinic in 6 weeks. PCP follow-up after rehab.\n\nHospital Medicine"},
-            {"type": "Result Note", "title": "Discharge summary reviewed", "author": "PCP", "date": "2025-07-09T08:15", "body": "Discharge summary in: central cord syndrome, nonoperative. In rehab now. Problem list updated."}
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-07-08T15:00",
+              "body": "DISCHARGE SUMMARY\nAdmitted: 06/26/2025 via ED. Discharged: 07/01/2025 to inpatient rehabilitation.\n\nPresentation: 79-year-old man with cervical spondylosis, prior strokes and multi-infarct dementia, treated six months ago for a Zenker diverticulum. Early this morning he lost his balance in the bathroom and hit his chin on the sink, without loss of consciousness. Afterward he could not use his hands well and felt clumsy doing up buttons, with a burning feeling over his shoulders and upper arms. He denied neck pain, leg weakness, and any change in bladder or bowel function.\n\nExam in ED: strength 4/5 in both arms, weaker in the hands than at the shoulders; legs 5/5. Pain and temperature sensation reduced over the shoulders and arms on both sides; vibration and joint position sense preserved.\n\nImaging: CT head without acute findings (old infarcts). CT cervical spine: no fracture or malalignment; multilevel degenerative spondylosis. MRI cervical spine: multilevel spondylotic canal narrowing, most marked at C4-C5, with cord edema at that level; no ligamentous injury or epidural collection.\n\nDiagnosis: central cord syndrome after a fall, on a background of cervical spondylosis.\n\nCourse: neurosurgery consulted; nonoperative management recommended. Soft collar for comfort. Blood pressure kept in a good range. PT/OT daily; hand function and burning pain improving by discharge. No bladder retention.\n\nMedications at discharge: unchanged home medications (hydrochlorothiazide 25 mg, metformin 500 mg twice daily, atorvastatin 20 mg, loratadine as needed, leuprolide per urology).\nAllergies: NKDA.\n\nDisposition: inpatient rehabilitation. Neurosurgery clinic in 6 weeks. PCP follow-up after rehab.\n\nHospital Medicine"
+            },
+            {
+              "type": "Result Note",
+              "title": "Discharge summary reviewed",
+              "author": "PCP",
+              "date": "2025-07-09T08:15",
+              "body": "Discharge summary in: central cord syndrome, nonoperative. In rehab now. Problem list updated."
+            }
           ]
         },
         {
@@ -120,7 +328,13 @@
           "kind": "telephone",
           "start": "2025-06-27T10:20",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Daughter: fall, admitted", "author": "RN", "date": "2025-06-27T10:20", "body": "Daughter called: he fell in the bathroom yesterday morning, hit his chin, and could not use his hands properly. ED said a bruised spinal cord in the neck from arthritis plus the fall, no surgery for now. Admitted. Expected to go to rehab. Message to PCP; asked her to call when he is discharged."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Daughter: fall, admitted",
+              "author": "RN",
+              "date": "2025-06-27T10:20",
+              "body": "Daughter called: he fell in the bathroom yesterday morning, hit his chin, and could not use his hands properly. ED said a bruised spinal cord in the neck from arthritis plus the fall, no surgery for now. Admitted. Expected to go to rehab. Message to PCP; asked her to call when he is discharged."
+            }
           ]
         },
         {
@@ -130,15 +344,56 @@
           "end": "2025-07-22T13:50",
           "service": "Internal Medicine — Primary Care",
           "reason": "Transitional care after hospital and rehab",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-07-22T13:55", "results": [{"test": "Sodium"}, {"test": "Creatinine"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-22T13:55", "results": [{"test": "Hemoglobin"}]}
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-07-22T13:00"}],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-22T13:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-22T13:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-07-22T13:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Transitional care visit", "author": "PCP", "date": "2025-07-22T14:20", "body": "With daughter. Hospitalized 6/26 to 7/1 for central cord syndrome after a fall in the bathroom, then inpatient rehab until 7/18 (we have the hospital summary; rehab summary not received). Home now with home-health PT and OT twice weekly.\n\nNow: hands stronger, buttons slow but possible, using built-up utensils. Burning across the shoulders much less. Collar off per rehab. Walking without device. No bladder trouble.\n\nMeds reconciled: no changes from before admission.\n\nExam: vitals per flowsheet. Grip reduced both hands, finger dexterity slow; shoulder strength nearly normal. Legs strong. Mild left weakness as before. Systolic murmur. Lungs clear.\n\nA/P:\n1. Central cord syndrome, improving. Continue home PT/OT. Neurosurgery visit in August.\n2. Falls: bathroom grab bars and shower chair ordered through home health; night lights; daughter checking daily, medical alert pendant discussed.\n3. Chronic conditions stable; BMP, CBC today.\nRTC October, sooner if needed."},
-            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2025-07-22T15:00", "body": "Requested discharge summary from the inpatient rehabilitation facility (stay 7/1 to 7/18/25)."}
+            {
+              "type": "Progress Notes",
+              "title": "Transitional care visit",
+              "author": "PCP",
+              "date": "2025-07-22T14:20",
+              "body": "With daughter. Hospitalized 6/26 to 7/1 for central cord syndrome after a fall in the bathroom, then inpatient rehab until 7/18 (we have the hospital summary; rehab summary not received). Home now with home-health PT and OT twice weekly.\n\nNow: hands stronger, buttons slow but possible, using built-up utensils. Burning across the shoulders much less. Collar off per rehab. Walking without device. No bladder trouble.\n\nMeds reconciled: no changes from before admission.\n\nExam: vitals per flowsheet. Grip reduced both hands, finger dexterity slow; shoulder strength nearly normal. Legs strong. Mild left weakness as before. Systolic murmur. Lungs clear.\n\nA/P:\n1. Central cord syndrome, improving. Continue home PT/OT. Neurosurgery visit in August.\n2. Falls: bathroom grab bars and shower chair ordered through home health; night lights; daughter checking daily, medical alert pendant discussed.\n3. Chronic conditions stable; BMP, CBC today.\nRTC October, sooner if needed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2025-07-22T15:00",
+              "body": "Requested discharge summary from the inpatient rehabilitation facility (stay 7/1 to 7/18/25)."
+            }
           ]
         },
         {
@@ -146,7 +401,13 @@
           "kind": "telephone",
           "start": "2025-08-05T11:00",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Home health plan of care", "author": "PCP", "date": "2025-08-05T11:00", "body": "Home health plan of care and face-to-face attestation signed: PT and OT for upper extremity weakness after central cord syndrome and fall prevention. Faxed back to the agency."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Home health plan of care",
+              "author": "PCP",
+              "date": "2025-08-05T11:00",
+              "body": "Home health plan of care and face-to-face attestation signed: PT and OT for upper extremity weakness after central cord syndrome and fall prevention. Faxed back to the agency."
+            }
           ]
         },
         {
@@ -155,22 +416,70 @@
           "start": "2025-10-07T10:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Follow-up; vaccines",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-07T10:30", "results": [{"test": "Creatinine"}, {"test": "Sodium"}]},
-            {"panel": null, "collected": "2025-10-07T10:30", "results": [{"test": "Hemoglobin A1c"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-07T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-07T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
           ],
           "immunizations": [
-            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-07T10:40"},
-            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T10:42"}
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T10:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T10:42"
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-10-07T10:00"},
-            {"procedure": "Immunization administration", "performed": "2025-10-07T10:40"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-07T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T10:40"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2025-10-07T10:55", "body": "With daughter. Home PT/OT finished in September. Hands better; still drops small things and handwriting is shaky. Saw neurosurgery in August, told he is healing and to avoid falls; no letter here. Wearing a medical alert pendant. No falls since June. Eating well.\n\nExam: vitals per flowsheet. Grip mildly reduced both sides, improved from July. Mild left weakness. Gait steady, slower. Systolic murmur. Lungs clear.\n\nPlan: A1c and BMP. Flu and COVID vaccines today. Continue current medicines. January visit with yearly labs."},
-            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2025-10-08T14:00", "body": "Stable. Portal message to daughter."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-10-07T10:55",
+              "body": "With daughter. Home PT/OT finished in September. Hands better; still drops small things and handwriting is shaky. Saw neurosurgery in August, told he is healing and to avoid falls; no letter here. Wearing a medical alert pendant. No falls since June. Eating well.\n\nExam: vitals per flowsheet. Grip mildly reduced both sides, improved from July. Mild left weakness. Gait steady, slower. Systolic murmur. Lungs clear.\n\nPlan: A1c and BMP. Flu and COVID vaccines today. Continue current medicines. January visit with yearly labs."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2025-10-08T14:00",
+              "body": "Stable. Portal message to daughter."
+            }
           ]
         },
         {
@@ -178,8 +487,20 @@
           "kind": "pharmacy",
           "start": "2025-12-09T09:40",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2025-12-09T09:40", "body": "Pharmacy requests renewals for the blister-pack medications: hydrochlorothiazide 25 mg, metformin 500 mg, atorvastatin 20 mg. Loratadine OTC. Pended."},
-            {"type": "Telephone Encounter", "title": "Refills approved", "author": "PCP", "date": "2025-12-09T12:15", "body": "Renewed, 30-day supplies with 11 refills, blister packaging."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2025-12-09T09:40",
+              "body": "Pharmacy requests renewals for the blister-pack medications: hydrochlorothiazide 25 mg, metformin 500 mg, atorvastatin 20 mg. Loratadine OTC. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills approved",
+              "author": "PCP",
+              "date": "2025-12-09T12:15",
+              "body": "Renewed, 30-day supplies with 11 refills, blister packaging."
+            }
           ]
         },
         {
@@ -188,18 +509,82 @@
           "start": "2026-01-13T10:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Diabetes follow-up, yearly labs",
-          "state": {"labs": {"Hemoglobin A1c": 6.9}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-13T10:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
-            {"panel": "Lipid Panel", "collected": "2026-01-13T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
-            {"panel": "CBC with Differential", "collected": "2026-01-13T10:30", "results": [{"test": "Hemoglobin"}]},
-            {"panel": null, "collected": "2026-01-13T10:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-13T10:00"}],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-13T10:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-13T10:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-13T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-13T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T10:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2026-01-13T10:45", "body": "With daughter. Quiet winter, mostly indoors. No falls. Swallowing fine. Urine stream ok, up twice at night. Leuprolide continuing at urology. Daughter feels his memory has slipped a bit more since the summer; still safe alone during the day with her visits and the pendant, in her view.\n\nExam: vitals per flowsheet. Mild left weakness; grip slightly reduced both hands. Systolic murmur. Lungs clear. Feet intact skin and sensation.\n\nPlan: yearly labs. Continue current regimen. Wellness visit April."},
-            {"type": "Result Note", "title": "Yearly labs", "author": "PCP", "date": "2026-01-15T09:00", "body": "A1c in his range, kidneys stable, lipids and counts fine, urine albumin normal. Portal note to daughter."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2026-01-13T10:45",
+              "body": "With daughter. Quiet winter, mostly indoors. No falls. Swallowing fine. Urine stream ok, up twice at night. Leuprolide continuing at urology. Daughter feels his memory has slipped a bit more since the summer; still safe alone during the day with her visits and the pendant, in her view.\n\nExam: vitals per flowsheet. Mild left weakness; grip slightly reduced both hands. Systolic murmur. Lungs clear. Feet intact skin and sensation.\n\nPlan: yearly labs. Continue current regimen. Wellness visit April."
+            },
+            {
+              "type": "Result Note",
+              "title": "Yearly labs",
+              "author": "PCP",
+              "date": "2026-01-15T09:00",
+              "body": "A1c in his range, kidneys stable, lipids and counts fine, urine albumin normal. Portal note to daughter."
+            }
           ]
         },
         {
@@ -207,8 +592,20 @@
           "kind": "portal_message",
           "start": "2026-03-10T17:30",
           "documents": [
-            {"type": "Patient Message", "title": "Refill question", "author": "patient", "date": "2026-03-10T17:30", "body": "Daughter here. The pharmacy says his loratadine isn't on the blister pack. Can it be? Allergy season starts soon and he forgets the separate bottle."},
-            {"type": "Patient Message", "title": "RE: Refill question", "author": "RN", "date": "2026-03-11T10:00", "body": "Since he takes it only as needed, it stays as a separate bottle. A reminder on the blister card for allergy days may help; we asked the pharmacy to add a note to the label."}
+            {
+              "type": "Patient Message",
+              "title": "Refill question",
+              "author": "patient",
+              "date": "2026-03-10T17:30",
+              "body": "Daughter here. The pharmacy says his loratadine isn't on the blister pack. Can it be? Allergy season starts soon and he forgets the separate bottle."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill question",
+              "author": "RN",
+              "date": "2026-03-11T10:00",
+              "body": "Since he takes it only as needed, it stays as a separate bottle. A reminder on the blister card for allergy days may help; we asked the pharmacy to add a note to the label."
+            }
           ]
         },
         {
@@ -217,11 +614,32 @@
           "start": "2026-04-14T10:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Annual wellness visit",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
-          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2026-04-14T10:00"}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-04-14T10:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2026-04-14T10:50", "body": "WELLNESS VISIT with daughter.\n\nFunction: bathing with shower chair, dressing slowly (Velcro shoes), feeding himself. Daughter handles everything else. Lives alone with daily visits and the alert pendant. No falls since last June.\nCognition: Mini-Cog 0/3 today, clock disorganized; daughter confirms slow decline.\nPHQ-9 4. Abstinent from alcohol.\nHearing aids in. Vision stable.\nAdvance care planning revisited: goals unchanged; MOLST still declined for now.\nVaccines up to date.\n\nExam: mild left weakness, reduced grip both hands, gait steady with care. Systolic murmur. Lungs clear.\n\nPlan: follow-up in summer."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2026-04-14T10:50",
+              "body": "WELLNESS VISIT with daughter.\n\nFunction: bathing with shower chair, dressing slowly (Velcro shoes), feeding himself. Daughter handles everything else. Lives alone with daily visits and the alert pendant. No falls since last June.\nCognition: Mini-Cog 0/3 today, clock disorganized; daughter confirms slow decline.\nPHQ-9 4. Abstinent from alcohol.\nHearing aids in. Vision stable.\nAdvance care planning revisited: goals unchanged; MOLST still declined for now.\nVaccines up to date.\n\nExam: mild left weakness, reduced grip both hands, gait steady with care. Systolic murmur. Lungs clear.\n\nPlan: follow-up in summer."
+            }
           ]
         },
         {
@@ -231,10 +649,25 @@
           "service": "Urology (outside)",
           "reason": "ADT follow-up",
           "labs": [
-            {"panel": null, "collected": "2026-05-12T09:10", "results": [{"test": "Prostate Specific Antigen", "value": 0.6}]}
+            {
+              "panel": null,
+              "collected": "2026-05-12T09:10",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 0.6
+                }
+              ]
+            }
           ],
           "documents": [
-            {"type": "Letter", "title": "Urology follow-up", "author": "urology", "date": "2026-05-26T10:00", "body": "Dear colleague,\n\nMr. Fleming continues androgen deprivation with leuprolide every 3 months. PSA 0.6 today; 0.7 in November 2025. Stable, no rise. Voiding acceptable. Injection given. Next review in 6 months.\n\nUrology"}
+            {
+              "type": "Letter",
+              "title": "Urology follow-up",
+              "author": "urology",
+              "date": "2026-05-26T10:00",
+              "body": "Dear colleague,\n\nMr. Fleming continues androgen deprivation with leuprolide every 3 months. PSA 0.6 today; 0.7 in November 2025. Stable, no rise. Voiding acceptable. Injection given. Next review in 6 months.\n\nUrology"
+            }
           ]
         },
         {
@@ -244,47 +677,63 @@
           "end": "2026-07-06T11:00",
           "service": "Emergency Medicine and Neurosurgery (outside)",
           "reason": "Confusion after fall",
-          "conditions": [{"label": "Acute subdural hematoma", "icd10": "S06.5XAA", "action": "diagnosed", "onset": "2026-06-23"}],
-          "measure": ["bp", "hr", "spo2"],
+          "conditions": [],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-27T14:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-27T14:40", "results": [{"test": "Sodium"}, {"test": "Creatinine"}]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-06-27T14:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-27T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-27T14:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-27T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "CT head without contrast", "performed": "2026-06-27T15:05", "text": "Hyperdense crescentic extra-axial collection over the right frontoparietal convexity, maximal thickness 12 mm, with effacement of the adjacent sulci and 6 mm leftward midline shift. Basal cisterns patent. Old infarcts and chronic small-vessel change as before. No skull fracture.", "conclusion": "Acute right frontoparietal subdural hematoma, 12 mm, with 6 mm midline shift."}
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-06-27T15:05",
+              "text": "Hyperdense crescentic extra-axial collection over the right frontoparietal convexity, maximal thickness 12 mm, with effacement of the adjacent sulci and 6 mm leftward midline shift. Basal cisterns patent. Old infarcts and chronic small-vessel change as before. No skull fracture.",
+              "conclusion": "Acute right frontoparietal subdural hematoma, 12 mm, with 6 mm midline shift."
+            }
           ],
           "documents": [
-            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "neurosurgery", "date": "2026-07-09T13:30", "body": "DISCHARGE SUMMARY\nAdmitted 06/27/2026 via ED. Discharged 07/06/2026 to skilled nursing facility.\n\nPresentation: 80-year-old man with multi-infarct dementia and central cord syndrome after a fall last year, brought in after his neighbor found him confused at home. He lives alone; he apparently fell several days ago, unwitnessed, and did not seek care. Over the last two days the neighbor noticed worsening headache, confusion and unsteadiness.\n\nED exam: drowsy, rouses to voice. Mild weakness and reduced sensation on the left. Pupils equal and reactive. No visible external injury.\n\nCT head: acute right frontoparietal subdural hematoma, 12 mm, 6 mm midline shift.\nLabs: counts, chemistries and coagulation normal; not on antithrombotic medication.\n\nCourse: admitted to neuro-ICU. Right craniotomy and evacuation of subdural hematoma 06/28/2026, uncomplicated. Alertness back to baseline by postoperative day 3 per daughter; headache resolved. Mild left weakness persists. Mobilized with PT, rolling walker. No seizures.\n\nDiagnosis: acute traumatic subdural hematoma, evacuated.\n\nDischarge medications: unchanged home medications (hydrochlorothiazide, metformin, atorvastatin, loratadine; leuprolide per urology).\nAllergies: NKDA.\n\nFollow-up: neurosurgery with CT head in about 6 weeks; staples removed at the facility; PCP after discharge from rehab.\n\nNeurosurgery"},
-            {"type": "Result Note", "title": "Discharge summary reviewed", "author": "PCP", "date": "2026-07-10T08:00", "body": "Summary in: acute right SDH, craniotomy 6/28, now in skilled nursing rehab. Problem list updated."}
-          ]
-        },
-        {
-          "id": "2026-06-29a",
-          "kind": "telephone",
-          "start": "2026-06-29T09:00",
-          "documents": [
-            {"type": "Telephone Encounter", "title": "Daughter: admitted with brain bleed", "author": "RN", "date": "2026-06-29T09:00", "body": "Daughter called. Saturday his neighbor found him confused at home; he must have fallen a few days before. CT showed bleeding on the brain, surgery yesterday to remove it. He is waking up more today and recognized her. Routed to PCP."},
-            {"type": "Telephone Encounter", "title": "PCP call back", "author": "PCP", "date": "2026-06-29T12:30", "body": "Spoke with daughter, supportive call. She is understandably shaken. Discussed that after rehab we should talk together about how much support he needs at home. She agrees."}
-          ]
-        },
-        {
-          "id": "2026-08-11a",
-          "kind": "office_visit",
-          "start": "2026-08-11T13:30",
-          "end": "2026-08-11T14:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Transitional care after hospital and skilled nursing stay",
-          "state": {"weight_kg": 72.0},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-11T14:35", "results": [{"test": "Sodium"}, {"test": "Creatinine"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-11T14:35", "results": [{"test": "Hemoglobin"}]}
-          ],
-          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-08-11T13:30"}],
-          "documents": [
-            {"type": "Progress Notes", "title": "Transitional care visit", "author": "PCP", "date": "2026-08-11T14:50", "body": "With daughter.\n\nInterval: admitted 6/27 to 7/6 for an acute right subdural hematoma after an unwitnessed fall, evacuated by craniotomy 6/28. Skilled nursing rehab until 8/4 (their summary not yet here). Home since with home-health PT/OT and nursing.\n\nNow: no headache. Back to his usual level of confusion per daughter, maybe a bit slower. Walks with a rolling walker indoors. Eating well but lost weight in the hospital. No falls since home. Daughter visits daily; pendant on.\n\nMeds reconciled: home medicines resumed unchanged.\n\nExam: vitals per flowsheet, weight down. Healed right scalp incision. Alert, oriented to person. Mild left weakness; grip reduced both hands. Gait slow with walker. Systolic murmur. Lungs clear.\n\nA/P:\n1. Acute SDH, evacuated, recovering. Neurosurgery follow-up CT next week.\n2. Falls with dementia, living alone: long talk with daughter about more support at home; she will look at options and we will talk again at the September visit.\n3. Weight loss after admission: calorie-dense snacks; recheck next visit.\n4. Chronic conditions: BMP and CBC today.\nRTC September."},
-            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2026-08-12T10:00", "body": "BMP and CBC normal. Portal note to daughter."}
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "neurosurgery",
+              "date": "2026-07-09T13:30",
+              "body": "DISCHARGE SUMMARY\nAdmitted 06/27/2026 via ED. Discharged 07/06/2026 to skilled nursing facility.\n\nPresentation: 80-year-old man with multi-infarct dementia and central cord syndrome after a fall last year, brought in after his neighbor found him confused at home. He lives alone; he apparently fell several days ago, unwitnessed, and did not seek care. Over the last two days the neighbor noticed worsening headache, confusion and unsteadiness.\n\nED exam: drowsy, rouses to voice. Mild weakness and reduced sensation on the left. Pupils equal and reactive. No visible external injury.\n\nCT head: acute right frontoparietal subdural hematoma, 12 mm, 6 mm midline shift.\nLabs: counts, chemistries and coagulation normal; not on antithrombotic medication.\n\nCourse: admitted to neuro-ICU. Right craniotomy and evacuation of subdural hematoma 06/28/2026, uncomplicated. Alertness back to baseline by postoperative day 3 per daughter; headache resolved. Mild left weakness persists. Mobilized with PT, rolling walker. No seizures.\n\nDiagnosis: acute traumatic subdural hematoma, evacuated.\n\nDischarge medications: unchanged home medications (hydrochlorothiazide, metformin, atorvastatin, loratadine; leuprolide per urology).\nAllergies: NKDA.\n\nFollow-up: neurosurgery with CT head in about 6 weeks; staples removed at the facility; PCP after discharge from rehab.\n\nNeurosurgery"
+            }
           ]
         },
         {
@@ -292,8 +741,13 @@
           "kind": "outside_records",
           "start": "2026-08-18T11:00",
           "documents": [
-            {"type": "Discharge Summary", "title": "Skilled nursing facility discharge summary", "author": "skilled nursing", "date": "2026-08-18T11:00", "body": "SKILLED NURSING FACILITY DISCHARGE SUMMARY\nStay: 07/06/2026 to 08/04/2026\n\nAdmitted for rehabilitation after craniotomy for right subdural hematoma. Staples removed on day 10, incision healed. PT/OT daily: progressed from contact guard to supervision with a rolling walker; transfers independent. Cognition at baseline per family. No falls, no new medications. Weight trended down early, stable last two weeks.\n\nDischarged home with daughter support and home-health services.\n\nSkilled Nursing Facility"},
-            {"type": "Result Note", "title": "SNF summary received", "author": "PCP", "date": "2026-08-19T08:20", "body": "SNF summary received; matches daughter's account."}
+            {
+              "type": "Discharge Summary",
+              "title": "Skilled nursing facility discharge summary",
+              "author": "skilled nursing",
+              "date": "2026-08-18T11:00",
+              "body": "SKILLED NURSING FACILITY DISCHARGE SUMMARY\nStay: 07/06/2026 to 08/04/2026\n\nAdmitted for rehabilitation after craniotomy for right subdural hematoma. Staples removed on day 10, incision healed. PT/OT daily: progressed from contact guard to supervision with a rolling walker; transfers independent. Cognition at baseline per family. No falls, no new medications. Weight trended down early, stable last two weeks.\n\nDischarged home with daughter support and home-health services.\n\nSkilled Nursing Facility"
+            }
           ]
         },
         {
@@ -303,10 +757,22 @@
           "service": "Neurosurgery (outside)",
           "reason": "Follow-up after subdural hematoma evacuation",
           "reports": [
-            {"study": "CT head without contrast", "performed": "2026-08-19T10:00", "issued": "2026-08-19T14:00", "text": "Postoperative change of right craniotomy. Thin residual right frontoparietal subdural collection, smaller than on the preoperative study, without new hyperdense blood. No midline shift. Old infarcts and chronic small-vessel change unchanged.", "conclusion": "Expected postoperative appearance with small residual right subdural collection; midline shift resolved."}
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-08-19T10:00",
+              "issued": "2026-08-19T14:00",
+              "text": "Postoperative change of right craniotomy. Thin residual right frontoparietal subdural collection, smaller than on the preoperative study, without new hyperdense blood. No midline shift. Old infarcts and chronic small-vessel change unchanged.",
+              "conclusion": "Expected postoperative appearance with small residual right subdural collection; midline shift resolved."
+            }
           ],
           "documents": [
-            {"type": "Letter", "title": "Neurosurgery follow-up", "author": "neurosurgery", "date": "2026-08-25T15:30", "body": "Dear colleague,\n\nSeen 8/19 with his daughter, 7 weeks after right craniotomy for acute subdural hematoma. No headache; walking with a walker. Incision healed. Mild left weakness. CT today: thin residual collection, smaller, no new blood, midline shift resolved. No further imaging needed unless symptoms change. Fall prevention as discussed. Follow up with us as needed.\n\nNeurosurgery"}
+            {
+              "type": "Letter",
+              "title": "Neurosurgery follow-up",
+              "author": "neurosurgery",
+              "date": "2026-08-25T15:30",
+              "body": "Dear colleague,\n\nSeen 8/19 with his daughter, 7 weeks after right craniotomy for acute subdural hematoma. No headache; walking with a walker. Incision healed. Mild left weakness. CT today: thin residual collection, smaller, no new blood, midline shift resolved. No further imaging needed unless symptoms change. Fall prevention as discussed. Follow up with us as needed.\n\nNeurosurgery"
+            }
           ]
         },
         {

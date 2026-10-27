@@ -50,3 +50,8 @@
 - 2026-07-20 portal_message, PCP: Pap and labs normal. (P)
 - 2026-08-11 pharmacy: labetalol refill. (P)
 - 2026-10-13 office_visit booked: HTN follow-up. (P)
+
+
+## Last seen
+
+The practice last saw MRN00001688 on 2024-10-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

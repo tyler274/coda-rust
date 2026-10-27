@@ -1,0 +1,194 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002001",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-01-23T11:05", "body": "No-show for 10:20. Reached pt on cell, he was out on a plowing call after the overnight snow and forgot. Rebooked 2/6 at 7:40."}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-02-06T07:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-02-06T08:05", "body": "Rebooked from the snow day. Winter is quieter for him, mostly plowing and equipment repair.\n\nNo CP, DOE, palpitations. Home BPs 130s-140s/80s. Adherent to lisinopril 20 and atorvastatin 40. Smoking unchanged.\n\nExam: NAD. Regular rhythm. Lungs clear. No LE swelling.\n\nA/P: HTN slightly above target, CAD with plaque, LDL not at goal on atorva 40. Offered to intensify either the statin or the BP regimen; he would rather not change in the middle of winter and wants to talk again at the physical. Documented. Smoking cessation discussed, declines.\n\nRTC September for physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "pharmacy",
+          "start": "2024-04-09T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Pharmacy refill request", "author": "MA", "date": "2024-04-09T10:15", "body": "E-request from pharmacy: lisinopril 20 mg #90 and atorvastatin 40 mg #90. Last visit 2/6, on active list. Sent per protocol, 1 refill each."}
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "hospital_admission",
+          "start": "2024-05-07T03:40",
+          "end": "2024-05-13T13:30",
+          "service": "General Surgery",
+          "reason": "Hematemesis with hypotension",
+          "conditions": [
+            {"label": "Peptic ulcer disease", "action": "diagnosed", "onset": "2024-05-07", "note": "Bleeding gastric ulcer, operative repair 05/2024"},
+            {"label": "Acute hemolytic transfusion reaction", "icd10": "T80.910A", "action": "diagnosed", "onset": "2024-05-07"}
+          ],
+          "allergies": [
+            {"substance": "Blood products", "reaction": "Acute hemolytic transfusion reaction", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "medications": [
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily before breakfast and dinner", "dose": {"value": 40, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Gastric ulcer"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-07T03:55", "results": [{"test": "Hemoglobin", "value": 7.4}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-05-07T03:55", "results": [{"test": "Creatinine", "value": 1.08}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-05-08T05:30", "results": [{"test": "Creatinine", "value": 2.36}]},
+            {"panel": null, "collected": "2024-05-08T05:30", "results": [{"test": "Bilirubin, indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 3.4}]},
+            {"panel": null, "collected": "2024-05-08T05:30", "results": [{"test": "Hemoglobin, free (plasma)", "loinc": "721-1", "unit": "mg/dL", "value": 85}]},
+            {"panel": null, "collected": "2024-05-08T05:30", "results": [{"test": "Direct antiglobulin test, polyspecific", "loinc": "1007-4", "text": "Positive"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-13T05:20", "results": [{"test": "Hemoglobin", "value": 9.1}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-05-13T05:20", "results": [{"test": "Creatinine", "value": 1.42}]}
+          ],
+          "procedures": [
+            {"procedure": "Upper endoscopy with biopsy", "performed": "2024-05-07T05:10"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-05-07T08:40", "issued": "2024-05-10T16:00", "text": "Specimen: stomach, ulcer edge, excised at operative repair. Gross: tan-pink tissue fragments, aggregate 1.4 cm. Microscopic: ulcer base with fibrinopurulent exudate, granulation tissue and reactive epithelial changes at the margin. No dysplasia or malignancy. Immunostain for Helicobacter pylori negative.", "conclusion": "Benign gastric ulcer. Negative for malignancy. H. pylori not identified."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary — General Surgery", "author": "general surgery", "date": "2024-05-13T15:10", "body": "REGIONAL HOSPITAL — GENERAL SURGERY DISCHARGE SUMMARY\nAdmitted 05/07/2024, discharged 05/13/2024.\n\nPrincipal diagnosis: bleeding gastric ulcer, status post operative repair.\nSecondary: acute hemolytic transfusion reaction.\n\nCourse: 54-year-old man with hypertension, hyperlipidemia, coronary artery disease and ongoing cigarette use brought in overnight after vomiting blood at home. In the ED he was pallid, sweaty and hypotensive; two large-bore lines were placed and crystalloid resuscitation begun. Hemoglobin on arrival 7.4. Urgent upper endoscopy found an actively bleeding gastric ulcer and he was taken to the OR for operative repair of the ulcer, with biopsy of its edge.\n\nIntraoperatively he was given packed red cells. Shortly after the second unit was hung he developed rigors, dyspnea and flank pain, his pressure fell further and he became agitated and tachycardic. The transfusion was stopped at once and the reaction protocol followed. The bag returned to the blood bank for investigation. Over the following hours the urinary catheter drained dark, red-brown urine and his sclerae turned yellow. Labs on 05/08: creatinine up from 1.08 on arrival to 2.36, indirect bilirubin 3.4, plasma free hemoglobin 85, direct antiglobulin test positive, schistocytes on the peripheral smear. Diagnosis: acute hemolytic transfusion reaction.\n\nHe was monitored in the surgical ICU with fluids and supportive care, urine output followed hourly. No further transfusion. Pressures stabilized, urine cleared over 48 hours, creatinine trended down (1.42 on the day of discharge). Hemoglobin 9.1 at discharge without further products. Lisinopril held through the hypotension and the kidney injury, resumed on 05/12. Tolerating a regular diet, incision clean.\n\nPathology: benign gastric ulcer, no malignancy, H. pylori negative.\n\nALLERGY ADDED: BLOOD PRODUCTS — acute hemolytic transfusion reaction. Any future transfusion only after blood bank consultation.\n\nDischarge medications: pantoprazole 40 mg twice daily (new); lisinopril 20 mg daily; atorvastatin 40 mg daily. Avoid NSAIDs.\n\nFollow-up: PCP within 1 week with CBC and BMP; general surgery clinic in 2 weeks; GI for repeat endoscopy in 8 to 10 weeks to confirm healing.\n\nTobacco: strongly advised to stop; impairs ulcer healing.\n\nSigned: general surgery attending."},
+            {"type": "Outside Records", "title": "Hospital records received", "author": "MA", "date": "2024-05-14T08:50", "body": "Discharge summary and path report received from the hospital, filed. Flagged to PCP: new allergy to blood products. Allergy list updated. TCM call to RN pool."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telephone",
+          "start": "2024-05-14T14:00",
+          "reason": "Post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Transitional care call", "author": "RN", "date": "2024-05-14T14:00", "body": "Post-discharge outreach, day 1 home. Pt says he is tired, sore at the incision, eating small meals. No vomiting, no black stools, urine looks normal color now. Has pantoprazole and is taking it twice a day. Reviewed: no ibuprofen or naproxen, acetaminophen ok for pain. Reminded him his allergy list now includes blood products and to say so at any hospital. Visit booked 5/21 with labs that morning."}
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {"label": "Acute hemolytic transfusion reaction", "icd10": "T80.910A", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-05-21T08:30", "results": [{"test": "Hemoglobin", "value": 10.6}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-05-21T08:30", "results": [{"test": "Creatinine", "value": 1.02}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-05-21T08:30", "results": [{"test": "Bilirubin, Total", "value": 0.9}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-05-21T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2024-05-21T10:00", "body": "Seen 8 days after discharge from the surgical service (admitted 5/7 to 5/13). Discharge summary reviewed in full.\n\nWhat happened: vomited blood, bleeding gastric ulcer found on scope, operated on the same morning. Got a transfusion in the OR and had an acute hemolytic reaction: hypotension, dark urine, jaundice, a bump in creatinine to 2.36, DAT positive. ICU, then the floor. Path benign, H. pylori negative.\n\nNow: energy coming back slowly. Walking the yard. Incision sore but closed. Eating normally. Stools brown. No lightheadedness. Urine normal color. Taking pantoprazole twice daily, lisinopril, atorvastatin. Not back at work yet. Smoking again since he got home, less than before, he says.\n\nExam: pale-ish but better. No scleral icterus. Midline upper abdominal incision healing well, no drainage. Heart regular, lungs clear.\n\nLabs today: Hgb 10.6 (9.1 at discharge). Cr 1.02, back to his usual. T bili 0.9.\n\nA/P\n1. Bleeding gastric ulcer s/p repair: PPI twice daily until GI rescope. Surgery clinic next week. No NSAIDs, ever, is the simple rule.\n2. Acute hemolytic transfusion reaction: resolved. Kidney function and bilirubin normal. Allergy to blood products on our list with the details; he knows to bring it up.\n3. Anemia from the bleed: recovering without iron need for now; CBC at physical.\n4. Tobacco: smoking again. Told him the ulcer and the heart both argue for stopping now. Declines a patch or pills; says he will try on his own.\n5. HTN: a little high today, sore and a long week; lisinopril back on since 5/12. Recheck at physical.\n\nRTC at physical in Sept."}
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "specialist_visit",
+          "start": "2024-05-28T13:00",
+          "service": "General Surgery",
+          "reason": "Postoperative check",
+          "documents": [
+            {"type": "Consult Note", "title": "General Surgery Clinic Letter", "author": "general surgery", "date": "2024-05-29T09:00", "body": "Dear colleague,\n\nI saw Mr. Allard in clinic on 05/28/2024, three weeks after operative repair of a bleeding gastric ulcer. He is eating well and his pain is minimal. The incision is healing cleanly with no sign of infection or hernia. He may return to light duties now and full lifting after six weeks from surgery. He has a GI appointment for repeat endoscopy. Please note his allergy to blood products (acute hemolytic transfusion reaction). No further surgical follow-up is needed unless problems arise.\n\nRegards,\nGeneral surgery"}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "procedure_visit",
+          "start": "2024-07-16T08:30",
+          "service": "Gastroenterology",
+          "reason": "Repeat endoscopy after gastric ulcer",
+          "medications": [
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "stop", "reason": "Ulcer healed; step down to daily"},
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily before breakfast", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "History of gastric ulcer"}
+          ],
+          "procedures": [
+            {"procedure": "Upper endoscopy with biopsy", "performed": "2024-07-16T08:45"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-07-16T08:45", "issued": "2024-07-19T11:00", "text": "Specimen: stomach, biopsies at site of prior ulcer. Microscopic: gastric mucosa with mild regenerative change and scar. No dysplasia, no malignancy. H. pylori not seen on immunostain.", "conclusion": "Healed ulcer site, benign. No H. pylori."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Upper Endoscopy Report", "author": "gastroenterology", "date": "2024-07-16T09:20", "body": "OUTSIDE GASTROENTEROLOGY — ESOPHAGOGASTRODUODENOSCOPY\nIndication: follow-up of bleeding gastric ulcer repaired surgically 05/2024; confirm healing.\nAllergies: blood products (acute hemolytic transfusion reaction).\nSedation: monitored anesthesia care.\nFindings: normal esophagus and GE junction. Stomach: healed ulcer scar with surrounding postsurgical change; no active ulceration, no visible vessel. Biopsies taken from the scar. Duodenum normal to the second portion.\nImpression: healed gastric ulcer.\nPlan: reduce pantoprazole to 40 mg once daily and continue long term given the history. Avoid NSAIDs. Smoking cessation advised. Will forward biopsy results.\n\nAddendum 07/19: biopsies benign, no H. pylori."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T08:00",
+          "end": "2024-09-17T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Low Density Lipoprotein": 101}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-17T08:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-17T08:35", "results": [{"test": "Creatinine"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-17T08:35", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-17T08:42"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-17T08:43"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-17T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-09-17T08:42"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "to": "Radiology", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-17T09:10", "body": "Physical, 54M.\n\nSince last year: May admission, bleeding gastric ulcer with operative repair, complicated by an acute hemolytic transfusion reaction. GI rescope in July: healed, benign biopsies, pantoprazole cut to once a day.\n\nFeels back to normal, full duty since late June. No abdominal pain, no melena, no hematemesis. No chest discomfort or exertional breathlessness.\n\nSmoking: back to a pack a day. He is frustrated with himself about it.\n\nMeds: lisinopril 20 daily, atorvastatin 40 daily, pantoprazole 40 daily.\nAllergies: BLOOD PRODUCTS (acute hemolytic transfusion reaction).\nPSH: operative repair of bleeding gastric ulcer, 05/2024.\nFH: father MI at 62, mother HTN, brother high cholesterol.\nPHQ-2 0. AUDIT-C 1.\n\nExam: Vitals reviewed. Color good, no icterus. Neck: no bruit, no thyromegaly. CV: regular, normal heart sounds. Resp: clear. Abd: healed upper midline scar, soft, nontender, no hernia felt. Ext: no edema, pulses full. Skin: chronic sun change only.\n\nA/P\n- Gastric ulcer, healed: pantoprazole daily long term per GI; no NSAIDs.\n- Hx transfusion reaction: allergy documented, CBC today to confirm recovery.\n- HTN: acceptable today.\n- CAD / hyperlipidemia: atorvastatin 40, lipids today. Raised again going to 80 mg given the plaque; he will think about it after the results.\n- Tobacco: 1 ppd. Counseled. Declines varenicline and patches for now. Will revisit.\n- LDCT due next month, ordered. Flu and updated COVID given.\n\nFollow up in 4 months."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T14:40",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-10-08T14:40", "text": "Comparison: 10/2023 and 10/2022. Technique: low-dose CT chest without IV contrast. No pulmonary nodule. Lungs clear without consolidation. No effusion or pneumothorax. Heart normal in size. Mediastinum unremarkable. Postsurgical change in the upper abdominal wall. Bones intact.", "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "done", "date": "2024-10-08T14:40"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "CT result", "author": "PCP", "date": "2024-10-09T17:30", "body": "Hi Kevin, screening CT clear again this year. Your blood count from the physical is fully back to normal too. Next scan October 2025."}
+          ]
+        }
+      ]
+    }
+  ]
+}

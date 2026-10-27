@@ -4,70 +4,14 @@
       "mrn": "MRN00002796",
       "events": [
         {
-          "id": "2026-01-20a",
-          "kind": "telephone",
-          "start": "2026-01-20T11:30",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Referral renewal",
-              "author": "front desk",
-              "date": "2026-01-20T11:30",
-              "body": "Insurance needs a renewed urology referral for the new plan year before her June ultrasound visit. Submitted on the payer portal, approval number in the referral record. Pt notified by voicemail."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-13a",
-          "kind": "telephone",
-          "start": "2026-04-13T19:40",
-          "reason": "fever and flank pain",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "After-hours call",
-              "author": "PCP",
-              "date": "2026-04-13T19:55",
-              "body": "Texted, then called. Since this morning shaking chills, fever at home, L flank pain, now lightheaded standing up. Hx struvite stone and Klebsiella UTIs. This needs the ED tonight, not an office visit - asked her not to drive herself. Her neighbor is taking her. Called ahead to the ED with her history."
-            }
-          ]
-        },
-        {
           "id": "2026-04-14a",
           "kind": "hospital_admission",
           "start": "2026-04-14T00:20",
           "end": "2026-04-21T13:30",
           "service": "Pulmonary & Critical Care",
           "reason": "septic shock, urinary source",
-          "conditions": [
-            {
-              "label": "Urinary tract infection",
-              "action": "diagnosed",
-              "onset": "2026-04-13",
-              "note": "complicated; Klebsiella pneumoniae"
-            },
-            {
-              "label": "Severe sepsis with septic shock",
-              "icd10": "R65.21",
-              "action": "diagnosed",
-              "onset": "2026-04-14"
-            }
-          ],
-          "medications": [
-            {
-              "drug": "ciprofloxacin 500 MG Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth twice daily through 4/25",
-              "dose": {
-                "value": 500,
-                "unit": "mg"
-              },
-              "frequency": "BID",
-              "route": "Oral",
-              "course": "short",
-              "reason": "complete 14 days for Klebsiella urosepsis"
-            }
-          ],
+          "conditions": [],
+          "medications": [],
           "vitals": [
             {
               "time": "2026-04-14T00:25",
@@ -250,132 +194,6 @@
           ]
         },
         {
-          "id": "2026-04-22a",
-          "kind": "telephone",
-          "start": "2026-04-22T10:15",
-          "reason": "post-discharge call",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Transition call",
-              "author": "RN",
-              "date": "2026-04-22T10:15",
-              "body": "Discharge summary and hospital records received this morning and filed. Called pt: home since yesterday, a friend is staying with her through the weekend. Taking cipro twice daily, has enough through Saturday. No fever, breathing normal, appetite returning. Neck site has a small bandage, dry. Visit with PCP Friday 4/24 at 1:00."
-            }
-          ],
-          "conditions": [
-            {
-              "label": "Air embolism following infusion, transfusion and therapeutic injection, initial encounter",
-              "icd10": "T80.0XXA",
-              "action": "diagnosed",
-              "onset": "2026-04-18",
-              "note": "venous air embolism at central venous catheter removal"
-            }
-          ]
-        },
-        {
-          "id": "2026-04-24a",
-          "kind": "office_visit",
-          "start": "2026-04-24T13:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "hospital follow-up",
-          "conditions": [
-            {
-              "label": "Severe sepsis with septic shock",
-              "icd10": "R65.21",
-              "action": "resolved"
-            },
-            {
-              "label": "Air embolism following infusion, transfusion and therapeutic injection, initial encounter",
-              "icd10": "T80.0XXA",
-              "action": "resolved"
-            }
-          ],
-          "measure": [
-            "bp",
-            "hr",
-            "rr",
-            "temp_c",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2026-04-24T13:40",
-              "results": [
-                {
-                  "test": "White Blood Cells"
-                },
-                {
-                  "test": "Hemoglobin"
-                },
-                {
-                  "test": "Platelets"
-                }
-              ]
-            },
-            {
-              "panel": "Basic Metabolic Panel (BMP)",
-              "collected": "2026-04-24T13:40",
-              "results": [
-                {
-                  "test": "Creatinine"
-                },
-                {
-                  "test": "Potassium"
-                }
-              ]
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Transitional care management, high complexity",
-              "performed": "2026-04-24T13:00"
-            },
-            {
-              "procedure": "Venipuncture",
-              "performed": "2026-04-24T13:40"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-Hospital Visit",
-              "author": "PCP",
-              "date": "2026-04-24T14:05",
-              "body": "Hospital 4/14-4/21 for Klebsiella urosepsis with septic shock (pressors ~48 h via R IJ line, ceftriaxone). CT without stone or obstruction. On 4/18 the line removal was complicated by venous air embolism - hypoxemia to 88%, wheezing, air in the RV on echo; oxygen and positioning; repeat echo next day clear with normal function.\n\nToday: tired but improving daily. No fever since the 16th. No shortness of breath, cough, chest pain. No flank pain, urine clear. Cipro last dose tomorrow. Plans to go back to school after break.\n\nExam: afebrile, vitals normal, SpO2 normal on room air. Comfortable. R neck puncture site healed, no hematoma or tenderness. Heart regular. Lungs clear, no wheeze. Abdomen soft, no CVA tenderness. No leg swelling. Neuro grossly normal.\n\nA/P\n1. Septic shock, urinary source - resolved; finishing cipro. CBC/BMP today.\n2. Venous air embolism at line removal - resolved, no residual symptoms or findings.\n3. Recurrent UTI / struvite stone hx - urology ultrasound in June already booked. Call at the first sign of a UTI, and we'll culture.\nRTC as needed; physical in the fall."
-            }
-          ]
-        },
-        {
-          "id": "2026-04-27a",
-          "kind": "portal_message",
-          "start": "2026-04-27T08:10",
-          "conditions": [
-            {
-              "label": "Urinary tract infection",
-              "action": "resolved"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Labs after the hospital",
-              "author": "PCP",
-              "date": "2026-04-27T08:10",
-              "body": "Robin, your white count, blood count and kidney function from Friday are all back to normal. Good news after a rough couple of weeks. Glad you finished the antibiotic."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Labs after the hospital",
-              "author": "patient",
-              "date": "2026-04-27T18:30",
-              "body": "Thank you, and thank you for calling ahead to the ER that night. Back in my classroom tomorrow."
-            }
-          ]
-        },
-        {
           "id": "2026-06-09a",
           "kind": "specialist_visit",
           "start": "2026-06-09T09:30",
@@ -398,34 +216,6 @@
               "body": "Visit 06/09/2026. Since last year: admitted in April with Klebsiella urosepsis and septic shock; CT then showed no stone or obstruction. Course complicated by an air embolism at central line removal, fully recovered. Feels well now, no urinary symptoms.\nUltrasound today: no stones, no hydronephrosis.\nImpression: stone free, recovered from urosepsis.\nPlan: hydration, early cultures through her PCP for any UTI symptoms, ultrasound in one year. Allergies: NKDA."
             }
           ]
-        },
-        {
-          "id": "2026-08-11a",
-          "kind": "portal_message",
-          "start": "2026-08-11T09:25",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Fall physical",
-              "author": "patient",
-              "date": "2026-08-11T09:25",
-              "body": "Hi, I'd like my yearly physical once school is back in, ideally a Tuesday after 3:30. I'll want my flu shot then too."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Fall physical",
-              "author": "front desk",
-              "date": "2026-08-11T11:00",
-              "body": "You're set for Tuesday 9/22 at 3:45. Flu vaccine is noted on the appointment."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T15:45",
-          "appointment": "booked",
-          "reason": "annual physical"
         }
       ]
     }

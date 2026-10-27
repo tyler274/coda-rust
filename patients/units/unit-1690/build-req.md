@@ -126,3 +126,8 @@ pregnancies.
 - Refills, pharmacy traffic, portal messages about results and scheduling, one
   cancelled and one missed visit, one visit booked after today.
 - No acute illnesses, injuries, new diagnoses or life events beyond this timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001690 on 2026-05-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -40,3 +40,8 @@
 - 2026-07-23 portal: results note (P)
 - 2026-08-18 portal: flu shot scheduling (P)
 - 2026-10-06 nurse_visit: booked influenza vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00002556 on 2026-07-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

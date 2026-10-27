@@ -1,0 +1,207 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002150",
+      "given": "Douglas",
+      "family": "Doyle",
+      "birth_date": "1968-10-08",
+      "address_line": "41 Woodbridge Lane",
+      "phone": "+1-603-555-0106",
+      "email": "douglas.doyle@example.test",
+      "marital_status": "married",
+      "summary": "Warehouse loader with cervical spondylosis and multilevel disc disease, treated hypertension, post-laminectomy mechanical low back pain and knee osteoarthritis, who joined in 2022. A left cervical radiculopathy in 2024 settled with therapy; a right C7 radiculopathy after overhead lifting in late 2025 was improving at his last visit.",
+      "events": [
+        {
+          "id": "2022-09-14a",
+          "kind": "establish_care",
+          "start": "2022-09-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "note": "on lisinopril per prior PCP"},
+            {"label": "Cervical spondylosis with multilevel degenerative disc disease (C5-C6, C6-C7)", "icd10": "M47.812", "action": "diagnosed", "note": "known from prior care"},
+            {"label": "Mechanical low back pain", "icd10": "M54.50", "action": "diagnosed", "note": "after L4-L5 laminectomy 2022"},
+            {"label": "Bilateral primary osteoarthritis of knee", "action": "diagnosed"},
+            {"label": "History of tobacco dependence", "action": "history", "note": "20 pack-years, quit 2019"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "ibuprofen 600 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily as needed for pain", "dose": {"value": 600, "unit": "mg"}, "frequency": "TID PRN", "route": "Oral", "course": "chronic", "reason": "pain"},
+            {"drug": "cyclobenzaprine hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime as needed for muscle spasm", "dose": {"value": 5, "unit": "mg"}, "frequency": "QHS PRN", "route": "Oral", "course": "chronic", "reason": "muscle spasm"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth as needed for headache", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "headache"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"},
+            {"substance": "Shellfish", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"bp": [132, 82], "weight_kg": 97.6, "height_cm": 180.3, "labs": {"Hemoglobin A1c": 5.4, "Low Density Lipoprotein": 88}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Warehouse loader"},
+            {"item": "History of alcohol use", "value": "1-2 beers on weekends"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-14T08:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-14T08:55", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-14T08:55", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-14T08:55", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-09-14T08:55", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-14T08:55", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-09-14T09:05"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-14T08:20"},
+            {"procedure": "Immunization administration", "performed": "2022-09-14T09:05"},
+            {"procedure": "Venipuncture", "performed": "2022-09-14T08:55"}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "former smoker, 20 pack-years, quit 2019"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-14T09:40", "body": "NEW PATIENT\n\n53M transferring from another primary care office closer to his old address. Wants one place to call. Main issues are his neck, his back and his knees, and BP which he says has been fine on lisinopril.\n\nHTN: lisinopril 10 daily for years per his account, takes it in the morning, no home cuff. No headaches beyond the usual, no chest symptoms.\nNeck: told years ago he has arthritis and disc wear in the neck at two levels (C5-6, C6-7). Stiff after a long shift, no arm symptoms now.\nLow back: L4-5 laminectomy this past spring at an outside spine group for leg pain, that's gone. Still gets a mechanical ache across the low back with bending and lifting. Back at work full duty since early summer.\nKnees: both ache on stairs and after a day on the dock floor. No locking.\nUses ibuprofen 600 up to three times a day on bad days, cyclobenzaprine 5 at night now and then for spasm, Tylenol 500 for a headache.\n\nPSH: L rotator cuff repair 2016; L4-L5 laminectomy 2022.\nAllergies: sulfa (hives); shellfish, doesn't know what happened, was told as a kid to avoid it.\nFH: father had neck arthritis that went on to myelopathy, and HTN. Mother with OA and osteoporosis. Older brother had a neck fusion for a pinched nerve.\nSH: loads trucks at a distribution warehouse, 30+ years of lifting. Quit cigarettes 2019 after about 20 pack-years. A beer or two on weekends.\n\nExam: well-appearing, large frame. BP as charted. Heart RRR without murmur. Lungs clear. Neck: reduced rotation both ways, no tenderness, Spurling negative bilaterally. Upper extremity strength, sensation and reflexes symmetric. Low back: healed midline scar, paraspinal tightness, straight leg raise negative. Knees: crepitus both, no effusion, stable.\n\nA/P\n1. HTN, at goal on lisinopril 10. Continue.\n2. Cervical spondylosis with DDD, quiet. Lifting technique, keep moving.\n3. Mechanical LBP after laminectomy, OA knees. As-needed meds as he has them.\n4. Former smoker, qualifies for annual lung screening CT. Discussed what it is and what a false alarm looks like; he wants it. Ordered.\n5. Tdap today. Baseline labs, HCV and HIV screening today.\n6. Records release signed for prior PCP.\nRTC 6 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T13:12",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2022-09-16T13:12", "body": "Hi Douglas, your blood work from Wednesday is all normal: kidney function, liver tests, blood counts, cholesterol and sugar. Hepatitis C and HIV screens were negative. Nothing to change. Watch for a call to schedule the lung CT."}
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "outside_records",
+          "start": "2022-09-28T10:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2022-09-28T10:30", "body": "Received from prior primary care office, 38 pages. Indexed:\n- Problem list: hypertension; cervical spondylosis with degenerative disc disease C5-C6 and C6-C7; low back pain; osteoarthritis of both knees.\n- Medication list: lisinopril 10 mg daily; ibuprofen 600 mg TID PRN; cyclobenzaprine 5 mg QHS PRN; acetaminophen 500 mg PRN.\n- Allergies: sulfa (hives), shellfish.\n- Spine surgery discharge summary, spring 2022: L4-L5 laminectomy, uncomplicated, discharged home day 1.\n- Screening colonoscopy report, 2019: complete exam, no polyps found, 10-year interval advised.\n- Office notes and lab reports 2019-2022.\nRouted to PCP."},
+            {"type": "Progress Notes", "title": "Outside records review", "author": "PCP", "date": "2022-09-29T17:05", "body": "Reviewed prior office packet. Matches his history. Colonoscopy 2019 clean, next due 2029. BP readings there mostly 130s/80s. Nothing outstanding."}
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-19T16:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-19T16:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2022-10-19T16:55", "body": "Came after his shift for flu vaccine. Screening questions negative, no egg or vaccine reactions. Quadrivalent flu 0.5 mL IM left deltoid. Tolerated, waited without problems, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "imaging",
+          "start": "2022-11-09T07:30",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-11-09T07:30", "issued": "2022-11-09T15:20", "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING, BASELINE\nIndication: former smoker, 20 pack-years, quit 2019.\nTechnique: low-dose helical CT of the chest without contrast.\nComparison: none.\nFindings: No pulmonary nodules. Lungs clear without consolidation or emphysema. Airways patent. No pleural effusion. Heart normal in size, no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. Visualized upper abdomen unremarkable. Mild degenerative change in the thoracic spine.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-11-09T15:20"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "Lung screening result", "author": "PCP", "date": "2022-11-10T08:15", "body": "Your lung screening CT was clear, no nodules. We'll repeat it each November while you qualify."}
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "office_visit",
+          "start": "2023-03-22T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-22T15:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-03-22T15:25"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-22T15:00"},
+            {"procedure": "Immunization administration", "performed": "2023-03-22T15:25"},
+            {"procedure": "Venipuncture", "performed": "2023-03-22T15:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-03-22T16:10", "body": "BP check. Feels fine. Taking lisinopril every day. Busy season at the warehouse, back and knees sore at the end of the week, ibuprofen a few days a week, cyclobenzaprine once or twice a month. Neck stiff but no arm symptoms.\n\nExam: BP as charted, at goal. Heart regular. Lungs clear. No edema.\n\nA/P: HTN controlled on lisinopril 10, continue. BMP today. First Shingrix today, second in 6 months, he'll do it at his physical. Physical in September."}
+          ]
+        },
+        {
+          "id": "2023-03-24a",
+          "kind": "portal_message",
+          "start": "2023-03-24T09:02",
+          "documents": [
+            {"type": "Patient Communication", "title": "BMP result", "author": "PCP", "date": "2023-03-24T09:02", "body": "Kidney function and potassium normal on the lisinopril. All good."},
+            {"type": "Patient Communication", "title": "RE: shingles shot", "author": "patient", "date": "2023-03-24T19:40", "body": "thanks. arm was sore and i felt run down the next day, fine now. is that normal"},
+            {"type": "Patient Communication", "title": "RE: shingles shot", "author": "RN", "date": "2023-03-25T08:30", "body": "Yes, a sore arm and a day of feeling tired or achy is common after Shingrix. Glad it passed. The second dose is due in September."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "pharmacy",
+          "start": "2023-06-12T11:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2023-06-12T11:20", "body": "Pharmacy fax for lisinopril 10 mg, 90-day supply. Last BMP 3/2023 normal, BP at goal 3/22. Pended to PCP."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2023-06-12T12:45", "body": "Lisinopril 10 mg #90 with 3 refills sent."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "annual_physical",
+          "start": "2023-09-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-20T08:35", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-20T08:35", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-09-20T08:40"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-20T08:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-20T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-20T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-20T08:35"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-20T09:15", "body": "PHYSICAL, 54M\n\nDoing well. Same job, same aches. Knees worst on the loading ramp; low back ache most evenings, eases with stretching he learned after surgery. Neck stiff turning to back up the forklift, no arm pain or numbness. Ibuprofen most workdays lately, he says. No GI upset, no dark stools.\n\nROS otherwise negative. PHQ-2 0.\n\nExam: BP as charted. HEENT clear. Neck reduced rotation, no tenderness. Heart RRR. Lungs clear. Abdomen soft, nontender. Knees with crepitus, no effusion. Neuro: strength 5/5 and reflexes 2+ symmetric in the arms and legs.\n\nA/P\n- HTN controlled on lisinopril 10.\n- Neck, back, knees: stable on his PRNs. Reviewed lifting mechanics.\n- Prevention: Shingrix #2 and flu today. Colonoscopy 2019 normal, next 2029. Lung CT due in November, ordered. CMP and lipids today.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2023-09-22a",
+          "kind": "portal_message",
+          "start": "2023-09-22T10:18",
+          "documents": [
+            {"type": "Patient Communication", "title": "Physical labs", "author": "PCP", "date": "2023-09-22T10:18", "body": "Labs from your physical look good. Cholesterol is in a fine range, kidney and liver numbers normal."}
+          ]
+        },
+        {
+          "id": "2023-10-14a",
+          "kind": "pharmacy",
+          "start": "2023-10-14T10:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-14T10:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside immunization", "author": "MA", "date": "2023-10-17T14:10", "body": "State registry update: updated COVID-19 vaccine given at a community pharmacy 10/14/2023. Entered into immunization history."}
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "imaging",
+          "start": "2023-11-08T07:45",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-11-08T07:45", "issued": "2023-11-08T13:50", "text": "LOW-DOSE CT CHEST, ANNUAL SCREENING\nComparison: 11/9/2022.\nFindings: No pulmonary nodules. No consolidation, no emphysema. Central airways clear. No pleural or pericardial effusion. Heart size normal. No adenopathy. Upper abdomen unremarkable. Stable mild thoracic spondylosis.", "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-11-08T13:50"}],
+          "documents": [
+            {"type": "Patient Communication", "title": "Lung CT", "author": "PCP", "date": "2023-11-09T07:55", "body": "Lung CT clear again. Next one in a year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

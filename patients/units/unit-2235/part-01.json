@@ -1,0 +1,255 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002235",
+      "given": "Francis",
+      "family": "Kerrigan",
+      "birth_date": "1955-07-23",
+      "address_line": "212 Cape Street, Goshen, MA 01032",
+      "phone": "+1-518-555-0134",
+      "email": "francis.kerrigan@example.test",
+      "marital_status": "married",
+      "summary": "Retired math teacher with long-standing type 2 diabetes, retinopathy, hypertension and untreated hyperlipidemia who joins in 2019. Over six years he has a healed plantar foot ulcer, REM sleep behavior disorder, thoracic stenosis, CLL on acalabrutinib, metastatic prostate cancer to bone on hormonal therapy, a parapneumonic effusion, and in late 2025 probable sporadic CJD, ending on home hospice.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:20",
+          "reason": "New patient intake call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient registration call", "author": "front desk", "date": "2019-08-27T10:20",
+             "body": "Mr. Kerrigan called asking to join the practice; his longtime doctor retired this summer. Membership explained, he signed up over the phone. Intake: type 2 diabetes for many years, blood pressure meds, sees an eye doctor every year. Uses the pharmacy in town. New patient visit booked for 9/10 at 9:00, 60 min. Records release emailed to him; he will sign and send it to the old office. Reminded him to bring all his pill bottles and his glucose meter."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:00",
+          "end": "2019-09-10T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit, diabetes and hypertension",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with hyperglycemia", "action": "history", "onset": "2001-06-01", "note": "about 18 years' duration"},
+            {"label": "Diabetic retinopathy", "icd10": "E11.319", "action": "history", "onset": "2014-01-01", "note": "followed by outside ophthalmology"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2008-01-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2010-01-01", "note": "never on medication"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "hydrochlorothiazide 12.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 12.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [142, 86], "weight_kg": 86.0, "height_cm": 176.0, "labs": {"Hemoglobin A1c": 8.4, "Low Density Lipoprotein": 136, "High Density Lipoprotein": 42, "Triglycerides": 172, "Creatinine": 1.08, "Glucose": 165, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "No alcohol use"},
+            {"item": "Occupation", "value": "Retired high school mathematics teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T10:10", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2019-09-10T10:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-10T09:00"}],
+          "orders": [{"id": "prior-records", "action": "placed", "order": "Records request, prior primary care practice", "category": "procedure", "reason": "establishing care"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T10:05",
+             "body": "NEW PATIENT\n\n64M, retired HS math teacher, joining after his PCP of many years retired. Here alone.\n\nHPI: Type 2 diabetes since roughly 2001. On metformin 1000 twice a day the whole time, never been on insulin or anything else, and he says the last A1c he remembers was 'in the 8s.' Checks sugars maybe twice a week, fasting numbers 150s-170s. No lows. Eye doctor yearly, told he has diabetic retinopathy, laser never needed as far as he knows. BP on lisinopril 20 and HCTZ 12.5, no home cuff. Told years ago his cholesterol was up; never started anything for it.\n\nROS: negative except as above. No chest pain, no claudication, no foot sores, no numbness he notices.\n\nPMH: T2DM with retinopathy; HTN; hyperlipidemia (no med).\nPSH: none.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, HCTZ 12.5 mg daily. Bottles reviewed.\nAllergies: NKDA.\nFH: Father - T2DM, prostate cancer. Mother - HTN, high cholesterol. Maternal uncle - CLL.\nSH: Married, lives with his wife in Goshen. Taught high school math for 34 years. Never smoked, does not drink. Gardens, walks the road most mornings.\n\nExam: Vitals as recorded, BP elevated. Well-appearing, pleasant. Fundi not well seen without dilation. Neck supple, no thyromegaly or nodes. Heart RRR, no murmur. Lungs clear. Abd soft. Feet: skin intact, mild callus under both first MT heads, monofilament reduced at the toes and soles both sides, DP and PT pulses 2+ bilaterally. No edema.\n\nA/P:\n1. Type 2 diabetes with retinopathy - A1c, CMP, urine microalbumin today. Continue metformin. Will revisit once numbers back.\n2. HTN - above goal today, first visit, recheck at follow-up. Continue current two drugs.\n3. Hyperlipidemia - lipid panel today.\n4. Health maintenance - HCV and HIV screening today. Records request to prior office for colonoscopy and vaccine history. Flu shot next month at a nurse visit.\n5. Eye: ask ophthalmology to send this year's exam.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "portal_message",
+          "start": "2019-09-13T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-13T16:40",
+             "body": "Hi Mr. Kerrigan, your labs from Tuesday are back. Kidney function, potassium and blood counts are normal. Hepatitis C and HIV screens negative. Your A1c is above where we want it, and the bad cholesterol (LDL) is mildly high. Urine protein check is normal, which is good news for your kidneys. We'll go over the diabetes numbers together at your December visit."}
+          ]
+        },
+        {
+          "id": "2019-09-30a",
+          "kind": "outside_records",
+          "start": "2019-09-30T11:15",
+          "orders": [{"id": "prior-records", "action": "done", "date": "2019-09-30T11:15"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2016-04-12T10:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records (summary)", "author": "outside primary care", "date": "2019-09-30T11:15",
+             "body": "Records received from patient's previous primary care office, 42 pages, covering 2012 to 2019. Abstracted:\n- Problem list: type 2 diabetes mellitus with retinopathy; hypertension; hyperlipidemia.\n- Medications: metformin 1000 mg twice daily; lisinopril 20 mg daily; hydrochlorothiazide 12.5 mg daily.\n- Allergies: none known.\n- Colonoscopy 03/2017: normal to the terminal ileum, no polyps. Repeat at 10 years.\n- Immunizations: Tdap 04/2016. Influenza most years.\n- A1c values over the last 3 years 8.1 to 8.7 per their flowsheet.\nNo hospitalizations recorded."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2019-10-08T14:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T14:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2019-10-08T14:10",
+             "body": "High-dose influenza given L deltoid, 0.7 mL IM, lot and expiration in the immunization record. VIS reviewed. No prior reactions. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "outside_records",
+          "start": "2019-11-19T09:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "ophthalmology", "date": "2019-11-19T09:30",
+             "body": "Ophthalmology consultation letter\nExam date: 11/05/2019\nRe: Francis Kerrigan, DOB 07/23/1955\n\nThank you for allowing us to follow your patient for diabetic eye care. Visual acuity with correction 20/40 OD, 20/25 OS. Dilated fundus exam shows diabetic retinopathy in both eyes, unchanged in appearance from last year's photographs. No macular edema on exam or OCT. Lens opacity in the right eye accounts for the reduced vision on that side; we discussed that surgery may be considered when it interferes with his reading or driving.\n\nMedications reviewed: metformin, lisinopril, hydrochlorothiazide. Allergies: NKDA.\n\nPlan: return in 12 months with dilation. Good glucose and blood pressure control remain the main protection for his retina."}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"bp": [140, 84], "labs": {"Hemoglobin A1c": 8.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-12-10T09:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2019-12-10T09:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-12-10T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2019-12-10T09:20",
+             "body": "F/u DM/HTN.\nDoing fine. Fasting sugars 150-180 on his log sheet. Taking metformin regularly, GI fine. Walking less now that it's cold. No hypoglycemia. Eye letter from November reviewed: retinopathy stable, R lens clouding.\n\nExam: BP as charted, still a bit up. Heart regular, lungs clear. Feet without breakdown, callus unchanged.\n\nA/P: DM2 - A1c repeated today. Talked about carbs at dinner, keep up the walking indoors at the mall. HTN - no change today. RTC spring."}
+          ]
+        },
+        {
+          "id": "2020-02-04a",
+          "kind": "pharmacy",
+          "start": "2020-02-04T13:10",
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Refill request: metformin", "author": "MA", "date": "2020-02-04T13:10",
+             "body": "Pharmacy fax requesting metformin 1000 mg #180 for 90 days. Last visit 12/2019, on active list. Refilled per protocol with 1 refill."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "telephone",
+          "start": "2020-03-24T11:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Visit changed to video", "author": "front desk", "date": "2020-03-24T11:00",
+             "body": "Called pt re: next week's appointment. With the office limiting in-person visits, offered video instead; he agreed. His wife will help set up the link on their tablet. Sent instructions by email."}
+          ]
+        },
+        {
+          "id": "2020-03-31a",
+          "kind": "telehealth_visit",
+          "start": "2020-03-31T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-03-31T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-03-31T10:55",
+             "body": "Video visit, patient at home in Goshen, wife present to help with the camera. Identity and consent confirmed.\n\nStaying home, feeling well. Sugars by meter 140s-160s fasting. Has enough of all three meds for 2 months. No symptoms to report.\n\nNo vitals today (no home cuff); he will get one.\n\nPlan: no changes. Labs deferred until in-person visits resume, likely June. Call with anything."}
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "office_visit",
+          "start": "2020-06-23T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"bp": [138, 84], "labs": {"Hemoglobin A1c": 8.5}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-06-23T09:45", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2020-06-23T09:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-06-23T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2020-06-23T09:55",
+             "body": "Masked visit. First in-person since winter.\nS: Feels well. Got a cuff; home readings 130s/80s. Gardening most days. No foot problems. Meter 150s fasting.\nO: Vitals per flowsheet. Heart RRR. Lungs clear. Feet: intact skin, reduced monofilament distally both feet, pulses good.\nA/P: T2DM w/ retinopathy - A1c and BMP today. HTN - home numbers better than office, continue. Turns 65 next month; set up the Welcome visit in August."}
+          ]
+        },
+        {
+          "id": "2020-06-26a",
+          "kind": "portal_message",
+          "start": "2020-06-26T12:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2020-06-26T12:05",
+             "body": "Your A1c came back about the same as December, still above goal. Kidney numbers and potassium are fine. Keep doing what you're doing with the walking and we'll recheck in the fall."}
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "annual_physical",
+          "start": "2020-08-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Initial preventive physical examination",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2020-08-18T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-18T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2020-08-18T09:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2020-08-18T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Welcome Visit", "author": "PCP", "date": "2020-08-18T09:50",
+             "body": "INITIAL PREVENTIVE EXAM\n\nJust turned 65. No new concerns.\n\nFunctional: independent with all daily activities, drives, manages his own meds and finances. No falls. Hearing adequate. Vision corrected, right eye blurrier - followed by ophthalmology.\nMood: PHQ-2 0.\nHome safety: lives with his wife, single-floor home, smoke detectors present.\nAdvance directive: will think about naming his wife as health care proxy; form given.\n\nExam: Normal general exam. BP per flowsheet. Feet: monofilament reduced at toes, no ulcer.\n\nPrevention:\n- Colonoscopy 2017 normal, next 2027.\n- Tdap 2016.\n- Shingles vaccine: advised, will get at pharmacy this fall.\n- Pneumococcal: discussed, he'd like to wait.\n- Flu in October.\n- Lipids, CBC and urine microalbumin today.\n\nRTC December for diabetes."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-06T15:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T15:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2020-10-06T15:30",
+             "body": "Fluzone High-Dose 0.7 mL IM right deltoid. Screening questions negative. Observed briefly, no reaction, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2020-11-12a",
+          "kind": "pharmacy",
+          "start": "2020-11-12T17:00",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-11-10T11:00"}],
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Vaccine administration record", "author": "pharmacy", "date": "2020-11-12T17:00",
+             "body": "Community pharmacy immunization notification: recombinant zoster vaccine, dose 1 of 2, administered 11/10/2020, left deltoid. Dose 2 due in 2 to 6 months."}
+          ]
+        },
+        {
+          "id": "2020-11-24a",
+          "kind": "outside_records",
+          "start": "2020-11-24T10:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Ophthalmology annual exam letter", "author": "ophthalmology", "date": "2020-11-24T10:00",
+             "body": "Exam 11/17/2020. Mr. Kerrigan is having more glare driving at night and trouble reading with the right eye. Best corrected acuity 20/60 right, 20/25 left. The right lens opacity has progressed and is now visually significant. Retinal exam: diabetic retinopathy both eyes, stable compared with prior; no macular edema. We have scheduled right eye cataract surgery for early next year. Left eye to be watched. Return after surgery and for annual dilated exam."}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "office_visit",
+          "start": "2020-12-08T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"bp": [144, 88], "labs": {"Hemoglobin A1c": 8.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-12-08T10:35", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2020-12-08T10:35", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-12-08T10:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2020-12-08T10:40",
+             "body": "DM/HTN f/u.\nRight cataract surgery being planned for March per ophthalmology letter; needs preop clearance form, which they'll fax. Home BP 130s-140s. Sugars about the same. First shingles shot done at the pharmacy.\nExam: BP per vitals. Lungs clear, heart regular. No edema.\nA/P: DM2 - A1c and BMP drawn. No med change. HTN - continue lisinopril/HCTZ. Will complete preop form when it comes. RTC late January."}
+          ]
+        }
+      ]
+    }
+  ]
+}

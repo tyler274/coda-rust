@@ -1,0 +1,188 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001821",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "portal_message",
+          "start": "2024-01-16T07:52",
+          "reason": "positive pregnancy test",
+          "orders": [
+            {"id": "ob-referral", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "pregnancy with chronic hypertension on labetalol"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant!",
+              "author": "patient",
+              "date": "2024-01-16T07:52",
+              "body": "Good morning - I got a positive home test this weekend. First day of my last period was December 13. Still taking the labetalol twice a day and the prenatal. Do I need to come in or should I call OB directly? I went to an OB group last time and would like to go back to them."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant!",
+              "author": "PCP",
+              "date": "2024-01-16T12:30",
+              "body": "Congratulations! By your dates you're due around September 18. No need to come here first. I've sent a referral to your OB group so they can see you early, since your blood pressure makes this a pregnancy they'll want to follow closely. Keep taking the labetalol 200 mg twice a day and the prenatal vitamin - labetalol is one of the preferred blood pressure medicines in pregnancy. Call us or them if you get a severe headache, vision changes, or readings of 160/110 or more."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "pharmacy",
+          "start": "2024-03-20T11:05",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill - labetalol",
+              "author": "MA",
+              "date": "2024-03-20T11:05",
+              "body": "eRx request from pharmacy for labetalol 200 mg tab, #180 (90 days, 1 tab BID). Last BP visit 8/2023, now followed by OB. Approved per protocol, 1 refill. Pharmacy confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "specialist_visit",
+          "start": "2024-06-26T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit, 28 weeks, chronic hypertension",
+          "vitals": {"bp": [138, 86]},
+          "conditions": [
+            {"label": "Pre-existing essential hypertension complicating pregnancy, third trimester", "icd10": "O10.013", "action": "diagnosed", "onset": "2024-01-16"},
+            {"label": "Maternal care for known or suspected poor fetal growth, third trimester", "icd10": "O36.5930", "action": "diagnosed", "onset": "2024-06-26"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2024-06-26T14:40"}
+          ],
+          "orders": [
+            {"id": "ob-referral", "action": "done", "date": "2024-06-26T14:00"}
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, fetal growth with umbilical artery velocimetry",
+              "loinc": "11525-3",
+              "performed": "2024-06-26T13:15",
+              "text": "Single live intrauterine pregnancy, cephalic. Gestational age by early dating 28w0d. Fetal biometry: estimated fetal weight below the 10th percentile for gestational age. Amniotic fluid index within normal limits. Placenta posterior, no previa. Umbilical artery waveform: increased resistance with elevated systolic/diastolic ratio for gestational age; end-diastolic flow present. Fetal heart rate normal. Survey of visualized anatomy unremarkable.",
+              "conclusion": "Estimated fetal weight below the 10th percentile with elevated umbilical artery S/D ratio, consistent with fetal growth restriction. Normal amniotic fluid. Recommend serial growth and umbilical artery surveillance."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics prenatal visit, 28 weeks",
+              "author": "obstetrics",
+              "date": "2024-07-01T09:10",
+              "body": "Outside Obstetrics & Gynecology - prenatal visit\nDate of service: 06/26/2024\n\nDear Doctor,\n\nI saw your patient Wendy Lavoie today, 32 years old, G2P1, at 28w0d by early dating.\n\nHer chronic hypertension remains well controlled on labetalol 200 mg twice daily. She takes it and her prenatal vitamin faithfully. Her first child was born at term without complications. No tobacco, alcohol or drugs. No headache, visual change or RUQ pain. Allergies: NKDA.\n\nBP 138/86. Examination unremarkable; fundal height noted.\n\nGrowth ultrasound today shows an estimated fetal weight below the 10th percentile, a normal amniotic fluid index, and increased umbilical artery resistance with an elevated S/D ratio, with end-diastolic flow present.\n\nImpression:\n1. Chronic hypertension in pregnancy, controlled on labetalol.\n2. Fetal growth restriction with abnormal umbilical artery indices.\n\nPlan: continue labetalol 200 mg BID and prenatal vitamin. Serial growth scans with umbilical artery studies and antenatal testing; we will plan delivery at 37 weeks if surveillance stays reassuring, sooner if not. Tdap given today. Preeclampsia precautions reviewed.\n\nThank you for sharing her care.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "hospital_admission",
+          "start": "2024-08-28T06:30",
+          "end": "2024-08-30T11:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "planned induction at 37 weeks for fetal growth restriction",
+          "conditions": [
+            {"label": "Pre-existing essential hypertension complicating pregnancy, third trimester", "icd10": "O10.013", "action": "resolved", "onset": "2024-01-16", "note": "delivered 08/28/2024"},
+            {"label": "Maternal care for known or suspected poor fetal growth, third trimester", "icd10": "O36.5930", "action": "resolved", "onset": "2024-06-26", "note": "delivered 08/28/2024"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "author": "obstetrics",
+              "date": "2024-09-04T13:30",
+              "body": "Hospital Labor & Delivery - Discharge Summary\nAdmitted 08/28/2024  Discharged 08/30/2024\n\nAdmission diagnosis: intrauterine pregnancy at 37w0d; fetal growth restriction with elevated umbilical artery S/D ratio; chronic hypertension on labetalol.\n\nCourse: Admitted for planned induction at 37 weeks following serial surveillance. Labor induced. Uncomplicated spontaneous vaginal delivery the evening of 08/28 of a liveborn female, 2,410 g, small for gestational age, vigorous at birth, to the newborn nursery. Estimated blood loss within normal range. Blood pressures remained controlled on her home labetalol 200 mg twice daily throughout; no features of preeclampsia. Breastfeeding established.\n\nDischarge diagnoses: SVD at 37w0d, G2P2; chronic hypertension, controlled.\nDischarge medications: labetalol 200 mg PO BID; prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: postpartum visit with obstetrics in 6 weeks; BP check with PCP after that; home BP log meanwhile."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "telephone",
+          "start": "2024-09-04T15:10",
+          "reason": "postpartum check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum call",
+              "author": "RN",
+              "date": "2024-09-04T15:10",
+              "body": "Called after discharge summary arrived. Pt one week out from delivery, baby girl doing well, nursing. Home BPs running 120s-130s/70s-low 80s on labetalol BID. No headache, vision change, SOB or leg swelling. Bleeding tapering. Mood ok, tired. OB postpartum appt 10/9. Asked her to book a BP visit with us for later in October; she will bring her log."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "specialist_visit",
+          "start": "2024-10-09T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postpartum visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics postpartum visit",
+              "author": "obstetrics",
+              "date": "2024-10-14T08:45",
+              "body": "Outside Obstetrics & Gynecology - postpartum visit\nDate of service: 10/09/2024\n\nMs. Lavoie is six weeks after a vaginal delivery at 37 weeks. She is recovering well and breastfeeding. BP normal today on labetalol 200 mg twice daily. Postpartum mood screen negative. Pelvic exam normal, healing complete.\n\nShe will continue labetalol and her prenatal vitamin while nursing. Her blood pressure care returns to you from here.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "office_visit",
+          "start": "2024-10-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum blood pressure follow-up",
+          "state": {"weight_kg": 73.5},
+          "vitals": {"weight_kg": 73.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-21T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-21T16:36"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-10-21T16:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-21T16:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - BP after delivery",
+              "author": "PCP",
+              "date": "2024-10-21T16:40",
+              "body": "S: Here with the baby in the car seat. Delivered 8/28 at 37 wk, induced for growth restriction (summary in Media), daughter now gaining well. Nursing. Home log over 6 weeks mostly 118-132/72-82. Takes labetalol 200 BID, prenatal daily. Sleeping in pieces, mood fine.\n\nO: Vitals reviewed, BP at goal. Weight up from prepregnancy, expected. Comfortable. Heart regular rate, no murmur. Lungs clear. Legs without swelling. PHQ-9 3.\n\nA/P: Chronic HTN, postpartum - well controlled. Labetalol remains fine with breastfeeding; no change. OB problems closed on the list; G2P2.\nFlu and COVID given today, she tolerated both.\nBP recheck in about 6 months, sooner for readings over 140/90."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "office_visit",
+          "start": "2024-12-09T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "right ear drainage",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "ent-referral", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "chronic foul right otorrhea with hearing loss"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-09T11:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - R ear",
+              "author": "PCP",
+              "date": "2024-12-09T11:55",
+              "body": "CC: right ear draining.\n\nHPI: Since about July the right ear has leaked on and off - yellowish, and she says the smell is strong enough that others notice. No pain to speak of. Hearing on that side has slowly gone down; she now turns her left ear toward people and has trouble in a loud room. Denies spinning or ringing. No fever. No swimming. Had tubes as a child and many infections then, none since her early teens.\n\nMeds: labetalol 200 BID, prenatal vitamin. NKDA.\n\nExam: afebrile, vitals as charted. R ear: moist debris and discharge in the canal, could not see the drum well after gentle cleaning. L ear: canal clear, TM intact. No mastoid tenderness or swelling. No facial asymmetry. Neck without nodes.\n\nA/P: Chronic right otorrhea with progressive hearing loss in a patient with a childhood tube history. Five months of foul drainage needs an ENT look under the microscope rather than another round of drops from me. Referral placed; front desk to request the earliest opening. Keep the ear dry (cotton ball with petroleum jelly in the shower). Return sooner for pain, swelling behind the ear, dizziness or facial weakness."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

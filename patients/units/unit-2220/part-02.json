@@ -1,0 +1,335 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002220",
+      "events": [
+        {
+          "id": "2022-01-12a",
+          "kind": "office_visit",
+          "start": "2022-01-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "palpitations, tired",
+          "state": {"weight_kg": 91.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "reports": [{"study": "12-lead ECG", "performed": "2022-01-12T14:20",
+            "text": "Atrial fibrillation, ventricular rate about 90. Normal axis. QRS narrow. No acute ST or T wave changes. No prior tracing for comparison.",
+            "conclusion": "Atrial fibrillation with controlled ventricular rate."}],
+          "orders": [{"id": "cards-referral-2022", "action": "placed", "order": "Cardiology referral", "category": "referral", "to": "Cardiology", "reason": "new atrial fibrillation"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-01-12T14:00"}, {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2022-01-12T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Palpitations", "author": "PCP", "date": "2022-01-12T14:45",
+             "body": "Came in on a same-day slot. For about six weeks he has had spells of his heart fluttering, sometimes an hour, sometimes most of an afternoon, and he has felt more worn out than usual. No chest pain, no fainting, not short of breath. No caffeine change. Wife noticed his pulse jumping when she held his wrist.\n\nExam: pulse irregularly irregular. BP as charted. No murmur. Lungs clear. No leg swelling. Weight down a couple of pounds since fall.\n\nECG in office: atrial fibrillation, rate controlled, no ischemic changes.\n\nA/P: new atrial fibrillation in a 69 year old with hypertension, diabetes and CAD. Stroke risk is clearly elevated and he will need anticoagulation; I would like cardiology to see him promptly and decide on the anticoagulant and any rate or rhythm strategy. Urgent referral placed, they can see him February 1. Return or go to the ED for chest pain, fainting or a racing heart that doesn't settle. Continue current meds including aspirin for now."}
+          ]
+        },
+        {
+          "id": "2022-02-04a",
+          "kind": "outside_records",
+          "start": "2022-02-04T10:30",
+          "conditions": [
+            {"label": "Paroxysmal atrial fibrillation", "action": "diagnosed", "onset": "2022-02-01"},
+            {"label": "Long-term current use of anticoagulants", "action": "diagnosed", "onset": "2022-02-01"}
+          ],
+          "medications": [
+            {"drug": "warfarin sodium 5 MG Oral Tablet", "action": "historical", "sig": "Take as directed per INR; currently 5 mg by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "atrial fibrillation"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-02-01T09:40", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-02-01T09:40", "results": [{"test": "Creatinine", "value": 1.1}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2022-02-01T09:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.0}]}
+          ],
+          "orders": [{"id": "cards-referral-2022", "action": "done", "date": "2022-02-04T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology consultation", "author": "cardiology", "date": "2022-02-04T10:30",
+             "body": "Outpatient cardiology consultation. Date of visit: 02/01/2022.\nReason for referral: atrial fibrillation found by his primary care physician.\n\nMr. Crowley, 69, describes roughly two months of on-and-off palpitations together with fatigue. He has had no chest pain, no shortness of breath and no fainting.\n\nHistory: hypertension, type 2 diabetes, coronary artery disease after a diagnostic catheterization in the past, chronic low back pain. Surgical: diagnostic cardiac catheterization.\nMedications: metformin 1000 mg twice daily, lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg at bedtime, aspirin 81 mg daily, morphine sulfate ER 30 mg twice daily.\nAllergies: NKDA.\nFamily: father MI at 72, mother ischemic stroke at 78, paternal uncle colon cancer at 75.\nSocial: retired carpenter, former smoker with 30 pack-years who stopped 10 years ago, alcohol 1 to 2 drinks a month.\n\nExam: BP 142/88. Heart rate 88, irregularly irregular. No added heart sounds, no murmur. Lungs clear. No edema.\nLabs: hemoglobin A1c 7.2%, creatinine 1.1 mg/dL, INR 1.0.\nECG: atrial fibrillation.\n\nAssessment: atrial fibrillation, rate acceptable at rest. CHA2DS2-VASc score 4 (hypertension, diabetes, vascular disease, age 65 to 74), well above the threshold for anticoagulation.\nPlan:\n1. Begin warfarin 5 mg daily, dose to be adjusted to an INR of 2 to 3. His primary care office will follow INRs; first check in one week.\n2. Transthoracic echocardiogram.\n3. Continue his other medications.\n4. Follow up here as needed; sooner for symptoms.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "nurse_visit",
+          "start": "2022-02-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 1.5}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-02-08T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-02-08T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-02-08T09:25",
+             "body": "First INR since warfarin 5 mg daily started 2/1. INR 1.5, expected this early. No bleeding or bruising. Reviewed warfarin teaching with patient and wife: consistent greens, no new supplements, alcohol kept light, tell us about any antibiotic. Continue 5 mg daily. Recheck 2 weeks. PCP aware."}
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "nurse_visit",
+          "start": "2022-02-22T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.3}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-02-22T09:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-02-22T09:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-02-22T09:35",
+             "body": "INR in range. No bleeding. Palpitations less frequent he thinks. Continue 5 mg daily, 35 mg/week. Recheck 3 weeks."}
+          ]
+        },
+        {
+          "id": "2022-03-01a",
+          "kind": "outside_records",
+          "start": "2022-03-01T13:10",
+          "reports": [{"study": "Transthoracic echocardiogram", "performed": "2022-02-24T10:00",
+            "text": "Complete transthoracic study. Rhythm atrial fibrillation during the study. Left ventricle normal in size and wall thickness with normal systolic function, LVEF 55-60%, no regional wall motion abnormality. Right ventricle normal in size and function. Left atrium normal in size. Right atrium normal. Aortic, mitral and tricuspid valves structurally normal without significant stenosis or regurgitation. Aortic root normal. No pericardial effusion. IVC normal with normal respiratory variation.",
+            "conclusion": "Normal LV size and function, LVEF 55-60%. No significant valve disease. Normal atrial size."}],
+          "documents": [
+            {"type": "Result Note", "title": "Echo report received", "author": "PCP", "date": "2022-03-01T16:20",
+             "body": "Outside echo from cardiology: normal heart function, valves fine, atria normal. Portal note to patient."}
+          ]
+        },
+        {
+          "id": "2022-03-15a",
+          "kind": "nurse_visit",
+          "start": "2022-03-15T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.6}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-03-15T09:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-03-15T09:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-03-15T09:30",
+             "body": "INR in range. No bleeding. Mentions his stomach has been off on and off and he has dropped some weight; advised he raise it with PCP, offered appointment, booked 4/5. Warfarin unchanged. Recheck with that visit or in 4 weeks."}
+          ]
+        },
+        {
+          "id": "2022-04-05a",
+          "kind": "office_visit",
+          "start": "2022-04-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weight loss, abdominal discomfort",
+          "conditions": [{"label": "Iron deficiency anemia", "action": "diagnosed", "onset": "2022-04-05"}],
+          "medications": [{"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "iron deficiency anemia"}],
+          "state": {"weight_kg": 86.0, "labs": {"Hemoglobin": 10.4, "Mean Corpuscular Volume": 76, "Ferritin": 7, "Iron": 24, "Transferrin Saturation": 5, "Total Iron-Binding Capacity": 452, "Prothrombin Time-International Normalized Ratio": 2.4}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-04-05T10:30", "resulted": "2022-04-05T15:10", "results": [{"test": "Hemoglobin", "value": 10.4}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Iron Studies", "collected": "2022-04-05T10:30", "results": [{"test": "Ferritin", "value": 7}, {"test": "Iron"}, {"test": "Transferrin Saturation"}, {"test": "Total Iron-Binding Capacity"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-04-05T10:30", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2022-04-05T10:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "orders": [{"id": "gi-referral-2022", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "weight loss, iron deficiency anemia, dark stools"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2022-04-05T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Weight loss", "author": "PCP", "date": "2022-04-05T11:00",
+             "body": "Since around New Year's he has had an achy, come-and-go discomfort in the belly, nothing sharp, and his stools have been looser than usual with a feeling he hasn't finished. A few times the stool looked dark, almost black. No bright red blood. Appetite somewhat down. He has lost about 15 pounds without trying since the fall. No fever, no vomiting. Started warfarin in February.\n\nExam: looks thinner. Conjunctivae a little pale. Abdomen soft, mild fullness and tenderness on the right side without guarding, no mass I can feel, no liver edge. Rectal deferred to GI. Heart irregular, rate fine. Lungs clear.\n\nLabs back this afternoon: hemoglobin 10.4, microcytic; ferritin 7. INR in range.\n\nA/P\n1. Iron deficiency anemia with weight loss, change in bowel habit and dark stools, on anticoagulation: needs prompt GI evaluation for a GI source; colonoscopy is due regardless. Urgent GI referral placed and I called their office; seen 4/28. Ferrous sulfate 325 mg daily. Warfarin continued for now given his stroke risk; he and his wife know to go to the ED for black tarry stools, vomiting blood or lightheadedness.\n2. AF on warfarin: INR in range.\nRest unchanged. Follow up after GI."}
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "nurse_visit",
+          "start": "2022-04-19T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.2}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-04-19T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-04-19T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-04-19T09:20",
+             "body": "INR in range. No further dark stools this week. GI visit 4/28; GI office will give instructions on holding warfarin around a colonoscopy. Continue current dose."}
+          ]
+        },
+        {
+          "id": "2022-05-03a",
+          "kind": "outside_records",
+          "start": "2022-05-03T14:00",
+          "conditions": [
+            {"label": "Malignant neoplasm of colon", "action": "diagnosed", "onset": "2022-04-28", "note": "ascending colon adenocarcinoma, moderately differentiated"},
+            {"label": "Secondary malignant neoplasm of liver", "icd10": "C78.7", "action": "diagnosed", "onset": "2022-04-28"},
+            {"label": "Secondary malignant neoplasm of lung", "icd10": "C78.00", "action": "diagnosed", "onset": "2022-04-28"}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2022-04-28T13:00",
+             "text": "CT abdomen and pelvis with IV contrast. Liver: multiple hypodense lesions in the right hepatic lobe. Left lobe without focal lesion. Gallbladder, pancreas, spleen and adrenal glands unremarkable. Kidneys enhance symmetrically, no hydronephrosis. Ascending colon wall thickening with an irregular mass at the site of the endoscopic finding. Appendix is normal. No ascites. Abdominal aorta normal in caliber. No free air.",
+             "conclusion": "Ascending colon mass with multiple right hepatic lobe hypodense lesions, concerning for metastatic disease."},
+            {"study": "CT chest", "performed": "2022-04-28T13:00",
+             "text": "CT chest with IV contrast. Several small pulmonary nodules in both lungs, new compared with the low-dose screening CT of 12/21/2021. No effusion. No mediastinal mass. Heart normal in size. Coronary calcification.",
+             "conclusion": "Several small bilateral pulmonary nodules, new since 12/2021, concerning for metastases."},
+            {"study": "Surgical pathology report", "performed": "2022-04-28T09:30",
+             "text": "Specimen: ascending colon mass, endoscopic biopsies. Microscopic: invasive adenocarcinoma, moderately differentiated, in fragments of colonic mucosa.",
+             "conclusion": "Ascending colon, biopsy: moderately differentiated adenocarcinoma."}
+          ],
+          "orders": [{"id": "gi-referral-2022", "action": "done", "date": "2022-05-03T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology consultation and procedure", "author": "gastroenterology", "date": "2022-05-03T14:00",
+             "body": "Gastroenterology. Date of service: 04/28/2022.\n\nReferred for unintentional weight loss and on-and-off abdominal discomfort over three months, about three months after his February cardiology visit for new atrial fibrillation. He also reports looser stools at times, a sense of incomplete evacuation, and dark stools on a few occasions without frank rectal bleeding. Diabetes and hypertension are well controlled.\n\nSocial: carpenter for 40 years, quit smoking a decade ago after 30 pack-years.\nMeds: per referral, including warfarin (held for the procedure per our protocol), aspirin, metformin, lisinopril, hydrochlorothiazide, atorvastatin, ER morphine, ferrous sulfate. NKDA.\n\nLabs: iron deficiency anemia confirmed.\nColonoscopy: ulcerated, obstructing mass in the ascending colon; the scope could not be passed beyond it. Biopsies taken.\nPathology: moderately differentiated adenocarcinoma.\nCT abdomen/pelvis and chest: multiple hypodense lesions in the right lobe of the liver and several small nodules in both lungs, consistent with metastatic disease.\n\nImpression: right-sided colon adenocarcinoma with liver and lung lesions.\nPlan: urgent oncology referral; appointment arranged. Resume warfarin tonight. Results reviewed with patient and his wife."}
+          ]
+        },
+        {
+          "id": "2022-05-04a",
+          "kind": "telephone",
+          "start": "2022-05-04T17:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call with patient and wife", "author": "PCP", "date": "2022-05-04T17:55",
+             "body": "Called after reading the GI letter. He and his wife already heard the diagnosis from GI. Quiet but composed; she had most of the questions. Talked through what a spread to the liver and lungs means, that oncology will lay out treatment, and that we stay involved for everything else. Oncology appointment confirmed for 5/17. He asked whether he'd done something wrong by waiting on the colonoscopy; reassured. Offered a visit any time. Will keep the INR checks going here."}
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "outside_records",
+          "start": "2022-05-24T11:40",
+          "labs": [{"panel": null, "collected": "2022-05-17T10:15", "results": [{"test": "Carcinoembryonic Antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 48.2}]}],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology consultation", "author": "oncology", "date": "2022-05-24T11:40",
+             "body": "Medical oncology new patient consultation. Visit date 05/17/2022.\n\nDiagnosis: adenocarcinoma of the ascending (right) colon, moderately differentiated, with multiple right hepatic lobe lesions and bilateral pulmonary nodules on staging CT: clinical stage IV.\n\nHe is a 69 year old retired carpenter, fully active, ECOG 0 to 1, with hypertension, type 2 diabetes, coronary disease, atrial fibrillation on warfarin and chronic back pain on ER morphine. NKDA.\nCEA 48.2 ng/mL.\n\nDiscussion: the disease is not resectable for cure at this time. The goals of systemic therapy (control, symptom relief, time) were reviewed with him and his wife. Given his cardiac history and anticoagulation, we will start with FOLFOX alone.\nPlan:\n- Port placement by interventional radiology, scheduled 5/20.\n- FOLFOX every 14 days, 12 cycles planned, starting 5/24.\n- Ondansetron for nausea as needed.\n- Fluorouracil can raise the INR; please check INR more often during treatment and let us know of large swings.\n- Restaging CT after cycle 12.\nWe will keep you informed."}
+          ]
+        },
+        {
+          "id": "2022-05-31a",
+          "kind": "pharmacy",
+          "start": "2022-05-31T10:05",
+          "medications": [{"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "historical", "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea", "dose": {"value": 4, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "chemotherapy nausea"}],
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Fill history review", "author": "MA", "date": "2022-05-31T10:05",
+             "body": "Ran outside fill history while preparing the morphine refill. New fill 5/23 from the oncology office: ondansetron 4 mg ODT, #30. Added to his medication list as prescribed elsewhere. Morphine ER last filled 5/3, refill routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "office_visit",
+          "start": "2022-06-07T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up during chemotherapy",
+          "state": {"weight_kg": 83.0, "bp": [132, 80], "labs": {"Hemoglobin": 11.6, "Mean Corpuscular Volume": 80, "Prothrombin Time-International Normalized Ratio": 2.6, "Hemoglobin A1c": 6.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2022-06-07T11:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2022-06-07T11:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-06-07T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-06-07T12:00",
+             "body": "Three cycles of FOLFOX in so far through his new port. Tired for two or three days after each, some queasiness that the dissolving tablets handle. Eating smaller meals. Belly discomfort a little less. Wife drives him to infusions.\n\nOncology's CBC last week showed the hemoglobin coming up on iron. Fasting sugars lower, 100s to 120s; A1c today. INR in range today.\n\nExam: port site right upper chest clean, healed. Weight down a little more. Heart irregular, rate controlled. Lungs clear. Abdomen soft.\n\nA/P\n- Metastatic right colon cancer on FOLFOX, managed by oncology.\n- AF on warfarin: INR in range on 5-FU, which can push it up; will check every 2 to 3 weeks during chemo.\n- DM2: eating less, sugars lower; keep metformin for now, call for any reading under 70.\n- Iron deficiency anemia: improving, continue iron.\n- Back pain stable on ER morphine; PDMP reviewed.\nSee in 2 months."}
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "nurse_visit",
+          "start": "2022-06-28T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 3.3}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-06-28T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-06-28T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-06-28T09:30",
+             "body": "INR above range. No bleeding, no new bruises, gums fine. Mid-chemo. Per PCP: take 2.5 mg (half tablet) on Mondays and Fridays, 5 mg other days (30 mg/week). Recheck 2 weeks. Instructions read back by wife."}
+          ]
+        },
+        {
+          "id": "2022-07-29a",
+          "kind": "outside_records",
+          "start": "2022-07-29T15:20",
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2022-07-29T15:20",
+             "body": "Regional hospital emergency department. Date of visit: 07/22/2022.\n\nChief complaint: racing heart and lightheaded.\nHPI: man with atrial fibrillation on warfarin and colon cancer on chemotherapy, here with palpitations and lightheadedness that came on suddenly three hours before arrival.\nPMH: long-standing hypertension, coronary artery disease, diabetes, AF, colon cancer. Meds include lisinopril and aspirin, warfarin; full list per patient. NKDA.\nSocial: former smoker, 30 pack-years, quit 10 years ago. Rare alcohol. Retired carpenter.\n\nExam: pulse 120, irregularly irregular. BP 130/84. No jugular venous distention. No peripheral edema. Lungs clear.\nECG: atrial fibrillation with rapid ventricular response, rate about 120, no acute ST changes.\n\nCourse: diltiazem IV in the department; ventricular rate settled to the 80s and the lightheadedness resolved. Observed, stable.\nDisposition: discharged home. Continue home medications. Follow up with PCP this week."}
+          ]
+        },
+        {
+          "id": "2022-08-02a",
+          "kind": "office_visit",
+          "start": "2022-08-02T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "state": {"weight_kg": 82.0, "labs": {"Prothrombin Time-International Normalized Ratio": 2.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-08-02T16:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-02T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-ED follow-up", "author": "PCP", "date": "2022-08-02T16:15",
+             "body": "Seen in the ED on 7/22 for fast AF; IV diltiazem there, rate came down and he went home the same day. ED note reviewed. No episodes since, no lightheadedness. Seven cycles of FOLFOX done.\n\nExam: heart irregular, rate controlled. BP as charted. Lungs clear. No edema.\nINR in range on the adjusted dose.\n\nA/P: AF, one episode of rapid rate during chemotherapy, controlled at rest now; continue warfarin, call or go to the ED for sustained racing or lightheadedness. INR every 2 to 3 weeks. Rest unchanged."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "nurse_visit",
+          "start": "2022-08-30T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 2.4}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-08-30T09:15", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-08-30T09:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-08-30T09:25",
+             "body": "INR in range on 30 mg/week. No bleeding. Continue. Recheck 3 weeks or with next visit."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T12:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye examination", "author": "optometry", "date": "2022-09-20T12:30",
+             "body": "Annual dilated exam 09/14/2022. Acuity 20/25 both eyes with correction. No diabetic retinopathy either eye. Mild cataract changes, not visually significant. Return in 12 months. Medications reviewed including warfarin. NKDA."}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "office_visit",
+          "start": "2022-09-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up, vaccines",
+          "state": {"labs": {"Hemoglobin": 12.8, "Mean Corpuscular Volume": 84, "Prothrombin Time-International Normalized Ratio": 2.4, "Low Density Lipoprotein": 79}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Prothrombin Time with INR", "collected": "2022-09-27T10:30", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-27T10:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-27T10:30", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-09-27T10:35"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-27T10:36"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-09-27T10:00"}, {"procedure": "Immunization administration", "performed": "2022-09-27T10:35"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2022-09-27T10:50",
+             "body": "Ten of twelve cycles done. Fatigue the main thing. No more racing heart since July. Bowels more regular, no dark stools. Oncology says his blood count is nearly normal.\n\nExam: weight steady. Irregular rhythm, rate controlled. Lungs clear. Port site fine. Feet: sensation intact, pulses present.\nPHQ-2 1; low days around infusions but not depressed, he says.\n\nA/P\n- Colon cancer: finishing FOLFOX in November, restaging after.\n- AF/warfarin: INR in range. Continue 30 mg/week.\n- DM2: A1c lower in June with the weight loss. Continue metformin.\n- HTN: fine.\n- CAD: lipids today.\n- Vaccines: high-dose flu and PCV20 today. Bivalent COVID at pharmacy.\n- Iron: continue until hemoglobin normal.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "pharmacy",
+          "start": "2022-10-18T16:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, bivalent", "date": "2022-10-14T12:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "COVID bivalent booster, outside", "author": "MA", "date": "2022-10-18T16:00",
+             "body": "Bivalent Moderna booster 10/14 at a retail pharmacy, pulled from the state registry and added."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "nurse_visit",
+          "start": "2022-11-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "state": {"labs": {"Prothrombin Time-International Normalized Ratio": 1.8}},
+          "labs": [{"panel": "Prothrombin Time with INR", "collected": "2022-11-08T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-11-08T09:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Anticoagulation visit", "author": "RN", "date": "2022-11-08T09:20",
+             "body": "INR slightly low. Last chemo cycle was last week. No missed doses. Per PCP, back to 5 mg daily (35 mg/week) now that infusions are ending. Recheck 2 to 3 weeks."}
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T13:50",
+          "labs": [{"panel": null, "collected": "2022-12-13T10:00", "results": [{"test": "Carcinoembryonic Antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 7.9}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2022-12-08T11:00",
+            "text": "Restaging CT chest, abdomen and pelvis with contrast. Comparison 04/28/2022. Right hepatic lobe hypodense lesions are fewer and smaller. Bilateral small pulmonary nodules are smaller, several no longer seen. Ascending colon wall thickening decreased. Appendix normal. No new lesion. No ascites or adenopathy. Port catheter tip at the cavoatrial junction.",
+            "conclusion": "Partial response of hepatic and pulmonary metastases and the ascending colon primary. No new disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology follow-up", "author": "oncology", "date": "2022-12-20T13:50",
+             "body": "Medical oncology follow-up, 12/13/2022.\nCompleted 12 cycles of FOLFOX on 11/1. Fatigue improving. Restaging CT 12/8 shows partial response in the liver, lungs and primary. CEA 7.9, down from 48.2.\nPlan, agreed with patient and wife: treatment break with CT chest/abdomen/pelvis and CEA every 3 to 4 months; restart therapy at progression. Port to be flushed every 6 to 8 weeks here. Ondansetron no longer needed.\nThank you for co-managing his other conditions."}
+          ]
+        }
+      ]
+    }
+  ]
+}

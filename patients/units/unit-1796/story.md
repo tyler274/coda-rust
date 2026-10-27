@@ -19,3 +19,8 @@
 - 2026-07-24 outside records: port ED record received (S, R5)
 - 2026-07-29 portal: fully recovered; norovirus and dehydration resolved (P, A3)
 - 2026-10-14 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00001796 on 2025-10-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

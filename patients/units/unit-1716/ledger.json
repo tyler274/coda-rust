@@ -1,0 +1,3817 @@
+{
+  "unit": "unit-1716",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001716",
+      "given": "Wendy",
+      "family": "Hastings",
+      "birth_date": "1989-09-05",
+      "address_line": "41 Laurel Park Road",
+      "phone": "+1-860-555-0198",
+      "email": "wendy.hastings@example.test",
+      "marital_status": "partnered",
+      "summary": "Teacher with Crohn disease, SLE, mild asthma and iron deficiency anemia who joins in 2019; HHT is named in 2021, a Crohn rectovaginal fistula in 2023 and neuropsychiatric lupus with a seizure in late 2023. Post-abortal choriocarcinoma is treated to remission in 2024; after a 2025 cesarean delivery it returns in July 2026 with brain and lung metastases and she is on chemotherapy at today.",
+      "events": [
+        {
+          "id": "2019-09-04a",
+          "kind": "telephone",
+          "start": "2019-09-04T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2019-09-04T10:20",
+              "author": "front desk",
+              "body": "Caller: Wendy Hastings, DOB 09/05/1989. Wants to transfer primary care here; has been with another practice for years and says the hard part has been getting anyone on the phone between visits. Has Crohn's and lupus, sees GI and rheumatology outside and plans to keep them. Membership terms reviewed, packet emailed. Records release signed electronically for her prior primary care office. New patient visit booked for 9/17 at 8:40, asked to bring all pill bottles and her inhaler."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "outside_records",
+          "start": "2019-09-12T14:05",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2019-09-12T14:05",
+              "author": "outside primary care",
+              "body": "Summary of records received (41 pages, scanned to media).\n\nProblem list carried by prior office: Crohn's disease (dx 2014, managed by outside GI), systemic lupus erythematosus (managed by outside rheumatology), mild intermittent asthma, anemia on oral iron.\nMedications at last visit: mesalamine DR 1.2 g three times daily; hydroxychloroquine 200 mg daily; prednisone 10 mg daily; albuterol HFA as needed; ferrous sulfate 325 mg daily.\nAllergies: NKDA.\nScreening: cervical cytology 2016 negative. Tdap 2016. Influenza vaccine most years.\nLast CBC (spring 2019): mild anemia, hemoglobin in the low 11s, platelets normal.\nNo hospitalizations listed in the prior five years."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T08:40",
+          "end": "2019-09-17T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Crohn disease",
+              "action": "history",
+              "onset": "2014-05-01",
+              "note": "Diagnosed at 24; outside GI"
+            },
+            {
+              "label": "Systemic lupus erythematosus",
+              "action": "history",
+              "note": "Diagnosed before joining; outside rheumatology"
+            },
+            {
+              "label": "Mild intermittent asthma",
+              "action": "history"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history",
+              "note": "Attributed to recurrent nosebleeds; on oral iron"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "mesalamine 1200 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (1.2 g) by mouth three times daily",
+              "dose": {
+                "value": 1200,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Crohn disease"
+            },
+            {
+              "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            },
+            {
+              "drug": "prednisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Lupus and Crohn disease"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Mild intermittent asthma"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              73
+            ],
+            "hr": 83,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 78.4,
+            "height_cm": 166.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2019-09-17T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-17T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2019-09-17T09:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 22
+                },
+                {
+                  "test": "Iron",
+                  "value": 45
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 303
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2019-09-17T09:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-17T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-17T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2019-09-17T09:15",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative. Routine co-testing interval.",
+              "issued": "2019-09-24T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-17T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-17T10:30",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n30F elementary school teacher transferring care. Main reason for switching: wants a doctor who answers between visits; her specialists are outside and she would like one person keeping the whole list straight.\n\nCrohn's: diagnosed in 2014 at 24 after months of diarrhea and weight loss. Followed by an outside GI group. On mesalamine 1.2 g TID. Says she is quiet right now, 1-2 formed stools a day, no blood.\nSLE: diagnosed some years ago by rheumatology (joint pain and a rash at the time per her account, she does not remember the details). Hydroxychloroquine 200 daily and prednisone 10 daily for a long time; GI and rheum have both bumped prednisone up for flares and brought it back down. Has never been off it for long.\nAsthma: albuterol maybe once a month, more with colds. No ED visits for asthma, no oral steroid bursts just for asthma.\nNosebleeds: since she was a kid. Comes and goes, a few a month lately, usually stops with pressure. On iron for low blood count for years, assumed from the nosebleeds. No black stools.\n\nPMH as above. PSH: none. Meds reconciled with bottles (5). NKDA.\nFH: mother with lupus. Maternal aunt with rheumatoid arthritis. Father gets frequent nosebleeds, as does a cousin on his side.\nSH: lives with partner. Never smoker, alcohol 1-2 drinks a month, no drugs. Teaches 2nd grade.\nGYN: periods regular. Last Pap 2016 normal.\n\nROS: no fevers, no joint swelling now, no rash now, no chest pain, no dyspnea at rest. Fatigue at the end of school days, chronic.\n\nEXAM: vitals as charted. Well appearing. HEENT: anterior nares without active bleeding, oropharynx clear. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear, no wheeze. Abdomen soft, nontender, normal bowel sounds. Joints without synovitis. Skin: no malar rash or discoid lesions today. Neuro grossly normal. Pelvic: normal external genitalia, cervix normal appearing, Pap with HPV collected.\n\nA/P\n1. Crohn's disease - quiet on mesalamine, GI outside. Will request their notes.\n2. SLE on HCQ + chronic prednisone 10 - rheum outside. Needs yearly retinal screening for HCQ; she thinks her last eye exam was last winter. Long-term prednisone: will look at bone density.\n3. Mild intermittent asthma - albuterol PRN, adequate.\n4. Iron deficiency anemia, likely from chronic nosebleeds - CBC and iron studies today, continue ferrous sulfate.\n5. Health maintenance: Pap/HPV today. HIV and hep C screening today. Lipids, A1c (steroid exposure), TSH. Flu shot when the supply arrives next month.\n\nReturn in about 4 months, sooner by text."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Ferritin": 19,
+              "Hemoglobin": 11.4,
+              "Hemoglobin A1c": 5.3,
+              "Iron": 48,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Transferrin Saturation": 13
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-20a",
+          "kind": "portal_message",
+          "start": "2019-09-20T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2019-09-20T16:45",
+              "author": "PCP",
+              "body": "Hi Wendy, your labs are back. Hemoglobin is a little low at the level your old office was seeing, and your iron stores are on the low side of normal, so keep taking the iron every day. Kidney and liver tests, cholesterol, sugar and thyroid are all normal. HIV and hepatitis C screens were negative. Urine was clean. Pap is still pending; I'll message when it's in. Nothing needs changing for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2019-09-20T19:12",
+              "author": "patient",
+              "body": "Thank you! Nice to get this so fast. Will keep up the iron."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2019-10-08T15:55",
+              "author": "RN",
+              "body": "Came after school for flu vaccine. No fever today, no prior reaction to flu vaccines. Quadrivalent inactivated 0.5 mL IM left deltoid. VIS reviewed. Tolerated, left after 15 min observation. Pap result (normal, HPV neg) reviewed with her at her request."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "outside_records",
+          "start": "2019-12-10T11:20",
+          "reason": "Rheumatology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "date": "2019-12-10T11:20",
+              "author": "rheumatology",
+              "body": "Outside rheumatology clinic - follow-up visit 12/03/2019.\n\nDear colleague, thank you for letting us know Ms. Hastings has joined your practice. We saw her in routine follow-up for systemic lupus erythematosus. She reports no new rash, no joint swelling, no pleuritic pain. Exam today without synovitis or mucocutaneous lesions. Recent labs reviewed. Disease quiet. Plan: continue hydroxychloroquine 200 mg daily and prednisone 10 mg daily; annual retinal screening for hydroxychloroquine (she reports one last winter). Return in 6 months.\n\nMedications: mesalamine 1.2 g TID, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol PRN, ferrous sulfate 325 mg daily. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-22a",
+          "kind": "office_visit",
+          "start": "2020-01-22T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, chronic conditions",
+          "vitals": {
+            "bp": [
+              108,
+              79
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 77.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-01-22T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2020-01-22T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2020",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "Long-term prednisone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2020-01-22T16:40",
+              "author": "PCP",
+              "body": "S: Routine follow-up. Rheum saw her in December, nothing changed. Bowels steady. Albuterol twice since fall, both with a cold in her classroom. Nosebleeds about the same, a few a month. Wants to know if the prednisone is hurting her bones.\nO: vitals as charted. Lungs clear. Abdomen benign. No rash.\nA/P: SLE and Crohn's quiet on current regimen. Asthma intermittent, fine. Anemia stable - CBC today. Long-term prednisone 10 mg: ordered DXA. Discussed calcium and vitamin D from diet and weight-bearing exercise. RTC 4-6 months or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-02-18a",
+          "kind": "outside_records",
+          "start": "2020-02-18T10:05",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hydroxychloroquine retinal screening",
+              "date": "2020-02-18T10:05",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology - exam 02/11/2020.\nIndication: hydroxychloroquine 200 mg daily, annual toxicity screening.\nVisual acuity 20/20 OU. IOP normal. Dilated fundus exam normal OU. Automated 10-2 visual fields full OU. SD-OCT macula: normal ellipsoid zone, no parafoveal thinning.\nImpression: no evidence of hydroxychloroquine retinopathy. Repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-04a",
+          "kind": "imaging",
+          "start": "2020-03-04T07:30",
+          "reason": "Bone density on long-term prednisone",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2020-03-04T07:30",
+              "text": "Indication: long-term glucocorticoid therapy, premenopausal. Lumbar spine L1-L4: Z-score -0.4. Left femoral neck: Z-score -0.2. Total left hip: Z-score 0.1. Technically adequate study, no vertebral levels excluded.",
+              "conclusion": "Bone mineral density within the expected range for age."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2020",
+              "action": "done",
+              "date": "2020-03-04T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "DXA result",
+              "date": "2020-03-05T12:10",
+              "author": "PCP",
+              "body": "Bone density normal for age. Messaged patient. No treatment needed; recheck only if steroid exposure changes a lot."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-30a",
+          "kind": "portal_message",
+          "start": "2020-03-30T09:14",
+          "reason": "Question about COVID risk",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Is prednisone making me high risk?",
+              "date": "2020-03-30T09:14",
+              "author": "patient",
+              "body": "School is remote for now. Should I be doing anything different because of the prednisone and lupus? Should I stop the prednisone? I have about 2 weeks left of everything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Is prednisone making me high risk?",
+              "date": "2020-03-30T12:40",
+              "author": "PCP",
+              "body": "Please don't stop the prednisone on your own - after this many years your body depends on it and stopping suddenly is dangerous. Same for the hydroxychloroquine and mesalamine. Being on prednisone does put you in the group that should be extra careful: stay home as much as you can, masks and hand washing, and let me know right away with fever or cough. I've sent 90-day refills of everything so you have a cushion. Let's do a video check-in in June instead of an office visit."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-16T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-06-16T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2020-06",
+              "action": "placed",
+              "order": "CBC, CMP",
+              "category": "lab",
+              "reason": "Medication monitoring"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-06-16T13:25",
+              "author": "PCP",
+              "body": "Video, patient at home, consented. Finished the school year remotely. Feels well overall. Bowels unchanged. No joint flares. Has used albuterol maybe once since March. Nosebleeds a couple of times a month, stops with pressure. Adherent to all meds.\nNo exam beyond what's visible: comfortable, speaking full sentences, no rash on face.\nA/P: Stable. Labs for monitoring this week at the lab drive-up. Refills current. Flu shot in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-18a",
+          "kind": "lab_only",
+          "start": "2020-06-18T08:10",
+          "reason": "Monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-06-18T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-06-18T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2020-06",
+              "action": "done",
+              "date": "2020-06-18T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2020-06-19T08:30",
+              "author": "PCP",
+              "body": "Hgb unchanged at her usual mild anemia. Kidney and liver function normal. No action. Released to portal with a short note."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-09a",
+          "kind": "outside_records",
+          "start": "2020-09-09T13:40",
+          "reason": "Gastroenterology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2020-09-09T13:40",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology - telehealth follow-up 09/01/2020.\nCrohn's disease, diagnosed 2014. Currently 1-2 formed stools daily, no bleeding, no abdominal pain, weight stable. No perianal symptoms. Plan: continue mesalamine 1.2 g three times daily; prednisone per rheumatology at 10 mg. Labs reviewed from her primary care office. Follow-up one year or sooner for symptoms.\nMeds: mesalamine, hydroxychloroquine, prednisone 10 mg, albuterol PRN, ferrous sulfate. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "annual_physical",
+          "start": "2020-10-20T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              80
+            ],
+            "hr": 75,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 78.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-10-20T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-10-20T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2020-10-20T16:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 20
+                },
+                {
+                  "test": "Iron",
+                  "value": 42
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 311
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-10-20T16:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-10-20T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-20T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-20T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-20T17:00",
+              "author": "PCP",
+              "body": "ANNUAL PREVENTIVE VISIT\n\nTeaching in person with masks, hybrid days. Tired but ok. PHQ-9 3. Sleep fine most nights. Exercise: walks with partner on weekends.\nCrohn's quiet per GI in September. Lupus quiet. Albuterol rarely. Nosebleeds: a few a month, one this summer that took about 30 minutes to stop at home.\nMeds unchanged, NKDA. Never smoker, rare alcohol.\n\nExam: vitals as charted. HEENT normal, nares without active bleeding. Thyroid normal. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin without rash. Joints normal.\n\nPrevention: Pap/HPV normal 2019, next 2024. HIV/HCV done 2019. Flu vaccine today. Eye screening for HCQ done February, normal; next due February.\nLabs: CBC, CMP, ferritin, UA.\nA/P: Stable chronic disease. Continue all meds. RTC ~4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-12-01a",
+          "kind": "pharmacy",
+          "start": "2020-12-01T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "Albuterol refill",
+              "date": "2020-12-01T09:05",
+              "author": "MA",
+              "body": "Pharmacy fax requesting albuterol HFA refill; last fill May. Pended to PCP. Approved 1 inhaler with 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-26a",
+          "kind": "portal_message",
+          "start": "2021-02-26T19:30",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-24T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Got my first COVID shot",
+              "date": "2021-02-26T19:30",
+              "author": "patient",
+              "body": "Teachers opened up this week so I got dose 1 of Pfizer on Wednesday at the regional clinic. Photo of the card attached. Sore arm and tired Thursday, fine now. Second one is booked for March 17. Do I need to skip my prednisone around it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Got my first COVID shot",
+              "date": "2021-02-27T08:50",
+              "author": "PCP",
+              "body": "Great news. Added to your record. No - keep every medicine exactly as you take it now, including the prednisone. Send a picture after dose 2 and I'll add that too."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-19a",
+          "kind": "portal_message",
+          "start": "2021-03-19T17:05",
+          "reason": "COVID vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-17T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dose 2 done",
+              "date": "2021-03-19T17:05",
+              "author": "patient",
+              "body": "Card attached. Fever and chills the night of, gone by the next afternoon."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dose 2 done",
+              "date": "2021-03-20T09:12",
+              "author": "MA",
+              "body": "Thanks Wendy, dose 2 is entered in your chart. That reaction is common and expected after the second dose."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "office_visit",
+          "start": "2021-05-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, chronic conditions",
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 77.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-05-11T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-05-11T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-05-11T16:20",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 14
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 18
+                },
+                {
+                  "test": "Iron",
+                  "value": 54
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 306
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-05-11T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-05-11T16:40",
+              "author": "PCP",
+              "body": "S: First in-person visit in over a year. Fully vaccinated. GI and rheum both by video this year, no changes. Main thing: nosebleeds have been more frequent since the winter, now about weekly, and a couple took a long time to stop. Takes iron daily. No black stools, no heavy periods.\nO: vitals as charted. Anterior septum without active bleeding. Lungs clear. Abdomen soft.\nA/P: Nosebleeds more often - humidifier at night, saline gel to nares, pressure technique reviewed. CBC/iron today; continue ferrous sulfate. If they keep picking up we should look into why. Asthma, SLE, Crohn's stable. RTC fall."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2021-05-12T12:15",
+              "author": "PCP",
+              "body": "Hgb 11 range, ferritin low-normal. Same as before. Continue iron. Portal note sent."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 15,
+              "Hemoglobin": 11.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "outside_records",
+          "start": "2021-06-22T10:30",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hydroxychloroquine retinal screening",
+              "date": "2021-06-22T10:30",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology - exam 06/15/2021 (delayed from February).\nOn hydroxychloroquine 200 mg daily. Acuity 20/20 OU. Fundus normal OU. 10-2 fields full. OCT macula without parafoveal changes.\nImpression: no hydroxychloroquine toxicity. Annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "office_visit",
+          "start": "2021-09-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "More frequent nosebleeds",
+          "vitals": {
+            "bp": [
+              116,
+              73
+            ],
+            "hr": 65,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 78.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-09-14T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-14T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-14T16:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-ref-2021",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Recurrent epistaxis with blood-streaked sputum; family history of nosebleeds"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Epistaxis",
+              "date": "2021-09-14T16:55",
+              "author": "PCP",
+              "body": "S: Nosebleeds are now several times a week, worse over the past year. Twice this summer she went to urgent care because pressure did not stop it after 30+ minutes; both times it settled there without packing being left in. Humidifier and saline gel have not changed much. New: every so often she coughs up a little blood-streaked spit in the morning. No actual cough, no shortness of breath, no chest pain. No fever. Her dad has had nosebleeds all his life, and a cousin on his side too.\nO: vitals as charted. Afebrile. Nares: dried blood left anterior septum, no active bleeding. Oropharynx clear. Lungs clear to auscultation. Heart RRR.\nA/P:\n1. Recurrent epistaxis, increasing, with family history on father's side and occasional blood-streaked sputum. I want this looked at with an eye to an inherited vascular cause and the lungs. Referral to pulmonology placed; she'd like the group closest to school. CBC today.\n2. Iron deficiency anemia - continue iron.\n3. Flu vaccine today.\nReturn after pulmonology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-15a",
+          "kind": "portal_message",
+          "start": "2021-09-15T13:20",
+          "reason": "Lab result and referral",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count and referral",
+              "date": "2021-09-15T13:20",
+              "author": "RN",
+              "body": "Hi Wendy, your blood count is about where it has been, no worse. The pulmonology office has the referral; their first opening is December 27. We put you on their cancellation list."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-02a",
+          "kind": "nurse_visit",
+          "start": "2021-11-02T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-02T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-02T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-11-02T16:15",
+              "author": "RN",
+              "body": "Pfizer booster 0.3 mL IM right deltoid. Eligible given immunosuppression. Observed 15 minutes, no reaction. Asked when pulmonology is - still 12/27, no cancellation spot yet."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-20a",
+          "kind": "outside_records",
+          "start": "2022-01-20T11:45",
+          "reason": "Pulmonology consult letter received",
+          "conditions": [
+            {
+              "label": "Hereditary hemorrhagic telangiectasia",
+              "action": "diagnosed",
+              "onset": "2021-12-27",
+              "note": "Clinical diagnosis at pulmonology: recurrent epistaxis, mucosal telangiectasias, affected first-degree relative"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-27T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-12-27T10:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-27T10:15",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-ref-2021",
+              "action": "done",
+              "date": "2022-01-20T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2022-01-20T11:45",
+              "author": "pulmonology",
+              "body": "Outside pulmonology group - new consultation, date of service 12/27/2021. Faxed 01/20/2022.\n\nReason for referral: recurrent epistaxis, occasional blood-tinged sputum.\n\nHistory: 32-year-old woman with Crohn's disease, SLE and mild intermittent asthma. Nosebleeds since childhood; over the last year they have become much more frequent, several per week, and on occasion she has needed medical care to stop them. She has noticed occasional blood in her sputum. She denies cough and dyspnea. Her father and a paternal cousin have the same problem.\n\nMedications: mesalamine 1.2 g TID, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol 90 mcg 2 puffs q4-6h PRN, ferrous sulfate 325 mg daily. NKDA. Never smoker.\n\nExam: comfortable, SpO2 normal on room air. Several small red to violaceous telangiectasias on the lips and buccal mucosa. Chest clear bilaterally, no bruits over the lung fields. No clubbing or cyanosis.\n\nData: hemoglobin 11.2 g/dL, platelets 250 K/uL, INR 1.0, PTT 30 s.\n\nAssessment: recurrent spontaneous epistaxis, mucocutaneous telangiectasias and a first-degree relative with the same picture meet clinical criteria for hereditary hemorrhagic telangiectasia (Osler-Weber-Rendu). Coagulation is normal. Mild anemia consistent with chronic blood loss.\n\nPlan: transthoracic echocardiogram with agitated saline to screen for pulmonary arteriovenous malformation. Continue oral iron. Nasal moisturization. Genetic counseling information given. We will forward the echo result."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-31a",
+          "kind": "outside_records",
+          "start": "2022-01-31T09:40",
+          "reason": "Echocardiogram report received",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2022-01-25T09:00",
+              "text": "Indication: hereditary hemorrhagic telangiectasia, screening for intrapulmonary shunt. Left ventricle normal in size with normal wall thickness and systolic function, estimated LVEF 60-65%. Normal diastolic filling. Right ventricle normal size and function. Atria normal. Valves structurally normal without significant regurgitation. Estimated RVSP normal. No pericardial effusion. Agitated saline contrast injected at rest and with Valsalva maneuver: no bubbles seen in the left heart at any cycle.",
+              "conclusion": "Normal echocardiogram. Negative agitated-saline study; no evidence of intracardiac or intrapulmonary shunt."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Echo reviewed",
+              "date": "2022-01-31T12:30",
+              "author": "PCP",
+              "body": "Bubble echo negative, no lung AVM shunt. Pulm letter arrived last week - HHT diagnosis. Visit already booked 2/8 to go over it."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review pulmonology findings",
+          "vitals": {
+            "bp": [
+              110,
+              80
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 78.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-08T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-02-08T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-02-08T16:20"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-02-08T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit - HHT",
+              "date": "2022-02-08T16:50",
+              "author": "PCP",
+              "body": "S: Here to go over pulmonology. She was relieved there is a name for the nosebleeds. Bubble echo negative. Says her father has since been told by his own doctor that he likely has the same thing. Nosebleeds still several a week. Occasional streaky sputum unchanged. No dyspnea.\nO: vitals as charted. Small telangiectasias on the lower lip. Lungs clear.\nA/P:\n1. Hereditary hemorrhagic telangiectasia, newly diagnosed by pulmonology (clinical criteria). Added to problem list; family history updated (father HHT). Bubble echo negative. Continue nasal moisturization; iron. We'll watch hemoglobin every 6 months.\n2. Immunizations: on chronic prednisone and hydroxychloroquine, so she qualifies for pneumococcal and shingles vaccines now. PCV20 and Shingrix #1 today; Shingrix #2 in 2-6 months.\n3. SLE/Crohn's: stable per specialists.\nRTC 4-6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "nurse_visit",
+          "start": "2022-04-12T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-04-12T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-04-12T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2022-04-12T16:10",
+              "author": "RN",
+              "body": "Shingrix dose 2, 0.5 mL IM left deltoid. After dose 1 she had a sore arm and felt achy for a day. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "lab_only",
+          "start": "2022-06-14T07:55",
+          "reason": "Monitoring labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-06-14T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-14T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2022-06-15T07:40",
+              "author": "PCP",
+              "body": "Hgb stable, mild anemia unchanged. Renal and hepatic panel normal on mesalamine/HCQ. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "outside_records",
+          "start": "2022-07-12T10:10",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hydroxychloroquine retinal screening",
+              "date": "2022-07-12T10:10",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology - exam 07/06/2022. Hydroxychloroquine 200 mg daily, about 3 mg/kg. Acuity 20/20 OU. Normal fundi. Fields full. OCT normal. No toxicity. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "outside_records",
+          "start": "2022-08-30T14:25",
+          "reason": "Gastroenterology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2022-08-30T14:25",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology - office follow-up 08/23/2022. Crohn's disease in clinical remission on mesalamine 1.2 g TID. Formed stools, no bleeding, no perianal complaints. Weight stable. Abdomen benign. Note new HHT diagnosis from pulmonology. Plan: continue current therapy, CBC and CMP via PCP. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              80
+            ],
+            "hr": 65,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 78.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                },
+                {
+                  "test": "Iron",
+                  "value": 61
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 322
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 19
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-10-18T16:35",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-18T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-18T17:05",
+              "author": "PCP",
+              "body": "ANNUAL EXAM\n\nNew class this year, 24 kids, likes them. Mood good, PHQ-9 2. Walking most evenings.\nHHT: nosebleeds still a few a week, shorter since she started the nightly gel. No urgent care trips since last year. Sputum streaks rare.\nCrohn's: GI in August, remission. Lupus: rheum in spring, quiet. Asthma: albuterol a few times this year.\nMeds unchanged. NKDA.\n\nExam: vitals as charted. Lip telangiectasias unchanged. Heart regular, no murmur. Chest clear. Abdomen soft, nontender. Skin no rash. No synovitis. No edema.\n\nPrevention: Pap 2019 normal, due 2024. Pneumococcal and shingles complete. Flu and bivalent COVID booster today. HCQ eye exam July, normal.\nLabs today: CBC, CMP, ferritin, UA.\nA/P: stable. Continue all. RTC about 4 months, labs before."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2022-10-19T13:05",
+              "author": "PCP",
+              "body": "Hgb ~11, ferritin low-normal, renal fine, UA negative. Continue iron. Released."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "lab_only",
+          "start": "2023-02-14T07:50",
+          "reason": "Monitoring labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-02-14T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 118
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-14T07:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2023-02-15T07:35",
+              "author": "PCP",
+              "body": "Platelets 118, new - she has always been normal. Hgb and WBC at her baseline. No new meds. Repeat CBC in 4 weeks; will copy rheum."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-15a",
+          "kind": "portal_message",
+          "start": "2023-02-15T07:45",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Platelet count",
+              "date": "2023-02-15T07:45",
+              "author": "PCP",
+              "body": "Hi Wendy, one number was off this time: your platelets (the clotting cells) were a bit low at 118, when they are usually normal. That can happen with a recent virus or just lab variation. Any unusual bruising, blood spots on the skin, or nosebleeds worse than your usual? If not, let's simply repeat it in about a month."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Platelet count",
+              "date": "2023-02-15T20:10",
+              "author": "patient",
+              "body": "No bruising, nosebleeds are the same as always. I had a cold at the end of January. Will go in mid March."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "lab_only",
+          "start": "2023-03-14T07:45",
+          "reason": "Repeat CBC",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-14T07:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 205
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Repeat CBC",
+              "date": "2023-03-14T15:20",
+              "author": "PCP",
+              "body": "Platelets back to 205. No explanation for the February dip. Messaged pt. Routine monitoring only."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal pain and loose stools",
+          "vitals": {
+            "bp": [
+              115,
+              83
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 76.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-04-18T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-18T16:25",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-expedite-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral (expedited)",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "Crohn disease, possible flare"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - GI symptoms",
+              "date": "2023-04-18T16:50",
+              "author": "PCP",
+              "body": "S: Since about January, on and off crampy lower abdominal pain and loose stools, 3-5 a day on bad days, then a few good days. No blood she has seen. Pants are looser; down about 2.5 kg from her usual. No fever. No travel, no antibiotics, nobody sick at home. Her GI follow-up isn't until late summer.\nO: vitals as charted, afebrile. Abdomen soft, mild tenderness in the lower abdomen, no guarding, no mass. Weight down from her baseline.\nA/P: Probable Crohn's flare. She is already on prednisone 10 and mesalamine; no change until GI sees her. Called GI office - visit moved up to 6/30, the soonest they have, with instruction to call them sooner if pain worsens or bleeding starts. CBC, CMP today. Hydrate. If fever or severe pain, ED."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to GI office",
+              "date": "2023-04-18T17:10",
+              "author": "PCP",
+              "body": "Spoke with GI scheduler and their nurse. Next available new-symptom slot 6/30. Patient added to waitlist. Our note faxed."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-07a",
+          "kind": "outside_records",
+          "start": "2023-07-07T12:30",
+          "reason": "Gastroenterology consult letter received",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-30T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-30T11:00",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                },
+                {
+                  "test": "Stool culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated. Ova and parasites: none seen."
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-expedite-2023",
+              "action": "done",
+              "date": "2023-07-07T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2023-07-07T12:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology - visit 06/30/2023 (letter dictated 07/05).\n\nHPI: Ms. Hastings, 33, with Crohn's disease for about nine years on mesalamine and long-term low-dose prednisone, plus SLE and hereditary hemorrhagic telangiectasia. For roughly six months she has had episodic abdominal pain and diarrhea with weight loss she did not intend. Over the last several weeks she has also had a foul-smelling tan vaginal discharge and has occasionally passed gas through the vagina.\n\nMeds: mesalamine 1.2 g three times daily, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol as needed, ferrous sulfate daily. NKDA.\n\nExam: afebrile. Weight 73 kg. Abdomen tender in the right lower quadrant, no rebound, no guarding, no mass. Perianal skin intact. Speculum and digital exam with chaperone: a small lesion on the posterior vaginal wall in keeping with a fistula opening.\n\nLabs today: hemoglobin 12.1, WBC 9.0, CRP 24 mg/L (ref <5). Stool culture negative for enteric pathogens; no ova or parasites.\n\nImpression: active Crohn's disease complicated by a rectovaginal fistula.\n\nPlan:\n1. MRI pelvis (fistula protocol).\n2. Colorectal surgery referral for exam under anesthesia and drainage.\n3. Metronidazole 500 mg three times daily for 4 weeks.\n4. Prednisone 40 mg daily, decreasing by 5 mg each week back to her 10 mg dose.\n5. Continue mesalamine. Follow-up after surgery."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "outside_records",
+          "start": "2023-07-26T09:30",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hydroxychloroquine retinal screening",
+              "date": "2023-07-26T09:30",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology - exam 07/19/2023. Hydroxychloroquine screening, year 4 in our office. Acuity 20/20 OU, normal dilated exam, fields full, OCT normal. No retinopathy. Next in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "outside_records",
+          "start": "2023-08-24T13:50",
+          "reason": "Colorectal surgery letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Colorectal surgery operative letter",
+              "date": "2023-08-24T13:50",
+              "author": "colorectal surgery",
+              "body": "Outside colorectal surgery - consult 07/27/2023; procedure 08/10/2023.\n\nMRI pelvis 07/18/2023 (fistula protocol): low rectovaginal fistula from the anterior lower rectum to the posterior vaginal wall. No abscess or collection. No other fistula tracks.\n\nProcedure: examination under anesthesia, placement of a loose draining seton through the rectovaginal fistula. Findings: single low tract, no abscess. No complications. Discharged same day.\n\nPost-op plan: sitz baths, keep stools soft; seton to remain long-term while Crohn's therapy is optimized by GI; follow-up in clinic in 6 weeks.\n\nMedications at discharge: unchanged home medications; completing metronidazole course. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "outside_records",
+          "start": "2024-01-08T09:15",
+          "reason": "ED record and discharge summary received",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-12-29T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-29T15:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 68
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-12-29T16:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "5-10 /hpf"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-29T15:40",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2023-12-30T11:00",
+              "text": "Indication: new-onset seizure, SLE. Technique: multiplanar multisequence MRI of the brain before and after IV gadolinium. Findings: no acute infarct on diffusion imaging. No hemorrhage. No mass or abnormal enhancement. Ventricles and sulci normal for age. No white matter lesions. No vascular malformation; normal flow voids. Pituitary and orbits unremarkable.",
+              "conclusion": "Normal MRI of the brain."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2024-01-08T09:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 12/29/2023, arrival 15:05 by ambulance.\n\nCC: seizure.\nHPI: 34-year-old woman with SLE, Crohn's disease and HHT. Per boyfriend, she had a generalized tonic-clonic seizure at home, then was confused. He says that over the past several months she has complained of headaches and fatigue, and a red rash on her face has flared when she is in the sun. No prior seizures. No head trauma.\nMeds: mesalamine 1.2 g TID, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol PRN, ferrous sulfate 325 mg daily. NKDA.\n\nVitals: T 37.8 C (100.0 F), BP 135/85, HR 88.\nExam: postictal, rouses to voice and follows commands. Erythematous rash across both malar areas and the nasal bridge. Oral mucosa without ulcers. Neuro: moves all extremities symmetrically, no focal deficit. Tongue without laceration.\n\nLabs: Hgb 11.2, WBC 3.8, platelets 95 K. Creatinine 1.1. UA: protein 2+, RBC 5-10/hpf. ANA positive. Anti-dsDNA positive. C3 low, C4 low.\n\nAssessment: new-onset generalized seizure in active SLE with cytopenias and low complements - concern for neuropsychiatric lupus. Admitted to medicine with neurology and rheumatology consults."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2024-01-08T09:20",
+              "author": "hospital medicine",
+              "body": "Regional hospital - Medicine. Admitted 12/29/2023, discharged 01/02/2024.\n\nPrincipal diagnosis: neuropsychiatric systemic lupus erythematosus presenting with generalized tonic-clonic seizure.\nSecondary: SLE with leukopenia, thrombocytopenia and hypocomplementemia; Crohn's disease with rectovaginal fistula (seton); hereditary hemorrhagic telangiectasia; mild intermittent asthma; anemia.\n\nCourse: Neurology and rheumatology consulted. MRI brain with and without contrast normal. Routine EEG: normal background, no epileptiform discharges. No further seizures. Treated with IV methylprednisolone 1 g daily for 3 days, then prednisone 40 mg daily. Levetiracetam 500 mg twice daily started. Headache resolved. Rash improving.\n\nDischarge medications:\n- levetiracetam 500 mg PO BID (NEW)\n- prednisone 40 mg PO daily, decrease by 5 mg each week to 10 mg daily (CHANGED)\n- hydroxychloroquine 200 mg PO daily\n- mesalamine 1.2 g PO TID\n- albuterol HFA PRN\n- ferrous sulfate 325 mg PO daily\n\nFollow-up: PCP within 1 week; rheumatology 01/16/2024; neurology 3 months. No driving per state law. Return for any seizure."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "outside_records",
+          "start": "2024-01-23T14:00",
+          "reason": "Rheumatology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology post-hospital letter",
+              "date": "2024-01-23T14:00",
+              "author": "rheumatology",
+              "body": "Outside rheumatology - visit 01/16/2024.\nSeen after admission for neuropsychiatric lupus with seizure. No further events. Prednisone now 35 mg on taper. Malar rash nearly resolved. No arthritis. Plan: complete taper to 10 mg; continue hydroxychloroquine 200 mg daily; levetiracetam per neurology. CBC and CMP in February through primary care, please forward. Return 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "outside_records",
+          "start": "2024-06-20T10:40",
+          "reason": "ED record and gynecologic oncology discharge summary received",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-06-08T20:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-08T20:30",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 225000
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2024-06-08T20:50",
+              "text": "Portable AP chest. Multiple bilateral pulmonary infiltrates. No pleural effusion. No pneumothorax. Heart size normal. Mediastinum normal.",
+              "conclusion": "Multiple bilateral pulmonary infiltrates."
+            },
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-06-09T09:30",
+              "text": "Transabdominal and transvaginal. Uterus enlarged. Heterogeneous, markedly vascular endometrial tissue measuring 2.4 cm. No gestational sac or intrauterine pregnancy. Ovaries normal in size bilaterally. No free fluid.",
+              "conclusion": "Enlarged uterus with 2.4 cm heterogeneous vascular endometrial tissue; no pregnancy. In this setting consistent with gestational trophoblastic neoplasia."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2024-06-09T13:10",
+              "text": "CT chest with IV contrast. Six pulmonary nodules in both lungs, the largest 1.4 cm in the right lower lobe. No pulmonary embolism. No mediastinal or hilar adenopathy. No pleural effusion. Visualized upper abdomen unremarkable.",
+              "conclusion": "Six bilateral pulmonary nodules, largest 1.4 cm, consistent with metastases in the clinical setting."
+            },
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2024-06-10T08:45",
+              "text": "Staging. No enhancing lesion. No hemorrhage. No mass effect. No vascular malformation. Normal ventricles.",
+              "conclusion": "No intracranial metastasis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2024-06-20T10:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 06/08/2024, 19:45.\n\nCC: shortness of breath, vaginal bleeding.\nHPI: 34-year-old woman with Crohn's, SLE (neuropsychiatric lupus with seizure 12/2023) and HHT, recent rectovaginal fistula with seton. Two weeks of shortness of breath and irregular vaginal bleeding, heavier than her periods. Miscarriage at 10 weeks gestation followed by D&C three months ago.\nMeds: mesalamine, hydroxychloroquine, prednisone 10 mg, albuterol PRN, ferrous sulfate. NKDA.\n\nVitals: BP 130/85, HR 102, RR 22, SpO2 94% on room air, afebrile.\nExam: mildly tachypneic. Diffuse rales both lungs. Abdomen soft; uterus palpably enlarged.\n\nLabs: Hgb 11.2, WBC 7.8, platelets 250. Serum beta-hCG 225,000 mIU/mL.\nCXR: multiple bilateral pulmonary infiltrates.\n\nAssessment: markedly elevated hCG three months after a pregnancy loss with an enlarged uterus and lung infiltrates - gestational trophoblastic neoplasia with pulmonary metastases until proven otherwise. Gynecologic oncology consulted; admitted."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Gynecologic oncology discharge summary",
+              "date": "2024-06-20T10:45",
+              "author": "gynecologic oncology",
+              "body": "Regional hospital - Gynecologic Oncology. Admitted 06/08/2024, discharged 06/13/2024.\n\nDiagnosis: choriocarcinoma (post-abortal gestational trophoblastic neoplasia) metastatic to lung. FIGO stage III. WHO/FIGO prognostic score 7 (high risk): antecedent abortion, hCG >100,000, more than four lung metastases.\n\nWorkup: pelvic ultrasound - enlarged uterus with 2.4 cm heterogeneous vascular endometrial tissue, no pregnancy. CT chest - six bilateral nodules, largest 1.4 cm. MRI brain - no metastasis. Tissue biopsy not pursued (hemorrhage risk; diagnosis on clinical and hCG criteria).\n\nTreatment: EMA/CO (etoposide, methotrexate, actinomycin D / cyclophosphamide, vincristine) cycle 1 started 06/12/2024 with folinic acid rescue; tolerated. Oxygen weaned to room air by 06/11.\n\nDischarge medications: home medications unchanged (mesalamine, hydroxychloroquine, prednisone 10 mg, levetiracetam 500 mg BID, albuterol, ferrous sulfate).\n\nFollow-up: cancer center infusion every 2 weeks; weekly hCG. Avoid pregnancy; reliable contraception. Primary care: routine."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "outside_records",
+          "start": "2024-07-19T11:10",
+          "reason": "Gynecologic oncology letter received",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-09T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 8420
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology progress letter",
+              "date": "2024-07-19T11:10",
+              "author": "gynecologic oncology",
+              "body": "Cancer center - gynecologic oncology. Visit 07/16/2024.\nCycle 3 of EMA/CO given. hCG falling appropriately: 225,000 at presentation, 8,420 on 07/09. Breathing normal. Fatigue as expected; no neutropenic fever. Continue EMA/CO every 2 weeks with weekly hCG; consolidation for three cycles after the first normal value."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-10T15:20",
+          "reason": "Gynecologic oncology letter received",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-06T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 212
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-03T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology progress letter",
+              "date": "2024-09-10T15:20",
+              "author": "gynecologic oncology",
+              "body": "Cancer center - gynecologic oncology. hCG 212 on 08/06 and 4 on 09/03 (normal <5). First normal value reached. Plan three consolidation cycles of EMA/CO, last expected mid-October, then monthly hCG surveillance for 12 months. Tolerating treatment."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "outside_records",
+          "start": "2024-10-25T13:35",
+          "reason": "Gynecologic oncology end-of-treatment letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology end-of-treatment letter",
+              "date": "2024-10-25T13:35",
+              "author": "gynecologic oncology",
+              "body": "Cancer center - gynecologic oncology. Visit 10/22/2024.\nCompleted EMA/CO, final consolidation cycle 10/15/2024. hCG normal since 09/03. Complete remission.\nSurveillance: monthly hCG for 12 months. Pregnancy should be avoided for 12 months after completion of chemotherapy so that hCG can be followed; contraception reviewed with patient and partner. Return to work when energy allows. We will send hCG results periodically."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "outside_records",
+          "start": "2025-03-20T12:00",
+          "reason": "Gynecologic oncology surveillance results",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-11-19T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-17T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-14T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-11T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<2"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-11T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<2"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology surveillance letter",
+              "date": "2025-03-20T12:00",
+              "author": "gynecologic oncology",
+              "body": "Cancer center - gynecologic oncology. Surveillance update.\nMonthly hCG since completing EMA/CO: <2 mIU/mL on 11/19, 12/17, 1/14, 2/11 and 3/11. Remains in remission. Continue monthly hCG through October 2025, then every 3 months. Continue contraception until then."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "outside_records",
+          "start": "2025-06-10T14:15",
+          "reason": "Gynecologic oncology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology letter",
+              "date": "2025-06-10T14:15",
+              "author": "gynecologic oncology",
+              "body": "Cancer center - gynecologic oncology.\nUnplanned pregnancy about 7 months after completing EMA/CO for choriocarcinoma. hCG 1,840 on 4/29. Ultrasound 5/20: single intrauterine gestation, about 7 weeks, cardiac activity present. hCG surveillance suspended during pregnancy. Plan: hCG 6 weeks after delivery and placental pathology at delivery; patient informed. Discussed with her OB team."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "outside_records",
+          "start": "2025-07-29T09:50",
+          "reason": "Ophthalmology letter received",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hydroxychloroquine retinal screening",
+              "date": "2025-07-29T09:50",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology - exam 07/22/2025. Hydroxychloroquine, about 6 years. Pregnant, second trimester. Acuity 20/20 OU, dilated exam normal, 10-2 fields full, OCT normal. No toxicity. Annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "outside_records",
+          "start": "2026-01-06T11:15",
+          "reason": "ED record received",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-28T18:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-28T18:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 86
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-01-06T11:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 12/28/2025, 18:10.\n\nCC: fever, incision pain.\nHPI: 36-year-old woman with Crohn's disease and SLE, postoperative day 3 after emergency cesarean delivery for fetal distress. Pain and redness around the incision since this morning; temperature 38.5 C at home. Breastfeeding.\nMeds: mesalamine 1.2 g TID, hydroxychloroquine 200 mg daily, prednisone 10 mg daily, albuterol PRN, ferrous sulfate 325 mg daily. NKDA.\n\nVitals: T 38.5 C; remaining vital signs within normal limits. BMI 34.\nExam: Low transverse cesarean incision with surrounding erythema and induration and a small amount of purulent drainage; no foul odor. No fluctuance. No crepitus. Abdomen otherwise soft. Fundus firm, appropriately tender. Breasts without erythema.\n\nLabs: WBC 14.0, CRP 86 mg/L.\nWound culture sent.\n\nAssessment: superficial incisional surgical site infection (cellulitis) after cesarean.\nPlan: cephalexin 500 mg PO four times daily for 7 days. Wound care instructions. Follow-up with OB tomorrow as scheduled. Return for spreading redness, worsening pain or persistent fever."
+            }
+          ],
+          "state": {
+            "weight_kg": 92.6
+          }
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-17T13:40",
+          "reason": "Obstetrics notes received",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-22T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-22T11:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics postpartum visit, day 4",
+              "date": "2026-02-17T13:40",
+              "author": "obstetrics",
+              "body": "Outside OB/MFM group. Date of service 12/29/2025.\n\nPostpartum day 4 after emergency cesarean. Seen in ED yesterday for incisional cellulitis, on cephalexin; afebrile today.\nComplaint: both breasts painful and swollen. Trying to breastfeed; baby not latching well and she worries the baby isn't getting enough. No fever today, no nipple discharge, no red streaking.\nVitals within normal limits.\nExam: breasts symmetrically enlarged, firm, tender. No skin color change. Nipples intact without cracks or fissures. No palpable axillary nodes. Incision: erythema receding, no drainage.\nAssessment: postpartum breast engorgement. Mild incisional cellulitis improving.\nPlan: feed or express every 2-3 hours, warm compress before and cold after feeds, gentle hand expression to soften before latch, same-day lactation consultant visit. Finish cephalexin. Postpartum visit at 4 weeks."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics postpartum visit, 4 weeks",
+              "date": "2026-02-17T13:45",
+              "author": "obstetrics",
+              "body": "Outside OB/MFM group. Date of service 01/22/2026.\n\nRoutine 4-week postpartum visit; infant along, well and gaining weight. Exclusively breastfeeding. Two days of painful blisters on the right breast. No fever, chills or flu-like illness. No recent vaccines, no sick contacts. Engorgement resolved.\nVitals within normal limits.\nExam: grouped vesicles on an erythematous base confined to the right areola. No similar lesions elsewhere. Incision healed.\nLabs: HIV antibody negative. CBC within normal limits. RPR nonreactive.\nAssessment: herpes simplex infection of the right areola.\nPlan: valacyclovir 1 g twice daily for 7 days. Breastfeed from the left; pump and discard from the right until all lesions are crusted. Hand hygiene. Return as needed.\n\nMedications listed: mesalamine, hydroxychloroquine, prednisone 10 mg, albuterol, ferrous sulfate. NKDA."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.2
+            }
+          }
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, chronic conditions",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-07-15a",
+          "kind": "outside_records",
+          "start": "2026-07-15T12:20",
+          "reason": "ED record and discharge summary received",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-01T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-01T14:20",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 75300
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-07-01T13:55",
+              "text": "Noncontrast CT head. Hemorrhagic lesion in the left parietal lobe with surrounding vasogenic edema. No midline shift. No hydrocephalus. No other intracranial hemorrhage. Calvarium intact.",
+              "conclusion": "Hemorrhagic left parietal lesion."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-07-01T14:40",
+              "text": "CT angiogram of the chest. No pulmonary embolism. Multiple bilateral pulmonary nodules. No pleural or pericardial effusion. Heart size normal. No mediastinal adenopathy.",
+              "conclusion": "Multiple bilateral pulmonary nodules. No pulmonary embolism."
+            },
+            {
+              "study": "MRI brain without and with contrast",
+              "loinc": "24590-2",
+              "performed": "2026-07-02T10:15",
+              "text": "Single 2.1 cm enhancing hemorrhagic lesion in the left parietal lobe with surrounding edema and mild local mass effect. No additional lesions. No vascular malformation. Ventricles normal.",
+              "conclusion": "Solitary hemorrhagic left parietal metastasis, 2.1 cm."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-07-15T12:20",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 07/01/2026, 13:30. Stroke alert.\n\nHPI: 36-year-old woman, about six months after delivery, with SLE, Crohn's disease, HHT and choriocarcinoma treated in 2024. Abrupt right-sided weakness and difficulty speaking this afternoon. In recent weeks she had spells of lightheadedness and an intermittent dull chest discomfort she had not mentioned to anyone. No follow-up care since her postpartum visit. No hypertension, diabetes or prior stroke. No drug use, recent travel or trauma.\nMeds: mesalamine, hydroxychloroquine, prednisone 10 mg, albuterol PRN, ferrous sulfate. NKDA.\n\nVitals: T 37.1 C (98.8 F), BP 118/76, HR 92.\nExam: awake and alert. Expressive aphasia. Right facial droop. Right arm and leg weakness. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender.\n\nLabs: Hgb 10.8, WBC 7.9, platelets 242. Serum beta-hCG 75,300 mIU/mL.\nCT head: hemorrhagic left parietal lesion. CTA chest: multiple bilateral pulmonary nodules, no PE.\nNot a thrombolysis candidate (hemorrhage).\n\nAssessment: hemorrhagic brain lesion with lung nodules and high hCG after a term pregnancy, in a patient with prior choriocarcinoma - metastatic gestational trophoblastic neoplasia. Admitted; gyn onc and neurosurgery consulted."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-07-15T12:30",
+              "author": "gynecologic oncology",
+              "body": "Regional hospital - Gynecologic Oncology. Admitted 07/01/2026, discharged 07/11/2026.\n\nDiagnosis: choriocarcinoma metastatic to brain and lungs, presenting six months after a term cesarean delivery; prior post-abortal choriocarcinoma 2024 treated to remission. FIGO stage IV, prognostic score 15 (ultra-high risk).\n\nCourse: MRI brain 7/2: single 2.1 cm hemorrhagic enhancing left parietal metastasis with edema, no other lesions. Dexamethasone 4 mg IV every 6 hours. Levetiracetam continued; no seizures. Neurosurgery: no operation at present. Low-dose etoposide-cisplatin induction started 07/03 to lower the risk of tumor bleeding; EP/EMA with high-dose methotrexate for CNS disease to begin 07/17 at the cancer center. Breastfeeding stopped. PT, OT and speech therapy daily: right arm and leg strength improving, speech improving.\n\nDischarge exam: mild expressive word-finding difficulty, right grip 4/5, right leg 4+/5, walking without device.\n\nDischarge medications: dexamethasone 2 mg PO BID with taper per oncology; levetiracetam 500 mg BID; hydroxychloroquine 200 mg daily; prednisone 10 mg daily; mesalamine 1.2 g TID; ferrous sulfate 325 mg daily; albuterol PRN.\n\nFollow-up: cancer center 07/17 to begin EP/EMA; hCG every 2 weeks with cycles; outpatient PT, OT and speech therapy referrals placed; PCP within 1 week. No driving."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "outside_records",
+          "start": "2026-08-14T11:00",
+          "reason": "Gynecologic oncology letter received",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-14T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 41200
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-28T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 6880
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-11T09:00",
+              "results": [
+                {
+                  "test": "Beta hCG, quantitative",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 1124
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecologic oncology progress letter",
+              "date": "2026-08-14T11:00",
+              "author": "gynecologic oncology",
+              "body": "Cancer center - gynecologic oncology. Visit 08/11/2026.\nChoriocarcinoma, FIGO IV:15, on EP/EMA with high-dose methotrexate since 07/17 after etoposide-cisplatin induction. hCG 75,300 (7/1), 41,200 (7/14), 6,880 (7/28), 1,124 (8/11) - responding. No new neurological symptoms; speech and right-sided strength improving with therapy. Dexamethasone taper completed 08/07. Continue EP/EMA, hCG with each cycle. Radiation oncology opinion on the brain lesion to be revisited once hCG is normal."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Beta hCG, quantitative": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stool culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain without and with contrast": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -66,3 +66,8 @@
 - 2026-07-23 office_visit: chronic follow-up, A1c 7.4, weight 84.5 (P)
 - 2026-08-18 portal_message: refill (P)
 - 2026-09-17 office_visit: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002210 on 2026-07-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

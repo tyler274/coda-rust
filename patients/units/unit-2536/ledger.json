@@ -1,0 +1,3510 @@
+{
+  "unit": "unit-2536",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002536",
+      "given": "Silas",
+      "family": "Carlson",
+      "birth_date": "1999-01-28",
+      "address_line": "27 Old Goshen Road, Williamsburg, MA 01096",
+      "phone": "+1-646-555-0159",
+      "email": "silas.carlson@example.test",
+      "marital_status": "single",
+      "summary": "Undergraduate who joins at 20 with recurrent HSV-1 cold sores, develops type 1 diabetes in 2021 managed by endocrinology, and has recurrent stress-related jaundice attributed by GI to both Dubin-Johnson and Gilbert syndromes. Laparoscopic appendectomy in 2023; heat exhaustion ED visit in July 2026 after his last practice visit.",
+      "events": [
+        {
+          "id": "2019-08-29a",
+          "kind": "telephone",
+          "start": "2019-08-29T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2019-08-29T10:20",
+              "author": "front desk",
+              "body": "Pt called asking to become a patient. 20 y/o, starting his second year at college, living in Williamsburg. Previously seen at a family practice near his parents' home. Student health insurance plan, card info taken. Only med is valacyclovir as needed for cold sores. New pt visit booked 9/10 at 9:00. Release signed by pt over the portal; request for records sent to the prior office."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Recurrent herpes simplex virus type 1 infection",
+              "action": "history",
+              "onset": "2014-06-01",
+              "note": "cold sores since mid-teens, a few a year",
+              "icd10": "B00.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "valacyclovir 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily as needed for cold sores",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "recurrent cold sores"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              69
+            ],
+            "hr": 73,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 70.2,
+            "height_cm": 180.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Undergraduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2019-09-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T09:45",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n20 y/o man here to set up primary care now that he is at school locally year-round. Feels well. No concerns today beyond keeping his valacyclovir on file.\n\nPMH: cold sores (HSV-1) since about age 15. Gets 2-4 a year, usually around exams or when run down. Takes valacyclovir 500 mg twice a day when he feels the tingle, stops once crusted. No eye involvement ever.\nPSH: none.\nMeds: valacyclovir 500 mg BID prn.\nAllergies: NKDA.\nFamily: father has type 2 diabetes. Mother has hypothyroidism (autoimmune). Older brother was told he has Gilbert syndrome. A cousin on his dad's side has Dubin-Johnson syndrome. Pt has never had his own liver tests that he knows of and has never been yellow.\nSocial: undergraduate, lives with a roommate off campus. Never smoked, no alcohol, no drugs. Plays pickup soccer most weekends. Single.\n\nROS: negative in full.\n\nExam: vitals as charted. Thin, well. HEENT normal, no active lip lesions. Neck supple, no nodes. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly normal.\n\nA/P\n1. Recurrent herpes labialis - continue episodic valacyclovir, refills given.\n2. Health maintenance - prior records requested to confirm childhood series; flu shot at a nurse visit next month. Labs at a physical next year.\nPHQ-2 0.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Microalbumin/Creatinine Ratio": 7,
+              "Thyroid Stimulating Hormone": 1.8,
+              "Tissue Transglutaminase IgA": 1.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "outside_records",
+          "start": "2019-09-26T14:00",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior family practice",
+              "date": "2019-09-26T14:00",
+              "author": "outside family medicine",
+              "body": "Summary of care, outside family medicine office, patient seen from infancy through 2019.\n\nProblems: herpes labialis, recurrent.\nMedications: valacyclovir 500 mg tablets, one twice daily as needed at onset of lesions.\nAllergies: none known.\nImmunizations: hepatitis B series complete in infancy; MMR x2; varicella x2; DTaP series and IPV complete; Tdap at age 12; HPV series complete; meningococcal conjugate x2 (last at 16).\nWell visits yearly through adolescence with normal growth and development. Sports physicals on file.\n\nScanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2019-10-08T16:20",
+              "author": "RN",
+              "body": "Here after class for flu shot. Denies fever today, no prior reactions, no egg issues. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Waited 15 min, fine on leaving."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-21a",
+          "kind": "portal_message",
+          "start": "2020-01-21T20:44",
+          "reason": "Immunization form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School form",
+              "date": "2020-01-21T20:44",
+              "author": "patient",
+              "body": "Hi, the college wants an updated immunization form before I can register for spring housing. Can you fill it out from the records my old doctor sent? I can pick it up. Thanks, Silas"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Form completed",
+              "date": "2020-01-23T11:05",
+              "author": "MA",
+              "body": "Immunization form completed from scanned prior records, signed by PCP. Uploaded to the portal and paper copy at front desk. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-10a",
+          "kind": "portal_message",
+          "start": "2020-03-10T08:12",
+          "reason": "Cold sore, refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cold sore starting",
+              "date": "2020-03-10T08:12",
+              "author": "patient",
+              "body": "Midterms this week and I can feel one starting on my lower lip. I'm down to 2 valacyclovir. Could you send more to the pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Cold sore starting",
+              "date": "2020-03-10T12:30",
+              "author": "PCP",
+              "body": "Sent a new prescription for valacyclovir 500 mg, twice a day as needed, with refills. Start it now. If you get any eye redness or pain with it, call us the same day. Good luck with exams."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              129,
+              77
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 69.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T08:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-09-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T08:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-22T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-22T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-09-22T09:30",
+              "author": "PCP",
+              "body": "PHYSICAL\n\nClasses mostly remote this fall, still in his apartment in town. Doing fine. Two cold sores since spring, both settled within a few days on valacyclovir. Sleeping ok, some late nights. Soccer has been on hold.\n\nMeds: valacyclovir prn. NKDA.\nFH/SH unchanged: never smoker, no alcohol.\n\nROS negative.\n\nExam: vitals as charted. Well, thin. Lips without lesions. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin clear, no jaundice. Normal gait.\n\nPHQ-9: 2.\n\nA/P\n- Health maintenance: one-time HIV and hepatitis C screens today along with BMP, CBC and lipids. Flu shot given today.\n- Recurrent HSV-1 labialis: stable, refills current.\nFollow up in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T13:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your physical labs",
+              "date": "2020-09-24T13:40",
+              "author": "PCP",
+              "body": "Silas - everything from Tuesday came back normal: blood counts, kidney function, sugar and cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do. Take care."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T09:30",
+          "reason": "COVID-19 vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-23T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-13T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Campus vaccine clinic record",
+              "date": "2021-04-20T09:30",
+              "author": "campus health clinic",
+              "body": "Vaccination record, campus COVID-19 vaccine clinic. Pfizer-BioNTech COVID-19 vaccine dose 1 on 03/23/2021 and dose 2 on 04/13/2021, each 0.3 mL IM left deltoid. No adverse events reported at either dose. Uploaded by patient through the portal; abstracted to the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "telephone",
+          "start": "2021-05-25T09:15",
+          "reason": "Thirst, frequent urination, weight loss",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Thirst and weight loss",
+              "date": "2021-05-25T09:40",
+              "author": "PCP",
+              "body": "Called back after his message this morning. About a month of being thirsty all the time, carrying a water bottle everywhere, up several times a night to pee, and he thinks he has lost weight even though he is eating more than usual. Some blurry vision this past week. Tired. No vomiting, no belly pain, no trouble breathing. Father has diabetes.\n\nThis story in a 22 y/o is new diabetes until proven otherwise. Our endocrinology colleagues had an urgent new-patient opening Thursday morning and he will take it; they will draw his labs there. Told him that if he starts vomiting, can't keep fluids down, gets belly pain or fast/deep breathing, or feels confused, he goes to the ED that day and does not wait for Thursday. He repeated this back. Will call him Friday."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-27a",
+          "kind": "specialist_visit",
+          "start": "2021-05-27T10:30",
+          "service": "Endocrinology",
+          "reason": "Polyuria, polydipsia, weight loss",
+          "vitals": {
+            "bp": [
+              106,
+              64
+            ],
+            "hr": 92,
+            "temp_c": 36.9,
+            "weight_kg": 64.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-05-27T11:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 388
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-05-27T11:20",
+              "results": [
+                {
+                  "test": "Urine Glucose",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Moderate (2+)"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-05-27T11:20",
+              "resulted": "2021-05-28T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 11.6
+                },
+                {
+                  "test": "Glutamic acid decarboxylase 65 antibody",
+                  "loinc": "56540-8",
+                  "unit": "[IU]/mL",
+                  "value": 34
+                },
+                {
+                  "test": "C-peptide",
+                  "loinc": "1986-9",
+                  "unit": "ng/mL",
+                  "value": 0.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 1.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2021-06-03T10:00",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY CONSULTATION\nDate of visit: 05/27/2021\nReferred by: primary care physician\nReason: thirst, urinary frequency and weight loss\n\nThank you for sending this 22-year-old student. For roughly four weeks he has felt worn out and constantly thirsty; by his estimate he is getting through close to five liters of water a day, and he now gets up more than once a night to void. He is hungrier than usual and still down about 6 kg over the month. In the last week he has had intermittent blurring when reading or working on his laptop. No dysuria or urgency, no abdominal pain. No fever, rash or joint pains.\n\nHistory: recurrent cold sores on as-needed valacyclovir. No surgery. No known drug allergies. Father with type 2 diabetes, mother with autoimmune hypothyroidism; an older brother and a paternal cousin with inherited bilirubin conditions. No tobacco, alcohol or drugs.\n\nExam: BP 106/64, pulse 92, afebrile. Weight 64 kg. Thin young man who looks a little dry, mucous membranes dry. Acuity mildly reduced and briefly sharper after blinking; fundi normal on direct ophthalmoscopy. Genitourinary and neurologic examinations normal.\n\nImpression: symptomatic hyperglycemia in a lean young adult, most likely new autoimmune diabetes. Not acidotic on history or exam.\n\nPlan: same-day labs - BMP, A1c, urinalysis, GAD65 antibody, C-peptide, TSH and tTG-IgA. He will return tomorrow to go over results and start treatment. ED precautions reviewed.\n\nResults addendum 05/28: glucose 388 mg/dL, bicarbonate 23, A1c 11.6%, urine glucose 3+ with moderate ketones, GAD65 antibody positive at 34 IU/mL, C-peptide 0.4 ng/mL. TSH and tTG-IgA normal.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Hemoglobin A1c": 11.6
+            }
+          },
+          "measure": [
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-05-28a",
+          "kind": "specialist_visit",
+          "start": "2021-05-28T09:00",
+          "service": "Endocrinology",
+          "reason": "New type 1 diabetes, insulin start",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2021-04-26"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 16 units under the skin at bedtime",
+              "dose": {
+                "value": 16,
+                "unit": "units"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 1 diabetes"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals per sliding scale",
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up: insulin start",
+              "date": "2021-06-22T15:10",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 05/28/2021\n\nSeen back the morning after his consultation to review labs. Glucose 388, A1c 11.6%, GAD65 antibody positive, low C-peptide, moderate ketonuria with a normal bicarbonate. Thyroid and celiac screens normal.\n\nDiagnosis: type 1 diabetes mellitus, new. No DKA.\n\nTreatment started today:\n- insulin glargine 16 units subcutaneously at bedtime\n- insulin lispro with meals on a sliding scale (scale given in writing)\nMeter, strips and pen needles prescribed. Pen technique taught and he gave his first dose in clinic. Hypoglycemia recognition and treatment reviewed. Diabetes educator session and nutrition visit next week. He will send readings through our portal for titration, return in about 6 to 8 weeks.\n\nAllergies: NKDA.\nEndocrinology\n\n[received by fax 06/22/2021]"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-28b",
+          "kind": "telephone",
+          "start": "2021-05-28T16:30",
+          "reason": "Follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after endocrinology",
+              "date": "2021-05-28T16:30",
+              "author": "PCP",
+              "body": "Called as promised. He saw endocrinology yesterday and again today and they told him it is type 1 diabetes. He is on two insulin pens and did his first shot in their office. Feels a bit overwhelmed but has the plan in writing and an educator visit next week. Video visit with me in about 10 days to go over everything."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "telehealth_visit",
+          "start": "2021-06-08T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New diabetes follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2021-06-08T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2021-06-08T13:35",
+              "author": "PCP",
+              "body": "Video visit, pt at his apartment, identity confirmed, consents to video.\n\nTen days into insulin for new type 1 diabetes (endocrinology dx 5/28 - their letter not in yet, history from pt and his written plan). Glargine 16 units at bedtime, lispro with meals per their scale. Fasting readings coming down, mostly 130s-170s now, one reading in the 70s before dinner that he treated with juice. Thirst and night urination are gone. Vision back to normal. Saw the educator Friday.\n\nMood: understandably thrown by this but has good support, roommate knows how to help with a low. Mom has been helpful.\n\nA/P\n1. Type 1 diabetes, new - endocrinology managing insulin. Updated our med list from his pens. Will request their notes.\n2. Recurrent cold sores - valacyclovir prn unchanged.\nCall with anything; next in person in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "pharmacy",
+          "start": "2021-07-13T10:05",
+          "reason": "Diabetes supplies coverage",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call: pen needles and strips",
+              "date": "2021-07-13T10:05",
+              "author": "MA",
+              "body": "Pharmacy called: student plan only covers a different meter's strips. Endocrinology wrote the original rx; pharmacy could not reach them. PCP ok'd switching to the covered meter and strips, same testing 4x/day, plus pen needles 32G 4 mm. New rx sent. Pt messaged about picking up the new meter."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "specialist_visit",
+          "start": "2021-08-17T14:00",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              116,
+              70
+            ],
+            "hr": 71,
+            "weight_kg": 69.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-08-17T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2021-08-24T09:00",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 08/17/2021\n\nType 1 diabetes, about 12 weeks on basal-bolus insulin. Doing well. Has regained most of the lost weight. Logs show fasting values mostly in range, a few post-dinner highs on late nights, two mild lows after soccer that he treated himself. A1c drawn today, now improved from 11.6% at diagnosis.\n\nRegimen unchanged: glargine 16 units at bedtime, lispro sliding scale with meals. Reviewed carrying fast sugar during sports. Next visit in 3 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0,
+            "labs": {
+              "Hemoglobin A1c": 7.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "nurse_visit",
+          "start": "2021-09-28T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-28T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-28T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2021-09-28T15:50",
+              "author": "RN",
+              "body": "Flu vaccine, quadrivalent, 0.5 mL IM right deltoid. Feels well, no fever. Fingerstick not needed, ate lunch an hour ago and has his meter. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "office_visit",
+          "start": "2021-10-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes check-in; episodes of yellow eyes",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 63,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 69.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-10-19T11:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-10-19T11:15",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-19T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-19T11:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "recurrent episodes of scleral icterus; family history of inherited bilirubin disorders"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-10-19T11:20",
+              "author": "PCP",
+              "body": "S: First in-person visit since his diabetes diagnosis. Endocrinology following, saw them in August; he says his A1c was much better. Glargine 16 at bedtime, lispro by scale. Two or three mild lows, all around soccer, none needing help.\n\nNew item he wanted to bring up: a few times over the last year, when he has been sick or under a lot of stress, his eyes have gone yellow for a few days and then cleared. He has not had it checked. No itching, no belly pain, urine and stool normal colors each time. Not yellow now. Brother has Gilbert's and a cousin on dad's side has Dubin-Johnson, so he wonders.\n\nO: vitals as charted. No scleral icterus today, skin normal color. Abdomen soft, nontender, no liver or spleen felt. Lips clear. Feet: skin intact, normal sensation.\n\nA/P\n1. Recurrent episodes of scleral icterus with a family history of two inherited bilirubin disorders - referral to GI; asked him to let GI know if it happens again before the appointment so they can catch labs during a spell.\n2. Type 1 diabetes - per endocrinology. Lipids and urine microalbumin today.\n3. Cold sores - quiet.\nFlu shot done last month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-21a",
+          "kind": "portal_message",
+          "start": "2021-10-21T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Cholesterol and urine results",
+              "date": "2021-10-21T12:15",
+              "author": "PCP",
+              "body": "Cholesterol numbers are normal and there is no protein leaking into the urine, which is what we watch for with diabetes. GI referral is in; their office should call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "specialist_visit",
+          "start": "2021-11-30T13:30",
+          "service": "Gastroenterology",
+          "reason": "Recurrent jaundice",
+          "conditions": [
+            {
+              "label": "Dubin-Johnson syndrome",
+              "action": "diagnosed",
+              "onset": "2020-12-01",
+              "icd10": "E80.6"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              72
+            ],
+            "hr": 68,
+            "temp_c": 37.0,
+            "weight_kg": 69.0
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-11-30T14:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 40
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-30T14:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2021-11-30T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2021-12-06T11:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY CONSULTATION\nDate of visit: 11/30/2021\nReason for referral: recurrent jaundice\n\nHe happens to be in the middle of an episode today: two days of mild yellowing of the skin and eyes. Over the past year he has had a handful of similar spells, generally when he was ill or stressed, each clearing by itself. Type 1 diabetes was diagnosed about six months ago and is managed by endocrinology. He has no itch, abdominal pain, dark urine or pale stools.\n\nMeds: insulin glargine 16 units at bedtime, insulin lispro sliding scale, valacyclovir prn. NKDA.\nFamily: older brother with Gilbert syndrome; paternal cousin with Dubin-Johnson syndrome. He adds that his mother has had spells of yellow eyes herself that were never worked up. Father with type 2 diabetes, mother with autoimmune hypothyroidism.\nSocial: student, no tobacco, alcohol or drugs.\n\nExam: scleral icterus. Liver edge palpable and slightly tender at the costal margin. Otherwise normal, no stigmata of chronic liver disease.\n\nLabs today: total bilirubin 3.2 mg/dL, direct 2.5, indirect 0.7. ALT 45, AST 40, alkaline phosphatase 90 U/L.\n\nAssessment: predominantly conjugated hyperbilirubinemia with normal transaminases and alkaline phosphatase, in a young man with a family member carrying the same diagnosis. Most consistent with Dubin-Johnson syndrome, a benign inherited disorder of bilirubin excretion.\n\nPlan: right upper quadrant ultrasound to make sure there is no obstruction. No treatment needed. Reviewed that spells may come with illness, fasting or stress. Return in about 6 months or sooner with a prolonged episode.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 1.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-09a",
+          "kind": "imaging",
+          "start": "2021-12-09T08:45",
+          "reason": "Conjugated hyperbilirubinemia",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2021-12-09T08:45",
+              "text": "Indication: conjugated hyperbilirubinemia, evaluate for obstruction.\nTechnique: grayscale and color Doppler imaging of the right upper quadrant.\nFindings: The liver is normal in size and echotexture with smooth contour; no focal lesion. Hepatopetal portal venous flow. The gallbladder is normally distended without stones, sludge or wall thickening; sonographic Murphy sign negative. Common bile duct measures 3 mm. No intrahepatic ductal dilation. Visualized pancreas unremarkable. Right kidney normal. No free fluid.",
+              "conclusion": "Normal right upper quadrant ultrasound. No biliary dilation or gallstones.",
+              "issued": "2021-12-09T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Ultrasound reviewed",
+              "date": "2021-12-10T08:30",
+              "author": "PCP",
+              "body": "RUQ ultrasound ordered by GI, copy to us: normal liver, gallbladder and ducts. Fits the GI impression of Dubin-Johnson. Problem list updated from the GI letter. Nothing further from our side."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "portal_message",
+          "start": "2021-12-14T21:02",
+          "reason": "Question about new diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dubin-Johnson question",
+              "date": "2021-12-14T21:02",
+              "author": "patient",
+              "body": "The GI doctor said I have Dubin-Johnson like my cousin. Is it something I need to tell people about, like if I go to the ER for my diabetes? And does it mess with insulin at all?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Dubin-Johnson question",
+              "date": "2021-12-15T07:50",
+              "author": "PCP",
+              "body": "Good questions. It does not affect your insulin or your diabetes. It is worth mentioning to any new doctor or ER, because your bilirubin can run high and it saves people from chasing it. Your ultrasound was normal too. It's on your problem list here so anyone looking at your chart will see it."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "specialist_visit",
+          "start": "2022-02-08T09:30",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              67
+            ],
+            "hr": 79,
+            "weight_kg": 68.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-08T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2022-02-14T16:00",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 02/08/2022\n\nType 1 diabetes, 8 months out. Meter download reviewed: good overnight stability, post-meal spikes when he guesses carbs at the dining hall. Occasional mild lows with exercise, self-treated. A1c drawn today.\nAlso has new GI diagnosis of Dubin-Johnson syndrome, no bearing on diabetes management.\n\nPlan: no dose change. Glargine 16 units at bedtime, lispro sliding scale. Carb counting refresher with our dietitian. Return 4 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "pharmacy",
+          "start": "2022-03-22T11:30",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization: insulin glargine",
+              "date": "2022-03-22T11:30",
+              "author": "MA",
+              "body": "Pharmacy fax: new plan year on the student policy requires PA for glargine pens. Form completed with diagnosis type 1 diabetes, on basal insulin since 5/2021. Submitted online, approved same day for 12 months. Pharmacy and pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "specialist_visit",
+          "start": "2022-05-24T11:00",
+          "service": "Gastroenterology",
+          "reason": "Recurrent jaundice",
+          "conditions": [
+            {
+              "label": "Gilbert syndrome",
+              "action": "diagnosed",
+              "onset": "2022-05-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              73
+            ],
+            "hr": 71,
+            "temp_c": 36.7,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-05-24T11:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-24T11:40",
+              "results": [
+                {
+                  "test": "Bilirubin, Indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 2.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-24T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 201
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up",
+              "date": "2022-10-04T14:25",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY FOLLOW-UP\nDate of visit: 05/24/2022\n\nSeen back with another spell: two days of yellow eyes and skin, right in the middle of final exams, sleeping little and eating at odd hours. No pain, itch, or change in urine or stool color.\n\nExam: looks well; scleral icterus. Abdomen soft and nontender, no hepatosplenomegaly.\n\nLabs: total bilirubin 3.2 mg/dL with direct 0.4 and indirect 2.8. AST 30, ALT 28, alkaline phosphatase 70 U/L. CBC normal.\n\nAssessment: this episode is unconjugated, with a normal blood count and normal liver enzymes, after fasting and poor sleep - the typical picture of Gilbert syndrome, which his brother has. This is in addition to the Dubin-Johnson syndrome diagnosed in November on a conjugated pattern. Both are benign.\n\nPlan: regular meals and sleep around exams; no treatment. Follow up as needed.\n\nGastroenterology\n\n[Received 10/04/2022 in response to records request]"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "office_visit",
+          "start": "2022-08-09T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-08-09b",
+          "kind": "telephone",
+          "start": "2022-08-09T15:10",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show follow-up",
+              "date": "2022-08-09T15:10",
+              "author": "front desk",
+              "body": "Pt did not come to 2:20 appt. Left voicemail. Pt called back at 4, working a summer job and forgot. Rebooked as his physical on 9/20."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 73,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 71.1,
+            "height_cm": 179.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.17
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 205
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 82
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-20T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-20T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-20T09:10"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-09-20T09:10"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-20T09:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-20T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "date": "2022-09-20T08:25",
+              "author": "MA",
+              "body": "Roomed for physical. Meds reviewed with pt: glargine 16 u qhs, lispro per scale, valacyclovir prn. NKDA. Fingerstick at home this morning 126. PHQ-9 completed: 3. Wants flu and covid today; ok with other vaccines if due."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-20T09:20",
+              "author": "PCP",
+              "body": "PHYSICAL\n\nBack for senior year (taking the slow route, working part-time). Diabetes is steady with endocrinology every few months. Lows only with long soccer games, he carries glucose tabs.\n\nHe tells me GI saw him in May during another yellow spell at finals and told him he 'also has Gilbert's.' We never got that note. Front desk will request it.\n\nCold sores: one in the spring, valacyclovir worked.\n\nMeds as rooming note. NKDA.\nSocial: never smoker, no alcohol.\n\nExam: vitals as charted, BMI about 22. Well. No icterus today. Mouth and lips clear. Neck without thyroid enlargement. Heart regular, lungs clear. Abdomen soft, no organomegaly. Feet: no calluses or skin breaks, monofilament and vibration intact, DP pulses 2+.\n\nA/P\n1. Type 1 diabetes - A1c, microalbumin with labs today; CMP, CBC, lipids, TSH (mother's thyroid disease, his own autoimmune diabetes). Eye exam - due, has an optometrist in town, will book.\n2. Dubin-Johnson and reported Gilbert syndrome - records request to GI.\n3. Immunizations: flu, bivalent covid booster, Tdap (last at 12), and PCV20 given his diabetes.\n4. PHQ-9 3.\nRTC 1 year, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "telephone",
+          "start": "2022-09-21T09:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI records request",
+              "date": "2022-09-21T09:40",
+              "author": "front desk",
+              "body": "Faxed request to the outside GI office for notes and labs from pt's May 2022 visit. Will follow up in two weeks if nothing arrives."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-23a",
+          "kind": "portal_message",
+          "start": "2022-09-23T10:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical results",
+              "date": "2022-09-23T10:05",
+              "author": "PCP",
+              "body": "Your A1c is right where endocrinology has been getting it, kidneys and urine protein are normal, and cholesterol and thyroid are normal. Bilirubin is a bit over the lab's upper limit with normal liver enzymes, which is what we expect with your bilirubin conditions - no action. Please do book that eye exam."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "outside_records",
+          "start": "2022-11-08T13:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "date": "2022-11-08T13:00",
+              "author": "optometry",
+              "body": "Diabetic eye exam letter, outside optometry practice. Exam date 11/03/2022.\nBest corrected acuity 20/20 OD and OS. Pupils normal. Pressures normal. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema.\nRecommend repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-31a",
+          "kind": "office_visit",
+          "start": "2023-01-31T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Yellow eyes and skin",
+          "vitals": {
+            "bp": [
+              117,
+              75
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 70.5
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-01-31T15:35",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-31T15:35",
+              "results": [
+                {
+                  "test": "Bilirubin, Indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 2.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-31T15:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-31T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-01-31T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-31T15:40",
+              "author": "PCP",
+              "body": "S: Same-day slot. Two days of yellow eyes and a yellowish tinge to his skin. He has been studying for exams and skipping meals, not much sleep. Feels fine otherwise. No pain, no itching, urine and stool look normal. Sugars a little higher than usual with the odd eating, no lows. Same pattern as the spells GI has seen (Dubin-Johnson in 2021, then a Gilbert-type spell last May).\n\nMeds: glargine 16 u qhs, lispro scale, valacyclovir prn. NKDA.\n\nO: vitals as charted. Looks well. Scleral icterus. Abdomen soft, nontender, liver and spleen not enlarged.\n\nA/P\nRecurrent jaundice in known Gilbert and Dubin-Johnson syndromes, triggered by fasting and short sleep. Hepatic panel with fractionation and CBC today to make sure it looks like his usual. Regular meals even during exams - set alarms if needed, which also helps the diabetes. Expect it to clear in a few days; call if it lingers past 2 weeks or if he gets pain, dark urine or pale stool."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-02a",
+          "kind": "portal_message",
+          "start": "2023-02-02T09:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Liver tests",
+              "date": "2023-02-02T09:20",
+              "author": "PCP",
+              "body": "Bilirubin is 3.2, mostly the indirect kind, with normal liver enzymes and a normal blood count. Same picture GI saw last spring. Nothing to treat. Eat regularly and it should fade over the next several days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Liver tests",
+              "date": "2023-02-02T18:47",
+              "author": "patient",
+              "body": "Thanks. Already looking less yellow today. Back to actual meals."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "specialist_visit",
+          "start": "2023-03-07T10:15",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              72
+            ],
+            "hr": 74,
+            "weight_kg": 71.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-03-07T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2023-03-13T12:00",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 03/07/2023\n\nType 1 diabetes since 05/2021. Steady control. Meter average stable, highest readings in late January during exams with irregular meals. No severe hypoglycemia. A1c today.\n\nGlargine 16 units at bedtime and lispro sliding scale continued. Discussed exercise snacks for the spring soccer season. Return 4 to 6 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "portal_message",
+          "start": "2023-05-16T07:58",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Valacyclovir refill",
+              "date": "2023-05-16T07:58",
+              "author": "patient",
+              "body": "Out of refills on the valacyclovir. No cold sore right now, I just like to have it in the drawer."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2023-05-16T11:40",
+              "author": "RN",
+              "body": "Valacyclovir 500 mg BID prn renewed per PCP, 30 tabs with 2 refills. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-13a",
+          "kind": "hospital_admission",
+          "start": "2023-07-13T01:50",
+          "end": "2023-07-14T11:30",
+          "service": "General Surgery",
+          "reason": "Acute appendicitis",
+          "conditions": [
+            {
+              "label": "Acute appendicitis",
+              "action": "diagnosed",
+              "onset": "2023-07-12",
+              "icd10": "K35.80"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for pain, no more than 6 tablets a day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              73
+            ],
+            "hr": 69,
+            "rr": 17,
+            "temp_c": 36.9,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-07-13T02:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.28
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-13T02:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.07
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-07-13T03:40",
+              "text": "Indication: right lower quadrant pain.\nTechnique: axial CT of the abdomen and pelvis after intravenous contrast, with coronal and sagittal reformats.\nFindings: The appendix is dilated with wall enhancement and surrounding fat stranding. No appendicolith. No extraluminal gas, fluid collection or abscess. Liver, gallbladder, spleen, pancreas, adrenals and kidneys are normal. No bowel obstruction. No free fluid. Lung bases clear. No acute osseous abnormality.",
+              "conclusion": "Acute uncomplicated appendicitis. No perforation or abscess.",
+              "issued": "2023-07-13T04:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic appendectomy",
+              "performed": "2023-07-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: laparoscopic appendectomy",
+              "date": "2023-09-05T10:00",
+              "author": "general surgery",
+              "body": "REGIONAL HOSPITAL - OPERATIVE REPORT\nDate of surgery: 07/13/2023\nPreoperative diagnosis: acute appendicitis\nPostoperative diagnosis: same, uncomplicated\nProcedure: laparoscopic appendectomy\nAnesthesia: general endotracheal\nFindings: inflamed, nonperforated appendix; no abscess or purulent fluid.\nDescription: three-port technique with umbilical access. Mesoappendix divided with energy device, base secured with a stapler. Specimen retrieved in a bag. Ports closed, skin with absorbable suture and glue.\nEBL minimal. No complications. Insulin managed per perioperative protocol with endocrinology input by phone.\nPathology: acute appendicitis.\nAllergies: NKDA.\n\n[Scanned 09/05/2023]"
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary",
+              "date": "2023-09-05T10:05",
+              "author": "general surgery",
+              "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted: 07/13/2023 via the emergency department\nDischarged: 07/14/2023\n\n24-year-old man with type 1 diabetes, Gilbert and Dubin-Johnson syndromes, who came in overnight with right lower quadrant pain. WBC 13.4. CT showed uncomplicated acute appendicitis. Taken for laparoscopic appendectomy the same morning without complication. Pathology: acute appendicitis.\n\nHospital course: tolerated diet by the evening of surgery, pain controlled on acetaminophen, walking. Glucose managed on his home basal insulin with correction lispro. Discharged postoperative day 1.\n\nDischarge medications: home insulin glargine 16 units at bedtime and lispro sliding scale; valacyclovir as needed; acetaminophen 500 mg 1 to 2 tablets every 6 hours as needed.\nActivity: no heavy lifting or contact sports for 2 weeks.\nFollow-up: general surgery clinic in 1 week.\nAllergies: NKDA.\n\n[Received 09/05/2023 after second request]"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "portal_message",
+          "start": "2023-07-17T12:30",
+          "reason": "Recent surgery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Had my appendix out",
+              "date": "2023-07-17T12:30",
+              "author": "patient",
+              "body": "Just letting you know I had my appendix out last Thursday at the hospital. Went in at night with bad pain on the right side, they did a CT and took it out laparoscopically that morning. Home since Friday, feeling ok, only taking Tylenol. I see the surgeon this week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Had my appendix out",
+              "date": "2023-07-17T16:05",
+              "author": "PCP",
+              "body": "Sorry you went through that, and glad it went smoothly. Keep an eye on your sugars while you're less active and eating less. We'll ask the hospital for the records. Let's do a short video check after you've seen the surgeon."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-21a",
+          "kind": "specialist_visit",
+          "start": "2023-07-21T09:40",
+          "service": "General Surgery",
+          "reason": "Postoperative follow-up",
+          "conditions": [
+            {
+              "label": "Acute appendicitis",
+              "action": "resolved",
+              "icd10": "K35.80"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              75
+            ],
+            "hr": 68,
+            "temp_c": 36.9
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-07-21T10:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-21T10:10",
+              "results": [
+                {
+                  "test": "Bilirubin, Indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 2.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-21T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery postoperative visit",
+              "date": "2023-07-26T14:30",
+              "author": "general surgery",
+              "body": "OUTSIDE GENERAL SURGERY CLINIC - POSTOPERATIVE VISIT\nDate of visit: 07/21/2023\n\nOne week out from laparoscopic appendectomy for uncomplicated acute appendicitis. Recovering well. For the last two days the whites of his eyes have looked yellow to him. No abdominal pain, nausea or vomiting; bowels normal; passing gas; eating well, appetite better than in the hospital. No fevers or chills, no dark urine or pale stools. Walks every day. A little tired. Using acetaminophen now and then.\nKnown Gilbert and Dubin-Johnson syndromes with previous yellow spells during exam periods in 2022 and early 2023. He mentions his father was once told of 'some liver enzyme issue' that was never treated.\n\nExam: afebrile. Scleral icterus, skin not jaundiced. Abdomen soft, nontender. Port sites healed, no erythema, no fluid collection.\n\nLabs: total bilirubin 3.1 mg/dL, indirect 2.8, direct 0.3. AST, ALT and alkaline phosphatase normal. Hemoglobin and hematocrit normal.\n\nImpression: normal recovery. Icterus is an unconjugated rise consistent with his Gilbert syndrome after surgery and reduced intake, not a surgical complication.\nPlan: resume full activity including soccer after 2 weeks from surgery. No further surgical follow-up needed.\n\nAllergies: NKDA.\nGeneral Surgery"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "telehealth_visit",
+          "start": "2023-08-08T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-op check",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-08-08T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2023-08-08T12:45",
+              "author": "PCP",
+              "body": "Video visit, pt at home, identity confirmed.\n\nFollow-up after laparoscopic appendectomy 7/13 at the regional hospital. Surgeon's note received: normal recovery, eyes yellowed for a few days afterward with an unconjugated bilirubin rise that fit his Gilbert syndrome. Yellow gone now. Back to running, cleared for soccer next week. Done with acetaminophen. Sugars back to his usual.\n\nIncisions look healed on camera.\n\nA/P\n- s/p laparoscopic appendectomy - surgical history updated. Still waiting on hospital discharge paperwork; front desk to re-request.\n- T1DM, Gilbert/Dubin-Johnson - unchanged.\nPhysical next year; flu in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:10",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records re-requested",
+              "date": "2023-08-22T10:10",
+              "author": "front desk",
+              "body": "Hospital records not received from first request (7/18). Called the medical records office, re-faxed signed release for 7/13-7/14 admission: discharge summary, op note, CT and path."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T16:06"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID vaccines",
+              "date": "2023-10-03T16:25",
+              "author": "RN",
+              "body": "Flu (quadrivalent) left deltoid and 2023-24 COVID vaccine right deltoid, both IM. No acute illness. Observed 15 min, no reaction. Reminded him a sore arm and tiredness for a day can bump sugars a little."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "outside_records",
+          "start": "2023-11-14T09:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "date": "2023-11-14T09:00",
+              "author": "optometry",
+              "body": "Diabetic eye exam report, outside optometry practice. Exam date 11/09/2023.\nAcuity 20/20 each eye uncorrected. Dilated exam: optic nerves healthy, maculae flat, no hemorrhages, exudates or microaneurysms. No diabetic retinopathy OU.\nNext dilated exam in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "specialist_visit",
+          "start": "2024-01-23T14:30",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              76
+            ],
+            "hr": 61,
+            "weight_kg": 70.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-01-23T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2024-01-30T08:40",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 01/23/2024\n\nType 1 diabetes, 2.5 years. Appendectomy last July went smoothly. Busy term with a part-time job, more skipped lunches and evening highs. No severe lows. A1c today, a little above last year's.\n\nNo change: glargine 16 units at bedtime, lispro sliding scale with meals. Encouraged pre-bolusing and not skipping lunch. Return 6 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T22:14",
+          "reason": "Refills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2024-03-12T22:14",
+              "author": "patient",
+              "body": "Can you renew the test strips and pen needles? Endo said to ask you since you sent them last time. Also low on valacyclovir."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills sent",
+              "date": "2024-03-13T09:30",
+              "author": "MA",
+              "body": "Per PCP: test strips (4x/day testing), pen needles 32G 4 mm, and valacyclovir 500 mg BID prn renewed to his pharmacy. Insulin pens stay with endocrinology. Pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "specialist_visit",
+          "start": "2024-05-22T11:15",
+          "service": "Dermatology",
+          "reason": "Painful lip and mouth sores",
+          "conditions": [
+            {
+              "label": "Herpes simplex virus infection",
+              "action": "diagnosed",
+              "onset": "2024-05-19",
+              "icd10": "B00.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 63
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology visit",
+              "date": "2024-06-04T13:15",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY NOTE\nDate of visit: 05/22/2024\n\n25-year-old man with recurrent HSV-1, type 1 diabetes and Gilbert syndrome that flares with stress. Three days of painful sores on the lips and inside the mouth, with a mild fever. A tingling feeling in the area came first, then the blisters. He has had this a number of times, mostly with stress or short sleep.\n\nMeds: insulin glargine, insulin lispro, valacyclovir 500 mg twice daily as needed. NKDA.\n\nExam: grouped vesicles and shallow erosions limited to the perioral skin and the oral mucosa. No eye involvement. No lesions elsewhere.\n\nAssessment: herpes simplex virus infection, recurrence of his known HSV-1, clinical diagnosis.\nPlan: take his valacyclovir 500 mg twice daily as prescribed now; supportive care with fluids and soft foods. Return or call for any eye pain or redness, or if lesions spread.\n\nDermatology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-05-23a",
+          "kind": "portal_message",
+          "start": "2024-05-23T19:30",
+          "reason": "Mouth sores",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Saw dermatology",
+              "date": "2024-05-23T19:30",
+              "author": "patient",
+              "body": "FYI I saw dermatology yesterday, the cold sores this time went inside my mouth too and I had a low fever. They said it's my usual herpes and to take the valacyclovir. Eating is annoying but I'm ok. Sugars are running a bit high."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Saw dermatology",
+              "date": "2024-05-24T08:10",
+              "author": "PCP",
+              "body": "Thanks for letting me know. Stay on top of fluids, and keep checking more often while you're sick - follow your endocrinology sick-day plan for the highs. If you can't keep fluids down or you see ketones, call us right away. Let me know if it isn't clearly better in a week."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T14:00",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization: insulin lispro",
+              "date": "2024-07-09T14:00",
+              "author": "MA",
+              "body": "Pharmacy says the student plan changed preferred rapid-acting insulin. Endocrinology office handling the PA for lispro pens; pharmacy gave him a 7-day supply in the meantime. Pt aware. Nothing further needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "annual_physical",
+          "start": "2024-09-18T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Herpes simplex virus infection",
+              "action": "resolved",
+              "icd10": "B00.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              76
+            ],
+            "hr": 80,
+            "temp_c": 37.2,
+            "spo2": 98,
+            "weight_kg": 71.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-18T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.6
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-18T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-18T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 86
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-18T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-18T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-18T09:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-18T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-18T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-18T09:21"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "date": "2024-09-18T08:45",
+              "author": "MA",
+              "body": "Physical. Med list reviewed: glargine 16 units at bedtime, lispro per sliding scale, valacyclovir prn. NKDA. PHQ-9 = 4. Requests flu and covid."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-18T09:30",
+              "author": "PCP",
+              "body": "PHYSICAL\n\n25 y/o, still finishing his degree part-time while working. Overall well.\n\nInterval: dermatology in May for an HSV-1 flare that spread inside the mouth with a low fever - healed within about 10 days on his valacyclovir, nothing since. No yellow spells since the one after his appendectomy last summer. Endocrinology in January; says the A1c 'crept up a bit' with skipped lunches. Has had his eye exam reminder, says he'll go this winter.\n\nMeds: as rooming. NKDA.\nSocial: never smoker, no alcohol, playing soccer again.\n\nExam: vitals as charted. Well-appearing. No icterus. Lips and oral mucosa clear. Thyroid normal. Heart regular, no murmur; lungs clear. Abdomen soft, healed port scars, no organomegaly. Feet: intact skin, normal monofilament, pulses palpable. Mood normal.\n\nA/P\n1. HSV infection (May episode) - resolved. Recurrent HSV-1 continues with episodic valacyclovir.\n2. T1DM - with endocrinology. A1c, microalbumin, CMP, CBC, lipids today. Eye exam this winter.\n3. Gilbert / Dubin-Johnson - quiet.\n4. Flu and 2024-25 covid given. PHQ-9 4, exams and work stress, coping fine.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T11:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "date": "2024-09-20T11:50",
+              "author": "PCP",
+              "body": "Labs look fine. A1c is a touch higher than a couple of years ago but close to where endocrinology has you; they'll fine-tune. Kidneys and urine protein normal, cholesterol normal, blood counts normal. Bilirubin mildly up with normal enzymes, your usual."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telephone",
+          "start": "2024-12-10T10:30",
+          "reason": "Insurance update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Insurance card",
+              "date": "2024-12-10T10:30",
+              "author": "front desk",
+              "body": "Pt uploaded new student health plan card for spring term. Same plan, new member ID. Demographics updated, eligibility verified."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "specialist_visit",
+          "start": "2025-02-11T13:45",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              71
+            ],
+            "hr": 64,
+            "weight_kg": 71.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-11T14:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2025-02-18T10:20",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 02/11/2025\n\nType 1 diabetes, nearly four years. Readings reviewed from his meter; overnight values steady, lunch is still the weak spot. No severe hypoglycemia, no ED visits. A1c drawn.\n\nRegimen unchanged: glargine 16 units at bedtime, lispro sliding scale with meals. Next visit in 6 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "portal_message",
+          "start": "2025-03-18T17:22",
+          "reason": "Refills and form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Strips and a form",
+              "date": "2025-03-18T17:22",
+              "author": "patient",
+              "body": "Hi - need refills on strips and needles again. And the college disability office wants a letter that I have type 1 diabetes so I can have my meter and snacks during exams. Can you write one?"
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills and letter",
+              "date": "2025-03-19T10:15",
+              "author": "MA",
+              "body": "Refills for test strips and pen needles sent. PCP signed accommodation letter confirming type 1 diabetes on insulin with need for glucose meter, fast-acting sugar and snacks during exams. Uploaded to portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-23a",
+          "kind": "office_visit",
+          "start": "2025-05-23T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Yellow eyes after camping trip",
+          "vitals": {
+            "bp": [
+              128,
+              79
+            ],
+            "hr": 72,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 71.0
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-05-23T11:55",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-23T11:55",
+              "results": [
+                {
+                  "test": "Bilirubin, Indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-23T11:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-23T11:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-23T11:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-23T12:05",
+              "author": "PCP",
+              "body": "S: 26 y/o with Gilbert and Dubin-Johnson syndromes and T1DM. His roommate told him this morning his eyes were yellow. Got back last night from five days camping, where food was limited and meals were irregular - ate very little some days. A bit tired since getting home, which he puts down to not drinking enough and poor sleep in the tent. No belly pain, nausea, vomiting, weight loss, itch or dark urine. No recent illness, no alcohol or drugs, no new meds or supplements. Sugars ran a little high on the trip, no lows. Spells before this: exam periods in 2022 and early 2023 and after his appendectomy in July 2023. He also remembers one earlier in college after a few all-nighters and skipped meals that went away on its own.\n\nMeds: glargine 16 u qhs, lispro scale, valacyclovir prn. NKDA. PSH: lap appendectomy 2023.\nFH: older brother with Gilbert syndrome, paternal cousin with Dubin-Johnson.\n\nO: vitals normal, BMI 22. Well, no distress, alert and oriented. Scleral icterus; skin not jaundiced. No hepatomegaly or splenomegaly, liver span normal to percussion. No spider angiomas, palmar erythema or ascites. Heart and lungs normal. Neuro nonfocal.\n\nA/P\nIcteric spell after several days of poor intake, in known Gilbert syndrome (with Dubin-Johnson). Hepatic panel with fractionation and CBC to confirm the usual unconjugated pattern. Fluids, regular meals, sleep. No further workup unless the labs look different from his past spells."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "portal_message",
+          "start": "2025-05-27T08:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bilirubin results",
+              "date": "2025-05-27T08:45",
+              "author": "PCP",
+              "body": "Bilirubin 2.6, almost all indirect; liver enzymes normal; hemoglobin 14, normal. Same Gilbert-type spell you've had before after not eating much. No treatment needed. Pack more food next trip!"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "pharmacy",
+          "start": "2025-08-12T09:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "date": "2025-08-12T09:50",
+              "author": "RN",
+              "body": "Pharmacy request for glargine pens, endocrinology prescriber unreachable before the weekend and pt down to his last pen. One-month bridge of glargine 16 units at bedtime approved by PCP; pt to have endocrinology send ongoing refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "annual_physical",
+          "start": "2025-10-01T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              72
+            ],
+            "hr": 76,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 70.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-01T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-01T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 237
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-01T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 86
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-01T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-01T08:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-01T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-01T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-01T09:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "date": "2025-10-01T08:35",
+              "author": "MA",
+              "body": "Annual. Meds verified from pt's pens and bottle: glargine 16 units nightly, lispro per scale with meals, valacyclovir prn. NKDA. PHQ-9: 3. Flu and covid today."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-01T09:25",
+              "author": "PCP",
+              "body": "PHYSICAL\n\n26 y/o. Last semester of coursework planned for this year. Feels well.\n\nInterval: one yellow spell in May after a camping trip, labs as usual for his Gilbert syndrome, cleared within a week. Endocrinology in February, regimen unchanged. One cold sore this summer, valacyclovir. He did see the optometrist last winter, but no report reached us; he's booked again for November and will ask them to send it.\n\nMeds as rooming. NKDA. Never smoker, no alcohol.\n\nExam: vitals as charted. Well. No icterus. Mouth clear. Thyroid not enlarged. Heart regular; lungs clear. Abdomen soft, no organomegaly. Feet: skin intact, sensation normal to monofilament, pulses 2+. Affect normal.\n\nA/P\n1. T1DM on basal-bolus insulin per endocrinology - A1c, CMP, microalbumin, lipids, TSH today. Optometry report requested after his November exam.\n2. Gilbert / Dubin-Johnson - nothing new.\n3. Recurrent HSV-1 labialis - valacyclovir prn.\n4. Flu and 2025-26 covid given. PHQ-9 3.\nSpring follow-up to touch base on diabetes."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "portal_message",
+          "start": "2025-10-03T14:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Labs from your physical",
+              "date": "2025-10-03T14:10",
+              "author": "PCP",
+              "body": "All reassuring: kidney numbers and urine protein normal, thyroid normal, cholesterol fine, blood counts normal. A1c about the same as last year. Bilirubin slightly up as always."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T11:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "date": "2025-11-18T11:00",
+              "author": "optometry",
+              "body": "Diabetic eye exam letter, outside optometry practice. Exam date 11/13/2025.\nVision 20/20 right, 20/20 left. Anterior segments quiet. Dilated fundus exam: no diabetic retinopathy in either eye, no macular edema.\nReturn in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T13:25",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization renewal: insulin glargine",
+              "date": "2026-01-13T13:25",
+              "author": "MA",
+              "body": "Annual PA for glargine pens expired with the new plan year. Renewal submitted with diagnosis and current regimen (16 units at bedtime). Approved 1/14 through 1/2027. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T12:02",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Spring appointment",
+              "date": "2026-03-10T12:02",
+              "author": "patient",
+              "body": "You said to come in this spring for a diabetes check. Do you have anything in late April? Afternoons are best, I have class in the mornings."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Spring appointment",
+              "date": "2026-03-10T15:30",
+              "author": "front desk",
+              "body": "Booked you Wednesday April 22 at 2:40 with your PCP. Please arrive 10 minutes early. Labs will be drawn at the visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "office_visit",
+          "start": "2026-04-22T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              136,
+              74
+            ],
+            "hr": 82,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 72.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-22T15:15",
+              "resulted": "2026-04-23T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-22T15:15",
+              "resulted": "2026-04-23T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-22T14:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-22T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-22T15:20",
+              "author": "PCP",
+              "body": "S: Spring diabetes check. Sees endocrinology roughly twice a year; he skipped his fall visit with a busy semester and has one coming up in the summer. Same doses: glargine 16 units at bedtime, lispro by his scale. Checks 3-4 times a day. A couple of mild lows after long soccer games, treated himself. No yellow spells since last May. One cold sore over the winter, settled with valacyclovir. Optometry report from November came in: no retinopathy.\n\nMeds: glargine, lispro, valacyclovir prn. NKDA.\nSocial: never smoker, no alcohol. Starting a summer soccer league.\n\nO: vitals as charted. Well. No icterus. Lips clear. Heart regular; lungs clear. Abdomen soft. Feet: skin intact, sensation normal, pulses palpable.\n\nA/P\n1. T1DM - A1c, CMP and urine microalbumin today, copy to endocrinology. Discussed summer soccer: carry fast sugar, check before and after games, drink plenty in the heat.\n2. Gilbert / Dubin-Johnson - quiet.\n3. Recurrent HSV-1 - valacyclovir prn, refills current.\nAnnual physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "portal_message",
+          "start": "2026-04-24T09:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results from Wednesday",
+              "date": "2026-04-24T09:30",
+              "author": "PCP",
+              "body": "A1c is in your usual range. Kidney function and urine protein normal. Bilirubin mildly high as always. I sent a copy to endocrinology for your summer visit. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T10:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Valacyclovir refill",
+              "date": "2026-06-09T10:40",
+              "author": "RN",
+              "body": "Pharmacy refill request, valacyclovir 500 mg BID prn. Last fill 11/2025. Renewed per standing plan, 30 tabs, 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-11a",
+          "kind": "ed_visit",
+          "start": "2026-07-11T15:35",
+          "end": "2026-07-11T19:40",
+          "service": "Emergency Medicine",
+          "reason": "Lightheadedness and nausea after soccer in the heat",
+          "vitals": [
+            {
+              "time": "2026-07-11T15:40",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 39.5,
+              "spo2": 98
+            },
+            {
+              "time": "2026-07-11T19:05",
+              "bp": [
+                114,
+                70
+              ],
+              "hr": 86,
+              "temp_c": 37.6
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-11T15:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-07-11T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-08-11T09:15",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of visit: 07/11/2026\n\nCC: lightheaded, dizzy and nauseated after soccer.\n\nHPI: 27-year-old man with type 1 diabetes, Gilbert syndrome and Dubin-Johnson syndrome (most recent jaundice spell May 2025). Played about three hours at a summer soccer tournament in direct sun with no real breaks. Drank water through the day but ate little. Over the last hour felt lightheaded, dizzy and queasy and teammates brought him in.\n\nMeds: insulin glargine 16 units at bedtime, insulin lispro sliding scale, valacyclovir prn. PSH: laparoscopic appendectomy. NKDA. No tobacco, alcohol or drugs.\n\nTriage vitals: T 39.5 C (103.1 F), HR 110, BP 100/60, RR 22, SpO2 98% on room air.\nExam: skin cool and moist. Fatigued, oriented x3. Remainder of exam unremarkable.\n\nLabs: Na 135, K 4.2, Cl 100, HCO3 24, BUN 18, Cr 1.0, glucose 90.\n\nED course: moved to a cool room, ice packs and fans. Normal saline 2 L IV. Glucose rechecked by fingerstick and stayed in range with oral intake. Repeat vitals T 37.6 C, HR 86, BP 114/70. Nausea and dizziness gone, walking without symptoms, tolerating fluids.\n\nDiagnoses: heat exhaustion; dehydration.\nDisposition: discharged home with a friend. Rest and fluids for 24-48 hours, no sports until fully recovered, check glucose more often for the next day. Follow up with primary care as needed.\n\n[Received 08/11/2026, filed]"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "portal_message",
+          "start": "2026-07-13T10:22",
+          "reason": "ED visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER Saturday",
+              "date": "2026-07-13T10:22",
+              "author": "patient",
+              "body": "Wanted to tell you I ended up in the ER Saturday after a soccer tournament - got dizzy and sick to my stomach in the heat. They said heat exhaustion and dehydration, gave me two bags of fluid and sent me home. Feeling normal now. Sugars were fine the whole time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Went to the ER Saturday",
+              "date": "2026-07-13T13:40",
+              "author": "PCP",
+              "body": "Glad you're feeling back to normal. Take it easy for a few more days, build back slowly, and on hot days take real breaks in the shade with fluids and some salt and carbs, checking your sugar before and after. If dizziness or nausea come back, call us. We'll get the ER record for your chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:05",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-08-18T19:05",
+              "author": "patient",
+              "body": "Is my September physical still on? I can't remember the date."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Physical",
+              "date": "2026-08-19T09:10",
+              "author": "front desk",
+              "body": "Yes - Thursday September 17 at 8:40 am. Come fasting if you can, and bring your meter."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "annual_physical",
+          "start": "2026-09-17T08:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute appendicitis|K35.80": {
+        "code": "K35.80",
+        "display": "Unspecified acute appendicitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dubin-Johnson syndrome|E80.6": {
+        "code": "E80.6",
+        "display": "Other disorders of bilirubin metabolism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Herpes simplex virus infection|B00.9": {
+        "code": "B00.9",
+        "display": "Herpesviral infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Recurrent herpes simplex virus type 1 infection|B00.1": {
+        "code": "B00.1",
+        "display": "Herpesviral vesicular dermatitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "valacyclovir 500 MG Oral Tablet": {
+        "code": "313565",
+        "display": "valacyclovir 500 MG Oral Tablet",
+        "ingredient": "valacyclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bilirubin, Indirect": {
+        "code": "1971-1",
+        "display": "Bilirubin.indirect [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "C-peptide": {
+        "code": "1986-9",
+        "display": "C peptide [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glutamic acid decarboxylase 65 antibody": {
+        "code": "56540-8",
+        "display": "Glutamate decarboxylase 65 Ab [Units/volume] in Serum by Immunoassay",
+        "unit": "[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

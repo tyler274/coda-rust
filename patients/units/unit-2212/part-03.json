@@ -9,7 +9,12 @@
           "start": "2026-01-21T09:30",
           "service": "Cardiology",
           "reason": "Paroxysmal atrial fibrillation follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "reports": [
             {
               "study": "12-lead ECG",
@@ -19,7 +24,13 @@
             }
           ],
           "orders": [
-            {"id": "ldct-2026", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"}
+            {
+              "id": "ldct-2026",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual screening"
+            }
           ],
           "documents": [
             {
@@ -57,7 +68,13 @@
               "conclusion": "Lung-RADS 1, negative. Next annual screen in 12 months."
             }
           ],
-          "orders": [{"id": "ldct-2026", "action": "done", "date": "2026-02-10T08:00"}]
+          "orders": [
+            {
+              "id": "ldct-2026",
+              "action": "done",
+              "date": "2026-02-10T08:00"
+            }
+          ]
         },
         {
           "id": "2026-03-10a",
@@ -65,14 +82,77 @@
           "start": "2026-03-10T14:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Diabetes, hypertension, atrial fibrillation follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-10T14:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
-            {"panel": "Lipid Panel", "collected": "2026-03-10T14:30", "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-10T14:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2026-03-10T14:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-10T14:00"}],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T14:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-03-10T14:30",
+              "results": [
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-10T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T14:00"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -104,12 +184,61 @@
           "end": "2026-07-04T19:10",
           "service": "Emergency Medicine",
           "reason": "Left-sided weakness",
-          "vitals": {"bp": [180, 95], "hr": 78},
-          "measure": ["rr", "spo2", "temp_c"],
+          "vitals": {
+            "bp": [
+              180,
+              95
+            ],
+            "hr": 78
+          },
+          "measure": [
+            "rr",
+            "spo2",
+            "temp_c"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-04T15:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-04T15:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-07-04T15:35", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-04T15:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-04T15:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-04T15:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -125,7 +254,12 @@
               "conclusion": "Sinus rhythm."
             }
           ],
-          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-07-04T15:20"}],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-04T15:20"
+            }
+          ],
           "documents": [
             {
               "type": "ED Notes",
@@ -144,18 +278,97 @@
           "service": "Neurology — Stroke",
           "reason": "Acute ischemic stroke",
           "conditions": [
-            {"label": "Lacunar infarction", "icd10": "I63.81", "action": "diagnosed", "onset": "2026-07-04"}
+            {
+              "label": "Lacunar infarction",
+              "icd10": "I63.81",
+              "action": "diagnosed",
+              "onset": "2026-07-04"
+            }
           ],
           "medications": [
-            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "stop", "reason": "Dose increased"},
-            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Secondary stroke prevention"},
-            {"drug": "apixaban 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Atrial fibrillation, stroke prevention"},
-            {"drug": "amlodipine 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug": "atorvastatin 80 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Secondary stroke prevention"
+            },
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Atrial fibrillation, stroke prevention"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
           ],
-          "state": {"bp": [136, 82]},
+          "state": {
+            "bp": [
+              136,
+              82
+            ]
+          },
           "labs": [
-            {"panel": "Lipid Panel", "collected": "2026-07-05T05:30", "results": [{"test": "Total Cholesterol", "value": 220}, {"test": "High Density Lipoprotein", "value": 35}, {"test": "Low Density Lipoprotein", "value": 160}, {"test": "Triglycerides", "value": 250}]},
-            {"panel": null, "collected": "2026-07-05T05:30", "results": [{"test": "Hemoglobin A1c"}]}
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-05T05:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 220
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 35
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 160
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-05T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -172,8 +385,14 @@
             }
           ],
           "procedures": [
-            {"procedure": "Initial hospital inpatient care", "performed": "2026-07-04T19:30"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-07-08T12:00"}
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-07-04T19:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-07-08T12:00"
+            }
           ],
           "documents": [
             {
@@ -206,12 +425,43 @@
           "end": "2026-07-14T11:05",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, stroke",
-          "vitals": {"bp": [138, 82]},
-          "measure": ["hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-14T11:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2026-07-14T10:20"}],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-14T11:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-07-14T10:20"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -242,7 +492,11 @@
           "start": "2026-08-18T13:30",
           "service": "Neurology",
           "reason": "Post-stroke follow-up",
-          "measure": ["bp", "hr", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
           "documents": [
             {
               "type": "Consult Note",
@@ -250,45 +504,6 @@
               "author": "neurology",
               "date": "2026-08-19T16:00",
               "body": "Stroke Neurology Clinic\n\nMr. Kaminski returns 6 weeks after a right internal capsule lacunar infarct. He has been doing PT and OT twice weekly and notes steady gains; buttons are easier. No new neurologic symptoms. Taking apixaban twice daily, atorvastatin 80 and amlodipine. No bleeding.\n\nExam: vitals per flowsheet. Alert, fluent. Faint left nasolabial flattening. Left arm 4+/5, left leg 4+/5. Sensation normal. Gait steady.\n\nAssessment: lacunar stroke with good recovery of left-sided weakness; paroxysmal AF now anticoagulated.\n\nRecommendations:\n1. Continue apixaban 5 mg twice daily long term.\n2. Continue atorvastatin 80 mg. LDL goal under 70; please repeat lipids now.\n3. BP goal under 130/80, per PCP.\n4. Continue PT/OT to complete course.\n5. Return to neurology in 6 months.\n\nThank you for allowing us to share in his care.\nStroke Neurology"
-            }
-          ]
-        },
-        {
-          "id": "2026-08-21a",
-          "kind": "lab_only",
-          "start": "2026-08-21T08:10",
-          "labs": [
-            {"panel": "Lipid Panel", "collected": "2026-08-21T08:10", "pending": true, "results": [{"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-08-21T08:10", "pending": true, "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]}
-          ],
-          "documents": [
-            {
-              "type": "Nursing Note",
-              "title": "Lab draw",
-              "author": "MA",
-              "date": "2026-08-21T08:20",
-              "body": "Fasting lipid panel and liver panel drawn per PCP after statin increase, neurology also requesting. Left antecubital, tolerated well. Pressure held 3 min given apixaban; no bleeding."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-24a",
-          "kind": "portal_message",
-          "start": "2026-08-24T18:45",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Cholesterol test and flu shot",
-              "author": "patient",
-              "date": "2026-08-24T18:45",
-              "body": "Hi, did the cholesterol test come back yet? Also when do you get flu shots in, I want to get it at the September appointment if I can. Stanley"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Cholesterol test and flu shot",
-              "author": "RN",
-              "date": "2026-08-25T09:10",
-              "body": "Hi Mr. Kaminski, the lab hasn't sent the results yet; we'll message you when they're in. Flu vaccine usually arrives in early September, so we should have it for your 9/22 visit."
             }
           ]
         },

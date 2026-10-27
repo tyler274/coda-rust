@@ -30,3 +30,8 @@
 - 2026-05-13 portal result note: CBC normal (P)
 - 2026-07-28 portal message: scheduling annual physical (P)
 - 2026-09-16 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00001899 on 2025-10-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

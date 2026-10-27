@@ -50,3 +50,8 @@
 - 2026-06-11 surveillance colonoscopy; report received 2026-06-19 (A8)
 - 2026-07-21 portal: oncology surveillance visit 2026-07-16 went well (A11)
 - 2026-09-15 booked annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00002740 on 2026-05-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

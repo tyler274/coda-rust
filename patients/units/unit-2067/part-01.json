@@ -1,0 +1,803 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002067",
+      "given": "Charles",
+      "family": "Moran",
+      "birth_date": "1965-09-21",
+      "address_line": "212 Bridge Road, Apt 3",
+      "phone": "+1-860-555-0162",
+      "email": "charles.moran@example.test",
+      "marital_status": "single",
+      "summary": "Long-haul truck driver and distance runner with a 2018 kidney transplant on tacrolimus and prednisone, hypertension, hyperlipidemia, mild COPD and knee osteoarthritis. Course in the practice: transplant renal artery stenosis stented in 2022, stage IA lung adenocarcinoma resected in 2023, a forearm squamous cell carcinoma treated with Mohs, and NSAID-related duodenal ulcer bleeds in 2024 and 2025 (the second after his last visit).",
+      "events": [
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2012-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2014-01-01"
+            },
+            {
+              "label": "Kidney transplant status",
+              "action": "history",
+              "onset": "2018-03-09"
+            },
+            {
+              "label": "Chronic kidney disease, stage 2",
+              "action": "history",
+              "onset": "2018-03-09",
+              "note": "Graft function, baseline creatinine about 1.2"
+            },
+            {
+              "label": "Long term (current) use of calcineurin inhibitor",
+              "icd10": "Z79.621",
+              "action": "history",
+              "onset": "2018-03-09"
+            },
+            {
+              "label": "Peptic ulcer disease",
+              "action": "history",
+              "onset": "2009-01-01",
+              "note": "Remote, by history"
+            },
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2016-01-01",
+              "note": "Mild, by history"
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "history",
+              "onset": "2017-01-01"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1984-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tacrolimus 5 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Kidney transplant, prescribed by transplant center"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Kidney transplant, prescribed by transplant center"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug_text": "naproxen sodium 220 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily as needed for knee pain",
+              "dose": {
+                "value": 220,
+                "unit": "mg"
+              },
+              "frequency": "BID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Knee osteoarthritis (over the counter)"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath or wheeze",
+              "dose": {
+                "value": 2,
+                "unit": "puff"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 82.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.2,
+              "Low Density Lipoprotein": 120,
+              "Total Cholesterol": 190,
+              "High Density Lipoprotein": 40,
+              "Triglycerides": 150,
+              "Hemoglobin": 13.6,
+              "Hemoglobin A1c": 5.6,
+              "Magnesium": 1.9,
+              "Microalbumin/Creatinine Ratio": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Long-haul truck driver"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-09-14T16:05",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Blood"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-14T16:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2020-09-14T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-14T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-09-14T15:20",
+              "body": "New patient, 54 yo M, transferring care; his old PCP retired. Drives long-haul, gone 4-5 days at a stretch, prefers portal and video when he is on the road.\n\nPMH: kidney transplant March 2018 at an outside transplant center, followed there yearly, graft has been stable per patient (baseline creatinine around 1.2). HTN for years, on amlodipine and HCTZ. Hyperlipidemia on atorvastatin. Peptic ulcer years ago, no details, no bleeding he knows of. COPD, mild, told so after breathing tests a few years back, uses albuterol maybe once a month, needs a new inhaler. Both knees ache, worse after long runs; takes OTC naproxen 220 mg twice a day when they act up.\nPSH: kidney transplant 2018.\nMeds: tacrolimus 5 mg BID and prednisone 5 mg daily (transplant team writes these), amlodipine 10 mg daily, HCTZ 25 mg daily, atorvastatin 40 mg daily, naproxen sodium 220 mg BID prn, albuterol prn.\nAllergies: NKDA.\nFH: father had an MI at 62 (CAD). Mother with high blood pressure. Maternal uncle on dialysis, cause never known.\nSH: single, lives alone in an apartment in town. Smokes about half a pack a day, ~25 pack-years. Not ready to quit cold, would like to cut down in steps. Alcohol a drink or two a month. Runs long distances, several races a year.\n\nROS negative except knees.\nExam: BP as charted. Well-appearing, lean. HEENT unremarkable. Neck supple, no nodes. Heart RRR, no murmur. Lungs clear, no wheeze, good air movement. Abdomen soft; well-healed right lower quadrant transplant incision, graft nontender. Knees: crepitus both, no effusion. No edema. Skin: no lesions.\n\nA/P\n1. Kidney transplant, stable per history. Immunosuppression per transplant center. Requesting their records and our prior office's.\n2. HTN, near goal. Continue amlodipine/HCTZ.\n3. Hyperlipidemia, continue atorvastatin 40. Lipids today.\n4. Tobacco: gradual-reduction plan - drop 2-3 cigarettes a week, pick a quit date once he's under 5 a day. Will check in by video in ~3 months.\n5. COPD, mild by hx: albuterol refilled.\n6. Knee OA: using naproxen sparingly per pt.\n7. HM: flu and Tdap today. Records will tell us colonoscopy status.\nLabs: CMP, CBC, lipids, A1c, Mg, UA."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-17a",
+          "kind": "portal_message",
+          "start": "2020-09-17T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-09-17T08:40",
+              "body": "Hi Charles, your labs look good. Kidney function is right where the transplant records say your baseline sits, blood counts and liver tests are normal, A1c is normal, and urine shows no protein. LDL is 120 on the atorvastatin, which we'll keep an eye on. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-28a",
+          "kind": "outside_records",
+          "start": "2020-09-28T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care and transplant center",
+              "author": "PCP",
+              "date": "2020-09-28T11:15",
+              "body": "Records received and reviewed (58 pages).\n\nPrior PCP: HTN since early 2010s, hyperlipidemia, knee OA. Remote peptic ulcer noted in history only. COPD noted after spirometry in 2016, mild. Smoker throughout. Colonoscopy 2017 as part of transplant evaluation: normal, repeat in 10 years.\n\nTransplant center: kidney transplant 03/2018, uncomplicated course. Native kidney disease cause not established. Hepatitis C antibody and HIV screen negative during evaluation. Maintenance tacrolimus and prednisone; tacrolimus troughs in range on recent checks. Graft creatinine 1.1-1.3 since 2019.\n\nNothing here changes our plan. Colonoscopy next due 2027."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-19a",
+          "kind": "outside_records",
+          "start": "2020-10-19T14:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "author": "transplant nephrology",
+              "date": "2020-10-19T14:00",
+              "body": "Transplant Nephrology Clinic\nVisit date: 10/14/2020\n\nDear colleague,\nThank you for taking over primary care for Mr. Moran, now 2.5 years after his kidney transplant. He feels well. Graft function is stable with a creatinine of 1.2, no proteinuria, and his tacrolimus trough is within our target range. Blood pressure in clinic 136/82.\n\nImmunosuppression unchanged: tacrolimus 5 mg twice daily, prednisone 5 mg daily. We will continue to prescribe both. Please avoid live vaccines.\n\nAllergies: NKDA.\nFollow-up here in one year with labs every 3 months through our lab.\n\nSincerely,\nTransplant Nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2020-12-07a",
+          "kind": "telehealth_visit",
+          "start": "2020-12-07T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Smoking reduction follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-12-07T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2020-12-07T17:30",
+              "body": "Video visit, pt in his truck at a rest stop in good connection, identity verified.\n\nSmoking: down from ~10 to about 6 cigarettes a day. Hardest times are the long night stretches. Has a quit date in mind for spring. Discussed what to expect the first two weeks and options if he wants NRT - he'd rather not.\nHome BP readings from his wrist cuff 120s-130s/80s.\nBreathing fine, no inhaler use this month.\nKnees okay, running less with the cold.\n\nA/P: good progress on tobacco; continue stepwise reduction toward a quit date. BP fine. Office visit in the spring for labs."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-11a",
+          "kind": "portal_message",
+          "start": "2021-01-11T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "author": "patient",
+              "date": "2021-01-11T20:05",
+              "body": "Do I qualify for the covid shot yet with my transplant? Pharmacy says sign up online but I'm never home long."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "author": "PCP",
+              "date": "2021-01-12T08:30",
+              "body": "Yes - your transplant medicines put you in an early group, and the mRNA vaccines are safe with them. Sign up through the state site; pharmacies along your routes count too. Let us know the dates so we can record them. Your transplant team may suggest an extra dose later."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-08a",
+          "kind": "pharmacy",
+          "start": "2021-02-08T10:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "author": "MA",
+              "date": "2021-02-09T09:10",
+              "body": "COVID-19 vaccine dose 1 (Pfizer) given 2/8/21 at a community pharmacy clinic. Entered from state registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-01a",
+          "kind": "pharmacy",
+          "start": "2021-03-01T11:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-01T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "author": "MA",
+              "date": "2021-03-02T08:45",
+              "body": "COVID-19 vaccine dose 2 (Pfizer) 3/1/21, pharmacy clinic. From registry."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "office_visit",
+          "start": "2021-03-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-22T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-03-22T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-03-22T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-03-22T08:00",
+              "body": "S: f/u HTN/lipids, in town this week. Smoking down to 3-4 a day, quit date set for May. No cough beyond the usual morning clearing. Running again, 20-25 miles a week. Knees sore after long runs, naproxen once or twice a week.\nMeds unchanged. Got both COVID shots.\nO: BP as charted, HR regular. Lungs clear. No edema.\nA/P: HTN controlled on amlodipine/HCTZ. Lipids and BMP today. Tobacco - nearly there, encouraged."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-03-24T12:10",
+              "body": "Kidney function and potassium are steady. LDL about the same as last fall. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-26a",
+          "kind": "portal_message",
+          "start": "2021-05-26T21:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Quit",
+              "author": "patient",
+              "date": "2021-05-26T21:40",
+              "body": "Doc - two weeks with zero cigarettes as of today. Threw out the last pack at a truck stop outside Albany. Cravings are worst after dinner. Just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Quit",
+              "author": "PCP",
+              "date": "2021-05-27T07:55",
+              "body": "That is great news, Charles. Congratulations. Cravings after meals usually fade over the next month or two; a walk or a piece of gum after dinner helps some people. If you have a slip, message me rather than giving up on it. I'll update your chart."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "office_visit",
+          "start": "2021-06-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, shingles vaccine",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved",
+              "onset": "1984-01-01",
+              "note": "Quit May 2021"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2021-05-12"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-06-21T16:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-06-21T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-06-21T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-06-21T16:00",
+              "body": "Quit smoking mid-May, ~6 weeks out, no slips. Weight up a pound or two, not bothered. Breathing feels better on runs.\nBP fine. Lungs clear.\nA/P: former smoker now (25 pk-yr, quit 5/2021) - chart updated. Shingrix #1 today (recombinant, okay with his immunosuppression). #2 in 2-6 months. Annual physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-30a",
+          "kind": "pharmacy",
+          "start": "2021-08-30T14:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-08-30T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "author": "MA",
+              "date": "2021-08-31T09:00",
+              "body": "Third primary COVID dose (Pfizer) for immunocompromised status, 8/30/21, retail pharmacy. Registry entry."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "nurse_visit",
+          "start": "2021-09-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-09-20T07:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-20T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2021-09-20T07:40",
+              "body": "Here for 2nd Shingrix. Reports a sore arm and one tired day after dose 1. Given L deltoid, tolerated. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-04a",
+          "kind": "outside_records",
+          "start": "2021-10-04T13:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "author": "transplant nephrology",
+              "date": "2021-10-04T13:30",
+              "body": "Transplant Nephrology Clinic\nVisit date: 09/29/2021\n\nMr. Moran returns for yearly review 3.5 years post-transplant. He has quit smoking, which we applaud. No infections this year. Creatinine 1.2, urine protein negative, tacrolimus level in range. BP 130/80.\n\nNo change to tacrolimus 5 mg BID or prednisone 5 mg daily. He has completed a 3-dose COVID series and Shingrix; please continue yearly influenza vaccine (inactivated only). Allergies: NKDA.\n\nReturn in 12 months.\nTransplant Nephrology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-08a",
+          "kind": "annual_physical",
+          "start": "2021-11-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 1.2,
+                  "unit": "ng/mL"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-08T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-11-08T09:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-11-08T09:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Former smoker, 25 pack-years, quit 2021"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-11-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-08T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-11-08T09:00",
+              "body": "Annual exam. 56 yo M. Feels well; still smoke-free since May. Ran a half marathon in October. Knees grumble afterward, naproxen a couple days, then fine.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, naproxen 220 prn, albuterol prn (hasn't needed it since summer). NKDA.\nROS: no chest pain, breathing good, no GI symptoms, no urinary complaints, mood good.\nExam: vitals as charted. HEENT normal. Neck no nodes or thyromegaly. Heart regular, no murmur. Lungs clear throughout. Abd soft, graft site nontender. Prostate deferred. Joints - knee crepitus, full ROM. Skin without suspicious lesions, some sun-weathering on L forearm from the truck window. No edema.\n\nA/P\n- Health maintenance: flu and PCV20 today. Colonoscopy 2017 normal, due 2027. Shingrix done, COVID x3 done. PSA after discussion - he wanted it, drawn today.\n- Lung cancer screening: new 2021 criteria now include him (age 56, 25 pk-yr, quit <15 yr). Low-dose CT ordered; scheduling will call him.\n- HTN, lipids, transplant - labs today; continue current regimen.\n- Sun protection on the driving arm."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "portal_message",
+          "start": "2021-11-10T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2021-11-10T16:20",
+              "body": "Charles - all of this year's labs are fine, including the PSA. Kidney numbers steady. Imaging scheduling will reach out about the screening CT."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "telephone",
+          "start": "2021-12-13T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling call",
+              "author": "front desk",
+              "date": "2021-12-13T10:05",
+              "body": "Called to schedule low-dose CT chest. Pt on the road until next week, asked us to call back. Left callback number."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

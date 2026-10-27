@@ -1,0 +1,3674 @@
+{
+  "unit": "unit-2090",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002090",
+      "given": "Timothy",
+      "family": "Cole",
+      "birth_date": "1982-09-11",
+      "address_line": "212 Pleasant Street, Unit 4, Easthampton, MA 01027",
+      "phone": "+1-508-555-0181",
+      "email": "timothy.cole@example.test",
+      "marital_status": "single",
+      "summary": "Man with HIV since 2010 and intermittent ART adherence, followed by an outside ID clinic, living in transitional housing and working construction on and off. Over 2020-2026 he has oral hairy leukoplakia, candidal esophagitis, AIDS-related Kaposi sarcoma, a second PJP pneumonia, primary CNS lymphoma presenting with a seizure, and cryptosporidiosis after the practice last saw him.",
+      "events": [
+        {
+          "id": "2019-07-09a",
+          "kind": "telephone",
+          "start": "2019-07-09T10:40",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2019-07-09T10:52",
+              "author": "front desk",
+              "body": "Caller is looking for a primary care doctor in town. Has not had one for a while; gets his HIV care at an outside infectious disease clinic and wants a PCP for everything else. Insurance is MassHealth/Medicaid, card verified. Mailing address is a transitional housing program on Pleasant St. Cell is the best number, ok to leave a message.\n\nScheduled new patient visit 7/16 at 9:00. Release of information signed for the ID clinic and his last primary care office; requests faxed today. Asked him to bring all his medication bottles."
+            }
+          ]
+        },
+        {
+          "id": "2019-07-16a",
+          "kind": "establish_care",
+          "start": "2019-07-16T09:00",
+          "end": "2019-07-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "diagnosed",
+              "onset": "2010-06-01",
+              "note": "Diagnosed 2010; followed by outside ID clinic; adherence on and off over the years"
+            },
+            {
+              "label": "History of Pneumocystis jirovecii pneumonia",
+              "action": "history",
+              "onset": "2018-03-01",
+              "note": "One episode in 2018, before joining",
+              "icd10": "Z87.01"
+            },
+            {
+              "label": "History of oropharyngeal candidiasis",
+              "action": "history",
+              "onset": "2018-03-01",
+              "icd10": "Z86.19"
+            },
+            {
+              "label": "Polysubstance use disorder (cocaine and methamphetamine)",
+              "action": "diagnosed",
+              "onset": "2012-01-01",
+              "note": "Intranasal and smoked use",
+              "icd10": "F19.20"
+            },
+            {
+              "label": "Housing instability, housed",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "note": "Transitional housing program",
+              "icd10": "Z59.819"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2017-01-01",
+              "note": "Quit 2017, 10 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV; prescribed by ID"
+            },
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 double-strength tablet by mouth three times weekly (Mon/Wed/Fri)",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "THREE_TIMES_WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "PJP prophylaxis; prescribed by ID"
+            },
+            {
+              "drug_text": "fluconazole 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for thrush",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thrush; prescribed by ID"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth as needed for pain or fever",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 67,
+            "rr": 13,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 74.7,
+            "height_cm": 177.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-07-16T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-07-16T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-07-16T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Transitional housing"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer, intermittent work"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2019-07-16T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-07-16T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-07-16T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-prior-2019",
+              "action": "placed",
+              "order": "Records request, prior primary care and ID clinic",
+              "category": "procedure",
+              "reason": "establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-07-16T10:40",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n36M here to set up primary care. HIV since 2010, care at an outside ID clinic, which he says he goes to \"most of the time.\" Admits there have been stretches over the years when he stopped his pills, usually when things got chaotic with housing. Currently taking his once-daily ART pill and the TMP-SMX three days a week. Had PJP pneumonia last year (2018) when he was off meds, hospitalized, recovered. Has had thrush in the past and keeps fluconazole on hand for it. No current mouth symptoms.\n\nSubstance use: cocaine and meth, both snorted and smoked, on and off for years. Used a few weeks ago. Not in a program. Open to talking about it, not ready to commit to anything today.\n\nSocial: lives in a transitional housing program here in Easthampton, shared kitchen. Works construction when there's work. Quit cigarettes in 2017, about 10 pack-years. Drinks once or twice a month. Single.\n\nPMH: HIV; PJP 2018; oral thrush in past; polysubstance use.\nPSH: tonsillectomy at 12.\nMeds (all from ID): bictegravir/FTC/TAF 1 tab daily; TMP-SMX DS 1 tab M/W/F; fluconazole 100 mg daily prn thrush; acetaminophen 500 mg prn.\nAllergies: none known to medications.\nFH: dad has high blood pressure, mom type 2 diabetes. No blood cancers or immune problems in the family that he knows of.\n\nROS: no fevers, sweats, cough, weight change, diarrhea, rash. Mood ok. PHQ-2 1.\n\nExam: thin-normal build, comfortable. Oropharynx clear, no plaques or thrush. No cervical/axillary nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without lesions. No edema. Alert, appropriate.\n\nA/P\n1. HIV - ID manages ART and prophylaxis; will get their notes. Adherence reinforced; he knows what happens when he stops.\n2. Polysubstance use (cocaine/methamphetamine) - discussed harm reduction, never use alone, offered referral to outpatient treatment; he'll think about it.\n3. Housing - transitional program; gave info for the housing navigator at the community action agency.\n4. Hx PJP, hx thrush - on prophylaxis per ID.\n5. Health maintenance - Tdap given today. CMP, CBC, lipids drawn. Flu shot in the fall.\n\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Low Density Lipoprotein": 95
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-07-18a",
+          "kind": "portal_message",
+          "start": "2019-07-18T16:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab work",
+              "date": "2019-07-18T16:10",
+              "author": "PCP",
+              "body": "Hi Timothy, your blood work from Tuesday came back fine: kidney and liver tests normal, blood counts normal, cholesterol in a good range. Nothing to change. See you in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-03a",
+          "kind": "outside_records",
+          "start": "2019-09-03T11:20",
+          "reason": "Records received",
+          "orders": [
+            {
+              "id": "rec-prior-2019",
+              "action": "done",
+              "date": "2019-09-03T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records Received - Prior Primary Care Office",
+              "date": "2019-09-03T11:20",
+              "author": "MA",
+              "body": "Two pages faxed back from his former primary care office in response to our July request: an old medication list (same ART, TMP-SMX and fluconazole he takes now) and an immunization printout without dates for the last several years. No visit notes; the office said he had not been seen there in a few years. Nothing yet from the ID clinic; second request faxed. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T14:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-10-08T14:40",
+              "author": "RN",
+              "body": "Walk-in for flu vaccine. Screening questions negative, no prior reactions. Quadrivalent flu 0.5 mL IM left deltoid, VIS reviewed. Tolerated, no reaction during 15 minute observation. Reminded of his follow-up in November."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "office_visit",
+          "start": "2019-11-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-Show",
+              "date": "2019-11-12T11:05",
+              "author": "front desk",
+              "body": "Patient did not arrive for 10:30 follow-up. Called cell, mailbox full. Text sent with our number to rebook."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-12-03a",
+          "kind": "office_visit",
+          "start": "2019-12-03T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, substance use and housing",
+          "vitals": {
+            "bp": [
+              112,
+              76
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 75.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Housing status",
+              "value": "Transitional housing"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-12-03T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2019-12-03T16:25",
+              "author": "PCP",
+              "body": "Missed November, came in today after our text. Says work dried up for the winter and he's been around the house more, which is not always good for him. Has used cocaine a couple of times since we met, meth once. No overdoses, nobody hurt. Still on the waitlist for a permanent unit through the housing program.\n\nTaking ART daily \"pretty much\"; last ID visit in the summer, next one in the new year. Taking the TMP-SMX. No mouth sores, fevers, cough or weight change.\n\nPHQ-9 4. Sleep a bit off.\n\nExam: NAD. Mouth clear. Lungs clear. Heart regular. No edema. Skin clear.\n\nA/P\n1. Polysubstance use - still intermittent use. Motivational conversation; he says he'd like to be done with it \"eventually.\" Gave walk-in hours for the outpatient recovery program; naloxone discussed, he already carries some from the housing program.\n2. HIV - per ID. Asked him to sign another release so their notes reach us.\n3. Housing - waitlisted, no change.\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2020-03-23T13:15",
+              "author": "front desk",
+              "body": "Routine in-person visits on hold for the next several weeks because of COVID. Spoke with patient, cancelled tomorrow's visit. He has no urgent issues. Will offer a video or phone visit when the schedule opens."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T11:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request - TMP-SMX",
+              "date": "2020-04-14T11:20",
+              "author": "RN",
+              "body": "Pharmacy faxed refill request for TMP-SMX DS. Prescriber on file is his ID clinic. Called the ID clinic nurse line, they will send it today. Let patient know; he has 2 tablets left, enough until pickup."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-23T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, substance use",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2020-06-23T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-06-23T13:35",
+              "author": "PCP",
+              "body": "Video visit, he is in his room at the housing program; consent for video visit obtained.\n\nHe says the lockdown months were rough. Used cocaine and some meth earlier this month, a few days in a row, and it scared him how fast it took over. Wants to stop for real this time. No chest pain, no seizures, no injection use.\n\nTaking ART and TMP-SMX. Had a phone visit with ID last month.\n\nMood: down but not hopeless, no thoughts of harming himself. Eating ok.\n\nA/P\n1. Polysubstance use (cocaine/methamphetamine) - motivated today. Warm handoff: messaged the outpatient recovery program, they will call him this week for intake (telehealth groups running). Carries naloxone. Talked through triggers (no work, isolation) and who he can call.\n2. HIV - continue per ID.\nVideo check-in in 3 months, sooner if he wants."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "telehealth_visit",
+          "start": "2020-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-09-22T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-09-22T10:25",
+              "author": "PCP",
+              "body": "Video, at home.\n\nNo cocaine or meth since June. Went to the recovery program's online groups through the summer, now goes once a week. Picked up some framing work in August. Housing unchanged.\n\nTaking ART daily, TMP-SMX MWF. Has an ID visit in December. No thrush lately.\n\nA/P\n1. Polysubstance use - about 3 months without use. Strongly encouraged; keep groups going.\n2. HIV - ID in December.\n3. Flu shot next month at a nurse visit.\nRTC early next year in person if allowed."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "nurse_visit",
+          "start": "2020-10-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-20T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-20T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2020-10-20T08:55",
+              "author": "RN",
+              "body": "Masked, screened at door, afebrile. Flu vaccine 0.5 mL IM right deltoid. VIS given. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-17a",
+          "kind": "specialist_visit",
+          "start": "2020-12-17T10:00",
+          "service": "Infectious Diseases",
+          "reason": "HIV routine follow-up",
+          "conditions": [
+            {
+              "label": "HIV-related opportunistic skin infection",
+              "action": "diagnosed",
+              "onset": "2020-10-01",
+              "note": "Recent infection reported by patient, healed by the ID visit; per ID problem list",
+              "icd10": "L08.9"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-12-17T10:40",
+              "resulted": "2020-12-18T15:00",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 220
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": "Undetectable"
+                },
+                {
+                  "test": "Varicella zoster virus IgG",
+                  "loinc": "15410-4",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Diseases Clinic Letter",
+              "date": "2020-12-28T09:30",
+              "author": "infectious disease",
+              "body": "OUTSIDE INFECTIOUS DISEASES CLINIC - VISIT SUMMARY TO PRIMARY CARE\nDate of visit: 12/17/2020\n\nScheduled HIV follow-up. Feels well today, nothing new. Reports he is taking his ART every day. Most recent CD4 before today was 350 in June. Mentions a skin infection earlier this fall that has cleared; we have added HIV-related opportunistic skin infection to his problem list. He asked whether he is due for any vaccines.\n\nCurrent: bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily; TMP-SMX DS three times weekly; fluconazole 100 mg daily prn thrush; acetaminophen prn. NKDA.\nSocial: one sexual partner, uses condoms every time. Former smoker. No drug use for about 6 months.\n\nExam: well appearing. Unremarkable exam today, including skin and oropharynx.\n\nResults today: CD4 220 cells/mm3. HIV-1 RNA undetectable. VZV IgG negative.\n\nImpression: HIV, virally suppressed on current regimen; CD4 lower than in June. Not immune to varicella.\n\nPlan: continue current regimen and prophylaxis. He is seronegative for VZV with a CD4 above 200; we would support varicella vaccination (2 doses, 3 months apart) through his primary care office if convenient for him. Return in 6 months with labs."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-29a",
+          "kind": "telephone",
+          "start": "2020-12-29T14:10",
+          "reason": "Vaccine planning",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ID Letter Follow-up - Varicella Vaccine",
+              "date": "2020-12-29T14:25",
+              "author": "RN",
+              "body": "PCP reviewed ID letter (CD4 220, undetectable viral load, VZV IgG negative) and agrees with varicella vaccine x2. Called patient, explained it is a live vaccine and ok at his CD4 per ID. He wants it. Nurse visit booked 1/12. Vaccine ordered from distributor."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "nurse_visit",
+          "start": "2021-01-12T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Varicella vaccine #1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-01-12T13:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Varicella",
+              "date": "2021-01-12T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Varicella Vaccine Dose 1",
+              "date": "2021-01-12T14:00",
+              "author": "RN",
+              "body": "Here for first varicella dose per PCP order (VZV IgG negative on ID labs 12/17, CD4 220). Denies fever or new illness today. No other live vaccines in the past 4 weeks. Varicella vaccine 0.5 mL subcut left upper arm, VIS given. Told him a mild rash or sore arm can happen within a few weeks; call if a rash shows up. Dose 2 due in 3 months - booked 4/13."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "nurse_visit",
+          "start": "2021-04-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Varicella vaccine #2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-04-13T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Varicella",
+              "date": "2021-04-13T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Varicella Vaccine Dose 2",
+              "date": "2021-04-13T13:50",
+              "author": "RN",
+              "body": "Second varicella dose. No reaction after dose 1 other than a sore arm for a day. Feeling well. Got his second COVID shot a few days ago at a community vaccine site; no issue spacing these per protocol. Varicella 0.5 mL subcut right upper arm. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T09:10",
+          "reason": "Immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-18T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-04-16T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 Vaccine Record",
+              "date": "2021-04-20T09:10",
+              "author": "MA",
+              "body": "Patient brought in his CDC card. Moderna dose 1 on 3/18/21 and dose 2 on 4/16/21 at the county vaccination clinic. Entered into immunization history; copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "annual_physical",
+          "start": "2021-06-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              79
+            ],
+            "hr": 66,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 75.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-06-08T09:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-06-08T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 301
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-06-08T09:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-06-08T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Transitional housing"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-06-08T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-06-08T09:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\nFeels good. One year almost without cocaine or meth (last use June 2020); still checks in with his recovery group most weeks. Working steadily on a roofing crew this spring. Still in the transitional program, moved up on the list.\n\nHIV: ID follows, says his last labs there were \"good.\" Takes ART daily, TMP-SMX MWF. Has not needed the fluconazole this year. Both varicella doses done, COVID series done.\n\nROS negative: no fevers, sweats, cough, mouth sores, diarrhea, rashes, weight change. PHQ-9 2.\n\nExam: well. HEENT normal, oropharynx clear. Neck supple, no nodes. Heart RRR. Lungs clear. Abd soft, NT, no HSM. Skin: no lesions. Ext: no edema. Neuro grossly normal.\n\nA/P\n1. Health maintenance - CMP, CBC, lipids, A1c today (on INSTI-based ART, dad with HTN, mom with T2DM). Tdap 2019, flu yearly, COVID done, varicella series done.\n2. HIV - per ID.\n3. Polysubstance use disorder - no use in a year. Keep doing what he's doing.\nRTC 6 months or prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.5,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T12:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2021-06-10T12:40",
+              "author": "PCP",
+              "body": "Timothy - labs from your physical look good. Sugar (A1c) normal, cholesterol fine, kidney and liver normal, blood counts normal. Recheck next year."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "office_visit",
+          "start": "2021-08-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "White patch on tongue",
+          "vitals": {
+            "bp": [
+              112,
+              74
+            ],
+            "hr": 76,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 74.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-08-24T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "white tongue lesion, not removable"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Tongue Lesion",
+              "date": "2021-08-24T11:40",
+              "author": "PCP",
+              "body": "Noticed a white patch on the right side of his tongue about a week ago. Doesn't hurt. Tried his fluconazole for 3 days thinking it was thrush, no change. Also says he's been more tired on and off and his work pants are looser - not trying to lose weight. Hasn't been to ID since the spring; admits he's missed some ART doses this summer.\n\nExam: weight down a little from June. Oropharynx: whitish patch along the right lateral tongue with a ridged surface; does not come off with a tongue blade. No other oral lesions. No cervical nodes. Lungs clear, heart regular.\n\nA/P\n1. Tongue lesion, not removable, no response to fluconazole - not typical thrush. Referral to ENT for evaluation; front desk to request a near-term slot.\n2. Fatigue, some weight loss, missed doses - asked him to call ID this week for labs. He agrees.\nRTC after ENT."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-01a",
+          "kind": "specialist_visit",
+          "start": "2021-09-01T14:00",
+          "service": "Otolaryngology",
+          "reason": "Tongue lesion",
+          "conditions": [
+            {
+              "label": "Oral hairy leukoplakia",
+              "action": "diagnosed",
+              "onset": "2021-08-18",
+              "icd10": "K13.3"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2021-09-01T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consult Letter",
+              "date": "2021-09-10T10:15",
+              "author": "otolaryngology",
+              "body": "OUTSIDE OTOLARYNGOLOGY - CONSULT LETTER\nVisit date: 09/01/2021\n\nThank you for sending this 38-year-old man with HIV. Two weeks of a white area on the side of the tongue, no pain. Some fatigue on and off and weight loss over the last several months. Patient reports more than one current sexual partner and past recreational drug use.\n\nOn exam the lesion on the lateral tongue border is corrugated and firmly attached and does not scrape away. No cervical adenopathy.\n\nImpression: oral hairy leukoplakia.\n\nRecommendations: no local treatment needed. It reflects his immune status, so the key step is follow-up with his HIV clinic for viral load, CD4 count and adherence. Happy to see him again if it changes in character."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "telephone",
+          "start": "2021-09-14T15:20",
+          "reason": "ENT letter follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ENT Letter Reviewed",
+              "date": "2021-09-14T15:30",
+              "author": "RN",
+              "body": "PCP reviewed ENT letter - oral hairy leukoplakia, no treatment, needs ID follow-up. Called patient. He says he has an ID appointment \"in a couple weeks\" but didn't know the date. Gave him the ID clinic number again and asked him to confirm it today."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "nurse_visit",
+          "start": "2021-10-26T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-26T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-26T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2021-10-26T16:15",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid after work. No contraindications. Asked about COVID booster - plans to get one at the pharmacy next month."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "outside_records",
+          "start": "2021-11-23T10:30",
+          "reason": "Immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-11-19T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "COVID-19 Booster Record",
+              "date": "2021-11-23T10:30",
+              "author": "MA",
+              "body": "State immunization registry shows Moderna booster given 11/19/21 at a community pharmacy. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "office_visit",
+          "start": "2022-02-08T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, tongue plaques",
+          "vitals": {
+            "bp": [
+              119,
+              83
+            ],
+            "hr": 65,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 76.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-08T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "persistent oral plaques"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2022-02-08T11:00",
+              "author": "PCP",
+              "body": "Tongue plaques still there, now on both sides. Not painful. Bothered by how they look and the texture. He did see ID in the fall; they told him to stick with his ART. He says he's taking it \"most days.\" Weight back up a bit over the holidays. No fevers.\n\nExam: corrugated white plaques along both lateral tongue borders, unchanged character, do not scrape. No other oral lesions. No nodes. Lungs clear.\n\nA/P\n1. Oral hairy leukoplakia - persistent. He'd like another opinion about whether anything can be done for the appearance; referral to dermatology (they see oral mucosal lesions). Wait list is long.\n2. HIV - adherence again. ID follow-up.\n3. Polysubstance use disorder - still no use.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "telephone",
+          "start": "2022-03-22T09:45",
+          "reason": "Referral authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Authorization - Dermatology",
+              "date": "2022-03-22T09:55",
+              "author": "front desk",
+              "body": "Dermatology office called; MassHealth referral number needed before they can book. Entered referral in the payer portal, number faxed to them. They offered 5/2 at 1:30. Patient notified by text and confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-02a",
+          "kind": "specialist_visit",
+          "start": "2022-05-02T13:30",
+          "service": "Dermatology",
+          "reason": "Fatigue, fever, weight loss; oral plaques",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 88,
+            "temp_c": 38.2,
+            "weight_kg": 66.5,
+            "height_cm": 178.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-05-02T14:20",
+              "resulted": "2022-05-04T12:00",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 180
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2022-05-02T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consult Letter",
+              "date": "2022-05-09T14:00",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - CONSULT LETTER\nVisit date: 05/02/2022\n\nReferred for oral plaques. At the visit his bigger concern was feeling unwell for about two months: tired, fevers off and on, and about 10 kg of weight loss he did not intend. No cough, no diarrhea, no night sweats. Sexually active with more than one partner, does not always use protection. No known drug allergies.\n\nVitals: T 38.2 C, BP 120/75, HR 88, BMI 21.\n\nExam: several white, corrugated plaques on the lateral tongue that cannot be wiped off; no other oral lesions. Skin and remainder of exam unremarkable.\n\nLabs drawn here: CD4 180 cells/uL. RPR non-reactive. Hepatitis B surface antigen negative. Hepatitis C antibody negative.\n\nImpression: oral hairy leukoplakia, consistent with the ENT assessment; no dermatologic treatment indicated. The constitutional symptoms and falling CD4 are the more pressing issue and need prompt review by his HIV physician; patient told this directly today. Copy to PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.5
+          }
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after dermatology, weight loss",
+          "vitals": {
+            "bp": [
+              114,
+              73
+            ],
+            "hr": 62,
+            "temp_c": 36.4,
+            "spo2": 100,
+            "weight_kg": 65.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-05-10T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2022-05-10T10:25",
+              "author": "PCP",
+              "body": "Seen after dermatology. Down about 10 kg since February. Tired, fevers on and off. Honest that he's been missing a lot of ART doses since winter - says the pill bottle \"gets lost\" when he's moving between rooms in the program. No drug use. Eating less, no diarrhea, no cough.\n\nDerm letter reviewed: CD4 180, RPR nonreactive, hep B sAg and hep C Ab negative.\n\nExam: thin. Afebrile here today. Tongue plaques unchanged. No thrush. No nodes. Lungs clear. Abd soft, no HSM. Skin clear.\n\nA/P\n1. HIV with falling CD4, missed doses, weight loss and fevers - needs ID now, not in the fall. Called the ID clinic from the room with him; they will see him next month and draw viral load. Pill organizer given; set a phone alarm together.\n2. Weight loss - follow weight. Return in 3 months, sooner if fevers worsen, cough or diarrhea.\n3. Oral hairy leukoplakia - unchanged."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "telephone",
+          "start": "2022-06-14T11:30",
+          "reason": "ID appointment check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up Call",
+              "date": "2022-06-14T11:40",
+              "author": "RN",
+              "body": "Called to check whether he made his ID appointment. He went last week, says they \"went over everything\" and he is back to taking the pill every day with the organizer. No fevers this week. Eating better. Reminded him of August visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "office_visit",
+          "start": "2022-08-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              80
+            ],
+            "hr": 61,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 67.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-08-16T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-08-16T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-08-16T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2022-08-16T14:40",
+              "author": "PCP",
+              "body": "Feels better than spring. Fevers stopped. Up 2 kg. Taking ART with the organizer, misses maybe one dose a week. Saw ID in June.\n\nExam: thin but looks better. Tongue plaques still present, smaller. Lungs clear. Heart regular.\n\nA/P\n1. HIV - improving adherence; ID follow-up continues.\n2. Weight - slowly recovering.\n3. Pneumococcal vaccine - indicated with HIV; PCV20 given today, no further pneumococcal doses needed.\n4. Flu and COVID bivalent at a nurse visit in October.\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2022-10-18T15:50",
+              "author": "RN",
+              "body": "Flu vaccine IM left deltoid and Pfizer bivalent COVID booster IM right deltoid. Screening negative. Observed 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-Show",
+              "date": "2022-12-06T10:30",
+              "author": "front desk",
+              "body": "No show for 10:00. Number goes straight to voicemail. Left message and sent a portal note to rebook."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "portal_message",
+          "start": "2023-01-10T19:05",
+          "reason": "Reschedule",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2023-01-10T19:05",
+              "author": "patient",
+              "body": "sorry i missed in december my phone was off for a while. can i come in sometime in feb. mornings better"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2023-01-11T08:50",
+              "author": "front desk",
+              "body": "No problem, Timothy. You're booked Tuesday 2/21 at 9:20. Reply here if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "office_visit",
+          "start": "2023-02-21T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Trouble swallowing",
+          "vitals": {
+            "bp": [
+              120,
+              80
+            ],
+            "hr": 63,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 67.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-21T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral, urgent",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "dysphagia and odynophagia in advanced HIV"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Dysphagia",
+              "date": "2023-02-21T10:05",
+              "author": "PCP",
+              "body": "About a week of food hanging up behind the breastbone, and it hurts to swallow. Liquids go down better than solids. White patches in his mouth again, a little sore. He stopped his ART sometime in the fall - \"I just stopped picking it up\" - and has not been back to ID since last summer. Still taking TMP-SMX some weeks. No drug use. No vomiting, no blood, no black stools.\n\nExam: thin. Oral thrush on the buccal mucosa and palate, plus the old tongue plaques. No nodes. Lungs clear. Abd soft, nontender.\n\nA/P\n1. Dysphagia/odynophagia with thrush, off ART - concern for esophageal infection. Urgent GI referral; GI office reached by phone and can scope him Monday 2/27.\n2. HIV off ART - he agrees to call ID; given the number again.\nFollow up after GI."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T08:00",
+          "service": "Gastroenterology",
+          "reason": "Dysphagia and odynophagia",
+          "conditions": [
+            {
+              "label": "Candidal esophagitis",
+              "action": "diagnosed",
+              "onset": "2023-02-13",
+              "icd10": "B37.81"
+            },
+            {
+              "label": "Oral candidiasis",
+              "action": "diagnosed",
+              "onset": "2023-02-13",
+              "icd10": "B37.0"
+            },
+            {
+              "label": "Noncompliance with medication regimen",
+              "action": "diagnosed",
+              "onset": "2022-10-01",
+              "note": "Off ART since fall 2022",
+              "icd10": "Z91.148"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fluconazole 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily for 21 days",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Candidal esophagitis; prescribed by GI"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 37.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-27T08:20",
+              "resulted": "2023-02-28T16:00",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 50
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 120000
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-27T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-27T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-02-27T09:40",
+              "text": "Specimen: esophagus, mid and distal, biopsies. Gross: four tan mucosal fragments, 0.2 to 0.4 cm, entirely submitted. Microscopic: squamous mucosa with acute inflammation and surface fibrinopurulent debris. Yeast forms and pseudohyphae are present within the debris and invade the squamous epithelium, highlighted on PAS-D stain. No viral cytopathic changes. No dysplasia.",
+              "conclusion": "Esophagus, biopsies: fungal (candidal) esophagitis. Negative for viral cytopathic effect and dysplasia.",
+              "issued": "2023-03-02T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2023-02-27T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2023-02-27T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consult and Procedure Letter",
+              "date": "2023-03-06T11:30",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY - CONSULT AND ENDOSCOPY\nDate of service: 02/27/2023\n\nHistory: two weeks of odynophagia and dysphagia with a feeling that food lodges in the mid-chest. New mildly sore white patches in the mouth. Longstanding HIV, prior oral hairy leukoplakia; he acknowledges he has not been taking his antiretrovirals and his HIV has not been controlled.\n\nT 37.8 C (100 F), BP 125/78, HR 88, RR 16. Oral thrush present.\n\nLabs today: CD4 50 cells/mm3. HIV-1 viral load 120,000 copies/mL. CBC and BMP unremarkable.\n\nEGD: linear yellow-white plaques running along the esophagus. Biopsies taken. Stomach and duodenum normal.\n\nPathology (resulted 3/2): candidal esophagitis; no viral changes, no dysplasia.\n\nAssessment: candidal esophagitis and oropharyngeal candidiasis in a patient with advanced HIV off therapy; medication nonadherence.\n\nPlan: fluconazole 200 mg daily for 21 days, prescription sent. He must re-engage with his HIV clinic to restart ART; we stressed this. GI follow-up only if symptoms persist after treatment."
+            }
+          ],
+          "state": {
+            "labs": {
+              "White Blood Cells": 4.6
+            }
+          }
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after GI",
+          "vitals": {
+            "bp": [
+              114,
+              79
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 67.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-14T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral-2023",
+              "action": "placed",
+              "order": "Infectious disease referral",
+              "category": "referral",
+              "to": "Infectious Diseases",
+              "reason": "HIV off ART, CD4 50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2023-03-14T10:00",
+              "author": "PCP",
+              "body": "Two weeks into fluconazole from GI. Swallowing much better, mouth less sore. GI letter and path reviewed: candidal esophagitis, CD4 50, viral load 120,000.\n\nWe talked plainly about what the CD4 means. He says he stopped ART because he was \"tired of being sick about being sick.\" Not using drugs. Housing the same.\n\nExam: few residual white patches on palate. Lungs clear.\n\nA/P\n1. Candidal esophagitis / oral thrush - improving; finish the 21 days.\n2. HIV, CD4 50, off ART; medication nonadherence - new ID referral placed and faxed so the clinic reaches out to him; he agrees to go. TMP-SMX: asked him to take it every Mon/Wed/Fri without fail.\nRTC 4 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Candidal esophagitis",
+              "action": "resolved",
+              "icd10": "B37.81"
+            },
+            {
+              "label": "Oral candidiasis",
+              "action": "resolved",
+              "icd10": "B37.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              84
+            ],
+            "hr": 79,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 69.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-04-11T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2023-04-11T10:10",
+              "author": "PCP",
+              "body": "Finished the fluconazole. Swallowing normal. Mouth not sore.\n\nID: the clinic left him two messages; he has not called back yet. Said he would this week.\n\nExam: oropharynx without thrush; leukoplakia plaques on tongue as before. Lungs clear.\n\nA/P\n1. Candidal esophagitis and thrush - resolved.\n2. HIV off ART - pressed again on ID. Gave him the direct scheduling line.\nPhysical in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "annual_physical",
+          "start": "2023-06-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 63,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 69.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-20T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-20T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-20T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Transitional housing"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer, intermittent work"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-20T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-20T09:35",
+              "author": "PCP",
+              "body": "PHYSICAL\n\nWeight up a couple of kg since April. Swallowing fine. Working a few days a week with a siding crew. Three years now without cocaine or meth.\n\nHIV: still has not made it to ID. Says he \"keeps meaning to.\" Not on ART. Taking TMP-SMX most weeks.\n\nROS: no fever, cough, diarrhea, mouth pain, rash. PHQ-9 3.\n\nExam: thin. Oropharynx without thrush; tongue plaques persist. No nodes. Heart RRR, lungs clear. Abd soft, no HSM. Skin without lesions. No edema.\n\nA/P\n1. Health maintenance - CMP, CBC, lipids, A1c. Flu and updated COVID in the fall. Colon screening starts at 45.\n2. HIV off ART - another long talk. I re-sent the ID referral with a note asking them to call him directly.\n3. Polysubstance use disorder - sustained abstinence.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "portal_message",
+          "start": "2023-06-22T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2023-06-22T13:20",
+              "author": "PCP",
+              "body": "Hi Timothy - your labs came back without anything worrying: kidneys, liver, sugar and cholesterol are all fine and the blood count is ok. The most important number for you is one we didn't check here, your CD4, which the ID clinic needs to follow. Please call them."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request - Fluconazole",
+              "date": "2023-09-12T10:30",
+              "author": "RN",
+              "body": "Patient called for fluconazole 100 mg refill, has a little thrush. Prescription on file from ID has expired and ID has not seen him this year. PCP authorized one fill of the same prn prescription. Reminded him again to call ID; he says he will."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "nurse_visit",
+          "start": "2023-11-07T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-07T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-07T15:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-07T15:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-11-07T15:30",
+              "author": "RN",
+              "body": "Flu IM left deltoid, updated Pfizer COVID IM right deltoid. Afebrile, no acute complaints. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Purple spots on legs and mouth",
+          "vitals": {
+            "bp": [
+              108,
+              86
+            ],
+            "hr": 82,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 64.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-12-12T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "onc-referral",
+              "action": "placed",
+              "order": "Oncology referral",
+              "category": "referral",
+              "to": "Oncology",
+              "reason": "violaceous skin and palatal lesions, advanced HIV"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Skin and Palate Lesions",
+              "date": "2023-12-12T12:05",
+              "author": "PCP",
+              "body": "Came in because of purple spots on both shins that showed up over the last few weeks, and his housemate noticed a purple area on the roof of his mouth. Not painful, not itchy. More tired. Lost about 5 kg since the fall without trying. Not on ART. Has not gone to ID.\n\nExam: thin. Several violaceous patches and plaques on both lower legs, non-tender. Violaceous patch on the hard palate. No nodes. Abd soft.\n\nA/P\n1. Violaceous skin and palatal lesions in advanced HIV off ART - strongly suspect Kaposi sarcoma. Oncology referral placed; they can see him 1/3. Explained what we're worried about.\n2. HIV off ART - the most important treatment for this is restarting ART; called ID with him, earliest new-return slot is mid-January, he took it.\n3. Weight loss.\nRTC after oncology."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-03a",
+          "kind": "specialist_visit",
+          "start": "2024-01-03T13:00",
+          "service": "Oncology",
+          "reason": "Violaceous skin lesions",
+          "conditions": [
+            {
+              "label": "Kaposi sarcoma (AIDS-related)",
+              "action": "diagnosed",
+              "onset": "2023-11-15",
+              "note": "Lower legs and hard palate; biopsy confirmed",
+              "icd10": "C46.9"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-01-03T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2024-01-03T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "onc-referral",
+              "action": "done",
+              "date": "2024-01-03T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Consult Letter",
+              "date": "2024-01-16T10:00",
+              "author": "oncology",
+              "body": "OUTSIDE ONCOLOGY - CONSULT LETTER\nVisit 01/03/2024\n\nRe: 41M with HIV, prior PJP and prior candidal esophagitis, seen for skin lesions. Several weeks of fatigue; painless violaceous patches and plaques on the lower legs and roof of mouth; 5 kg down over 2 months; some early satiety. No fevers, sweats or cough. Has not seen his ID physician in over a year. Takes his antiretrovirals inconsistently and currently is not taking any prophylactic antibiotic.\n\nExam: thin, pale. Multiple non-blanching violaceous plaques on both lower legs and on the hard palate. No lymphadenopathy. Abdomen soft, nontender, no hepatosplenomegaly.\n\nHgb 11 g/dL.\n\nPunch biopsy of a left shin plaque taken today; pathology: Kaposi sarcoma, HHV-8 (LANA) positive.\n\nAssessment: AIDS-related Kaposi sarcoma, skin and palate.\n\nPlan: the first-line treatment is effective ART, which he needs to restart with ID now (appointment this month); restart TMP-SMX prophylaxis. We will follow the lesions with photographs every 3 months. Systemic chemotherapy only if lesions progress despite ART."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Hemoglobin": 11.0
+            }
+          }
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after oncology",
+          "vitals": {
+            "bp": [
+              111,
+              79
+            ],
+            "hr": 67,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 63.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-06T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.77
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-02-06T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-06T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral-2023",
+              "action": "done",
+              "date": "2024-02-06T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2024-02-06T09:45",
+              "author": "PCP",
+              "body": "Oncology letter reviewed: biopsy confirmed Kaposi sarcoma; plan is ART first, chemo only if it progresses.\n\nHe went to ID on 1/18 - first time in well over a year. Restarted the same once-daily ART pill and the TMP-SMX MWF. Says he has taken it every day since, organizer in use. Oncology will see him every 3 months.\n\nExam: thin. Violaceous plaques on both shins and palate, similar to December. Healed biopsy site left shin. No thrush. Lungs clear.\n\nA/P\n1. Kaposi sarcoma, AIDS-related - per oncology; ART is the treatment.\n2. HIV - back on ART and prophylaxis. Big step; told him so.\n3. Anemia on oncology labs (Hgb 11) - CBC and CMP today.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5,
+            "labs": {
+              "Hemoglobin": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "portal_message",
+          "start": "2024-02-08T17:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood work",
+              "date": "2024-02-08T17:30",
+              "author": "PCP",
+              "body": "Timothy, your blood count is still a little low (hemoglobin about 11), about the same as at oncology. Kidneys and liver are fine, which matters now that you're back on your HIV medicine. We'll recheck in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "telehealth_visit",
+          "start": "2024-05-07T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-05-07T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-05-07T14:25",
+              "author": "PCP",
+              "body": "Video from his room. Says he is mostly taking ART, \"maybe five or six days a week.\" TMP-SMX some weeks, not every week. Oncology saw him in April, photographed the spots, no change. Energy a little better. No cough, fever, mouth pain.\n\nA/P\n1. HIV - partial adherence; went through what's getting in the way (irregular work hours, sleeping at a friend's some nights). Suggested a second pill organizer to keep at the friend's place.\n2. Kaposi sarcoma - stable per patient; oncology following.\nPhysical in June."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-Show",
+              "date": "2024-06-18T09:10",
+              "author": "front desk",
+              "body": "Did not come for physical. Voicemail left. Will try to rebook in the fall."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "ed_visit",
+          "start": "2024-08-22T19:40",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, cough, fever",
+          "conditions": [
+            {
+              "label": "Pneumocystis jirovecii pneumonia",
+              "action": "diagnosed",
+              "onset": "2024-08-12",
+              "icd10": "B59"
+            },
+            {
+              "label": "Oral candidiasis",
+              "action": "diagnosed",
+              "onset": "2024-08-01",
+              "icd10": "B37.0"
+            }
+          ],
+          "vitals": {
+            "spo2": 89
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-22T20:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "CD4 Count",
+                  "value": 62
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "text": ">500,000 copies/mL"
+                },
+                {
+                  "test": "Oxygen partial pressure in arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 63
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-08-22T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2024-08-27T08:30",
+              "author": "emergency medicine",
+              "body": "REGIONAL ED - PHYSICIAN NOTE (abbreviated copy sent to PCP)\nArrival 8/22/2024 19:40\n\nCC: short of breath.\n\n41M with HIV, inconsistent ART, prior PJP and Kaposi sarcoma, brought in by his roommate. Ten days of increasing breathlessness, dry cough and low fevers, more and more tired; now gets winded on stairs or walking a short way. Roommate says he has lost a lot of weight over about 3 months and has had white patches on his tongue at times. No sputum, chest pain or blood in sputum.\n\nExam: thin, mildly tachypneic. SpO2 89% RA. Thrush. Faint crackles both lungs.\n\nWBC 4.3. CD4 62. HIV-1 RNA >500,000 copies/mL. ABG on room air: PaO2 63 mmHg.\nCXR (portable): bilateral diffuse interstitial opacities; no effusion, no pneumothorax.\n\nImpression: presumed Pneumocystis pneumonia with hypoxemia; oral candidiasis; advanced HIV.\n\nDisposition: admitted to medicine on oxygen. TMP-SMX treatment dosing and steroids started in the ED (PaO2 under 70)."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-30a",
+          "kind": "pharmacy",
+          "start": "2024-08-30T15:00",
+          "reason": "Discharge prescriptions",
+          "medications": [
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth three times daily to complete 21 days total, then resume 1 tablet three times weekly",
+              "dose": {
+                "value": 2,
+                "unit": "tablet"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "PJP pneumonia treatment; hospital prescriber"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "40 mg twice daily days 1-5, 40 mg daily days 6-10, 20 mg daily days 11-21 (started in hospital 8/22)",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "PJP pneumonia with hypoxemia; hospital prescriber"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Pharmacy Fill History",
+              "date": "2024-09-03T10:20",
+              "author": "MA",
+              "body": "Medication fill history pulled after patient called about a hospital stay. Filled 8/30/24: TMP-SMX DS #36 (2 tabs three times a day), prednisone 20 mg taper, bictegravir/emtricitabine/tenofovir alafenamide #30. Prescriber is a hospitalist at the regional hospital. No discharge summary received; request faxed to medical records."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T09:50",
+          "reason": "Hospital discharge",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2024-09-03T10:05",
+              "author": "RN",
+              "body": "Patient called. Discharged Friday 8/30 after about a week in the hospital for pneumonia, \"the same kind as before.\" Breathing better, walking around the house ok, no fever. Taking the big TMP-SMX doses and prednisone. Booked post-hospital visit Thursday 9/5. Fill history pulled (see pharmacy note)."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-05a",
+          "kind": "office_visit",
+          "start": "2024-09-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, pneumonia",
+          "vitals": {
+            "bp": [
+              111,
+              71
+            ],
+            "hr": 69,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 59.3
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-09-05T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-09-05T10:50",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\n\nAdmitted 8/22 to 8/30 at the regional hospital. Our records: short ED note and the pharmacy fill history; discharge summary requested, not yet received. From Timothy: he was on oxygen for several days, they did a sputum test after a breathing treatment and told him it was PJP again. Treated with high-dose TMP-SMX and a prednisone taper; both run through 9/11, then back to one TMP-SMX DS three times a week. The hospital restarted his HIV pill before he left. ID visit set for October.\n\nNow: breathing much better, mild cough, no fever. Walking to the store without stopping. Appetite poor, weight 59 kg. Mouth no longer sore.\n\nMeds reconciled with his bottles: bictegravir/FTC/TAF daily; TMP-SMX DS 2 tabs TID (through 9/11) then DS MWF; prednisone taper (through 9/11); fluconazole prn; acetaminophen prn.\n\nExam: thin, no distress. Speaks full sentences. Oropharynx clear. Lungs with a few faint basilar crackles, no wheeze. Heart regular.\n\nA/P\n1. PJP pneumonia, recovering - finish treatment course and taper exactly as written, then back to prophylaxis dose. Return precautions reviewed.\n2. HIV - ART restarted inpatient; ID in October.\n3. Weight loss - calorie-dense foods; housing program kitchen has supplements.\nRTC 3-4 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "office_visit",
+          "start": "2024-10-01T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, pneumonia",
+          "conditions": [
+            {
+              "label": "Pneumocystis jirovecii pneumonia",
+              "action": "resolved",
+              "icd10": "B59"
+            },
+            {
+              "label": "Oral candidiasis",
+              "action": "resolved",
+              "icd10": "B37.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              110,
+              82
+            ],
+            "hr": 77,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 61.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-01T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-01T09:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 323
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-01T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-01T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-01T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2024-10-01T10:10",
+              "author": "PCP",
+              "body": "Finished the high-dose TMP-SMX and the prednisone on 9/11. Back on TMP-SMX DS MWF and says he takes it. Breathing back to normal, no cough. Weight up 2 kg.\n\nHe tells me he stopped the HIV pill about a week after he got home - it made him feel sick and he \"couldn't do it\" on top of the other pills. Has the October ID appointment and says he'll tell them.\n\nExam: oropharynx clear. Lungs clear. Heart regular.\n\nA/P\n1. PJP pneumonia - treated, resolved. Thrush resolved.\n2. HIV off ART again (side effects). Told him plainly this is how he ended up in the hospital, twice. Asked him to bring the side effects to ID rather than stopping - there may be things they can adjust. Kept ART on his list; ID prescribes.\n3. TMP-SMX prophylaxis - continue; CMP and CBC today after the high-dose course.\n4. Flu vaccine today.\nRTC 2-3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "labs": {
+              "Hemoglobin": 11.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs after the pneumonia",
+              "date": "2024-10-03T12:15",
+              "author": "PCP",
+              "body": "Potassium and kidney function are normal after the strong TMP-SMX course - good. Hemoglobin still around 11, about where it was. Keep taking the 3-times-a-week tablet. And please keep the ID appointment this month."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-12-10T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-12-10T15:25",
+              "author": "PCP",
+              "body": "Video. Missed the October ID visit (was working a job out of town that week), rebooked for February. Still not taking ART. Takes TMP-SMX MWF. Breathing fine. Oncology saw him in November, spots \"the same.\" Still in the transitional program; new roommate.\n\nA/P\n1. HIV off ART - he knows the risk; not ready to restart until he talks to ID about the side effects. Asked him to keep February.\n2. Prophylaxis - continue.\nIn person in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              109,
+              66
+            ],
+            "hr": 68,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-11T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2025-02-11T10:20",
+              "author": "PCP",
+              "body": "Feels ok. Weight slowly coming up. Saw ID last week; they talked through options, he said he'd \"think about it\" and did not restart. Taking TMP-SMX MWF faithfully - \"that one I don't mess with after last summer.\" No cough, fever, swallowing trouble.\n\nExam: thin. Violaceous plaques both shins and palate, no new ones that I can see. No thrush. Lungs clear.\n\nA/P\n1. HIV off ART - same conversation; respect his choice today, door open. ID following.\n2. Kaposi sarcoma - stable on exam; oncology following.\n3. Prophylaxis - continue.\nPhysical in May."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "telephone",
+          "start": "2025-03-18T11:00",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request - TMP-SMX",
+              "date": "2025-03-18T11:10",
+              "author": "RN",
+              "body": "Pharmacy request for TMP-SMX DS three times weekly; ID prescription ran out of refills. PCP sent 90-day supply with 1 refill. Patient notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "annual_physical",
+          "start": "2025-05-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              68
+            ],
+            "hr": 59,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 61.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-13T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 310
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-13T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Transitional housing"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-05-13T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-05-13T09:25",
+              "author": "PCP",
+              "body": "PHYSICAL\n\nWorking regularly with a framing crew this spring. Eating better. Still off ART; TMP-SMX MWF. Five years without cocaine or meth. Has a girlfriend now, sees her most weekends.\n\nROS: no fevers, cough, dyspnea, dysphagia, diarrhea, headaches. PHQ-9 4.\n\nExam: thin, well-appearing. Palate and shin plaques unchanged. No thrush. No nodes. Heart RRR, lungs clear. Abd soft, no HSM. Neuro nonfocal.\n\nA/P\n1. Health maintenance - CMP, CBC, lipids, A1c. Colon screening due at 45 (2027). Flu in fall.\n2. HIV off ART - asked again; he says \"maybe after the summer.\" Safer sex reviewed.\n3. Kaposi sarcoma - stable; oncology.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "portal_message",
+          "start": "2025-05-16T11:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2025-05-16T11:45",
+              "author": "PCP",
+              "body": "Hi Timothy, labs look reasonable. Hemoglobin a bit better than last fall. Kidneys, liver, sugar and cholesterol fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "ed_visit",
+          "start": "2025-08-20T21:15",
+          "service": "Emergency Medicine",
+          "reason": "Seizure",
+          "conditions": [
+            {
+              "label": "Seizure",
+              "action": "diagnosed",
+              "onset": "2025-08-20",
+              "icd10": "R56.9"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-20T21:45",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 35
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-20T21:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-08-28T09:00",
+              "author": "emergency medicine",
+              "body": "REGIONAL ED - PHYSICIAN NOTE (copy to PCP)\nArrival 8/20/2025 21:15\n\nBrought in by his partner, who saw him have a generalized seizure at home. HIV, prior PJP, Kaposi sarcoma. He has been off antiretrovirals for more than a year, says because of side effects; has kept taking TMP-SMX prophylaxis.\n\nPostictal on arrival, improving. No focal deficit documented on reassessment.\n\nCD4 35/uL.\nCT head: ring-enhancing lesion.\n\nImpression: first seizure; ring-enhancing brain lesion in advanced HIV.\n\nDisposition: loaded with levetiracetam; admitted to medicine with neurology and ID consultation."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "telephone",
+          "start": "2025-08-21T10:30",
+          "reason": "Patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Partner",
+              "date": "2025-08-21T10:40",
+              "author": "RN",
+              "body": "Patient's partner called (patient on speaker, gave verbal ok to talk with her). He had a seizure last night and is admitted at the regional hospital; they found something on the head CT and are doing more tests. Partner wanted us to know. PCP notified. Asked them to call when he is discharged so we can see him within the week."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "conditions": [
+            {
+              "label": "Primary CNS lymphoma, diffuse large B-cell type (non-Hodgkin lymphoma)",
+              "action": "diagnosed",
+              "onset": "2025-08-29",
+              "note": "Stereotactic biopsy during August 2025 admission",
+              "icd10": "C83.390"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Seizure; started in hospital"
+            },
+            {
+              "drug_text": "dexamethasone 4 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Taper per hospital/oncology instructions",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Brain lymphoma; hospital prescriber"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              80
+            ],
+            "hr": 64,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 61.9
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-09-16T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-09-16T11:40",
+              "author": "PCP",
+              "body": "TRANSITIONAL CARE VISIT\n\nHere with his partner. Hospitalized 8/20 to 9/5. We have only the ED note; the rest is their account plus the discharge medication sheet he brought.\n\nAfter the seizure the CT showed a lesion; MRI with contrast showed one enhancing spot. Toxoplasma blood test was negative (he had been taking his TMP-SMX). He had a needle biopsy through the skull on 8/29: lymphoma of the brain, large B-cell type. Oncology started chemotherapy in the hospital - high-dose methotrexate based, given every 2 weeks as an inpatient. Neurology started levetiracetam. On a dexamethasone taper. ART restarted in hospital, and this time he says he means it: \"I don't want to die from this.\"\n\nNo seizures since. Mild headache the first week, gone. Tired after chemo.\n\nMeds (discharge sheet): bictegravir/FTC/TAF daily; TMP-SMX DS MWF; levetiracetam 500 mg BID; dexamethasone taper; fluconazole prn; acetaminophen prn. Chemotherapy given by oncology.\n\nExam: thin, alert, oriented. Speech normal. CN intact, strength and gait normal. Healed small scalp incision. Palate and shin plaques unchanged. Lungs clear.\n\nA/P\n1. Primary CNS lymphoma (non-Hodgkin, diffuse large B-cell) - oncology leads; requested their notes.\n2. Seizure - levetiracetam BID; no driving (he doesn't drive), no working at heights on the crew until cleared - he says he is out of work during treatment anyway.\n3. HIV - ART restarted; ID follow-up scheduled.\n4. Kaposi sarcoma - unchanged.\nRTC 6-8 weeks; call with any seizure, confusion, fever."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "outside_records",
+          "start": "2025-10-07T14:00",
+          "reason": "Oncology records",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Progress Note",
+              "date": "2025-10-07T14:00",
+              "author": "oncology",
+              "body": "OUTSIDE HEMATOLOGY/ONCOLOGY - PROGRESS NOTE (copy to PCP, received by fax)\n\nDiagnosis: primary CNS lymphoma, diffuse large B-cell type, solitary lesion, biopsy 8/29/2025; background HIV with CD4 35 at diagnosis.\n\nTreatment: high-dose methotrexate-based induction, cycles every 14 days, given inpatient; tolerating with fatigue. Dexamethasone being tapered off.\n\nPlan: continue induction; continue ART (restarted 9/2025), TMP-SMX prophylaxis and levetiracetam. Repeat brain MRI after induction."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T13:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T13:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2025-10-14T13:35",
+              "author": "RN",
+              "body": "Inactivated flu vaccine IM left deltoid; oncology ok'd timing between cycles. Afebrile. No seizures since discharge per patient. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request - Levetiracetam",
+              "date": "2025-11-18T09:45",
+              "author": "RN",
+              "body": "Patient down to 4 days of levetiracetam; hospital prescription had no refills. PCP sent levetiracetam 500 mg BID, 90-day supply. Pharmacy confirmed it will be ready this afternoon. He says chemo is going ok, \"two more rounds.\""
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "office_visit",
+          "start": "2025-12-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              83
+            ],
+            "hr": 77,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 63.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-22T09:45",
+              "resulted": "2025-12-23T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-22T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-12-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Primary Care Follow-up",
+              "date": "2025-12-22T09:50",
+              "author": "PCP",
+              "body": "Doing better than I expected. Induction chemo almost done - last cycle scheduled for January, then oncology repeats the MRI. Off dexamethasone. No seizures on levetiracetam. Taking ART every day since September, organizer at his partner's place, and TMP-SMX MWF. ID saw him in November.\n\nTired after chemo weeks. Eating well; weight 64.\n\nExam: thin, alert. Speech and gait normal. Mouth: no thrush; palatal plaque unchanged. Shin plaques unchanged. Lungs clear. Heart regular.\n\nA/P\n1. Primary CNS lymphoma - finishing induction with oncology.\n2. Seizure - none since August; continue levetiracetam.\n3. HIV - adherent since September. Proud of him; told him so.\n4. Kaposi sarcoma - stable.\n5. CBC and CMP today (chemo and TMP-SMX).\nRTC after the January MRI, about 2-3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Hemoglobin": 11.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "portal_message",
+          "start": "2025-12-23T15:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Monday",
+              "date": "2025-12-23T15:20",
+              "author": "PCP",
+              "body": "Timothy - hemoglobin is around 11, expected with chemo. Kidney and liver tests are ok for the next methotrexate cycle; I've sent a copy to oncology. Happy holidays."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T10:00",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Refill Authorization",
+              "date": "2026-02-10T10:20",
+              "author": "RN",
+              "body": "Pharmacy refill request for TMP-SMX DS three times weekly. Last PCP fill 3/2025; ID now prescribing per pharmacy profile, but no refills left. Authorized 90 days. Patient's follow-up visit after the January MRI not yet booked - message left asking him to call."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T18:40",
+          "reason": "Letter request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "letter for housing",
+              "date": "2026-03-24T18:40",
+              "author": "patient",
+              "body": "hi its Tim. the housing place says i need a letter from my doctor that i have medical conditions so i can get on the priority list for an apartment. can you do that"
+            },
+            {
+              "type": "Letter",
+              "title": "Letter of Medical Necessity - Housing",
+              "date": "2026-03-26T12:00",
+              "author": "PCP",
+              "body": "To the housing review committee:\n\nTimothy Cole has been a patient of this practice since 2019. He has serious chronic medical conditions that require frequent appointments with several specialists, daily medications, and treatment that leaves him vulnerable to infection. Stable, private housing with reliable access to a refrigerator, a bathroom and a phone is medically important for him. I support his application for priority placement.\n\nPlease contact our office with questions.\n\nPrimary Care Physician"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: letter for housing",
+              "date": "2026-03-26T12:10",
+              "author": "front desk",
+              "body": "Hi Tim, your letter is ready - signed copy at the front desk and a PDF attached here. Please also call to book your follow-up visit with the doctor; it's overdue."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "ed_visit",
+          "start": "2026-05-01T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Diarrhea",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2026-05-11T08:45",
+              "author": "emergency medicine",
+              "body": "REGIONAL ED - PHYSICIAN NOTE (copy to PCP)\nArrival 5/1/2026 16:30\n\n43M with HIV, prior PJP and non-Hodgkin lymphoma. Six days of large-volume watery diarrhea with cramping and fatigue. No blood or mucus. Down 4 kg (9 lb) in a week. Ate raw vegetables at an outdoor picnic recently. No travel abroad, no recent antibiotics. Drinks bottled water at home. Reports he stopped his antiretrovirals a few months ago.\n\nT 38.0 C. Mildly dry. Abdomen soft and nontender.\n\nStool modified acid-fast stain: round oocysts, 4-6 microns.\n\nImpression: cryptosporidiosis with mild dehydration in advanced HIV.\n\nPlan: IV fluids, oral rehydration and supportive care; antiretroviral therapy restarted; ID follow-up arranged. Discharged home. PCP follow-up advised."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "telephone",
+          "start": "2026-05-12T11:15",
+          "reason": "ED follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED Note Received - Outreach",
+              "date": "2026-05-12T11:25",
+              "author": "RN",
+              "body": "PCP reviewed ED note from 5/1 (cryptosporidiosis, ART restarted) and asked that he be seen. Called patient's cell, voicemail; left message with our number asking him to book a visit. Portal message sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "pharmacy",
+          "start": "2026-06-16T09:30",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Refill Request - Levetiracetam",
+              "date": "2026-06-16T09:45",
+              "author": "RN",
+              "body": "Pharmacy request for levetiracetam 500 mg BID. Last PCP visit 12/2025. PCP approved 30 days and asked for a visit before further refills. Message left for patient."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T09:00",
+          "reason": "Scheduling reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time to schedule",
+              "date": "2026-07-21T09:00",
+              "author": "front desk",
+              "body": "Hi Timothy, the doctor would like to see you - it has been several months since your last visit and we received your ED records from May. Please call or reply here to pick a time."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Candidal esophagitis|B37.81": {
+        "code": "B37.81",
+        "display": "Candidal esophagitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "HIV-related opportunistic skin infection|L08.9": {
+        "code": "L08.9",
+        "display": "Local infection of the skin and subcutaneous tissue, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of Pneumocystis jirovecii pneumonia|Z87.01": {
+        "code": "Z87.01",
+        "display": "Personal history of pneumonia (recurrent)",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of oropharyngeal candidiasis|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Housing instability, housed|Z59.819": {
+        "code": "Z59.819",
+        "display": "Housing instability, housed unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Kaposi sarcoma (AIDS-related)|C46.9": {
+        "code": "C46.9",
+        "display": "Kaposi's sarcoma, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Noncompliance with medication regimen|Z91.148": {
+        "code": "Z91.148",
+        "display": "Patient's other noncompliance with medication regimen for other reason",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Oral candidiasis|B37.0": {
+        "code": "B37.0",
+        "display": "Candidal stomatitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Oral hairy leukoplakia|K13.3": {
+        "code": "K13.3",
+        "display": "Hairy leukoplakia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pneumocystis jirovecii pneumonia|B59": {
+        "code": "B59",
+        "display": "Pneumocystosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Polysubstance use disorder (cocaine and methamphetamine)|F19.20": {
+        "code": "F19.20",
+        "display": "Other psychoactive substance dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Primary CNS lymphoma, diffuse large B-cell type (non-Hodgkin lymphoma)|C83.390": {
+        "code": "C83.390",
+        "display": "Primary central nervous system lymphoma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Seizure|R56.9": {
+        "code": "R56.9",
+        "display": "Unspecified convulsions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "dexamethasone 4 MG Oral Tablet": {
+        "code": "197582",
+        "display": "dexamethasone 4 MG Oral Tablet",
+        "ingredient": "dexamethasone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "fluconazole 100 MG Oral Tablet": {
+        "code": "197698",
+        "display": "fluconazole 100 MG Oral Tablet",
+        "ingredient": "fluconazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "fluconazole 200 MG Oral Tablet": {
+        "code": "197700",
+        "display": "fluconazole 200 MG Oral Tablet",
+        "ingredient": "fluconazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Oxygen partial pressure in arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Varicella zoster virus IgG": {
+        "code": "15410-4",
+        "display": "Varicella zoster virus IgG Ab [Presence] in Serum by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

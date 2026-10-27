@@ -22,3 +22,8 @@
 - 2026-07-14 portal: driving question, six months seizure-free (A4)
 - 2026-08-18 pharmacy refill (P)
 - 2026-09-29 booked annual preventive visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00002670 on 2025-09-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

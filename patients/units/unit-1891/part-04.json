@@ -34,14 +34,53 @@
           "service": "Emergency Medicine",
           "reason": "hypoglycemia, found unresponsive",
           "conditions": [
-            {"label": "Type 1 diabetes mellitus with hypoglycemia with coma", "icd10": "E10.641", "action": "diagnosed", "onset": "2026-05-17", "note": "found unresponsive; EMS glucagon"}
+            {
+              "label": "Type 1 diabetes mellitus with hypoglycemia with coma",
+              "icd10": "E10.641",
+              "action": "diagnosed",
+              "onset": "2026-05-17",
+              "note": "found unresponsive; EMS glucagon"
+            }
           ],
-          "measure": ["bp", "hr", "temp_c", "rr", "spo2"],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ],
           "labs": [
-            {"panel": null, "collected": "2026-05-17T10:42", "results": [{"test": "Glucose, capillary (point of care)", "loinc": "41653-7", "unit": "mg/dL", "value": 38}]},
-            {"panel": null, "collected": "2026-05-17T11:08", "results": [{"test": "Glucose, capillary (point of care)", "loinc": "41653-7", "unit": "mg/dL", "value": 96}]}
+            {
+              "panel": null,
+              "collected": "2026-05-17T10:42",
+              "results": [
+                {
+                  "test": "Glucose, capillary (point of care)",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-17T11:08",
+              "results": [
+                {
+                  "test": "Glucose, capillary (point of care)",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 96
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-05-17T11:05"}],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-05-17T11:05"
+            }
+          ],
           "documents": [
             {
               "type": "ED Note",
@@ -75,10 +114,26 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "follow-up after ED visit for severe hypoglycemia",
           "conditions": [
-            {"label": "Type 1 diabetes mellitus with hypoglycemia with coma", "icd10": "E10.641", "action": "resolved", "note": "single episode 05/17/2026 after a missed meal"}
+            {
+              "label": "Type 1 diabetes mellitus with hypoglycemia with coma",
+              "icd10": "E10.641",
+              "action": "resolved",
+              "note": "single episode 05/17/2026 after a missed meal"
+            }
           ],
-          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-20T10:30"}],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-20T10:30"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -95,60 +150,6 @@
               "body": "To the endocrinology group following Abigail Lemieux (DOB 10/08/1999):\n\nFYI, she was seen in a regional ED on 5/17 for severe hypoglycemia with loss of consciousness after a missed breakfast; EMS glucose 38, glucagon IM, 96 on arrival, discharged the same day. I saw her today and she is well. Current doses unchanged (glargine 20 units qhs, aspart 8 units AC). I have deferred any regimen change to you and advised no driving until you have reviewed the episode. She has a visit with you in June. ED record attached.\n\nPrimary care"
             }
           ]
-        },
-        {
-          "id": "2026-06-16a",
-          "kind": "portal_message",
-          "start": "2026-06-16T18:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "endocrinology visit update",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Endo visit",
-              "author": "patient",
-              "date": "2026-06-16T18:40",
-              "body": "Hi, saw endo last week. We went over what happened in May. They didn't change any doses and said the plan you gave me (not skipping meals, checking at night and in the morning) is the right one. No more lows since then."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Endo visit",
-              "author": "PCP",
-              "date": "2026-06-17T07:55",
-              "body": "Thanks for the update, glad it's been quiet. We haven't gotten their note, so I'll ask them for a copy. See you at your physical."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-11a",
-          "kind": "portal_message",
-          "start": "2026-08-11T13:10",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "schedule physical",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Scheduling my physical",
-              "author": "patient",
-              "date": "2026-08-11T13:10",
-              "body": "Hi! Can I book my yearly physical for September? Tuesdays are best for me, mornings."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Scheduling my physical",
-              "author": "front desk",
-              "date": "2026-08-11T15:02",
-              "body": "You're booked for Tuesday 9/22 at 8:30 am. Please come fasting; labs will be drawn at the visit. Flu and COVID shots should be in by then too."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T08:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "annual physical",
-          "appointment": "booked"
         }
       ]
     }

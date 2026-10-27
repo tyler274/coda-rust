@@ -95,3 +95,8 @@
 - 2026-06-18 portal: A1c 7.8 (P)
 - 2026-08-19 portal: refill request, confirms September visit (P)
 - 2026-09-10 booked: diabetes and BP follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002531 on 2026-03-18. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

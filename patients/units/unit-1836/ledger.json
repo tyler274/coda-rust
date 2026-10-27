@@ -1,0 +1,3220 @@
+{
+  "unit": "unit-1836",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001836/2026-03-17a: allergen \"Ceftriaxone\" not in catalog (text only)",
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001836",
+      "given": "Karen",
+      "family": "Duffy",
+      "birth_date": "1988-12-20",
+      "address_line": "41 Pomeroy Meadow Road",
+      "phone": "+1-917-555-0148",
+      "email": "karen.duffy@example.test",
+      "marital_status": "single",
+      "summary": "Remote software developer with mild ileocolonic Crohn's disease after a 2020 ileocecal resection, mild asthma and recurrent UTIs. Vitamin D deficiency with secondary hyperparathyroidism (2022) and B12 deficiency anemia (2023), then a urethral diverticulum with three pyelonephritis episodes, the last complicated by ceftriaxone anaphylaxis in the ICU (2026); now referred to urology.",
+      "events": [
+        {
+          "id": "2021-07-26a",
+          "kind": "portal_message",
+          "start": "2021-07-26T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New patient intake",
+              "date": "2021-07-26T20:14",
+              "author": "patient",
+              "body": "Hi, I'm booked as a new patient on Aug 10. I filled out the intake forms online. My old primary care office was in New York and I signed their release form already, but I don't know if they've sent anything. Also is it ok to bring my inhaler and supplement bottles instead of typing out the doses? Thanks, Karen"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New patient intake",
+              "date": "2021-07-27T09:02",
+              "author": "front desk",
+              "body": "Hi Karen, welcome! Bringing the bottles is perfect. We faxed a records request to your previous office this morning and will let you know when it comes in. See you on the 10th."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-06a",
+          "kind": "outside_records",
+          "start": "2021-08-06T13:40",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2019-04-11T10:00",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "date": "2021-08-06T13:40",
+              "author": "front desk",
+              "body": "41 pages received from prior PCP office (New York). Includes visit notes 2016-2021, immunization record, 2019 Pap (normal), operative and pathology summary from her 2020 bowel surgery, and GI correspondence. Indexed to chart, flagged for PCP review before new patient visit."
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside records reviewed",
+              "date": "2021-08-09T17:25",
+              "author": "PCP",
+              "body": "Skimmed old records ahead of tomorrow. Long-standing Crohn's, laparoscopic ileocecal resection 2020 (appendix out with the specimen), followed by GI, no maintenance therapy in the notes. Asthma, albuterol only. Several cystitis episodes over the years. Pap 2019 normal. Tdap last 2010."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Crohn disease",
+              "action": "history",
+              "note": "ileocolonic, currently mild; followed by outside GI"
+            },
+            {
+              "label": "Mild intermittent asthma",
+              "action": "history"
+            },
+            {
+              "label": "Personal history of urinary tract infections",
+              "action": "history",
+              "note": "recurrent cystitis",
+              "icd10": "Z87.440"
+            },
+            {
+              "label": "Acquired absence of other specified parts of digestive tract",
+              "action": "history",
+              "onset": "2020-02-01",
+              "note": "laparoscopic ileocecal resection 2020 for Crohn's",
+              "icd10": "Z90.49"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath",
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "asthma"
+            },
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (65 mg elemental iron) by mouth daily with food",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Penicillin",
+              "reaction": "Hives",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 62,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 61.3,
+            "height_cm": 164.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-10T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-10T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-10T09:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-10T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software developer (remote/work-from-home)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-08-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-08-10T09:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-10T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-08-10T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-08-10T09:00",
+              "author": "PCP",
+              "body": "32F here to establish. Moved to Easthampton this spring, works from home writing software. Previous PCP in NY.\n\nCrohn's: ileocolonic, many years. Had a laparoscopic ileocecal resection in 2020 (appendix removed with it). Since then bowels mostly settled, 1-3 formed BMs/day, no blood. Sees an outside GI group yearly, not on any maintenance medicine; she says GI calls it mild.\nAsthma: since childhood, uses albuterol maybe once a month, more with colds or cold air. No ED visits or steroids in years.\nUTIs: bladder infections a couple of times a year for a long stretch. Also had UTIs early in a pregnancy a few years ago, treated with nitrofurantoin. Never a kidney infection.\nSupplements: prenatal vitamin and ferrous sulfate daily, both from years back; she just keeps taking them.\n\nPSH: lap ileocecal resection 2020.\nAllergies: PCN (hives), sulfa (rash).\nFHx: mother RA. Father asthma, seasonal allergies. Sister has Crohn's.\nSH: never smoker, drinks once or twice a month, vegetarian. Mostly indoors at a desk; tries to walk on weekends.\n\nROS otherwise negative.\n\nExam: well-appearing, NAD. Vitals per flowsheet, BMI 22. HEENT unremarkable, oropharynx clear. Neck supple, no thyroid enlargement. Lungs clear, no wheeze. Heart RRR, no murmur. Abdomen soft, nontender, healed laparoscopic port scars. No CVA tenderness. Skin clear. Neuro grossly intact. Mood bright. PHQ-2 0.\n\nA/P\n1. Establishing care, health maintenance: Tdap today (last 2010). HIV and HCV screen, CMP, CBC, lipids. Pap 2019 normal in old records, next due 2022-2024 window - will do co-test at a future physical.\n2. Crohn's, mild, post-resection: GI following. Will ask her to have them cc us.\n3. Mild intermittent asthma: albuterol PRN, refills on file.\n4. Hx recurrent UTIs: none recently. Call early for symptoms.\n5. Supplements: continue as she takes them.\nRTC 1 year for physical, sooner prn."
+            },
+            {
+              "type": "Result Note",
+              "title": "New patient labs",
+              "date": "2021-08-12T12:10",
+              "author": "PCP",
+              "body": "Karen - your blood work from Tuesday is all normal: blood counts, kidney and liver function, electrolytes, cholesterol. HIV and hepatitis C screens are negative. Nothing to change."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "date": "2021-10-14T16:25",
+              "author": "RN",
+              "body": "Screening questions negative. Influenza vaccine 0.5 mL IM left deltoid, lot and expiration in MAR. Allergies reviewed (PCN, sulfa) - no vaccine allergy. Tolerated well, waited 15 min, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "pharmacy",
+          "start": "2022-03-08T11:05",
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "stop",
+              "reason": "replaced by practice prescription"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath",
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "Mild intermittent asthma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: albuterol",
+              "date": "2022-03-08T11:05",
+              "author": "MA",
+              "body": "Pharmacy fax: albuterol HFA, last fill under prior PCP, no refills left. Per pt uses it about once a month, last needed after a cold in Feb. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2022-03-08T15:40",
+              "author": "PCP",
+              "body": "Albuterol HFA sent, 1 inhaler with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "outside_records",
+          "start": "2022-05-17T10:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up letter",
+              "date": "2022-05-17T10:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nDate of service: 05/10/2022\n\nDear Doctor,\nI saw Ms. Duffy for her yearly review of ileocolonic Crohn's disease, about two years out from laparoscopic ileocecal resection. She reports one to three formed stools daily without bleeding, nocturnal stooling or abdominal pain. Weight is stable. Abdominal exam is benign.\n\nAllergies: penicillin, sulfonamides.\nMedications: albuterol as needed, prenatal multivitamin, ferrous sulfate.\n\nImpression: Crohn's disease, clinically mild and quiet after resection. We will continue observation without maintenance therapy. I will see her in a year, sooner for symptoms.\n\nSincerely,\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "annual_physical",
+          "start": "2022-08-23T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; tired and achy",
+          "conditions": [
+            {
+              "label": "Vitamin D deficiency",
+              "action": "diagnosed",
+              "onset": "2022-03-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              76
+            ],
+            "hr": 59,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 60.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-23T09:30",
+              "resulted": "2022-08-24T14:00",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 8.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 11
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-23T09:30",
+              "resulted": "2022-08-24T14:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 101
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 33.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T09:30",
+              "resulted": "2022-08-24T14:00",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 3.0
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 12
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 88
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-08-23T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-23T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "vitamin D 12 with elevated PTH, low calcium, bone pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-08-23T08:40",
+              "author": "PCP",
+              "body": "33F annual. Main thing today: since around March she has felt progressively worn out, legs feel weak climbing stairs, and she aches deep in her shins, thighs and lower back. No injury. Sleeping fine, mood ok (PHQ-2 1). No fevers, weight steady. Bowels at baseline per her, GI saw her in May. Asthma quiet.\n\nWorks from home, rarely outside on weekdays. Vegetarian.\n\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate.\nAllergies: PCN (hives), sulfa (rash).\n\nExam: tired-appearing but comfortable. Vitals per flowsheet. Conjunctivae a touch pale. Thyroid normal. Lungs clear. Heart RRR. Abdomen soft, nontender. Mild tenderness pressing over both tibias, no swelling or deformity. Strength 5/5 but she says stairs are harder. Reflexes 2+ symmetric.\n\nA/P\n1. Fatigue, weakness, diffuse bone pain after ileal resection, indoor job, vegetarian - worried about vitamin D / bone mineral problem. CMP, phos, 25-OH vit D, PTH, CBC, TSH today.\n2. Health maintenance: Pap due within the next couple of years, she'd rather do it next time. Flu and COVID booster at a nurse visit in October.\n3. Crohn's, asthma: stable.\nWill call with results."
+            },
+            {
+              "type": "Result Note",
+              "title": "Results: vitamin D, calcium, PTH",
+              "date": "2022-08-24T17:45",
+              "author": "PCP",
+              "body": "Vit D 12 (low), calcium 8.1 (low), PTH 88 (high), alk phos 120 (top of normal), phos 3.0. Fits vitamin D deficiency with a compensatory PTH rise, likely malabsorption after the ileal resection plus little sun. Hgb 11.6 with MCV 101 - mild, recheck once the vitamin D is sorted. TSH normal. Referring to endocrinology given the PTH and bone pain."
+            }
+          ],
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 12,
+              "Alkaline Phosphatase": 120,
+              "Calcium": 8.1,
+              "Hemoglobin": 11.6,
+              "Mean Corpuscular Volume": 101,
+              "Parathyroid Hormone, Intact": 88,
+              "Phosphorus": 3.0,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-08-25a",
+          "kind": "portal_message",
+          "start": "2022-08-25T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2022-08-25T08:15",
+              "author": "PCP",
+              "body": "Hi Karen, your vitamin D is quite low (12) and your calcium is a little low, which has pushed your parathyroid hormone up. That combination can absolutely cause the tiredness, weakness and bone aches you described. Your blood count is a bit low too; I'd like to recheck that after we treat the vitamin D. I've referred you to endocrinology so they can confirm the plan for replacing it. Their office will call you to schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2022-08-25T12:31",
+              "author": "patient",
+              "body": "That actually makes me feel better, at least there's a reason. Should I start vitamin D on my own while I wait?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2022-08-25T16:02",
+              "author": "PCP",
+              "body": "Their first opening is about 4 weeks out, and they'll likely want a high-dose course, so let's let them set it up. If the appointment slips past mid-September let me know."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "specialist_visit",
+          "start": "2022-09-20T13:30",
+          "service": "Endocrinology",
+          "reason": "Vitamin D deficiency, elevated PTH",
+          "conditions": [
+            {
+              "label": "Secondary hyperparathyroidism due to vitamin D deficiency",
+              "action": "diagnosed",
+              "onset": "2022-08-23",
+              "icd10": "E21.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ergocalciferol 1.25 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule (50,000 units) by mouth once weekly for 8 weeks",
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Vitamin D deficiency"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78,
+            "weight_kg": 59.3
+          },
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-09-20T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2022-09-27T10:10",
+              "author": "endocrinology",
+              "body": "Outside endocrinology practice\nDate of service: 09/20/2022\nReason for referral: low vitamin D, elevated PTH\n\nHistory: Ms. Duffy is a 33-year-old woman with ileocolonic Crohn's disease who had an ileal resection two years ago. Over about six months she has had increasing fatigue, proximal muscle weakness and aching bone pain, worst in the legs. She works remotely and is indoors most of the day. Diet vegetarian.\n\nMedications: albuterol inhaler as needed, prenatal multivitamin daily, ferrous sulfate 325 mg daily.\nAllergies: penicillin (hives), sulfonamides (rash).\nFamily history: mother rheumatoid arthritis, father asthma, sister Crohn's disease.\n\nExam: BP 130/85, HR 78, BMI 22. She looks pale. Tender to palpation along both lower legs. No proximal muscle wasting. Thyroid not enlarged.\n\nData (referring office, 08/23/2022): calcium 8.1 mg/dL, phosphate 3.0 mg/dL, alkaline phosphatase 120 U/L, 25-hydroxyvitamin D 12 ng/mL, intact PTH 88 pg/mL.\n\nAssessment: Secondary hyperparathyroidism from vitamin D deficiency, most likely from reduced absorption after ileal resection and limited sun exposure. The low-normal phosphate and borderline alkaline phosphatase raise concern for early osteomalacia; repletion should address it.\n\nPlan:\n- Ergocalciferol 50,000 units once weekly for 8 weeks.\n- Then cholecalciferol 2000 units daily, ongoing.\n- Recheck calcium, 25-OH vitamin D and PTH with her PCP about 3 months from now. I am happy to see her again if PTH does not normalize.\n\nThank you for this referral."
+            }
+          ],
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2022-10-18T15:50",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Pt on week 5 of weekly vitamin D, says legs already ache less. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "portal_message",
+          "start": "2022-11-15T19:22",
+          "medications": [
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin D deficiency"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Done with the weekly vitamin D",
+              "date": "2022-11-15T19:22",
+              "author": "patient",
+              "body": "Took the last of the 8 weekly capsules on Sunday. Endo said to switch to 2000 units daily after. Can that go on my list here? I bought it OTC."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Done with the weekly vitamin D",
+              "date": "2022-11-16T09:10",
+              "author": "MA",
+              "body": "Added vitamin D3 2000 units daily to your medication list. You're due for the recheck labs early December; the PCP put in a follow-up for Dec 6."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vitamin D recheck; still fatigued",
+          "vitals": {
+            "bp": [
+              139,
+              80
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 59.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-06T10:55",
+              "resulted": "2022-12-07T13:00",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-06T10:55",
+              "resulted": "2022-12-07T13:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 105
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 35.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 304
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-06T10:55",
+              "resulted": "2022-12-07T13:00",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 32
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 54
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-06T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-06T10:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2022",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "macrocytic anemia, Hgb 9.8, MCV 105"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: vitamin D deficiency",
+              "date": "2022-12-06T10:20",
+              "author": "PCP",
+              "body": "Finished ergocalciferol 50k weekly x8 in mid-Nov, now on D3 2000 daily. Bone aches much better, legs stronger on stairs. But fatigue is the same or worse. Over the last few weeks: episodes of her heart racing for a minute or two, a few times a week, at rest; and her tongue has been sore and tender, hurts with spicy food. No chest pain, no syncope, no dyspnea beyond baseline. No melena or blood in stool, bowels at baseline. Still vegetarian, eats eggs and dairy rarely.\n\nExam: pale. HR regular today. Tongue smooth and reddened. Lungs clear. Heart regular, no murmur. Abdomen benign. No edema.\n\nA/P\n1. Vitamin D deficiency with secondary hyperparathyroidism: recheck vit D, PTH, calcium today. Continue D3 2000.\n2. Fatigue, palpitations, glossitis, pallor, MCV 101 in August: concern for B12 deficiency after ileal resection plus vegetarian diet. CBC today; if anemia has progressed will refer to heme.\n3. Palpitations: likely related; revisit once anemia addressed."
+            },
+            {
+              "type": "Result Note",
+              "title": "Results 12/7",
+              "date": "2022-12-07T16:30",
+              "author": "PCP",
+              "body": "Vit D 32, PTH 54, Ca 9.0 - repleted, PTH normalized. Hgb now 9.8, MCV 105 - macrocytic anemia, worse than August. Hematology referral placed. Will call her."
+            }
+          ],
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 32,
+              "Calcium": 9.0,
+              "Hemoglobin": 9.8,
+              "Mean Corpuscular Volume": 105,
+              "Parathyroid Hormone, Intact": 54
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "telephone",
+          "start": "2022-12-08T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call: results and referral",
+              "date": "2022-12-08T08:50",
+              "author": "PCP",
+              "body": "Spoke with pt. Vitamin D and parathyroid numbers are now normal. Blood count has dropped to 9.8 with large red cells; explained this points toward B12 or similar deficiency and that hematology can sort out the cause and the right replacement. Referral sent, she'll watch for their call. Advised ED for chest pain, fainting or shortness of breath at rest. She understands."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-16a",
+          "kind": "specialist_visit",
+          "start": "2023-01-16T09:15",
+          "service": "Hematology",
+          "reason": "Macrocytic anemia",
+          "conditions": [
+            {
+              "label": "Vitamin B12 deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2022-08-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "vitamin B12 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (1000 mcg) by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin B12 deficiency"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              76
+            ],
+            "hr": 58,
+            "temp_c": 36.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-01-16T10:00",
+              "resulted": "2023-01-19T11:00",
+              "results": [
+                {
+                  "test": "Homocysteine",
+                  "loinc": "13965-9",
+                  "unit": "umol/L",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Methylmalonic acid",
+                  "loinc": "13964-2",
+                  "unit": "umol/L",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2022",
+              "action": "done",
+              "date": "2023-01-16T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology consultation",
+              "date": "2023-01-23T14:20",
+              "author": "hematology",
+              "body": "Outside hematology and oncology group\nDate of service: 01/16/2023\nReferred for: macrocytic anemia\n\nMs. Duffy, 34, describes roughly six months of tiredness, recent intermittent palpitations, and a painful, raw tongue. She has ileocolonic Crohn's disease with a prior ileal resection, and she keeps a strict vegetarian diet. Her vitamin D deficiency has been treated and her PTH has normalized.\n\nCurrent medications: albuterol as needed, prenatal multivitamin, ferrous sulfate 325 mg daily, vitamin D3 2000 units daily.\nAllergies: penicillin, sulfonamides.\n\nExam: vital signs normal. Skin is pale. No jaundice, no lymphadenopathy, no splenomegaly. Neurologic screen without sensory loss.\n\nReferring labs (12/06/2022): hemoglobin 9.8 g/dL, MCV 105 fL.\nDrawn here: homocysteine elevated, methylmalonic acid elevated.\n\nImpression: Macrocytic anemia from vitamin B12 deficiency. The elevated MMA and homocysteine confirm a tissue-level deficiency. Loss of terminal ileum and a vegetarian diet both contribute.\n\nPlan: start cyanocobalamin 1000 mcg by mouth daily, indefinitely. Repeat CBC in about 3 months through her PCP; we expect the hemoglobin and MCV to normalize. Please send her back if they do not.\n\nThank you."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "lab_only",
+          "start": "2023-04-11T08:05",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-11T08:05",
+              "resulted": "2023-04-11T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-11T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC on B12",
+              "date": "2023-04-12T09:20",
+              "author": "PCP",
+              "body": "Karen - three months into B12 your hemoglobin is back to 12.3 and the red cell size is normal again (93). Nice response. Keep taking the B12 every day; it's long-term given your surgery. Fax copy to hematology."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: CBC on B12",
+              "date": "2023-04-12T12:48",
+              "author": "patient",
+              "body": "Great news. Tongue is totally back to normal and no more racing heart. Way more energy."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.3,
+              "Mean Corpuscular Volume": 93
+            }
+          }
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "outside_records",
+          "start": "2023-05-16T11:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology annual letter",
+              "date": "2023-05-16T11:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nVisit: 05/09/2023\n\nAnnual Crohn's review. Ms. Duffy has had no flares; stools formed, no bleeding or pain. Since last year she was found to be deficient in vitamin D and B12, now replaced through endocrinology and hematology; this is consistent with her ileal resection and we will support ongoing supplementation.\n\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate, vitamin D3 2000 units, B12 1000 mcg daily.\nAllergies: penicillin, sulfa.\n\nExam: abdomen soft, nontender.\n\nAssessment: ileocolonic Crohn's disease, mild and inactive. No change; continue observation. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "office_visit",
+          "start": "2023-06-27T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Painful intercourse, dysuria",
+          "vitals": {
+            "bp": [
+              114,
+              79
+            ],
+            "hr": 53,
+            "temp_c": 36.4,
+            "weight_kg": 59.3
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-06-27T14:20",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.021
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-27T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "dyspareunia, intermittent dysuria, anterior vaginal wall fullness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-06-27T14:00",
+              "author": "PCP",
+              "body": "Since around the new year, intercourse has become painful, and she gets spells of burning with urination every few weeks that settle on their own in a day or two. She also feels a sort of fullness or bulge at the front of the vagina. No fever, no flank pain, no discharge she's noticed. Has not had a UTI treated this year.\n\nUA today: negative.\n\nShe preferred a gynecologist do the pelvic exam rather than me today.\n\nA/P: dyspareunia, intermittent dysuria and anterior vaginal fullness, UA clean. Needs a pelvic exam by GYN. Referral placed. Return/call for fever or flank pain."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "specialist_visit",
+          "start": "2023-07-17T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Dyspareunia, dysuria, anterior vaginal wall fullness",
+          "conditions": [
+            {
+              "label": "Urethral diverticulum",
+              "action": "diagnosed",
+              "onset": "2023-01-01",
+              "icd10": "N36.1"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-07-17T11:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "done",
+              "date": "2023-07-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2023-07-24T09:40",
+              "author": "gynecology",
+              "body": "Outside women's health practice\nDate of service: 07/17/2023\n\nHPI: 34-year-old with Crohn's disease, recently treated vitamin D and B12 deficiency, and a long history of urinary tract infections, sent for six months of dyspareunia and on-and-off dysuria. She also notices a full feeling along the front wall of the vagina.\n\nAllergies: penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate, vitamin D3, vitamin B12.\n\nPelvic exam: external genitalia normal. Speculum: cervix normal. On the anterior vaginal wall beneath the urethra there is a tender, soft mass; gentle pressure expresses a small amount of purulent fluid from the urethral meatus. Uterus and adnexa normal size, nontender.\n\nUrinalysis in clinic: unremarkable.\n\nAssessment: urethral diverticulum.\n\nPlan: reviewed the diagnosis and its link to her infections and pain. Follow up here as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "annual_physical",
+          "start": "2023-09-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              73
+            ],
+            "hr": 61,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 60.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 113
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:15",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 31
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 578
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-12T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-12T08:30",
+              "author": "PCP",
+              "body": "34F, annual. Feels the best she has in two years: energy back, no bone pain, tongue fine. Taking D3 2000 and B12 1000 daily without misses. Ferrous sulfate and prenatal vitamin also continuing.\n\nSaw GYN in July - told she has a urethral diverticulum. Still some discomfort with sex, occasional burning, no fevers. GYN to follow as needed.\nCrohn's quiet per GI in May. Asthma: one albuterol use this summer.\n\nExam: well. Vitals per flowsheet. Mucous membranes pink. Lungs clear, heart regular. Abdomen nontender, port scars. No CVA tenderness. No edema. PHQ-2 0.\n\nA/P\n1. Vitamin D deficiency / secondary HPT: on maintenance D3; check level and calcium.\n2. B12 deficiency anemia: on oral B12; CBC and B12 level.\n3. Urethral diverticulum: per GYN.\n4. HM: Pap due - she asked to wait until after the GYN visit settled; will do with next physical. Flu/COVID next month at nurse visit."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2023-09-14T08:10",
+              "author": "PCP",
+              "body": "Everything in range: vitamin D, B12, calcium, kidney and liver function, blood count. Continue the same supplements."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Vitamin B12": 560
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2023-10-17T16:10",
+              "author": "RN",
+              "body": "Flu (L arm) and 2023-24 COVID (R arm) given. VIS provided. No prior vaccine reactions. Pt left after 15 min, feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "pharmacy",
+          "start": "2024-02-06T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: albuterol",
+              "date": "2024-02-06T10:30",
+              "author": "MA",
+              "body": "eRx renewal request from pharmacy for albuterol HFA. Last filled 7 months ago. Approved per standing protocol, 1 inhaler + 3 refills. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "outside_records",
+          "start": "2024-05-21T09:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology annual letter",
+              "date": "2024-05-21T09:45",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nVisit: 05/14/2024\n\nCrohn's disease, ileocolonic, status post ileocecal resection 2020. Asymptomatic over the past year. Exam benign. Continues vitamin D and B12 replacement, and we agree with indefinite B12.\n\nAllergies: penicillin, sulfonamides.\n\nPlan: continue observation without maintenance medication. Yearly review."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "vitals": {
+            "bp": [
+              126,
+              83
+            ],
+            "hr": 60,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 59.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T09:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.62
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 126
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 320
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T09:40",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 31
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 551
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-09-17T09:25",
+              "text": "Liquid-based cervical cytology, satisfactory for evaluation, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative. Repeat co-testing in 5 years."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-17T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T09:00",
+              "author": "PCP",
+              "body": "35F. Doing well overall. Supplements daily. Diverticulum: intermittent discomfort and burning still, nothing that has sent her to urgent care this year; GYN has not needed to see her back. Crohn's stable, GI saw her in May. Asthma minimal.\n\nExam: well. BP/HR per flowsheet. Neck no nodes. Lungs clear. Heart regular. Abdomen soft, nontender. Pelvic: external normal; speculum - cervix appears normal, co-test collected; mild tenderness anterior vaginal wall, known. No CVA tenderness.\n\nA/P\n1. HM: Pap/HPV done. PHQ-2 0. Flu shot next month.\n2. Vitamin D / B12 deficiencies: labs today.\n3. Urethral diverticulum, recurrent UTI hx: return early for fever, flank pain.\n4. Crohn's, asthma: stable."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2024-09-24T13:15",
+              "author": "PCP",
+              "body": "Hi Karen - your Pap is normal and HPV negative, so you're set for 5 years. Vitamin D, B12, blood count and chemistries are normal. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2024-10-08T15:35",
+              "author": "RN",
+              "body": "Trivalent flu vaccine L deltoid. Declined COVID update today, will think about it. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-11a",
+          "kind": "ed_visit",
+          "start": "2024-11-11T18:40",
+          "end": "2024-11-11T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Fever, chills, left flank pain",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "diagnosed",
+              "onset": "2024-11-04",
+              "note": "left; E. coli",
+              "icd10": "N10"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute pyelonephritis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-11T18:50",
+              "bp": [
+                110,
+                68
+              ],
+              "hr": 102,
+              "rr": 18,
+              "temp_c": 38.7
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-11-11T19:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Many"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-11T19:05",
+              "resulted": "2024-11-13T10:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible to ciprofloxacin."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-11-11T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2024-11-13T08:30",
+              "author": "emergency medicine",
+              "body": "Community hospital emergency department\nVisit 11/11/2024\n\nCC: fever, chills, left flank pain x3 days\nHPI: 35F with Crohn's disease and a urethral diverticulum. A week of burning and frequency, then three days of fevers with shaking chills and pain in the left flank. No vomiting, tolerating fluids.\nAllergies: penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate, vitamin D3, vitamin B12.\n\nTriage: T 38.7 C, BP 110/68, HR 102, RR 18.\nExam: flushed, nontoxic. Lungs clear. Heart tachycardic, regular. Abdomen soft, nontender. Mild left CVA tenderness to percussion.\n\nUA: pyuria with bacteriuria. Urine culture sent.\n\nED course: acetaminophen, 1 L normal saline, ceftriaxone 1 g IV given without reaction. Fever down, HR 88 at recheck. Tolerating PO.\n\nImpression: acute pyelonephritis, left.\nDisposition: home on ciprofloxacin 500 mg twice daily for 7 days. Follow up with PCP this week. Return for vomiting, worsening pain or persistent fever.\n\nAddendum 11/13: urine culture >100K E. coli, susceptible to ciprofloxacin."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "telephone",
+          "start": "2024-11-13T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED check",
+              "date": "2024-11-13T11:20",
+              "author": "RN",
+              "body": "Called after ED record arrived. Pt on day 2 of cipro, fever broke yesterday, flank still sore but better. Eating and drinking. Culture grew E. coli sensitive to cipro - she's on the right drug. Appt with PCP 11/19. Reviewed when to go back to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, pyelonephritis",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "resolved",
+              "icd10": "N10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              80
+            ],
+            "hr": 55,
+            "temp_c": 36.7,
+            "weight_kg": 60.1
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-11-19T10:55",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-11-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2024-11-19T10:40",
+              "author": "PCP",
+              "body": "Seen in ED 11/11 for left pyelo, E. coli sensitive to cipro. Finished cipro yesterday. No fever since day 2, flank pain gone, no dysuria. First kidney infection of her life.\n\nExam: afebrile, looks well. No CVA tenderness. Abdomen soft.\nUA today negative.\n\nA/P: left pyelonephritis, resolved. Diverticulum likely a reservoir. Reviewed hydration and early contact for symptoms; given her allergies, cipro worked well - note for next time."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "office_visit",
+          "start": "2025-03-04T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in, supplements",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-03-03T17:05",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow afternoon, work release deadline. Feels fine. Will keep her September physical instead."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T10:15",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology annual letter",
+              "date": "2025-05-20T10:15",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nVisit: 05/13/2025\n\nReviewed her November episode of left pyelonephritis, treated without complication. From a bowel standpoint she remains in clinical remission: formed stools, no bleeding, no pain. Abdomen benign.\n\nAllergies: penicillin, sulfonamides.\nMedications: albuterol prn, prenatal multivitamin, ferrous sulfate, D3 2000 units, B12 1000 mcg.\n\nImpression: mild ileocolonic Crohn's disease, quiescent after resection. Continue current approach. Next review in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-26a",
+          "kind": "ed_visit",
+          "start": "2025-07-26T11:10",
+          "end": "2025-07-26T17:30",
+          "service": "Emergency Medicine",
+          "reason": "Fever, dysuria, left flank pain",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "diagnosed",
+              "onset": "2025-07-24",
+              "note": "left; E. coli",
+              "icd10": "N10"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute pyelonephritis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-26T11:20",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 98,
+              "temp_c": 38.5
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-26T11:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-07-26T11:40",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Many"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-26T11:40",
+              "resulted": "2025-07-28T09:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible to ciprofloxacin."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2025-07-26T13:30",
+              "text": "Both kidneys are normal in size and echotexture. No hydronephrosis on either side. No renal calculi. No perinephric fluid. Bladder partially distended, unremarkable.",
+              "conclusion": "No hydronephrosis or renal stones."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-07-26T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-07-28T08:15",
+              "author": "emergency medicine",
+              "body": "Community hospital emergency department\nDate: 07/26/2025 (Saturday)\n\nChief complaint: fever and left flank pain for 2 days.\nHPI: 36-year-old woman with a known urethral diverticulum who was treated for left pyelonephritis in November 2024. Two days of fever, painful urination and left flank pain; a week of more frequent, urgent voiding before that. She mentions she had repeated UTIs in the first trimester of a prior pregnancy, treated with nitrofurantoin.\nPSH: laparoscopic ileocecal resection 2020 (appendix removed).\nAllergies: penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal multivitamin, ferrous sulfate 325 mg, D3 2000 units, B12 1000 mcg. Taking all as prescribed, no recent changes.\nSocial: never smoker, rare alcohol, works from home in software.\n\nVitals: T 38.5 C (101.3 F), BP 110/70, P 98.\nExam: uncomfortable, nontoxic. Lungs clear. Heart regular, mildly tachycardic. Abdomen soft. Left costovertebral angle tenderness.\n\nLabs: WBC 14.0. UA leukocyte esterase positive, nitrite positive. Culture sent.\nRenal ultrasound: no hydronephrosis, no stones.\n\nCourse: acetaminophen, IV fluids, ceftriaxone 1 g IV, no reaction. Improved.\nImpression: acute left pyelonephritis, uncomplicated.\nDisposition: home, ciprofloxacin 500 mg twice daily x7 days. PCP follow-up early next week.\n\nCulture addendum 07/28: E. coli >100K, ciprofloxacin susceptible."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-31a",
+          "kind": "office_visit",
+          "start": "2025-07-31T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, second pyelonephritis",
+          "vitals": {
+            "bp": [
+              144,
+              87
+            ],
+            "hr": 59,
+            "temp_c": 37.1,
+            "weight_kg": 59.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-31T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ua-2025-08",
+              "action": "placed",
+              "order": "Urinalysis after antibiotic course",
+              "category": "lab",
+              "reason": "test of cure"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2025-07-31T09:20",
+              "author": "PCP",
+              "body": "ED Saturday 7/26 for left pyelonephritis again - second in under a year. Renal US there clean. Culture E. coli, cipro-sensitive, now day 5 of 7. Afebrile since Monday, flank ache fading, voiding comfortably.\n\nExam: T normal, looks well. Minimal left CVA tenderness. Abdomen benign.\n\nA/P\n1. Acute left pyelonephritis, improving on cipro. Finish course; UA one week from today.\n2. Urethral diverticulum with two pyelonephritis episodes. Talked about it today; she will think about seeing GYN again. Hydrate, void after intercourse."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-07a",
+          "kind": "lab_only",
+          "start": "2025-08-07T08:10",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "resolved",
+              "icd10": "N10"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-08-07T08:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.4
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ua-2025-08",
+              "action": "done",
+              "date": "2025-08-07T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Urinalysis after treatment",
+              "date": "2025-08-07T14:00",
+              "author": "PCP",
+              "body": "UA clean after the cipro course. Pyelonephritis resolved."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 67,
+            "temp_c": 37.1,
+            "spo2": 99,
+            "weight_kg": 59.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-23T09:20",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 116
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-23T09:20",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 32
+                },
+                {
+                  "test": "Vitamin B12",
+                  "value": 568
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-23T08:45",
+              "author": "PCP",
+              "body": "36F, yearly. No infections since July. Supplements daily. Crohn's in remission per GI. Albuterol a handful of times this summer, no nighttime symptoms.\n\nExam: well-appearing. Vitals per flowsheet. Lungs clear. Heart RRR. Abdomen soft, healed scars. No CVA tenderness. Skin normal. PHQ-2 1.\n\nA/P\n1. Vitamin D / B12 deficiencies, on replacement: labs today.\n2. Urethral diverticulum, two pyelo episodes: she has not gone back to GYN; return precautions reviewed.\n3. Mild intermittent asthma: albuterol PRN.\n4. HM: Pap 2024 normal. Flu and COVID in October."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2025-09-25T07:55",
+              "author": "PCP",
+              "body": "All normal: chemistries, calcium, CBC, vitamin D, B12."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2025-10-14T16:20",
+              "author": "RN",
+              "body": "Influenza (L) and 2025-26 COVID (R) IM. Allergy list reviewed. Fine after observation."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "hospital_admission",
+          "start": "2026-03-17T14:25",
+          "end": "2026-03-20T12:30",
+          "service": "Emergency Medicine",
+          "reason": "Right pyelonephritis; anaphylaxis to ceftriaxone",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "diagnosed",
+              "onset": "2026-03-15",
+              "note": "right; E. coli",
+              "icd10": "N10"
+            },
+            {
+              "label": "Anaphylactic reaction due to ceftriaxone",
+              "action": "diagnosed",
+              "onset": "2026-03-17",
+              "icd10": "T88.6XXA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily to complete 7 days total (last dose 3/23)",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute pyelonephritis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Ceftriaxone",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-03-17T14:35",
+              "temp_c": 38.9
+            },
+            {
+              "time": "2026-03-17T15:52",
+              "bp": [
+                68,
+                42
+              ],
+              "hr": 132,
+              "rr": 28,
+              "temp_c": 37.2,
+              "spo2": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-03-17T14:50",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Many"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-17T14:50",
+              "resulted": "2026-03-19T08:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible to ciprofloxacin."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-17T14:25"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-17T18:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-03-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-03-23T10:05",
+              "author": "hospital medicine",
+              "body": "Regional medical center - discharge summary\nAdmitted 03/17/2026 via ED to ICU; transferred to floor 03/19; discharged 03/20/2026.\n\nPrincipal diagnoses: anaphylaxis due to IV ceftriaxone; acute right pyelonephritis (E. coli).\n\nPresentation: 37-year-old woman with a urethral diverticulum and recurrent UTIs, with left pyelonephritis in 11/2024 and 07/2025, came in with two days of right flank pain, fever and dysuria. Triage temperature 38.9 C. UA: pyuria, positive leukocyte esterase and nitrite. Culture sent. Known allergies at arrival: penicillin (hives), sulfonamides (rash). She confirmed she had received ceftriaxone in the past without problems, and IV ceftriaxone was started after acetaminophen.\n\nEvent: about ten minutes into the infusion she reported her throat closing, lightheadedness and a feeling that something terrible was happening. Her voice became hoarse and she coughed hard, then flushed all over with visible swelling of the face and lips. Vitals at that time: T 37.2 C, HR 132, RR 28, BP 68/42, SpO2 91% on room air. Exam: swollen eyelids and lips, raised red urticarial plaques across chest and arms, expiratory wheeze on both sides with inspiratory stridor, anxious, working to breathe with accessory muscles. Neck veins flat; heart fast without murmur; no leg edema.\n\nManagement: infusion stopped. Epinephrine 0.5 mg IM, repeated once at 5 minutes. Two liters of crystalloid, diphenhydramine 50 mg IV, methylprednisolone 125 mg IV, nebulized albuterol, oxygen. Stridor and hypotension resolved over about two hours without intubation or pressors. Admitted to the ICU for observation; no biphasic reaction.\n\nPyelonephritis: switched to IV ciprofloxacin. Urine culture: E. coli >100K, susceptible to ciprofloxacin. Afebrile from day 2. Transitioned to oral ciprofloxacin.\n\nAllergy list updated: CEFTRIAXONE - ANAPHYLAXIS. Also penicillin (hives), sulfonamides (rash).\n\nDischarge medications: ciprofloxacin 500 mg PO twice daily through 03/23 (7 days total). Continue albuterol prn, prenatal multivitamin, ferrous sulfate 325 mg, vitamin D3 2000 units, vitamin B12 1000 mcg.\n\nFollow-up: PCP within one week. Recommend outpatient evaluation of the urethral diverticulum given three upper tract infections."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-25a",
+          "kind": "office_visit",
+          "start": "2026-03-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "action": "resolved",
+              "icd10": "N10"
+            },
+            {
+              "label": "Anaphylactic reaction due to ceftriaxone",
+              "action": "resolved",
+              "icd10": "T88.6XXA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              85
+            ],
+            "hr": 59,
+            "temp_c": 37.0,
+            "spo2": 96,
+            "weight_kg": 59.8
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-03-25T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2026",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "urethral diverticulum with three episodes of pyelonephritis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-03-25T11:00",
+              "author": "PCP",
+              "body": "Admitted 3/17-3/20: right pyelonephritis, and ceftriaxone anaphylaxis 10 min into the infusion (hypotension 68/42, stridor, urticaria, angioedema) - IM epi x2, ICU overnight, no airway needed. Finished oral cipro on 3/23. Culture E. coli, cipro-S.\n\nToday: no fever, no flank pain, voiding fine. Shaken by the reaction. Breathing back to baseline, no albuterol since discharge.\n\nExam: well. Vitals per flowsheet, SpO2 normal. No facial swelling, skin clear. Lungs clear, no wheeze or stridor. No CVA tenderness.\n\nA/P\n1. Anaphylaxis to ceftriaxone: allergy list updated (severe, high criticality). Told her to name it - along with penicillin and sulfa - at every pharmacy, ED and procedure. Ciprofloxacin has been tolerated 3 times.\n2. Acute right pyelonephritis, resolved after course.\n3. Urethral diverticulum with three pyelonephritis episodes in ~16 months: referral to urology for definitive evaluation. She agrees this time.\n4. Vitamin D, B12: continue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "outside_records",
+          "start": "2026-05-19T09:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology annual letter",
+              "date": "2026-05-19T09:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nVisit: 05/12/2026\n\nYearly Crohn's visit. Noted her March admission for right pyelonephritis with ceftriaxone anaphylaxis; allergy list here updated. GI-wise she is well: no flares, formed stools, no bleeding. Abdomen soft, nontender.\n\nAllergies: ceftriaxone (anaphylaxis), penicillin, sulfonamides.\n\nImpression: ileocolonic Crohn's disease, mild and quiet after ileocecal resection. Continue observation, vitamin D and B12. See her in a year."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T21:04",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urology appointment",
+              "date": "2026-06-09T21:04",
+              "author": "patient",
+              "body": "The urology office finally called - earliest new patient slot is August 11. Is that ok or should I be pushing for sooner? I've been fine since March."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urology appointment",
+              "date": "2026-06-10T08:30",
+              "author": "PCP",
+              "body": "August is fine since you're well. Ask to be on their cancellation list. If you get any burning, fever or flank pain before then, message me same day and we'll get a urine culture going - and remember no ceftriaxone. I'll see you at your check-in on July 2."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "office_visit",
+          "start": "2026-07-02T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: supplements, diverticulum",
+          "vitals": {
+            "bp": [
+              135,
+              68
+            ],
+            "hr": 58,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 60.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-02T10:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 127
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-02T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-02T10:10",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-07-02T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-02T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2026-07-02T09:40",
+              "author": "PCP",
+              "body": "37F. No infections since March. Some ongoing discomfort with intercourse, no dysuria now. Urology consult set for 8/11. Taking D3, B12, iron and prenatal vitamin daily. Crohn's quiet (GI letter May). Asthma: no albuterol in months.\n\nExam: well. Vitals per flowsheet. Lungs clear. Heart regular. Abdomen soft. No CVA tenderness.\n\nA/P\n1. Urethral diverticulum, three pyelos: urology 8/11.\n2. Ceftriaxone anaphylaxis: allergy list confirmed.\n3. Vitamin D / B12 deficiency on replacement: CMP, CBC, vit D today.\n4. Physical in September, booked."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "date": "2026-07-06T08:20",
+              "author": "PCP",
+              "body": "Calcium, chemistries, blood count and vitamin D all normal. Same doses."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T14:00",
+          "service": "Urology",
+          "reason": "Urethral diverticulum, recurrent pyelonephritis",
+          "orders": [
+            {
+              "id": "uro-referral-2026",
+              "action": "done",
+              "date": "2026-08-11T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology consultation",
+              "date": "2026-08-18T11:30",
+              "author": "urology",
+              "body": "Outside urology group\nDate of service: 08/11/2026\n\nReferred for urethral diverticulum. 37-year-old woman diagnosed by gynecology in 2023 on exam (tender anterior vaginal wall mass with purulent expression). Since then left pyelonephritis 11/2024 and 07/2025 and right pyelonephritis 03/2026, all E. coli; the March episode was complicated by anaphylaxis to ceftriaxone. Ongoing dyspareunia.\n\nAllergies: ceftriaxone (anaphylaxis), penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal multivitamin, ferrous sulfate, vitamin D3, vitamin B12.\nPSH: laparoscopic ileocecal resection 2020.\n\nExam: tender soft mass of the anterior vaginal wall under the mid-urethra, consistent with the known diverticulum. No vaginal wall erythema otherwise. No CVA tenderness.\n\nImpression: urethral diverticulum with recurrent upper tract infection.\nPlan: MRI of the pelvis to define the diverticulum before we talk through transvaginal excision. We will call her when the MRI is authorized. Antibiotic choices should continue to avoid beta-lactams.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "portal_message",
+          "start": "2026-08-20T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI from urology",
+              "date": "2026-08-20T12:40",
+              "author": "patient",
+              "body": "Urology wants a pelvic MRI before they talk surgery. They said insurance approval can take a couple weeks. Do you need to do anything on your end?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: MRI from urology",
+              "date": "2026-08-20T15:15",
+              "author": "RN",
+              "body": "Hi Karen, the urology office handles the authorization for the MRI they ordered, so nothing needed from us. We received their consult note. If the approval drags past mid-September, let us know and we can nudge. Your physical is still on for 9/22."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acquired absence of other specified parts of digestive tract|Z90.49": {
+        "code": "Z90.49",
+        "display": "Acquired absence of other specified parts of digestive tract",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute pyelonephritis|N10": {
+        "code": "N10",
+        "display": "Acute pyelonephritis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Anaphylactic reaction due to ceftriaxone|T88.6XXA": {
+        "code": "T88.6XXA",
+        "display": "Anaphylactic reaction due to adverse effect of correct drug or medicament properly administered, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of urinary tract infections|Z87.440": {
+        "code": "Z87.440",
+        "display": "Personal history of urinary (tract) infections",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary hyperparathyroidism due to vitamin D deficiency|E21.1": {
+        "code": "E21.1",
+        "display": "Secondary hyperparathyroidism, not elsewhere classified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Urethral diverticulum|N36.1": {
+        "code": "N36.1",
+        "display": "Urethral diverticulum",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ergocalciferol 1.25 MG Oral Capsule": {
+        "code": "1367410",
+        "display": "ergocalciferol 1.25 MG Oral Capsule",
+        "ingredient": "ergocalciferol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Homocysteine": {
+        "code": "13965-9",
+        "display": "Homocysteine [Moles/volume] in Serum or Plasma",
+        "unit": "umol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Methylmalonic acid": {
+        "code": "13964-2",
+        "display": "Methylmalonate [Moles/volume] in Serum or Plasma",
+        "unit": "umol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin Oral Tablet\""
+    ]
+  }
+}

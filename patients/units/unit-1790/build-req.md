@@ -211,3 +211,8 @@ psychiatry involvement before 2026; D&C reason not stated.
 - **Today:** psychiatry follow-up arranged; a booked PCP visit **2026-09-15** for
   depression follow-up and medication review. Nothing else open.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001790 on 2026-06-16. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

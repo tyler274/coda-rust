@@ -1,0 +1,4091 @@
+{
+  "unit": "unit-2208",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002208",
+      "given": "Bernard",
+      "family": "Pickett",
+      "birth_date": "1950-07-06",
+      "address_line": "31 Pinewood Lane, Belchertown, MA 01007",
+      "phone": "+1-774-555-0147",
+      "email": "bernie.pickett@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired man who joined in 2019 with diabetes, hypertension, hyperlipidemia, a treated prostate cancer and a remote stroke. His PSA recurs in 2021 (salvage radiation, then surveillance), nephrogenic diabetes insipidus follows in 2022, and cognitive decline to vascular dementia by 2024; after his last visit in September 2024 the practice receives records of a stroke admission and an ED visit for ventricular tachycardia.",
+      "events": [
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:20",
+          "end": "2019-09-10T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2009-06-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2004-06-01"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history",
+              "onset": "2009-06-01"
+            },
+            {
+              "label": "History of prostate cancer",
+              "action": "history",
+              "onset": "2018-04-01",
+              "note": "radical prostatectomy spring 2018; PSA undetectable since"
+            },
+            {
+              "label": "History of stroke without residual deficits",
+              "action": "history",
+              "onset": "2016-05-01",
+              "note": "ischemic stroke 2016, no lasting deficit"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ],
+            "hr": 74,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 89.0,
+            "height_cm": 175.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 130
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 134
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:25",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "text": "<0.1"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-10T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "prior-records-2019",
+              "action": "placed",
+              "order": "Records request, prior primary care and urology",
+              "category": "procedure",
+              "reason": "transfer of care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T10:20",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n69 y/o retired man moving his care here from a practice he left after his doctor retired. Wants one place that keeps track of everything.\n\nHPI / PROBLEMS HE BRINGS\n1. Type 2 diabetes x about 10 yrs. Metformin 1000 twice a day, no lows, does not check sugars at home much. Last A1c he remembers was 'around 7.'\n2. Hypertension x about 15 yrs. Lisinopril 20 daily. Home cuff 'usually 130s.'\n3. High cholesterol, atorvastatin 40, no muscle aches.\n4. Prostate cancer, radical prostatectomy spring 2018. Says his PSA has been 'zero' at every check since. Recovered well from the surgery.\n5. Stroke 2016 - in the hospital a few days, fully recovered. No residual weakness or speech problem.\n\nMEDS: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily.\nALLERGIES: none known.\nPSH: radical prostatectomy 2018.\nFH: father had prostate cancer (diagnosed in his 70s), mother had a stroke, sister has type 2 diabetes.\nSH: retired. Never smoked. Doesn't drink. Lives in Belchertown. Daughter lives nearby. Drives.\n\nROS: no chest pain, no dyspnea, no urinary trouble, no numbness in feet, no vision change.\n\nEXAM: BP 138/86. Wt 89 kg, ht 175 cm, BMI 29. Pleasant, clear historian.\nHEENT normal. Neck supple, no bruit. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed lower midline scar. No edema. Feet: skin intact, monofilament normal both feet, DP pulses 2+. Neuro: strength and speech normal, gait steady.\n\nA/P\n- T2DM: continue metformin. A1c, CMP, ACR today.\n- HTN: a little above goal today, continue lisinopril, bring home readings next time.\n- HLD: lipid panel.\n- Prostate cancer s/p RP: PSA today; he was followed by his surgeon's office, records requested.\n- Hx stroke: no residual deficit; records requested from prior practice.\n- HM: hep C screen today (one-time). Flu shot next month at nurse visit. Wellness visit in December.\n\nRTC 3 months."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2019-09-10T11:05",
+              "author": "front desk",
+              "body": "Signed release from pt. Records request faxed to his previous primary care office and to the urology office that did his surgery. Asked for last 5 yrs of notes, labs, op report, PSA history, imaging, immunizations."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 89.0,
+            "height_cm": 175.0,
+            "labs": {
+              "Creatinine": 1.08,
+              "Glucose": 132,
+              "Hemoglobin": 13.8,
+              "Hemoglobin A1c": 7.0,
+              "Low Density Lipoprotein": 88,
+              "Microalbumin/Creatinine Ratio": 12
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T14:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2019-09-12T14:40",
+              "author": "PCP",
+              "body": "Hi Mr. Pickett,\n\nYour first set of labs is back. Your A1c is right about where we want it for you. Kidney function and potassium are fine, and so is your cholesterol on the atorvastatin. PSA is undetectable, which is what we hope to see after your surgery. Hepatitis C screen is negative, and your urine protein check is normal.\n\nNo changes. See you for the flu shot and then in December.\n\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2019-10-01a",
+          "kind": "outside_records",
+          "start": "2019-10-01T10:00",
+          "orders": [
+            {
+              "id": "prior-records-2019",
+              "action": "done",
+              "date": "2019-10-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Practice and Urology Records",
+              "date": "2019-10-01T10:00",
+              "author": "PCP",
+              "body": "Outside records received from his prior primary care office and urology, about 60 pages. Reviewed.\n\nHighlights:\n- Radical prostatectomy, spring 2018. Postop PSAs listed as undetectable (<0.1) at each check through spring 2019. Urology planned PSA every 6 months, then yearly; can be done here.\n- 2016 hospital summary: admitted for an ischemic stroke; symptoms cleared before discharge. No residual deficit at the follow-up note.\n- Colonoscopy 2015: normal, no polyps. No repeat recommended given age at next interval.\n- Tdap 2017. Pneumococcal and zoster: none documented.\n- A1c values 6.8-7.3 over the past several years on metformin. LDLs 80s-90s on atorvastatin 40.\n\nProblem list and medication list here match. Scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2019-10-08T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2019-10-08T10:45",
+              "author": "RN",
+              "body": "High-dose flu vaccine given, left deltoid. Screening questions negative. VIS given. Tolerated well, waited 15 min, no reaction. Reminded him of the wellness visit on 12/5."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "outside_records",
+          "start": "2019-11-19T15:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Exam Report",
+              "date": "2019-11-19T15:00",
+              "author": "optometry",
+              "body": "OPTOMETRY - DIABETIC EYE EXAMINATION\nExam date: 11/12/2019\nPatient: Bernard Pickett\n\nDilated fundus exam both eyes. No diabetic retinopathy OU. No macular edema. Lenses clear. VA 20/25 OD, 20/25 OS with correction.\n\nAllergies: NKDA.\nRecommend yearly dilated exam.\n\nOptometrist"
+            }
+          ]
+        },
+        {
+          "id": "2019-12-05a",
+          "kind": "annual_physical",
+          "start": "2019-12-05T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              136,
+              74
+            ],
+            "hr": 88,
+            "spo2": 98,
+            "weight_kg": 87.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2019-12-05T13:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-12-05T14:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-12-05T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2019-12-05T14:25",
+              "author": "PCP",
+              "body": "MEDICARE AWV (INITIAL)\n\nHealth risk assessment reviewed with pt. Independent with all daily activities, drives, manages his own pills and bills. Lives alone, daughter close by and checks in. No falls in past year. Hearing fine per pt. Vision corrected, eye exam done last month, no retinopathy.\nPHQ-2: 0.\nCognition: no concerns from pt; conversational recall and clock draw fine.\nAdvance directive: daughter is health care proxy; he will bring a copy.\n\nVitals per flowsheet. Weight steady.\n\nPrevention:\n- Colonoscopy 2015 normal. No further screening planned.\n- Tdap 2017.\n- Shingrix #1 today, #2 in 2-6 months.\n- Pneumococcal: discussed, he wants to wait until next year.\n- Flu done in October.\n- Hep C negative 9/2019.\n\nPersonalized plan given. Continue current meds. Diabetes follow-up in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-02-27a",
+          "kind": "nurse_visit",
+          "start": "2020-02-27T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-02-27T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2020-02-27T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2020-02-27T09:25",
+              "author": "RN",
+              "body": "Second Shingrix dose given IM, right deltoid. He said the first one made his arm ache for a day or two. Told him the same could happen. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2020-03-19T11:30",
+              "author": "front desk",
+              "body": "Called pt to cancel 3/24 diabetes follow-up; routine in-person visits on hold for now. He is doing fine, has 3 months of meds on hand. Will set up a video visit next month."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-04-22a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure check-in",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-04-22T11:25",
+              "author": "PCP",
+              "body": "Video visit. He is at home, daughter set up the tablet for him and then left the room.\n\nStaying home, daughter does his grocery runs. Walking around the neighborhood most days. Taking all three meds. Home BP readings he read off his log: 134/82, 140/86, 136/84, 138/80. No home glucose meter readings to share, says he 'never got into it.'\nNo chest pain, SOB, foot problems, urinary issues.\n\nA/P\n- DM2: due for A1c; will draw when the lab reopens for routine work, aim July.\n- HTN: home numbers upper 130s, ok for now. Recheck in person.\n- Continue metformin, lisinopril, atorvastatin. Refills sent.\n\n15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-16a",
+          "kind": "office_visit",
+          "start": "2020-07-16T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              140,
+              86
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 89.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-07-16T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-16T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 133
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-07-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2020-07-16T09:15",
+              "author": "PCP",
+              "body": "Masked visit. First time in the office since December.\n\nS: Feels fine. Still walking. Eating more bread than he should, he says. Meds as prescribed, no side effects. No hypoglycemia symptoms. Home BP 'about 140.'\n\nO: BP 140/86 on recheck. Wt stable. Feet normal to inspection and monofilament. Heart RRR, lungs clear, no edema.\n\nA/P\n1. DM2 - A1c and BMP today.\n2. HTN - running a bit above where I'd like for someone with a prior stroke (goal under 130/80). He'd like to try cutting salt first. Recheck in the fall; if still up we'll add something.\n3. HLD - lipids at the fall visit.\n\nFlu shot in October."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              86
+            ],
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-07-17a",
+          "kind": "portal_message",
+          "start": "2020-07-17T16:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2020-07-17T16:10",
+              "author": "PCP",
+              "body": "Mr. Pickett - A1c is 6.9, nice work. Kidney numbers and potassium are normal. Keep doing what you're doing and keep an eye on the salt. We'll recheck your blood pressure in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-21a",
+          "kind": "pharmacy",
+          "start": "2020-09-21T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2020-09-21T09:30",
+              "author": "MA",
+              "body": "Mail-order pharmacy request for 90-day supply of metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily. Last visit 7/16, labs current. Sent per protocol, 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-09a",
+          "kind": "nurse_visit",
+          "start": "2020-10-09T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-09T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-09T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Flu",
+              "date": "2020-10-09T14:15",
+              "author": "RN",
+              "body": "Flu vaccine, high dose, given IM left arm. No contraindications. No reaction during wait. Confirmed BP follow-up with PCP 11/4."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-04a",
+          "kind": "office_visit",
+          "start": "2020-11-04T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 25 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension, cardiovascular risk after prior stroke"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              146,
+              88
+            ],
+            "hr": 77,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 88.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-11-04T10:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 126
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-11-04T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Blood Pressure Follow-up",
+              "date": "2020-11-04T10:50",
+              "author": "PCP",
+              "body": "BP recheck as planned.\n\nHe has cut back salt, home log is mostly 140s over upper 80s. Office 146/88 after sitting. Pulse in the 80s. No headaches, chest pain, dizziness.\n\nExam: heart regular, no murmur; lungs clear; no edema.\n\nA/P\nHTN above goal in a man with a prior ischemic stroke and diabetes. Talked over options. Adding metoprolol succinate 25 mg daily on top of lisinopril, to bring the pressure down and for his overall cardiovascular risk. Reviewed side effects (tiredness, slow pulse, lightheadedness). BMP today. Follow up in about 3 months with fasting labs (A1c, lipids, BMP) and a PSA, which is due."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              88
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-11-18a",
+          "kind": "portal_message",
+          "start": "2020-11-18T08:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about new pill",
+              "date": "2020-11-18T08:15",
+              "author": "patient",
+              "body": "Doctor, does the metoprolol need to go with the others in the morning or can I take it at night? I keep forgetting which one it is. Thanks, Bernie"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about new pill",
+              "date": "2020-11-18T12:40",
+              "author": "RN",
+              "body": "Hi Bernie, morning with your other pills is fine, and keeping them all together is the easiest way not to miss it. It's the small white tablet. A pillbox can help. Call if you feel dizzy when you stand up."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "outside_records",
+          "start": "2020-12-08T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Exam Report",
+              "date": "2020-12-08T13:00",
+              "author": "optometry",
+              "body": "OPTOMETRY - DIABETIC EYE EXAMINATION\nExam date: 12/1/2020\n\nDilated exam OU: no diabetic retinopathy, no macular edema. Lenses clear. Correction updated slightly.\nAllergies: NKDA.\nReturn 1 year.\n\nOptometrist"
+            }
+          ]
+        },
+        {
+          "id": "2021-02-02a",
+          "kind": "office_visit",
+          "start": "2021-02-02T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, 3 months after starting metoprolol",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 78,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 88.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-02-02T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-02-02T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 150
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-02-02T09:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 130
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-02-02T09:30",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "text": "<0.1"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-02-02T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-26T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-02-02T09:35",
+              "author": "PCP",
+              "body": "Here for the 3-month check after we added metoprolol in November.\n\nS: Doing well. No chest pain, no racing heart, no shortness of breath. No lightheadedness when he stands. Taking everything in the morning from a pillbox now - metformin 1000 twice a day, lisinopril 20, atorvastatin 40, metoprolol succinate 25. Had his first COVID shot at the town clinic on 1/26, second one booked.\n\nO: BP 132/84, HR 78. Comfortable. Heart regular, no murmur. Lungs clear. Ankles without swelling. Feet intact.\n\nA/P\n1. HTN - better on the two drugs. Continue lisinopril and metoprolol.\n2. DM2 - fasting labs drawn today.\n3. HLD - lipids today.\n4. Prostate ca s/p RP - PSA due, drawn today.\n\nRTC 3-4 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Review",
+              "date": "2021-02-03T13:20",
+              "author": "PCP",
+              "body": "A1c 7.2. TC 180, LDL 90, HDL 45, TG 150. Cr 1.1, K 4.5. PSA <0.1. Fine, no changes. Pt notified via portal."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              84
+            ],
+            "labs": {
+              "Creatinine": 1.1,
+              "Hemoglobin A1c": 7.2,
+              "High Density Lipoprotein": 45,
+              "Low Density Lipoprotein": 90,
+              "Potassium": 4.5,
+              "Triglycerides": 150
+            }
+          },
+          "measure": [
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-02-03a",
+          "kind": "portal_message",
+          "start": "2021-02-03T13:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Results",
+              "date": "2021-02-03T13:25",
+              "author": "PCP",
+              "body": "Hi Bernie - A1c 7.2, about the same as before. Cholesterol numbers are fine on the atorvastatin. Kidneys and potassium are normal. PSA still undetectable. Nothing to change. Good luck with the second COVID shot."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "office_visit",
+          "start": "2021-05-20T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Tiredness, slow urination",
+          "vitals": {
+            "bp": [
+              131,
+              81
+            ],
+            "hr": 77,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 88.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-05-20T14:40",
+              "resulted": "2021-05-21T15:30",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-05-20T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-05-20T14:45",
+              "author": "PCP",
+              "body": "CC: tired, and slower to get going when he urinates.\n\nHPI: For about three months he's felt more worn out than usual - naps in the afternoon, which he never used to. Also takes a while to start his stream. No burning, no blood, no fevers, no weight loss, no bone or back pain. No change in meds. Sleeping ok otherwise. Both COVID doses done (1/26 and 2/16).\n\nO: Vitals per flowsheet. NAD. Heart regular, lungs clear. Abd soft, nontender, no suprapubic fullness. No CVA tenderness. No edema.\n\nA/P\n- Fatigue + urinary hesitancy in a man with prostate cancer s/p prostatectomy 2018. PSA was undetectable in February. Repeat PSA today. If it's up he needs to go back to cancer care.\n- Will call him with the result."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-05-24a",
+          "kind": "telephone",
+          "start": "2021-05-24T09:40",
+          "orders": [
+            {
+              "id": "onc-referral-2021",
+              "action": "placed",
+              "order": "Oncology referral",
+              "category": "referral",
+              "to": "Oncology",
+              "reason": "Rising PSA after radical prostatectomy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "PSA Result Call",
+              "date": "2021-05-24T09:40",
+              "author": "PCP",
+              "body": "Called pt. PSA 2.2, up from undetectable in February. Explained this means the prostate cancer is likely active again even though the gland was removed, and that it needs a cancer specialist to sort out next steps. He took it calmly, asked if his daughter could come to the appointment - yes. Oncology referral placed, urgent. Front desk to send notes and PSA history."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-02a",
+          "kind": "specialist_visit",
+          "start": "2021-08-02T10:30",
+          "service": "Oncology",
+          "reason": "Rising PSA after radical prostatectomy",
+          "conditions": [
+            {
+              "label": "History of prostate cancer",
+              "action": "resolved",
+              "onset": "2018-04-01"
+            },
+            {
+              "label": "Malignant neoplasm of prostate",
+              "action": "diagnosed",
+              "onset": "2021-02-15",
+              "note": "biochemical recurrence after radical prostatectomy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              74
+            ],
+            "hr": 69,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-02T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-02T10:15",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-08-02T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 142
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 72
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-02T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 158
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "onc-referral-2021",
+              "action": "done",
+              "date": "2021-08-02T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology Consultation",
+              "date": "2021-08-05T09:00",
+              "author": "oncology",
+              "body": "OUTPATIENT ONCOLOGY - NEW CONSULTATION\nDate of service: 08/02/2021\nReferred by: primary care, for rising PSA\n\nPatient is a 71-year-old man treated with radical prostatectomy three years ago, recovery uncomplicated. PSA stayed undetectable afterward; on 2/2/2021 it was <0.1. Since then it has climbed, 2.2 in May and 4.5 today. Over roughly six months he has felt progressively more fatigued and has had hesitancy starting his stream. He reports no bone pain and no weight loss, fevers or sweats.\n\nPMH: type 2 diabetes, hypertension (both well controlled per pt and PCP records), hyperlipidemia, prostate cancer s/p RP 2018, ischemic stroke 2016 without residual deficit.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily, metoprolol succinate 25 mg daily.\nAllergies: NKDA.\nFH: father with prostate cancer; mother stroke; sister type 2 DM.\nSH: retired, never smoker, no alcohol. Daughter accompanies.\n\nExam: Well appearing. No spinal or bony tenderness. DRE: no abnormality appreciated. No lymphadenopathy. No edema.\n\nLabs today: Hgb 13.2, creatinine 1.1, fasting glucose 142, total cholesterol 178. PSA 4.5 ng/mL.\nWhole-body bone scan (7/28/2021): no scintigraphic evidence of osseous metastatic disease.\n\nImpression: Biochemically recurrent prostate adenocarcinoma after radical prostatectomy, PSA 4.5, no metastatic disease on bone scan.\n\nPlan:\n- Refer to radiation oncology to discuss salvage radiation to the prostate bed.\n- Urology to follow urinary symptoms and PSA after treatment.\n- Copy to PCP.\n\nOncology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.2,
+              "Prostate Specific Antigen": 4.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "telephone",
+          "start": "2021-08-10T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Oncology Letter Review",
+              "date": "2021-08-10T12:10",
+              "author": "PCP",
+              "body": "Oncology letter received and reviewed with pt and daughter by phone. Bone scan negative. Plan is radiation to the area where the prostate was; radiation oncology will call. Answered questions about whether he needs to stop any of his medicines for it - no. Will see him in the fall once treatment is done."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-23a",
+          "kind": "specialist_visit",
+          "start": "2021-08-23T13:00",
+          "service": "Radiation Oncology",
+          "reason": "Salvage radiation consultation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Radiation Oncology Consultation",
+              "date": "2021-08-26T10:15",
+              "author": "radiation oncology",
+              "body": "RADIATION ONCOLOGY CONSULTATION\nDate of service: 8/23/2021\n\n71 y/o man, prostatectomy 2018, PSA now 4.5 and rising from undetectable in early 2021. Bone scan negative. Seen with his daughter.\n\nWe discussed salvage external beam radiation to the prostate bed, the expected course (about 7 weeks, weekdays), and short- and long-term effects including urinary frequency and urgency, bowel irritation, fatigue, and later bladder or ureter changes. Hormonal therapy alongside radiation was discussed; with his stroke history and cardiovascular risk, he and the team agreed to radiation alone.\n\nAllergies: NKDA. Meds per PCP list.\n\nPlan: CT simulation next week, start early September. 66 Gy in 33 fractions.\n\nRadiation Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-14T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-14T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2021-10-14T15:45",
+              "author": "RN",
+              "body": "Came straight from a radiation session (week 6). Flu high dose L arm, Pfizer booster R arm. Tired but ok. Observed 15 min, no issues. Mentions he's going more often during the day since radiation started, no burning; radiation team aware."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-03a",
+          "kind": "outside_records",
+          "start": "2021-11-03T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Radiation Treatment Summary",
+              "date": "2021-11-03T11:00",
+              "author": "radiation oncology",
+              "body": "RADIATION THERAPY COMPLETION SUMMARY\n\nDiagnosis: biochemically recurrent prostate adenocarcinoma after radical prostatectomy.\nTreatment: external beam radiation to the prostate bed, 66 Gy in 33 fractions, 9/7/2021 through 10/26/2021. No breaks. No androgen deprivation.\n\nTolerance: urinary frequency in the second half of treatment, mild fatigue. No bowel bleeding. No unplanned visits.\n\nFollow-up: PSA in about 3 months with urology. Late effects reviewed again with patient and daughter.\n\nAllergies: NKDA.\n\nRadiation Oncology"
+            }
+          ]
+        },
+        {
+          "id": "2021-11-17a",
+          "kind": "office_visit",
+          "start": "2021-11-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after radiation; diabetes",
+          "vitals": {
+            "bp": [
+              136,
+              83
+            ],
+            "hr": 74,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 89.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-11-17T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-11-17T11:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.08
+                },
+                {
+                  "test": "Glucose",
+                  "value": 140
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-17T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-17T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-11-17T11:15",
+              "author": "PCP",
+              "body": "Finished salvage radiation 10/26 (66 Gy / 33 fx, summary in chart). Daughter drove him.\n\nS: Energy coming back slowly. Still going to the bathroom more often and slow to start, up at night once or twice. No blood in urine or stool. Eating ok. Taking meds.\n\nO: Vitals per flowsheet, BP fine. Heart regular. Lungs clear. Abd soft, nontender. No edema.\n\nA/P\n1. Recurrent prostate ca s/p salvage RT - PSA follow-up with urology in early 2022.\n2. DM2 - A1c, CMP.\n3. HTN - controlled, same meds.\n4. CBC after radiation.\n\nSee me in 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.8,
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "outside_records",
+          "start": "2021-11-30T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Exam Report",
+              "date": "2021-11-30T14:00",
+              "author": "optometry",
+              "body": "DIABETIC EYE EXAM\nDate: 11/22/2021\n\nDilated, both eyes. No retinopathy. Maculae flat and dry. Lenses clear. VA stable.\nNKDA.\nNext exam 1 year.\n\nOptometrist"
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "pharmacy",
+          "start": "2022-01-11T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Authorization",
+              "date": "2022-01-11T10:05",
+              "author": "MA",
+              "body": "Pharmacy fax: atorvastatin 40 mg and metoprolol succinate 25 mg, 90 days. Seen 11/17. Approved x 3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-14a",
+          "kind": "specialist_visit",
+          "start": "2022-02-14T09:15",
+          "service": "Urology",
+          "reason": "Urinary symptoms and PSA after salvage radiation",
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 78,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-14T09:00",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 6.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-14T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.08
+                },
+                {
+                  "test": "Glucose",
+                  "value": 132
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 73
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-02-14T09:00",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "date": "2022-02-17T16:00",
+              "author": "urology",
+              "body": "UROLOGY CLINIC NOTE\nDate of visit: 2/14/2022\n\nReturning to our clinic, where he had his prostatectomy in 2018, after oncology evaluation and salvage radiation to the prostate bed (completed 10/2021).\n\nHe describes six months of getting up at night to void, hesitancy, and a weaker stream. No dysuria and no burning.\n\nPMH: hypertension, type 2 diabetes on metformin, hyperlipidemia, ischemic stroke 2016.\nMeds: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily, metoprolol succinate 25 mg daily.\nAllergies: NKDA.\nFH: father diagnosed with prostate cancer at 75.\nSH: nonsmoker, no alcohol.\n\nExam: BP 135/85, HR 78, BMI 29. Abdomen soft. DRE: smooth prostatic fossa, no palpable mass or nodularity, nontender.\n\nLabs: PSA 6.5 ng/mL. BMP and UA unremarkable.\n\nAssessment: Prostate cancer with persistent PSA rise after salvage radiation. Lower urinary tract symptoms after prostatectomy and pelvic radiation.\n\nPlan:\n- We discussed androgen deprivation. Given his strokes and cardiovascular risk, and the PSA pace so far, we will hold off and follow PSA every 6 months (PCP can draw).\n- Timed voiding, limit evening fluids.\n- Return in one year, sooner if bone pain or rapid PSA rise.\n\nUrology"
+            }
+          ],
+          "state": {
+            "bp": [
+              135,
+              85
+            ],
+            "labs": {
+              "Prostate Specific Antigen": 6.5
+            }
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-24a",
+          "kind": "office_visit",
+          "start": "2022-03-24T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              131,
+              88
+            ],
+            "hr": 76,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-24T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-24T15:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 154
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-24T15:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-24T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-24T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Follow-up",
+              "date": "2022-03-24T15:35",
+              "author": "PCP",
+              "body": "DM/HTN f/u. Urology letter from 2/14 reviewed: PSA 6.5 after salvage radiation, they're watching it rather than starting hormone therapy. He's comfortable with that plan.\n\nS: Up at night 2-3 times. Trying timed voiding. Otherwise feels ok. No chest pain, palpitations, SOB. Meds unchanged.\n\nO: BP and HR per flowsheet. Heart regular, lungs clear, no edema. Feet: no lesions, sensation intact.\n\nA/P\n1. DM2 - A1c, ACR.\n2. HLD - lipids, annual.\n3. HTN - ok.\n4. Prostate ca - PSA with urology every 6 mo; next due ~August, I'll draw it.\n5. CBC yearly.\n\nRTC 3 mo."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              82
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-06-22a",
+          "kind": "office_visit",
+          "start": "2022-06-22T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nighttime urination, large volumes",
+          "vitals": {
+            "bp": [
+              141,
+              83
+            ],
+            "hr": 85,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 89.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-06-22T11:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 143
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-22T11:50",
+              "results": [
+                {
+                  "test": "Urine osmolality",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 190
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-06-22T11:50",
+              "results": [
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.004
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-22T11:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-06-22T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral-2022",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "Nocturnal polyuria with dilute urine"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Nocturia",
+              "date": "2022-06-22T12:00",
+              "author": "PCP",
+              "body": "CC: getting up all night to urinate.\n\nHPI: Over the last couple of months the nighttime trips have gotten worse, now several a night, and he says it is a lot of urine each time, pale like water. He has stopped drinking anything after supper and it hasn't helped. Not especially thirsty during the day, he thinks. Tired from broken sleep. No burning, no blood, no flank pain, no fever.\n\nMeds: metformin, lisinopril, atorvastatin, metoprolol succinate. No diuretic.\n\nO: Vitals per flowsheet. Well appearing, mucous membranes moist. Abd soft, no suprapubic fullness or tenderness. No edema.\n\nA/P\nNocturnal polyuria, large dilute volumes, not just the bladder-outlet pattern urology described. Glucose has been fine so this isn't sugar. Checking BMP (Na, Ca, glucose), urine osm, UA, A1c.\nIf urine is dilute with a normal-to-high sodium, will send to nephrology for a diabetes insipidus workup."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result Note",
+              "date": "2022-06-23T17:10",
+              "author": "PCP",
+              "body": "Na 143, glucose and calcium normal. Urine osm 190, SG 1.004 - dilute urine. UA otherwise negative. Nephrology referral placed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "portal_message",
+          "start": "2022-06-24T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Test results and kidney referral",
+              "date": "2022-06-24T09:05",
+              "author": "PCP",
+              "body": "Hi Bernie,\n\nYour sugar and blood salts are normal, but your urine is very watery even after you cut back on fluids. That can happen when the kidneys don't respond to the hormone that normally concentrates urine. I've asked a kidney specialist to see you to test for that. Their office will call. Keep drinking when you're thirsty during the day - don't hold back because of the bathroom trips.\n\nYour primary care physician"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Test results and kidney referral",
+              "date": "2022-06-24T19:48",
+              "author": "patient",
+              "body": "Thank you. My daughter Ellen will drive me, can you put her name down so they can talk to her too. - B. Pickett"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "specialist_visit",
+          "start": "2022-08-09T08:30",
+          "service": "Nephrology",
+          "reason": "Nocturnal polyuria, dilute urine",
+          "conditions": [
+            {
+              "label": "Nephrogenic diabetes insipidus",
+              "action": "diagnosed",
+              "onset": "2022-04-01",
+              "icd10": "N25.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 12.5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Nephrogenic diabetes insipidus"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              85
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "weight_kg": 89.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-09T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2022-08-09T09:40",
+              "text": "RENAL ULTRASOUND\nIndication: nocturnal polyuria; prior prostatectomy and pelvic radiation.\nRight kidney 10.8 cm, left kidney 11.1 cm, normal cortical thickness and echogenicity. No renal stones. No renal mass. Both ureters are dilated along their visualized course. No ureteral stone or obstructing mass identified. Bladder adequately distended, wall smooth, no intraluminal mass.",
+              "conclusion": "Bilateral hydroureters without stones or obstructing masses."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-referral-2022",
+              "action": "done",
+              "date": "2022-08-09T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "date": "2022-08-12T14:30",
+              "author": "nephrology",
+              "body": "NEPHROLOGY CONSULTATION\nDate of service: 08/09/2022\nReason: nocturnal polyuria with dilute urine (urine osm 190, SG 1.004 per PCP)\n\nHPI: 72-year-old man with prostate cancer treated by radical prostatectomy and then salvage radiation to the prostate bed roughly a year ago. Urology saw him in February for hesitancy and nocturia. Over the last four months the night voiding has steadily worsened: he gets up repeatedly and passes large volumes of clear urine though he stops fluids well before bed. Some daytime sleepiness from the interrupted nights. No dysuria, no visible blood, no flank pain. No fever, weight loss or abdominal pain.\n\nMeds: metformin 1000 mg BID, lisinopril 20 mg, atorvastatin 40 mg, metoprolol succinate 25 mg.\nAllergies: NKDA.\nFH: father prostate cancer, mother stroke, sister T2DM.\nSH: never smoker, no alcohol, retired.\n\nExam: vitals within normal limits. Abdomen soft, no masses felt, no suprapubic tenderness.\n\nData: serum glucose, calcium and electrolytes normal today. Renal ultrasound today: bilateral hydroureters, no stones or obstructing mass.\nDesmopressin challenge in clinic: urine osmolality rose by less than 10 percent.\n\nAssessment: Nephrogenic diabetes insipidus (no response to desmopressin with dilute urine and normal serum chemistries). Bilateral hydroureters after prostatectomy and pelvic radiation, no obstructing lesion seen.\n\nPlan:\n- Start hydrochlorothiazide 12.5 mg daily plus a low-sodium diet (handout given) to reduce urine volume.\n- Drink to thirst.\n- BMP in about a month (PCP fine) for sodium and potassium.\n- Repeat renal ultrasound in 6 months.\n\nNephrology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nephrology Letter / New Medication",
+              "date": "2022-08-16T09:30",
+              "author": "RN",
+              "body": "Nephrology note received. Called pt: started hydrochlorothiazide 12.5 mg each morning on 8/10, picked up at pharmacy. Reviewed low-salt handout with daughter. BMP booked with PCP visit 9/14. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "office_visit",
+          "start": "2022-09-14T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up on hydrochlorothiazide",
+          "vitals": {
+            "bp": [
+              136,
+              80
+            ],
+            "hr": 77,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 89.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-14T10:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 134
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-14T10:20",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-14T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-09-14T10:25",
+              "author": "PCP",
+              "body": "Nephrology letter reviewed: nephrogenic DI, started HCTZ 12.5 + low-salt diet, hydroureters on US, repeat US in 6 months.\n\nS: Five weeks on HCTZ. Up 1-2 times a night now instead of 4-5. Daughter has been cooking with less salt. No dizziness or cramps.\n\nO: BP and pulse per flowsheet. No orthostatic symptoms on standing. Heart regular, lungs clear, no edema.\n\nA/P\n1. Nephrogenic DI - better on HCTZ. BMP today for Na/K as nephrology asked.\n2. Prostate ca - 6-month PSA today for urology.\n3. DM/HTN - continue. Added HCTZ to med list.\n\nFlu shot and COVID booster in October. RTC Dec."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result Note",
+              "date": "2022-09-15T12:30",
+              "author": "PCP",
+              "body": "Na 140, K 4.2 on HCTZ - good. PSA 6.9 (6.5 in Feb), copied to urology. Pt and daughter notified."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Potassium": 4.2,
+              "Prostate Specific Antigen": 6.9,
+              "Sodium": 140
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-12T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T10:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-12T10:25",
+              "author": "RN",
+              "body": "High-dose influenza (L deltoid) and bivalent Pfizer booster (R deltoid). No prior reactions. Observed 15 minutes. Daughter Ellen with him."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "outside_records",
+          "start": "2022-11-29T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Exam Report",
+              "date": "2022-11-29T11:30",
+              "author": "optometry",
+              "body": "Diabetic eye exam 11/21/2022. Dilated OU. No diabetic retinopathy either eye, no macular edema. Lenses clear. NKDA. See yearly.\n\nOptometrist"
+            }
+          ]
+        },
+        {
+          "id": "2022-12-16a",
+          "kind": "office_visit",
+          "start": "2022-12-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              135,
+              81
+            ],
+            "hr": 81,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 89.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-16T14:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-16T14:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 133
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-16T13:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-12-16T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-12-16T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2022-12-16T14:10",
+              "author": "PCP",
+              "body": "DM2 / HTN / nephrogenic DI.\n\nS: Sleeping better, one trip a night most nights. Sticking with the low-salt cooking. Walking less now that it's cold. No hypoglycemia. Takes his meds from the pillbox.\n\nO: Vitals reviewed. Heart regular, lungs clear, no edema. Feet: intact skin, normal monofilament, pulses palpable.\n\nA/P\n1. DM2 - A1c today.\n2. HTN - fine on lisinopril, metoprolol, HCTZ.\n3. Nephrogenic DI - stable, Na ok in Sept; BMP today.\n4. PCV20 given today (agreed this time).\n5. Repeat renal US and nephrology f/u due Feb; urology Feb.\n\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "specialist_visit",
+          "start": "2023-02-21T10:00",
+          "service": "Nephrology",
+          "reason": "Nephrogenic diabetes insipidus follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              87
+            ],
+            "hr": 71,
+            "weight_kg": 88.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-21T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 128
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2023-02-21T09:00",
+              "text": "RENAL ULTRASOUND, FOLLOW-UP\nComparison: 8/9/2022.\nRight kidney 10.9 cm, left kidney 11.0 cm, normal echogenicity, no stones or masses. Bilateral ureteral dilatation is again seen, similar in caliber to the prior study. No stone or obstructing mass. Bladder unremarkable.",
+              "conclusion": "Bilateral hydroureters, unchanged from 8/2022."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Follow-up",
+              "date": "2023-02-23T15:20",
+              "author": "nephrology",
+              "body": "NEPHROLOGY FOLLOW-UP\nVisit 2/21/2023\n\nNephrogenic DI on hydrochlorothiazide 12.5 mg daily with sodium restriction since August. Nighttime voiding down to about once a night; daytime output lower by his account. No lightheadedness.\n\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 25, HCTZ 12.5.\nNKDA.\n\nExam unremarkable, euvolemic.\nLabs: creatinine 1.1, electrolytes normal.\nRenal US today: bilateral hydroureters, unchanged.\n\nPlan: continue HCTZ and low-sodium diet. BMP with PCP every 6 months. Return in one year or sooner if output climbs again.\n\nNephrology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-27a",
+          "kind": "specialist_visit",
+          "start": "2023-02-27T14:30",
+          "service": "Urology",
+          "reason": "Prostate cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-27T14:10",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "date": "2023-03-02T09:45",
+              "author": "urology",
+              "body": "UROLOGY - FOLLOW-UP\nDate: 2/27/2023\n\nRecurrent prostate cancer after RP (2018) and salvage RT (2021), on PSA surveillance.\nPSA trend: 4.5 (8/21), 6.5 (2/22), 6.9 (9/22), 7.6 today.\nNo bone pain. Voiding better since nephrology started HCTZ for nephrogenic DI.\nMeds reviewed. NKDA.\n\nAssessment: slow PSA rise. Continue surveillance, no androgen deprivation for now given cerebrovascular history.\nPlan: PSA every 6 months via PCP; see in one year.\n\nUrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prostate Specific Antigen": 7.6
+            }
+          }
+        },
+        {
+          "id": "2023-02-28a",
+          "kind": "telephone",
+          "start": "2023-02-28T16:00",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Renal Ultrasound Follow-up",
+              "date": "2023-02-28T16:00",
+              "author": "PCP",
+              "body": "Nephrology f/u letter and repeat renal US reviewed: bilateral hydroureters unchanged from August, creatinine 1.1. Continue HCTZ. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "pharmacy",
+          "start": "2023-03-20T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Authorization",
+              "date": "2023-03-20T11:15",
+              "author": "MA",
+              "body": "Pharmacy request: hydrochlorothiazide 12.5 mg daily, 90 days (originally from nephrology, nephrology asked us to manage refills). BMP 2/21 normal. Sent with 3 refills. Also refilled metformin and lisinopril."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-05-15T16:40",
+              "author": "front desk",
+              "body": "Daughter called to cancel tomorrow, she can't get off work to drive him. Rebooked 6/12."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-06-08a",
+          "kind": "telephone",
+          "start": "2023-06-08T12:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Daughter",
+              "date": "2023-06-08T12:30",
+              "author": "RN",
+              "body": "Daughter Ellen (on HIPAA form) called ahead of Monday's visit. Over the past year he's been forgetting conversations they had a day or two before, and he's been mixing up his bills - two late notices and one paid twice. Says he always handled money carefully. No falls, no sudden changes, no new weakness that she has seen. She wanted the doctor to know before the visit since he tends to say everything is fine. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "office_visit",
+          "start": "2023-06-12T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Memory concerns",
+          "vitals": {
+            "bp": [
+              137,
+              81
+            ],
+            "hr": 80,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 88.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-12T11:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 132
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-12T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-12T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2023",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Progressive memory loss, prior stroke"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Memory",
+              "date": "2023-06-12T11:25",
+              "author": "PCP",
+              "body": "Visit with daughter, who called last week (see RN note).\n\nS: Pt himself thinks his memory is 'a little worse, like anybody my age.' Daughter describes a year of forgetting recent conversations and errors with bills that are new for him. No getting lost driving per daughter. Mood ok, sleeping better since the HCTZ. PHQ-9 3.\nMeds unchanged.\n\nO: Vitals per flowsheet. Pleasant, conversant, repeats one question during the visit. Speech fluent. Strength symmetric, gait steady. Heart regular, lungs clear.\n\nA/P\nProgressive memory complaint over a year with functional change (finances), in a man with a prior ischemic stroke, diabetes and hypertension. Needs formal cognitive evaluation.\n- Neurology referral.\n- BMP (sodium on HCTZ, calcium) and CBC today; neurology can add the rest.\n- Daughter to help with bills in the meantime; she's already set up autopay.\n- Continue meds.\n\nRTC after neurology, ~Sept for wellness visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-08-07a",
+          "kind": "specialist_visit",
+          "start": "2023-08-07T13:00",
+          "service": "Neurology",
+          "reason": "Cognitive evaluation",
+          "conditions": [
+            {
+              "label": "Mild cognitive impairment",
+              "action": "diagnosed",
+              "onset": "2022-08-01",
+              "note": "vascular pattern"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              79
+            ],
+            "hr": 82
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-07T12:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-07T12:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-07T12:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 250
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 145
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-07T12:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-07T12:30",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 400
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2023",
+              "action": "done",
+              "date": "2023-08-07T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2023-08-10T11:00",
+              "author": "neurology",
+              "body": "NEUROLOGY - COGNITIVE EVALUATION\nDate of visit: 8/7/2023\nReferring: primary care\n\nHistory obtained from patient and his daughter, who helps care for him. He had an ischemic stroke in 2016 without lasting deficit. Over the past year the family has noticed he loses track of recent conversations and has started making mistakes with his finances, which he always managed without trouble. He feels his memory is only mildly off.\n\nPMH: T2DM, hypertension, hyperlipidemia, prostate cancer s/p RP and salvage RT with PSA surveillance, nephrogenic DI.\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 25, hydrochlorothiazide 12.5.\nAllergies: NKDA.\nFH: father prostate cancer, mother stroke, sister T2DM.\nSH: retired, never smoker, no alcohol.\n\nExam: Awake, cooperative. Knows who he is and where he is; gives the wrong month and year. Struggles to come up with his grandchildren's names and cannot describe what he did yesterday. MMSE 22/30. Cranial nerves, strength, reflexes, sensation, coordination and gait otherwise normal.\n\nLabs: fasting glucose 130, A1c 7.2, total cholesterol 190, LDL 100, HDL 45, triglycerides 250, TSH 2.5, B12 400.\n\nImpression: Mild cognitive impairment, likely vascular in a man with prior stroke and vascular risk factors. Reversible contributors not found on thyroid and B12 testing.\n\nPlan:\n- Continue vascular risk-factor management with PCP.\n- Daughter to supervise finances and medications.\n- Repeat assessment in one year, sooner with any sudden change.\n\nNeurology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2,
+              "High Density Lipoprotein": 45,
+              "Low Density Lipoprotein": 100,
+              "Triglycerides": 250
+            }
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "annual_physical",
+          "start": "2023-09-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              126,
+              82
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 88.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-14T09:40",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 8.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-14T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-14T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.11
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 128
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 70
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-09-14T09:00"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2023-09-14T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-09-14T09:50",
+              "author": "PCP",
+              "body": "MEDICARE AWV, SUBSEQUENT. Daughter present.\n\nNeurology letter 8/7 reviewed: MMSE 22, mild cognitive impairment of likely vascular origin; TSH and B12 normal.\n\nFunction: independent in dressing, bathing, eating, walking. Daughter now handles bills and fills his weekly pillbox. He still cooks simple meals. No falls this year. PHQ-2 0.\n\nAdvance care planning (separate, about 20 min): daughter remains health care proxy, form on file updated. He would want treatment for anything reversible; he does not want to end up on machines long term. MOLST not completed today; he wants to think about it.\n\nPrevention: colonoscopy aged out. Flu, updated COVID and RSV next month at nurse visit. Shingrix and PCV20 done.\n\nChronic: DM2, HTN, HLD, nephrogenic DI on HCTZ, prostate cancer on PSA surveillance (PSA today for urology), MCI.\n\nPlan: labs as ordered. Diabetes recheck in December."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prostate Specific Antigen": 8.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-11T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T11:07"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-11T11:09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-11T11:30",
+              "author": "RN",
+              "body": "Three vaccines today with daughter's consent and his: high-dose flu L deltoid, 2023-24 COVID R deltoid, RSV L deltoid lower site. Observed 15 min, felt fine. Wrote the dates on his card."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "outside_records",
+          "start": "2023-11-28T10:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Exam Report",
+              "date": "2023-11-28T10:20",
+              "author": "optometry",
+              "body": "Diabetic eye exam, 11/20/2023: dilated both eyes, no diabetic retinopathy, no macular edema, lenses clear. NKDA. Recheck 12 months.\n\nOptometrist"
+            }
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "office_visit",
+          "start": "2023-12-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ],
+            "hr": 81,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 89.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-12-11T14:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-12-11T14:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 132
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-11T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2023-12-11T14:55",
+              "author": "PCP",
+              "body": "With daughter.\n\nS: Eating more sweets since fall per daughter, less walking. Taking pills from the box, she checks it. No low sugars. Night voiding stable once.\n\nO: BP 138/86, pulse 70s. Heart regular, lungs clear, no edema. Feet: monofilament intact, pulses present, no skin breakdown.\n\nA/P\n1. DM2 - A1c today. Talked about the sweets; daughter will keep fewer in the house.\n2. HTN - borderline today, recheck next visit.\n3. Nephrogenic DI - BMP today (Na on HCTZ).\n4. MCI - stable per daughter.\n\nRTC 3 months."
+            },
+            {
+              "type": "Result Note",
+              "title": "Result Note",
+              "date": "2023-12-12T16:00",
+              "author": "PCP",
+              "body": "A1c 7.5, a bit higher than last year. BMP normal, Na fine. Diet as discussed, recheck March. Portal message to daughter."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "labs": {
+              "Hemoglobin A1c": 7.5
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-02-26a",
+          "kind": "specialist_visit",
+          "start": "2024-02-26T10:15",
+          "service": "Urology",
+          "reason": "Prostate cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-26T10:00",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 8.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "date": "2024-02-29T13:10",
+              "author": "urology",
+              "body": "UROLOGY - ANNUAL FOLLOW-UP\n2/26/2024\n\nProstate cancer, RP 2018, salvage RT 2021, PSA surveillance. Seen with daughter. No bone pain. Voiding stable.\nPSA: 7.6 (2/23), 8.0 (9/23), 8.7 today.\nNKDA. Meds reviewed (now includes HCTZ).\n\nSlow rise continues. With his cognitive changes and vascular history, family and patient prefer to continue watching. Androgen deprivation not started.\nPSA q6 months with PCP; return 1 year.\n\nUrology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prostate Specific Antigen": 8.7
+            }
+          }
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "office_visit",
+          "start": "2024-03-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              81
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 89.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-20T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-20T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 198
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 248
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 152
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-20T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-20T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Care Visit",
+              "date": "2024-03-20T10:05",
+              "author": "PCP",
+              "body": "With daughter. Urology note 2/26 reviewed - PSA 8.7, still watching.\n\nS: Says he feels fine. Daughter: memory about the same as last summer, no new problems she's noticed. Eating somewhat better. Meds via pillbox, no missed doses that she knows of.\n\nO: BP and pulse per flowsheet. Alert, pleasant. Heart regular, lungs clear, no edema. Gait steady.\n\nA/P\n1. DM2 - A1c today.\n2. HLD - lipids today.\n3. HTN - continue current regimen.\n4. Prostate ca - next PSA ~Aug/Sept.\n5. MCI - neurology recheck due in August.\n\nRTC 2 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Low Density Lipoprotein": 104
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2024-05-20T09:15",
+              "author": "front desk",
+              "body": "Daughter cancelled 5/21, conflict. Offered June dates, she'll call back after she checks her calendar."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "portal_message",
+          "start": "2024-06-17T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2024-06-17T20:05",
+              "author": "patient",
+              "body": "This is Ellen, Bernie's daughter, writing from his account. He is down to about a week of the metformin and the water pill. Can you send them to the mail order? Also I still need to reschedule the appointment I cancelled. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2024-06-18T09:20",
+              "author": "MA",
+              "body": "Hi Ellen, metformin and hydrochlorothiazide sent to the mail-order pharmacy for 90 days, plus a 2-week supply to the local pharmacy so he doesn't run out. He's due for a visit and labs. The neurology recheck is in August - we can see him right after that. Call the front desk to pick a time."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "imaging",
+          "start": "2024-08-05T15:00",
+          "service": "Radiology",
+          "reason": "Cognitive decline, transient spells; ordered by neurology",
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2024-08-05T15:00",
+              "text": "MRI BRAIN WITHOUT CONTRAST\nIndication: progressive cognitive decline, transient episodes of confusion and weakness.\nTechnique: multiplanar multisequence MRI of the brain without contrast.\nFindings: Multiple small infarcts in the left cerebral hemisphere. Extensive periventricular white matter T2/FLAIR hyperintensity. No restricted diffusion. No hemorrhage. No mass or extra-axial collection. Ventricles and sulci appropriate for age. Major intracranial flow voids preserved.",
+              "conclusion": "Multiple small infarcts in the left cerebral hemisphere and extensive periventricular white matter changes. No acute infarct, hemorrhage or mass."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI Brain",
+              "date": "2024-08-06T08:30",
+              "author": "radiology",
+              "body": "Outside MRI brain without contrast, 8/5/2024, ordered by neurology. Report received and scanned. Impression: multiple small infarcts in the left cerebral hemisphere and extensive periventricular white matter changes; nothing acute."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "specialist_visit",
+          "start": "2024-08-12T11:00",
+          "service": "Neurology",
+          "reason": "Cognitive follow-up",
+          "conditions": [
+            {
+              "label": "Mild cognitive impairment",
+              "action": "resolved",
+              "onset": "2022-08-01"
+            },
+            {
+              "label": "Vascular dementia",
+              "action": "diagnosed",
+              "onset": "2023-08-01",
+              "icd10": "F01.50"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "hr": 69
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-12T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-12T10:40",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 162
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-12T10:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 261
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 145
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2024-08-15T10:30",
+              "author": "neurology",
+              "body": "NEUROLOGY FOLLOW-UP\nDate: 8/12/2024\n\nReturns one year after evaluation for cognitive decline, with his daughter. She describes a slow loss over the past year of his ability to plan and organize, for example he can no longer put together a grocery list or keep track of a week's plans. In the last six months there were two spells of abrupt confusion with weakness, each lasting several hours and then clearing; the family did not seek care at the time. He acknowledges some forgetfulness; what bothers him most is no longer being able to handle his money.\n\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 25, HCTZ 12.5.\nAllergies: NKDA.\n\nExam: BP 145/90. Mild weakness of the right arm and leg. Deep tendon reflexes brisker on the right. Remainder of exam as before.\n\nLabs: A1c 7.8, fasting glucose 162, total cholesterol 190, LDL 110, HDL 45.\nMRI brain 8/5/2024: multiple small left hemispheric infarcts and extensive periventricular white matter disease.\n\nImpression: Vascular dementia. Progression from last year's mild cognitive impairment with loss of independent function, new focal right-sided signs and imaging showing multiple infarcts on a background of small vessel disease.\n\nPlan:\n- Blood pressure, diabetes and lipid management with PCP.\n- Daughter to continue managing finances and medications; home safety reviewed.\n- Return in one year, sooner for any new sudden symptoms (call 911).\n\nNeurology"
+            }
+          ],
+          "state": {
+            "bp": [
+              145,
+              90
+            ],
+            "labs": {
+              "Glucose": 158,
+              "Hemoglobin A1c": 7.8,
+              "High Density Lipoprotein": 45,
+              "Low Density Lipoprotein": 110
+            }
+          },
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-08-16a",
+          "kind": "telephone",
+          "start": "2024-08-16T13:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology Letter Received",
+              "date": "2024-08-16T13:45",
+              "author": "RN",
+              "body": "Neurology letter 8/12 received, routed to PCP. Called daughter Ellen to book follow-up with PCP; scheduled 9/4 at 10:00. Reminded her to call 911 for any sudden confusion or weakness."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "office_visit",
+          "start": "2024-09-04T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after neurology; diabetes and blood pressure",
+          "vitals": {
+            "bp": [
+              144,
+              88
+            ],
+            "hr": 79,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 89.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-04T10:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.09
+                },
+                {
+                  "test": "Glucose",
+                  "value": 154
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 71
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-04T10:35",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-04T10:35",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-09-04T10:40",
+              "author": "PCP",
+              "body": "Follow-up after neurology, with daughter.\n\nNeurology 8/12 reviewed: now vascular dementia; two transient spells of confusion/weakness this year that were not evaluated at the time; mild R-sided weakness, brisk R reflexes; MRI multiple small L hemisphere infarcts + extensive white matter disease. A1c 7.8, LDL 110 on their labs.\n\nS: He says he feels fine. Daughter: no further spells since spring. She manages the pillbox and bills; he still lives on his own with her checking daily. No falls. Voiding stable.\n\nO: BP 144/88, rechecked similar. Pulse 70s. Alert, a bit slowed in conversation. Mild R-sided weakness as neurology found. Gait slow but steady. Heart regular, lungs clear, no edema. Feet ok.\n\nA/P\n1. Vascular dementia - per neurology. Daughter knows to call 911 for any sudden symptoms.\n2. HTN - above goal today. Daughter will check home BP twice a week for a month and send the log; we'll decide then.\n3. DM2 - A1c 7.8 on metformin. Diet review; recheck in 3 months.\n4. HLD - on atorvastatin 40.\n5. Nephrogenic DI - BMP today.\n6. Prostate ca - PSA today for urology.\n7. ACR today.\n\nNo medication changes today. RTC 3 months - daughter will schedule."
+            }
+          ],
+          "state": {
+            "bp": [
+              144,
+              88
+            ],
+            "labs": {
+              "Prostate Specific Antigen": 9.1
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-09-06a",
+          "kind": "portal_message",
+          "start": "2024-09-06T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-06T15:30",
+              "author": "PCP",
+              "body": "Hi Ellen and Bernie,\n\nKidney function, potassium and sodium are all fine on the water pill. Urine protein check is normal. PSA is 9.1, up a little from 8.7 in February - I've sent it to urology, and it's in keeping with the slow rise they've been watching.\n\nPlease send the home blood pressure readings in a few weeks, and book the December visit when you get a chance.\n\nYour primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood pressure log",
+              "date": "2024-10-03T19:22",
+              "author": "patient",
+              "body": "Ellen here. Dad's home readings for September, mornings: 142/86, 146/88, 138/84, 144/90, 140/86, 148/88, 141/85, 139/87. He's been fine otherwise. I haven't been able to get an appointment booked yet with my work schedule, sorry."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood pressure log",
+              "date": "2024-10-04T12:15",
+              "author": "PCP",
+              "body": "Thanks Ellen, this is helpful. His pressure is consistently above where we want it after the strokes on his MRI, and I'd like to see him to adjust his medicines and recheck his sugar rather than change things by message. Please call the front desk for the first opening that works - we can do an early morning slot. He's also due for his flu and COVID shots; the pharmacy can give those if the office is hard to get to."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telephone",
+          "start": "2024-12-10T11:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Overdue Follow-up",
+              "date": "2024-12-10T11:40",
+              "author": "front desk",
+              "body": "Called daughter re: overdue 3-month follow-up (due Dec). Left voicemail with call-back number. Second attempt; letter mailed to pt's address as well."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Authorization",
+              "date": "2025-01-14T09:10",
+              "author": "MA",
+              "body": "Mail-order renewals: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 25, HCTZ 12.5. Last seen 9/4/24, overdue. Per PCP: 90 days each, no further refills without a visit. Note added to pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "specialist_visit",
+          "start": "2025-02-24T09:45",
+          "service": "Urology",
+          "reason": "Prostate cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-24T09:30",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "date": "2025-02-27T14:00",
+              "author": "urology",
+              "body": "UROLOGY FOLLOW-UP\n2/24/2025\n\nRecurrent prostate cancer after RP and salvage RT, on PSA surveillance. Daughter present; patient now carries a diagnosis of vascular dementia per neurology.\nPSA: 8.7 (2/24), 9.1 (9/24, PCP), 9.8 today. No bone pain, no new urinary problems.\nNKDA.\n\nPSA continues to rise slowly. Reviewed again with daughter: continue observation, no hormone therapy for now.\nPlan: PSA in 6 months, return 1 year.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "hospital_admission",
+          "start": "2025-04-28T16:20",
+          "end": "2025-05-01T13:00",
+          "service": "Inpatient Medicine",
+          "reason": "Acute ischemic stroke",
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2025-04-28T17:05",
+              "text": "CT HEAD WITHOUT CONTRAST\nIndication: worsening gait and right-sided weakness.\nFindings: Multiple areas of infarction in both cerebral hemispheres. No intracranial hemorrhage. No mass effect or midline shift. Ventricles normal in size for age. Basal cisterns patent. Calvarium intact.",
+              "conclusion": "Multiple infarcts in both cerebral hemispheres. No hemorrhage."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-05-06T10:00",
+              "author": "hospitalist",
+              "body": "DISCHARGE SUMMARY - regional hospital, inpatient medicine\nAdmitted 4/28/2025, discharged 5/1/2025\n\nDischarge diagnosis: acute ischemic stroke.\nOther: vascular dementia, T2DM, hypertension, hyperlipidemia, prostate cancer on surveillance, nephrogenic DI.\n\nBrought in by daughter for worse walking and right-sided weakness compared with his baseline. CT head on arrival: multiple areas of infarction in both cerebral hemispheres, no hemorrhage.\n\nCourse: admitted for monitoring and therapy evaluation. Able to walk with assistance by discharge. Evaluated by PT and OT; discharged home with daughter's support and home physical therapy.\n\nDischarge medications (unchanged from home): metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily, metoprolol succinate 25 mg daily, hydrochlorothiazide 12.5 mg daily.\nAllergies: NKDA.\n\nFollow-up: PCP within 1-2 weeks; neurology as scheduled.\n\nHospitalist"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "telephone",
+          "start": "2025-05-08T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge Call",
+              "date": "2025-05-08T14:15",
+              "author": "RN",
+              "body": "Discharge summary received 5/6 (stroke admission 4/28-5/1). Called daughter. He's home, home PT started this week. Eating and drinking ok, taking his usual meds. Offered a post-hospital visit this week or next with PCP; daughter said he's worn out from the hospital and she'd rather wait, will call when he's up to it. Reviewed stroke warning signs and 911. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "specialist_visit",
+          "start": "2025-07-29T10:30",
+          "service": "Neurology",
+          "reason": "Vascular dementia follow-up after stroke admission",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2025-08-01T09:00",
+              "author": "neurology",
+              "body": "NEUROLOGY FOLLOW-UP\nDate: 7/29/2025\n\nVascular dementia, seen with his daughter, three months after a hospital stay for ischemic stroke. Since that admission she has seen an abrupt drop in what he can do day to day; he can no longer manage any part of his money and needs prompting for ordinary tasks. He is also more irritable, and walking has been harder since the stroke.\n\nMeds: metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 25, HCTZ 12.5.\nAllergies: NKDA.\n\nExam: Mild right hemiparesis. Romberg positive. Gait slow and unsteady. MMSE 24/30, points lost mainly on attention and calculation.\nImaging: admission CT head (4/28/2025) reviewed - multiple infarcts in both cerebral hemispheres.\n\nImpression: Vascular dementia with stepwise decline after the recent stroke; gait impairment.\n\nPlan:\n- Outpatient physical therapy for gait and balance.\n- Home safety: grab bars, remove loose rugs, supervision on stairs.\n- Risk-factor management with PCP.\n- Return in 6 months.\n\nNeurology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "pharmacy",
+          "start": "2025-09-16T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2025-09-16T10:30",
+              "author": "MA",
+              "body": "Pharmacy requesting all five maintenance meds. Not seen since 9/2024. PCP approved 30-day supply each so he doesn't go without; called daughter to schedule - she says transportation is hard since the stroke and asked about a video visit. Told her yes, front desk will call to set it up."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "ed_visit",
+          "start": "2026-01-28T14:05",
+          "end": "2026-01-28T18:30",
+          "service": "Emergency Medicine",
+          "reason": "Palpitations and lightheadedness",
+          "vitals": [
+            {
+              "time": "2026-01-28T14:10",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 150,
+              "rr": 18
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-28T14:25",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 148
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 63
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-28T14:25",
+              "results": [
+                {
+                  "test": "Magnesium",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-28T14:25",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-01-28T14:12",
+              "text": "12-LEAD ECG\nRate 150. Regular wide-complex tachycardia. AV dissociation present. QRS axis and morphology consistent with ventricular origin.\nRepeat after amiodarone (14:58): sinus rhythm, rate 72, normal intervals, no acute ST changes.",
+              "conclusion": "Ventricular tachycardia at 150 with AV dissociation; converted to sinus rhythm."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-02-02T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD - regional hospital\nDate of visit: 1/28/2026\n\nCC: palpitations, lightheaded.\n\nHPI: 75-year-old man with vascular dementia and prior strokes, brought by daughter. About 30 minutes before arrival, while repotting houseplants at the kitchen table, he suddenly felt his heart racing and became lightheaded. No chest pain, no shortness of breath, did not pass out.\n\nPMH: vascular dementia, ischemic strokes, T2DM, HTN, HLD, prostate cancer on surveillance, nephrogenic DI.\nMeds: metformin, lisinopril, atorvastatin, metoprolol succinate 25 mg, HCTZ.\nAllergies: NKDA.\n\nExam: BP 110/70, HR 150, RR 18. Alert and oriented. Heart rhythm regular, no murmurs, rubs or gallops. Lungs clear bilaterally. Neck veins: intermittent prominent jugular venous pulsations, not matching the heartbeat.\n\nECG obtained immediately: regular wide-complex tachycardia at 150 with AV dissociation - ventricular tachycardia.\n\nED course: hemodynamically stable. Amiodarone 150 mg IV over 10 minutes; converted to sinus rhythm at 72. Labs: potassium 4.3, magnesium 2.1, high-sensitivity troponin I 9 ng/L, creatinine 1.2.\n\nAssessment: Sustained monomorphic ventricular tachycardia, hemodynamically tolerated, converted with amiodarone.\nDisposition: admitted to telemetry under cardiology.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28b",
+          "kind": "hospital_admission",
+          "start": "2026-01-28T18:30",
+          "end": "2026-01-30T12:30",
+          "service": "Cardiology",
+          "reason": "Ventricular tachycardia",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-01-29T10:00",
+              "text": "TRANSTHORACIC ECHOCARDIOGRAM\nIndication: ventricular tachycardia.\nLeft ventricle normal in size and wall thickness. LVEF 55-60%. Normal regional wall motion. Right ventricle normal size and function. Atria normal in size. No significant valvular stenosis or regurgitation. No pericardial effusion. IVC normal with respiratory variation.",
+              "conclusion": "Normal LV size and function, LVEF 55-60%, normal wall motion, no significant valve disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Cardiology Discharge Summary",
+              "date": "2026-02-03T11:00",
+              "author": "cardiology",
+              "body": "DISCHARGE SUMMARY - cardiology service\nAdmitted 1/28/2026 via ED, discharged 1/30/2026\n\nPrincipal diagnosis: sustained ventricular tachycardia, converted with IV amiodarone in the ED.\n\nCourse: Two nights on telemetry with no recurrence of VT. Electrolytes normal. Echocardiogram: LVEF 55-60%, normal wall motion, no significant valve disease. Metoprolol succinate increased from 25 mg to 50 mg daily. Outpatient ischemic evaluation and rhythm monitoring arranged with cardiology clinic.\n\nDischarge medications: metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily, metoprolol succinate 50 mg daily (increased), hydrochlorothiazide 12.5 mg daily.\nAllergies: NKDA.\n\nFollow-up: cardiology clinic in 4-6 weeks; PCP.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "specialist_visit",
+          "start": "2026-02-23T13:30",
+          "service": "Urology",
+          "reason": "Prostate cancer surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-23T13:15",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 10.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Follow-up",
+              "date": "2026-02-26T10:40",
+              "author": "urology",
+              "body": "UROLOGY FOLLOW-UP\n2/23/2026\n\nProstate cancer, RP 2018 and salvage RT 2021, PSA surveillance. With daughter. Hospital stay last month for a heart rhythm problem, now on a higher metoprolol dose.\nPSA 9.8 (2/25) -> 10.6 today. No bone pain. Voiding unchanged.\nNKDA.\n\nContinued slow rise. Daughter and patient wish to keep the same approach. Continue observation; PSA in 6 months; return 1 year.\n\nUrology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "specialist_visit",
+          "start": "2026-03-10T09:00",
+          "service": "Cardiology",
+          "reason": "Follow-up after ventricular tachycardia",
+          "reports": [
+            {
+              "study": "Holter monitor",
+              "performed": "2026-02-16T10:00",
+              "text": "48-HOUR HOLTER MONITOR\nUnderlying rhythm sinus throughout. Occasional isolated premature ventricular complexes. No couplets. No ventricular tachycardia. No pauses. No atrial fibrillation.",
+              "conclusion": "Sinus rhythm with occasional isolated PVCs; no ventricular tachycardia.",
+              "issued": "2026-02-19T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Clinic Note",
+              "date": "2026-03-12T15:00",
+              "author": "cardiology",
+              "body": "CARDIOLOGY CLINIC - FOLLOW-UP\n3/10/2026\n\nSeen with his daughter six weeks after admission for sustained VT, converted in the ED with IV amiodarone. No palpitations or lightheadedness since discharge. Taking metoprolol succinate 50 mg daily.\n\nTesting since discharge:\n- 48-hour Holter (2/16-2/18): sinus rhythm, occasional isolated PVCs, no VT.\n- Pharmacologic (regadenoson) nuclear stress test (2/24): no ischemia, no infarct.\n- Echo during admission: LVEF 55-60%, normal wall motion.\n\nMeds: metformin, lisinopril 20, atorvastatin 40, metoprolol succinate 50, HCTZ 12.5.\nAllergies: NKDA.\n\nImpression: single episode of hemodynamically tolerated VT with preserved LV function and no ischemia on testing.\n\nPlan:\n- Continue metoprolol succinate 50 mg daily (we will prescribe).\n- With normal LVEF, a defibrillator is not indicated at this time.\n- Return in 6 months, sooner with palpitations, near-fainting or fainting.\n\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "pharmacy",
+          "start": "2026-03-16T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Call",
+              "date": "2026-03-16T11:20",
+              "author": "MA",
+              "body": "Pharmacy asked whether to cancel the old metoprolol succinate 25 mg prescription from our office since cardiology sent 50 mg. Told them cardiology is managing the metoprolol dose. Routed to PCP; he has not been seen here since 9/2024 so med list not reconciled."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T21:03",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "date": "2026-05-12T21:03",
+              "author": "patient",
+              "body": "Hi, it's Ellen again. Dad needs his metformin, lisinopril, atorvastatin and water pill. Cardiology is doing the metoprolol now. I know he's overdue to come in - getting him in and out of the car is hard. Is the video visit still possible?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "date": "2026-05-13T08:55",
+              "author": "PCP",
+              "body": "Hi Ellen - refills sent for 90 days. Yes, a video visit works, and I'd like to do one soon: it's been a long time, and with the stroke and the heart rhythm problem I want to go over all his medicines with you and get labs. Our front desk will call you this week to set it up."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-08-18T10:00",
+              "author": "MA",
+              "body": "Mail-order request: metformin, lisinopril, atorvastatin, HCTZ. Last 90-day fill in May. Video visit never scheduled - two messages left for daughter in May and June. PCP approved 30 days each and asked front desk to reach daughter again for a visit."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Nephrogenic diabetes insipidus|N25.1": {
+        "code": "N25.1",
+        "display": "Nephrogenic diabetes insipidus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Vascular dementia|F01.50": {
+        "code": "F01.50",
+        "display": "Vascular dementia, unspecified severity, without behavioral disturbance, psychotic disturbance, mood disturbance, and anxiety",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Urine osmolality": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

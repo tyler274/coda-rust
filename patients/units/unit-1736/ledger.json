@@ -1,0 +1,4676 @@
+{
+  "unit": "unit-1736",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001736/2024-01-14a: allergen \"Lamotrigine\" not in catalog (text only)",
+    "MRN00001736/2024-01-14a: reaction \"Toxic epidermal necrolysis\" not in catalog (text only)",
+    "MRN00001736/2025-01-16a: allergen \"Dextromethorphan\" not in catalog (text only)",
+    "MRN00001736/2025-01-16a: reaction \"Serotonin syndrome\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001736",
+      "given": "Karen",
+      "family": "Hurley",
+      "birth_date": "1990-12-22",
+      "address_line": "27 Petticoat Hill Road, Williamsburg, MA 01096",
+      "phone": "+1-413-555-0174",
+      "email": "karen.hurley@example.test",
+      "marital_status": "married",
+      "summary": "Licensed practical nurse with recurrent depression, chronic migraine, IBS-D and quiescent epilepsy who joins in 2020; later factitious diarrhea and surreptitious sulfonylurea hypoglycemia lead to a diagnosis of factitious disorder imposed on self. Toxic epidermal necrolysis from lamotrigine in 2024, three episodes of serotonin syndrome 2025 to 2026, and a pregnancy ending in severe preeclampsia with pulmonary edema and preterm cesarean in January 2026.",
+      "events": [
+        {
+          "id": "2020-09-08a",
+          "kind": "telephone",
+          "start": "2020-09-08T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2020-09-08T10:12",
+              "author": "front desk",
+              "body": "Caller wants to establish with the practice. Works as an LPN at a rehab facility, says her old office in town is closing its doors to adult patients at the end of the year. Membership terms reviewed, she will sign at the first visit. Booked new patient appt 9/17 at 2:40. Signed release sent by email; we will fax the request to her prior primary care office for the last 5 yrs of notes, labs and immunizations."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "outside_records",
+          "start": "2020-09-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior primary care records received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care office records",
+              "date": "2020-09-14T15:30",
+              "author": "outside primary care",
+              "body": "Records received from prior primary care office, 38 pages, covering 2015 to 2020.\n\nProblem summary as carried by that office: depression, recurrent, on sertraline since her early twenties with good response at 100 mg; migraine without aura, chronic, uses sumatriptan; IBS with diarrhea predominance, loperamide as needed; epilepsy, onset in adolescence, followed in childhood by pediatric neurology, seizure-free for many years and off antiseizure medicine since her late teens.\n\nSurgical: laparoscopic appendectomy 2015, uneventful recovery.\nAllergy: sulfa antibiotics - rash.\n\nLast Pap 2018 NILM. Childhood vaccines documented complete. Influenza vaccine yearly through her employer.\n\nMost recent visit 03/2020: PHQ-9 of 6, BP 112/70, weight 63 kg. No labs in the last 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-17a",
+          "kind": "establish_care",
+          "start": "2020-09-17T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, recurrent, unspecified",
+              "action": "history",
+              "onset": "2012-06-01",
+              "icd10": "F33.9"
+            },
+            {
+              "label": "Chronic migraine without aura",
+              "action": "history",
+              "onset": "2010-01-01"
+            },
+            {
+              "label": "Irritable bowel syndrome with diarrhea",
+              "action": "history",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Epilepsy",
+              "action": "history",
+              "onset": "2004-01-01",
+              "note": "Seizure-free for years, off antiseizure medication"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder"
+            },
+            {
+              "drug_text": "sumatriptan 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at migraine onset; may repeat once after 2 hours. Max 200 mg per day",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Migraine"
+            },
+            {
+              "drug_text": "loperamide hydrochloride 2 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth as needed for loose stools. Max 8 mg per day",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "IBS with diarrhea"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              71
+            ],
+            "hr": 69,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 62.9,
+            "height_cm": 165.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.61
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 83
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-17T15:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.74
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Licensed practical nurse"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-17T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-17T16:20",
+              "author": "PCP",
+              "body": "29F here to establish. LPN, works days at a rehab and skilled nursing facility. Married, no kids. Prior office records reviewed (scanned 9/14).\n\nDepression: recurrent, first episode in her early 20s. On sertraline 100 mg for years, feels it works. Mood 'okay, work is a lot right now.' No SI. Not in counseling at present. PHQ-9 7, GAD-7 5.\n\nMigraine: chronic, no aura. Mother has the same. Uses sumatriptan 100, usually works within an hour. Estimates 6 to 8 doses a month. Discussed medication-overuse headache and prevention; she would rather keep things as they are for now.\n\nIBS-D: years of loose stools with stress, loperamide a few times a month. No blood, no weight loss, no nocturnal stools. Sister has IBS too.\n\nEpilepsy: seizures as a teenager, treated in childhood, off meds since about age 18 and seizure-free since. Does drive. Maternal aunt has epilepsy.\n\nPSH: lap appy 2015.\nFHx: mother depression and migraine; maternal aunt epilepsy; father HTN; sister IBS.\nSH: never smoker, no alcohol, no drugs.\nAllergy: sulfa (rash).\n\nExam: well appearing, pleasant. Vitals as charted. HEENT unremarkable. Neck supple, no thyromegaly. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, healed laparoscopic port scars. No edema. Neuro: CN intact, strength and reflexes symmetric, gait normal. Affect a little flat but appropriate.\n\nA/P\n1. MDD, recurrent - stable on sertraline 100 mg, will take over prescribing. Counseling list given.\n2. Chronic migraine without aura - sumatriptan PRN; headache diary. Revisit prevention if frequency climbs.\n3. IBS-D - loperamide PRN.\n4. Epilepsy, in long remission off meds - no action.\n5. Health maintenance: CBC, CMP, lipids, TSH; HIV and hep C screen once, she agrees. Pap due 2021. Flu shot next month at our nurse clinic (she usually gets it at work, will do it here this year).\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Creatinine": 0.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-21a",
+          "kind": "portal_message",
+          "start": "2020-09-21T08:47",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2020-09-21T08:47",
+              "author": "PCP",
+              "body": "Hi Karen - everything from Thursday came back fine. Blood counts, kidney and liver tests, thyroid and cholesterol are all in the normal range, and the HIV and hepatitis C screens were negative. Nothing to change. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2020-10-13T08:05",
+              "author": "RN",
+              "body": "In before her shift for flu vaccine. No fever today, no prior reaction to flu shots. Allergy list reviewed (sulfa). Quadrivalent 0.5 mL IM L deltoid. VIS given. Waited 15 min, fine. Left for work."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-03a",
+          "kind": "pharmacy",
+          "start": "2020-12-03T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline refill",
+              "date": "2020-12-03T11:20",
+              "author": "MA",
+              "body": "Pharmacy fax: last refill from her prior doctor used up. Sertraline 100 mg #90 with 3 refills sent per PCP plan from the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "portal_message",
+          "start": "2021-01-19T19:22",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question about vaccine",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "date": "2021-01-19T19:22",
+              "author": "patient",
+              "body": "Work offered me the COVID shot and I got the first one on the 6th. Anything I should know with my sertraline or my migraines?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "date": "2021-01-20T07:55",
+              "author": "PCP",
+              "body": "No interaction with sertraline. A headache the day after is common; your usual sumatriptan is fine to use. Please send a picture of your card once you have both doses so we can add it here."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "outside_records",
+          "start": "2021-02-09T13:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-06T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-01-27T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Employer vaccination card",
+              "date": "2021-02-09T13:05",
+              "author": "patient",
+              "body": "Pt uploaded a photo of her vaccine card from the employee clinic at work: Pfizer COVID-19 doses on 1/6/21 and 1/27/21. Entered into the immunization record. She had a sore arm and a tired day after dose 2, nothing more."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-07a",
+          "kind": "office_visit",
+          "start": "2021-04-07T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression and migraine follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              67
+            ],
+            "hr": 66,
+            "weight_kg": 63.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-04-07T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-04-07T16:35",
+              "author": "PCP",
+              "body": "S: 6 mo f/u. Winter was long, worked a lot of extra shifts, but mood held. Taking sertraline daily. PHQ-9 6. Headache diary: about 7 migraine days in March, each responded to one sumatriptan. Bowels at her usual, loperamide maybe twice a month.\nO: vitals as charted, looks well. Brief exam unremarkable.\nA/P: MDD recurrent - stable, continue sertraline 100. Chronic migraine - stable on PRN triptan, reminded of the 2-day-a-week ceiling to avoid rebound. IBS-D quiet. Physical and Pap in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "pharmacy",
+          "start": "2021-06-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Sumatriptan quantity limit",
+              "date": "2021-06-22T09:40",
+              "author": "MA",
+              "body": "Insurer limits sumatriptan to 9 tabs per 30 days. Her prior office prescription has run out. New Rx sent for #9 with refills under our name; PA for quantity not needed at this amount, she says 9 is usually enough. Loperamide also rewritten so it is on our list (she buys it OTC most months)."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "telephone",
+          "start": "2021-09-28T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical scheduling",
+              "date": "2021-09-28T11:40",
+              "author": "front desk",
+              "body": "Pt called to set up her yearly physical with Pap. Booked 10/19 8:20, reminded to come in fasting is not needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              71
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 63.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-19T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-19T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-10-19T08:45",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2021-10-25T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-19T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-10-19T09:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T09:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-19T09:30",
+              "author": "PCP",
+              "body": "Preventive visit, age 30.\n\nInterval: no new issues. Mood steady, PHQ-9 5. Migraines about the same, 6 to 8 a month, triptan works. IBS flares with stress, loperamide occasionally. No seizures. Not planning a pregnancy at present; discussed folic acid if that changes.\n\nROS otherwise negative.\n\nExam: Vitals as charted. Well appearing. Skin without rashes. HEENT normal, TMs clear. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Breasts symmetric, no masses. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap and HPV collected. Extremities without edema. Neuro nonfocal. Mood and affect normal.\n\nA/P\n- Health maintenance: Pap with HPV today. Tdap (last one over 10 yrs ago per old records) and flu today. CBC/CMP.\n- MDD, migraine, IBS-D: unchanged, meds continued.\nRTC 6 months or as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "portal_message",
+          "start": "2021-10-26T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2021-10-26T12:15",
+              "author": "PCP",
+              "body": "Your Pap smear was normal and the HPV test was negative, so the next one is not due for five years. Blood work from the physical was normal too."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "outside_records",
+          "start": "2022-01-11T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-30T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Employee health immunization record",
+              "date": "2022-01-11T10:30",
+              "author": "employee health",
+              "body": "Employee health immunization summary for staff member K. Hurley. COVID-19 vaccine Pfizer-BioNTech booster dose given 11/30/2021, lot on file. Prior doses 01/06/2021 and 01/27/2021. Annual TB screening questionnaire negative."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression, migraine",
+          "vitals": {
+            "bp": [
+              127,
+              69
+            ],
+            "hr": 61,
+            "weight_kg": 63.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-22T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-03-22T15:55",
+              "author": "PCP",
+              "body": "Routine f/u, overdue by a few months (rescheduled twice for work).\n\nShe is tired. Short staffed at the facility since the winter surge, lots of doubles. PHQ-9 up a little to 8, no SI, sleeping okay on days off. Does not want a dose change; agrees to call the counseling number again. Migraines 7 to 9 days a month, sumatriptan helps. Bowels unchanged.\n\nVitals as charted, weight up 2 kg since we met. Exam not repeated beyond a brief look; appears tired but engaged.\n\nA/P: MDD recurrent, mild uptick with work stress - continue sertraline 100, counseling referral info again, recheck in 6 mo or sooner. Migraine and IBS-D stable."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "portal_message",
+          "start": "2022-06-14T21:04",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2022-06-14T21:04",
+              "author": "patient",
+              "body": "Hi, my pharmacy says the sertraline needs a new script. Could you send it to the same place? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2022-06-15T09:12",
+              "author": "MA",
+              "body": "Sent this morning, 90 days with 3 refills. -MA"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "office_visit",
+          "start": "2022-09-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diarrhea for 2 months",
+          "vitals": {
+            "bp": [
+              107,
+              68
+            ],
+            "hr": 70,
+            "temp_c": 36.8,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-20T11:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.58
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T11:45",
+              "resulted": "2022-09-22T10:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-21T07:30",
+              "resulted": "2022-09-24T12:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova or parasites seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-20T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chronic watery diarrhea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Diarrhea",
+              "date": "2022-09-20T11:50",
+              "author": "PCP",
+              "body": "CC: loose stools x about 2 months.\n\nHPI: Since mid-July has had watery stools most days, she counts 4 to 6 a day, worse than her usual IBS pattern which was a couple of loose days a week. Some crampy lower abdominal discomfort before BMs. No blood, no black stools, no mucus. No nighttime stools that wake her. Appetite fine, weight steady. No travel, no camping or well water, no sick contacts, no new foods or supplements, no recent antibiotics. Loperamide helps for a few hours. Still working full time.\n\nExam: vitals as charted, afebrile. Not dehydrated, mucous membranes moist. Abdomen soft, nondistended, mild diffuse tenderness without guarding, normal bowel sounds. No masses.\n\nA/P: chronic diarrhea, more than her baseline IBS-D. CBC, BMP, celiac serology; stool culture and O&P (kit given, drop off tomorrow). Referring to GI given duration. Fluids, loperamide as needed up to the max. Call if blood, fever, or she cannot keep up with fluids."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stool and blood tests",
+              "date": "2022-09-27T13:30",
+              "author": "PCP",
+              "body": "Karen, the stool culture and parasite check were both negative, the celiac blood test was negative, and your blood count and electrolytes were normal. GI has the referral; their office should call you to schedule. How are things this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stool and blood tests",
+              "date": "2022-09-27T19:48",
+              "author": "patient",
+              "body": "About the same. GI called, I see them in November for a scope."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "telephone",
+          "start": "2022-10-04T14:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI referral",
+              "date": "2022-10-04T14:15",
+              "author": "MA",
+              "body": "GI office confirmed referral received with notes and stool results. Colonoscopy set for 11/29 with prep instructions mailed to pt. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T07:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2022-10-18T08:00",
+              "author": "RN",
+              "body": "Flu (L deltoid) and bivalent COVID booster (R deltoid). No acute illness today. Tolerated well, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "procedure_visit",
+          "start": "2022-11-29T08:30",
+          "end": "2022-11-29T10:15",
+          "service": "Gastroenterology",
+          "reason": "Chronic diarrhea",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-11-29T09:20",
+              "text": "A. Terminal ileum, biopsy: small bowel mucosa with normal villous architecture; no active inflammation or granulomas. B. Right colon, random biopsies: colonic mucosa without diagnostic abnormality. C. Left colon, random biopsies: colonic mucosa without diagnostic abnormality; surface epithelial lymphocytes not increased and subepithelial collagen table not thickened. No microscopic colitis.",
+              "conclusion": "Benign ileal and colonic mucosa. No microscopic colitis, no inflammatory bowel disease.",
+              "issued": "2022-12-02T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2022-11-29T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "date": "2022-12-05T09:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY - COLONOSCOPY REPORT (received by fax)\nDate of procedure: 11/29/2022\nIndication: chronic watery diarrhea\nAllergies: sulfa\nSedation: monitored anesthesia care\nPrep: good (BBPS 8)\n\nThe scope was passed to the cecum and the terminal ileum was intubated for about 5 cm. The ileal mucosa looked normal. Throughout the colon the mucosa was normal in appearance with a normal vascular pattern. No polyps, ulcers or masses. Random biopsies taken from the right and left colon and from the terminal ileum. Retroflexion in the rectum unremarkable.\n\nImpression: normal colonoscopy to the terminal ileum; biopsies sent to look for microscopic colitis.\nPlan: follow up pathology; stool studies to be sent; clinic visit in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "specialist_visit",
+          "start": "2023-01-09T13:30",
+          "service": "Gastroenterology",
+          "reason": "Chronic diarrhea follow-up",
+          "conditions": [
+            {
+              "label": "Factitious diarrhea",
+              "action": "diagnosed",
+              "onset": "2022-07-15",
+              "icd10": "R19.7"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-28T09:15",
+              "resulted": "2022-12-30T11:00",
+              "results": [
+                {
+                  "test": "Osmolality of Stool",
+                  "loinc": "2693-0",
+                  "unit": "mOsm/kg",
+                  "value": 260
+                },
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 290
+                },
+                {
+                  "test": "Sodium in Stool",
+                  "loinc": "15207-4",
+                  "unit": "mmol/L",
+                  "value": 30
+                },
+                {
+                  "test": "Potassium in Stool",
+                  "loinc": "15202-5",
+                  "unit": "mmol/L",
+                  "value": 40
+                },
+                {
+                  "test": "Magnesium in Stool",
+                  "loinc": "29911-5",
+                  "unit": "mg/dL",
+                  "value": 5
+                },
+                {
+                  "test": "Phosphate in Stool",
+                  "loinc": "88713-3",
+                  "unit": "mg/dL",
+                  "value": 4
+                },
+                {
+                  "test": "Osmol gap of Stool",
+                  "loinc": "73571-2",
+                  "unit": "mOsm/kg",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2023-01-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2023-01-12T10:40",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY - CLINIC LETTER\nDate of service: 01/09/2023\nRe: Karen Hurley, DOB 12/22/1990\nReferred by: primary care physician\n\nThank you for asking us to see Ms. Hurley, a 32 year old LPN, for chronic diarrhea.\n\nShe describes half a year now of watery stools, five or six a day, with occasional cramping. No blood and no mucus. She has not traveled, has had no sick contacts and has not changed her diet. Background of IBS with diarrhea, depression, chronic migraine and remote epilepsy. Medicines: sertraline 100 mg daily, sumatriptan 100 mg as needed, loperamide as needed. Allergy: sulfa (rash). Family: sister with IBS.\n\nOn exam today she looks well. Abdomen is soft without tenderness or distension.\n\nData: stool culture and ova and parasites negative (primary care, 9/2022). Tissue transglutaminase IgA negative. Colonoscopy to the terminal ileum 11/29/2022 normal, with random biopsies showing no microscopic colitis.\n\nStool studies collected 12/28/2022:\n- stool osmolality 260 mOsm/kg\n- serum osmolality 290 mOsm/kg\n- stool sodium 30 mEq/L, stool potassium 40 mEq/L\n- stool magnesium 5 mg/dL\n- stool phosphate 4 mg/dL\n\nCalculated stool osmotic gap 290 - 2 x (30 + 40) = 150 mOsm/kg.\n\nAssessment: the measured stool osmolality is lower than plasma. Stool leaving the colon is never hypotonic to plasma, so a value like this tells us the sample has been diluted with water or another dilute fluid after passage. The gap is not interpretable for that reason, and the stool magnesium is not elevated, so I do not suspect a magnesium-containing laxative. With an otherwise complete and negative evaluation, the findings are most consistent with factitious diarrhea.\n\nI discussed the results with her in a straightforward way. She was upset and disagreed. I have recommended a psychiatric evaluation and would ask primary care to help with that. No further GI testing planned; she can continue loperamide for her IBS symptoms. Happy to see her again if anything new develops.\n\nGastroenterology attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "office_visit",
+          "start": "2023-01-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review GI consultation",
+          "vitals": {
+            "bp": [
+              106,
+              84
+            ],
+            "hr": 66,
+            "weight_kg": 64.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-19T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-01-19T17:05",
+              "author": "PCP",
+              "body": "She asked to talk about the GI letter. Read it together. She is hurt by it, says she has been sick for months and 'nobody believes nurses.' I told her I was not there to accuse her of anything, that the test result is what it is, and that I care how she is doing either way. Stools now 'a bit better.' PHQ-9 10, no SI, no plan, safe at home with her husband.\n\nExam: vitals as charted, weight stable. Tearful at times, organized, linear.\n\nA/P\n1. Factitious diarrhea per GI evaluation. Offered referral to psychiatry; she declines for now. Left the door open.\n2. MDD recurrent, PHQ-9 up to 10. Continue sertraline 100; she will think about counseling. Recheck 2 to 3 months.\n3. IBS-D: loperamide as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-23a",
+          "kind": "pharmacy",
+          "start": "2023-02-23T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sumatriptan refill",
+              "date": "2023-02-23T14:10",
+              "author": "MA",
+              "body": "Pharmacy request for sumatriptan 100 mg #9. Last fill 33 days ago, within the plan limit. Approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-05a",
+          "kind": "ed_visit",
+          "start": "2023-04-05T11:35",
+          "end": "2023-04-06T13:20",
+          "service": "Emergency Medicine",
+          "reason": "Episodes of confusion, sweating and tremor",
+          "vitals": [
+            {
+              "time": "2023-04-05T11:40",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-05T11:45",
+              "results": [
+                {
+                  "test": "Glucose in Capillary blood by Glucometer",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 40
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-05T11:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.58
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-05T11:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-05T11:50",
+              "resulted": "2023-04-10T09:30",
+              "results": [
+                {
+                  "test": "Insulin",
+                  "loinc": "20448-7",
+                  "unit": "u[IU]/mL",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "C peptide",
+                  "loinc": "1986-9",
+                  "unit": "ng/mL",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Sulfonylurea screen",
+                  "loinc": "15374-2",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-04-05T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2023-04-07T08:30",
+              "author": "emergency medicine",
+              "body": "AREA MEDICAL CENTER, EMERGENCY SERVICES - PHYSICIAN RECORD (received by fax)\nArrival 04/05/2023 11:35, discharged from ED observation 04/06/2023 13:20\n\nCC: spells of confusion, sweating and shakiness.\n\n32 y/o F, LPN, known factitious diarrhea per GI evaluation this January, who reports roughly two months of intermittent spells: she gets foggy and confused, sweaty and tremulous, sometimes with a racing heart. Most happen late morning. Today a coworker found her confused at the nurses' station and checked a glucose. She takes sertraline, sumatriptan when needed and loperamide when needed and says she takes nothing else; no insulin or diabetes pills at home, no alcohol, no drugs. Allergies: sulfa.\n\nExam: vitals in normal range on arrival. Anxious, diaphoretic forehead, otherwise unremarkable; nonfocal neuro exam once glucose corrected.\n\nED course: point-of-care glucose 40 mg/dL during the spell. Critical sample drawn (insulin, C-peptide, sulfonylurea screen) before 25 g IV dextrose, with prompt return to baseline. Placed on a dextrose infusion and observed overnight with hourly checks; infusion weaned and fingersticks stayed normal for 8 hours off it. BMP unremarkable. A1c 5.2%.\n\nImpression: hypoglycemia, cause pending. No diabetes. Send-out tests pending at discharge.\nDisposition: home with husband; eat regularly; follow up with PCP within one week. The patient was told the ED would call with results.\n\nEmergency medicine attending"
+            },
+            {
+              "type": "ED Notes",
+              "title": "ED Addendum - Send-out Results",
+              "date": "2023-04-11T10:15",
+              "author": "emergency medicine",
+              "body": "ADDENDUM 04/10/2023 (received 04/11)\nResults from the critical sample drawn 04/05 during glucose 40: insulin elevated, C-peptide elevated, sulfonylurea screen positive. Together these show hypoglycemia from a sulfonylurea, which is not one of her prescribed medicines. I called the patient and reviewed the result; she denies taking one. Given the prior factitious diarrhea, I strongly recommended psychiatric evaluation and faxed this to her PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "office_visit",
+          "start": "2023-04-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "vitals": {
+            "bp": [
+              107,
+              65
+            ],
+            "hr": 63,
+            "weight_kg": 66.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-04-12T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "factitious hypoglycemia, depression"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2023-04-12T09:30",
+              "author": "PCP",
+              "body": "Post-ED. Seen at the regional ED 4/5 for confusion and sweating with a glucose of 40; observed overnight. ED addendum: insulin and C-peptide both high, sulfonylurea screen positive.\n\nWe went through it together. She was quiet for a long time, then said she has been under a lot of strain and does not know why she does things sometimes. She did not say more and I did not press. No spells since discharge. PHQ-9 11. Denies SI, no intent, no plan; husband is aware of the ED visit.\n\nExam: vitals as charted. Calm, tearful, good eye contact. Not diaphoretic. Neuro nonfocal.\n\nA/P\n1. Hypoglycemia from a non-prescribed sulfonylurea, in the setting of prior factitious diarrhea. She accepts a psychiatry referral today; placed as urgent.\n2. MDD recurrent - continue sertraline 100 for now; psychiatry to advise.\n3. Safety: crisis line numbers given; she agrees to call or go to the ED if thoughts of self-harm.\nCall in 2 weeks to touch base."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-26a",
+          "kind": "specialist_visit",
+          "start": "2023-04-26T10:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric evaluation",
+          "conditions": [
+            {
+              "label": "Factitious disorder imposed on self (Munchausen syndrome)",
+              "action": "diagnosed",
+              "onset": "2022-07-15",
+              "icd10": "F68.12"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2023-04-26T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Evaluation",
+              "date": "2023-05-02T14:20",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY - INITIAL EVALUATION\nDate of service: 04/26/2023\nReferral: PCP, after hypoglycemia with positive sulfonylurea screen\n\nMs. Hurley is a 32 year old married LPN with a long history of recurrent depression on sertraline. Over the past nine months she has had diarrhea that GI found to be produced by dilution of stool samples, and this month an ED visit for hypoglycemia with high insulin, high C-peptide and a positive sulfonylurea screen. In session she did not offer an explanation for either finding and became tearful when they were reviewed. There is no outside gain we can identify: no leave from work, disability claim or legal matter. She denies any wish to die. She described feeling calmer when she is being looked after as a patient.\n\nMSE: casually dressed, cooperative, guarded at first. Mood 'embarrassed.' Affect constricted, tearful. Thought process linear. No SI or HI. No psychosis. Insight partial, judgment fair.\n\nDiagnoses: factitious disorder imposed on self, based on two objectively documented episodes of falsified illness without outside gain; major depressive disorder, recurrent.\n\nPlan: weekly psychotherapy with our clinic; psychiatry follow-up monthly at first. Continue sertraline 100 mg daily; we will prescribe from here on. Safety plan completed. With her permission we will coordinate with her PCP; we asked that one physician hold her medical care and that new testing be ordered thoughtfully.\n\nOutpatient psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-26b",
+          "kind": "telephone",
+          "start": "2023-04-26T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in",
+              "date": "2023-04-26T16:45",
+              "author": "PCP",
+              "body": "Called as promised. She saw psychiatry this morning and will start weekly therapy there. No further spells. Feels 'raw but okay.' No SI. Will see her in May for the headaches as planned."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches",
+          "vitals": {
+            "bp": [
+              111,
+              71
+            ],
+            "hr": 76,
+            "weight_kg": 65.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-24T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "chronic migraine"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Migraine",
+              "date": "2023-05-24T14:40",
+              "author": "PCP",
+              "body": "Headaches. Diary over the last year shows about 15 headache days a month now, most of them migraine type, one-sided throbbing with light sensitivity, no aura. Using sumatriptan on maybe 8 of those days and riding out the rest. Wants to see a headache specialist; a coworker told her about a migraine study at the neurology clinic.\n\nPsychiatry intake done 4/26, in weekly therapy. Mood 'a little lighter.' PHQ-9 9.\n\nExam: vitals as charted. Fundi sharp. Cranial nerves intact, strength and reflexes symmetric, gait and coordination normal.\n\nA/P\n1. Chronic migraine without aura, about 15 days a month, not controlled with as-needed treatment. Referral to neurology. Keep the diary going. Continue sumatriptan, max 2 days a week.\n2. Factitious disorder, MDD - followed by psychiatry, who now prescribes sertraline. Will keep in close touch with them."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "specialist_visit",
+          "start": "2023-07-17T09:15",
+          "service": "Neurology",
+          "reason": "Chronic migraine, research visit",
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-07-17T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "date": "2023-07-21T11:00",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - HEADACHE CLINIC LETTER\nVisit 07/17/2023\n\nDear colleague,\n\nI saw Ms. Hurley, 32, for chronic migraine. She has had migraine since her teens and, over the past year, headaches on about 15 days a month. Sumatriptan helps the attacks it is used for; she has not had lasting control with as-needed treatment alone. She also has depression and factitious disorder followed by psychiatry, IBS with diarrhea, and epilepsy in remission off medication for more than ten years. Allergy: sulfa.\n\nGeneral and neurological examinations are normal today.\n\nShe met criteria for, and consented to, our crossover study of an investigational preventive. Each participant takes the study medicine for three months and a matching placebo for three months; neither she nor the treating team knows the order. Headache days are counted monthly from an electronic diary. She keeps sumatriptan for attacks.\n\nI will write again when she completes the six months.\n\nHeadache neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "portal_message",
+          "start": "2023-08-22T18:31",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question about study",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Migraine study",
+              "date": "2023-08-22T18:31",
+              "author": "patient",
+              "body": "I started the migraine study last month. They said to tell you. Is it okay to keep taking my sertraline with the study pills?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Migraine study",
+              "date": "2023-08-22T20:10",
+              "author": "PCP",
+              "body": "Thanks for letting me know. The study team checked your medicine list when you enrolled, so yes, keep taking sertraline as psychiatry prescribes it. If anything new comes up with the study pills, the study team is the first call."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Research study notice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Research study enrollment notice",
+              "date": "2023-09-12T10:00",
+              "author": "neurology",
+              "body": "Research coordinator notice: participant K. Hurley enrolled 07/17/2023 in a randomized, double-blind, placebo-controlled crossover study of an investigational migraine preventive. Please contact the study team before starting any new migraine preventive. Emergency unblinding line provided on her study card."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "annual_physical",
+          "start": "2023-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 81,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 65.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-24T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-24T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.59
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-24T09:15",
+              "author": "PCP",
+              "body": "Annual, age 32.\n\nSeeing psychiatry monthly and a therapist weekly, which she says is helping; PHQ-9 8, GAD-7 7. No more hypoglycemic spells. Bowels back to her old IBS pattern. In month four of the neurology migraine study, keeps a diary, will not guess which arm she is on. No seizures.\n\nROS negative.\n\nExam: vitals as charted. Well appearing. Skin clear. Thyroid normal. Heart regular, no murmur; lungs clear to auscultation. Breast exam deferred at her request. Abdomen soft and nontender. No edema. Neuro nonfocal.\n\nA/P\n- Health maintenance: Pap/HPV 2021 normal, next 2026. Flu and updated COVID given. CBC and CMP.\n- Factitious disorder and MDD: psychiatry following, sertraline 100 from psychiatry.\n- Chronic migraine: in study, sumatriptan for attacks.\n- IBS-D, epilepsy in remission: no change.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "pharmacy",
+          "start": "2023-12-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline refill request",
+              "date": "2023-12-12T10:05",
+              "author": "MA",
+              "body": "Pharmacy asked us for a sertraline refill. Fill history shows psychiatry has been writing it since May. Pharmacy told to route to psychiatry; our open prescription inactivated to avoid duplicate fills."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-14a",
+          "kind": "hospital_admission",
+          "start": "2024-01-14T19:20",
+          "end": "2024-02-01T12:30",
+          "service": "Dermatology",
+          "reason": "Fever, sore throat and blistering skin eruption",
+          "conditions": [
+            {
+              "label": "Toxic epidermal necrolysis",
+              "action": "diagnosed",
+              "onset": "2024-01-11",
+              "icd10": "L51.2"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lamotrigine 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Depression, add-on (outside psychiatry)"
+            },
+            {
+              "drug_text": "lamotrigine 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Toxic epidermal necrolysis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Lamotrigine",
+              "reaction": "Toxic epidermal necrolysis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-01-14T19:30",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 20,
+              "temp_c": 38.9,
+              "spo2": 97
+            },
+            {
+              "time": "2024-01-31T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-14T20:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-01-14T20:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-01-31T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.61
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-31T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-01-14T21:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-02-05T09:45",
+              "author": "hospital medicine",
+              "body": "TERTIARY MEDICAL CENTER - DISCHARGE SUMMARY (received 02/05/2024)\nAdmitted 01/14/2024 via ED to the burn and critical care unit; dermatology consulting. Discharged 02/01/2024.\n\nPrincipal diagnosis: toxic epidermal necrolysis, attributed to lamotrigine.\n\nHistory: 33 year old woman with factitious disorder imposed on self and prior factitious diarrhea, recurrent depression, chronic migraine, IBS-D and epilepsy, who had three days of fever and sore throat before a painful red rash appeared on her chest and back. Over about a day it spread to the face and limbs, with flaccid blisters and skin coming away. Lamotrigine 25 mg daily had been started by her outside psychiatrist about two weeks before, as an add-on for depression. Other medicines: sertraline 100 mg daily, sumatriptan 100 mg as needed, loperamide 2 mg as needed. Known allergy: sulfa (rash).\n\nAdmission exam: T 38.9 C, HR 110, BP 100/60. Dusky macules coalescing into flaccid bullae and sheets of epidermal detachment over the face, trunk and extremities, about 35% of body surface area. Nikolsky sign positive. Erosions on the buccal mucosa. Both conjunctivae injected.\n\nAdmission labs: WBC 15.0, hemoglobin 13.2, platelets 250; creatinine 1.2; ALT 45, AST 47.\n\nCourse: lamotrigine stopped on arrival and listed as an allergy. Managed in the critical care unit with warmed room, IV fluids, non-adherent dressings, eye lubrication with daily eye checks, mouth care and scheduled pain control, with nutrition support. Creatinine came back to normal with fluids. Fever settled in the first week. Re-epithelialization was steady and nearly complete by discharge. No infection. Her eyes were comfortable at discharge.\n\nDischarge medicines: sertraline 100 mg daily; sumatriptan as needed; loperamide as needed; bland emollient to healed areas.\nAllergies at discharge: LAMOTRIGINE - toxic epidermal necrolysis; sulfa - rash.\nAdvice: never take lamotrigine again; tell every prescriber and pharmacist. Follow up with PCP within a week and with dermatology in one month.\n\nHospital medicine attending, for the inpatient team"
+            },
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Inpatient Consultation",
+              "date": "2024-02-05T09:50",
+              "author": "dermatology",
+              "body": "DERMATOLOGY CONSULT (inpatient, 01/14/2024; received with the discharge packet)\nReason: blistering eruption with fever.\n\nThree days of fever and throat pain, then a painful eruption starting on the trunk, now face, trunk and limbs, with blisters and sloughing. New medicine: lamotrigine, about two weeks.\n\nExam: febrile and tachycardic. Confluent dusky erythema with flaccid bullae and denuded areas, positive Nikolsky sign; estimated 35% BSA detachment. Buccal erosions. Bilateral conjunctival injection.\n\nImpression: toxic epidermal necrolysis, lamotrigine the culprit drug.\nRecommendations: stop lamotrigine and record as a permanent allergy; critical care level supportive care; ophthalmic lubrication and daily eye exams; wound care as per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "telephone",
+          "start": "2024-01-16T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Husband calling",
+              "date": "2024-01-16T09:05",
+              "author": "front desk",
+              "body": "Pt's husband called to let us know she was admitted Sunday to the burn and critical care unit at a tertiary hospital for a severe skin reaction, thought to be from a new medicine. Message to PCP. Records request faxed for discharge summary."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "vitals": {
+            "bp": [
+              114,
+              82
+            ],
+            "hr": 70,
+            "temp_c": 36.7,
+            "weight_kg": 65.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-06T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.59
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-06T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 196
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-02-06T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital Visit",
+              "date": "2024-02-06T11:20",
+              "author": "PCP",
+              "body": "Discharged 2/1 after 18 days for toxic epidermal necrolysis from lamotrigine. I did not know lamotrigine had been started; psychiatry added it in late December for mood.\n\nToday: skin tender in a few spots on the back and thighs, otherwise healed over, new skin pink. Eyes a little gritty in the mornings, using drops. Mouth fine, eating normally. No fever. Tired. Husband drove her. PHQ-9 10.\n\nExam: vitals as charted, afebrile. Healed, re-epithelialized new skin over trunk and limbs, no open areas, no signs of infection. Conjunctivae quiet. Oral mucosa healed.\n\nA/P\n1. TEN from lamotrigine, recovering. Lamotrigine allergy on our list, flagged as high criticality. Dermatology f/u next month. Sun protection on the new skin. BMP and CBC to confirm recovery.\n2. Depression - psychiatry has seen her since discharge; continuing sertraline 100 only.\n3. Migraine study wrapped up while she was inpatient; neurology letter to follow.\nRTC 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "specialist_visit",
+          "start": "2024-02-21T14:00",
+          "service": "Neurology",
+          "reason": "Migraine study completion",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up",
+              "date": "2024-02-26T13:15",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY - HEADACHE CLINIC FOLLOW-UP\nVisit 02/21/2024\n\nMs. Hurley has completed the six months of the crossover study. Headache days by month from her diary:\nmonths 1, 2, 3: 8, 7 and 6\nmonths 4, 5, 6: 14, 15 and 15\nShe reported no significant side effects at any point. The order of study drug and placebo stays blinded until the whole study closes, and we have asked her not to speculate. I note the hospitalization in January for a reaction to lamotrigine, which was not a study medicine.\n\nExam today is unchanged and normal apart from healing skin.\n\nPlan: back to sumatriptan for attacks; keep the diary; we will contact her when the study is unblinded.\n\nHeadache neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T11:00",
+          "service": "Dermatology",
+          "reason": "Post-TEN follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2024-03-15T10:20",
+              "author": "dermatology",
+              "body": "OUTSIDE DERMATOLOGY - FOLLOW-UP\nVisit 03/12/2024\nSeen six weeks after toxic epidermal necrolysis from lamotrigine. Skin fully re-epithelialized, no erosions, nails and scalp normal, mouth healed. Eyes asymptomatic. Reinforced lifelong avoidance of lamotrigine, which is now on her allergy card. Sun protection for the next few months. Discharged from dermatology follow-up; return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "telephone",
+          "start": "2024-05-07T09:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Sumatriptan PA renewal",
+              "date": "2024-05-07T09:25",
+              "author": "MA",
+              "body": "Insurer requires annual reauthorization for sumatriptan 100 mg #9 per month. Form completed with diagnosis and neurology letters, signed by PCP, faxed. Approved same day through 5/2025. Pt notified by phone, left message."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Toxic epidermal necrolysis",
+              "action": "resolved",
+              "icd10": "L51.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              75
+            ],
+            "hr": 64,
+            "weight_kg": 65.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-06-11T16:10",
+              "author": "PCP",
+              "body": "Doing better. Skin fully healed; dermatology released her in March. Eyes fine. Mood steady, still in therapy every other week, psychiatry every 2 months. PHQ-9 7. Migraines back up to about 14 days a month since the study ended; sumatriptan for the worst ones. Bowels at baseline.\n\nVitals as charted. Exam: skin intact, no active lesions.\n\nA/P: TEN, recovered. MDD and factitious disorder, followed by psychiatry. Chronic migraine, she is waiting to hear about unblinding and does not want to start anything new right now. IBS-D stable. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "portal_message",
+          "start": "2024-08-27T17:48",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Unblinding",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Migraine study",
+              "date": "2024-08-27T17:48",
+              "author": "patient",
+              "body": "The study team said the study is still running so no unblinding yet. Just letting you know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Migraine study",
+              "date": "2024-08-28T08:02",
+              "author": "PCP",
+              "body": "Thanks for the update. Keep the diary going in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 80,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 65.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T09:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T08:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T09:25",
+              "author": "PCP",
+              "body": "Annual exam, 33 y/o.\n\nNo hospital or ED visits since February. Mood fair, PHQ-9 8, sees psychiatry and therapy. Migraines frequent, sumatriptan on the bad days. IBS-D baseline. No seizures. She and her husband have been talking about starting a family 'at some point'; discussed folic acid and planning ahead with psychiatry about her medicines.\n\nBP 138/88 today, recheck similar. Father has hypertension. She does not check at home.\n\nExam: vitals as charted. Skin intact. Thyroid normal. Heart RRR, no murmurs. Lungs clear. Abdomen soft, nontender. No edema. Neuro nonfocal.\n\nA/P\n- Elevated BP without diagnosis: home cuff, log for a month, recheck visit in early spring. Salt and exercise talk.\n- Health maintenance: CBC, CMP, lipids. Flu and COVID today. Pap due 2026.\n- MDD, factitious disorder, migraine, IBS-D: as above, no changes."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              88
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-25a",
+          "kind": "portal_message",
+          "start": "2024-10-25T12:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2024-10-25T12:02",
+              "author": "PCP",
+              "body": "Blood count, kidney and liver function and cholesterol all look fine. Please keep the BP log and bring it in March."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "ed_visit",
+          "start": "2025-01-09T13:05",
+          "end": "2025-01-10T15:40",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, agitation and tremor",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "diagnosed",
+              "onset": "2025-01-09",
+              "icd10": "G25.79"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sertraline 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched to fluoxetine by outside psychiatry 2025-01-02"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Serotonin syndrome"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-09T13:10",
+              "bp": [
+                160,
+                95
+              ],
+              "hr": 120,
+              "rr": 20,
+              "temp_c": 38.9,
+              "spo2": 98
+            },
+            {
+              "time": "2025-01-10T14:00",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-09T13:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-09T13:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 228
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-01-09T13:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-01-09T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-01-13T08:20",
+              "author": "emergency medicine",
+              "body": "AREA MEDICAL CENTER, EMERGENCY SERVICES - PHYSICIAN RECORD (received 01/13/2025)\nArrival 01/09/2025 13:05. Held in the ED observation unit; discharged 01/10/2025 15:40.\n\nCC: confused and shaky since this morning.\n\n34 y/o F brought by her husband with about six hours of confusion, agitation and tremor. She vomited several times this morning. Husband says she has seemed more anxious all week. Her psychiatrist changed her antidepressant about a week ago; she is now on fluoxetine. She also takes sumatriptan for occasional migraines and has been using an over-the-counter cough syrup with dextromethorphan for a few days. History of factitious disorder and a prior ED visit for confusion and tremor (hypoglycemia, 2023). Allergies: lamotrigine (TEN), sulfa. Outside med list still shows sertraline 100 mg and loperamide.\n\nExam: T 38.9 C, HR 120, BP 160/95. Sweating, restless. Pupils dilated, reactive to light. Hyperreflexic with inducible clonus at the ankles. Oriented to self only, not to time or place.\n\nLabs: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98. CBC unremarkable. UA normal.\n\nImpression: serotonin syndrome - fluoxetine with dextromethorphan and a triptan.\n\nCourse: all serotonergic drugs and the cough syrup held. IV fluids, IV lorazepam for agitation and tremor, cyproheptadine 12 mg then 2 mg every 2 hours while symptomatic, external cooling. By the next morning she was oriented, afebrile, with clonus gone.\n\nDisposition: home. Do not take dextromethorphan. Fluoxetine stopped; her psychiatrist was called and will advise on her antidepressant. PCP follow-up within a week.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "office_visit",
+          "start": "2025-01-16T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "resolved",
+              "icd10": "G25.79"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Dextromethorphan",
+              "reaction": "Serotonin syndrome",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "intolerance"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              94
+            ],
+            "hr": 67,
+            "temp_c": 36.8,
+            "weight_kg": 65.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-01-16T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2025-01-16T14:00",
+              "author": "PCP",
+              "body": "ED/obs 1/9-1/10 for serotonin syndrome: fluoxetine (started by psychiatry 1/2, replacing sertraline) plus OTC dextromethorphan cough syrup plus sumatriptan.\n\nNow: back to herself, no tremor, sleeping. Psychiatry switched her back to sertraline 100 mg on 1/13. Cough gone, no more syrup. Used no sumatriptan since.\n\nExam: vitals as charted, afebrile. Calm, oriented. Pupils equal, normal size. Reflexes 2+ symmetric, no clonus. No tremor.\n\nA/P\n1. Serotonin syndrome, resolved.\n2. Dextromethorphan added to her allergy list as an intolerance so it flags at pharmacies. Went over other OTC products that contain it.\n3. MDD - sertraline 100 per psychiatry.\n4. Migraine - sumatriptan still allowed for attacks per neurology; advised sparing use and to call if any shakiness or fever after a dose.\nBP recheck visit in March as planned."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "outside_records",
+          "start": "2025-02-18T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Psychiatry letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry update",
+              "date": "2025-02-18T13:30",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY - UPDATE LETTER\nAfter her ED visit in January for serotonin syndrome we stopped fluoxetine and returned to sertraline 100 mg daily on 01/13/2025. She is tolerating it. Therapy continues weekly. Dextromethorphan to be avoided."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure recheck",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2024-10-22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              140,
+              90
+            ],
+            "hr": 73,
+            "weight_kg": 65.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - BP",
+              "date": "2025-03-18T16:35",
+              "author": "PCP",
+              "body": "BP visit. Home log over 4 weeks (she used an upper arm cuff, two readings each morning): mostly 134-142 over 86-92. Here 140/90 after 5 minutes seated. No headaches beyond her usual migraines, no chest pain or dyspnea. Salt intake moderate, walking 2 to 3 times a week.\n\nExam: vitals as charted. Heart RRR, lungs clear, no edema.\n\nA/P\n1. Essential hypertension, mild. Father with HTN. Lifestyle first: salt under 2 g, regular walking. Recheck in 3 to 4 months. She and her husband are hoping to try for a pregnancy this year, so if a medicine is needed we would choose one that is safe in pregnancy.\n2. MDD - stable on sertraline per psychiatry, PHQ-9 8."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              90
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-02a",
+          "kind": "portal_message",
+          "start": "2025-04-02T20:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Home blood pressure",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP readings",
+              "date": "2025-04-02T20:15",
+              "author": "patient",
+              "body": "Two weeks of readings since less salt: 136/88, 138/86, 132/88, 140/90, 134/86, 136/88. A little better?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP readings",
+              "date": "2025-04-03T07:40",
+              "author": "PCP",
+              "body": "A little, yes. Keep going and we will look again this summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "telephone",
+          "start": "2025-06-02T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Sumatriptan PA renewal",
+              "date": "2025-06-02T12:10",
+              "author": "MA",
+              "body": "Annual sumatriptan quantity authorization expired 5/2025. Renewal submitted with neurology letters, approved through 5/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "ed_visit",
+          "start": "2025-07-09T16:50",
+          "end": "2025-07-10T18:10",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, agitation, sweating and fever",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "diagnosed",
+              "onset": "2025-07-09",
+              "icd10": "G25.79"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Switched to fluoxetine by outside psychiatry 2025-06-30"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            },
+            {
+              "drug": "fluoxetine 20 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Serotonin syndrome"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-09T16:55",
+              "bp": [
+                160,
+                90
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 39.2,
+              "spo2": 98
+            },
+            {
+              "time": "2025-07-10T16:30",
+              "bp": [
+                128,
+                80
+              ],
+              "hr": 82,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-09T17:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-09T17:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-09T17:20",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-07-09T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-07-14T10:05",
+              "author": "emergency medicine",
+              "body": "AREA MEDICAL CENTER, EMERGENCY SERVICES - PHYSICIAN RECORD (received 07/14/2025)\nArrival 07/09/2025 16:50; observation unit; discharged 07/10/2025 18:10.\n\nCC: confused, sweating, fever.\n\n34 y/o F with factitious disorder, recurrent depression and serotonin syndrome in January of this year. Husband brought her in after about two hours of confusion, agitation, shaking and drenching sweats; she felt hot. He says her psychiatrist started a new medicine recently - fluoxetine again, per the pharmacy, as of 6/30. She took a sumatriptan for a migraine earlier today. No cough syrup this time per husband. Allergies: lamotrigine (TEN), sulfa, dextromethorphan.\n\nExam: T 39.2 C, HR 120, BP 160/90. Diaphoretic, agitated. Hyperreflexia, inducible ankle clonus, ocular clonus. Oriented to person only.\n\nLabs: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98. CBC within normal limits. Urine hCG negative.\n\nImpression: recurrent serotonin syndrome, fluoxetine with sumatriptan.\n\nCourse: serotonergic medicines held. IV fluids, lorazepam, cyproheptadine, cooling blanket. Afebrile overnight, clonus resolved, mental status normal by morning.\n\nDisposition: home. Fluoxetine stopped. Psychiatry notified; they plan to resume her previous sertraline. PCP follow-up within one week.\n\nEmergency medicine attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "telehealth_visit",
+          "start": "2025-07-16T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "resolved",
+              "icd10": "G25.79"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder (outside psychiatry)"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-07-16T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit - ED Follow-up",
+              "date": "2025-07-16T13:00",
+              "author": "PCP",
+              "body": "Video, she is at home, identity verified by DOB.\n\nSecond serotonin syndrome, ED/obs 7/9-7/10: psychiatry had put her back on fluoxetine 6/30, and she took sumatriptan that day. Fluoxetine stopped; psychiatry restarted sertraline 100 mg on 7/11.\n\nFeels washed out but no tremor, no fever, thinking clearly. PHQ-9 11, no SI. Husband with her on the call.\n\nA/P\n1. Serotonin syndrome x2, resolved. Asked her to keep sumatriptan to the rarest use; she wants to keep it available. Will let neurology know.\n2. MDD - sertraline per psychiatry. Psychiatry visit next week.\n3. HTN - lifestyle, home log; in person in about a month."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "office_visit",
+          "start": "2025-08-05T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state",
+              "action": "diagnosed",
+              "onset": "2025-06-28",
+              "icd10": "Z33.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              141,
+              86
+            ],
+            "hr": 74,
+            "weight_kg": 65.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-05T09:15",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-05T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, chronic hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Pregnancy",
+              "date": "2025-08-05T09:40",
+              "author": "PCP",
+              "body": "Two positive home tests this week. LMP 6/14/25, so about 7.5 weeks. First pregnancy, planned. Urine hCG here positive. Mild nausea, no bleeding, no pain.\n\nReviewed her meds with pregnancy in mind: sertraline per psychiatry, generally a reasonable choice in pregnancy, and psychiatry is aware. Loperamide only rarely. Sumatriptan: she will talk with OB about it. No antiseizure drugs needed, seizure-free.\n\nBP today as charted, still mildly up.\n\nA/P\n1. Intrauterine pregnancy by dates, about 7 weeks 3 days. Referral to OB; first prenatal visit to be set this month.\n2. Essential hypertension, mild - OB to manage in pregnancy; I sent them her BP history.\n3. MDD, factitious disorder - psychiatry following."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T10:30",
+          "service": "Obstetrics",
+          "reason": "First prenatal visit",
+          "medications": [
+            {
+              "drug_text": "labetalol hydrochloride 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chronic hypertension in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              92
+            ],
+            "hr": 65,
+            "weight_kg": 66.7
+          },
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-08-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics New Prenatal Visit",
+              "date": "2025-08-25T15:00",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS - NEW OB VISIT LETTER\nVisit 08/19/2025\n\nG1P0 at 9 weeks 3 days by LMP of 06/14/2025. Background mild chronic hypertension diagnosed in primary care this spring, untreated; recurrent depression on sertraline via psychiatry; factitious disorder; epilepsy in remission off medication; chronic migraine; IBS-D. Allergies: lamotrigine (TEN), sulfa (rash), dextromethorphan (serotonin syndrome).\n\nBP 142/92 today, on repeat as well.\n\nPlan: labetalol 200 mg twice daily for chronic hypertension in pregnancy, home BP twice daily. Routine prenatal care per our protocol. Discussed signs of preeclampsia. Sertraline continued with psychiatry. Avoid triptans where possible.\n\nObstetrics attending"
+            }
+          ],
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "pharmacy",
+          "start": "2025-09-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medication list update",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Fill history reviewed",
+              "date": "2025-09-03T11:00",
+              "author": "MA",
+              "body": "Fill history pulled for chart reconciliation: labetalol 200 mg BID filled 8/19 (OB prescriber), sertraline 100 mg filled 8/8 (psychiatry). List updated. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2025-10-07T08:35",
+              "author": "RN",
+              "body": "About 16 weeks pregnant, OB asked her to get flu and COVID here. Feeling fine, no fever. Allergy list reviewed. Inactivated trivalent flu L deltoid, COVID R deltoid. Observed 15 minutes, no reaction. OB notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T20:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labetalol",
+              "date": "2025-11-18T20:30",
+              "author": "patient",
+              "body": "OB has me on labetalol and my BP is fine. Do I need to see you for it or do they handle it while I'm pregnant?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labetalol",
+              "date": "2025-11-18T21:05",
+              "author": "PCP",
+              "body": "OB handles it during the pregnancy. After the baby comes we will take it back over. Glad it's going well."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "hospital_admission",
+          "start": "2026-01-06T03:40",
+          "end": "2026-01-12T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Shortness of breath, leg swelling and low urine output in pregnancy",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "action": "diagnosed",
+              "onset": "2026-01-04",
+              "icd10": "O14.13"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2026-01-05",
+              "icd10": "N17.9"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-06T03:45",
+              "bp": [
+                165,
+                110
+              ],
+              "hr": 102,
+              "rr": 28,
+              "temp_c": 36.9,
+              "spo2": 89
+            },
+            {
+              "time": "2026-01-12T08:00",
+              "bp": [
+                134,
+                84
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-06T04:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 190
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-06T04:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-06T04:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-11T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.59
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-01-06T04:10",
+              "text": "Portable AP chest. Bilateral perihilar and lower zone airspace opacities with indistinct vascular margins. Heart size within normal limits for the projection. No pneumothorax. No large effusion.",
+              "conclusion": "Bilateral infiltrates consistent with pulmonary edema."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-01-06T05:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-01-14T16:30",
+              "author": "obstetrics",
+              "body": "REGIONAL WOMEN'S AND BIRTH CENTER - DISCHARGE SUMMARY (received 01/14/2026)\nAdmitted 01/06/2026, discharged 01/12/2026.\n\nG1, admitted at 29 weeks 3 days. Chronic hypertension on labetalol 200 mg twice daily since early pregnancy. Also recurrent depression on sertraline, epilepsy in remission without medication, factitious disorder, chronic migraine, IBS-D, serotonin syndrome twice in 2025. Allergies: lamotrigine (TEN), sulfa (rash), dextromethorphan (serotonin syndrome).\n\nPresentation: two days of swelling in both legs and passing much less urine, then sudden breathlessness overnight with pink frothy sputum.\n\nOn arrival: BP 165/110, HR 102, RR 28, SpO2 89% on room air. Crackles halfway up both lung fields. 2+ pitting edema of both legs. Brisk deep tendon reflexes.\nLabs: hemoglobin 12.5, platelets 190. Creatinine 1.2 (her baseline 0.6). Albumin 2.8. Urine protein 3+.\nChest x-ray: bilateral infiltrates consistent with pulmonary edema.\n\nDiagnoses: severe preeclampsia without HELLP features, complicated by pulmonary edema; acute kidney injury.\n\nCourse: oxygen by mask, IV furosemide with good diuresis, IV magnesium sulfate for seizure prophylaxis (continued 24 hours after delivery), IV labetalol for severe-range pressures, betamethasone for fetal lung maturity. After stabilization, primary low transverse cesarean delivery on 01/07/2026 at 29 weeks 4 days; liveborn infant admitted to the NICU. Oxygen weaned by postoperative day 2. Urine output recovered and creatinine returned to normal before discharge. Incision healing well. No seizures.\n\nDischarge medicines: labetalol 200 mg twice daily; sertraline 100 mg daily (psychiatry). Home BP twice daily; call for BP 150/100 or higher, headache, visual change or breathlessness.\nFollow-up: OB in 1 week for BP and incision; PCP in 2 to 4 weeks.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "telephone",
+          "start": "2026-01-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Delivery notification",
+              "date": "2026-01-08T15:20",
+              "author": "front desk",
+              "body": "Pt's husband called: she was admitted 1/6 with high BP and fluid in her lungs and had the baby by C-section yesterday, early. Baby in NICU. She is improving. Message to PCP; records request faxed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T22:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment after the hospital",
+              "date": "2026-01-20T22:40",
+              "author": "patient",
+              "body": "The hospital said to see you in a few weeks. I'm at the NICU most days so mornings are hard. Anything early afternoon the first week of February?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment after the hospital",
+              "date": "2026-01-21T08:55",
+              "author": "front desk",
+              "body": "Booked you Tuesday 2/3 at 1:40. Congratulations, and we hope the little one is growing strong."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "office_visit",
+          "start": "2026-02-03T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital and postpartum follow-up",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "action": "resolved",
+              "icd10": "O14.13"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Pregnant state",
+              "action": "resolved",
+              "note": "Cesarean delivery 2026-01-07",
+              "icd10": "Z33.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              89
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-03T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-03T14:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-03T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Follow-up",
+              "date": "2026-02-03T14:30",
+              "author": "PCP",
+              "body": "Four weeks after cesarean at 29 weeks for severe preeclampsia with pulmonary edema and AKI (admitted 1/6-1/12). Baby still in the NICU, gaining. She is there most of each day.\n\nBreathing normal, no orthopnea, leg swelling gone. Home BPs 120s/70s-80s on labetalol 200 BID. No headaches beyond an occasional migraine. Incision fine, OB saw her at 1 week. Sleep broken, mood 'up and down.' PHQ-9 10, no SI. Seeing her therapist by video; psychiatry appointment next week.\n\nExam: vitals as charted. Lungs clear. Heart regular. No edema. Incision healed. Reflexes 2+.\n\nA/P\n1. Severe preeclampsia, resolved after delivery. AKI resolved - BMP today to document.\n2. Essential hypertension - continue labetalol 200 BID; OB will hand prescribing back to us.\n3. MDD - PHQ-9 10, watching closely postpartum with psychiatry; sertraline 100.\n4. Health maintenance: Pap due this year, will do at the next in-person visit when she is ready.\nRTC 2 to 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "portal_message",
+          "start": "2026-02-05T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney test",
+              "date": "2026-02-05T09:30",
+              "author": "PCP",
+              "body": "Kidney function is back to normal and your blood count is fine. One less thing to worry about."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Labetalol refill",
+              "date": "2026-03-10T10:20",
+              "author": "MA",
+              "body": "Pharmacy request: labetalol 200 mg BID, last written by OB. OB note says return to PCP for BP. Sent #180 with 1 refill per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-04-14b",
+          "kind": "telephone",
+          "start": "2026-04-14T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit",
+              "date": "2026-04-14T16:10",
+              "author": "front desk",
+              "body": "Pt did not arrive for 3 pm. Called, she apologized - baby came home last week and the day got away from her. Rebooked as video 4/21."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2026-04-21T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-04-21T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Follow-up",
+              "date": "2026-04-21T12:25",
+              "author": "PCP",
+              "body": "Video from home, baby asleep nearby. Home BPs 118-128/74-82 on labetalol, no side effects. Migraines about 10 days a month, sumatriptan sparingly. Bowels okay. Mood: PHQ-9 9, psychiatry monthly, sertraline 100. No seizures.\n\nA/P: HTN controlled on labetalol, continue. MDD stable. Migraine and IBS-D unchanged. Pap at the next in-person visit. RTC in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T14:02",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Loperamide",
+              "date": "2026-05-19T14:02",
+              "author": "patient",
+              "body": "Can you send loperamide to the pharmacy? Insurance covers it with a script and I'm almost out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Loperamide",
+              "date": "2026-05-20T09:30",
+              "author": "MA",
+              "body": "Sent to your pharmacy, 2 mg capsules as needed, max 4 a day."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "hospital_admission",
+          "start": "2026-06-29T10:15",
+          "end": "2026-07-04T13:00",
+          "service": "Critical Care",
+          "reason": "Confusion, agitation and tremor",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "diagnosed",
+              "onset": "2026-06-29",
+              "icd10": "G25.79"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "diagnosed",
+              "onset": "2026-06-29",
+              "icd10": "N17.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "dextromethorphan hydrobromide 2 MG/ML Oral Solution",
+              "action": "historical",
+              "sig": "Take 10 mL by mouth every 6 hours as needed for cough",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Cough (outside urgent care)"
+            },
+            {
+              "drug_text": "dextromethorphan hydrobromide 2 MG/ML Oral Solution",
+              "action": "stop",
+              "reason": "Serotonin syndrome"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-29T10:20",
+              "bp": [
+                160,
+                95
+              ],
+              "hr": 120,
+              "rr": 22,
+              "spo2": 97
+            },
+            {
+              "time": "2026-07-04T08:00",
+              "bp": [
+                126,
+                80
+              ],
+              "hr": 76,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-29T10:40",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 5200
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-29T10:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 31
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-29T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 95
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-29T10:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-29T10:40",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 35
+                },
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 150
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL FEU",
+                  "text": "Elevated"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-29T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-07-06T11:45",
+              "author": "critical care",
+              "body": "AREA MEDICAL CENTER - ICU DISCHARGE SUMMARY (received 07/06/2026)\nED arrival 06/29/2026 10:15, admitted to the ICU, transferred to the floor 07/02, discharged 07/04/2026.\n\n35 y/o F, two earlier episodes of serotonin syndrome (01/2025, 07/2025), recurrent depression on sertraline, chronic migraine on sumatriptan as needed, chronic hypertension on labetalol, factitious disorder, epilepsy in remission, cesarean delivery in January. Allergies listed: lamotrigine (TEN), sulfa, dextromethorphan.\n\nHusband brought her in after two hours of confusion, agitation and shaking. He told us she had been given a prescription for dextromethorphan syrup at an urgent care a few days earlier for a lingering cough.\n\nOn arrival: HR 120, BP 160/95. Diaphoretic and tachycardic. Hyperreflexia, inducible clonus, dilated pupils.\nLabs: CK 5200 U/L. Creatinine 2.1. WBC 12.0, platelets 95. PT 14 s, PTT 35 s, fibrinogen 150 mg/dL, D-dimer elevated.\n\nDiagnoses: serotonin syndrome, third episode (sertraline, dextromethorphan, sumatriptan); acute kidney injury with marked CK elevation; low platelets and low fibrinogen with elevated D-dimer, followed closely.\n\nCourse: all serotonergic drugs held. Aggressive IV fluids, IV benzodiazepines, cyproheptadine by mouth, active cooling. No intubation. Mental status normal by day 2. CK fell daily, urine output stayed adequate, creatinine improved steadily. Platelets and fibrinogen recovered without transfusion. Moved to the floor on 07/02.\n\nInpatient psychiatry saw her: restart sertraline 100 mg daily at discharge, no other serotonergic medicines. Neurology by phone agreed to stop sumatriptan.\n\nDischarge medicines: sertraline 100 mg daily; labetalol 200 mg twice daily; loperamide as needed. STOPPED: sumatriptan; dextromethorphan.\nPlease avoid dextromethorphan, triptans, tramadol, linezolid and other serotonergic agents.\nFollow-up: PCP within 1 to 2 weeks with BMP, CBC and CK; psychiatry within 1 week.\n\nCritical care attending"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "telephone",
+          "start": "2026-07-02T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission notice",
+              "date": "2026-07-02T09:40",
+              "author": "front desk",
+              "body": "Notice from the area medical center: pt admitted 6/29 to ICU, serotonin syndrome. Message to PCP. Discharge summary requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-07a",
+          "kind": "telephone",
+          "start": "2026-07-07T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-07-07T10:00",
+              "author": "RN",
+              "body": "TCM call, discharged 7/4 after ICU stay for serotonin syndrome. She is home, husband and her mother helping with the baby. No confusion, no tremor, no fever. Drinking well, urine normal color. Taking sertraline 100 and labetalol 200 BID; sumatriptan and the cough syrup are out of the house. Psychiatry appt 7/9. She would like to wait on labs and the PCP visit until the end of the month because of childcare; PCP aware and agrees given stable labs at discharge. Booked 7/31."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "office_visit",
+          "start": "2026-07-31T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "conditions": [
+            {
+              "label": "Serotonin syndrome",
+              "action": "resolved",
+              "icd10": "G25.79"
+            },
+            {
+              "label": "Acute kidney injury",
+              "action": "resolved",
+              "icd10": "N17.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sumatriptan 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Serotonin syndrome x3; triptans to be avoided"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              81
+            ],
+            "hr": 72,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 66.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-31T14:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-31T14:00",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-31T14:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 96
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-07-31T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-07-31T14:10",
+              "author": "PCP",
+              "body": "Third serotonin syndrome, ICU 6/29-7/4: sertraline plus dextromethorphan syrup from an urgent care for a cough, plus sumatriptan. Dextromethorphan was on her allergy list here. CK 5200, creatinine 2.1, platelets 95, low fibrinogen on arrival; all improving at discharge.\n\nNow: feels well, cough gone. No muscle pain, urine normal. No tremor or confusion. Sertraline 100 restarted by inpatient psychiatry, seen by her psychiatrist 7/9. PHQ-9 9, no SI. Migraines: off sumatriptan, a few headaches, managing.\n\nExam: vitals as charted. Alert, calm. Pupils normal. Reflexes 2+, no clonus. No tremor. Lungs clear. No edema.\n\nA/P\n1. Serotonin syndrome x3, resolved. Sumatriptan removed from her list. Talked plainly about telling every prescriber about the reactions and checking OTC labels; she will carry a wallet card.\n2. AKI with high CK - BMP, CBC, CK today.\n3. Chronic migraine - no triptans going forward; she will ask neurology about an acute plan that is not serotonergic.\n4. HTN - controlled on labetalol 200 BID.\n5. MDD, factitious disorder - psychiatry following.\n6. Pap still due - next visit.\nRTC 6 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs from Friday",
+              "date": "2026-08-04T08:50",
+              "author": "PCP",
+              "body": "Good news: kidney function, CK (the muscle enzyme) and platelets are all back to normal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your labs from Friday",
+              "date": "2026-08-04T12:16",
+              "author": "patient",
+              "body": "Thank you, that's a relief."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "outside_records",
+          "start": "2026-08-13T15:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Psychiatry follow-up letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry follow-up letter",
+              "date": "2026-08-13T15:05",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY - FOLLOW-UP LETTER\nVisits 07/09 and 08/06/2026\n\nMs. Hurley is back on sertraline 100 mg daily alone after her third episode of serotonin syndrome. Mood is fair, sleep is broken with an infant at home, no thoughts of self-harm. She continues weekly therapy. We will not add any other serotonergic agent. We continue to work on the factitious disorder in therapy; no new episodes known to us. Next visit in one month."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "pharmacy",
+          "start": "2026-08-20T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Labetalol refill",
+              "date": "2026-08-20T09:10",
+              "author": "MA",
+              "body": "Labetalol 200 mg BID refill request. Last BP 7/31 at goal. Sent #180, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypertension, depression, Pap",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute kidney injury|N17.9": {
+        "code": "N17.9",
+        "display": "Acute kidney failure, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Factitious diarrhea|R19.7": {
+        "code": "R19.7",
+        "display": "Diarrhea, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Factitious disorder imposed on self (Munchausen syndrome)|F68.12": {
+        "code": "F68.12",
+        "display": "Factitious disorder imposed on self, with predominantly physical signs and symptoms",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, recurrent, unspecified|F33.9": {
+        "code": "F33.9",
+        "display": "Major depressive disorder, recurrent, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Serotonin syndrome|G25.79": {
+        "code": "G25.79",
+        "display": "Other drug induced movement disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe preeclampsia without HELLP features|O14.13": {
+        "code": "O14.13",
+        "display": "Severe pre-eclampsia, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Toxic epidermal necrolysis|L51.2": {
+        "code": "L51.2",
+        "display": "Toxic epidermal necrolysis [Lyell]",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "dextromethorphan hydrobromide 2 MG/ML Oral Solution": {
+        "code": "1370216",
+        "display": "dextromethorphan hydrobromide 2 MG/ML Oral Solution",
+        "ingredient": "dextromethorphan",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "labetalol hydrochloride 200 MG Oral Tablet": {
+        "code": "896762",
+        "display": "labetalol hydrochloride 200 MG Oral Tablet",
+        "ingredient": "labetalol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "lamotrigine 25 MG Oral Tablet": {
+        "code": "282401",
+        "display": "lamotrigine 25 MG Oral Tablet",
+        "ingredient": "lamotrigine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "loperamide hydrochloride 2 MG Oral Capsule": {
+        "code": "978006",
+        "display": "loperamide hydrochloride 2 MG Oral Capsule",
+        "ingredient": "loperamide",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sertraline 100 MG Oral Tablet": {
+        "code": "312938",
+        "display": "sertraline 100 MG Oral Tablet",
+        "ingredient": "sertraline",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "sumatriptan 100 MG Oral Tablet": {
+        "code": "313160",
+        "display": "sumatriptan 100 MG Oral Tablet",
+        "ingredient": "sumatriptan",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bacteria identified in Stool by Culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "C peptide": {
+        "code": "1986-9",
+        "display": "C peptide [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ug/mL FEU",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose in Capillary blood by Glucometer": {
+        "code": "41653-7",
+        "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Insulin": {
+        "code": "20448-7",
+        "display": "Insulin [Units/volume] in Serum or Plasma",
+        "unit": "u[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Magnesium in Stool": {
+        "code": "29911-5",
+        "display": "Magnesium [Mass/volume] in Stool",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmol gap of Stool": {
+        "code": "73571-2",
+        "display": "Osmol gap of Stool",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Serum or Plasma": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Stool": {
+        "code": "2693-0",
+        "display": "Osmolality of Stool",
+        "unit": "mOsm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ova and parasites identified in Stool by Light microscopy": {
+        "code": "10704-5",
+        "display": "Ova and parasites identified in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Phosphate in Stool": {
+        "code": "88713-3",
+        "display": "Phosphate [Mass/volume] in Stool",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Potassium in Stool": {
+        "code": "15202-5",
+        "display": "Potassium [Moles/volume] in Stool",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sodium in Stool": {
+        "code": "15207-4",
+        "display": "Sodium [Moles/volume] in Stool",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sulfonylurea screen": {
+        "code": "15374-2",
+        "display": "Sulfonylurea [Presence] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

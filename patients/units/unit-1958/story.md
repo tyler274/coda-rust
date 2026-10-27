@@ -1,0 +1,26 @@
+# unit-1958 story (Priya Iyer)
+
+- 2024-08-26 phone: asks to join the practice; new-patient physical booked (P)
+- 2024-09-10 outside records: prior primary care, healthy, Pap 2022 normal (P)
+- 2024-09-17 new-patient preventive visit: healthy, no meds, NKDA; screening labs, flu and COVID vaccines (A1, P)
+- 2024-09-19 portal: screening labs normal (P)
+- 2025-02-13 portal: two months of fevers, tiredness, weight loss; visit booked (P)
+- 2025-02-18 office visit: fevers, fatigue, 10 lb down, wrist and knee aches; labs, ESR 74, CRP 56 (A2)
+- 2025-02-20 phone: results; urgent rheumatology referral (A2)
+- 2025-03-07 rheumatology consult and CTA chest: Takayasu arteritis; prednisone 50, methotrexate 15 weekly, folic acid, D3 (S, A3, A4); received 03-12
+- 2025-03-12 portal: patient asks about the diagnosis and alcohol on methotrexate (P)
+- 2025-04-11 office visit: better on treatment; PCV20, Shingrix 1; right-arm BP (P)
+- 2025-05-08 cardiology consult with echo: normal (A4)
+- 2025-06-12 rheumatology follow-up: ESR 24, CRP 9; prednisone to 20 mg (A3)
+- 2025-07-08 nurse visit: Shingrix 2 (P)
+- 2025-08-19 follow-up visit cancelled (P)
+- 2025-10-07 nurse visit: flu and COVID (P)
+- 2025-10-16 rheumatology follow-up: ESR 14, CRP 3; prednisone to 5 mg (A3)
+- 2025-12-05 portal: scheduling the physical, Pap question (P)
+- 2026-01-30 preventive visit (last seen): well; Pap, CBC, CMP, lipids, A1c (P)
+- 2026-02-04 portal: results normal, Pap normal (P)
+- 2026-03-09 cardiology follow-up: relapse, ESR 98, CTA progression (S, R1, R2, R6); received 03-11
+- 2026-03-16 portal: patient tells the physician about the flare (P)
+- 2026-03-20 rheumatology letter: prednisone 40, tocilizumab added (A5); filed 03-24
+- 2026-08-10 portal: confirms September visit (P)
+- 2026-09-11 booked follow-up (P)

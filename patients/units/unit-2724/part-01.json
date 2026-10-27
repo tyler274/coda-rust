@@ -1,0 +1,669 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002724",
+   "given": "Shannon",
+   "family": "Pomeroy",
+   "birth_date": "1975-04-24",
+   "address_line": "58 Lyman Terrace Rd",
+   "phone": "+1-646-555-0173",
+   "email": "shannon.pomeroy@example.test",
+   "marital_status": "married",
+   "summary": "51-year-old teacher with type 2 diabetes, hypothyroidism, obesity and chronic constipation who joined in 2020. Gallstones failed ursodiol dissolution, plantar fasciitis and overactive bladder settled with conservative care, rectal prolapse was repaired by rectopexy in 2024, and obstructive jaundice from a bile duct stone in December 2025 led to ERCP and cholecystectomy.",
+   "events": [
+    {
+     "id": "2020-08-20a",
+     "kind": "telephone",
+     "start": "2020-08-20T10:12",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2020-08-20T10:12",
+       "body": "Caller would like to become a patient here. Teaches 3rd grade, wants a doctor she can text after school instead of waiting weeks for a callback. Current PCP office is closing their internal medicine side. Membership info emailed. New pt visit set for 9/10 at 3:45 (after school). Release of records form emailed for her old office; asked her to bring pill bottles."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-10a",
+     "kind": "establish_care",
+     "start": "2020-09-10T15:45",
+     "end": "2020-09-10T16:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2016-05-01"
+      },
+      {
+       "label": "Obesity, unspecified",
+       "action": "history",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Hypothyroidism",
+       "action": "history",
+       "onset": "2009-03-01"
+      },
+      {
+       "label": "Chronic constipation",
+       "action": "history",
+       "onset": "2005-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Type 2 diabetes",
+       "action": "historical"
+      },
+      {
+       "drug": "levothyroxine sodium 0.1 MG Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily before breakfast",
+       "dose": {
+        "value": 100,
+        "unit": "mcg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypothyroidism",
+       "action": "historical"
+      },
+      {
+       "drug_text": "multivitamin Oral Tablet",
+       "sig": "Take 1 tablet by mouth daily",
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "action": "historical"
+      },
+      {
+       "drug_text": "ibuprofen 200 MG Oral Tablet",
+       "sig": "Take 1 to 2 tablets by mouth every 6 to 8 hours as needed for pain",
+       "dose": {
+        "value": 200,
+        "unit": "mg"
+       },
+       "frequency": "Q6-8H PRN",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "pain",
+       "action": "historical"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Elementary school teacher"
+      }
+     ],
+     "state": {
+      "weight_kg": 82.4,
+      "height_cm": 163.0,
+      "labs": {
+       "Glucose": 138,
+       "Thyroid Stimulating Hormone": 2.1,
+       "Microalbumin/Creatinine Ratio": 12,
+       "Hemoglobin A1c": 6.8,
+       "Total Cholesterol": 196,
+       "Low Density Lipoprotein": 118,
+       "High Density Lipoprotein": 46,
+       "Triglycerides": 160
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-09-10T16:40",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-10T16:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-10T16:40",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-10T16:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.8
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2020-09-10T16:20",
+       "issued": "2020-09-16T11:00",
+       "text": "Specimen: ThinPrep, cervical/endocervical. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV DNA not detected.",
+       "conclusion": "NILM, HPV negative."
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2020-09-10T16:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-10T15:45"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-09-10T16:35"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-09-10T16:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging",
+       "reason": "routine screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-10T17:30",
+       "body": "New patient, 45F, transferring from a prior internal medicine office. Here to establish.\n\nProblems she brings:\n1. T2DM, dx around 2016 by prior PCP. Metformin 1000 BID since then, tolerating. Doesn't check sugars at home. Last A1c she remembers was \"under 7.\" No known eye/kidney/nerve issues. Eye exam overdue.\n2. Hypothyroid since ~2009, levothyroxine 100 mcg, same dose for years. Takes it first thing.\n3. Weight. Has been in the low 180s for about 10 yrs. Tries to cut carbs, on and off.\n4. Constipation for as long as she can remember, goes every 2-3 days, strains. Manages with prunes, water, salad. No blood, no weight loss.\nAlso takes a multivitamin and OTC ibuprofen 1-2 tabs now and then for aches after a long day standing.\n\nPSH: none. No abdominal or pelvic surgery.\nOB: G3P3, three vaginal deliveries, youngest is 14.\nFH: mother T2DM and \"her bladder dropped\" (pelvic organ prolapse). Maternal grandmother hypothyroid. Father had gallstones.\nSH: 3rd grade teacher, before that worked retail sales for years. Married, 3 kids. Never smoker. No alcohol at all.\nAllergies: NKDA.\n\nROS: negative except as above. No polyuria/polydipsia. No numbness in feet. No chest pain or SOB.\n\nExam: vitals per flowsheet. BMI ~31. Pleasant, well appearing. Thyroid not enlarged, no nodules. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, obese, nontender, no organomegaly. Feet: skin intact, monofilament intact both feet, DP pulses 2+. Pelvic: normal external genitalia, cervix normal, Pap/HPV collected. No visible prolapse.\n\nA/P\n- T2DM: continue metformin. A1c, CMP, lipids, urine microalbumin today. Optometry referral list given for dilated exam.\n- Hypothyroid: TSH.\n- Obesity: talked portion size, walking after school. She'd rather do it on her own for now.\n- Constipation: fiber/fluids, she's comfortable with her routine.\n- HM: Pap/HPV today. Tdap today (no record of one). HCV and HIV screens. Mammogram ordered. Colon screening at 45 - discussed, she'd like to wait until next year.\n- Records requested from prior office.\nReturn ~6 months, sooner prn. She has my cell."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-14a",
+     "kind": "portal_message",
+     "start": "2020-09-14T18:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Lab results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2020-09-14T18:05",
+       "body": "Hi Shannon, your labs are back and look good. A1c is in the target range, kidney function and thyroid are normal, and your HIV and hepatitis C screens are negative. Cholesterol is borderline, nothing to change today and we'll keep an eye on it. Pap result will come separately in a few days."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "patient",
+       "date": "2020-09-14T20:41",
+       "body": "Thank you! That's a relief. I made the mammogram appointment for November."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-24a",
+     "kind": "outside_records",
+     "start": "2020-09-24T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Prior practice records",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "MA",
+       "date": "2020-09-24T09:30",
+       "body": "Received 41 pages from her prior internal medicine office covering 2014-2020. Summary for the chart: T2DM diagnosed spring 2016 after fasting glucose and A1c in diabetic range, metformin started then and titrated to 1000 mg BID by fall 2016. Hypothyroidism on levothyroxine, at 100 mcg since at least 2014 with TSH normal on each check. A1c values 2017-2020 between 6.5 and 7.0. Pap 2017 normal. No colonoscopy or mammogram on file within the last 2 years. Immunizations: influenza most years. Allergies: none recorded. Filed to media."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-08a",
+     "kind": "nurse_visit",
+     "start": "2020-10-08T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-08T15:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-08T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2020-10-08T15:50",
+       "body": "Flu vaccine 0.5 mL IM given L deltoid. No prior reactions. Tolerated well, left after 15 min observation."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-12a",
+     "kind": "imaging",
+     "start": "2020-11-12T07:50",
+     "service": "Breast Imaging",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2020-11-12T07:50",
+       "issued": "2020-11-13T10:20",
+       "text": "Bilateral CC and MLO views with tomosynthesis. No prior studies available for comparison. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.",
+       "conclusion": "BI-RADS 1: negative. Routine screening recommended."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2020",
+       "action": "done",
+       "date": "2020-11-12T07:50"
+      }
+     ]
+    },
+    {
+     "id": "2021-03-11a",
+     "kind": "office_visit",
+     "start": "2021-03-11T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-03-11T16:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.9
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-03-11T16:20",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-03-11T15:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2021-03-11T17:05",
+       "body": "6 mo DM check. Teaching hybrid this year, says it's been exhausting. Taking metformin regularly, no GI upset. Levothyroxine daily. Didn't make the eye appointment yet.\nGot first Pfizer appointment next week through the school district.\nExam: BP and weight as charted, weight unchanged. Heart/lungs normal. Feet without lesions.\nA/P: T2DM - A1c today, BMP. No change. Gave optometry number again.\nHypothyroid - stable, TSH next physical.\nColon screening - she wants to think about FIT vs colonoscopy, will decide at physical.\nF/u September for physical."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-12a",
+     "kind": "portal_message",
+     "start": "2021-03-12T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "A1c result",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "A1c result",
+       "author": "PCP",
+       "date": "2021-03-12T12:30",
+       "body": "A1c stable, still at goal. Kidney function and potassium normal. Keep doing what you're doing."
+      }
+     ]
+    },
+    {
+     "id": "2021-03-19a",
+     "kind": "pharmacy",
+     "start": "2021-03-19T16:10",
+     "service": "Community Pharmacy",
+     "reason": "COVID-19 vaccine dose 1",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-19T16:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Outside immunization",
+       "author": "MA",
+       "date": "2021-03-22T09:00",
+       "body": "Dose 1 Pfizer COVID-19 vaccine 3/19/21 at a district vaccine clinic, per state registry. Entered."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-09a",
+     "kind": "pharmacy",
+     "start": "2021-04-09T16:30",
+     "service": "Community Pharmacy",
+     "reason": "COVID-19 vaccine dose 2",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-09T16:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Outside immunization",
+       "author": "MA",
+       "date": "2021-04-12T09:05",
+       "body": "Dose 2 Pfizer 4/9/21 per registry. Primary series complete. Pt texted that she felt achy and tired the next day, resolved."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-08a",
+     "kind": "outside_records",
+     "start": "2021-06-08T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Eye exam report",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2021-06-08T11:00",
+       "body": "Diabetic Eye Examination Report\nDate of exam: 06/03/2021\nPatient: Shannon Pomeroy\nDilated fundus exam OU. VA cc 20/20 OD, 20/25 OS. IOP 15/16. Lens clear OU. Disc margins sharp, C/D 0.3 OU. Macula flat, no edema. No microaneurysms, hemorrhages or exudates.\nImpression: no diabetic retinopathy. Glasses Rx updated.\nRecommend: repeat dilated exam in 12 months.\nAllergies: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-16a",
+     "kind": "annual_physical",
+     "start": "2021-09-16T15:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-16T16:30",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-16T16:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-16T16:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 6.7
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-09-16T15:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-09-16T16:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-09-16T17:20",
+       "body": "Annual. 46F. Back in the classroom full time, glad. Feels fine.\nDM: metformin 1000 BID, no lows, no symptoms. Eye exam done in June, no retinopathy.\nThyroid: levo 100, no symptoms.\nBowels: same pattern, every couple days.\nWeight: about the same.\nMeds reviewed: metformin, levothyroxine, MVI, ibuprofen prn.\nExam: well appearing. HEENT normal. Neck no thyromegaly. CV regular, no murmur. Lungs clear. Abd soft NT. Breasts: no masses, no axillary nodes. Feet: monofilament normal bilat, pulses intact, no calluses. Skin no concerning lesions.\nPHQ-2 0.\nA/P\n- T2DM: labs today incl A1c, UACR, lipids.\n- Hypothyroid: TSH.\n- CRC screen: chose FIT, kit given and returned at checkout.\n- Mammogram due Nov 2022 (biennial ok, she prefers every 1-2 yrs).\n- Flu in Oct. Booster when eligible.\nNext DM visit March."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-20a",
+     "kind": "portal_message",
+     "start": "2021-09-20T07:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2021-09-20T07:45",
+       "body": "All reviewed. A1c in range, kidneys/urine protein normal, TSH normal, FIT negative. LDL about the same as last year. Next FIT in a year unless we switch to colonoscopy."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-14a",
+     "kind": "nurse_visit",
+     "start": "2021-10-14T15:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-14T15:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-14T15:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2021-10-14T15:45",
+       "body": "Seasonal influenza vaccine, 0.5 mL IM right deltoid. Lot and expiration in MAR. No complaints."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-05a",
+     "kind": "pharmacy",
+     "start": "2021-11-05T17:00",
+     "service": "Community Pharmacy",
+     "reason": "COVID-19 booster",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-11-05T17:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Outside immunization",
+       "author": "MA",
+       "date": "2021-11-09T08:40",
+       "body": "Pfizer booster 11/5/21 at retail pharmacy per registry. Updated."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

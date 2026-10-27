@@ -1,0 +1,355 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002002",
+      "events": [
+        {
+          "id": "2021-01-19a",
+          "kind": "portal_message",
+          "start": "2021-01-19T08:50",
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "stop", "reason": "iron stores replete"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Iron pills", "author": "patient", "date": "2021-01-19T08:50",
+             "body": "This is his sister typing for Sean. He is almost out of the iron pills. Does he need more? The sleep study was last week, they said the lung doctor will send results."},
+            {"type": "Patient Message", "title": "RE: Iron pills", "author": "PCP", "date": "2021-01-19T12:30",
+             "body": "Thanks for checking. His blood count and iron level were back to normal in October and he has taken the iron three more months since, so he can stop when this bottle runs out. We'll keep an eye on his blood count with his regular labs. I'll watch for the sleep doctor's letter."}
+          ]
+        },
+        {
+          "id": "2021-02-04a",
+          "kind": "outside_records",
+          "start": "2021-02-04T10:30",
+          "conditions": [
+            {"label": "Obstructive sleep apnea", "action": "diagnosed", "onset": "2021-01-14"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonary and Sleep Medicine Follow-up Letter", "author": "pulmonology", "date": "2021-02-04T10:30",
+             "body": "Outside pulmonary and sleep medicine practice. Re: Sean Berman, DOB 4/22/1973.\n\nHe completed in-laboratory split-night polysomnography on 1/14/2021. Diagnostic portion: apnea-hypopnea index 34 events per hour, oxygen saturation nadir 81%, predominantly obstructive events, loud snoring. CPAP was titrated in the second half of the night with good control of events.\n\nDiagnosis: obstructive sleep apnea.\n\nPlan: CPAP ordered through a durable equipment supplier, auto-titrating, with a nasal mask; setup expected this month. Reviewed nightly use and mask care. Drowsy driving precautions reviewed again. We will see him about 3 months after he starts, with a download from the machine.\n\nThe full sleep study report is available on request."}
+          ]
+        },
+        {
+          "id": "2021-04-08a",
+          "kind": "pharmacy",
+          "start": "2021-04-08T15:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-08T15:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Vaccine record from pharmacy", "author": "MA", "date": "2021-04-09T09:10",
+             "body": "State immunization registry update: COVID-19 vaccine (Pfizer) dose 1 given 4/8/2021 at a retail pharmacy. Entered into the immunization record."}
+          ]
+        },
+        {
+          "id": "2021-04-29a",
+          "kind": "pharmacy",
+          "start": "2021-04-29T15:20",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-29T15:20"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Vaccine record from pharmacy", "author": "MA", "date": "2021-04-30T09:05",
+             "body": "Registry update: Pfizer COVID-19 dose 2 given 4/29/2021. Primary series complete. Record updated."}
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "office_visit",
+          "start": "2021-05-04T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "conditions": [
+            {"label": "Iron deficiency anemia", "action": "resolved", "onset": "2020-04-06"}
+          ],
+          "state": {"weight_kg": 102.0, "labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "labs": [
+            {"panel": null, "collected": "2021-05-04T11:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-05-04T11:30", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-04T11:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-05-04T11:00"},
+            {"procedure": "Venipuncture", "performed": "2021-05-04T11:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-05-04T11:45",
+             "body": "S: CPAP set up in February. Wears it \"most nights,\" takes it off sometimes at 3 am. Says he is less sleepy in the afternoons. Not driving long distances. Off iron since January. Both COVID shots done at the pharmacy. Risperidone on and off; psychiatry still seeing him.\nO: Vitals as charted. Heart regular, lungs clear. Feet intact.\nPulm letter reviewed: AHI 34, nadir 81%, OSA, on CPAP.\nA/P: OSA on CPAP, encouraged nightly use. DM, A1c today. HTN, no change. Anemia resolved, CBC today to confirm. Weight up; diet talk. RTC 4 months."}
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "outside_records",
+          "start": "2021-07-20T14:00",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2021-07-20T14:00",
+             "body": "Outside optometry office. Dilated diabetic eye examination 7/13/2021. Visual acuity 20/25 right, 20/20 left with correction. Pressures normal. Lenses clear. Fundus exam both eyes: no diabetic retinopathy, no macular edema. Recheck in one year."}
+          ]
+        },
+        {
+          "id": "2021-09-27a",
+          "kind": "office_visit",
+          "start": "2021-09-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weight gain, weakness and high blood pressure",
+          "state": {"weight_kg": 108.0, "bp": [156, 96], "labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-09-27T10:55", "results": [{"test": "Hemoglobin A1c", "value": 7.8}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-27T10:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2021-09-27T10:55", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.84}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-27T10:50"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-27T10:20"},
+            {"procedure": "Immunization administration", "performed": "2021-09-27T10:50"},
+            {"procedure": "Venipuncture", "performed": "2021-09-27T10:55"}
+          ],
+          "orders": [
+            {"id": "endo-referral-2021", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "suspected hypercortisolism"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-09-27T11:30",
+             "body": "S: Since about late spring he has put on weight, mostly through the face, neck and belly, without eating more as far as he and his sister can tell. Bruises on his arms from small bumps. A scrape on his shin took weeks to close. Double vision comes and goes, a few times a week, lasts minutes. Hard to get up from a low chair or out of the car without pushing with his arms. Taking lisinopril and metformin. No steroid pills, creams, inhalers or injections, ever.\n\nO: BP 156/96 (repeat similar). Weight 108 kg, up 6 kg since May. Round, red face, fullness at the back of the neck. Scattered bruises on the forearms. Proximal hip weakness; cannot rise from the chair without using his arms. EOM full now, no ptosis. Heart regular, lungs clear.\n\nA/P:\n1. Weight gain, plethoric round face, easy bruising, proximal weakness, rising BP and sugars: concerned for Cushing syndrome. No exogenous steroids. Urgent endocrinology referral; they prefer to run the dexamethasone testing themselves.\n2. Intermittent diplopia: likely part of the same picture vs separate; will ask endo to comment. Return or ED for persistent double vision, facial droop, trouble speaking.\n3. HTN above goal: lisinopril 20 continued; recheck after endocrine visit.\n4. DM: A1c 7.8 today (back this afternoon), higher. Metformin continued.\n5. Flu shot today."}
+          ]
+        },
+        {
+          "id": "2021-10-18a",
+          "kind": "specialist_visit",
+          "start": "2021-10-18T14:00",
+          "service": "Endocrinology",
+          "reason": "Suspected Cushing syndrome",
+          "measure": ["bp", "hr", "weight_kg"],
+          "orders": [
+            {"id": "endo-referral-2021", "action": "done", "date": "2021-10-18T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Consultation", "author": "endocrinology", "date": "2021-12-14T09:30",
+             "body": "Outside endocrinology practice. Initial consultation, date of service 10/18/2021. Referred by primary care for suspected hypercortisolism.\n\nHPI: 48-year-old man with hypertension, schizophrenia and type 2 diabetes, recently evaluated for obstructive sleep apnea (on CPAP) and for iron deficiency anemia (resolved). Over roughly four months he has gained weight, his blood pressure has climbed, and he has noticed a fuller face and neck, bruising with little trauma, wounds that are slow to heal, episodes of double vision and difficulty getting up from chairs. No exogenous glucocorticoid exposure.\n\nMedications: metformin 1,000 mg BID, lisinopril 20 mg once daily, risperidone 2 mg (inconsistent), diphenhydramine 25 mg at bedtime as needed, calcium carbonate 500 mg as needed. NKDA. Family history: father with diabetes and hypertension, mother with schizophrenia, brother with hepatitis B. Former smoker, 10 pack-years, quit 2017; no alcohol; retired construction worker.\n\nExam: facial plethora and rounding, dorsocervical fullness. Bruising of forearms. Deep tendon reflexes slightly reduced, becoming brisker after a short period of sustained effort. No ptosis after holding upgaze for a full minute (60 seconds).\n\nLaboratory: serum cortisol elevated; plasma ACTH elevated. Overnight low-dose (1 mg) dexamethasone suppression test: cortisol not suppressed.\n\nAssessment: ACTH-dependent hypercortisolism.\n\nPlan: high-dose dexamethasone suppression test administered to help separate a pituitary from an ectopic source; follow-up in two weeks with results and imaging as indicated."}
+          ]
+        },
+        {
+          "id": "2021-11-01a",
+          "kind": "specialist_visit",
+          "start": "2021-11-01T10:30",
+          "service": "Endocrinology",
+          "reason": "Follow-up of ACTH-dependent hypercortisolism",
+          "conditions": [
+            {"label": "Ectopic ACTH production", "icd10": "E24.3", "action": "diagnosed", "onset": "2021-06-01"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "reports": [
+            {"study": "CT chest", "performed": "2021-10-26T09:00", "issued": "2021-10-26T15:30",
+             "text": "CT chest with intravenous contrast. Indication: ACTH-dependent hypercortisolism, evaluate for an ectopic source. A 1.8 cm well-circumscribed, smoothly marginated solid nodule in the right middle lobe. No other pulmonary nodules. No mediastinal, hilar or axillary lymphadenopathy. No pleural or pericardial effusion. Heart size normal. Visualized upper abdomen unremarkable; adrenal glands unremarkable. Osseous structures intact.",
+             "conclusion": "1.8 cm right middle lobe nodule, a candidate ectopic ACTH source. No adenopathy."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Follow-up", "author": "endocrinology", "date": "2021-12-14T09:35",
+             "body": "Outside endocrinology practice. Follow-up, date of service 11/1/2021.\n\nResults: high-dose dexamethasone suppression test did not suppress cortisol, favoring an ectopic ACTH source over a pituitary adenoma.\n\nImaging: CT chest 10/26/2021 shows a 1.8 cm well-circumscribed right middle lobe nodule without adenopathy. Ga-68 DOTATATE PET/CT 10/29/2021: the right middle lobe nodule is avid; no other abnormal uptake.\n\nAssessment: ectopic ACTH production, most consistent with a bronchial neuroendocrine (carcinoid) tumor of the right middle lobe.\n\nPlan: referred to thoracic surgery for resection. Discussed that cortisol may drop sharply after the tumor is removed and that he will likely need temporary hydrocortisone. Blood pressure and sugars should improve after cure; primary care to adjust as needed. Copy to primary care."}
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "portal_message",
+          "start": "2021-11-10T19:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Surgery", "author": "patient", "date": "2021-11-10T19:15",
+             "body": "Hi this is Sean's sister. The hormone doctor found a spot on his right lung that they think is causing all of this. The lung surgeon is doing an operation on December 9. Do you need to do anything before that? He is nervous but says he wants it out."},
+            {"type": "Patient Message", "title": "RE: Surgery", "author": "PCP", "date": "2021-11-11T08:20",
+             "body": "Thank you for letting us know. We have not received the endocrinology notes yet; I've asked their office to send them. The surgeon's team usually handles the pre-op testing. Please have him keep taking his blood pressure and diabetes pills unless the surgeon says otherwise, and bring his CPAP to the hospital. Call us after he is home and we'll see him."}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "office_visit",
+          "start": "2021-12-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after lung surgery",
+          "medications": [
+            {"drug_text": "hydrocortisone 5 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (15 mg) by mouth every morning and 1 tablet (5 mg) every afternoon", "dose": {"value": 20, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "adrenal insufficiency after tumor resection, prescribed by endocrinology"}
+          ],
+          "state": {"weight_kg": 104.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-12-20T13:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-20T14:00",
+             "body": "S: Had the lung operation 12/9, keyhole surgery, right middle lobe taken out, home after three nights. By his and his sister's account the surgeon said the tumor was making the hormone. Some soreness at the incisions, using acetaminophen. Breathing fine. Endocrine started hydrocortisone at discharge: 15 mg in the morning, 5 mg mid-afternoon. Tired. No fever. We have no operative note or discharge summary; the endocrinology letters from October and November came last week.\nO: Vitals as charted; BP still up. Port sites clean and dry, no redness. Lungs clear. Face still full.\nA/P:\n1. Ectopic ACTH, s/p right middle lobectomy 12/9/21. Final pathology not in our chart yet; requested from the hospital and endocrinology. On hydrocortisone per endocrine; reviewed sick-day doubling and when to go to the ED (vomiting, can't keep pills down).\n2. HTN and DM: expect improvement, may need less treatment; home glucose checks if he can. No changes today.\nRTC 3 months, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "outside_records",
+          "start": "2022-01-11T11:40",
+          "conditions": [
+            {"label": "Malignant carcinoid tumor of the bronchus and lung", "icd10": "C7A.090", "action": "diagnosed", "onset": "2021-12-09", "note": "typical carcinoid, right middle lobe, resected 12/2021"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2021-12-09T10:00", "issued": "2021-12-14T16:00",
+             "text": "Specimen: right middle lobe, lobectomy; mediastinal and hilar lymph nodes. Tumor: well-differentiated neuroendocrine tumor, typical carcinoid, 1.8 cm in greatest dimension. No necrosis. Margins: bronchial, vascular and parenchymal margins negative. Lymph nodes: 0 of 8 involved. Background lung without significant abnormality.",
+             "conclusion": "Typical carcinoid of the right middle lobe, 1.8 cm, margins negative, 0/8 lymph nodes."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology Post-operative Letter", "author": "endocrinology", "date": "2022-01-11T11:40",
+             "body": "Outside endocrinology practice. Telehealth follow-up 1/5/2022.\n\nHe underwent VATS right middle lobectomy with lymph node sampling on 12/9/2021. Pathology attached: typical carcinoid, 1.8 cm, negative margins, no nodal involvement. Post-operative morning cortisol was low, as expected after removal of the ACTH source, and he was discharged on hydrocortisone 15 mg each morning and 5 mg each afternoon. No vomiting or dizziness.\n\nPlan: continue hydrocortisone for now; we will taper over the next 2 to 3 months and check a morning cortisol before stopping. Surveillance chest CT in about one year with thoracic surgery. Primary care: please watch blood pressure and glucose as cortisol excess resolves."}
+          ]
+        },
+        {
+          "id": "2022-03-15a",
+          "kind": "office_visit",
+          "start": "2022-03-15T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "medications": [
+            {"drug_text": "hydrocortisone 5 MG Oral Tablet", "action": "stop", "reason": "taper completed by endocrinology"}
+          ],
+          "state": {"weight_kg": 99.0, "bp": [132, 82], "labs": {"Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": null, "collected": "2022-03-15T10:10", "results": [{"test": "Hemoglobin A1c", "value": 6.9}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-15T10:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-03-15T10:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-03-15T10:10", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-15T09:40"},
+            {"procedure": "Venipuncture", "performed": "2022-03-15T10:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-15T10:25",
+             "body": "S: Took his last hydrocortisone last week after the taper; endocrine checked a morning cortisol on 3/7 and told him it was normal. Feels stronger, gets out of a chair without his arms. Face less round. No double vision since around the surgery. Bruising better. CPAP most nights.\nO: BP 132/82. Weight 99 kg, down 9 kg from September. Incisions healed. Proximal strength normal. Lungs clear.\nA/P:\n1. Ectopic ACTH from RML typical carcinoid, resected, hypercortisolism resolved clinically; hydrocortisone done. Surveillance CT per thoracic surgery in December.\n2. HTN better controlled, lisinopril 20 continued.\n3. DM: A1c 6.9 today. Metformin same.\n4. Lipids, urine microalbumin, CMP today.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "outside_records",
+          "start": "2022-03-22T14:15",
+          "labs": [
+            {"panel": null, "collected": "2022-03-07T08:00", "results": [{"test": "Cortisol, AM", "value": 13.6}]}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Endocrinology Letter", "author": "endocrinology", "date": "2022-03-22T14:15",
+             "body": "Outside endocrinology practice. Re: Sean Berman. Hydrocortisone was tapered off over January and February. Morning cortisol on 3/7/2022, drawn 24 hours after his last dose, was in the normal range, indicating recovery of his own adrenal function. Hydrocortisone discontinued. No stress dosing needed going forward. He will see thoracic surgery for surveillance imaging in December and us in a year."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "office_visit",
+          "start": "2022-06-21T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"weight_kg": 92.0, "bp": [130, 80], "labs": {"Hemoglobin A1c": 6.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-06-21T15:10", "results": [{"test": "Hemoglobin A1c", "value": 6.6}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-06-21T15:10", "results": [{"test": "Creatinine"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-06-21T14:40"},
+            {"procedure": "Venipuncture", "performed": "2022-06-21T15:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-06-21T15:20",
+             "body": "Doing well. Weight keeps coming off without trying, 92 kg. Walks to the corner store and back most days. No lows on metformin. Taking risperidone, he says; psychiatry visit last month. Exam: BP 130/80, heart regular, lungs clear, feet intact. A1c 6.6 after the visit. Plan: same meds. Eye exam due next month. RTC fall."}
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "outside_records",
+          "start": "2022-07-26T10:00",
+          "documents": [
+            {"type": "Letter", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2022-07-26T10:00",
+             "body": "Outside optometry office. Dilated exam 7/19/2022. Corrected acuity 20/25 OD, 20/20 OS. IOP normal. No diabetic retinopathy either eye. No macular edema. Return in 12 months."}
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "office_visit",
+          "start": "2022-09-28T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Neck pain with left arm tingling",
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth every 8 hours as needed for pain, max 3,000 mg per day", "dose": {"value": 1000, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "neck pain"}
+          ],
+          "state": {"weight_kg": 84.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-28T11:55"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-28T11:56"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-09-28T11:20"},
+            {"procedure": "Immunization administration", "performed": "2022-09-28T11:55"}
+          ],
+          "orders": [
+            {"id": "neuro-referral-2022", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "neck pain with left arm paresthesias"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-09-28T12:05",
+             "body": "S: Two weeks of left-sided neck pain, came on without an injury he can name. Pins and needles down the left arm off and on. Worse looking over his left shoulder and when he carries anything heavy. No bladder or bowel change, no leg symptoms, no fever. Ibuprofen avoided because of his ulcer history.\nO: Vitals as charted. Weight 84 kg. Tender left paraspinal neck muscles. Neck rotation to the left limited by pain. Grip equal. Brief neuro screen without obvious deficit today.\nA/P:\n1. Neck pain with left arm paresthesias, likely cervical radicular. Neurology referral for evaluation and imaging decisions. Acetaminophen scheduled for a week then as needed. Avoid NSAIDs. Call if weakness, clumsiness, gait or bladder change.\n2. Prevention: PCV20 (diabetes) and flu today, deltoids.\n3. Weight down another 8 kg since June; eating less, sister says he skips meals. Will watch."}
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "specialist_visit",
+          "start": "2022-10-24T15:00",
+          "service": "Neurology",
+          "reason": "Neck pain and left arm tingling",
+          "conditions": [
+            {"label": "Cervical radiculopathy due to C6-C7 disc herniation", "icd10": "M50.123", "action": "diagnosed", "onset": "2022-09-12"}
+          ],
+          "measure": ["bp", "hr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-24T15:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2022-10-24T15:45", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 8}]},
+            {"panel": null, "collected": "2022-10-24T15:45", "results": [{"test": "C Reactive Protein", "value": 0.4}]}
+          ],
+          "orders": [
+            {"id": "neuro-referral-2022", "action": "done", "date": "2022-10-24T15:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2022-12-06T08:45",
+             "body": "Outside neurology group. Date of service 10/24/2022. Referred by primary care for neck pain with arm paresthesias.\n\nHPI: 49-year-old man with schizophrenia and a reducible inguinal hernia, also hypertension (on lisinopril), diabetes, and a bronchial carcinoid resected last year. For about six weeks he has had neck pain and intermittent tingling into the left arm. Turning his head to the left and lifting heavy objects make it worse.\n\nMedications: lisinopril 20 mg qd, metformin 1000 mg bid, risperidone 2 mg qd (irregular), diphenhydramine 25 mg at bedtime as needed, calcium carbonate 500 mg as needed, acetaminophen as needed. NKDA.\n\nExam: tender left paracervical muscles. Strength reduced in the left biceps and left wrist extensors; otherwise full. Left biceps reflex diminished; other reflexes symmetric. Reduced light touch and pinprick over the left thumb and index finger. Gait normal. No long-tract signs.\n\nLabs today: CBC, ESR and CRP within normal limits.\n\nImpression: left cervical radiculopathy.\n\nPlan: MRI cervical spine without contrast. Physical therapy referral. Continue acetaminophen; avoid NSAIDs given ulcer history. Follow up after MRI.\n\nAddendum: MRI cervical spine 10/31/2022 shows a herniated disc at C6-C7 with impingement of the left nerve root. No cord signal change. Diagnosis: cervical radiculopathy due to C6-C7 disc herniation. Continue therapy; surgical opinion only if weakness progresses or pain is refractory."}
+          ]
+        },
+        {
+          "id": "2022-11-03a",
+          "kind": "pharmacy",
+          "start": "2022-11-03T16:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-03T16:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Vaccine record from pharmacy", "author": "MA", "date": "2022-11-04T08:45",
+             "body": "Registry update: Pfizer bivalent COVID-19 booster given 11/3/2022 at a retail pharmacy. Record updated."}
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "portal_message",
+          "start": "2022-11-15T10:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Neck doctor", "author": "patient", "date": "2022-11-15T10:30",
+             "body": "The neck doctor did the MRI and said it is a disc. He wants him to do physical therapy. Did you get the papers? He wants to know if he has to wait for you to send it."},
+            {"type": "Patient Message", "title": "RE: Neck doctor", "author": "RN", "date": "2022-11-15T14:10",
+             "body": "We haven't received the neurology note or the MRI report yet; we've asked their office to fax them. If the neurologist's office already sent the therapy referral he can go ahead and schedule with the therapist; he doesn't need to wait for us. Call if his arm gets weaker."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "imaging",
+          "start": "2022-12-13T08:30",
+          "service": "Radiology",
+          "reason": "Surveillance after carcinoid resection",
+          "reports": [
+            {"study": "CT chest", "performed": "2022-12-13T08:30", "issued": "2022-12-13T13:00",
+             "text": "CT chest with contrast. Comparison 10/26/2021. Postsurgical changes of right middle lobectomy with staple line intact. No new or enlarging pulmonary nodule. No mediastinal or hilar lymphadenopathy. No pleural effusion. Adrenal glands normal in thickness.",
+             "conclusion": "Postoperative change. No evidence of recurrent or metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "CT chest result", "author": "PCP", "date": "2022-12-20T09:00",
+             "body": "Surveillance CT from thoracic surgery received: post-lobectomy change only, no recurrence. Neurology consult and MRI addendum also received 12/6. Filed."}
+          ]
+        }
+      ]
+    }
+  ]
+}

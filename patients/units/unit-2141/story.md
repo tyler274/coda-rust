@@ -15,3 +15,8 @@
 - 2026-06-18 portal: patient asks about going back to the sprayer; PCP replies (P)
 - 2026-08-12 portal: asks to book the physical (P)
 - 2026-09-16 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002141 on 2025-05-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

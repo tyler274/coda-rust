@@ -1,0 +1,135 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001925",
+      "given": "Chloe",
+      "family": "Eldridge",
+      "birth_date": "1999-09-26",
+      "address_line": "88 Lyman Street, Apt 2B",
+      "phone": "+1-347-555-0174",
+      "email": "chloe.eldridge@example.test",
+      "marital_status": "single",
+      "summary": "Healthy environmental science graduate student who joined in 2024 and then had three atypical pneumonias in nine months (two treated in the office, the third in the left upper lobe sampled by bronchoscopy at pulmonology). The opportunistic-infection concern was set aside on a negative lavage and normal immunoglobulins; she is well, with a physical booked.",
+      "events": [
+        {
+          "id": "2024-08-19a",
+          "kind": "telephone",
+          "start": "2024-08-19T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-08-19T10:12",
+              "body": "Caller is a 24 y/o grad student (environmental science) moving into graduate housing off campus for her second year. Has been using the university health center but would like a regular internist she can text. Membership explained, student plan covers labs/imaging/specialists. No current problems.\n\nBooked new patient physical Wednesday 9/4 at 8:40. Emailed intake forms and a records release for the university health center. She will bring her insurance card."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "establish_care",
+          "start": "2024-09-04T08:40",
+          "end": "2024-09-04T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 61.0, "height_cm": 166.0, "labs": {"Low Density Lipoprotein": 88, "Total Cholesterol": 168}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-04T09:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-04T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-04T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-04T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-04T09:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Wine socially, 1-2 glasses on weekends"},
+            {"item": "Occupation", "value": "Graduate student, environmental science"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-04T09:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-04T09:27"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-09-04T08:40"},
+            {"procedure": "Venipuncture", "performed": "2024-09-04T09:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-04T09:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2024-09-04T09:35",
+              "body": "Chloe is a 24 year old starting the second year of a master's program in environmental science, here to set up primary care. She has been seen only at the university health center for acute things and feels well today.\n\nPMH: nothing significant. No hospitalizations, no surgeries.\nMeds: none. No supplements.\nAllergies: none to medicines.\nFH: no immunodeficiency, autoimmune disease or chronic lung disease that she knows of on either side.\nSH: lives in graduate housing with roommates. Grew up in upstate New York. Never a smoker, no vaping. Wine socially, a glass or two on weekends. No drug use. Field work for her program is mostly water and soil sampling. Very active outdoors.\nGYN: regular cycles. Last cervical cytology 2023 at the health center, normal per patient; records requested.\nPrevention: thinks she finished the HPV series and had a Tdap before college; awaiting the health center's record.\n\nROS: negative across systems.\n\nExam: vitals as charted, BMI normal. Well appearing. HEENT normal, TMs clear, no thyromegaly or adenopathy. Heart regular, no murmur. Lungs clear to auscultation throughout. Abdomen soft, nontender. Skin without rash. No edema. Mood and affect normal. PHQ-2 0.\n\nA/P: healthy adult, establishing care.\n- Baseline CBC, CMP, lipids. HIV and hep C screening once, she agrees.\n- Flu and updated COVID given today, tolerated.\n- Pap due 2026 assuming the 2023 result is normal.\n- She has our cell and portal; reach out for anything.\nReturn in a year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-06a",
+          "kind": "portal_message",
+          "start": "2024-09-06T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-09-06T16:20",
+              "body": "Hi Chloe, all of your bloodwork from Wednesday is normal: blood counts, kidney and liver tests, cholesterol, and both the HIV and hepatitis C screens were negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "outside_records",
+          "start": "2024-10-02T11:05",
+          "immunizations": [
+            {"vaccine": "MMR", "date": "2000-10-02T10:00"},
+            {"vaccine": "MMR", "date": "2004-03-11T10:00"},
+            {"vaccine": "Varicella", "date": "2000-10-02T10:05"},
+            {"vaccine": "Varicella", "date": "2004-03-11T10:05"},
+            {"vaccine": "HPV, 9-valent", "date": "2011-08-22T15:00"},
+            {"vaccine": "HPV, 9-valent", "date": "2012-03-05T15:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2016-08-29T14:00"},
+            {"vaccine": "Tdap", "date": "2017-08-10T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "University health center records",
+              "author": "university health center",
+              "date": "2024-10-02T11:05",
+              "body": "Records released to the patient's new primary care physician per signed authorization.\n\nImmunization history on file (transcribed from entry documents): MMR x2, varicella x2, HPV 9-valent x2 (series complete, started before age 15), MenACWY 2016, Tdap 08/2017.\n\nVisits on file: minor acute visits only (sore throat, ankle sprain) without ongoing problems.\n\nCervical cytology 2023: negative for intraepithelial lesion or malignancy. Next screening per routine interval.\n\nAllergies: NKDA. Medications: none."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "portal_message",
+          "start": "2024-12-09T19:44",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tdap proof",
+              "author": "patient",
+              "date": "2024-12-09T19:44",
+              "body": "Hi, my program needs proof of a tetanus shot within 10 years before I can sign up for the summer field course. Do you have it from the health center records? Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Tdap proof",
+              "author": "MA",
+              "date": "2024-12-10T09:02",
+              "body": "Hi Chloe, yes, Tdap 08/2017 is in your chart from the health center. I attached your immunization record to this message. It is good through 2027."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

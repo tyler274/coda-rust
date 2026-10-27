@@ -1,0 +1,3950 @@
+{
+  "unit": "unit-2030",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002030",
+      "given": "Craig",
+      "family": "Abbott",
+      "birth_date": "1973-08-09",
+      "address_line": "14 Lower Wapping Road",
+      "phone": "+1-802-555-0197",
+      "email": "craig.abbott@example.test",
+      "marital_status": "married",
+      "summary": "Battery recycling plant technician with hypertension and gout who joined in 2019, developed noise-induced hearing loss and then symptomatic occupational lead poisoning in 2022 with slow recovery after removal from exposure, and passed a uric acid ureteral stone in early 2026.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2019-08-27T10:12",
+              "author": "front desk",
+              "body": "Caller wants to establish with the practice; his last doctor's office is closing its adult panel. Explained the membership and that insurance is still used for labs and specialists. Booked new patient visit 9/17. Release signed for records from his previous primary care office, faxed today. He takes two prescriptions, a blood pressure pill and one for gout. Will bring bottles."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-16a",
+          "kind": "telephone",
+          "start": "2019-09-16T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pre-visit reminder",
+              "date": "2019-09-16T14:05",
+              "author": "MA",
+              "body": "Reminder call for new patient visit tomorrow 8:40. Asked him to come fasting for labs and bring medication bottles. Confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T08:40",
+          "end": "2019-09-17T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2014-06-01"
+            },
+            {
+              "label": "Gout",
+              "action": "history",
+              "onset": "2016-03-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            },
+            {
+              "drug": "allopurinol 300 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Gout"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              88
+            ],
+            "hr": 74,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 92.6,
+            "height_cm": 179.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-17T09:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-17T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-17T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 197
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 132
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 122
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 148
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-17T09:35",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Battery recycling plant technician"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "2-3 drinks per week, social"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-17T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-17T09:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-17T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-17T09:40",
+              "author": "PCP",
+              "body": "46M here to establish. Previous PCP office closing adult panel; records requested.\n\nHTN since ~2014, on lisinopril 10 mg for years, no side effects. Doesn't check at home.\nGout since ~2016, a few flares before allopurinol. On allopurinol 300 mg daily since, no flare in over a year. No colchicine at home.\nNo surgeries. NKDA.\n\nFH: father with HTN, paternal uncle with gout, mother hypothyroid.\nSH: married. Works at a battery recycling plant as a technician, long time in plant work. Quit cigarettes about 5 yrs ago. 2-3 beers a week. Rides his road bike most weekends in season.\n\nROS negative except as above.\n\nExam: BP 136/86, recheck similar. Well appearing. TMs normal. Neck no thyromegaly. Heart RRR without murmur. Lungs clear. Abd benign. Joints: no tophi, no synovitis. Ext without edema. Neuro grossly normal.\n\nA/P\n1. HTN, near goal on lisinopril 10. Continue. Encouraged home cuff.\n2. Gout, quiet on allopurinol 300. Uric acid today.\n3. Health maintenance: CMP, CBC, lipids, A1c, uric acid; one-time hep C and HIV, he agrees. Tdap given today. Colon screening is due at 45 now; discussed, he'd rather wait until spring. Flu shot in October.\n4. Former smoker, light.\n\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              86
+            ],
+            "weight_kg": 92.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Creatinine": 1.0,
+              "Hemoglobin": 15.0,
+              "Hemoglobin A1c": 5.4,
+              "High Density Lipoprotein": 47,
+              "Low Density Lipoprotein": 118,
+              "Total Cholesterol": 192,
+              "Triglycerides": 135,
+              "Uric Acid": 6.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "portal_message",
+          "start": "2019-09-24T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent results",
+              "date": "2019-09-24T07:55",
+              "author": "PCP",
+              "body": "Hi Craig, your labs from last week look good. Kidney and liver tests are normal, blood count normal, sugar normal. Uric acid is 6.8, which is close to where we want it on the allopurinol. Cholesterol is acceptable for now. Hepatitis C and HIV screens negative. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "outside_records",
+          "start": "2019-10-08T13:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-10-08T13:20",
+              "author": "MA",
+              "body": "34 pages received by fax from previous primary care. Contents: office notes 2013-2019, med lists, labs.\nSummary for chart: HTN started on lisinopril 2014. Gout diagnosed 2016, allopurinol started 2017 after recurrent flares. Annual labs 2016-2019 with normal kidney function and blood counts; uric acid 6.5-7.1 on allopurinol. No colonoscopy on file. Tobacco documented as quit. Allergies: none.\nRouted to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu shot",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-22T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-22T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2019-10-22T16:40",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. No prior reactions. Tolerated well, VIS provided."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-20a",
+          "kind": "telephone",
+          "start": "2020-03-20T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Visit change",
+              "date": "2020-03-20T09:30",
+              "author": "front desk",
+              "body": "Office converting routine in-person visits to video during the state emergency. Pt's 3/24 appt cancelled; rebooked as video 4/7. He has enough of both meds."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "office_visit",
+          "start": "2020-03-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "6 month follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2020-04-07a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-07T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and gout follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-07T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "date": "2020-04-07T11:45",
+              "author": "PCP",
+              "body": "Video, rescheduled from the in-person slot in March.\nPlant is still running; he's considered essential and is going in. Wears his PPE.\nBought a home BP cuff after the last visit: readings mostly 130s/80s.\nNo gout flares. Taking allopurinol and lisinopril daily.\nAppears well on video, no distress.\nA/P: HTN controlled by home readings, continue lisinopril 10. Gout quiet, continue allopurinol 300. Colonoscopy deferred for now given the pandemic. In-person physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-11a",
+          "kind": "pharmacy",
+          "start": "2020-08-11T09:05",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill request",
+              "date": "2020-08-11T09:05",
+              "author": "MA",
+              "body": "Pharmacy fax for 90-day refills of lisinopril 10 mg and allopurinol 300 mg. Last seen 4/2020. Approved per PCP protocol, 1 refill each until the physical."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "annual_physical",
+          "start": "2020-10-06T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              81
+            ],
+            "hr": 79,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 91.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-10-06T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-10-06T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-10-06T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 200
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 135
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 124
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 151
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-06T08:45",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2020-10-06T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-10-06T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2020",
+              "action": "placed",
+              "order": "Screening colonoscopy referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-06T08:50",
+              "author": "PCP",
+              "body": "47M for yearly exam.\nInterval: fine. Working full shifts. Rode a lot this summer.\nMeds: lisinopril 10 daily, allopurinol 300 daily. NKDA.\nNo gout flares this year.\nROS: no chest pain, dyspnea, GI or GU complaints.\n\nExam: vitals reviewed. NAD. HEENT normal. Neck supple. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, nontender. Feet: no tophi, 1st MTPs normal. Skin no concerning lesions. PHQ-2 0.\n\nA/P\n- HTN: in range today, continue.\n- Gout: continue allopurinol, uric acid with labs.\n- CRC screening: now ready, GI referral for colonoscopy.\n- Flu shot given.\n- BMP, CBC, lipids, uric acid.\nReturn 1 yr, or 6 months for BP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-10-12a",
+          "kind": "portal_message",
+          "start": "2020-10-12T08:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2020-10-12T08:20",
+              "author": "PCP",
+              "body": "Hi Craig, everything from your physical came back in range: kidneys, blood count, cholesterol and uric acid. GI should be calling you to set up the colonoscopy."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-17a",
+          "kind": "portal_message",
+          "start": "2021-02-17T21:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "date": "2021-02-17T21:30",
+              "author": "patient",
+              "body": "Am I able to get the covid shot yet? I work in a plant with a lot of people."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "date": "2021-02-18T09:10",
+              "author": "RN",
+              "body": "Manufacturing workers aren't in the current phase yet; the state is expected to open eligibility to your age group next month. Pharmacies are booking online once it opens. Let us know when you've had it so we can record it."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-30a",
+          "kind": "pharmacy",
+          "start": "2021-03-30T15:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-09T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-30T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 vaccination",
+              "date": "2021-03-30T15:10",
+              "author": "MA",
+              "body": "Pt sent photo of his vaccine card through the portal. Pfizer dose 1 on 3/9/21, dose 2 on 3/30/21, both at a retail pharmacy. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-13a",
+          "kind": "telephone",
+          "start": "2021-04-13T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Colonoscopy prep",
+              "date": "2021-04-13T11:15",
+              "author": "RN",
+              "body": "Pt called with prep questions for 4/20. Reviewed clear liquids the day before, split-dose prep timing, need a driver. He can take lisinopril the morning of with a sip of water. Has a ride arranged."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "procedure_visit",
+          "start": "2021-04-20T07:30",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-04-20T07:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2020",
+              "action": "done",
+              "date": "2021-04-20T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report (outside GI)",
+              "date": "2021-04-23T10:00",
+              "author": "gastroenterology",
+              "body": "Outside endoscopy center report, received 4/23/21.\nProcedure date 4/20/21. Indication: average-risk screening, age 47. Allergies: NKDA.\nPrep: good, adequate for screening.\nScope advanced to the cecum, appendiceal orifice and ileocecal valve photographed. Withdrawal 9 min.\nFindings: normal mucosa throughout. Small internal hemorrhoids on retroflexion. No polyps or masses.\nImpression: normal screening colonoscopy.\nRecommendation: repeat in 10 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "pharmacy",
+          "start": "2021-08-24T08:40",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill authorization",
+              "date": "2021-08-24T08:40",
+              "author": "MA",
+              "body": "Lisinopril 10 mg and allopurinol 300 mg 90-day refills approved. Physical 9/28 already booked."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              87
+            ],
+            "hr": 71,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 91.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 247
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 119
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 143
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-28T08:40",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-28T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-28T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-28T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-28T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-28T08:55",
+              "author": "PCP",
+              "body": "48 y/o man, yearly visit.\nDoing well. Colonoscopy in April normal. Fully vaccinated for COVID in March.\nHome BPs 130-138 over low 80s. Gout quiet on allopurinol.\nWorks at the battery plant, rotating floor duties.\nMeds lisinopril 10, allopurinol 300. NKDA.\n\nExam: vitals as charted. Ears normal canals and TMs. Heart regular, no murmur. Lungs clear. Abd soft. No joint swelling, no tophi. No edema. PHQ-2 negative.\n\nPlan: same meds. CMP, CBC, lipids, uric acid. Flu vaccine today. Booster when eligible. 1 year."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.1,
+              "Hemoglobin": 14.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-04a",
+          "kind": "portal_message",
+          "start": "2021-10-04T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-10-04T12:30",
+              "author": "PCP",
+              "body": "Labs from your physical are fine overall. Kidney function and blood count normal, cholesterol about the same as 2019, uric acid in range. See you next year."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-09a",
+          "kind": "specialist_visit",
+          "start": "2022-02-09T13:30",
+          "service": "Occupational Medicine",
+          "reason": "hearing difficulty",
+          "conditions": [
+            {
+              "label": "Noise-induced hearing loss, bilateral",
+              "action": "diagnosed",
+              "onset": "2021-06-01",
+              "icd10": "H83.3X3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              87
+            ],
+            "hr": 81,
+            "spo2": 98
+          },
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2022-02-09T13:10",
+              "text": "Pure-tone air and bone conduction, both ears. Otoscopy clear. Thresholds within normal limits 250 Hz through 2 kHz bilaterally. Notch at 4 kHz: 45 dB HL right, 55 dB HL left, with partial recovery at 8 kHz. Air-bone gap absent. Tympanometry type A both ears. Word recognition good both ears at comfortable level.",
+              "conclusion": "Bilateral high-frequency sensorineural hearing loss with a 4 kHz notch, left slightly worse than right, consistent with noise exposure."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Occupational Medicine Consultation: hearing",
+              "date": "2022-02-18T11:00",
+              "author": "occupational medicine",
+              "body": "OCCUPATIONAL MEDICINE CLINIC\nDate of service: 02/09/2022\nRe: Craig Abbott, DOB 08/09/1973\nReferred by: employer hearing conservation program after a shift on his annual audiogram\n\nMr. Abbott is a 48-year-old battery recycling technician, about 25 years in plant work, who has noticed hearing getting worse over the past several months, mostly trouble following conversation on the floor and in restaurants. No otalgia, no drainage, no dizziness or spinning. No tinnitus complaints today.\nHistory: hypertension and gout. Meds: lisinopril, allopurinol 300 mg daily. Allergies: NKDA.\nFamily: father hypertension, paternal uncle gout, mother hypothyroidism.\n\nExam: vital signs normal. Ear canals clear. Tympanic membranes intact on both sides, pearly, no fluid or redness. Weber goes to the right. Rinne positive bilaterally, air conduction better than bone.\nAudiogram today (attached): high-frequency sensorineural loss both ears with a notch at 4 kHz, left a little worse.\n\nAssessment: Noise-induced hearing loss, bilateral, work-related.\nPlan: Fitted for foam plugs plus earmuffs for loud areas. Repeat audiogram yearly through the employer program. Not at a level needing amplification at present.\n\nOccupational Medicine Physician\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "portal_message",
+          "start": "2022-02-22T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hearing test at work",
+              "date": "2022-02-22T19:40",
+              "author": "patient",
+              "body": "Hi, the plant sent me to their occupational doctor for my hearing. He said it's from noise and gave me double protection. Just wanted you to have it. Should I be doing anything else?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hearing test at work",
+              "date": "2022-02-23T08:15",
+              "author": "PCP",
+              "body": "Thanks Craig, we got their letter. I agree with the plan: wear the plugs and muffs together on the floor every time, and keep doing the yearly hearing test. Nothing else needed right now. If it starts affecting you at home, we can talk about a formal hearing aid evaluation."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "pharmacy",
+          "start": "2022-05-10T08:50",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill authorization",
+              "date": "2022-05-10T08:50",
+              "author": "MA",
+              "body": "Electronic refill requests: lisinopril 10 mg #90, allopurinol 300 mg #90. Seen 9/2021. Approved x1 each; pt reminded by text that his physical is due in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "specialist_visit",
+          "start": "2022-08-10T09:00",
+          "service": "Occupational Medicine",
+          "reason": "weakness, fatigue, abdominal pain",
+          "conditions": [
+            {
+              "label": "Lead poisoning",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "icd10": "T56.0X1A"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "succimer 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 900 mg (9 capsules) by mouth three times daily for 5 days, then 900 mg twice daily for 14 days",
+              "dose": {
+                "value": 900,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Lead poisoning"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 92.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.03
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-08-10T09:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 46
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-10T09:40",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.5
+                },
+                {
+                  "test": "Peripheral blood smear",
+                  "loinc": "18314-5",
+                  "text": "Microcytic hypochromic red cells with basophilic stippling."
+                },
+                {
+                  "test": "Lead",
+                  "value": 72,
+                  "resulted": "2022-08-12T14:00"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Occupational Medicine Visit: weakness and abdominal pain",
+              "date": "2022-08-16T10:30",
+              "author": "occupational medicine",
+              "body": "OCCUPATIONAL MEDICINE CLINIC\nDate of service: 08/10/2022, with addendum 08/12/2022\nRe: Craig Abbott, DOB 08/09/1973\n\nSeen previously here in February for work-related hearing loss. Now 49, he comes back with roughly half a year of slowly increasing weakness in both hands and both feet, tiredness through the whole shift, and crampy belly pain. In the last few weeks he has also become constipated, and store-bought laxatives have done nothing.\nHe works the battery breaking and smelting side of the recycling plant.\nPMH: hypertension, gout, noise-induced hearing loss. Meds: lisinopril 10 mg daily, allopurinol 300 mg daily. NKDA.\nFamily history unchanged from February.\n\nExam: BP 145/90. Mildly pale conjunctivae. Abdomen soft. Light touch and pinprick reduced in both hands to the wrists and both feet to above the ankles. Strength mildly reduced in grip.\n\nLabs today: Hgb 10.2, MCV 74, creatinine 1.8, BUN 29, uric acid 8.5. Smear shows basophilic stippling.\nAddendum 8/12: blood lead 72 mcg/dL.\n\nAssessment: Symptomatic occupational lead poisoning with anemia, peripheral neuropathy, abdominal symptoms and reduced kidney function.\nPlan:\n1. Medical removal from all lead-exposed tasks effective now; employer notified per standard.\n2. Oral succimer 10 mg/kg (900 mg) three times daily for 5 days, then twice daily for 14 days. Started 8/12.\n3. Blood lead and CBC after the course and then at intervals per surveillance.\n4. Please follow blood pressure, kidney function and gout.\n\nOccupational Medicine Physician\ncc: primary care"
+            }
+          ],
+          "state": {
+            "bp": [
+              145,
+              90
+            ],
+            "labs": {
+              "Blood Urea Nitrogen": 29,
+              "Creatinine": 1.8,
+              "Hemoglobin": 10.2,
+              "Lead": 72,
+              "Mean Corpuscular Volume": 74,
+              "Uric Acid": 8.5
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-08-17a",
+          "kind": "telephone",
+          "start": "2022-08-17T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: lead level",
+              "date": "2022-08-17T12:25",
+              "author": "PCP",
+              "body": "Called pt after reviewing the occupational medicine letter. He's on day 5 of succimer, some nausea, taking it with food. Off the lead side at work since last week, doing paperwork and inventory. Still tired, belly crampy. Kidney number up to 1.8 from 1.1 last fall; told him that's part of the lead effect and we will watch it. Visit booked mid-September. Advised to avoid NSAIDs and keep up fluids."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "office_visit",
+          "start": "2022-09-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up lead poisoning, BP",
+          "vitals": {
+            "bp": [
+              158,
+              88
+            ],
+            "hr": 86,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 91.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-14T15:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-14T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-14T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-09-14T16:05",
+              "author": "PCP",
+              "body": "Follow-up after lead poisoning diagnosed by occ med in August.\nFinished the 19-day succimer course last week. Mild nausea only. Still fatigued, hands and feet still tingly and weak, belly cramps on and off, bowels slow. No change yet, he says.\nWork: still on non-lead duties, no exposure.\nMeds: lisinopril 10, allopurinol 300. Succimer complete. NKDA.\n\nExam: BP above goal today, recheck similar. Pale. Abdomen soft, mildly tender diffusely, no guarding. Reduced light touch in glove-stocking pattern. Grip slightly weak, symmetric.\n\nA/P\n1. Lead poisoning, symptomatic, s/p chelation. Repeat lead level and CBC are being done by occ med; asked them to cc us. Expect slow improvement.\n2. HTN, above goal. Plan to keep lisinopril 10 for now and recheck when he is feeling better.\n3. Gout, quiet.\n4. Flu vaccine today.\nRTC 4-5 months, sooner if worse."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "pharmacy",
+          "start": "2022-10-19T10:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-15T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization",
+              "date": "2022-10-19T10:00",
+              "author": "MA",
+              "body": "State registry reconciliation: Pfizer bivalent COVID booster 10/15/2022, given at a pharmacy. Added."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "pharmacy",
+          "start": "2022-11-29T09:00",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill authorization",
+              "date": "2022-11-29T09:00",
+              "author": "MA",
+              "body": "90-day refills sent: lisinopril 10 mg, allopurinol 300 mg. Seen 9/14."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "portal_message",
+          "start": "2023-01-24T19:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Still not feeling right",
+              "date": "2023-01-24T19:20",
+              "author": "patient",
+              "body": "Still tired all the time and my stomach still bothers me. Hands and feet tingle on and off. Can I come in before my next visit? Is the lead still in me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Still not feeling right",
+              "date": "2023-01-25T07:50",
+              "author": "PCP",
+              "body": "Sorry it's dragging on. Let's get you in on 2/9 and do bloodwork a few days before so we can go over it together, including another lead level. Front desk will send the lab order. If you get severe belly pain, vomiting or new weakness before then, call right away."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-06a",
+          "kind": "lab_only",
+          "start": "2023-02-06T07:15",
+          "reason": "pre-visit labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-02-06T07:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.03
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 9
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-02-06T07:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 29
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 46
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-02-06T07:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 140
+                },
+                {
+                  "test": "Iron",
+                  "value": 121
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 341
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 35
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-02-06T07:15",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 9.5
+                },
+                {
+                  "test": "Peripheral blood smear",
+                  "loinc": "18314-5",
+                  "text": "Microcytic red cells; basophilic stippling present."
+                },
+                {
+                  "test": "Lead",
+                  "value": 44,
+                  "resulted": "2023-02-08T16:20"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-02-06T07:15"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Blood Urea Nitrogen": 29,
+              "Creatinine": 1.8,
+              "Ferritin": 140,
+              "Hemoglobin": 10.2,
+              "Lead": 44,
+              "Mean Corpuscular Volume": 74,
+              "Uric Acid": 9.5
+            }
+          }
+        },
+        {
+          "id": "2023-02-09a",
+          "kind": "office_visit",
+          "start": "2023-02-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ongoing fatigue, abdominal pain, tingling",
+          "vitals": {
+            "bp": [
+              134,
+              90
+            ],
+            "hr": 74,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 91.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-09T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-02-09T11:30",
+              "author": "PCP",
+              "body": "49M with HTN, gout, noise-induced hearing loss and occupational lead poisoning (occ med, Aug 2022), back to go over symptoms that are hanging on.\n\nSubjective: Still worn out by mid-afternoon. Belly aches most days, dull and all over, and he is constipated, a BM every 3-4 days despite fiber. Hands and feet tingle on and off, and they feel weak when he grips tools or climbs stairs. No weight loss, no blood in stool, no fevers. Still off the lead side at the plant since August, no other exposures at home that he knows of (no remodeling, no firearms, no hobby casting).\nMeds: allopurinol 300 daily, lisinopril 10 daily. Succimer finished 9/2022. NKDA.\nFH: father HTN, paternal uncle gout, mother hypothyroidism.\n\nObjective: vitals as charted. Looks pale. Abdomen with mild diffuse tenderness, no rebound, no guarding, no masses. Neuro: light touch decreased in both hands and both feet in a glove-and-stocking distribution; reflexes present.\n\nLabs 2/6: Hgb 10.2, MCV 74, Cr 1.8, BUN 29, uric acid 9.5. Smear: basophilic stippling. Ferritin 140, so not iron deficiency. Blood lead 44 (down from 72, but up from what occ med expected after chelation).\n\nA/P\n1. Lead poisoning with persistent anemia, neuropathy, abdominal symptoms and reduced kidney function. Numbers unchanged in 6 months; lead level consistent with release from bone stores. Will call occ med today to share and coordinate on whether more chelation is needed. Must stay out of lead work.\n2. Constipation from #1: more fluids and dietary fiber.\n3. Gout: uric acid 9.5 on allopurinol 300; no flares.\n4. HTN: continue lisinopril 10.\nRecheck CBC, BMP, lead in 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-10a",
+          "kind": "telephone",
+          "start": "2023-02-10T13:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call with occupational medicine",
+              "date": "2023-02-10T13:20",
+              "author": "PCP",
+              "body": "Spoke with his occupational medicine physician. Their view: rebound after a single course is expected, level is falling, no repeat chelation unless it climbs back over 50 or symptoms worsen. He stays on permanent removal for now with their surveillance draws. Agreed. Pt updated by phone; he's relieved there's no more of the capsules."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "portal_message",
+          "start": "2023-02-14T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Going back to my old job",
+              "date": "2023-02-14T12:40",
+              "author": "patient",
+              "body": "My supervisor asked when I can go back to the furnace side. Do you decide that or the plant doctor?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Going back to my old job",
+              "date": "2023-02-14T15:05",
+              "author": "RN",
+              "body": "Occupational medicine makes that call based on your lead levels, and the doctor's advice is to stay off lead work for now. The doctor already spoke with them this week."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "office_visit",
+          "start": "2023-05-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3 month follow-up, lead poisoning",
+          "vitals": {
+            "bp": [
+              154,
+              89
+            ],
+            "hr": 77,
+            "spo2": 97,
+            "weight_kg": 90.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-17T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 80
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-05-17T08:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 52
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-17T08:05",
+              "results": [
+                {
+                  "test": "Lead",
+                  "value": 31,
+                  "resulted": "2023-05-19T15:00"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-05-17T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-17T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-05-17T08:50",
+              "author": "PCP",
+              "body": "Lead f/u.\nFeels a lot better than February. Belly pain gone since about April, bowels regular again. Tingling in hands mostly gone; feet still buzz at night sometimes. Energy improving, back to short rides.\nNo lead work.\nExam: BP above goal. Color better. Abd soft, NT. Light touch mildly reduced over toes only; hands normal.\nLabs drawn this morning, CBC and BMP back during visit: Hgb 12.1, MCV 80, Cr 1.6. Lead pending.\nA/P: Lead poisoning, improving. Anemia and kidney function recovering. Continue removal. Physical in the fall with labs. HTN and gout unchanged, same meds."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Blood Urea Nitrogen": 19,
+              "Creatinine": 1.6,
+              "Hemoglobin": 12.1,
+              "Lead": 31,
+              "Mean Corpuscular Volume": 80
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lead level",
+              "date": "2023-05-22T09:10",
+              "author": "PCP",
+              "body": "Your lead level came back at 31, down from 44 in February. Going the right direction. Occupational medicine will keep checking it at work as well."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "pharmacy",
+          "start": "2023-08-08T08:35",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill authorization",
+              "date": "2023-08-08T08:35",
+              "author": "MA",
+              "body": "Refill requests lisinopril and allopurinol approved, 90 days. Physical scheduled 9/27."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "annual_physical",
+          "start": "2023-09-27T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              136,
+              89
+            ],
+            "hr": 77,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 91.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-27T08:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.46
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 81
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 58
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-27T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-27T08:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 116
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 192
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 138
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 144
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-27T08:45",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.6
+                },
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-09-27T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-09-27T08:40"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-27T08:41"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-27T08:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-27T09:00",
+              "author": "PCP",
+              "body": "Turned 50 in August. Here for physical.\nLead: continues to improve. Energy back to normal, back to long weekend rides this summer. Feet still a little numb at the toes some nights. No abdominal symptoms.\nHearing: wears plugs and muffs; yearly test at work stable per pt.\nHTN: home readings 138-144/86-90.\nGout: no flares.\nMeds lisinopril 10, allopurinol 300. NKDA. Former smoker. 2-3 drinks/wk.\n\nExam: BP above goal. Ears: canals clear, TMs normal. Heart RRR. Lungs clear. Abd soft, NT. Light touch slightly reduced at toes bilaterally, otherwise intact. No joint swelling. PHQ-2 0.\n\nA/P\n- Lead poisoning, recovering.\n- HTN, continue current dose.\n- Gout, continue allopurinol, uric acid today.\n- Health maintenance: discussed PSA screening pros and cons, he wants it. Shingrix #1, flu, updated COVID today. Colonoscopy 2021 normal.\n- CMP, CBC, lipids, uric acid, PSA.\nShingrix #2 in 2-6 months. 1 year physical, f/u 4-6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              88
+            ],
+            "labs": {
+              "Blood Urea Nitrogen": 17,
+              "Creatinine": 1.4,
+              "Hemoglobin": 13.6,
+              "Mean Corpuscular Volume": 85,
+              "Prostate Specific Antigen": 0.8,
+              "Uric Acid": 8.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-02a",
+          "kind": "portal_message",
+          "start": "2023-10-02T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2023-10-02T07:45",
+              "author": "PCP",
+              "body": "Hi Craig. Blood count is back to nearly normal, kidney number is 1.4 (better than last year's 1.8 but not quite back to where you were before the lead). PSA normal. Uric acid a bit high at about 8, no change for now since you've had no flares. Cholesterol fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "outside_records",
+          "start": "2023-11-14T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-08T06:30",
+              "results": [
+                {
+                  "test": "Lead",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Occupational Medicine surveillance letter",
+              "date": "2023-11-14T10:00",
+              "author": "occupational medicine",
+              "body": "OCCUPATIONAL MEDICINE CLINIC\nRe: Craig Abbott, DOB 08/09/1973\nSurveillance blood lead drawn 11/08/2023: 22 mcg/dL.\nTrend: 72 (8/2022), 44 (2/2023, drawn by primary care), 31 (5/2023), 22 (11/2023).\nHe has requested, and the employer has approved, a permanent move to a technician position outside the lead-handling areas. Surveillance draws will continue every 6 months while he works on site.\nAllergies: NKDA.\nOccupational Medicine Physician\ncc: primary care"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Lead": 22
+            }
+          }
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "portal_message",
+          "start": "2023-12-12T10:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shingles vaccine reminder",
+              "date": "2023-12-12T10:00",
+              "author": "MA",
+              "body": "Hi Craig, you're due for your second Shingrix dose. It can be given at your February follow-up, so no separate trip needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "office_visit",
+          "start": "2024-02-07T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up HTN, gout; second shingles dose",
+          "vitals": {
+            "bp": [
+              150,
+              87
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 91.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-07T16:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.37
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 63
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-07T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 315
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-07T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-07T16:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-07T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-02-07T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-07T16:35",
+              "author": "PCP",
+              "body": "F/u. Came straight from the plant.\nFeels normal. Toes occasionally numb when cold, otherwise nothing from the lead episode. New job on the clean side suits him.\nBP at home ~140/88. Taking lisinopril and allopurinol. No gout.\nExam: BP above goal. Heart RRR, lungs clear. Toes: light touch slightly decreased, vibration intact.\nA/P: HTN above goal, he'd like to work on salt and alcohol first, keep lisinopril 10. Gout stable. Lead poisoning, resolved symptoms, residual mild toe numbness. CBC and BMP today. Shingrix #2 given, series complete."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 14.2,
+              "Mean Corpuscular Volume": 87
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "portal_message",
+          "start": "2024-02-12T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-02-12T13:10",
+              "author": "PCP",
+              "body": "Blood count is normal now and kidney function is stable at 1.4. Good news overall."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T09:20",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill authorization",
+              "date": "2024-06-18T09:20",
+              "author": "MA",
+              "body": "Lisinopril 10 mg #90 and allopurinol 300 mg #90 approved."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "specialist_visit",
+          "start": "2024-08-14T10:00",
+          "service": "Preventive Medicine",
+          "reason": "occupational screening results and cardiovascular risk",
+          "vitals": {
+            "bp": [
+              149,
+              91
+            ],
+            "hr": 80,
+            "weight_kg": 91.1
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-14T07:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 196
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 122
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 140
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 150
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-08-14T07:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-14T07:30",
+              "results": [
+                {
+                  "test": "Lead",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2024-08-14T07:50",
+              "text": "Screening pure-tone audiometry both ears. Normal thresholds through 2 kHz. 4 kHz notch bilaterally, left slightly greater than right, unchanged from the 2022 baseline. No significant threshold shift.",
+              "conclusion": "Stable bilateral high-frequency sensorineural hearing loss."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Preventive Medicine Consultation",
+              "date": "2024-08-23T14:00",
+              "author": "preventive medicine",
+              "body": "PREVENTIVE MEDICINE, EMPLOYER HEALTH SCREENING PROGRAM\nDate of service: 08/14/2024\nPatient: Craig Abbott, DOB 08/09/1973\n\nScheduled visit to go over this year's occupational screening and his heart risk.\nBackground: hypertension, gout, work-related noise-induced hearing loss, occupational lead poisoning in 2022 now off lead tasks.\nMedications: lisinopril 10 mg daily, allopurinol 300 mg daily. Allergies: NKDA.\nSocial: technician at a battery recycling plant. Stopped smoking 10 years ago. Alcohol socially, 2 to 3 drinks weekly.\nFamily: father hypertension, paternal uncle gout, mother hypothyroidism.\n\nScreening results:\n- Blood lead 16 mcg/dL, continuing to fall.\n- Creatinine 1.4.\n- Audiogram unchanged from 2022.\n- Lipids: total 196, HDL 46, LDL 122, triglycerides 140.\n\nCardiovascular risk: pooled cohort 10-year ASCVD estimate 6.8% (borderline). Explained in plain numbers what that estimate means: out of 100 men like him, about 7 would be expected to have a heart attack or stroke in 10 years.\nRecommendations: no statin at this time; Mediterranean-style eating, keep up cycling, limit alcohol. Continue care with primary care for blood pressure and gout. Annual screening next year.\n\nPreventive Medicine Physician\ncc: primary care"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.4,
+              "High Density Lipoprotein": 46,
+              "Lead": 16,
+              "Low Density Lipoprotein": 122,
+              "Total Cholesterol": 196,
+              "Triglycerides": 140
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "outside_records",
+          "start": "2024-08-26T09:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside letter reviewed",
+              "date": "2024-08-26T09:00",
+              "author": "PCP",
+              "body": "Preventive medicine consult from 8/14 reviewed. Lead 16, Cr 1.4, audiogram stable, LDL 122, ASCVD 6.8%. Agree with no statin for now. Will discuss at physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "annual_physical",
+          "start": "2024-10-02T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 78,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 91.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-02T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.36
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 63
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-02T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-02T08:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-02T08:40",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-02T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-02T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-02T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-10-02T08:35"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-02T08:36"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-02T08:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-02T08:55",
+              "author": "PCP",
+              "body": "51M annual.\nReviewed August preventive medicine letter: lead 16, risk estimate 6.8%, lipids LDL 122, no statin advised; he's fine with that.\nFeels well, cycling most weekends. Toes still a little numb in the cold.\nHTN home log 138-146 / 86-92. Says he's cut back on salty food. Gout: no flares.\nMeds: lisinopril 10 mg, allopurinol 300 mg. NKDA. 2-3 drinks/week. Former smoker.\n\nExam: BP above goal. HEENT normal. Heart RRR without murmur. Lungs CTA. Abd soft. Joints normal. Light touch slightly reduced at toes. PHQ-2 0.\n\nA/P\n- HTN: continue lisinopril 10; keep home log.\n- Gout: allopurinol 300, uric acid today.\n- Lead poisoning: improving per occ med surveillance.\n- Prevention: PCV20, flu, updated COVID today. Colonoscopy due 2031. PSA done last year, next year.\n- CMP, CBC, UA, uric acid.\n6 month f/u."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "portal_message",
+          "start": "2024-10-07T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from physical",
+              "date": "2024-10-07T12:05",
+              "author": "PCP",
+              "body": "Craig, your blood count is normal, kidney function is steady at the level we've seen since last year, urine test clean. Uric acid still around 8. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "office_visit",
+          "start": "2025-03-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "HTN and gout follow-up",
+          "vitals": {
+            "bp": [
+              148,
+              91
+            ],
+            "hr": 79,
+            "spo2": 95,
+            "weight_kg": 91.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-19T16:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.39
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 61
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-19T16:05",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-19T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-19T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-03-19T16:10",
+              "author": "PCP",
+              "body": "Routine f/u.\nNo complaints. Winter on the trainer in the basement. Taking both meds every morning.\nBP still a bit high on the office cuff, home readings similar.\nExam: heart RRR, lungs clear, no edema. No joint findings.\nA/P: HTN, continue lisinopril. Gout, quiet, continue allopurinol. BMP and uric acid. Physical in the fall, f/u in summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "portal_message",
+          "start": "2025-03-24T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2025-03-24T08:05",
+              "author": "PCP",
+              "body": "Kidney function unchanged, uric acid about the same as last fall. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "office_visit",
+          "start": "2025-06-11T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-25a",
+          "kind": "portal_message",
+          "start": "2025-06-25T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2025-06-25T20:15",
+              "author": "patient",
+              "body": "Sorry I missed the appt a couple weeks ago, got held over on a shift and forgot to call. I'm almost out of the lisinopril. Can you send a refill and I'll just come for the physical in October?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-06-26T08:30",
+              "author": "MA",
+              "body": "No problem. Doctor approved 90 days of lisinopril and allopurinol to your pharmacy. Physical booked for October 8 at 8 AM."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "telephone",
+          "start": "2025-09-30T15:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment reminder",
+              "date": "2025-09-30T15:30",
+              "author": "front desk",
+              "body": "Text reminder sent for physical 10/8 8 AM, fasting. Pt confirmed by reply."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "annual_physical",
+          "start": "2025-10-08T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              144,
+              89
+            ],
+            "hr": 72,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 91.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-08T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 60
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 14
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-08T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-08T08:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 149
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 147
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-08T08:40",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.9
+                },
+                {
+                  "test": "Prostate Specific Antigen",
+                  "value": 0.8
+                },
+                {
+                  "test": "Lead",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-08T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-08T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T08:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-08T08:55",
+              "author": "PCP",
+              "body": "52M annual exam. Missed June f/u (work).\nNo new concerns. Rode a few long events this summer. Hearing protection at work, stable.\nMeds: lisinopril 10, allopurinol 300. NKDA.\nHTN: home average about 142/88.\nGout: no flares since before joining here.\n\nExam: BP above goal. TMs clear. Heart RRR. Lungs clear. Abd soft, NT. No tophi. Toes: light touch minimally reduced. PHQ-2 0.\n\nA/P\n- HTN, continue current regimen.\n- Gout, continue allopurinol 300.\n- Lead poisoning, recovered clinically; lead level with labs since the plant's next draw isn't till spring.\n- PSA after discussion; flu and COVID today.\n- CMP, CBC, lipids, uric acid, PSA, lead.\n1 year, f/u in spring."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Lead": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "portal_message",
+          "start": "2025-10-14T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-10-14T07:30",
+              "author": "PCP",
+              "body": "Results: lead 11, lowest yet. PSA normal. Blood count normal, kidney function stable, cholesterol about the same. Uric acid around 8. Talk in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "pharmacy",
+          "start": "2025-12-16T08:55",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill authorization",
+              "date": "2025-12-16T08:55",
+              "author": "MA",
+              "body": "Refills approved: lisinopril 10 mg and allopurinol 300 mg, 90 days each."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-31a",
+          "kind": "ed_visit",
+          "start": "2026-01-31T09:40",
+          "end": "2026-01-31T14:10",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain with nausea",
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "action": "diagnosed",
+              "onset": "2026-01-31",
+              "icd10": "N20.1"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-31T09:45",
+              "bp": [
+                166,
+                98
+              ],
+              "hr": 108,
+              "rr": 18,
+              "temp_c": 36.8,
+              "spo2": 98
+            },
+            {
+              "time": "2026-01-31T12:30",
+              "bp": [
+                148,
+                92
+              ],
+              "hr": 90,
+              "rr": 16,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-31T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 60
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-31T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-31T10:10",
+              "results": [
+                {
+                  "test": "Urine pH",
+                  "value": 5.0
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Large"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": ">50"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-31T10:05",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 9
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis without contrast",
+              "loinc": "36952-0",
+              "performed": "2026-01-31T11:05",
+              "text": "Technique: helical CT of the abdomen and pelvis without oral or IV contrast, renal stone protocol.\nFindings: 4 mm calculus in the left distal ureter about 2 cm above the ureterovesical junction, low attenuation (approximately 420 HU), not seen on the scout image. No hydronephrosis. Kidneys normal in size with no additional calculi. Right ureter and bladder unremarkable. Liver, spleen, pancreas and adrenals unremarkable. No free fluid. Appendix normal. Lung bases clear.",
+              "conclusion": "4 mm left distal ureteral calculus, low density, suggestive of uric acid composition. No hydronephrosis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-31T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-02-03T09:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT, REGIONAL HOSPITAL\nArrival 01/31/2026 09:40. Received by primary care 02/03/2026.\nPt: Craig Abbott, 52M. Allergies: NKDA.\n\nHPI: Sharp pain in the left side that came on suddenly this morning and hasn't let up, with nausea, no vomiting. Can't get comfortable, keeps changing position on the stretcher. No injury, no recent illness. Rode an organized cycling event in hot weather last weekend on a trip south. First time with pain like this. No burning with urination, no penile discharge.\nPMH: HTN, gout, occupational lead poisoning (followed by occupational medicine and PCP), noise-induced hearing loss. Meds: lisinopril 10 mg daily, allopurinol 300 mg daily.\nFH: father HTN, paternal uncle gout, mother hypothyroidism.\nSH: former smoker, social alcohol, battery recycling technician. Eats a lot of red meat and seafood.\n\nTriage: HR 108, BP 166/98, afebrile, SpO2 98% RA. Pain 9/10.\nExam: uncomfortable, writhing. Left CVA tenderness. Abdomen soft, no peritoneal signs. No testicular tenderness.\n\nUA: many RBCs (>50/hpf), pH 5.0, no bacteria, no casts, nitrite and LE negative.\nCr 1.4 (baseline per records 1.3-1.4). WBC normal. Uric acid 8.9.\nCT A/P without contrast: 4 mm left distal ureteral stone, low density, no hydronephrosis.\n\nED course: IV fluids, IV acetaminophen, IV ondansetron. Pain improved to 5/10, recurred.\nImpression: left distal ureterolithiasis, likely uric acid.\nDisposition: placed in observation for pain control and stone passage; strain all urine."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.4,
+              "Uric Acid": 8.9
+            }
+          }
+        },
+        {
+          "id": "2026-01-31b",
+          "kind": "hospital_admission",
+          "start": "2026-01-31T14:10",
+          "end": "2026-02-01T11:30",
+          "service": "Hospital Medicine — Observation",
+          "reason": "renal colic, observation",
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily for 14 days",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Calculus of ureter"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Nausea"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-01T07:40",
+              "results": [
+                {
+                  "test": "Stone analysis",
+                  "loinc": "9795-6",
+                  "text": "Uric acid 100%",
+                  "resulted": "2026-02-05T15:00"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-02-01T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Observation Discharge Summary",
+              "date": "2026-02-03T09:05",
+              "author": "hospital medicine",
+              "body": "REGIONAL HOSPITAL, OBSERVATION UNIT\nAdmit 01/31/2026, discharge 02/01/2026.\nPatient: Craig Abbott, DOB 08/09/1973. Allergies: NKDA.\nReason for observation: left renal colic from a 4 mm distal ureteral stone.\nCourse: oral fluids and IV fluids overnight, tamsulosin started, acetaminophen and ondansetron. Passed a small stone into the strainer at 05:20 on 2/1 with prompt relief. Sent for analysis. Eating and voiding normally; pain 0/10 at discharge.\nDischarge diagnosis: left distal ureterolithiasis, stone passed.\nDischarge medications: tamsulosin 0.4 mg daily x14 days (may stop sooner since stone passed), ondansetron 4 mg ODT q8h prn, acetaminophen 1000 mg q6h prn. Continue lisinopril 10 mg and allopurinol 300 mg.\nFollow-up: primary care within 1-2 weeks; stone analysis to be forwarded.\nHospitalist"
+            },
+            {
+              "type": "Lab Report",
+              "title": "Stone analysis",
+              "date": "2026-02-06T08:40",
+              "author": "hospital medicine",
+              "body": "Calculus analysis (infrared spectroscopy), specimen collected 02/01/2026, reported 02/05/2026: uric acid 100%. Forwarded by fax to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "telephone",
+          "start": "2026-02-03T11:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-02-03T12:00",
+              "author": "RN",
+              "body": "ED and observation records received. Called pt. Stone passed Sunday morning, no pain since, urine clear. Stopped the ondansetron. Taking tamsulosin still; told him he can stop once he's seen. Appt 2/10 with PCP. Drinking more water."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-ED follow-up, kidney stone",
+          "medications": [
+            {
+              "drug": "allopurinol 300 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "allopurinol 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 4 tablets (400 mg) by mouth daily",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Gout"
+            },
+            {
+              "drug_text": "potassium citrate 10 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 10,
+                "unit": "meq"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Calculus of ureter"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              93
+            ],
+            "hr": 75,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 91.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-10T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up after ED / observation",
+              "date": "2026-02-10T09:55",
+              "author": "PCP",
+              "body": "Seen in the ED 1/31 for L renal colic, observation overnight, passed a 4 mm stone 2/1. Analysis: 100% uric acid.\nFeels completely fine. No flank pain, no blood in urine, no fever. Stopped tamsulosin yesterday.\nAdmits he eats red meat or shellfish most days and doesn't drink much water on shift. Gout: no flares.\nMeds: lisinopril 10, allopurinol 300. NKDA.\n\nExam: BP above goal. No CVA tenderness. Abd soft, NT.\nReviewed ED labs: Cr 1.4 (his baseline), uric acid 8.9, urine pH 5.0.\n\nA/P\n1. Uric acid ureteral stone, passed. Acidic urine and uric acid above goal both favor recurrence. Start potassium citrate 10 mEq BID to bring urine pH up; he'll check urine pH strips at home, aiming for 6-6.5. Fluids at least 2.5 L/day. Cut back red meat and seafood.\n2. Gout / hyperuricemia: increase allopurinol to 400 mg daily (100 mg tabs x4), target uric acid under 6.\n3. HTN: on lisinopril with new potassium citrate, will check potassium and creatinine in 3 months.\n4. Lead poisoning, stable.\nRTC 3 months with uric acid, BMP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "pharmacy",
+          "start": "2026-02-12T11:40",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Prior authorization",
+              "date": "2026-02-12T11:40",
+              "author": "MA",
+              "body": "Pharmacy reports insurer needs prior authorization for potassium citrate ER. Submitted with diagnosis of uric acid ureteral stone and urine pH 5.0. Approved same afternoon for 12 months. Pharmacy notified; allopurinol 100 mg tabs filled without issue."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "portal_message",
+          "start": "2026-03-04T18:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urine strips",
+              "date": "2026-03-04T18:50",
+              "author": "patient",
+              "body": "Doing the pH strips in the morning. Mostly 6.0, a couple 6.5. Water bottle at work now. Taking the 4 small allopurinols, no issues. That ok?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urine strips",
+              "date": "2026-03-05T07:40",
+              "author": "PCP",
+              "body": "That's right where we want it. Keep going and we'll check blood work in May."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "office_visit",
+          "start": "2026-05-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3 month follow-up, uric acid, potassium",
+          "vitals": {
+            "bp": [
+              144,
+              89
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 92.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-11T07:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 66
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-11T07:20",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 6.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-05-13T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-11T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-05-13T16:00",
+              "author": "PCP",
+              "body": "3 mo f/u after uric acid stone.\nNo further colic or hematuria. Urine pH 6-6.5 at home. Drinking 2.5-3 L. Fewer steaks; still likes seafood. No gout.\nMeds: lisinopril 10, allopurinol 400 (100 x4), potassium citrate 10 mEq BID. NKDA.\nLabs 5/11: uric acid 6.4, K 4.6, Cr 1.3.\nExam: BP above goal. No edema.\nA/P: Uric acid stone, no recurrence on potassium citrate. K fine with lisinopril. Uric acid improving, near goal on 400 mg. Continue all. HTN unchanged. Recheck in 3 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatinine": 1.3,
+              "Potassium": 4.6,
+              "Uric Acid": 6.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-14a",
+          "kind": "portal_message",
+          "start": "2026-05-14T07:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2026-05-14T07:35",
+              "author": "PCP",
+              "body": "As we discussed yesterday, uric acid 6.4 and potassium 4.6 are both fine. See you in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "telephone",
+          "start": "2026-07-29T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment reminder",
+              "date": "2026-07-29T10:20",
+              "author": "front desk",
+              "body": "Reminder sent for 8/5 follow-up. Pt confirmed, asked whether to fast; told not needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "office_visit",
+          "start": "2026-08-05T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up gout, kidney stone, HTN",
+          "vitals": {
+            "bp": [
+              143,
+              85
+            ],
+            "hr": 79,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 92.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-05T08:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.33
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 64
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-05T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-05T08:50",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 5.8,
+                  "resulted": "2026-08-06T09:00"
+                },
+                {
+                  "test": "Lead",
+                  "value": 8,
+                  "resulted": "2026-08-07T14:30"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-08-05T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-05T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-08-05T08:55",
+              "author": "PCP",
+              "body": "Follow-up, turning 53 this week.\nNo kidney stone symptoms since February. Urine pH strips 6.0-6.5. No gout flares. Riding a lot this summer and carrying extra water. Toes fine except in the cold.\nMeds: lisinopril 10 mg daily, allopurinol 400 mg daily, potassium citrate 10 mEq twice daily. NKDA.\nHome BP log averages ~140/88.\n\nExam: BP above goal, similar on recheck. Heart RRR. Lungs clear. Abd soft. No CVA tenderness. No edema. No tophi.\n\nA/P\n1. Uric acid nephrolithiasis history: no recurrence. Continue potassium citrate and fluids.\n2. Gout: allopurinol 400, uric acid today.\n3. HTN: continue lisinopril 10.\n4. Lead poisoning: blood lead with today's draw.\nBMP, CBC, uric acid, lead. Physical in the fall."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Lead": 8,
+              "Uric Acid": 5.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "portal_message",
+          "start": "2026-08-07T16:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2026-08-07T16:10",
+              "author": "PCP",
+              "body": "All back. Uric acid 5.8, finally under 6. Lead 8. Potassium, kidney function and blood count all steady. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "portal_message",
+          "start": "2026-08-19T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2026-08-19T21:05",
+              "author": "patient",
+              "body": "Can I get a refill on the potassium citrate? Pharmacy says no refills left. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2026-08-20T09:15",
+              "author": "MA",
+              "body": "Sent 90 days with 3 refills to your pharmacy, approved by the doctor."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Calculus of ureter|N20.1": {
+        "code": "N20.1",
+        "display": "Calculus of ureter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lead poisoning|T56.0X1A": {
+        "code": "T56.0X1A",
+        "display": "Toxic effect of lead and its compounds, accidental (unintentional), initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Noise-induced hearing loss, bilateral|H83.3X3": {
+        "code": "H83.3X3",
+        "display": "Noise effects on inner ear, bilateral",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "potassium citrate 10 MEQ Extended Release Oral Tablet": {
+        "code": "199381",
+        "display": "potassium citrate 10 MEQ Extended Release Oral Tablet",
+        "ingredient": "potassium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "succimer 100 MG Oral Capsule": {
+        "code": "198227",
+        "display": "succimer 100 MG Oral Capsule",
+        "ingredient": "succimer",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Peripheral blood smear": {
+        "code": "18314-5",
+        "display": "Morphology [Interpretation] in Blood Narrative",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stone analysis": {
+        "code": "9795-6",
+        "display": "Composition in Stone",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT abdomen and pelvis without contrast": {
+        "code": "36952-0",
+        "display": "CT Abdomen and Pelvis WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

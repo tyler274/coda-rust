@@ -1,0 +1,214 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002542",
+      "given": "Malik",
+      "family": "Hughes",
+      "birth_date": "1990-04-13",
+      "address_line": "58 Linden St Apt 2",
+      "phone": "+1-978-555-0167",
+      "email": "malik.hughes@example.test",
+      "marital_status": "single",
+      "summary": "36-year-old logistics coordinator with perinatally acquired HIV followed at an outside ID clinic and genital HSV-2 on suppression. A 2023 adherence lapse brought an unsuppressed viral load and HIV-associated thrombocytopenia that recovered with adherence; later primary syphilis (2025) and chlamydial epididymitis (2026), both treated.",
+      "events": [
+        {
+          "id": "2021-05-24a",
+          "kind": "telephone",
+          "start": "2021-05-24T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Inquiry", "author": "front desk", "date": "2021-05-24T10:12", "body": "Caller wants to transfer primary care here. Says his old PCP's office stopped taking his plan. Has Medicaid, verified active. Gets HIV care at an outside ID clinic and wants to keep that. Booked new patient appt 6/8 at 9:00. Records release forms emailed for prior PCP and the ID clinic; he will sign and send back."}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "establish_care",
+          "start": "2021-06-08T09:00",
+          "end": "2021-06-08T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {"label": "Human immunodeficiency virus [HIV] disease", "icd10": "B20", "action": "diagnosed", "onset": "1990-04-13", "note": "Perinatally acquired; HIV care at outside ID clinic"},
+            {"label": "Genital herpes simplex virus type 2 infection", "icd10": "A60.00", "action": "diagnosed", "note": "On daily suppression"}
+          ],
+          "medications": [
+            {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV, prescribed by infectious disease"},
+            {"drug_text": "valacyclovir 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HSV-2 suppression"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 82.1, "height_cm": 179.0, "labs": {"CD4 Count": 680}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social (1-2 drinks per week)"},
+            {"item": "Occupation", "value": "Logistics coordinator"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-08T09:55", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-08T09:55", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2021-06-08T09:55", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2021-06-08T09:55", "results": [{"test": "Urine Protein"}, {"test": "Urine Glucose"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-06-08T09:40"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2021-06-08T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-06-08T09:00"},
+            {"procedure": "Immunization administration", "performed": "2021-06-08T09:40"},
+            {"procedure": "Venipuncture", "performed": "2021-06-08T09:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-06-08T09:00", "body": "31M here to set up primary care. Transferring from a prior PCP office.\n\nHIV since birth (mother HIV+). Followed by an outside ID clinic every ~6 mo, on Biktarvy 1 tab daily, which ID prescribes. Per pt last viral load was undetectable and CD4 'in the 600s'. No OIs that he knows of. Also genital HSV-2, on valacyclovir 500 daily for suppression for years; rare breakthrough, none recently.\n\nPSH: circumcised as a newborn, nothing else.\nMeds: Biktarvy daily, valacyclovir 500 mg daily.\nAllergies: none to meds.\nFH: mother HIV+. Father - doesn't know his history. Maternal grandmother with type 2 DM.\nSH: works as a logistics coordinator for a distribution company. Never smoked. A drink or two on weekends. No IV or other drug use. Single, sexually active, more than one partner; says he uses condoms.\nCOVID: two Pfizer doses this spring at a pharmacy.\n\nROS: negative except as above.\nExam: well appearing. HEENT unremarkable, no thrush. No cervical/axillary nodes. Heart RRR no murmur. Lungs clear. Abd soft, no HSM. Skin without rash. GU deferred.\nPHQ-2 0.\n\nA/P\n1. HIV, perinatal, stable per report - continue care with ID. Records requested. Will keep copies of their labs here.\n2. Genital HSV-2 - continue valacyclovir; I can handle refills.\n3. Health maintenance - PCV20 and first MenACWY today (both recommended with HIV). Second MenACWY in 8 wk, nurse visit. Baseline CMP, CBC, lipids, UA.\nFollow up yearly for physical, sooner prn."}
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2021-06-10T16:20", "body": "Hi Malik - your kidney and liver tests, blood counts, cholesterol and urine all came back normal. Nice to have a baseline on file here. We'll see you in August for the second meningitis shot."}
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "outside_records",
+          "start": "2021-06-21T11:05",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-30T14:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T14:00"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2021-04-27T08:40", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records From Prior PCP and ID Clinic", "author": "MA", "date": "2021-06-21T11:05", "body": "Received 38 pages by fax, prior primary care office plus the outside ID clinic.\n\nPrior PCP: routine visits, problem list HIV (perinatal) and genital HSV-2. Allergies NKDA. COVID mRNA doses x2 spring 2021 entered from the pharmacy record. No other screening due at his age.\n\nID clinic: most recent visit April 2021. HIV-1 RNA not detected, CD4 in the normal range, on bictegravir/FTC/TAF daily with good adherence documented. Plan: q6 month follow-up with labs.\n\nAbstracted into chart. Forwarded to PCP."}
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "nurse_visit",
+          "start": "2021-08-10T15:30",
+          "reason": "MenACWY dose 2",
+          "immunizations": [{"vaccine": "Meningococcal conjugate MenACWY", "date": "2021-08-10T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-08-10T15:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunization", "author": "RN", "date": "2021-08-10T15:30", "body": "In for 2nd MenACWY. No problems after the first one. Given 0.5 mL IM L deltoid, VIS reviewed. Tolerated well, left after 15 min. Series complete; booster due in 5 years."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T17:10",
+          "reason": "flu and COVID booster",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T17:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-19T17:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T17:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "RN", "date": "2021-10-19T17:10", "body": "After-work slot. Flu vaccine R deltoid, Pfizer booster L deltoid. Feels well, no fever. Observed 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "specialist_visit",
+          "start": "2021-11-16T10:00",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2021-11-16T10:40", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2021-11-19T09:30", "body": "OUTSIDE INFECTIOUS DISEASE CLINIC - Visit 11/16/2021\nRe: Malik Hughes\n\nSix-month visit for perinatally acquired HIV. Doing well, no missed doses he can think of. No fevers, weight steady. HSV quiet on valacyclovir.\nAllergies: NKDA.\nMeds: bictegravir/emtricitabine/TAF 1 tab daily; valacyclovir 500 mg daily.\nExam unremarkable, no oral lesions, no adenopathy.\nLabs: HIV-1 RNA not detected. CD4 stable.\nPlan: continue current regimen, return in 6 months. Thank you for sharing his care."}
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "portal_message",
+          "start": "2022-03-09T21:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill Request", "author": "patient", "date": "2022-03-09T21:14", "body": "Hey, can I get a refill on the valacyclovir? Down to like 5 pills. Same pharmacy. Thanks"},
+            {"type": "Patient Message", "title": "RE: Refill Request", "author": "MA", "date": "2022-03-10T09:02", "body": "Sent to your pharmacy, 90 days with 3 refills."}
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-05-17T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-17T09:10", "results": [{"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-05-17T09:10", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-05-17T08:30"},
+            {"procedure": "Venipuncture", "performed": "2022-05-17T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-05-17T08:30", "body": "Annual exam. No concerns. Last ID visit in Nov was fine, next one is June. Taking Biktarvy and valacyclovir daily, no HSV outbreaks this year.\nSH unchanged. Long shifts at the warehouse office lately, sleeping ok. Never smoker, 1-2 drinks/wk.\nPHQ-2: 0.\nExam: NAD. Oropharynx clear. Neck supple, no nodes. Heart regular, no murmur. Lungs clear. Abd benign. Skin clear. Ext normal.\n\nA/P: healthy 32M with well-controlled HIV per ID.\n- CMP, CBC, lipids today.\n- Vaccines: flu/COVID this fall.\n- Safer sex reviewed, he gets STI screens through ID.\nRTC 1 yr."},
+            {"type": "Result Note", "title": "Annual Labs Reviewed", "author": "PCP", "date": "2022-05-19T12:40", "body": "CMP, CBC, lipids normal. Pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "specialist_visit",
+          "start": "2022-06-14T13:20",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2022-06-14T14:00", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"},
+              {"test": "Rapid Plasma Reagin", "text": "Non-reactive"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2022-06-20T10:15", "body": "Outside ID clinic, seen 6/14/22.\n\nHIV, acquired perinatally, on BIC/FTC/TAF. Reports taking it every day. No new symptoms. No new partners since his last visit per his report.\nNKDA. Meds unchanged.\nExam: well, no lymphadenopathy, no oral candidiasis, skin clear.\nViral load remains undetectable; CD4 holding steady. RPR non-reactive.\nContinue regimen. Next visit December."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:45",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T16:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T16:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-18T16:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "RN", "date": "2022-10-18T16:45", "body": "Flu (L arm) and Pfizer bivalent booster (R arm). Afebrile, feels fine. No reaction during observation. Pt reminded about his ID appt in December."}
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "specialist_visit",
+          "start": "2022-12-06T09:40",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up",
+          "labs": [
+            {"panel": null, "collected": "2022-12-06T10:15", "results": [
+              {"test": "HIV-1 RNA Viral Load", "text": "Not detected (<20 copies/mL)"},
+              {"test": "CD4 Count"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2022-12-12T14:00", "body": "INFECTIOUS DISEASE - outside clinic letter\nDate of visit: 12/06/2022\n\nRoutine HIV visit. He feels well. Says work has been hectic with holiday shipping. Adherence reported as good, though he admits a couple of late doses.\nAllergies: none known.\nMedications: bictegravir/emtricitabine/tenofovir alafenamide daily, valacyclovir 500 mg daily.\nExam: normal.\nResults: HIV RNA undetectable. CD4 stable.\nAssessment/plan: virologically suppressed. Continue. Return in about 3 months for routine check."}
+          ]
+        }
+      ]
+    }
+  ]
+}

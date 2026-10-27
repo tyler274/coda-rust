@@ -1,0 +1,671 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002790",
+      "events": [
+        {
+          "id": "2024-08-21a",
+          "kind": "annual_physical",
+          "start": "2024-08-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-21T09:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-08-21T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-21T09:40",
+              "body": "Yearly visit. She turns 45 next month. Says she is fine, a bit tired from summer curriculum work but nothing she wants looked into. No meds.\n\nScreens: PHQ-2 zero.\n\nExam: BP and weight in her usual range. Neck without nodes. Lungs clear, heart regular without murmur. Abdomen soft, no masses. No edema. Normal affect.\n\nPlan:\n- Colorectal screening is due at 45. We talked through colonoscopy vs stool testing; she prefers the FIT. Kit handed to her, to do after her birthday.\n- Lipids and CMP today.\n- Mammogram order renewed for winter.\n- Vaccines in October."
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening, average risk"
+            },
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine breast cancer screening"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T13:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholesterol and Chemistry",
+              "author": "PCP",
+              "date": "2024-08-22T13:15",
+              "body": "Cholesterol numbers are in a good range and the chemistry panel is normal. Recheck lipids in a year or two."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "lab_only",
+          "start": "2024-09-30T11:05",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-27T07:00",
+              "resulted": "2024-09-30T11:05",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-09-30T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT Result",
+              "author": "PCP",
+              "date": "2024-09-30T12:40",
+              "body": "Stool FIT negative. Portal note sent: repeat the kit in one year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "nurse_visit",
+          "start": "2024-10-16T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-16T15:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-16T15:36"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T15:34"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2024-10-16T15:50",
+              "body": "Flu (2024-25) left deltoid, COVID 2024-25 right deltoid. Well today. Mentions she has felt run down for a few months; advised to book a visit with the doctor for that rather than wait for her physical. She will."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "office_visit",
+          "start": "2024-11-18T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, bloating, irregular bowels",
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9,
+              "Tissue Transglutaminase IgA": 1.1,
+              "C Reactive Protein": 0.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-18T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Eosinophils %"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-18T16:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-11-18T16:20",
+              "results": [
+                {
+                  "test": "Ferritin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-18T16:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA"
+                },
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-18T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-18T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "bloating and alternating bowel habit with fatigue"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-11-18T16:30",
+              "body": "S: Since roughly June she has been dragging. Tired by midafternoon, foggy, hard to keep up with grading. Belly bloats on and off, worse later in the day. Bowels have gone irregular: a few days constipated, then loose for a day or two, back and forth. No blood, no black stool. Weight steady, eating okay. No fevers. Periods regular. Took on more at work this year and admits it has been stressful.\n\nO: Vitals as charted, afebrile. Looks tired but well. Thyroid not enlarged, no nodes. Heart and lungs normal. Abdomen soft, not distended, nontender today, normal bowel sounds, no masses or organomegaly.\n\nA/P: Fatigue with bloating and alternating bowel habit, ~5 months. No alarm features and FIT was negative in September. Checking CBC with diff, CMP, TSH, ferritin, celiac serology and CRP today. She would like to see GI regardless of results to sort out the bowel piece; referral placed. Will message results."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "portal_message",
+          "start": "2024-11-20T08:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results From Monday",
+              "author": "PCP",
+              "date": "2024-11-20T08:10",
+              "body": "Julie, everything from Monday is normal: no anemia, iron stores fine, thyroid normal, celiac test negative, inflammation marker normal, kidney and liver tests fine. Reassuring. Keep the GI appointment."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results From Monday",
+              "author": "patient",
+              "date": "2024-11-20T20:22",
+              "body": "Good to hear. GI could fit me in December 16th, so I took it."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "office_visit",
+          "start": "2025-01-13T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after GI visit",
+          "conditions": [
+            {
+              "label": "Irritable bowel syndrome",
+              "action": "diagnosed",
+              "onset": "2024-12-16",
+              "note": "mixed bowel pattern; diagnosed by outside gastroenterology"
+            },
+            {
+              "label": "Situational anxiety",
+              "icd10": "F41.8",
+              "action": "diagnosed",
+              "onset": "2024-09-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "historical",
+              "sig": "Mix 17 g in 8 oz of liquid and drink once daily as needed for constipation",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "irritable bowel syndrome with constipation spells"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-13T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-13T16:35",
+              "body": "Here to go over the GI visit from 12/16. We have no letter yet; history from Julie.\n\nShe says the gastroenterologist examined her, reviewed our November labs, and called it irritable bowel syndrome, the mixed type. Started her on polyethylene glycol powder, one capful in a drink on days she is backed up. Using it maybe twice a week. Some diet suggestions. Bloating a little better.\n\nThe bigger piece today is stress. This year she took on extra duties at school on top of her classes and has been anxious most days since early fall, lying awake running through to-do lists, waking at 4. She thinks the tiredness and the gut flares follow the bad weeks. No panic attacks. Not depressed, still enjoys weekends. No thoughts of self-harm. No substance use.\n\nGAD-7 9, PHQ-9 6.\n\nExam: BP and weight stable. Appears a little tense, linear and engaged. Abdomen soft, nontender.\n\nAssessment:\n1. IBS, mixed, newly diagnosed by GI. PEG as needed added to her list per report.\n2. Situational anxiety with sleep disruption, tied to the job change.\n\nPlan: Talked through sleep habits, a fixed wind-down, caffeine before noon only. Offered a counseling referral; she would rather try on her own first and will tell me if it is not improving. No medication. Our staff will request the GI consult note. Check in by video in about three months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "telephone",
+          "start": "2025-01-14T09:15",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "author": "MA",
+              "date": "2025-01-14T09:15",
+              "body": "Called the outside GI office for the 12/16/24 consult note. They show it signed but never sent to us. Request faxed with patient's release; they said 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "imaging",
+          "start": "2025-01-22T16:10",
+          "reason": "screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-01-22T16:10",
+              "text": "Bilateral screening mammography with tomosynthesis. Prior studies from 2022 and 2023 reviewed. Scattered fibroglandular tissue. No suspicious mass, calcification or distortion. Stable appearance.",
+              "conclusion": "BI-RADS 1: negative. Return in one year."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-01-22T16:10"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "outside_records",
+          "start": "2025-01-29T14:00",
+          "reason": "gastroenterology consult note",
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2025-01-29T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2025-01-29T14:00",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP - NEW PATIENT CONSULTATION\nDate of service: 12/16/2024\nReferring: primary care\nReason: fatigue, bloating, change in bowel habit\n\nMs. Duffy is a 45-year-old teacher seen at the request of her primary care physician. For about half a year she has found ordinary days harder to get through: persistent tiredness, trouble thinking clearly, and bloating that comes and goes. Her stools swing between constipation and diarrhea; the amount passed is not changed. For several weeks she has felt full in the lower abdomen, a little better after a bowel movement, and needs to rest after light exertion. No meaningful weight loss, appetite largely preserved though she is not hungry first thing in the morning. She connects all of this to stress since her job responsibilities changed, and reports anxiety and poor sleep.\n\nPast history: cesarean section at 32. No chronic illness.\nMedications: none.\nAllergies: NKDA.\nFamily history: maternal aunt with papillary thyroid cancer; father hypertension; mother osteoporosis.\nSocial: high school teacher, never smoker, no alcohol.\n\nExamination: Abdomen mildly distended with slight tenderness across both lower quadrants. No palpable mass, no guarding or rebound.\n\nData: Laboratory testing from her PCP in November is normal, including CBC, metabolic panel, TSH, ferritin, celiac serology and CRP. FIT negative 9/2024.\n\nImpression: Irritable bowel syndrome, mixed subtype, meeting symptom criteria, with no alarm features and normal laboratory evaluation. Stress and sleep disruption likely contributing.\n\nRecommendations:\n1. Polyethylene glycol 3350, 17 g in liquid once daily as needed for constipation.\n2. Soluble fiber, regular meals, trial of a reduced fermentable carbohydrate diet with handout.\n3. Address stress and sleep with her PCP.\n4. No endoscopic evaluation needed at this time. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-16T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up anxiety and IBS",
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-04-16T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Follow-up",
+              "author": "PCP",
+              "date": "2025-04-16T16:25",
+              "body": "Video from her kitchen after school.\n\nAnxiety: better. She dropped one of the extra committees and has kept the evening routine. Asleep by 10:30 most nights, still the odd early waking. GAD-7 5 today (9 in January). Does not want counseling or medicine.\n\nIBS: fewer flares since cutting back on some trigger foods and adding fiber. Uses the PEG a few times a month. No bleeding, weight stable by her home scale.\n\nAssessment: situational anxiety improving; IBS-M controlled.\nPlan: continue current approach. Physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "annual_physical",
+          "start": "2025-08-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2025-08-19T08:05",
+              "body": "Pt cancelled 8/20 physical, pulled into building meetings before classes start. First opening that works with her schedule is the Friday school breaks for the holidays; booked 12/19 at 10:00. Flu/COVID to be done separately in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "nurse_visit",
+          "start": "2025-10-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-22T15:44"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-22T15:46"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-22T15:44"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2025-10-22T16:00",
+              "body": "2025-26 flu vaccine L deltoid and 2025-26 COVID vaccine R deltoid. No acute illness, temp normal. Fine after 15 minutes of observation. Reminded her of the December physical."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "annual_physical",
+          "start": "2025-12-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "GAD-7 total score",
+              "value": 4
+            },
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-19T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-19T10:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-12-19T10:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-12-19T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-19T10:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine breast cancer screening"
+            },
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening, average risk"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-12-19T10:45",
+              "body": "Physical, moved from August. First day of break and she sounds relieved.\n\nInterval: IBS quiet most weeks; PEG maybe twice a month. Gut flares still track with busy stretches. Stress much more manageable this fall, sleeping through most nights. No new symptoms. NKDA. Only PEG as needed.\n\nGAD-7 4, PHQ-9 3.\n\nExam: Vitals and weight as charted, unchanged. HEENT clear. Neck supple, no cervical adenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. No edema. Calm, good eye contact.\n\nA/P:\n- Preventive: CBC, CMP, lipids today. Mammogram order for January. FIT is due again; new kit given. Pap/HPV due next year, will do at next physical. Vaccines current for the season.\n- IBS, mixed: stable on PEG as needed.\n- Situational anxiety: much improved, no treatment needed.\nNext physical in about a year; reach me by message for anything sooner."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "portal_message",
+          "start": "2025-12-22T09:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results From Your Physical",
+              "author": "PCP",
+              "date": "2025-12-22T09:30",
+              "body": "Your blood count, chemistry and cholesterol all look good. Enjoy the break. Don't forget the stool kit when you get a chance."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

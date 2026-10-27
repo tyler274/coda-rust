@@ -1,0 +1,300 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002090",
+      "events": [
+        {
+          "id": "2024-09-05a",
+          "kind": "office_visit",
+          "start": "2024-09-05T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, pneumonia",
+          "state": {"weight_kg": 59.0},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2024-09-05T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2024-09-05T10:50",
+             "body": "TRANSITIONAL CARE VISIT\n\nAdmitted 8/22 to 8/30 at the regional hospital. Our records: short ED note and the pharmacy fill history; discharge summary requested, not yet received. From Timothy: he was on oxygen for several days, they did a sputum test after a breathing treatment and told him it was PJP again. Treated with high-dose TMP-SMX and a prednisone taper; both run through 9/11, then back to one TMP-SMX DS three times a week. The hospital restarted his HIV pill before he left. ID visit set for October.\n\nNow: breathing much better, mild cough, no fever. Walking to the store without stopping. Appetite poor, weight 59 kg. Mouth no longer sore.\n\nMeds reconciled with his bottles: bictegravir/FTC/TAF daily; TMP-SMX DS 2 tabs TID (through 9/11) then DS MWF; prednisone taper (through 9/11); fluconazole prn; acetaminophen prn.\n\nExam: thin, no distress. Speaks full sentences. Oropharynx clear. Lungs with a few faint basilar crackles, no wheeze. Heart regular.\n\nA/P\n1. PJP pneumonia, recovering - finish treatment course and taper exactly as written, then back to prophylaxis dose. Return precautions reviewed.\n2. HIV - ART restarted inpatient; ID in October.\n3. Weight loss - calorie-dense foods; housing program kitchen has supplements.\nRTC 3-4 weeks."}
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "office_visit",
+          "start": "2024-10-01T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, pneumonia",
+          "state": {"weight_kg": 61.0, "labs": {"Hemoglobin": 11.2}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Pneumocystis jirovecii pneumonia", "icd10": "B59", "action": "resolved"},
+            {"label": "Oral candidiasis", "icd10": "B37.0", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-01T09:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-01T09:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-01T09:50"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-01T09:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-01T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Follow-up", "author": "PCP", "date": "2024-10-01T10:10",
+             "body": "Finished the high-dose TMP-SMX and the prednisone on 9/11. Back on TMP-SMX DS MWF and says he takes it. Breathing back to normal, no cough. Weight up 2 kg.\n\nHe tells me he stopped the HIV pill about a week after he got home - it made him feel sick and he \"couldn't do it\" on top of the other pills. Has the October ID appointment and says he'll tell them.\n\nExam: oropharynx clear. Lungs clear. Heart regular.\n\nA/P\n1. PJP pneumonia - treated, resolved. Thrush resolved.\n2. HIV off ART again (side effects). Told him plainly this is how he ended up in the hospital, twice. Asked him to bring the side effects to ID rather than stopping - there may be things they can adjust. Kept ART on his list; ID prescribes.\n3. TMP-SMX prophylaxis - continue; CMP and CBC today after the high-dose course.\n4. Flu vaccine today.\nRTC 2-3 months."}
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "portal_message",
+          "start": "2024-10-03T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs after the pneumonia", "author": "PCP", "date": "2024-10-03T12:15",
+             "body": "Potassium and kidney function are normal after the strong TMP-SMX course - good. Hemoglobin still around 11, about where it was. Keep taking the 3-times-a-week tablet. And please keep the ID appointment this month."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-12-10T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2024-12-10T15:25",
+             "body": "Video. Missed the October ID visit (was working a job out of town that week), rebooked for February. Still not taking ART. Takes TMP-SMX MWF. Breathing fine. Oncology saw him in November, spots \"the same.\" Still in the transitional program; new roommate.\n\nA/P\n1. HIV off ART - he knows the risk; not ready to restart until he talks to ID about the side effects. Asked him to keep February.\n2. Prophylaxis - continue.\nIn person in February."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {"weight_kg": 62.5},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-11T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Follow-up", "author": "PCP", "date": "2025-02-11T10:20",
+             "body": "Feels ok. Weight slowly coming up. Saw ID last week; they talked through options, he said he'd \"think about it\" and did not restart. Taking TMP-SMX MWF faithfully - \"that one I don't mess with after last summer.\" No cough, fever, swallowing trouble.\n\nExam: thin. Violaceous plaques both shins and palate, no new ones that I can see. No thrush. Lungs clear.\n\nA/P\n1. HIV off ART - same conversation; respect his choice today, door open. ID following.\n2. Kaposi sarcoma - stable on exam; oncology following.\n3. Prophylaxis - continue.\nPhysical in May."}
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "telephone",
+          "start": "2025-03-18T11:00",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request - TMP-SMX", "author": "RN", "date": "2025-03-18T11:10",
+             "body": "Pharmacy request for TMP-SMX DS three times weekly; ID prescription ran out of refills. PCP sent 90-day supply with 1 refill. Patient notified."}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "annual_physical",
+          "start": "2025-05-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 63.0, "labs": {"Hemoglobin": 12.4}},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-13T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-13T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-05-13T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-05-13T09:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Housing status", "value": "Transitional housing"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-05-13T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-05-13T09:25",
+             "body": "PHYSICAL\n\nWorking regularly with a framing crew this spring. Eating better. Still off ART; TMP-SMX MWF. Five years without cocaine or meth. Has a girlfriend now, sees her most weekends.\n\nROS: no fevers, cough, dyspnea, dysphagia, diarrhea, headaches. PHQ-9 4.\n\nExam: thin, well-appearing. Palate and shin plaques unchanged. No thrush. No nodes. Heart RRR, lungs clear. Abd soft, no HSM. Neuro nonfocal.\n\nA/P\n1. Health maintenance - CMP, CBC, lipids, A1c. Colon screening due at 45 (2027). Flu in fall.\n2. HIV off ART - asked again; he says \"maybe after the summer.\" Safer sex reviewed.\n3. Kaposi sarcoma - stable; oncology.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "portal_message",
+          "start": "2025-05-16T11:45",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2025-05-16T11:45",
+             "body": "Hi Timothy, labs look reasonable. Hemoglobin a bit better than last fall. Kidneys, liver, sugar and cholesterol fine."}
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "ed_visit",
+          "start": "2025-08-20T21:15",
+          "service": "Emergency Medicine",
+          "reason": "Seizure",
+          "conditions": [{"label": "Seizure", "icd10": "R56.9", "action": "diagnosed", "onset": "2025-08-20"}],
+          "labs": [{"panel": null, "collected": "2025-08-20T21:45", "results": [{"test": "CD4 Count", "value": 35}]}],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-08-20T21:15"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2025-08-28T09:00",
+             "body": "REGIONAL ED - PHYSICIAN NOTE (copy to PCP)\nArrival 8/20/2025 21:15\n\nBrought in by his partner, who saw him have a generalized seizure at home. HIV, prior PJP, Kaposi sarcoma. He has been off antiretrovirals for more than a year, says because of side effects; has kept taking TMP-SMX prophylaxis.\n\nPostictal on arrival, improving. No focal deficit documented on reassessment.\n\nCD4 35/uL.\nCT head: ring-enhancing lesion.\n\nImpression: first seizure; ring-enhancing brain lesion in advanced HIV.\n\nDisposition: loaded with levetiracetam; admitted to medicine with neurology and ID consultation."}
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "telephone",
+          "start": "2025-08-21T10:30",
+          "reason": "Patient hospitalized",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from Partner", "author": "RN", "date": "2025-08-21T10:40",
+             "body": "Patient's partner called (patient on speaker, gave verbal ok to talk with her). He had a seizure last night and is admitted at the regional hospital; they found something on the head CT and are doing more tests. Partner wanted us to know. PCP notified. Asked them to call when he is discharged so we can see him within the week."}
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "office_visit",
+          "start": "2025-09-16T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "state": {"weight_kg": 62.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [{"label": "Primary CNS lymphoma, diffuse large B-cell type (non-Hodgkin lymphoma)", "icd10": "C83.390", "action": "diagnosed", "onset": "2025-08-29", "note": "Stereotactic biopsy during August 2025 admission"}],
+          "medications": [
+            {"drug": "levetiracetam 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Seizure; started in hospital"},
+            {"drug_text": "dexamethasone 4 MG Oral Tablet", "action": "historical", "sig": "Taper per hospital/oncology instructions", "dose": {"value": 4, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Brain lymphoma; hospital prescriber"}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-09-16T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-09-16T11:40",
+             "body": "TRANSITIONAL CARE VISIT\n\nHere with his partner. Hospitalized 8/20 to 9/5. We have only the ED note; the rest is their account plus the discharge medication sheet he brought.\n\nAfter the seizure the CT showed a lesion; MRI with contrast showed one enhancing spot. Toxoplasma blood test was negative (he had been taking his TMP-SMX). He had a needle biopsy through the skull on 8/29: lymphoma of the brain, large B-cell type. Oncology started chemotherapy in the hospital - high-dose methotrexate based, given every 2 weeks as an inpatient. Neurology started levetiracetam. On a dexamethasone taper. ART restarted in hospital, and this time he says he means it: \"I don't want to die from this.\"\n\nNo seizures since. Mild headache the first week, gone. Tired after chemo.\n\nMeds (discharge sheet): bictegravir/FTC/TAF daily; TMP-SMX DS MWF; levetiracetam 500 mg BID; dexamethasone taper; fluconazole prn; acetaminophen prn. Chemotherapy given by oncology.\n\nExam: thin, alert, oriented. Speech normal. CN intact, strength and gait normal. Healed small scalp incision. Palate and shin plaques unchanged. Lungs clear.\n\nA/P\n1. Primary CNS lymphoma (non-Hodgkin, diffuse large B-cell) - oncology leads; requested their notes.\n2. Seizure - levetiracetam BID; no driving (he doesn't drive), no working at heights on the crew until cleared - he says he is out of work during treatment anyway.\n3. HIV - ART restarted; ID follow-up scheduled.\n4. Kaposi sarcoma - unchanged.\nRTC 6-8 weeks; call with any seizure, confusion, fever."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "outside_records",
+          "start": "2025-10-07T14:00",
+          "reason": "Oncology records",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Progress Note", "author": "oncology", "date": "2025-10-07T14:00",
+             "body": "OUTSIDE HEMATOLOGY/ONCOLOGY - PROGRESS NOTE (copy to PCP, received by fax)\n\nDiagnosis: primary CNS lymphoma, diffuse large B-cell type, solitary lesion, biopsy 8/29/2025; background HIV with CD4 35 at diagnosis.\n\nTreatment: high-dose methotrexate-based induction, cycles every 14 days, given inpatient; tolerating with fatigue. Dexamethasone being tapered off.\n\nPlan: continue induction; continue ART (restarted 9/2025), TMP-SMX prophylaxis and levetiracetam. Repeat brain MRI after induction."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T13:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-14T13:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2025-10-14T13:35",
+             "body": "Inactivated flu vaccine IM left deltoid; oncology ok'd timing between cycles. Afebrile. No seizures since discharge per patient. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill Request - Levetiracetam", "author": "RN", "date": "2025-11-18T09:45",
+             "body": "Patient down to 4 days of levetiracetam; hospital prescription had no refills. PCP sent levetiracetam 500 mg BID, 90-day supply. Pharmacy confirmed it will be ready this afternoon. He says chemo is going ok, \"two more rounds.\""}
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "office_visit",
+          "start": "2025-12-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {"weight_kg": 64.0, "labs": {"Hemoglobin": 11.0}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-22T09:45", "resulted": "2025-12-23T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-22T09:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2025-12-22T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Follow-up", "author": "PCP", "date": "2025-12-22T09:50",
+             "body": "Doing better than I expected. Induction chemo almost done - last cycle scheduled for January, then oncology repeats the MRI. Off dexamethasone. No seizures on levetiracetam. Taking ART every day since September, organizer at his partner's place, and TMP-SMX MWF. ID saw him in November.\n\nTired after chemo weeks. Eating well; weight 64.\n\nExam: thin, alert. Speech and gait normal. Mouth: no thrush; palatal plaque unchanged. Shin plaques unchanged. Lungs clear. Heart regular.\n\nA/P\n1. Primary CNS lymphoma - finishing induction with oncology.\n2. Seizure - none since August; continue levetiracetam.\n3. HIV - adherent since September. Proud of him; told him so.\n4. Kaposi sarcoma - stable.\n5. CBC and CMP today (chemo and TMP-SMX).\nRTC after the January MRI, about 2-3 months."}
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "portal_message",
+          "start": "2025-12-23T15:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from Monday", "author": "PCP", "date": "2025-12-23T15:20",
+             "body": "Timothy - hemoglobin is around 11, expected with chemo. Kidney and liver tests are ok for the next methotrexate cycle; I've sent a copy to oncology. Happy holidays."}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T10:00",
+          "reason": "Refill",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Refill Authorization", "author": "RN", "date": "2026-02-10T10:20",
+             "body": "Pharmacy refill request for TMP-SMX DS three times weekly. Last PCP fill 3/2025; ID now prescribing per pharmacy profile, but no refills left. Authorized 90 days. Patient's follow-up visit after the January MRI not yet booked - message left asking him to call."}
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T18:40",
+          "reason": "Letter request",
+          "documents": [
+            {"type": "Patient Message", "title": "letter for housing", "author": "patient", "date": "2026-03-24T18:40",
+             "body": "hi its Tim. the housing place says i need a letter from my doctor that i have medical conditions so i can get on the priority list for an apartment. can you do that"},
+            {"type": "Letter", "title": "Letter of Medical Necessity - Housing", "author": "PCP", "date": "2026-03-26T12:00",
+             "body": "To the housing review committee:\n\nTimothy Cole has been a patient of this practice since 2019. He has serious chronic medical conditions that require frequent appointments with several specialists, daily medications, and treatment that leaves him vulnerable to infection. Stable, private housing with reliable access to a refrigerator, a bathroom and a phone is medically important for him. I support his application for priority placement.\n\nPlease contact our office with questions.\n\nPrimary Care Physician"},
+            {"type": "Patient Message", "title": "RE: letter for housing", "author": "front desk", "date": "2026-03-26T12:10",
+             "body": "Hi Tim, your letter is ready - signed copy at the front desk and a PDF attached here. Please also call to book your follow-up visit with the doctor; it's overdue."}
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "ed_visit",
+          "start": "2026-05-01T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Diarrhea",
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2026-05-11T08:45",
+             "body": "REGIONAL ED - PHYSICIAN NOTE (copy to PCP)\nArrival 5/1/2026 16:30\n\n43M with HIV, prior PJP and non-Hodgkin lymphoma. Six days of large-volume watery diarrhea with cramping and fatigue. No blood or mucus. Down 4 kg (9 lb) in a week. Ate raw vegetables at an outdoor picnic recently. No travel abroad, no recent antibiotics. Drinks bottled water at home. Reports he stopped his antiretrovirals a few months ago.\n\nT 38.0 C. Mildly dry. Abdomen soft and nontender.\n\nStool modified acid-fast stain: round oocysts, 4-6 microns.\n\nImpression: cryptosporidiosis with mild dehydration in advanced HIV.\n\nPlan: IV fluids, oral rehydration and supportive care; antiretroviral therapy restarted; ID follow-up arranged. Discharged home. PCP follow-up advised."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "telephone",
+          "start": "2026-05-12T11:15",
+          "reason": "ED follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ED Note Received - Outreach", "author": "RN", "date": "2026-05-12T11:25",
+             "body": "PCP reviewed ED note from 5/1 (cryptosporidiosis, ART restarted) and asked that he be seen. Called patient's cell, voicemail; left message with our number asking him to book a visit. Portal message sent as well."}
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "pharmacy",
+          "start": "2026-06-16T09:30",
+          "reason": "Refill",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Refill Request - Levetiracetam", "author": "RN", "date": "2026-06-16T09:45",
+             "body": "Pharmacy request for levetiracetam 500 mg BID. Last PCP visit 12/2025. PCP approved 30 days and asked for a visit before further refills. Message left for patient."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T09:00",
+          "reason": "Scheduling reminder",
+          "documents": [
+            {"type": "Patient Message", "title": "Time to schedule", "author": "front desk", "date": "2026-07-21T09:00",
+             "body": "Hi Timothy, the doctor would like to see you - it has been several months since your last visit and we received your ED records from May. Please call or reply here to pick a time."}
+          ]
+        }
+      ]
+    }
+  ]
+}

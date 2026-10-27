@@ -138,3 +138,8 @@ Guinea trip. No labs before the home saline order. Nobody comments on any of the
   care calls, a portal note in August 2026 about energy and refills.
 - **Exams and reports** state ordinary normal findings for what is not given above.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002118 on 2025-10-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

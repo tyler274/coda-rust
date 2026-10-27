@@ -68,3 +68,8 @@ One line per contact, date order, tagged with the build-req letter it rests on.
 - 2026-07-21 pharmacy: HCQ renewal routed to rheumatology (P)
 - 2026-08-18 portal: annual physical booked (P)
 - 2026-09-22 booked annual physical with flu vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00001819 on 2026-04-02. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

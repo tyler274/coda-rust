@@ -21,3 +21,8 @@
 - 2026-08-20 outside records: OB six-week postpartum visit 2026-08-17, BP 118/76, gestational hypertension resolved (A5)
 - 2026-08-21 portal: PCP note on future BP and lipid checks; schedules physical (P)
 - 2026-09-29 booked: annual physical (P)
+
+
+## Last seen
+
+The practice last saw MRN00001849 on 2024-09-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

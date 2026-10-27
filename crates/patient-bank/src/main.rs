@@ -2,6 +2,7 @@
 //!
 //! ```text
 //! cargo run -p patient-bank -- catalog [--roger-fixture DIR]
+//! cargo run -p patient-bank -- import --db PATH
 //! cargo run -p patient-bank -- brief|check|preview UNIT
 //! cargo run -p patient-bank -- build [--out DIR]
 //! cargo run -p patient-bank -- validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]
@@ -15,7 +16,7 @@ use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use patient_bank::{bank, catalog, paths, unit, validate};
+use patient_bank::{bank, catalog, import, paths, unit, validate};
 
 fn main() -> ExitCode {
     let args: Vec<String> = env::args().skip(1).collect();
@@ -41,6 +42,13 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
                 .path("--roger-fixture")
                 .unwrap_or_else(paths::roger_fixture);
             catalog::build(&roger)?
+        }
+        "import" => {
+            let o = Opts::parse(rest, &["--db"])?;
+            let db = o
+                .path("--db")
+                .ok_or("import needs --db, the synthetic_hospital benchmark_v1.3.db")?;
+            import::run(&db, &paths::patients_dir())?
         }
         "brief" | "check" | "preview" => {
             let o = Opts::parse(rest, &[])?;
@@ -127,6 +135,7 @@ fn usage() -> Failure {
 patient-bank runs the synthetic patient bank pipeline.
 
   patient-bank catalog [--roger-fixture DIR]
+  patient-bank import --db PATH
   patient-bank brief|check|preview UNIT
   patient-bank build [--out DIR]
   patient-bank validate [--bank DIR] [--schema PATH] [--jobs 8] [--report PATH]

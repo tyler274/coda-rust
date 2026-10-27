@@ -207,3 +207,8 @@ Allowed without listing, with ordinary normal results unless a level here says o
 - Booked visit after 2026-08-27: 2026-09-22, diabetes and coronary follow-up.
 
 No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002206 on 2026-06-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

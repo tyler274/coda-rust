@@ -1,0 +1,1200 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002218",
+   "given": "Edward",
+   "family": "Bennett",
+   "birth_date": "1952-01-28",
+   "address_line": "64 Bardwell Street",
+   "phone": "+1-860-555-0155",
+   "email": "edward.bennett@example.test",
+   "marital_status": "married",
+   "summary": "Retired math teacher with type 2 diabetes, hypertension and BPH who joins in 2021. Recurrent urinary retention after a hernia repair, a knee replacement and on its own, orthostatic hypotension on tamsulosin, hyperkalemia on sulfamethoxazole-trimethoprim with lisinopril, and a UTI-related delirium admission in 2025. Outside records reach the practice unevenly.",
+   "events": [
+    {
+     "id": "2021-06-02a",
+     "kind": "telephone",
+     "start": "2021-06-02T10:20",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New Patient Inquiry",
+       "author": "front desk",
+       "date": "2021-06-02T10:20",
+       "body": "Mr. Bennett phoned. Retired, lives in Belchertown, wants to transfer primary care here from the office he has used for years; a neighbor is a member. Explained membership, he signed up over the phone. New patient visit booked for next Tuesday morning, 60 min. Asked him to bring all his pill bottles and any recent lab printouts. Records release form emailed to edward.bennett@example.test."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-08a",
+     "kind": "establish_care",
+     "start": "2021-06-08T09:00",
+     "end": "2021-06-08T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "note": "longstanding, on metformin"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "note": "on lisinopril, controlled"
+      },
+      {
+       "label": "Primary osteoarthritis of right knee",
+       "action": "history",
+       "note": "followed by outside orthopedics"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "atorvastatin 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "primary prevention with diabetes"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       128,
+       80
+      ],
+      "weight_kg": 92.0,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin A1c": 7.0,
+       "Creatinine": 1.0,
+       "Low Density Lipoprotein": 86,
+       "Glucose": 136,
+       "Microalbumin/Creatinine Ratio": 12
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-06-08T10:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-06-08T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-06-08T10:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Total Cholesterol"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-06-08T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 drinks per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired high school mathematics teacher"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2021-06-08T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-06-08T10:05",
+       "body": "NEW PATIENT\n69 y/o retired high school math teacher transferring care. Married, lives with his wife in Belchertown.\n\nDIABETES: type 2 for many years, metformin 1000 twice a day, tolerates it. Checks sugars a few mornings a week, usually 120s-140s. No lows. No numbness or foot sores. Eye exam yearly with his optometrist.\nHYPERTENSION: lisinopril 10 daily, home cuff runs low 130s.\nSTATIN: atorvastatin 20, started by his old PCP for the diabetes. No muscle aches.\nRIGHT KNEE: arthritis, sees an outside orthopedic group, walks most days, says the knee is 'manageable for now.'\nGU: no urinary complaints today.\n\nPMH: as above. PSH: none.\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 20 mg daily.\nAllergies: none known to medications.\nFH: father type 2 diabetes, died of prostate cancer at 75. Mother hypertension. Older brother has an enlarged prostate.\nSH: never smoker. A beer or a glass of wine once or twice a week. Retired from teaching math.\n\nROS: negative except knee as above.\nEXAM: well appearing. BP and HR per flowsheet. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, nontender. Feet: skin intact, DP pulses 2+, monofilament normal both feet. Right knee crepitus, no effusion.\n\nA/P\n1. T2DM: continue metformin. A1c, CMP, urine albumin today.\n2. HTN: at goal, continue lisinopril.\n3. Statin: continue atorvastatin 20, lipids today.\n4. R knee OA: per ortho.\n5. Health maintenance: will get old records (colonoscopy, vaccines). Hep C screen today. PHQ-2 negative.\nFollow up after the records come in; AWV in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-10a",
+     "kind": "portal_message",
+     "start": "2021-06-10T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2021-06-10T16:40",
+       "body": "Edward, your bloodwork is back. A1c is right where we want it for you, kidney function and potassium are normal, cholesterol is in a good range on the atorvastatin, and the urine protein test is normal. Hepatitis C screen negative. No changes. I'll see you in the fall for your wellness visit."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "patient",
+       "date": "2021-06-10T19:02",
+       "body": "Thank you, good to hear. My old office never explained the numbers this clearly. Ed"
+      }
+     ]
+    },
+    {
+     "id": "2021-07-06a",
+     "kind": "outside_records",
+     "start": "2021-07-06T11:00",
+     "reason": "prior practice records",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2018-05-10T10:00"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-03-12T10:00"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-06-04T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-09T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-02T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records From Prior Primary Care Office",
+       "author": "outside primary care",
+       "date": "2021-07-06T11:00",
+       "body": "38 pages received by fax. Summary abstracted by MA:\n- Problem list: type 2 diabetes mellitus, essential hypertension, osteoarthritis right knee.\n- Medications: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 20 mg daily.\n- Allergies: NKDA.\n- Colonoscopy 2017: normal exam, no polyps; repeat interval 10 years.\n- Immunizations: Tdap 05/2018; recombinant zoster 03/2019 and 06/2019; COVID-19 Pfizer 02/2021 and 03/2021.\n- Last A1c on file 6.9 (11/2020).\nAbstracted into chart. Original filed under Media."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-17a",
+     "kind": "outside_records",
+     "start": "2021-08-17T14:00",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2021-08-17T14:00",
+       "body": "Optometry report to primary care.\nPatient: Edward Bennett. Exam performed 08/12/2021, dilated.\nVA 20/25 OD, 20/25 OS with correction.\nFundus: no diabetic retinopathy either eye. No macular edema.\nRecommend repeat dilated exam in 12 months.\nPatient allergies on file: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-21a",
+     "kind": "annual_physical",
+     "start": "2021-09-21T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-09-21T10:10"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-09-21T10:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2021-09-21T09:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-21T10:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-09-21T10:20",
+       "body": "ANNUAL WELLNESS VISIT - INITIAL\nHealth risk assessment reviewed with him. Independent in daily activities, still drives, does the grocery shopping. Walks 2 miles most mornings unless the knee complains. No falls this year. Hearing ok. Vision followed by optometry, no retinopathy in August.\nCognition: brief screen normal, sharp as ever (he corrected my arithmetic on the copay).\nMood: PHQ-2 0.\nAdvance directive: wife is his health care proxy, will bring a copy.\nScreening: colonoscopy 2017 normal per old records. Hep C done in June. Shingrix and Tdap up to date.\nVaccines today: high-dose flu L deltoid, PCV20 R deltoid. Tolerated.\nPlan: diabetes visit in December."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-12a",
+     "kind": "nurse_visit",
+     "start": "2021-10-12T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-12T11:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-12T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine Administration",
+       "author": "RN",
+       "date": "2021-10-12T11:25",
+       "body": "Pfizer booster given IM left deltoid. Lot and expiration in the immunization record. Screening questions negative. Observed 15 min, no reaction. Card updated."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-16a",
+     "kind": "office_visit",
+     "start": "2021-11-16T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "burning with urination",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed",
+       "onset": "2021-11-14"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cephalexin 500 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth four times daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "QID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2021-11-16T14:35",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive (2+)"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "value": 35
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Clarity",
+         "text": "Cloudy"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-11-16T14:35",
+       "resulted": "2021-11-18T09:10",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible: cephalexin, nitrofurantoin, ceftriaxone, trimethoprim-sulfamethoxazole. Resistant: ampicillin."
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-11-16T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Same-Day Visit: Dysuria",
+       "author": "PCP",
+       "date": "2021-11-16T14:55",
+       "body": "Texted this morning, seen same day.\nS: 2 days of burning when he urinates and going more often. No fever or chills, no flank pain, no blood he has noticed. First time for this. No discharge.\nO: afebrile, vitals per flowsheet. Abdomen soft, mild suprapubic discomfort to palpation, no CVA tenderness.\nUA dip: LE 2+, nitrite positive.\nA/P: cystitis in a man, so treating as a complicated UTI. Culture sent. Cephalexin 500 four times daily x7 days. Fluids. Call if fever, back pain, or not improving in 48 h. We'll call with the culture."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-18a",
+     "kind": "telephone",
+     "start": "2021-11-18T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Urine Culture Result",
+       "author": "RN",
+       "date": "2021-11-18T10:05",
+       "body": "Called pt with culture: E. coli, sensitive to the cephalexin he is on. He says the burning is already better. Reminded to finish all 7 days. PCP aware."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-29a",
+     "kind": "portal_message",
+     "start": "2021-11-29T08:15",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Finished antibiotic",
+       "author": "patient",
+       "date": "2021-11-29T08:15",
+       "body": "Finished the antibiotic last week and everything is back to normal. Thanks for fitting me in that day."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Finished antibiotic",
+       "author": "PCP",
+       "date": "2021-11-29T12:30",
+       "body": "Glad to hear it. No need to recheck unless symptoms come back."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "office_visit",
+     "start": "2021-12-14T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-12-14T08:45",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-12-14T08:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-12-14T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2021-12-14T09:10",
+       "body": "DM/HTN f/u.\nDoing fine. Fasting sugars 130s. No hypoglycemia. Taking all meds.\nMentions he has been getting up 2 or 3 times a night to urinate since around October, and goes more often in the day. No burning since the UTI. Thinks it might be the extra decaf in the evening.\nExam: BP/HR per flowsheet. Heart regular. Lungs clear. Feet intact.\nA/P\n- T2DM: A1c drawn today, continue metformin.\n- HTN: controlled, lisinopril.\n- Nocturia/frequency: cut evening fluids, watch for a couple of months; if it continues, examine and consider treatment.\nRTC 2 months."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c and BMP",
+       "author": "PCP",
+       "date": "2021-12-15T13:20",
+       "body": "A1c stable, BMP normal. Released to portal with a short note."
+      }
+     ]
+    },
+    {
+     "id": "2022-01-18a",
+     "kind": "pharmacy",
+     "start": "2022-01-18T09:30",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "90-Day Refills",
+       "author": "MA",
+       "date": "2022-01-18T09:30",
+       "body": "Pharmacy fax requesting 90-day supplies: metformin 1000 mg BID, lisinopril 10 mg daily, atorvastatin 20 mg daily. Last visit 12/14, labs current. Sent per protocol, 90 days with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "office_visit",
+     "start": "2022-02-08T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "urinary frequency and nocturia",
+     "medications": [
+      {
+       "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth daily, 30 minutes after the same meal each day",
+       "dose": {
+        "value": 0.4,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "lower urinary tract symptoms, suspected prostate enlargement"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-02-08T10:30",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Glucose",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-referral-2022",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "lower urinary tract symptoms, family history of prostate cancer"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-08T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit: Urinary Symptoms",
+       "author": "PCP",
+       "date": "2022-02-08T10:55",
+       "body": "Back about the urinary symptoms. Cutting fluids after dinner didn't help much.\nNow about 4 months of going every couple of hours, up 2-3x a night, slow to get started, and a weaker stream than he used to have. No pain, no blood, no fever. Brother has the same thing, and father died of prostate cancer, so he's anxious about that.\nExam: GU deferred to urology per his preference. Abdomen soft, no bladder palpable.\nUA dip clean today.\nA/P: LUTS, most likely prostate enlargement. Start tamsulosin 0.4 mg daily; counseled about lightheadedness when standing, especially the first few doses, and to take it after the same meal. Referral to urology for full evaluation including PSA given family history. RTC after urology."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-01a",
+     "kind": "portal_message",
+     "start": "2022-03-01T07:50",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Urology appointment",
+       "author": "patient",
+       "date": "2022-03-01T07:50",
+       "body": "Haven't heard from the urology office yet. Should I call them myself?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Urology appointment",
+       "author": "front desk",
+       "date": "2022-03-01T11:15",
+       "body": "Hi Mr. Bennett, we called them for you. The referral was received and they had you on a wait list; you are scheduled April 20 at 1:40. They will mail paperwork."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-20a",
+     "kind": "specialist_visit",
+     "start": "2022-04-20T13:40",
+     "service": "Urology",
+     "reason": "lower urinary tract symptoms",
+     "conditions": [
+      {
+       "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+       "action": "diagnosed",
+       "onset": "2021-10-15"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       135,
+       85
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-04-20T13:50",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "value": 0
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-20T14:20",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.0,
+         "loinc": "2160-0",
+         "unit": "mg/dL"
+        },
+        {
+         "test": "Fasting Glucose",
+         "value": 140
+        },
+        {
+         "test": "Prostate Specific Antigen",
+         "value": 2.8
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-referral-2022",
+       "action": "done",
+       "date": "2022-04-28T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology Consultation",
+       "author": "urology",
+       "date": "2022-04-28T15:00",
+       "body": "UROLOGY CONSULTATION\nDate of service: 04/20/2022\nReferred by primary care for voiding symptoms.\n\nMr. Bennett is a 70-year-old man with roughly half a year of daytime frequency, getting up at night to void, a slow start and a weakened stream. Urination is painless. One treated UTI in November. Started tamsulosin 0.4 mg in February through his PCP with modest effect so far.\nPMH: type 2 diabetes, hypertension (well controlled), right knee osteoarthritis.\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, tamsulosin 0.4 mg daily, atorvastatin 20 mg daily.\nAllergies: NKDA.\nFamily: father died of prostate cancer at age 75. Brother with BPH.\nSocial: never smoker, social alcohol.\n\nExam: BP 135/85, HR 78, BMI 29. Abdomen soft, bladder not palpable. Normal phallus and testes. DRE: prostate enlarged symmetrically, firm texture, no nodules, nontender.\nUA: no evidence of infection, no hematuria.\nLabs (drawn today): creatinine 1.0, fasting glucose 140, PSA 2.8 ng/mL.\n\nImpression: benign prostatic hyperplasia with lower urinary tract symptoms. PSA within the age-adjusted range and exam benign; reassuring despite his father's history.\nPlan: continue tamsulosin 0.4 mg daily. Reviewed behavioral measures. Return in 6 months with post-void residual.\n\nThank you for this referral.\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "office_visit",
+     "start": "2022-06-14T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Low Density Lipoprotein": 91
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-06-14T08:35",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-06-14T08:35",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-14T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-06-14T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: Diabetes, BP, BPH",
+       "author": "PCP",
+       "date": "2022-06-14T09:05",
+       "body": "Interval: saw urology in April, BPH with a benign exam and a normal-range PSA, letter reviewed. On tamsulosin, nights a little better, still up twice.\nDM: home sugars 120-150. Metformin, no GI issues.\nHTN: home readings fine.\nNo dizziness on standing.\nExam: vitals per flowsheet. Heart regular, lungs clear. Monofilament intact both feet, no calluses.\nPlan: A1c, BMP, lipids, urine albumin. Continue all meds. Urology again in the fall. AWV September."
+      },
+      {
+       "type": "Result Note",
+       "title": "Lab Review",
+       "author": "PCP",
+       "date": "2022-06-15T12:40",
+       "body": "Yearly diabetes labs reviewed: A1c in his usual range, kidney function and potassium normal, LDL at goal on atorvastatin 20, urine albumin normal. Portal note sent. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "office_visit",
+     "start": "2022-07-19T15:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "dysuria",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed",
+       "onset": "2022-07-17"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cephalexin 500 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth four times daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "QID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-07-19T15:20",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive (3+)"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "value": 48
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Trace"
+        },
+        {
+         "test": "Urine Clarity",
+         "text": "Cloudy"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-07-19T15:20",
+       "resulted": "2022-07-21T08:40",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible: cephalexin, ceftriaxone, nitrofurantoin, trimethoprim-sulfamethoxazole, ciprofloxacin. Resistant: ampicillin."
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-07-19T15:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Same-Day Visit: UTI Symptoms",
+       "author": "PCP",
+       "date": "2022-07-19T15:40",
+       "body": "Second UTI-type episode in 8 months. Burning and urgency since Sunday, more frequent than his usual baseline. No fever, no flank pain.\nVitals per flowsheet, afebrile. No CVA tenderness, mild suprapubic tenderness.\nUA positive for LE and nitrite, trace blood on dip.\nA/P: recurrent cystitis in a man with BPH. Culture sent. Cephalexin 500 QID x7d again (last culture was sensitive). Will let urology know at the fall visit; incomplete emptying may be contributing. Trace blood: recheck UA after treatment."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-21a",
+     "kind": "telephone",
+     "start": "2022-07-21T09:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Culture Result Call",
+       "author": "RN",
+       "date": "2022-07-21T09:30",
+       "body": "Culture grew E. coli again, sensitive to cephalexin. Spoke with pt, symptoms improving on day 3. Continue course. UA recheck to be done when he comes in for the AWV in September."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-02a",
+     "kind": "portal_message",
+     "start": "2022-08-02T18:20",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "All better",
+       "author": "patient",
+       "date": "2022-08-02T18:20",
+       "body": "Done with the capsules, no burning anymore. Will do the urine test in September like the nurse said."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-23a",
+     "kind": "outside_records",
+     "start": "2022-08-23T13:30",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic Eye Exam Letter",
+       "author": "optometry",
+       "date": "2022-08-23T13:30",
+       "body": "To the primary care physician: Mr. Bennett had his annual dilated exam on 08/18/2022. Best corrected acuity 20/25 both eyes. No signs of diabetic retinopathy, no macular edema. Return 1 year. Allergies reviewed: NKDA."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "annual_physical",
+     "start": "2022-09-20T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-09-20T09:10",
+       "results": [
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "value": 1
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-09-20T09:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-09-20T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-20T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-09-20T09:50",
+       "body": "AWV (subsequent).\nFunctional status unchanged: drives, walks most days, does the yard. No falls. Knee about the same, ortho following.\nCognition screen normal. PHQ-2 0.\nUA recheck after July UTI: no blood, no leukocytes.\nGU: urology follow-up booked for October 10.\nAdvance directive copy now scanned.\nFlu vaccine (high dose) given today. Bivalent COVID booster at a nurse visit later in October.\nNext diabetes visit December."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-10a",
+     "kind": "specialist_visit",
+     "start": "2022-10-10T10:00",
+     "service": "Urology",
+     "reason": "BPH follow-up",
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-10-10T10:05",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-10-10T10:30",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology Follow-up",
+       "author": "urology",
+       "date": "2022-12-19T14:10",
+       "body": "UROLOGY FOLLOW-UP\nVisit date: 10/10/2022\n\nReturns 6 months after his first evaluation for BPH. Over the past half year he describes frequency, urgency and nocturia and feels he does not empty completely. Two urinary infections in the last 12 months, both treated with antibiotics by primary care.\nMedications: metformin 1000 mg BID, lisinopril 10 mg daily, tamsulosin 0.4 mg daily, atorvastatin 20 mg daily.\nAllergies: NKDA.\n\nExam: abdomen soft and nontender. DRE: symmetrically enlarged, firm, nontender gland, no nodules.\nUrinalysis: no evidence of active infection.\nLabs: creatinine 1.2, BUN 18.\nBladder ultrasound post-void residual: 120 mL.\n\nAssessment: BPH with LUTS and an incomplete-emptying component; recurrent UTIs.\nPlan: continue tamsulosin. Double voiding. Follow up as needed.\n\nUrology"
+      }
+     ]
+    },
+    {
+     "id": "2022-10-25a",
+     "kind": "nurse_visit",
+     "start": "2022-10-25T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "COVID booster",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-25T13:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-25T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine Administration",
+       "author": "RN",
+       "date": "2022-10-25T13:55",
+       "body": "Bivalent Pfizer COVID booster, 0.3 mL IM, left deltoid. No prior reactions. Waited 15 minutes, fine. Says urology visit went fine, 'keep the pill.'"
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "telehealth_visit",
+     "start": "2022-12-06T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.0
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-02T08:20",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-02T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2022-12-06T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit: Diabetes",
+       "author": "PCP",
+       "date": "2022-12-06T11:25",
+       "body": "Video from home, identity verified, consented.\nLabs from Friday reviewed: A1c about where it has been, BMP fine.\nHe saw urology Oct 10; per him the bladder scan 'wasn't bad' and he should stay on tamsulosin. We have not received their note. No UTI since summer.\nHome BP 128-134/78-82.\nPlan: continue meds. Will request the urology note. Office visit in March."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-12a",
+     "kind": "telephone",
+     "start": "2022-12-12T09:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records Request",
+       "author": "MA",
+       "date": "2022-12-12T09:45",
+       "body": "Called urology office re: 10/10/22 visit note, not received. They will fax it. Request also sent through their portal."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

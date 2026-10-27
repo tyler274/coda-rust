@@ -1,0 +1,935 @@
+{
+  "unit": "unit-1906",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001906",
+      "given": "Lori",
+      "family": "Simard",
+      "birth_date": "1995-09-16",
+      "address_line": "28 Quarry Ridge Road",
+      "phone": "+1-617-555-0192",
+      "email": "lori.simard@example.test",
+      "marital_status": "single",
+      "summary": "Thirty-year-old math teacher who joined in August 2025 with amenorrhea and nipple discharge; outside gynecology found a prolactin of 250 and a 1.5 cm pituitary macroadenoma with a bitemporal field defect. Endocrinology started cabergoline with partial response; an ED visit in June 2026 for headaches and worsening vision led to a dose increase and a neurosurgery opinion favoring transsphenoidal resection, decision pending.",
+      "events": [
+        {
+          "id": "2025-08-12a",
+          "kind": "telephone",
+          "start": "2025-08-12T10:05",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2025-08-12T10:05",
+              "author": "front desk",
+              "body": "Caller moved her care out to this area last year and has been without a primary doctor. Teaches math at the high school, wants something before classes start. Membership info emailed, she signed up over the phone. New patient visit set for 8/19 at 8:20. Asked her to sign a release for her old practice so we can pull records."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "establish_care",
+          "start": "2025-08-19T08:20",
+          "end": "2025-08-19T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 73,
+            "spo2": 95,
+            "weight_kg": 62.1,
+            "height_cm": 165.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-19T08:45",
+              "resulted": "2025-08-19T09:00",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T09:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2025-08-19T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-08-19T09:10",
+              "author": "PCP",
+              "body": "New patient, 29, here to set up primary care. Previously seen at a practice out east, records requested.\n\nShe has not had a period since roughly April. Before that cycles were regular. Over the same stretch she has noticed a small amount of milky fluid from the nipples, mostly when she showers. She already has an appointment with gynecology in October for this and would like to keep it there. Otherwise feels well, energy fine, weight stable.\n\nPMH: none. PSH: tonsils out at 12. Meds: none. Allergies: no known drug allergies.\nFH: mother on thyroid replacement for hypothyroidism, father treated for high blood pressure. Nobody with pituitary or other gland tumors that she knows of.\nSH: teaches high school math. Never smoked. Wine once or twice a week.\n\nExam: well appearing. Vitals as recorded. Thyroid not enlarged. Heart RRR without murmur, lungs clear bilaterally. Abdomen soft. Breast exam deferred to gyn at her request. Skin no hirsutism or acne.\n\nUrine hCG in office negative.\n\nA/P\n1. Secondary amenorrhea with nipple discharge. Pregnancy excluded today. Keeping her gyn appointment in October, which she prefers; asked her to have them send us their note and any labs. Low threshold to move it up if anything new.\n2. Health maintenance: baseline CBC, CMP, lipids. Offered one-time HIV and hep C screening, she agreed. Last Pap at 27 per her report, normal; due again at 30 with HPV. Flu and COVID vaccines when the fall supply arrives.\nFollow up after the gyn visit, or yearly physical next spring."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              72
+            ],
+            "weight_kg": 63.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Low Density Lipoprotein": 88
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2025-08-21T16:40",
+              "author": "PCP",
+              "body": "Hi Lori, your blood count, chemistries, kidney and liver numbers and cholesterol all came back normal. HIV and hepatitis C screens were negative. Nothing to do here. Let me know what gynecology says in October. — your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "outside_records",
+          "start": "2025-09-05T11:30",
+          "reason": "prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Practice",
+              "date": "2025-09-05T11:30",
+              "author": "MA",
+              "body": "Records from her previous primary care office arrived electronically, 34 pages, covering 2019 to 2024. Summary for the chart:\n- Annual visits, all routine. No chronic problems listed, no medications.\n- Allergies: none.\n- Surgical: tonsillectomy in childhood.\n- Cervical cytology 2022: negative for intraepithelial lesion. Recommended repeat 3 years.\n- Last visit 2024: well visit, no concerns, normal exam.\nFiled to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "hr": 66
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T15:36"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-09T15:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-09T15:45",
+              "author": "RN",
+              "body": "Came in after school for vaccines. No fever, no prior reactions. Screening questions reviewed, not pregnant (negative test in August, no periods since spring, has gyn appointment later this month).\nInfluenza 0.5 mL IM left deltoid. COVID 2025-26 formula 0.3 mL IM right deltoid. VIS given for both.\nWaited 15 minutes, felt fine, left at 4:05."
+            }
+          ],
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "specialist_visit",
+          "start": "2025-10-28T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "amenorrhea and galactorrhea",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-28T13:50",
+              "resulted": "2025-10-29T14:00",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "unit": "ng/mL",
+                  "value": 250
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "unit": "m[IU]/L",
+                  "value": 2.5
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "unit": "m[IU]/mL",
+                  "value": 7.2
+                },
+                {
+                  "test": "Luteinizing Hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pituitary-mri",
+              "action": "placed",
+              "order": "MRI brain with contrast",
+              "category": "imaging",
+              "reason": "hyperprolactinemia with visual field defect"
+            },
+            {
+              "id": "endo-referral",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "hyperprolactinemia, pituitary mass suspected"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2025-11-03T09:15",
+              "author": "gynecology",
+              "body": "OUTSIDE GYNECOLOGY — CONSULTATION\nDate of service: 10/28/2025\nCopy to: primary care\n\nReason: no menses for half a year, nipple discharge.\n\nHistory: 30-year-old whose periods stopped about six months ago after years of regular cycles. Over the same time she has had milky expression from both breasts. On direct questioning she has also noticed her side vision fading slowly, more so on the right. No headache, no lightheadedness, weight unchanged. Office hCG negative at her PCP in August.\n\nPMH none. PSH tonsillectomy age 12. Medications none. Allergies NKDA.\nFamily: mother hypothyroid, father hypertensive. No known pituitary or endocrine tumors in the family.\nSocial: teaches high school math, never smoker, wine socially one to two glasses weekly.\n\nExam: BP and weight as recorded by our staff. Breasts symmetric, no masses; scant white fluid expressed bilaterally. Pelvic exam normal. Confrontation fields: temporal loss in both eyes, pattern consistent with a bitemporal hemianopsia. Pupils equal and reactive, extraocular movements full, cranial nerves otherwise intact, strength and reflexes normal.\n\nLabs drawn today:\nProlactin 250 ng/mL (ref 4-23)\nTSH 2.5 mIU/L (ref 0.4-4.0)\nFSH 7.2 mIU/mL (ref 3.5-12.5)\nLH 6.8 mIU/mL (ref 2.4-12.6)\n\nImpression: hyperprolactinemic amenorrhea with galactorrhea and a bitemporal field cut, worrying for a pituitary macroadenoma. Thyroid normal, gonadotropins in range.\n\nPlan: MRI of the brain with contrast with attention to the sella, scheduled. Referral to endocrinology placed and expedited given the field loss. Advised her not to drive at night until evaluated. We will forward the MRI result to her PCP.\n\n— Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "imaging",
+          "start": "2025-11-06T07:30",
+          "reason": "pituitary mass suspected",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2025-11-06T07:30",
+              "text": "OUTSIDE IMAGING CENTER\nExam: MRI brain with and without IV gadolinium, dedicated thin-section coronal and sagittal images through the sella.\nIndication: elevated prolactin, bitemporal field loss.\nComparison: none.\n\nFindings: There is a 1.5 cm sellar mass arising from the pituitary gland, measured in greatest craniocaudal dimension on coronal post-contrast images, enhancing less than the normal gland. It extends above the diaphragma sellae into the suprasellar cistern. The cavernous sinuses appear free of tumor and the internal carotid flow voids are normal. The pituitary stalk is displaced but intact. No hemorrhage within the mass.\nBrain parenchyma is normal in signal without mass effect elsewhere. Ventricles normal in size. No abnormal enhancement outside the sella. Paranasal sinuses and mastoids clear.",
+              "conclusion": "1.5 cm pituitary macroadenoma with suprasellar extension.",
+              "issued": "2025-11-06T13:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pituitary-mri",
+              "action": "done",
+              "date": "2025-11-06T13:10"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "telephone",
+          "start": "2025-11-07T12:20",
+          "reason": "MRI result",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call With Patient re MRI",
+              "date": "2025-11-07T12:35",
+              "author": "PCP",
+              "body": "Called her at lunch break. Gyn had already spoken with her yesterday about the scan. Reviewed: 1.5 cm pituitary adenoma reaching up above the sella, which fits the prolactin of 250 and explains the field loss. Explained that these are almost always benign and that most respond to medication that shrinks them, and that endocrinology leads from here. Her endo appointment is 11/20. She is understandably rattled; questions answered. Reminded her to go to the ED for sudden severe headache or sudden change in vision. She will message after the endo visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "specialist_visit",
+          "start": "2025-11-20T10:00",
+          "service": "Endocrinology",
+          "reason": "pituitary macroadenoma, hyperprolactinemia",
+          "conditions": [
+            {
+              "label": "Prolactinoma",
+              "action": "diagnosed",
+              "onset": "2025-11-06"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take one-half tablet (0.25 mg) by mouth twice weekly",
+              "dose": {
+                "value": 0.25,
+                "unit": "mg"
+              },
+              "frequency": "TWICE WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prolactinoma"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral",
+              "action": "done",
+              "date": "2025-11-20T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2025-11-24T08:40",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY — NEW CONSULTATION\nVisit: 11/20/2025\nReferred by gynecology; copy to PCP.\n\nThirty-year-old woman with about seven months of amenorrhea and galactorrhea, prolactin 250 ng/mL in late October with normal TSH, FSH and LH, and a 1.5 cm pituitary adenoma extending above the sella on MRI 11/6. She describes the peripheral vision loss, right a bit worse than left. No headache. No medications. NKDA.\n\nExam: vitals per our intake. Bilateral temporal field restriction to confrontation, right more than left. Visual acuity grossly intact. No cushingoid or acromegalic features. Thyroid normal. Small amount of fluid expressible from both breasts.\n\nAssessment: macroprolactinoma with suprasellar extension contacting the chiasm. A prolactin of 250 with a tumor of this size is consistent with a true prolactinoma rather than stalk effect.\n\nPlan:\n- Start cabergoline 0.25 mg (half of a 0.5 mg tablet) twice weekly, taken at bedtime with a snack. Discussed nausea and lightheadedness early on, and rare impulse-control changes.\n- Prolactin again in 2 to 3 months, then titrate.\n- Repeat pituitary MRI in about 6 months.\n- Cabergoline lowers prolactin quickly and fertility can return; she should use reliable contraception and let us know if she wishes to conceive.\n- Call sooner for headache or any worsening of vision.\n\n— Endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "specialist_visit",
+          "start": "2026-02-10T14:20",
+          "service": "Endocrinology",
+          "reason": "prolactinoma follow-up",
+          "medications": [
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "stop",
+              "dose": {
+                "value": 0.25,
+                "unit": "mg"
+              },
+              "frequency": "TWICE WEEKLY"
+            },
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (0.5 mg) by mouth twice weekly",
+              "dose": {
+                "value": 0.5,
+                "unit": "mg"
+              },
+              "frequency": "TWICE WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Prolactinoma"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-03T07:50",
+              "resulted": "2026-02-03T16:30",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "unit": "ng/mL",
+                  "value": 140
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2026-02-12T10:05",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY — FOLLOW-UP\nVisit: 02/10/2026   cc: PCP\n\nMacroprolactinoma, on cabergoline 0.25 mg twice weekly since late November. Taking it reliably at bedtime, tolerating it. Breast leakage is less than before but still there. No menses yet. Vision about the same to her; no headaches.\n\nExam: temporal field restriction on confrontation, right more than left, unchanged from November.\n\nProlactin 2/3: 140 ng/mL (250 before treatment). Moving the right way but well above normal.\n\nPlan: increase cabergoline to 0.5 mg twice weekly, one full tablet. Repeat MRI this summer, timed with a prolactin. Sooner for headaches or vision change.\n\n— Endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "portal_message",
+          "start": "2026-03-24T19:55",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-03-24T19:55",
+              "author": "patient",
+              "body": "Hi, I think I'm due for my yearly physical and the Pap you mentioned. Could we do late May? Our third quarter exams wrap up mid-May and I can take a morning then. Thanks, Lori"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-03-25T08:30",
+              "author": "front desk",
+              "body": "Hi Lori, you're set for Thursday 5/28 at 7:40 am with your PCP. Come a few minutes early. No fasting needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "annual_physical",
+          "start": "2026-05-28T07:40",
+          "end": "2026-05-28T08:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, cervical screening",
+          "vitals": {
+            "bp": [
+              115,
+              77
+            ],
+            "hr": 78,
+            "spo2": 97,
+            "weight_kg": 63.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-05-28T08:05",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV DNA: not detected.",
+              "conclusion": "NILM. High-risk HPV negative.",
+              "issued": "2026-06-03T11:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-05-28T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-05-28T08:30",
+              "author": "PCP",
+              "body": "Yearly physical. Turns 31 in September.\n\nInterval: pituitary macroprolactinoma diagnosed in November, followed by endocrinology. On cabergoline 0.5 mg twice weekly since February. Prolactin 250 at diagnosis, 140 in February per the endo letter. Still no periods. Still has some milky leakage from both breasts, less than last fall. The last few months she has had a dull headache now and then, usually late in the day; she put it down to grading and screens. Side vision feels no worse to her. Endo plans a repeat MRI and prolactin this summer; the appointment is in July.\n\nROS otherwise negative. Sleeping fine, mood good, PHQ-9 is 2.\n\nMeds: cabergoline 0.5 mg PO twice weekly. NKDA.\nSH: still teaching, never smoker, wine once or twice a week.\n\nExam: vitals as charted, BMI normal. Comfortable. Thyroid smooth, no nodules. Heart S1 S2 regular, no murmur. Lungs without wheeze or crackle. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesion, Pap with HPV collected. Breasts not re-examined, discharge as described. Neuro: cranial nerves intact apart from her known temporal field loss, which I did not formally retest; strength and gait normal.\n\nA/P\n1. Prolactinoma on cabergoline, prolactin still high in February. New intermittent dull headaches are worth telling endocrinology about before July; I'll send them a note. If headaches become frequent or severe, or vision worsens, she should not wait for July and should be seen urgently.\n2. Health maintenance: Pap with HPV today. Flu and COVID vaccines this coming October. Tdap status unknown in the old records; will look again next year.\nNext physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-28b",
+          "kind": "telephone",
+          "start": "2026-05-28T12:10",
+          "reason": "note to endocrinology",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Message to Endocrinology",
+              "date": "2026-05-28T12:10",
+              "author": "PCP",
+              "body": "Faxed a short note to her endocrinologist: seen today for her physical, reporting occasional dull headaches over a few months, vision subjectively stable, on cabergoline 0.5 mg twice weekly. Asked whether they want the MRI sooner than July. Office acknowledged receipt; will leave timing to them."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "portal_message",
+          "start": "2026-06-03T15:00",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2026-06-03T15:00",
+              "author": "PCP",
+              "body": "Lori, your Pap and HPV test from last week were both normal. With a normal result on both, the next one is in five years. — your PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "ed_visit",
+          "start": "2026-06-30T18:40",
+          "end": "2026-06-30T23:55",
+          "service": "Emergency Medicine",
+          "reason": "headaches and worsening vision",
+          "vitals": {
+            "bp": [
+              107,
+              70
+            ],
+            "hr": 74,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-30T19:20",
+              "resulted": "2026-06-30T21:05",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "unit": "ng/mL",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-30T19:10",
+              "resulted": "2026-06-30T19:25",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-30T19:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-30T19:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2026-06-30T21:30",
+              "text": "EMERGENCY DEPARTMENT IMAGING\nExam: MRI brain without and with gadolinium, including thin coronal and sagittal sequences of the sella.\nIndication: known pituitary adenoma, headaches, worsening peripheral vision.\nComparison: outside MRI 11/06/2025, report available.\n\nFindings: Sellar mass measuring 1.3 cm in greatest craniocaudal dimension on coronal post-contrast images, previously reported as 1.5 cm. The suprasellar component elevates and compresses the optic chiasm. No intratumoral hemorrhage or infarct to suggest apoplexy. Cavernous sinuses without invasion. No hydrocephalus. Remainder of the brain normal. No acute intracranial abnormality.",
+              "conclusion": "1.3 cm pituitary macroadenoma, smaller than the prior report, still compressing the optic chiasm. No hemorrhage.",
+              "issued": "2026-06-30T22:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-06-30T23:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-07-02T09:10",
+              "author": "emergency medicine",
+              "body": "REGIONAL EMERGENCY DEPARTMENT — PHYSICIAN RECORD\nArrived 6/30/2026 18:40. Received by the primary care office 7/2/2026.\n\nCC: headaches, vision getting worse.\n\nHPI: 30F with a pituitary prolactinoma diagnosed last November, on cabergoline through endocrinology. For several months she has had recurring dull headaches, now most days, and over the same period her peripheral vision has been slipping; today the headache would not settle and she came in. She continues to have spontaneous milky discharge from both nipples; not pregnant, not breastfeeding. No sudden thunderclap onset, no vomiting, no double vision, no fever.\n\nMeds: cabergoline 0.5 mg twice weekly. Allergies: NKDA.\nPMH/PSH: prolactinoma; tonsillectomy as a child.\nFamily: hypothyroid mother, hypertensive father; no pituitary or endocrine tumors.\nSocial: math teacher, never smoked, light wine use.\n\nExam: vitals in flowsheet, afebrile. Alert, oriented, uncomfortable but not toxic. Pupils equal and reactive, fundi without papilledema. Confrontation fields show peripheral loss in both eyes. Remaining cranial nerves, strength, sensation, coordination and gait normal. Bilateral galactorrhea on exam. Neck supple.\n\nResults: prolactin 131 ng/mL (ref 4-23), markedly elevated. Urine hCG negative. BMP and CBC unremarkable. MRI brain: 1.3 cm sellar mass compressing the optic chiasm, no hemorrhage.\n\nMDM: known macroprolactinoma with chiasmal compression and persistent symptoms on cabergoline. No apoplexy, no hydrocephalus, neuro otherwise intact. Does not require admission. Spoke with on-call endocrinology, who will see her within two weeks.\n\nDisposition: discharged home, stable, 23:55. Return for sudden severe headache, rapid vision loss, vomiting or confusion. Continue cabergoline until seen by endocrinology. Copy to PCP and endocrinology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "rr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "portal_message",
+          "start": "2026-07-01T07:15",
+          "reason": "ED visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER last night",
+              "date": "2026-07-01T07:15",
+              "author": "patient",
+              "body": "Wanted you to know I ended up in the ER last night. The headaches got more frequent and my side vision is worse. They did an MRI, the tumor is a little smaller but still pressing on the optic nerves. They called endocrinology and I'm supposed to be seen in the next couple of weeks. Sent home. Just wanted you to have the update."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER last night",
+              "date": "2026-07-01T08:20",
+              "author": "PCP",
+              "body": "Thank you for letting me know, and I'm sorry you had a rough night. Good that the scan showed no bleeding and that it is a bit smaller. We'll get the ER record. Keep the endocrinology visit, and if the headache becomes sudden and severe or your vision drops quickly, go back in. I'm here if you want to talk it through before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T09:30",
+          "service": "Endocrinology",
+          "reason": "prolactinoma after ED visit",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up",
+              "date": "2026-07-16T13:45",
+              "author": "endocrinology",
+              "body": "OUTSIDE ENDOCRINOLOGY — FOLLOW-UP AFTER ED VISIT\nVisit: 07/14/2026   cc: PCP\n\nSeen in the ED 6/30 for headaches and worsening peripheral vision. MRI there: adenoma now 1.3 cm, down from 1.5 cm, but still compressing the chiasm. Prolactin 131 ng/mL on cabergoline 0.5 mg twice weekly (250 at baseline, 140 in February). Headaches continue several days a week. Galactorrhea persists. Amenorrhea continues.\n\nExam: bitemporal field restriction on confrontation, right worse.\n\nAssessment: macroprolactinoma with incomplete biochemical and radiographic response to cabergoline and persistent chiasmal compression with visual symptoms.\n\nPlan:\n- Increase cabergoline to 1 mg (two 0.5 mg tablets) twice weekly.\n- Formal visual field testing with ophthalmology, ordered.\n- Referral to neurosurgery for an opinion on transsphenoidal surgery, given the chiasm.\n- Prolactin in 4 to 6 weeks.\n\n— Endocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "specialist_visit",
+          "start": "2026-08-11T11:00",
+          "service": "Neurosurgery",
+          "reason": "pituitary macroadenoma",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery Consultation",
+              "date": "2026-08-14T15:30",
+              "author": "neurosurgery",
+              "body": "OUTSIDE NEUROSURGERY — NEW PATIENT CONSULTATION\nVisit: 08/11/2026\nReferred by endocrinology; copy to PCP.\n\n30-year-old teacher with a prolactin-secreting pituitary macroadenoma diagnosed 11/2025. Cabergoline has lowered prolactin from 250 to 131 ng/mL and reduced the tumor from 1.5 to 1.3 cm, but the June MRI shows continued compression of the optic chiasm and she reports ongoing headaches and peripheral vision loss. Cabergoline was recently raised to 1 mg twice weekly by endocrinology.\n\nExam: alert, fluent. Bitemporal field deficit to confrontation. Otherwise nonfocal.\n\nImaging reviewed personally: 1.3 cm sellar and suprasellar adenoma elevating the chiasm, no cavernous sinus invasion, favorable sphenoid anatomy.\n\nDiscussion: with symptomatic chiasmal compression despite medical therapy, I recommend endoscopic endonasal transsphenoidal resection. We reviewed goals (decompress the chiasm, debulk or remove the tumor), the expected hospital stay, and risks including CSF leak, sodium and water balance problems, pituitary hormone deficiency, bleeding, infection and, rarely, vision worsening. She would like time to think it over and to see the formal visual field results before deciding. She will continue cabergoline in the meantime.\n\nPlan: return visit once fields are done to make a decision.\n\n— Neurosurgery"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "telephone",
+          "start": "2026-08-17T14:00",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Request",
+              "date": "2026-08-17T14:00",
+              "author": "front desk",
+              "body": "Pt called wanting to sit down with her PCP and go over the neurosurgery recommendation before she decides. Booked Thursday 9/10 at 3:45, after school lets out. Neurosurgery and endo letters are already in the chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T15:45",
+          "reason": "follow-up after ED visit and neurosurgery consult",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "cabergoline 0.5 MG Oral Tablet": {
+        "code": "199703",
+        "display": "cabergoline 0.5 MG Oral Tablet",
+        "ingredient": "cabergoline",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Luteinizing Hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

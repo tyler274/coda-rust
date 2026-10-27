@@ -1,0 +1,116 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001838",
+      "events": [
+        {
+          "id": "2025-05-06a",
+          "kind": "portal_message",
+          "start": "2025-05-06T19:12",
+          "documents": [
+            {"type": "Patient Communication", "title": "Immunization record request", "author": "patient", "date": "2025-05-06T19:12", "body": "Hello, the district HR office is updating staff files and asked me for proof of my shots, including the flu and COVID ones from the fall. Could someone send me a printout? Thank you!"},
+            {"type": "Patient Communication", "title": "RE: Immunization record request", "author": "RN", "date": "2025-05-07T09:20", "body": "Hi Sadie, your full immunization history, including what came over from your old office, is attached as a PDF. Let us know if HR needs it on a particular form."}
+          ]
+        },
+        {
+          "id": "2025-07-25a",
+          "kind": "portal_message",
+          "start": "2025-07-25T21:48",
+          "documents": [
+            {"type": "Patient Communication", "title": "Car accident", "author": "patient", "date": "2025-07-25T21:48", "body": "I was in a really bad car accident on Monday. My friend was in the car with me and she died. I only got banged up a little and I'm okay physically but I can't sleep, and when I do I wake up from dreams about it. I can't focus on anything. I don't know if this is something you see people for but I didn't know who else to ask."},
+            {"type": "Patient Communication", "title": "RE: Car accident", "author": "PCP", "date": "2025-07-26T08:10", "body": "Sadie, I'm so sorry. That is a terrible thing to go through, and yes, this is exactly what we are here for. I'd like to see you in person. Can you come in Monday at 10:30? Reply here and I'll hold the slot. If at any point you feel unsafe or have thoughts of hurting yourself, call 988 or go to the nearest emergency room."}
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "office_visit",
+          "start": "2025-07-28T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "sleep problems and nightmares after car crash",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "orders": [{"id": "psych-referral", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "distress, insomnia and nightmares after a fatal car crash"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-28T11:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-07-28T13:40", "body": "S: 27F seen a week after a serious crash on 7/21. A friend of hers was killed at the scene and Sadie saw it happen. Her own injuries were minor and she says they have mostly healed, nothing hurts now. Since then she lies awake for hours, wakes from nightmares about the crash, and cannot hold her attention on lesson planning or reading. Has not driven since. Her parents have been staying with her on and off. No prior counseling or psychiatric care. No alcohol or other substances, has not tried anything for sleep. Denies thoughts of harming herself.\n\nO: vitals as charted, within normal range. Tired-appearing, tearful when describing the crash, otherwise appropriate and organized. Heart regular, lungs clear. No residual tenderness or bruising of note. Neuro nonfocal.\n\nA: significant distress with insomnia, nightmares and poor concentration one week after a traumatic event in which she witnessed a death.\n\nP: discussed that these reactions are common early on and that getting specialized help now matters. Urgent referral to psychiatry placed; front desk to call for the earliest opening. Sleep basics reviewed. She prefers to hold off on any medication until she has been evaluated. Crisis line and ED precautions reviewed. I'll check in after she is seen."}
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "specialist_visit",
+          "start": "2025-08-04T14:00",
+          "service": "Psychiatry",
+          "reason": "psychiatric evaluation after motor vehicle collision",
+          "conditions": [{"label": "Acute stress reaction", "icd10": "F43.0", "action": "diagnosed", "onset": "2025-07-21"}],
+          "orders": [{"id": "psych-referral", "action": "done", "date": "2025-08-04T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry Consultation", "author": "psychiatry", "date": "2025-08-08T09:15", "body": "Outpatient psychiatry consultation, visit of 08/04/2025. Thank you for the referral.\n\nMs. Nakamura is a 27-year-old teacher seen two weeks after a car crash in which she had minor injuries and witnessed the death of a friend. Since then she has had intrusive, upsetting memories of the event, steers clear of driving and of conversations about it, and describes feeling numb and cut off from the people around her. She is on guard much of the time and startles easily. These symptoms are getting in the way of her work preparations and her social life. No psychiatric history before this. No medications. Allergies: none known. Family history notable for maternal hypothyroidism and paternal hypertension. Never smoker, no alcohol.\n\nVital signs within normal limits. General physical examination unremarkable. Mental status: anxious, cooperative, linear thought process, no suicidal or homicidal ideation.\n\nImpression: acute stress reaction.\n\nPlan: referred to a trauma-focused therapist for weekly sessions. No medication at this time. Please obtain a CBC, TSH and urine drug screen before her return in about one month.\n\nOutpatient psychiatry"}
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "lab_only",
+          "start": "2025-08-27T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "labs requested by psychiatry",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-27T08:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2025-08-27T08:25", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2025-08-27T08:25", "results": [{"test": "Drug screen, urine", "loinc": "54247-2", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-08-27T08:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Lab draw", "author": "MA", "date": "2025-08-27T08:35", "body": "Blood drawn from left antecubital on the first try, urine collected. Orders per the psychiatry consult letter: CBC, TSH, urine drug screen. Pt asked that results also go to her psychiatrist; fax number confirmed from the letter. Her mother drove her in today."}
+          ]
+        },
+        {
+          "id": "2025-08-28a",
+          "kind": "portal_message",
+          "start": "2025-08-28T17:30",
+          "documents": [
+            {"type": "Patient Communication", "title": "Results from yesterday", "author": "PCP", "date": "2025-08-28T17:30", "body": "Hi Sadie, everything from yesterday is normal: blood counts and thyroid are fine and the urine screen was negative. We faxed a copy to psychiatry for your visit next week. Thinking of you, and glad you have started with the therapist."}
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "portal_message",
+          "start": "2025-09-03T13:02",
+          "documents": [
+            {"type": "Patient Communication", "title": "Follow-up and work forms", "author": "patient", "date": "2025-09-03T13:02", "body": "I saw the psychiatrist again yesterday. Honestly not much better. I keep having flashbacks, I still barely sleep and I feel on edge all the time. I haven't driven since the accident and I haven't been able to go back to school, the kids started last week without me. She doesn't want to start any medicine right now and wants me to keep going to therapy every week, which I am. The district needs a leave form from a doctor. Can you fill it out? I'll drop it at the front desk."},
+            {"type": "Patient Communication", "title": "RE: Follow-up and work forms", "author": "PCP", "date": "2025-09-03T16:40", "body": "Of course. Drop it off whenever is easy and I'll get it done in a day or two. Please don't worry about the timing; healing from this takes time, and you are doing the right things."}
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "telephone",
+          "start": "2025-09-05T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Leave of absence paperwork", "author": "front desk", "date": "2025-09-05T11:15", "body": "School district leave of absence form completed and signed by PCP, faxed to district HR; confirmation page received. Original scanned to media. Pt notified by phone, copy left for her at the front desk."}
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-09T13:20"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-09T13:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-09T13:22"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2025-10-09T13:40", "body": "Here for seasonal vaccines, her father drove her. Afebrile, feels well physically. Flu vaccine IM left deltoid, COVID 2025-26 formula IM right deltoid. Tolerated both, watched 15 minutes without problems. Said therapy is going, slowly."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        }
+      ]
+    }
+  ]
+}

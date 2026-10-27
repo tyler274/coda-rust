@@ -234,3 +234,8 @@ Re-voice everything: no source sentence, clinician name, problem-list dump,
   records requests, one cancelled visit and one no-show.
 - 2026-08-27 pre-visit labs pending today; annual wellness visit booked 2026-09-08.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00002222 on 2024-10-29. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

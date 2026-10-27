@@ -1,0 +1,436 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002204",
+      "given": "Frederick",
+      "family": "Esposito",
+      "birth_date": "1959-11-15",
+      "address_line": "88 Pine Hollow Road",
+      "phone": "+1-603-555-0105",
+      "email": "frederick.esposito@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal worker with long-standing type 2 diabetes on glipizide alone, stage 3b CKD and hypertension who joins in 2022. A chronic right plantar ulcer from mid-2024 leads to a 2025 admission complicated by a cefazolin reaction and hypoglycemia, then a resistant E. coli pyelonephritis, and after his last practice visit an ICU stay for urinary septic shock.",
+      "events": [
+        {
+          "id": "2022-08-24a",
+          "kind": "telephone",
+          "start": "2022-08-24T10:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2022-08-24T10:12",
+              "body": "Caller Frederick Esposito, DOB 11/15/1959, South Hadley. His primary care doctor of many years is retiring at the end of the month and a neighbor recommended us. Explained the membership model, call/text access and that he keeps his insurance for labs, imaging and prescriptions. He wants to go ahead. New patient visit booked for 9/6 at 9:00. Records release form emailed; he will sign and send it to his old office. Asked him to bring all medications in their bottles and his glucose meter."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "establish_care",
+          "start": "2022-09-06T09:00",
+          "end": "2022-09-06T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus with diabetic chronic kidney disease", "action": "history", "onset": "2010-06-01"},
+            {"label": "Chronic kidney disease, stage 3b", "action": "history", "onset": "2019-01-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2008-01-01"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2017-06-01", "note": "30 pack-years, quit about 2017"}
+          ],
+          "medications": [
+            {"drug": "glipizide 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with breakfast", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug": "metoprolol tartrate 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension, CKD"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 40, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "Diabetes, cardiovascular risk"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Cardiovascular risk"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "state": {"bp": [136, 84], "weight_kg": 89.0, "height_cm": 175.0, "labs": {"Hemoglobin A1c": 7.9, "Creatinine": 1.7, "Fasting Glucose": 148, "Glucose": 150, "Low Density Lipoprotein": 80, "Hemoglobin": 14.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-06T10:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-06T10:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-06T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Urinalysis", "collected": "2022-09-06T10:10", "results": [{"test": "Urine Protein"}, {"test": "Urine Glucose"}]},
+            {"panel": null, "collected": "2022-09-06T10:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio", "value": 14}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired postal worker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-06T10:00"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-06T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-09-06T10:00"},
+            {"procedure": "Venipuncture", "performed": "2022-09-06T10:10"}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "30 pack-years, quit about 5 years ago"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-06T10:05",
+              "body": "New patient, 62 y/o man, here to establish. Prior PCP retiring; records requested.\n\nHPI: Type 2 diabetes for a long time, managed on glipizide alone as long as he can remember. Checks sugars a few mornings a week, mostly 130s-160s fasting. No lows he can recall. Told several years ago his kidneys were 'stage 3' and that the blood pressure pills protect them. BP pills are metoprolol and lisinopril; takes them reliably. No chest pain on exertion, no dyspnea, no edema. No foot sores. Eyes: had a cataract out earlier this year, vision good since.\n\nPMH: T2DM; CKD 3b; HTN.\nPSH: appendectomy at 12; cataract surgery 2022.\nMeds (bottles reviewed): glipizide 5 daily, metoprolol tartrate 50 BID, lisinopril 10 daily, atorvastatin 40 qhs, aspirin 81 daily.\nAllergies: PENICILLIN - anaphylaxis (remote; he was told never to take it again).\nFH: father T2DM and a stroke; mother HTN and kidney disease; brother has coronary disease.\nSH: retired from the postal service after a long career carrying mail. Married, lives with his wife in South Hadley. Smoked about a pack a day for 30 years, stopped around 2017. A drink once or twice a month. Walks the neighborhood most days.\n\nExam: BP and vitals per flowsheet. Well appearing. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, well-healed RLQ scar. Feet: skin intact, no calluses or wounds, DP and PT pulses 2+ both feet. No edema.\n\nA/P\n1. Type 2 diabetes - on sulfonylurea only. A1c, CMP, urine albumin/Cr today. Continue glipizide 5.\n2. CKD 3b - CMP today; prior records will show trend. Continue ACE inhibitor.\n3. HTN - near goal today. Continue metoprolol and lisinopril.\n4. Statin/aspirin - continue.\n5. Former heavy smoker - eligible for annual lung cancer screening CT; discussed what it involves and the chance of a false positive; he wants it. Ordered.\n6. Health maintenance - PCV20 given today. Hep C and HIV once. Colonoscopy and tetanus per old records. Flu and COVID in October.\n\nRTC 3 months, sooner as needed. He has the practice number for calls or texts."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "portal_message",
+          "start": "2022-09-08T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2022-09-08T16:40",
+              "body": "Hi Frederick, your labs from Tuesday are back. Your A1c is a bit above where I'd like it but in the range we'd expect on your current medicine. Kidney function is in the stage 3b range, which fits with what you were told before; once your old records arrive I can see whether it has been steady. Potassium is fine. Cholesterol numbers look good on the atorvastatin. Urine protein check was normal, and the hepatitis C and HIV screens were negative. We'll recheck the sugar and kidney numbers at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-19a",
+          "kind": "outside_records",
+          "start": "2022-09-19T13:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior PCP records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2022-09-19T13:25",
+              "body": "62 pages received from the patient's previous primary care office (records release on file). Abstracted for the chart:\n- Problems carried there: type 2 diabetes, hypertension, chronic kidney disease stage 3b. Creatinine on their draws from 2019 through 2022 ranges 1.6 to 1.7.\n- Meds match what the patient brought in.\n- Allergy: penicillin, anaphylaxis.\n- Screening colonoscopy 2018, normal, next in 10 years.\n- Tdap 2019.\n- Cataract surgery report, early 2022, lens implant placed without complication.\nPaper copies to scan queue. Forwarded to PCP for review."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "author": "PCP",
+              "date": "2022-09-20T08:10",
+              "body": "Old records reviewed. Kidney function steady at stage 3b for at least three years, creatinine 1.6-1.7. Colonoscopy and Tdap current. Updated health maintenance."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T14:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T14:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-04T14:20",
+              "body": "In for fall vaccines. High-dose flu given left arm, bivalent COVID booster right arm. Screening questions negative, penicillin allergy noted (not relevant to vaccines). Tolerated both; observed 15 minutes, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "imaging",
+          "start": "2022-10-18T11:30",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-18T11:30",
+              "text": "OUTSIDE IMAGING CENTER - LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: 62-year-old former smoker, 30 pack-years, quit 2017.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: Lungs are clear without nodule, mass or consolidation. Airways patent. No pleural effusion. Heart size normal. No mediastinal or hilar lymph node enlargement. Upper abdomen unremarkable on limited views.\nAllergies on requisition: penicillin.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-10-18T11:30"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2022-10-19T09:02",
+              "body": "Baseline screening CT negative, Lung-RADS 1. Repeat next fall. Portal note sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 8.1}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-13T10:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-12-13T10:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T10:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2022-12-13T11:00",
+              "body": "Three month follow-up. Says the holidays are a tough stretch for eating; morning sugars creeping into the 150s-170s. No low readings. No new symptoms. Taking everything as prescribed.\n\nExam: BP per flowsheet. Heart regular. Lungs clear. Feet intact, pulses present, no lesions.\n\nAssessment/Plan:\n- T2DM: A1c and BMP today. Continue glipizide.\n- CKD 3b / HTN: continue lisinopril and metoprolol. BMP today.\n- Lung screen negative in October.\nNext visit in about four months."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "pharmacy",
+          "start": "2023-02-07T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2023-02-07T09:15",
+              "body": "Pharmacy requesting 90-day supplies with 3 refills: glipizide 5 mg, metoprolol tartrate 50 mg, lisinopril 10 mg, atorvastatin 40 mg. Last visit 12/13/22, labs current. Pended for PCP.\n\nPCP: approved all four as requested."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "outside_records",
+          "start": "2023-03-21T15:00",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2023-03-21T15:00",
+              "body": "Community optometry - diabetic eye exam letter\nPatient: Frederick Esposito  DOB 11/15/1959\nExam date: 3/14/2023\nAllergies per patient: penicillin.\nDilated fundus exam both eyes. Visual acuity 20/25 right, 20/25 left with correction. Posterior chamber lens implant from 2022 cataract surgery well centered. No diabetic retinopathy either eye; no macular edema. Optic nerves healthy.\nImpression: diabetes without retinopathy.\nRecommend: repeat dilated exam in one year.\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes, blood pressure and kidney follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-04-11T08:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-04-11T08:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-04-11T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Chronic Disease Follow-up",
+              "author": "PCP",
+              "date": "2023-04-11T09:00",
+              "body": "Doing well. Has been walking more now that the weather turned. Fasting sugars 130s-150s. Eye exam last month showed no retinopathy. No chest discomfort, breathing fine, no swelling.\n\nExam: vitals as charted. Cor RRR. Lungs clear. No edema. Feet without wounds.\n\nPlan: A1c and BMP today; continue current regimen. Shingles vaccine series - he'd like to start; nurse visit scheduled. Back in 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "portal_message",
+          "start": "2023-04-12T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2023-04-12T12:20",
+              "body": "Frederick - A1c came down a little from December. Kidney function and potassium unchanged from your usual. Keep up the walking."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Results",
+              "author": "patient",
+              "date": "2023-04-12T19:48",
+              "body": "Thanks Doc. My wife says it's her cooking. See you in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "nurse_visit",
+          "start": "2023-05-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine #1",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-05-16T13:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-05-16T13:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix dose 1",
+              "author": "RN",
+              "date": "2023-05-16T13:50",
+              "body": "Shingrix dose 1 given IM left deltoid. Counseled on sore arm and possible fatigue for a day or two. Dose 2 due in 2-6 months; will give at his August visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "portal_message",
+          "start": "2023-07-19T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "missed appointment",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "We missed you yesterday",
+              "author": "front desk",
+              "date": "2023-07-19T09:05",
+              "body": "Hi Mr. Esposito, we had you down for a 9:30 visit yesterday. Hope all is well. Please reply or call to reschedule."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: We missed you yesterday",
+              "author": "patient",
+              "date": "2023-07-19T11:31",
+              "body": "Sorry about that, had it on the calendar for the 25th. Wrote it down wrong. Anything early August works."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: We missed you yesterday",
+              "author": "front desk",
+              "date": "2023-07-19T11:52",
+              "body": "No problem. You're set for Tuesday 8/8 at 10:00. The nurse will have your second shingles shot ready too."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "office_visit",
+          "start": "2023-08-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up; Shingrix #2",
+          "state": {"labs": {"Hemoglobin A1c": 8.0}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-08-08T10:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-08-08T10:30"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-08-08T10:00"},
+            {"procedure": "Immunization administration", "performed": "2023-08-08T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2023-08-08T10:35",
+              "body": "Rescheduled from July. Sugars a little higher, mostly 140s-160s mornings, no lows. Feels fine.\n\nExam: vitals reviewed. Heart and lungs normal. Feet: no wounds, skin intact.\n\nPlan: A1c today. Second Shingrix given by RN. Annual physical in late September with full labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin A1c": 8.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-26T08:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-26T08:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-26T08:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-26T08:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio", "value": 19}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-26T08:00"},
+            {"procedure": "Venipuncture", "performed": "2023-09-26T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-26T08:50",
+              "body": "Annual exam, 63M.\n\nInterval: no illnesses, ER visits or new medicines this year. Walking 30-40 minutes most days. Sleeping well. Mood good; PHQ-2 0. Hearing and vision fine. Still not smoking.\n\nMeds unchanged: glipizide 5, metoprolol tartrate 50 BID, lisinopril 10, atorvastatin 40, ASA 81. Allergy: penicillin (anaphylaxis).\n\nROS otherwise negative.\n\nExam: well appearing. HEENT normal. Neck no adenopathy. Heart regular rate, no murmurs. Lungs clear. Abdomen soft, nontender. Skin no concerning lesions. Feet: no wounds or calluses, pedal pulses palpable. No edema.\n\nAssessment/Plan:\n- T2DM, CKD 3b, HTN: CMP, CBC, lipids, A1c, urine albumin today. Same regimen.\n- Lung screening: annual CT due next month, order in.\n- Vaccines: flu and updated COVID at a nurse visit in October. Shingrix complete. PCV20 done 2022.\n- Colonoscopy due 2028.\nFollow up in 3-4 months."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung cancer screening"}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-10T15:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-10T15:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T15:05"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-10T15:20",
+              "body": "High-dose influenza and 2023-24 COVID vaccines administered, one in each arm. No contraindications on screening. Waited 15 min, felt fine, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "imaging",
+          "start": "2023-10-24T10:45",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-24T10:45",
+              "text": "OUTSIDE IMAGING CENTER - LOW-DOSE CT CHEST, ANNUAL SCREENING\nComparison: 10/18/2022.\nTechnique: Low-dose non-contrast CT chest.\nFindings: No pulmonary nodules. No consolidation or effusion. Central airways clear. Normal heart size. No adenopathy.\nAllergies on requisition: penicillin.",
+              "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-10-24T10:45"}],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "author": "PCP",
+              "date": "2023-10-25T08:40",
+              "body": "Second annual LDCT clear, Lung-RADS 1. Patient notified through the portal."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

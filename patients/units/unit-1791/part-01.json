@@ -1,0 +1,199 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001791",
+      "given": "Malee",
+      "family": "Bautista",
+      "birth_date": "1992-08-19",
+      "address_line": "41 Cottage Row",
+      "phone": "+1-617-555-0100",
+      "email": "malee.bautista@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with generalized myasthenia gravis on pyridostigmine and prednisone, mild asthma and alpha-thalassemia trait. In 2021 a second pregnancy was lost at 26 weeks to parvovirus B19 hydrops; in 2022 persistent parvovirus caused pancytopenia treated with IVIG. Last seen 2026-05-28 for bronchitis, admitted that night in myasthenic crisis.",
+      "events": [
+        {
+          "id": "2019-09-05a",
+          "kind": "telephone",
+          "start": "2019-09-05T13:22",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2019-09-05T13:22", "body": "Caller would like to establish with the practice. Moved to Easthampton over the summer, teaches second grade, starts back next week. Has a neurologist she plans to keep. Membership explained, intake packet emailed. Signed release sent to her old primary care office for records. New patient appt booked 9/17 at 3:40 (after school)."}
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "outside_records",
+          "start": "2019-09-12T10:05",
+          "reason": "records from prior primary care",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "front desk", "date": "2019-09-12T10:05", "body": "41 pages received from prior primary care office, scanned under Media.\n\nIndex for the PCP:\n- Problem list there: myasthenia gravis (generalized; neurology diagnosis 2017, followed by outside neuromuscular clinic), asthma since childhood, alpha thalassemia trait.\n- Meds on their last list: pyridostigmine 60 mg q4-6h while awake, prednisone 10 mg daily, albuterol HFA prn.\n- Allergies: none recorded.\n- Pap 04/2019 at postpartum visit: negative for intraepithelial lesion.\n- Delivered a healthy baby early 2019, uncomplicated pregnancy per their notes.\n- Last labs there: CBC with mild microcytic anemia, consistent with her trait per their comment."}
+          ]
+        },
+        {
+          "id": "2019-09-17a",
+          "kind": "establish_care",
+          "start": "2019-09-17T15:40",
+          "end": "2019-09-17T16:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Myasthenia gravis without exacerbation", "action": "history", "onset": "2017-06-01", "note": "generalized; outside neurology"},
+            {"label": "Mild intermittent asthma", "action": "history", "onset": "2001-01-01"},
+            {"label": "Alpha thalassemia trait", "icd10": "D56.3", "action": "history", "onset": "1992-08-19"}
+          ],
+          "medications": [
+            {"drug_text": "pyridostigmine bromide 60 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 4 to 6 hours while awake", "dose": {"value": 60, "unit": "mg"}, "frequency": "Q4H", "route": "Oral", "course": "chronic", "reason": "myasthenia gravis"},
+            {"drug": "prednisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "myasthenia gravis"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath", "dose": {"value": 2, "unit": "puff"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "asthma"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "state": {"weight_kg": 55.2, "height_cm": 157.5, "labs": {"Hemoglobin": 11.6, "Mean Corpuscular Volume": 71, "Red Blood Cells": 5.08, "Thyroid Stimulating Hormone": 1.7, "Hemoglobin A1c": 5.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2019-09-17T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-17T16:30", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-17T16:30", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-17T16:30", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Hemoglobin A1c"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-09-17T16:25"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-17T15:40"},
+            {"procedure": "Immunization administration", "performed": "2019-09-17T16:25"},
+            {"procedure": "Venipuncture", "performed": "2019-09-17T16:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-17T17:10", "body": "27F, second-grade teacher, new to the area, here to set up primary care. Old records reviewed (scanned 9/12).\n\nMyasthenia gravis: generalized, diagnosed 2017 by her neurologist, who she will keep seeing (next visit in Nov). Describes herself as \"mostly normal\" on current regimen. End of the school day she sometimes notices her eyelids feel heavy; resolves with rest and her afternoon pyridostigmine. No swallowing or breathing trouble. Never hospitalized for it.\nAsthma: since childhood. Uses albuterol a handful of times a year, mostly with colds or cold air at recess duty. No night symptoms, no ED visits, no oral steroid bursts beyond her daily prednisone.\nAlpha thalassemia trait: knows about it; her dad carries it too. Told years ago her blood count always runs a little low.\n\nOB: one child, born early this year, uncomplicated pregnancy and delivery. Pap at her postpartum visit in April was normal.\nMeds: pyridostigmine 60 mg every 4-6 h while awake, prednisone 10 mg every morning, albuterol HFA prn.\nAllergies: NKDA.\nFH: father with alpha thal trait; mother with autoimmune thyroid disease.\nSH: married, one baby at home. Never smoker, no alcohol. Teaches elementary school.\n\nExam: well-appearing, conversant, no ptosis at rest; sustained upgaze 60 s without fatigue. EOMI, no diplopia. Speech normal. Lungs clear, no wheeze. Heart RRR, no murmur. Abdomen soft. Strength 5/5 proximal and distal. No rash.\n\nA/P\n1. Myasthenia gravis, generalized, stable - continue pyridostigmine and prednisone as prescribed by neurology; will refill locally if easier for her. Reviewed warning signs: trouble swallowing, breathing, or speaking -> ED.\n2. Asthma, mild intermittent - albuterol prn. \n3. Alpha thalassemia trait - CBC today for her baseline.\n4. Long-term prednisone - A1c and CMP today.\n5. Health maintenance: CMP, lipids, TSH (mother's thyroid history), one-time HIV and hep C screen. Tdap given. Flu shot when supply arrives. Pap up to date (04/2019).\nPHQ-2 0.\nFollow up yearly physical, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2019-09-19a",
+          "kind": "portal_message",
+          "start": "2019-09-19T19:48",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-19T19:48", "body": "Hi Malee, your labs from Tuesday are back. Kidney and liver tests, sugar (A1c), cholesterol and thyroid are all normal. HIV and hepatitis C screens negative. Your blood count shows the small red cells and slightly low hemoglobin we expect with alpha thalassemia trait - this is your baseline, and I'll use it to compare going forward. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T15:30",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T15:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2019-10-08T15:45", "body": "Here after school for flu vaccine. No fever today. Screening questions reviewed; on prednisone 10 mg, inactivated vaccine fine. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Tolerated well, left after 15 min."}
+          ]
+        },
+        {
+          "id": "2019-11-21a",
+          "kind": "specialist_visit",
+          "start": "2019-11-21T09:00",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neuromuscular Clinic Follow-up", "author": "neurology", "date": "2019-11-26T11:30", "body": "OUTSIDE NEUROMUSCULAR CLINIC - FOLLOW-UP LETTER\nVisit date: 11/21/2019\n\nDear colleague, thank you for taking over her primary care.\n\nMs. Bautista returns for routine review of generalized myasthenia gravis. Since her last visit she reports mild late-afternoon lid heaviness on long days, no diplopia, no bulbar or respiratory symptoms.\n\nMedications: pyridostigmine 60 mg every 4-6 hours while awake; prednisone 10 mg daily; albuterol inhaler as needed.\nAllergies: NKDA.\n\nExamination: no ptosis at rest or after sustained upgaze; extraocular movements full; facial and bulbar strength normal; neck flexion 5/5; limbs 5/5 without fatigable weakness.\n\nImpression: generalized myasthenia gravis, well controlled.\nPlan: no change in doses. Reviewed medications that can worsen myasthenia; list given to patient. Return in 6-12 months.\n\nNeuromuscular clinic"}
+          ]
+        },
+        {
+          "id": "2019-12-16a",
+          "kind": "pharmacy",
+          "start": "2019-12-16T11:12",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Refill Request", "author": "MA", "date": "2019-12-16T11:12", "body": "Pharmacy fax requesting pyridostigmine 60 mg #180 with refills. Original prescriber is her neurologist; pt asked us to take over refills. Routed to PCP - approved, 90-day supply x 3 refills sent. Pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2020-03-04a",
+          "kind": "portal_message",
+          "start": "2020-03-04T20:31",
+          "reason": "question about illness at school",
+          "documents": [
+            {"type": "Patient Message", "title": "Question about getting sick at school", "author": "patient", "date": "2020-03-04T20:31", "body": "Hi, with everything going around my classroom right now I'm a little nervous since I take prednisone every day. Is there anything I should be doing differently? Thanks, Malee"},
+            {"type": "Patient Message", "title": "RE: Question about getting sick at school", "author": "PCP", "date": "2020-03-05T07:52", "body": "Good question. Ten milligrams a day does lower your defenses somewhat, so: hand washing, keep up with vaccines, and let us know early if you get sick rather than waiting it out - especially a fever, a cough that is getting worse, or any change in your swallowing, speech or breathing, since infections can stir up myasthenia. Don't stop or skip the prednisone on your own. We're here same day if you need us."}
+          ]
+        },
+        {
+          "id": "2020-05-13a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in, refills",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-05-13T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-05-13T16:30", "body": "Video, pt at home, consent for telehealth obtained.\nTeaching remotely since March; home with the baby. MG: no change - lids heavy some evenings, no diplopia, chewing and swallowing fine, no shortness of breath. Asthma: used albuterol twice this spring. No fevers or illness.\nMeds unchanged. Visually no ptosis, speech clear and full sentences, no increased work of breathing.\nA/P: Myasthenia gravis stable; asthma mild intermittent. Prednisone and albuterol refilled. Neurology video follow-up next month. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "specialist_visit",
+          "start": "2020-06-23T10:30",
+          "service": "Neurology",
+          "reason": "myasthenia gravis follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neuromuscular Clinic Video Follow-up", "author": "neurology", "date": "2020-06-26T09:15", "body": "OUTSIDE NEUROMUSCULAR CLINIC - VIDEO FOLLOW-UP\nVisit date: 06/23/2020\n\nGeneralized myasthenia gravis. Remote visit due to the pandemic. Patient reports stable symptoms with occasional end-of-day eyelid fatigue only. No double vision, dysphagia, dysarthria or dyspnea.\nMedications: pyridostigmine 60 mg q4-6h while awake; prednisone 10 mg daily; albuterol prn. NKDA.\nVideo exam: no ptosis at rest or after 45 seconds of upgaze; facial movements symmetric; speech clear; counts to 30 on one breath.\nImpression: stable. Plan: continue current doses. In-person visit in about 9 months.\n\nNeuromuscular clinic"}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2020-09-22T16:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-09-22T16:25", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2020-09-22T16:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-09-22T15:45"},
+            {"procedure": "Venipuncture", "performed": "2020-09-22T16:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-09-22T16:50", "body": "Annual exam. Back in the classroom (hybrid) this month, masked. Feels well.\nMG: stable per her and per neurology video visit in June; same doses. Asthma: rare albuterol. No interval illness.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nROS negative otherwise. Periods regular. Not currently planning pregnancy but may in the next year or two - would want to talk with neurology first.\n\nExam: NAD. No ptosis, EOM full. Oropharynx clear. Neck supple, thyroid not enlarged. Lungs clear. RRR. Abdomen benign. No edema. Skin: no petechiae or bruising. Strength full.\nPHQ-2 0.\n\nA/P\n- Health maintenance: CBC, BMP, A1c (prednisone). Pap next due 2022. Flu shot - nurse visit in two weeks once our supply is in.\n- MG, asthma: stable, no changes.\n- Pregnancy planning: discuss timing with neurology when ready; let us know."}
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T12:40",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2020-09-24T12:40", "body": "Results are fine - kidney function, sugar and A1c normal on the prednisone. Blood count is right where it was last year for your thalassemia trait. See you for your flu shot."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:20",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T15:25"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T15:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2020-10-06T15:35", "body": "Flu vaccine. Afebrile, no symptoms; COVID screening questions negative at door. Quadrivalent 0.5 mL IM R deltoid. VIS reviewed. No reaction."}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T09:50",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Refill Request", "author": "MA", "date": "2020-12-08T09:50", "body": "Pt portal request: albuterol inhaler, current one is empty. Last fill 03/2020. Sent to PCP queue. Approved x1 inhaler with 1 refill. Pt aware."}
+          ]
+        }
+      ]
+    }
+  ]
+}

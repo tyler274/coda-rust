@@ -1,0 +1,263 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001740",
+      "given": "Samantha",
+      "family": "Simard",
+      "birth_date": "1992-09-14",
+      "address_line": "38 Conway Street, Apt 2",
+      "phone": "+1-413-555-0164",
+      "email": "samantha.simard@example.test",
+      "marital_status": "single",
+      "summary": "Financial analyst with relapsing-remitting MS diagnosed in the South in January 2020, on interferon beta-1a, with neurogenic bladder; joined the practice in November 2020 after moving north. Relapses 2022-2025 at outside neurology and ED, febrile cystitis after catheterization began in 2025, and a T4 myelitis admission in June 2026 after her last practice visit.",
+      "events": [
+        {
+          "id": "2020-11-04a",
+          "kind": "telephone",
+          "start": "2020-11-04T10:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2020-11-04T10:20",
+              "body": "Caller is 28, relocated from down south last month for work, looking for a primary doctor up here. Has MS, followed by a neurologist where she used to live and will need a new one locally. Insurance is BCBS PPO through employer, verified. Membership terms reviewed, she signed up online while we were on the phone. New patient slot given for the 17th, 60 min. Emailed the records release for her old PCP and old neurology office; she will sign and send back. Asked her to bring all meds including her injection, or a photo of the box."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "establish_care",
+          "start": "2020-11-17T09:00",
+          "end": "2020-11-17T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; multiple sclerosis",
+          "conditions": [
+            {"label": "Relapsing-remitting multiple sclerosis", "action": "diagnosed", "onset": "2020-01-20", "note": "Diagnosed by outside neurology in January 2020 after right optic neuritis."},
+            {"label": "Neurogenic bladder", "action": "diagnosed", "onset": "2020-06-01", "note": "Detrusor overactivity with urgency, attributed to MS by prior neurologist."},
+            {"label": "History of recurrent optic neuritis, bilateral", "icd10": "Z86.69", "action": "history", "onset": "2019-12-10", "note": "Right eye December 2019, left eye mid-2020; both recovered."},
+            {"label": "History of rheumatic fever", "icd10": "Z86.79", "action": "history", "onset": "2000-06-01", "note": "Childhood, per patient; no known heart involvement."}
+          ],
+          "medications": [
+            {"drug_text": "0.5 ML interferon beta-1a 0.088 MG/ML Prefilled Syringe", "action": "historical", "sig": "Inject 44 mcg under the skin three times weekly", "dose": {"value": 44, "unit": "mcg"}, "frequency": "THREE TIMES WEEKLY", "route": "Subcutaneous", "course": "chronic", "reason": "Relapsing-remitting multiple sclerosis"},
+            {"drug": "oxybutynin chloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily as needed for urinary urgency", "dose": {"value": 5, "unit": "mg"}, "frequency": "BID PRN", "route": "Oral", "course": "chronic", "reason": "Neurogenic bladder"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Financial analyst"}
+          ],
+          "state": {"weight_kg": 61.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2020-11-17T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-11-17T10:10", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": null, "collected": "2020-11-17T10:10", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Lipid Panel", "collected": "2020-11-17T10:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-11-17T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2020-11-17T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-11-17T10:00"}],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-11-17T09:00"}],
+          "orders": [
+            {"id": "neuro-referral-2020", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Relapsing-remitting MS, transfer of care after relocation"},
+            {"id": "records-south-2020", "action": "placed", "order": "Outside records request", "category": "procedure", "to": "Prior neurology and primary care", "reason": "MS diagnosis records and imaging"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-11-17T10:05",
+              "body": "NEW PATIENT\n\n28F, financial analyst, moved up from the South in October for a job. Here to establish primary care and get connected with a local MS neurologist.\n\nNeuro history (her account; records requested): In December 2019 she lost vision in the right eye over a few days with pain on moving the eye. Optic neuritis; MRI brain showed white matter lesions and she was told she had relapsing-remitting MS in January 2020. Started interferon beta-1a 44 mcg SC three times a week in February 2020 and has stayed on it. Second optic neuritis, this time the left eye, around June 2020. Both eyes recovered to her satisfaction. No other attacks she knows of. Injections go fine, rotates sites, takes them at night.\n\nBladder: urgency since early 2020. Prior neurologist called it a neurogenic (overactive) bladder from the MS. Oxybutynin 5 mg, uses it some days, maybe 3-4 times a week, usually before long meetings. No leakage, no infections.\n\nPMH otherwise: rheumatic fever as a kid per her mother, she does not know details; never told she had a heart problem from it, no antibiotic prophylaxis.\nPSH: none.\nMeds: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID PRN.\nAllergies: NKDA.\nFH: mother with autoimmune hypothyroidism on thyroid replacement; father with hypertension. Nobody in the family with MS.\nSH: lives alone in an apartment in town. Analyst at a regional firm, hybrid schedule. Never smoked. Wine or a beer once or twice a week. No other substances. Walks most days.\nGyn: last Pap 2019 at her old practice, normal per her.\n\nROS: no current visual change, numbness, weakness or balance trouble. Mood fine, settling in. Otherwise negative.\n\nEXAM\nVitals as charted. Well appearing.\nHEENT: PERRL, no afferent defect today, EOM full without pain. Fundi not well seen without dilation.\nNeck supple, no thyromegaly.\nHeart RRR, no murmur. Lungs clear.\nAbd soft, NT, no suprapubic tenderness.\nNeuro: CN II-XII grossly intact. Strength 5/5 throughout. Reflexes 2+ and symmetric. Sensation intact to light touch. Gait normal, tandem ok.\nSkin: injection sites on abdomen and thighs without induration.\nPHQ-9 3.\n\nA/P\n1. Relapsing-remitting MS, on interferon beta-1a, last relapse ~5 months ago. Needs a local MS neurologist; referral placed. Baseline CBC with diff and CMP today (interferon labs), TSH as well given family thyroid disease. Records request to old neurology for MRI and notes.\n2. Neurogenic bladder, urgency only, managed with PRN oxybutynin. Continue.\n3. History of bilateral optic neuritis, recovered.\n4. Childhood rheumatic fever by history, no known cardiac involvement. Normal heart exam.\n5. Health maintenance: flu vaccine today. HIV and hep C screening offered, she agreed. Lipids with today's draw. Pap due 2022 based on 2019 result, will confirm once records arrive.\n\nFollow up after neurology sees her, sooner if any new symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "portal_message",
+          "start": "2020-11-19T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2020-11-19T16:40",
+              "body": "Hi Samantha, all of your bloodwork from Tuesday came back normal: blood counts, liver and kidney tests, thyroid and cholesterol. The HIV and hepatitis C screens were negative. I've sent your results to neurology so they have a baseline when they see you. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-14a",
+          "kind": "outside_records",
+          "start": "2020-12-14T11:15",
+          "reason": "records from prior neurology and primary care",
+          "orders": [{"id": "records-south-2020", "action": "done", "date": "2020-12-14T11:15"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2017-05-09T10:00"}],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior neurology records (2019-2020)",
+              "author": "outside neurology",
+              "date": "2020-12-14T11:15",
+              "body": "Outside neurology clinic records, 32 pages, received by fax.\n\nSummary of contents:\n- 12/2019 visit: painful right eye vision loss over 4 days. Exam with right RAPD and reduced acuity right eye. Impression right optic neuritis.\n- 01/2020 MRI brain with and without contrast: multiple periventricular T2/FLAIR white matter hyperintensities, appearance consistent with demyelinating disease.\n- 01/2020 visit: diagnosis of relapsing-remitting multiple sclerosis discussed with patient. Disease-modifying options reviewed; she chose interferon beta-1a.\n- 02/2020: interferon beta-1a 44 mcg SC three times weekly started after injection teaching.\n- 06/2020 visit: left eye blurring with pain on eye movement x5 days, left RAPD. Impression left optic neuritis. Recovery noted at the 08/2020 visit.\n- Urgency noted at the 06/2020 visit; assessed as neurogenic detrusor overactivity; oxybutynin 5 mg twice daily as needed prescribed.\n- 09/2020: last visit before her move. Exam without new findings. Plan to transfer care.\n\nReviewed by PCP; copy to the new neurology office with the referral."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2020-12-14T11:20",
+              "body": "Prior PCP records, received with the neurology packet.\nImmunizations: Tdap 05/2017. Childhood series complete per school record.\nCervical cytology 03/2019: negative for intraepithelial lesion or malignancy.\nProblem list there: multiple sclerosis; urinary urgency. No other chronic problems.\nNo allergies recorded.\nReviewed, Tdap entered. Pap next due 2022."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-23a",
+          "kind": "specialist_visit",
+          "start": "2021-02-23T14:00",
+          "service": "Neurology",
+          "reason": "transfer of care, multiple sclerosis",
+          "orders": [{"id": "neuro-referral-2020", "action": "done", "date": "2021-02-23T14:00"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "author": "neurology",
+              "date": "2021-03-02T09:30",
+              "body": "OUTSIDE NEUROLOGY GROUP - MS CLINIC\nDate of visit: 02/23/2021\nReferring: primary care\n\nThank you for sending Ms. Simard, a 28-year-old woman with relapsing-remitting multiple sclerosis who is transferring care after moving to the area.\n\nHer illness began with right optic neuritis in late 2019, diagnosed as RRMS in January 2020 on the basis of the MRI findings, followed by left optic neuritis in mid-2020. She has been on interferon beta-1a 44 mcg subcutaneously three times weekly since February 2020 and tolerates it without complaint. No new symptoms since the summer. Bladder urgency managed with oxybutynin as needed.\n\nMedications: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg twice daily as needed.\nAllergies: none known.\n\nExamination: Alert, fluent. Visual acuity grossly normal both eyes, pupils equal and reactive, no afferent defect, fields full to confrontation. Extraocular movements full. Face symmetric. Strength full in all four limbs, tone normal, reflexes symmetric, plantar responses flexor. Sensation intact to all modalities. Coordination and gait normal, tandem intact.\n\nImpression: RRMS, clinically stable on interferon beta-1a; no new deficits on examination.\n\nPlan:\n- Continue interferon beta-1a at the current dose.\n- Monitoring labs (CBC and hepatic panel every 6 months, TSH yearly) may be drawn through her PCP; please forward results.\n- Prescriptions for interferon will continue through our office and the specialty pharmacy.\n- Return as needed for new symptoms; she has our nurse line.\n\nNeurology, MS clinic"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "lab_only",
+          "start": "2021-05-18T08:10",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-18T08:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2021-05-18T08:10", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "author": "PCP",
+              "date": "2021-05-19T12:05",
+              "body": "CBC and liver tests normal on interferon. Faxed to neurology. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "annual_physical",
+          "start": "2021-06-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-11T15:00"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-06-08T08:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-06-08T09:20",
+              "body": "Annual exam. 28F with RRMS on interferon beta-1a, neurogenic bladder.\n\nInterval: met her new neurologist in February, no changes. No relapses this year. Bladder about the same, oxybutynin a few times a week. Got both Pfizer doses at a pharmacy in April and May, card reviewed and entered. Working mostly from home, likes it. Sleeping ok. Exercise: walks, some yoga.\n\nMeds: interferon beta-1a 44 mcg SC TIW (neuro), oxybutynin 5 mg BID prn.\nNKDA.\n\nExam: vitals as charted. Well. Eyes: pupils symmetric, no APD. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. Neuro: strength and reflexes symmetric, gait steady. Skin: injection sites clean.\nPHQ-2 0.\n\nA/P\n- RRMS: stable. Monitoring labs done last month, normal. Next set in the fall.\n- Neurogenic bladder: continue oxybutynin; refill sent, 90 days with 3 refills.\n- HM: COVID series complete. Tdap 2017. Pap due next year. Flu in the fall. Lipids normal last November.\n\nRTC 6 months or with any new symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T19:12",
+          "reason": "refill question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Oxybutynin",
+              "author": "patient",
+              "date": "2021-06-10T19:12",
+              "body": "Hi, the pharmacy says they only got 30 pills of the oxybutynin not 90? Can you check? Thanks, Sam"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Oxybutynin",
+              "author": "RN",
+              "date": "2021-06-11T09:02",
+              "body": "Hi Sam, it looks like the 90-day quantity didn't go through on the e-prescription. I called the pharmacy and corrected it to 180 tablets (90-day supply). Should be ready later today."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-12T16:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2021-10-12T16:45",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. Screening questions negative. VIS given. Pt reminded that interferon flu-like effects can overlap with a sore arm/achiness after the vaccine. Tolerated, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "lab_only",
+          "start": "2021-11-16T07:55",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-11-16T07:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2021-11-16T07:55", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": null, "collected": "2021-11-16T07:55", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "author": "PCP",
+              "date": "2021-11-17T08:40",
+              "body": "Counts, LFTs, TSH all within range. Copy to neurology. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-09a",
+          "kind": "portal_message",
+          "start": "2021-12-09T12:30",
+          "reason": "vaccine record",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-04T11:00"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "author": "patient",
+              "date": "2021-12-09T12:30",
+              "body": "Got my booster Saturday at the pharmacy, attaching a pic of the card. Felt kind of crummy for a day, same as my shots usually make me feel."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "author": "MA",
+              "date": "2021-12-09T14:10",
+              "body": "Thanks Samantha, booster dose added to your record."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

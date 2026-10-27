@@ -1,0 +1,723 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001836",
+   "given": "Karen",
+   "family": "Duffy",
+   "birth_date": "1988-12-20",
+   "address_line": "41 Pomeroy Meadow Road",
+   "phone": "+1-917-555-0148",
+   "email": "karen.duffy@example.test",
+   "marital_status": "single",
+   "summary": "Remote software developer with mild ileocolonic Crohn's disease after a 2020 ileocecal resection, mild asthma and recurrent UTIs. Vitamin D deficiency with secondary hyperparathyroidism (2022) and B12 deficiency anemia (2023), then a urethral diverticulum with three pyelonephritis episodes, the last complicated by ceftriaxone anaphylaxis in the ICU (2026); now referred to urology.",
+   "events": [
+    {
+     "id": "2021-07-26a",
+     "kind": "portal_message",
+     "start": "2021-07-26T20:14",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "New patient intake",
+       "author": "patient",
+       "date": "2021-07-26T20:14",
+       "body": "Hi, I'm booked as a new patient on Aug 10. I filled out the intake forms online. My old primary care office was in New York and I signed their release form already, but I don't know if they've sent anything. Also is it ok to bring my inhaler and supplement bottles instead of typing out the doses? Thanks, Karen"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: New patient intake",
+       "author": "front desk",
+       "date": "2021-07-27T09:02",
+       "body": "Hi Karen, welcome! Bringing the bottles is perfect. We faxed a records request to your previous office this morning and will let you know when it comes in. See you on the 10th."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-06a",
+     "kind": "outside_records",
+     "start": "2021-08-06T13:40",
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap)",
+       "performed": "2019-04-11T10:00",
+       "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+       "conclusion": "NILM."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care practice",
+       "author": "front desk",
+       "date": "2021-08-06T13:40",
+       "body": "41 pages received from prior PCP office (New York). Includes visit notes 2016-2021, immunization record, 2019 Pap (normal), operative and pathology summary from her 2020 bowel surgery, and GI correspondence. Indexed to chart, flagged for PCP review before new patient visit."
+      },
+      {
+       "type": "Result Note",
+       "title": "Outside records reviewed",
+       "author": "PCP",
+       "date": "2021-08-09T17:25",
+       "body": "Skimmed old records ahead of tomorrow. Long-standing Crohn's, laparoscopic ileocecal resection 2020 (appendix out with the specimen), followed by GI, no maintenance therapy in the notes. Asthma, albuterol only. Several cystitis episodes over the years. Pap 2019 normal. Tdap last 2010."
+      }
+     ]
+    },
+    {
+     "id": "2021-08-10a",
+     "kind": "establish_care",
+     "start": "2021-08-10T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "New patient, establish care",
+     "conditions": [
+      {
+       "label": "Crohn disease",
+       "action": "history",
+       "note": "ileocolonic, currently mild; followed by outside GI"
+      },
+      {
+       "label": "Mild intermittent asthma",
+       "action": "history"
+      },
+      {
+       "label": "Personal history of urinary tract infections",
+       "icd10": "Z87.440",
+       "action": "history",
+       "note": "recurrent cystitis"
+      },
+      {
+       "label": "Acquired absence of other specified parts of digestive tract",
+       "icd10": "Z90.49",
+       "action": "history",
+       "onset": "2020-02-01",
+       "note": "laparoscopic ileocecal resection 2020 for Crohn's"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "historical",
+       "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath",
+       "frequency": "PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "asthma"
+      },
+      {
+       "drug_text": "prenatal multivitamin Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "ferrous sulfate 325 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet (65 mg elemental iron) by mouth daily with food",
+       "dose": {
+        "value": 325,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Penicillin",
+       "reaction": "Hives",
+       "severity": "moderate",
+       "criticality": "low",
+       "type": "allergy"
+      },
+      {
+       "substance": "Sulfonamide antibiotics",
+       "reaction": "Rash",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "state": {
+      "weight_kg": 60.0,
+      "height_cm": 165.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-08-10T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-08-10T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-08-10T09:50",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-08-10T09:50",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Social, 1-2 drinks per month"
+      },
+      {
+       "item": "Occupation",
+       "value": "Software developer (remote/work-from-home)"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2021-08-10T09:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, new patient, 18-39",
+       "performed": "2021-08-10T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-08-10T09:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-08-10T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2021-08-10T09:00",
+       "body": "32F here to establish. Moved to Easthampton this spring, works from home writing software. Previous PCP in NY.\n\nCrohn's: ileocolonic, many years. Had a laparoscopic ileocecal resection in 2020 (appendix removed with it). Since then bowels mostly settled, 1-3 formed BMs/day, no blood. Sees an outside GI group yearly, not on any maintenance medicine; she says GI calls it mild.\nAsthma: since childhood, uses albuterol maybe once a month, more with colds or cold air. No ED visits or steroids in years.\nUTIs: bladder infections a couple of times a year for a long stretch. Also had UTIs early in a pregnancy a few years ago, treated with nitrofurantoin. Never a kidney infection.\nSupplements: prenatal vitamin and ferrous sulfate daily, both from years back; she just keeps taking them.\n\nPSH: lap ileocecal resection 2020.\nAllergies: PCN (hives), sulfa (rash).\nFHx: mother RA. Father asthma, seasonal allergies. Sister has Crohn's.\nSH: never smoker, drinks once or twice a month, vegetarian. Mostly indoors at a desk; tries to walk on weekends.\n\nROS otherwise negative.\n\nExam: well-appearing, NAD. Vitals per flowsheet, BMI 22. HEENT unremarkable, oropharynx clear. Neck supple, no thyroid enlargement. Lungs clear, no wheeze. Heart RRR, no murmur. Abdomen soft, nontender, healed laparoscopic port scars. No CVA tenderness. Skin clear. Neuro grossly intact. Mood bright. PHQ-2 0.\n\nA/P\n1. Establishing care, health maintenance: Tdap today (last 2010). HIV and HCV screen, CMP, CBC, lipids. Pap 2019 normal in old records, next due 2022-2024 window - will do co-test at a future physical.\n2. Crohn's, mild, post-resection: GI following. Will ask her to have them cc us.\n3. Mild intermittent asthma: albuterol PRN, refills on file.\n4. Hx recurrent UTIs: none recently. Call early for symptoms.\n5. Supplements: continue as she takes them.\nRTC 1 year for physical, sooner prn."
+      },
+      {
+       "type": "Result Note",
+       "title": "New patient labs",
+       "author": "PCP",
+       "date": "2021-08-12T12:10",
+       "body": "Karen - your blood work from Tuesday is all normal: blood counts, kidney and liver function, electrolytes, cholesterol. HIV and hepatitis C screens are negative. Nothing to change."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-14a",
+     "kind": "nurse_visit",
+     "start": "2021-10-14T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-14T16:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-14T16:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2021-10-14T16:25",
+       "body": "Screening questions negative. Influenza vaccine 0.5 mL IM left deltoid, lot and expiration in MAR. Allergies reviewed (PCN, sulfa) - no vaccine allergy. Tolerated well, waited 15 min, left ambulatory."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "pharmacy",
+     "start": "2022-03-08T11:05",
+     "medications": [
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "stop",
+       "reason": "replaced by practice prescription"
+      },
+      {
+       "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+       "action": "start",
+       "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath",
+       "frequency": "PRN",
+       "route": "Inhalation",
+       "course": "chronic",
+       "reason": "Mild intermittent asthma"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request: albuterol",
+       "author": "MA",
+       "date": "2022-03-08T11:05",
+       "body": "Pharmacy fax: albuterol HFA, last fill under prior PCP, no refills left. Per pt uses it about once a month, last needed after a cold in Feb. Routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill approved",
+       "author": "PCP",
+       "date": "2022-03-08T15:40",
+       "body": "Albuterol HFA sent, 1 inhaler with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "outside_records",
+     "start": "2022-05-17T10:30",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology follow-up letter",
+       "author": "gastroenterology",
+       "date": "2022-05-17T10:30",
+       "body": "Outside gastroenterology group\nDate of service: 05/10/2022\n\nDear Doctor,\nI saw Ms. Duffy for her yearly review of ileocolonic Crohn's disease, about two years out from laparoscopic ileocecal resection. She reports one to three formed stools daily without bleeding, nocturnal stooling or abdominal pain. Weight is stable. Abdominal exam is benign.\n\nAllergies: penicillin, sulfonamides.\nMedications: albuterol as needed, prenatal multivitamin, ferrous sulfate.\n\nImpression: Crohn's disease, clinically mild and quiet after resection. We will continue observation without maintenance therapy. I will see her in a year, sooner for symptoms.\n\nSincerely,\nGastroenterology"
+      }
+     ]
+    },
+    {
+     "id": "2022-08-23a",
+     "kind": "annual_physical",
+     "start": "2022-08-23T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical; tired and achy",
+     "conditions": [
+      {
+       "label": "Vitamin D deficiency",
+       "action": "diagnosed",
+       "onset": "2022-03-01"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Calcium": 8.1,
+       "Phosphorus": 3.0,
+       "Alkaline Phosphatase": 120,
+       "25-hydroxy Vitamin D": 12,
+       "Parathyroid Hormone, Intact": 88,
+       "Hemoglobin": 11.6,
+       "Mean Corpuscular Volume": 101,
+       "Thyroid Stimulating Hormone": 1.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-08-23T09:30",
+       "resulted": "2022-08-24T14:00",
+       "results": [
+        {
+         "test": "Calcium",
+         "value": 8.1
+        },
+        {
+         "test": "Alkaline Phosphatase",
+         "value": 120
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-08-23T09:30",
+       "resulted": "2022-08-24T14:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 11.6
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 101
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-08-23T09:30",
+       "resulted": "2022-08-24T14:00",
+       "results": [
+        {
+         "test": "Phosphorus",
+         "value": 3.0
+        },
+        {
+         "test": "25-hydroxy Vitamin D",
+         "value": 12
+        },
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 88
+        },
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "orders": [
+      {
+       "id": "endo-referral-2022",
+       "action": "placed",
+       "order": "Endocrinology referral",
+       "category": "referral",
+       "to": "Endocrinology",
+       "reason": "vitamin D 12 with elevated PTH, low calcium, bone pain"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-08-23T08:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-08-23T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-08-23T08:40",
+       "body": "33F annual. Main thing today: since around March she has felt progressively worn out, legs feel weak climbing stairs, and she aches deep in her shins, thighs and lower back. No injury. Sleeping fine, mood ok (PHQ-2 1). No fevers, weight steady. Bowels at baseline per her, GI saw her in May. Asthma quiet.\n\nWorks from home, rarely outside on weekdays. Vegetarian.\n\nMeds: albuterol prn, prenatal vitamin, ferrous sulfate.\nAllergies: PCN (hives), sulfa (rash).\n\nExam: tired-appearing but comfortable. Vitals per flowsheet. Conjunctivae a touch pale. Thyroid normal. Lungs clear. Heart RRR. Abdomen soft, nontender. Mild tenderness pressing over both tibias, no swelling or deformity. Strength 5/5 but she says stairs are harder. Reflexes 2+ symmetric.\n\nA/P\n1. Fatigue, weakness, diffuse bone pain after ileal resection, indoor job, vegetarian - worried about vitamin D / bone mineral problem. CMP, phos, 25-OH vit D, PTH, CBC, TSH today.\n2. Health maintenance: Pap due within the next couple of years, she'd rather do it next time. Flu and COVID booster at a nurse visit in October.\n3. Crohn's, asthma: stable.\nWill call with results."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results: vitamin D, calcium, PTH",
+       "author": "PCP",
+       "date": "2022-08-24T17:45",
+       "body": "Vit D 12 (low), calcium 8.1 (low), PTH 88 (high), alk phos 120 (top of normal), phos 3.0. Fits vitamin D deficiency with a compensatory PTH rise, likely malabsorption after the ileal resection plus little sun. Hgb 11.6 with MCV 101 - mild, recheck once the vitamin D is sorted. TSH normal. Referring to endocrinology given the PTH and bone pain."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-25a",
+     "kind": "portal_message",
+     "start": "2022-08-25T08:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your lab results",
+       "author": "PCP",
+       "date": "2022-08-25T08:15",
+       "body": "Hi Karen, your vitamin D is quite low (12) and your calcium is a little low, which has pushed your parathyroid hormone up. That combination can absolutely cause the tiredness, weakness and bone aches you described. Your blood count is a bit low too; I'd like to recheck that after we treat the vitamin D. I've referred you to endocrinology so they can confirm the plan for replacing it. Their office will call you to schedule."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "patient",
+       "date": "2022-08-25T12:31",
+       "body": "That actually makes me feel better, at least there's a reason. Should I start vitamin D on my own while I wait?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Your lab results",
+       "author": "PCP",
+       "date": "2022-08-25T16:02",
+       "body": "Their first opening is about 4 weeks out, and they'll likely want a high-dose course, so let's let them set it up. If the appointment slips past mid-September let me know."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-20a",
+     "kind": "specialist_visit",
+     "start": "2022-09-20T13:30",
+     "service": "Endocrinology",
+     "reason": "Vitamin D deficiency, elevated PTH",
+     "conditions": [
+      {
+       "label": "Secondary hyperparathyroidism due to vitamin D deficiency",
+       "icd10": "E21.1",
+       "action": "diagnosed",
+       "onset": "2022-08-23"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "ergocalciferol 1.25 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule (50,000 units) by mouth once weekly for 8 weeks",
+       "frequency": "WEEKLY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Vitamin D deficiency"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       130,
+       85
+      ],
+      "hr": 78
+     },
+     "measure": [
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "endo-referral-2022",
+       "action": "done",
+       "date": "2022-09-20T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology consultation",
+       "author": "endocrinology",
+       "date": "2022-09-27T10:10",
+       "body": "Outside endocrinology practice\nDate of service: 09/20/2022\nReason for referral: low vitamin D, elevated PTH\n\nHistory: Ms. Duffy is a 33-year-old woman with ileocolonic Crohn's disease who had an ileal resection two years ago. Over about six months she has had increasing fatigue, proximal muscle weakness and aching bone pain, worst in the legs. She works remotely and is indoors most of the day. Diet vegetarian.\n\nMedications: albuterol inhaler as needed, prenatal multivitamin daily, ferrous sulfate 325 mg daily.\nAllergies: penicillin (hives), sulfonamides (rash).\nFamily history: mother rheumatoid arthritis, father asthma, sister Crohn's disease.\n\nExam: BP 130/85, HR 78, BMI 22. She looks pale. Tender to palpation along both lower legs. No proximal muscle wasting. Thyroid not enlarged.\n\nData (referring office, 08/23/2022): calcium 8.1 mg/dL, phosphate 3.0 mg/dL, alkaline phosphatase 120 U/L, 25-hydroxyvitamin D 12 ng/mL, intact PTH 88 pg/mL.\n\nAssessment: Secondary hyperparathyroidism from vitamin D deficiency, most likely from reduced absorption after ileal resection and limited sun exposure. The low-normal phosphate and borderline alkaline phosphatase raise concern for early osteomalacia; repletion should address it.\n\nPlan:\n- Ergocalciferol 50,000 units once weekly for 8 weeks.\n- Then cholecalciferol 2000 units daily, ongoing.\n- Recheck calcium, 25-OH vitamin D and PTH with her PCP about 3 months from now. I am happy to see her again if PTH does not normalize.\n\nThank you for this referral."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T15:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-10-18T15:45"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T15:47"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2022-10-18T15:50",
+       "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Pt on week 5 of weekly vitamin D, says legs already ache less. Observed 15 min, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-15a",
+     "kind": "portal_message",
+     "start": "2022-11-15T19:22",
+     "medications": [
+      {
+       "drug": "cholecalciferol 0.05 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule (2000 units) by mouth daily",
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Vitamin D deficiency"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Done with the weekly vitamin D",
+       "author": "patient",
+       "date": "2022-11-15T19:22",
+       "body": "Took the last of the 8 weekly capsules on Sunday. Endo said to switch to 2000 units daily after. Can that go on my list here? I bought it OTC."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Done with the weekly vitamin D",
+       "author": "MA",
+       "date": "2022-11-16T09:10",
+       "body": "Added vitamin D3 2000 units daily to your medication list. You're due for the recheck labs early December; the PCP put in a follow-up for Dec 6."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "office_visit",
+     "start": "2022-12-06T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vitamin D recheck; still fatigued",
+     "state": {
+      "labs": {
+       "25-hydroxy Vitamin D": 32,
+       "Parathyroid Hormone, Intact": 54,
+       "Calcium": 9.0,
+       "Hemoglobin": 9.8,
+       "Mean Corpuscular Volume": 105
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-12-06T10:55",
+       "resulted": "2022-12-07T13:00",
+       "results": [
+        {
+         "test": "Calcium",
+         "value": 9.0
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-12-06T10:55",
+       "resulted": "2022-12-07T13:00",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 9.8
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 105
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-06T10:55",
+       "resulted": "2022-12-07T13:00",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D",
+         "value": 32
+        },
+        {
+         "test": "Parathyroid Hormone, Intact",
+         "value": 54
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "heme-referral-2022",
+       "action": "placed",
+       "order": "Hematology referral",
+       "category": "referral",
+       "to": "Hematology",
+       "reason": "macrocytic anemia, Hgb 9.8, MCV 105"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-12-06T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-12-06T10:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up: vitamin D deficiency",
+       "author": "PCP",
+       "date": "2022-12-06T10:20",
+       "body": "Finished ergocalciferol 50k weekly x8 in mid-Nov, now on D3 2000 daily. Bone aches much better, legs stronger on stairs. But fatigue is the same or worse. Over the last few weeks: episodes of her heart racing for a minute or two, a few times a week, at rest; and her tongue has been sore and tender, hurts with spicy food. No chest pain, no syncope, no dyspnea beyond baseline. No melena or blood in stool, bowels at baseline. Still vegetarian, eats eggs and dairy rarely.\n\nExam: pale. HR regular today. Tongue smooth and reddened. Lungs clear. Heart regular, no murmur. Abdomen benign. No edema.\n\nA/P\n1. Vitamin D deficiency with secondary hyperparathyroidism: recheck vit D, PTH, calcium today. Continue D3 2000.\n2. Fatigue, palpitations, glossitis, pallor, MCV 101 in August: concern for B12 deficiency after ileal resection plus vegetarian diet. CBC today; if anemia has progressed will refer to heme.\n3. Palpitations: likely related; revisit once anemia addressed."
+      },
+      {
+       "type": "Result Note",
+       "title": "Results 12/7",
+       "author": "PCP",
+       "date": "2022-12-07T16:30",
+       "body": "Vit D 32, PTH 54, Ca 9.0 - repleted, PTH normalized. Hgb now 9.8, MCV 105 - macrocytic anemia, worse than August. Hematology referral placed. Will call her."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-08a",
+     "kind": "telephone",
+     "start": "2022-12-08T08:50",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call: results and referral",
+       "author": "PCP",
+       "date": "2022-12-08T08:50",
+       "body": "Spoke with pt. Vitamin D and parathyroid numbers are now normal. Blood count has dropped to 9.8 with large red cells; explained this points toward B12 or similar deficiency and that hematology can sort out the cause and the right replacement. Referral sent, she'll watch for their call. Advised ED for chest pain, fainting or shortness of breath at rest. She understands."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

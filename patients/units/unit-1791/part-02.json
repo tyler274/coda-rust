@@ -1,0 +1,253 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001791",
+      "events": [
+        {
+          "id": "2021-03-08a",
+          "kind": "portal_message",
+          "start": "2021-03-08T06:58",
+          "reason": "positive pregnancy test",
+          "documents": [
+            {"type": "Patient Message", "title": "Positive test", "author": "patient", "date": "2021-03-08T06:58", "body": "Good morning - I took a home test this weekend and it was positive! Last period started Feb 15. We were hoping for this. Should I keep taking everything as usual? I don't want to stop anything without asking. - Malee"},
+            {"type": "Patient Message", "title": "RE: Positive test", "author": "PCP", "date": "2021-03-08T07:41", "body": "Congratulations! Yes - keep taking your pyridostigmine and prednisone exactly as you have been; stopping either suddenly is riskier than continuing. Let's see you this week to confirm, go over your medicines, and get you to obstetrics early given the myasthenia. Front desk will reach out with a time."}
+          ]
+        },
+        {
+          "id": "2021-03-11a",
+          "kind": "office_visit",
+          "start": "2021-03-11T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pregnancy confirmation",
+          "conditions": [
+            {"label": "Supervision of high risk pregnancy, unspecified, first trimester", "icd10": "O09.91", "action": "diagnosed", "onset": "2021-02-15", "note": "G2P1; LMP 2021-02-15; myasthenia gravis on prednisone"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-03-11T15:55", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
+          ],
+          "orders": [
+            {"id": "ob-referral-2021", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "intrauterine pregnancy, mother with myasthenia gravis on prednisone"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-03-11T15:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-03-11T16:35", "body": "Here after a positive home pregnancy test. LMP 2/15/21 -> about 3.5 weeks; EDD around 11/22/21. G2P1 (healthy 2-year-old, uncomplicated pregnancy and delivery). Mild nausea, no bleeding or cramping.\nMG: stable, same doses, neurologist aware of plans to conceive. Asthma: quiet.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nUrine hCG positive in office.\nExam: well. No ptosis. Lungs clear. Abdomen soft, nontender.\n\nA/P\n1. Intrauterine pregnancy, early first trimester - referral to obstetrics placed; she would like an OB close to home. Asked them to see her early given MG and chronic steroid.\n2. Myasthenia gravis - continue pyridostigmine and prednisone unchanged; both have been used through her first pregnancy without trouble. Messaging neurology so they know. She has the list of drugs to avoid with MG to share with OB.\n3. Asthma - albuterol prn is fine in pregnancy.\nShe will get her COVID vaccine when teachers become eligible; reviewed that it's recommended in pregnancy."}
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "pharmacy",
+          "start": "2021-04-20T10:15",
+          "reason": "outside immunizations",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-26T14:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-16T14:20"}
+          ],
+          "documents": [
+            {"type": "Immunization Note", "title": "Outside Immunizations Recorded", "author": "MA", "date": "2021-04-20T10:15", "body": "Pt uploaded her vaccination card. Pfizer COVID doses 3/26/21 and 4/16/21, given at a regional vaccination site. Entered in immunization history."}
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "specialist_visit",
+          "start": "2021-05-20T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit",
+          "vitals": {"bp": [120, 75], "hr": 88, "rr": 18},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-20T10:10", "results": [{"test": "Hemoglobin", "value": 11}, {"test": "Hematocrit", "value": 33}, {"test": "Mean Corpuscular Volume", "value": 70}]},
+            {"panel": null, "collected": "2021-05-20T10:10", "resulted": "2021-05-24T15:00", "results": [
+              {"test": "Hemoglobin A/Hemoglobin.total in Blood", "loinc": "4546-8", "value": 97, "unit": "%"},
+              {"test": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis", "loinc": "4552-6", "value": 2.5, "unit": "%"},
+              {"test": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis", "loinc": "32682-7", "value": 0.5, "unit": "%"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2021-05-20T10:30", "text": "Single intrauterine pregnancy. Fetal cardiac activity present. Crown-rump length consistent with dates by LMP. Amniotic fluid normal in amount. Placenta posterior, normal in thickness, no previa. No fetal fluid collections. Cervix long and closed.", "conclusion": "Single live intrauterine pregnancy, size consistent with dates."}
+          ],
+          "orders": [
+            {"id": "ob-referral-2021", "action": "done", "date": "2021-05-20T09:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics Prenatal Visit", "author": "obstetrics", "date": "2021-05-26T13:05", "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - PRENATAL VISIT\nDate of visit: 05/20/2021\nGA 13w3d by LMP (2/15/21). G2P1001.\n\nThank you for referring Ms. Bautista. Pregnancy unremarkable so far. Today she raises two concerns: her belly feels bigger than it did at this point last time, and for about a week she has been a little short of breath.\n\nPMH: generalized myasthenia gravis (neurology), asthma, alpha thalassemia trait.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol HFA prn.\nAllergies: NKDA.\nFamily: father alpha thal carrier; mother autoimmune thyroid disease. One healthy child, 2.\nSocial: elementary school teacher; never smoker; no alcohol.\n\nBP 120/75, HR 88, RR 18.\nUterus measures larger than expected for 13 weeks. Fetal heart tones present. Lungs clear.\n\nLabs: Hgb 11 g/dL, Hct 33%, MCV 70 fL. Hemoglobin electrophoresis: HbA 97%, HbA2 2.5%, HbF 0.5% - no beta-chain variant; with the microcytosis, consistent with her known alpha thalassemia trait.\nUltrasound: single live IUP, size equals dates, normal fluid (report attached).\n\nAssessment: IUP at 13 weeks. Size greater than dates on exam, not borne out on ultrasound. Mild dyspnea of pregnancy vs asthma; lungs clear. Alpha thalassemia trait confirmed.\nPlan: routine prenatal labs; recheck growth and fluid at next visit in 4 weeks. Will coordinate with neurology.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2021-06-16a",
+          "kind": "specialist_visit",
+          "start": "2021-06-16T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit",
+          "conditions": [
+            {"label": "Hydrops fetalis", "icd10": "O36.22X0", "action": "diagnosed", "onset": "2021-06-16"},
+            {"label": "Parvovirus B19 infection", "icd10": "B34.3", "action": "diagnosed", "onset": "2021-06-02"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2021-06-16T11:20", "resulted": "2021-06-18T14:10", "results": [
+              {"test": "Parvovirus B19 IgM Ab [Presence] in Serum by Immunoassay", "loinc": "40658-7", "text": "Positive"},
+              {"test": "Parvovirus B19 IgG Ab [Presence] in Serum by Immunoassay", "loinc": "29660-8", "text": "Negative"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2021-06-16T10:40", "text": "Single intrauterine pregnancy. Fetal heart rate 165/min. Fetal ascites. Fetal skin edema. Small pericardial effusion. Polyhydramnios. Placenta thickened. No structural anomaly seen on this limited survey.", "conclusion": "Fetal hydrops: ascites, skin edema and pericardial effusion, with polyhydramnios and placental thickening."},
+            {"study": "Fetal middle cerebral artery Doppler", "loinc": "11525-3", "performed": "2021-06-16T11:05", "text": "Middle cerebral artery peak systolic velocity measured on the follow-up study is elevated for gestational age. Umbilical artery waveform with forward diastolic flow.", "conclusion": "Elevated MCA peak systolic velocity, suggesting fetal anemia."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics Prenatal Visit", "author": "obstetrics", "date": "2021-06-21T09:20", "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - PRENATAL VISIT\nDate of visit: 06/16/2021, with serology addendum 06/18/2021\nGA 17w2d.\n\nFollow-up after last month's size-dates question and shortness of breath. She has felt fine overall. Mentions a mild cold around two weeks ago - low-grade temperature, tiredness, stuffy nose - gone on its own within days. No travel. No known sick contacts, though several children in her class have been passing around viral illnesses.\n\nMeds unchanged (pyridostigmine, prednisone 10 mg, albuterol prn). NKDA.\n\nUltrasound today: fetal ascites, skin edema and a small pericardial effusion; polyhydramnios; thick placenta. FHR 165. Follow-up study shows raised MCA peak systolic velocity (reports attached).\n\nAssessment: fetal hydrops with Doppler evidence of fetal anemia at 17 weeks. Infectious cause suspected given classroom exposure and recent illness.\nPlan: parvovirus B19 serology sent today. Counseling done; she understands the findings are serious.\n\nADDENDUM 06/18/2021: parvovirus B19 IgM POSITIVE, IgG NEGATIVE - acute maternal parvovirus B19 infection. Patient informed by phone. Close ultrasound surveillance.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "telephone",
+          "start": "2021-06-22T12:15",
+          "reason": "update on pregnancy",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Telephone Call", "author": "PCP", "date": "2021-06-22T12:30", "body": "Called pt after reviewing OB letter (fetal hydrops, parvovirus B19 IgM positive). She is frightened but understands what OB told her. Answered questions about the virus - common in schools, not something she did wrong. She asked whether her prednisone made it worse; explained steroids can blunt the immune response, but stopping it now would risk a myasthenia flare - keep taking it, OB and neurology agree. No weakness, swallowing or breathing symptoms. She has OB follow-up set. Told her to call any time; offered to see her. 15 min."}
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "specialist_visit",
+          "start": "2021-07-20T08:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "fever, rash",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-20T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2021-07-20T09:30", "text": "Single intrauterine pregnancy, cardiac activity present. Nuchal skin thickening. Pericardial effusion. Fetal ascites.", "conclusion": "Persistent fetal hydrops: nuchal skin thickening, pericardial effusion and ascites."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics Visit", "author": "obstetrics", "date": "2021-07-22T16:40", "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - VISIT NOTE\nDate of visit: 07/20/2021\nGA 22w2d.\n\nKnown maternal parvovirus B19 infection about a month ago with fetal hydrops. Comes in early: for the last few days low-grade temperatures, fatigue, and a pink rash on both cheeks. Says several of her students looked the same last week. Because of her job and these symptoms a CBC and ultrasound were done today.\n\nMeds: pyridostigmine, prednisone 10 mg daily, albuterol prn. NKDA.\nExam: faint erythematous rash over both cheeks; otherwise unremarkable.\nCBC: unremarkable for her.\nUltrasound: nuchal skin thickening, pericardial effusion, ascites (report attached).\n\nAssessment: facial rash consistent with parvovirus; ongoing fetal hydrops at 22 weeks.\nPlan: close surveillance; reviewed fetal kick counts and when to go to the hospital.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2021-07-20b",
+          "kind": "ed_visit",
+          "start": "2021-07-20T19:05",
+          "end": "2021-07-21T01:30",
+          "service": "Emergency Medicine",
+          "reason": "decreased fetal movement",
+          "conditions": [
+            {"label": "Severe parvovirus B19 infection (immunocompromised host)", "icd10": "B34.3", "action": "diagnosed", "onset": "2021-06-02", "note": "on chronic prednisone; no IgG response"}
+          ],
+          "vitals": {"bp": [120, 78], "hr": 88, "temp_c": 36.8},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-20T19:30", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 7.0}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2021-07-20T19:30", "results": [
+              {"test": "ABO and Rh group [Type] in Blood", "loinc": "882-1", "text": "O positive"},
+              {"test": "Blood group antibody screen [Presence] in Serum or Plasma", "loinc": "890-4", "text": "Negative"},
+              {"test": "Parvovirus B19 IgM Ab [Presence] in Serum by Immunoassay", "loinc": "40658-7", "text": "Positive"},
+              {"test": "Parvovirus B19 IgG Ab [Presence] in Serum by Immunoassay", "loinc": "29660-8", "text": "Negative"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2021-07-20T20:15", "text": "Single intrauterine fetus with cardiac activity. Fetal skin edema and ascites. Placenta without retroplacental collection; no placenta previa.", "conclusion": "Fetal skin edema and ascites. No evidence of abruption or previa."}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2021-07-23T08:50", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival 07/20/2021 19:05\n\nCC: baby moving less for two days.\nHPI: 28-year-old G2P1 at 22 weeks, generalized myasthenia gravis on daily prednisone, seen in her OB's office this morning for a parvovirus rash. Over two days fewer fetal movements. Denies vaginal bleeding, fluid leakage or contractions.\nPMH: myasthenia gravis, asthma, alpha thalassemia trait; parvovirus B19 infection this pregnancy with fetal hydrops. Prior pregnancy term, uncomplicated.\nMeds: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn. NKDA.\nSH: teacher; never smoker; no alcohol.\n\nVitals: BP 120/78, HR 88, T 36.8 C.\nExam: comfortable; abdomen gravid, nontender; no vaginal bleeding.\n\nLabs: O positive; antibody screen negative. Hgb 13.2, WBC 7,000, platelets 250,000. Parvovirus B19 IgM positive, IgG negative.\nOB ultrasound: single fetus, skin edema and ascites; no abruption or previa.\nFetal monitoring: baseline 160 bpm, minimal variability, no accelerations.\n\nMDM: persistent parvovirus B19 viremia without seroconversion five weeks after illness in a patient on chronic corticosteroids - severe infection in an immunocompromised host, with fetal hydrops. Reviewed with on-call obstetrics.\nDisposition: discharged 01:30 with close obstetric follow-up and return precautions for absent movement, bleeding or pain.\n\nEmergency Medicine"}
+          ]
+        },
+        {
+          "id": "2021-07-26a",
+          "kind": "telephone",
+          "start": "2021-07-26T16:10",
+          "reason": "check-in after ED visit",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Telephone Call", "author": "PCP", "date": "2021-07-26T16:25", "body": "Called to check in after ED record arrived. Rash fading, energy so-so. Following with OB twice weekly. Still on prednisone and pyridostigmine, no MG symptoms. Family staying with her this week. Will keep in touch; she knows to reach us any time."}
+          ]
+        },
+        {
+          "id": "2021-08-16a",
+          "kind": "hospital_admission",
+          "start": "2021-08-16T07:45",
+          "end": "2021-08-18T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "absent fetal movement",
+          "conditions": [
+            {"label": "Intrauterine fetal demise", "icd10": "O36.4XX0", "action": "diagnosed", "onset": "2021-08-16"},
+            {"label": "Supervision of high risk pregnancy, unspecified, first trimester", "icd10": "O09.91", "action": "resolved"},
+            {"label": "Hydrops fetalis", "icd10": "O36.22X0", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-16T08:20", "results": [{"test": "Hemoglobin", "value": 12.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-08-16T08:20", "results": [{"test": "Prothrombin Time", "value": 12}]},
+            {"panel": null, "collected": "2021-08-16T08:20", "results": [
+              {"test": "aPTT in Platelet poor plasma by Coagulation assay", "loinc": "3173-2", "value": 30, "unit": "s"},
+              {"test": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay", "loinc": "3255-7", "value": 400, "unit": "mg/dL"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Obstetric ultrasound", "loinc": "11525-3", "performed": "2021-08-16T08:05", "text": "Single intrauterine fetus. No cardiac activity. No fetal movement.", "conclusion": "Intrauterine fetal demise."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Obstetric Discharge Summary", "author": "obstetrics", "date": "2021-08-20T14:15", "body": "REGIONAL HOSPITAL LABOR & DELIVERY - DISCHARGE SUMMARY\nAdmitted 08/16/2021  Discharged 08/18/2021\n\nReason for admission: no fetal movement for 24 hours at 26w0d.\nHistory: G2P1, generalized myasthenia gravis on pyridostigmine and prednisone 10 mg, asthma, alpha thalassemia trait. This pregnancy complicated by maternal parvovirus B19 infection without seroconversion and fetal hydrops. Denied bleeding, abdominal pain, fever or trauma.\n\nOn arrival vital signs stable. Abdomen appropriate for gestational age; no fetal heart tones by handheld Doppler. Ultrasound confirmed intrauterine fetal demise with no cardiac activity.\nLabs: Hgb 12.2, platelets 250K, PT 12 s, PTT 30 s, fibrinogen 400 mg/dL.\n\nCourse: the patient was understandably distraught and asked for time with her family before deciding about management. On 8/17 she chose induction; misoprostol induction, uncomplicated vaginal delivery of a stillborn infant with marked hydrops. Placenta delivered intact. Estimated blood loss small. Blood type O positive - anti-D not indicated. Home medications continued throughout; no myasthenic symptoms. Bereavement and social work support provided.\n\nDischarge diagnoses: intrauterine fetal demise at 26 weeks; fetal hydrops due to maternal parvovirus B19 infection.\nDischarge medications: pyridostigmine 60 mg q4-6h, prednisone 10 mg daily, albuterol prn.\nFollow-up: obstetrics in 6 weeks; primary care.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "telephone",
+          "start": "2021-08-24T11:40",
+          "reason": "check-in after delivery",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Telephone Call", "author": "PCP", "date": "2021-08-24T12:00", "body": "Called after reading the discharge summary. Expressed our condolences. Physically recovering, bleeding light, no fever. Sleeping poorly. Supportive family around. School starts in two weeks - unsure she's ready but wants the routine. Taking all her medicines. Visit set for mid-September to check in; sooner if needed."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "office_visit",
+          "start": "2021-09-14T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pregnancy loss",
+          "conditions": [
+            {"label": "Intrauterine fetal demise", "icd10": "O36.4XX0", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 57.6},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 6},
+            {"survey": "GAD-7 total score", "value": 4}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-14T16:20"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-14T15:45"},
+            {"procedure": "Immunization administration", "performed": "2021-09-14T16:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-09-14T16:40", "body": "Four weeks after stillbirth at 26 weeks (parvovirus B19 with fetal hydrops). She went back to her classroom last week; says being with the kids helps and also is hard. Sad most days, some crying, sleep improving. Eating ok. No thoughts of self-harm. Leaning on family; considering the hospital's bereavement group.\nBleeding stopped. No fever. No weakness, ptosis, swallowing or breathing trouble. Rash long gone.\nMeds: pyridostigmine, prednisone 10 mg, albuterol prn.\nPHQ-9 6, GAD-7 4.\nExam: tearful at times, appropriate. No ptosis. Lungs clear. Abdomen soft, nontender.\n\nA/P\n1. Grief after stillbirth - normal grief response, mild symptom scores. No diagnosis. Gave bereavement group and counselor contacts; she'll reach out. Recheck in a couple of months or sooner.\n2. MG - stable through delivery.\n3. Postpartum check with OB in 2 weeks.\nFlu vaccine today."}
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "specialist_visit",
+          "start": "2021-09-28T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "postpartum visit",
+          "documents": [
+            {"type": "Consult Note", "title": "Postpartum Visit", "author": "obstetrics", "date": "2021-10-04T10:30", "body": "OUTSIDE OBSTETRICS & GYNECOLOGY - POSTPARTUM VISIT\nDate of visit: 09/28/2021\n\nSix weeks after misoprostol induction and vaginal delivery of a stillborn at 26 weeks (fetal hydrops, maternal parvovirus B19). Lochia resolved. No fever or pelvic pain. Coping with grief, has support; seeing her PCP.\nExam: abdomen soft; uterus normal size, nontender; perineum healed.\nAssessment: normal postpartum recovery.\nPlan: discussed that parvovirus does not usually recur in a later pregnancy; preconception visit when she is ready. Routine gynecologic care through PCP.\n\nObstetrics & Gynecology"}
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "pharmacy",
+          "start": "2021-11-18T17:30",
+          "reason": "outside immunization",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-18T17:30"}],
+          "documents": [
+            {"type": "Immunization Note", "title": "Outside Immunization Recorded", "author": "MA", "date": "2021-11-19T09:05", "body": "State registry update: Pfizer COVID booster given 11/18/21 at a retail pharmacy. Added to history."}
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "portal_message",
+          "start": "2021-12-07T21:14",
+          "reason": "refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Prednisone refill", "author": "patient", "date": "2021-12-07T21:14", "body": "Hi, the pharmacy says my prednisone has no refills left. I have about a week of pills. Thank you!"},
+            {"type": "Patient Message", "title": "RE: Prednisone refill", "author": "MA", "date": "2021-12-08T08:20", "body": "Sent today - prednisone 10 mg, 90 days with 3 refills, to your usual pharmacy. Dr. wanted me to ask how you are doing; reply anytime if you'd like a visit."}
+          ]
+        }
+      ]
+    }
+  ]
+}

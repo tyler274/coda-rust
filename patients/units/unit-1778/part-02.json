@@ -1,0 +1,379 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001778",
+      "events": [
+        {
+          "id": "2023-04-18a",
+          "kind": "portal_message",
+          "start": "2023-04-18T21:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Period pain",
+              "author": "patient",
+              "date": "2023-04-18T21:02",
+              "body": "Hi, I wanted to see if I could come in about my periods. The cramps have gotten a lot worse, the first couple of days I'm curled up with a heating pad and the ibuprofen barely touches it. Sex has also started to hurt, deep inside, which is new. We've been trying to get pregnant since the fall with no luck. Not sure if any of that is connected but it's on my mind. After school any day works. Melissa"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Period pain",
+              "author": "PCP",
+              "date": "2023-04-19T07:12",
+              "body": "Thanks for writing, Melissa. Those things may well be connected and it's worth sorting out. Let's do Tuesday 5/2 at 3:45. If the pain gets much worse or you get fever, text me before then."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-02a",
+          "kind": "office_visit",
+          "start": "2023-05-02T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "painful periods, difficulty conceiving",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-02T15:50",
+              "resulted": "2023-05-02T15:55",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-02T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "progressive dysmenorrhea and dyspareunia, trying to conceive 7 months, family history of endometriosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-05-02T16:30",
+              "body": "Here for worsening period pain.\n\nOver roughly two years her periods have hurt more each year. Now the first two or three days are bad: dull cramping low in the pelvis that goes into the low back and sometimes toward the rectum. Ibuprofen takes the edge off but not much more. Over the last several months, deep pain with intercourse. Some discomfort with bowel movements around her period; otherwise bowels normal, no blood. Cycles still regular, every 28 to 30 days. No spotting between periods, no unusual discharge. No fever. No urinary symptoms.\n\nTrying to conceive since about September, 7 months now.\n\nNo prior pelvic infections or STIs. No surgeries. Mother with endometriosis.\n\nExam: comfortable. Vitals as charted. Abdomen soft, mild suprapubic tenderness without guarding, no masses. Urine hCG negative today. I did not do a pelvic exam today; she would rather have that done once by gynecology.\n\nA/P: progressive secondary-sounding dysmenorrhea with deep dyspareunia and cyclic bowel discomfort, plus a family history: endometriosis is the leading concern. Seven months of trying is still within the normal window, but given the picture it is reasonable for gynecology to look at both together.\n- Referral to gynecology; front desk to help schedule.\n- Ibuprofen with food at the first sign of her period, heat.\n- Call if pain becomes constant, fever, or she misses a period."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-04a",
+          "kind": "telephone",
+          "start": "2023-05-04T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Gynecology referral scheduled",
+              "author": "front desk",
+              "date": "2023-05-04T11:25",
+              "body": "Referral and 5/2 office note faxed to the outside gynecology group. Their scheduler called back: new patient consult Friday 6/9 at 9:30, ultrasound same visit if needed. Patient notified by text and confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-09a",
+          "kind": "specialist_visit",
+          "start": "2023-06-09T09:30",
+          "service": "Gynecology",
+          "reason": "chronic pelvic pain and difficulty conceiving",
+          "measure": [
+            "bp",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Endometriosis",
+              "action": "diagnosed",
+              "onset": "2021-06-01",
+              "note": "clinical diagnosis by gynecology; left ovarian cyst on ultrasound; laparoscopy recommended"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-06-09T10:05",
+              "text": "TRANSVAGINAL PELVIC ULTRASOUND\nIndication: pelvic pain, dysmenorrhea, difficulty conceiving.\nTechnique: transvaginal grayscale and color Doppler imaging.\nUterus: retroverted, normal in size and contour. Endometrium normal in thickness for cycle phase. No myometrial mass.\nRight ovary: normal in size with normal follicles.\nLeft ovary: a homogeneous hypoechoic cyst measuring 4.0 x 3.6 x 3.4 cm, without internal vascularity or solid component.\nNo free fluid in the pelvis.",
+              "conclusion": "Normal uterus. 4 cm homogeneous hypoechoic left ovarian cyst."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2023",
+              "action": "done",
+              "date": "2023-06-09T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "author": "gynecology",
+              "date": "2023-06-14T11:20",
+              "body": "OUTSIDE GYNECOLOGY GROUP\nConsultation, date of visit 06/09/2023\nReferred by her primary care physician.\n\nReason: pelvic pain and trouble conceiving.\n\nMs. Nolan is a 29-year-old who describes two years of steadily worsening menstrual pain, at its worst during the first two to three days of flow. The pain is a dull cramp that can spread into the lower back and toward the rectum. Deep penetration during intercourse has become painful, enough that intimacy has become a source of stress. Around menses she also notices pain with defecation; bowel pattern is otherwise unchanged. Over-the-counter analgesics have helped only modestly. Menses are regular at 28 to 30 day intervals with no intermenstrual bleeding or abnormal discharge. She and her husband have been attempting pregnancy for eight months.\n\nPMH: no pelvic inflammatory disease or sexually transmitted infection.\nPSH: none; no abdominal operations.\nMedications: none.\nAllergies: NKDA.\nFamily history: endometriosis in her mother; infertility in a maternal aunt.\nSocial: nonsmoker, no alcohol. Otherwise healthy.\n\nExam: well-appearing. External genitalia normal. Speculum: normal cervix, physiologic discharge. Bimanual and rectovaginal: uterus retroverted; tenderness on palpation of the posterior cul-de-sac with nodularity along the uterosacral ligaments.\n\nTransvaginal ultrasound in clinic today: normal uterus; a homogeneous hypoechoic 4 cm cyst on the left ovary.\n\nImpression: findings are highly suggestive of endometriosis, with a probable left ovarian endometrioma, in a patient with dysmenorrhea, deep dyspareunia, cyclic dyschezia and eight months of attempting conception.\n\nPlan: I recommended diagnostic laparoscopy, which would confirm and stage the disease and allow treatment of implants and the cyst at the same sitting. We discussed what surgery involves and its recovery. She would like time to think it over with her husband and will call our surgical scheduler if she wishes to proceed. Continue analgesics as needed in the meantime.\n\nThank you for the referral.\n\nAllergies: NKDA"
+            },
+            {
+              "type": "Result Note",
+              "title": "Outside gynecology consult received",
+              "author": "PCP",
+              "date": "2023-06-14T17:05",
+              "body": "Gyn consult reviewed. Exam and ultrasound support endometriosis with a left endometrioma, 4 cm. Laparoscopy recommended; patient deciding. Endometriosis added to problem list. Will check in with her."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "telephone",
+          "start": "2023-06-20T16:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up after gynecology consult",
+              "author": "PCP",
+              "date": "2023-06-20T16:25",
+              "body": "Called to see how the gyn visit went and to answer questions. She understood the diagnosis and the recommendation for laparoscopy. After talking it over at home they have decided not to schedule surgery right now; she does not want an operation this summer, and they are going to take a break from trying for a while. She knows the surgery offer stands and can go back to gynecology whenever she is ready. Pain plan for now: ibuprofen with food early in the period, heat. Agreed she will reach out if pain worsens or when they are ready to try again. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "annual_physical",
+          "start": "2023-10-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, Pap",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-10-16T07:55",
+              "issued": "2023-10-19T14:00",
+              "text": "Specimen: cervical, liquid-based preparation.\nSpecimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T08:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-16T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-10-16T08:30",
+              "body": "Annual exam, Pap due.\n\nEndometriosis: diagnosed clinically by gyn in June, left endometrioma 4 cm on ultrasound. She did not go ahead with laparoscopy. They are not trying to conceive at the moment. Periods still painful the first couple of days; ibuprofen with food and heat get her through, has not missed school for it. Intercourse still uncomfortable at times. Bowels normal.\n\nMeds: OTC ibuprofen with periods only. NKDA.\nPHQ-9: 2. Says she is fine, the summer decision was hard but she feels settled about it.\n\nExam: vitals per flowsheet, BMI 22. Heart, lungs normal. Abdomen soft, nontender. Pelvic: normal external exam, cervix normal, Pap collected. Deferred bimanual.\n\nA/P:\n- Endometriosis: stable on current approach. She knows the door to gyn is open.\n- Cervical cancer screening: Pap today.\n- Flu and updated COVID given.\n- Return for annual next fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "portal_message",
+          "start": "2023-10-20T11:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2023-10-20T11:30",
+              "body": "Melissa, your Pap was normal. With your age and history the next one is due in three years."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "telephone",
+          "start": "2024-04-08T07:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2024-04-08T07:10",
+              "body": "Voicemail from patient: parent-teacher conferences moved to tomorrow afternoon, needs to cancel her 4/9 check-in. Says nothing urgent, will message when she wants to rebook."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "office_visit",
+          "start": "2024-04-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual visit reminder",
+              "author": "front desk",
+              "date": "2024-09-24T09:30",
+              "body": "Hi Melissa, you're due for your yearly physical. We have early openings in late October. Let us know what works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Annual visit reminder",
+              "author": "patient",
+              "date": "2024-09-24T20:12",
+              "body": "Wednesday 10/23 early please. Should I fast?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Annual visit reminder",
+              "author": "front desk",
+              "date": "2024-09-25T08:05",
+              "body": "Booked 10/23 at 7:30. Fasting is not required for this visit, but water is fine either way."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "annual_physical",
+          "start": "2024-10-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "weight_kg": 62.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "rr",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-23T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-23T07:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-23T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-23T08:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-23T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-23T07:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-23T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-23T08:25",
+              "body": "Yearly visit. Canceled the spring check-in, nothing was wrong.\n\nEndometriosis: periods unchanged from last year, painful the first two days, ibuprofen and heat. No missed work. Dyspareunia comes and goes. They plan to start trying again around the end of the year. We talked about what to expect: given the endometriosis, if no pregnancy within about six months to a year she should come back sooner rather than later and we will get her back to gyn. She would rather avoid surgery if she can but is open to hearing options again.\n\nMeds: OTC ibuprofen with menses. NKDA. PHQ-2 0.\n\nExam: vitals as charted, BMI 23. Heart and lungs normal. Abdomen soft, nontender, no mass.\n\nA/P:\n- Endometriosis, stable symptoms. Plan as above.\n- CBC and lipids today (screening, last 2021).\n- Flu and COVID today.\n- Pap 2023 normal, next 2026."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-10-24T13:15",
+              "body": "Blood count and cholesterol are both normal. Talk soon."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,663 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001836",
+   "events": [
+    {
+     "id": "2025-03-04a",
+     "kind": "office_visit",
+     "start": "2025-03-04T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Check-in, supplements",
+     "appointment": "cancelled",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Appointment cancelled",
+       "author": "front desk",
+       "date": "2025-03-03T17:05",
+       "body": "Pt called to cancel tomorrow afternoon, work release deadline. Feels fine. Will keep her September physical instead."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-20a",
+     "kind": "outside_records",
+     "start": "2025-05-20T10:15",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology annual letter",
+       "author": "gastroenterology",
+       "date": "2025-05-20T10:15",
+       "body": "Outside gastroenterology group\nVisit: 05/13/2025\n\nReviewed her November episode of left pyelonephritis, treated without complication. From a bowel standpoint she remains in clinical remission: formed stools, no bleeding, no pain. Abdomen benign.\n\nAllergies: penicillin, sulfonamides.\nMedications: albuterol prn, prenatal multivitamin, ferrous sulfate, D3 2000 units, B12 1000 mcg.\n\nImpression: mild ileocolonic Crohn's disease, quiescent after resection. Continue current approach. Next review in a year."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-26a",
+     "kind": "ed_visit",
+     "start": "2025-07-26T11:10",
+     "end": "2025-07-26T17:30",
+     "service": "Emergency Medicine",
+     "reason": "Fever, dysuria, left flank pain",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "diagnosed",
+       "onset": "2025-07-24",
+       "note": "left; E. coli"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute pyelonephritis"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-07-26T11:20",
+       "temp_c": 38.5,
+       "bp": [
+        110,
+        70
+       ],
+       "hr": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-07-26T11:40",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 14.0
+        }
+       ]
+      },
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-07-26T11:40",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "text": "Many"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-26T11:40",
+       "resulted": "2025-07-28T09:00",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible to ciprofloxacin."
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2025-07-26T13:30",
+       "text": "Both kidneys are normal in size and echotexture. No hydronephrosis on either side. No renal calculi. No perinephric fluid. Bladder partially distended, unremarkable.",
+       "conclusion": "No hydronephrosis or renal stones."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2025-07-26T11:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2025-07-28T08:15",
+       "body": "Community hospital emergency department\nDate: 07/26/2025 (Saturday)\n\nChief complaint: fever and left flank pain for 2 days.\nHPI: 36-year-old woman with a known urethral diverticulum who was treated for left pyelonephritis in November 2024. Two days of fever, painful urination and left flank pain; a week of more frequent, urgent voiding before that. She mentions she had repeated UTIs in the first trimester of a prior pregnancy, treated with nitrofurantoin.\nPSH: laparoscopic ileocecal resection 2020 (appendix removed).\nAllergies: penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal multivitamin, ferrous sulfate 325 mg, D3 2000 units, B12 1000 mcg. Taking all as prescribed, no recent changes.\nSocial: never smoker, rare alcohol, works from home in software.\n\nVitals: T 38.5 C (101.3 F), BP 110/70, P 98.\nExam: uncomfortable, nontoxic. Lungs clear. Heart regular, mildly tachycardic. Abdomen soft. Left costovertebral angle tenderness.\n\nLabs: WBC 14.0. UA leukocyte esterase positive, nitrite positive. Culture sent.\nRenal ultrasound: no hydronephrosis, no stones.\n\nCourse: acetaminophen, IV fluids, ceftriaxone 1 g IV, no reaction. Improved.\nImpression: acute left pyelonephritis, uncomplicated.\nDisposition: home, ciprofloxacin 500 mg twice daily x7 days. PCP follow-up early next week.\n\nCulture addendum 07/28: E. coli >100K, ciprofloxacin susceptible."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-31a",
+     "kind": "office_visit",
+     "start": "2025-07-31T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, second pyelonephritis",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "ua-2025-08",
+       "action": "placed",
+       "order": "Urinalysis after antibiotic course",
+       "category": "lab",
+       "reason": "test of cure"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-07-31T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED Visit",
+       "author": "PCP",
+       "date": "2025-07-31T09:20",
+       "body": "ED Saturday 7/26 for left pyelonephritis again - second in under a year. Renal US there clean. Culture E. coli, cipro-sensitive, now day 5 of 7. Afebrile since Monday, flank ache fading, voiding comfortably.\n\nExam: T normal, looks well. Minimal left CVA tenderness. Abdomen benign.\n\nA/P\n1. Acute left pyelonephritis, improving on cipro. Finish course; UA one week from today.\n2. Urethral diverticulum with two pyelonephritis episodes. Talked about it today; she will think about seeing GYN again. Hydrate, void after intercourse."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-07a",
+     "kind": "lab_only",
+     "start": "2025-08-07T08:10",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2025-08-07T08:10",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ua-2025-08",
+       "action": "done",
+       "date": "2025-08-07T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Urinalysis after treatment",
+       "author": "PCP",
+       "date": "2025-08-07T14:00",
+       "body": "UA clean after the cipro course. Pyelonephritis resolved."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-23a",
+     "kind": "annual_physical",
+     "start": "2025-09-23T08:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-23T09:20",
+       "results": [
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-09-23T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-09-23T09:20",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        },
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-09-23T08:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-09-23T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-09-23T08:45",
+       "body": "36F, yearly. No infections since July. Supplements daily. Crohn's in remission per GI. Albuterol a handful of times this summer, no nighttime symptoms.\n\nExam: well-appearing. Vitals per flowsheet. Lungs clear. Heart RRR. Abdomen soft, healed scars. No CVA tenderness. Skin normal. PHQ-2 1.\n\nA/P\n1. Vitamin D / B12 deficiencies, on replacement: labs today.\n2. Urethral diverticulum, two pyelo episodes: she has not gone back to GYN; return precautions reviewed.\n3. Mild intermittent asthma: albuterol PRN.\n4. HM: Pap 2024 normal. Flu and COVID in October."
+      },
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2025-09-25T07:55",
+       "body": "All normal: chemistries, calcium, CBC, vitamin D, B12."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T16:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T16:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-14T16:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T16:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2025-10-14T16:20",
+       "body": "Influenza (L) and 2025-26 COVID (R) IM. Allergy list reviewed. Fine after observation."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-17a",
+     "kind": "hospital_admission",
+     "start": "2026-03-17T14:25",
+     "end": "2026-03-20T12:30",
+     "service": "Emergency Medicine",
+     "reason": "Right pyelonephritis; anaphylaxis to ceftriaxone",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "diagnosed",
+       "onset": "2026-03-15",
+       "note": "right; E. coli"
+      },
+      {
+       "label": "Anaphylactic reaction due to ceftriaxone",
+       "icd10": "T88.6XXA",
+       "action": "diagnosed",
+       "onset": "2026-03-17"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Ceftriaxone",
+       "reaction": "Anaphylaxis",
+       "severity": "severe",
+       "criticality": "high",
+       "type": "allergy"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth twice daily to complete 7 days total (last dose 3/23)",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Acute pyelonephritis"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-03-17T14:35",
+       "temp_c": 38.9
+      },
+      {
+       "time": "2026-03-17T15:52",
+       "temp_c": 37.2,
+       "hr": 132,
+       "rr": 28,
+       "bp": [
+        68,
+        42
+       ],
+       "spo2": 91
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2026-03-17T14:50",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "text": "Many"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-17T14:50",
+       "resulted": "2026-03-19T08:00",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "Greater than 100,000 CFU/mL Escherichia coli. Susceptible to ciprofloxacin."
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-03-17T14:25"
+      },
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2026-03-17T18:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2026-03-20T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "hospital medicine",
+       "date": "2026-03-23T10:05",
+       "body": "Regional medical center - discharge summary\nAdmitted 03/17/2026 via ED to ICU; transferred to floor 03/19; discharged 03/20/2026.\n\nPrincipal diagnoses: anaphylaxis due to IV ceftriaxone; acute right pyelonephritis (E. coli).\n\nPresentation: 37-year-old woman with a urethral diverticulum and recurrent UTIs, with left pyelonephritis in 11/2024 and 07/2025, came in with two days of right flank pain, fever and dysuria. Triage temperature 38.9 C. UA: pyuria, positive leukocyte esterase and nitrite. Culture sent. Known allergies at arrival: penicillin (hives), sulfonamides (rash). She confirmed she had received ceftriaxone in the past without problems, and IV ceftriaxone was started after acetaminophen.\n\nEvent: about ten minutes into the infusion she reported her throat closing, lightheadedness and a feeling that something terrible was happening. Her voice became hoarse and she coughed hard, then flushed all over with visible swelling of the face and lips. Vitals at that time: T 37.2 C, HR 132, RR 28, BP 68/42, SpO2 91% on room air. Exam: swollen eyelids and lips, raised red urticarial plaques across chest and arms, expiratory wheeze on both sides with inspiratory stridor, anxious, working to breathe with accessory muscles. Neck veins flat; heart fast without murmur; no leg edema.\n\nManagement: infusion stopped. Epinephrine 0.5 mg IM, repeated once at 5 minutes. Two liters of crystalloid, diphenhydramine 50 mg IV, methylprednisolone 125 mg IV, nebulized albuterol, oxygen. Stridor and hypotension resolved over about two hours without intubation or pressors. Admitted to the ICU for observation; no biphasic reaction.\n\nPyelonephritis: switched to IV ciprofloxacin. Urine culture: E. coli >100K, susceptible to ciprofloxacin. Afebrile from day 2. Transitioned to oral ciprofloxacin.\n\nAllergy list updated: CEFTRIAXONE - ANAPHYLAXIS. Also penicillin (hives), sulfonamides (rash).\n\nDischarge medications: ciprofloxacin 500 mg PO twice daily through 03/23 (7 days total). Continue albuterol prn, prenatal multivitamin, ferrous sulfate 325 mg, vitamin D3 2000 units, vitamin B12 1000 mcg.\n\nFollow-up: PCP within one week. Recommend outpatient evaluation of the urethral diverticulum given three upper tract infections."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-25a",
+     "kind": "office_visit",
+     "start": "2026-03-25T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up",
+     "conditions": [
+      {
+       "label": "Acute pyelonephritis",
+       "icd10": "N10",
+       "action": "resolved"
+      },
+      {
+       "label": "Anaphylactic reaction due to ceftriaxone",
+       "icd10": "T88.6XXA",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "uro-referral-2026",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "urethral diverticulum with three episodes of pyelonephritis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2026-03-25T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2026-03-25T11:00",
+       "body": "Admitted 3/17-3/20: right pyelonephritis, and ceftriaxone anaphylaxis 10 min into the infusion (hypotension 68/42, stridor, urticaria, angioedema) - IM epi x2, ICU overnight, no airway needed. Finished oral cipro on 3/23. Culture E. coli, cipro-S.\n\nToday: no fever, no flank pain, voiding fine. Shaken by the reaction. Breathing back to baseline, no albuterol since discharge.\n\nExam: well. Vitals per flowsheet, SpO2 normal. No facial swelling, skin clear. Lungs clear, no wheeze or stridor. No CVA tenderness.\n\nA/P\n1. Anaphylaxis to ceftriaxone: allergy list updated (severe, high criticality). Told her to name it - along with penicillin and sulfa - at every pharmacy, ED and procedure. Ciprofloxacin has been tolerated 3 times.\n2. Acute right pyelonephritis, resolved after course.\n3. Urethral diverticulum with three pyelonephritis episodes in ~16 months: referral to urology for definitive evaluation. She agrees this time.\n4. Vitamin D, B12: continue."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-19a",
+     "kind": "outside_records",
+     "start": "2026-05-19T09:30",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology annual letter",
+       "author": "gastroenterology",
+       "date": "2026-05-19T09:30",
+       "body": "Outside gastroenterology group\nVisit: 05/12/2026\n\nYearly Crohn's visit. Noted her March admission for right pyelonephritis with ceftriaxone anaphylaxis; allergy list here updated. GI-wise she is well: no flares, formed stools, no bleeding. Abdomen soft, nontender.\n\nAllergies: ceftriaxone (anaphylaxis), penicillin, sulfonamides.\n\nImpression: ileocolonic Crohn's disease, mild and quiet after ileocecal resection. Continue observation, vitamin D and B12. See her in a year."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-09a",
+     "kind": "portal_message",
+     "start": "2026-06-09T21:04",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Urology appointment",
+       "author": "patient",
+       "date": "2026-06-09T21:04",
+       "body": "The urology office finally called - earliest new patient slot is August 11. Is that ok or should I be pushing for sooner? I've been fine since March."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Urology appointment",
+       "author": "PCP",
+       "date": "2026-06-10T08:30",
+       "body": "August is fine since you're well. Ask to be on their cancellation list. If you get any burning, fever or flank pain before then, message me same day and we'll get a urine culture going - and remember no ceftriaxone. I'll see you at your check-in on July 2."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-02a",
+     "kind": "office_visit",
+     "start": "2026-07-02T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up: supplements, diverticulum",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-07-02T10:10",
+       "results": [
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-02T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-02T10:10",
+       "results": [
+        {
+         "test": "25-hydroxy Vitamin D"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-07-02T09:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-07-02T10:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2026-07-02T09:40",
+       "body": "37F. No infections since March. Some ongoing discomfort with intercourse, no dysuria now. Urology consult set for 8/11. Taking D3, B12, iron and prenatal vitamin daily. Crohn's quiet (GI letter May). Asthma: no albuterol in months.\n\nExam: well. Vitals per flowsheet. Lungs clear. Heart regular. Abdomen soft. No CVA tenderness.\n\nA/P\n1. Urethral diverticulum, three pyelos: urology 8/11.\n2. Ceftriaxone anaphylaxis: allergy list confirmed.\n3. Vitamin D / B12 deficiency on replacement: CMP, CBC, vit D today.\n4. Physical in September, booked."
+      },
+      {
+       "type": "Result Note",
+       "title": "Labs",
+       "author": "PCP",
+       "date": "2026-07-06T08:20",
+       "body": "Calcium, chemistries, blood count and vitamin D all normal. Same doses."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "specialist_visit",
+     "start": "2026-08-11T14:00",
+     "service": "Urology",
+     "reason": "Urethral diverticulum, recurrent pyelonephritis",
+     "orders": [
+      {
+       "id": "uro-referral-2026",
+       "action": "done",
+       "date": "2026-08-11T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology consultation",
+       "author": "urology",
+       "date": "2026-08-18T11:30",
+       "body": "Outside urology group\nDate of service: 08/11/2026\n\nReferred for urethral diverticulum. 37-year-old woman diagnosed by gynecology in 2023 on exam (tender anterior vaginal wall mass with purulent expression). Since then left pyelonephritis 11/2024 and 07/2025 and right pyelonephritis 03/2026, all E. coli; the March episode was complicated by anaphylaxis to ceftriaxone. Ongoing dyspareunia.\n\nAllergies: ceftriaxone (anaphylaxis), penicillin (hives), sulfonamides (rash).\nMeds: albuterol prn, prenatal multivitamin, ferrous sulfate, vitamin D3, vitamin B12.\nPSH: laparoscopic ileocecal resection 2020.\n\nExam: tender soft mass of the anterior vaginal wall under the mid-urethra, consistent with the known diverticulum. No vaginal wall erythema otherwise. No CVA tenderness.\n\nImpression: urethral diverticulum with recurrent upper tract infection.\nPlan: MRI of the pelvis to define the diverticulum before we talk through transvaginal excision. We will call her when the MRI is authorized. Antibiotic choices should continue to avoid beta-lactams.\n\nThank you for the referral."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-20a",
+     "kind": "portal_message",
+     "start": "2026-08-20T12:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "MRI from urology",
+       "author": "patient",
+       "date": "2026-08-20T12:40",
+       "body": "Urology wants a pelvic MRI before they talk surgery. They said insurance approval can take a couple weeks. Do you need to do anything on your end?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: MRI from urology",
+       "author": "RN",
+       "date": "2026-08-20T15:15",
+       "body": "Hi Karen, the urology office handles the authorization for the MRI they ordered, so nothing needed from us. We received their consult note. If the approval drags past mid-September, let us know and we can nudge. Your physical is still on for 9/22."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-22a",
+     "kind": "annual_physical",
+     "start": "2026-09-22T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

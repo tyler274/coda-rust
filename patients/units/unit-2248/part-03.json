@@ -33,17 +33,89 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Leg swelling",
           "conditions": [
-            {"label": "Edema of lower extremity", "action": "diagnosed", "onset": "2025-02-17", "note": "Bilateral, due to nifedipine (calcium channel blocker)"},
-            {"label": "Anaphylactoid reaction to iodinated contrast media", "icd10": "T88.6XXA", "action": "resolved"}
+            {
+              "label": "Edema of lower extremity",
+              "action": "diagnosed",
+              "onset": "2025-02-17",
+              "note": "Bilateral, due to nifedipine (calcium channel blocker)"
+            },
+            {
+              "label": "Anaphylactoid reaction to iodinated contrast media",
+              "icd10": "T88.6XXA",
+              "action": "resolved"
+            }
           ],
           "medications": [
-            {"drug_text": "24 HR nifedipine 30 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 30, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Angina and hypertension, started by cardiology 01/2025"}
+            {
+              "drug_text": "24 HR nifedipine 30 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Angina and hypertension, started by cardiology 01/2025"
+            }
           ],
-          "vitals": {"bp": [132, 78]},
-          "measure": ["hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "vitals": {
+            "bp": [
+              132,
+              78
+            ]
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-03-10T10:35", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
-            {"panel": "Urinalysis", "collected": "2025-03-10T10:35", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Glucose", "text": "Negative"}]}
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-10T10:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-03-10T10:35",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -60,9 +132,18 @@
             }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-10T09:30"},
-            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-03-10T10:05"},
-            {"procedure": "Venipuncture", "performed": "2025-03-10T10:35"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-10T09:30"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-03-10T10:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-10T10:35"
+            }
           ],
           "documents": [
             {
@@ -82,21 +163,6 @@
           ]
         },
         {
-          "id": "2025-03-12a",
-          "kind": "telephone",
-          "start": "2025-03-12T12:40",
-          "reason": "Coordination with cardiology",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Call with cardiology; patient update",
-              "author": "PCP",
-              "date": "2025-03-12T12:55",
-              "body": "Spoke with his cardiologist. Agrees with nifedipine edema. With beta blockers off the table after the AV block and his angina better on nifedipine, they prefer to keep it at 30 mg and treat the swelling with stockings and elevation. They will see him in the spring.\nLabs from 3/10: creatinine normal, liver tests normal, UA negative.\nCalled Paul and told him both. He's fine with stockings, his daughter already bought a pair. Keep nifedipine. Follow up in June or sooner if the swelling worsens."
-            }
-          ]
-        },
-        {
           "id": "2025-04-01a",
           "kind": "hospital_admission",
           "start": "2025-04-01T07:40",
@@ -104,23 +170,74 @@
           "service": "Cardiology",
           "reason": "Syncope with complete heart block",
           "vitals": [
-            {"time": "2025-04-01T07:45", "hr": 42, "bp": [88, 60], "rr": 16},
-            {"time": "2025-04-01T09:30", "hr": 70, "bp": [110, 66], "rr": 16, "spo2": 97},
-            {"time": "2025-04-05T08:00", "hr": 72, "bp": [124, 72], "rr": 14, "spo2": 98, "temp_c": 36.7}
+            {
+              "time": "2025-04-01T07:45",
+              "hr": 42,
+              "bp": [
+                88,
+                60
+              ],
+              "rr": 16
+            },
+            {
+              "time": "2025-04-01T09:30",
+              "hr": 70,
+              "bp": [
+                110,
+                66
+              ],
+              "rr": 16,
+              "spo2": 97
+            },
+            {
+              "time": "2025-04-05T08:00",
+              "hr": 72,
+              "bp": [
+                124,
+                72
+              ],
+              "rr": 14,
+              "spo2": 98,
+              "temp_c": 36.7
+            }
           ],
-          "conditions": [
-            {"label": "Third degree atrioventricular block", "icd10": "I44.2", "action": "diagnosed", "onset": "2025-04-01"},
-            {"label": "Second degree atrioventricular block, Mobitz type I", "icd10": "I44.1", "action": "resolved"},
-            {"label": "Non-ST elevation (NSTEMI) myocardial infarction", "icd10": "I21.4", "action": "diagnosed", "onset": "2025-04-01"},
-            {"label": "Presence of cardiac pacemaker", "action": "diagnosed", "note": "Dual-chamber pacemaker implanted 2025-04-03"}
-          ],
-          "medications": [
-            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary artery disease after NSTEMI; paced"}
-          ],
+          "conditions": [],
+          "medications": [],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-01T07:55", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-01T07:55", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2025-04-01T19:10", "results": [{"test": "Troponin I, High Sensitivity", "value": 1860}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-01T07:55",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-01T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-01T19:10",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 1860
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -137,9 +254,18 @@
             }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, high MDM", "performed": "2025-04-01T07:40"},
-            {"procedure": "Initial hospital inpatient care", "performed": "2025-04-01T11:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-04-05T11:30"}
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-01T07:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-01T11:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-04-05T11:30"
+            }
           ],
           "documents": [
             {
@@ -159,65 +285,6 @@
           ]
         },
         {
-          "id": "2025-04-02a",
-          "kind": "telephone",
-          "start": "2025-04-02T08:30",
-          "reason": "Family call: patient hospitalized",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Daughter called",
-              "author": "RN",
-              "date": "2025-04-02T08:40",
-              "body": "Daughter called to let us know Dad was admitted yesterday after passing out again; heart rate very slow, a temporary pacing wire is in and they are talking about a permanent pacemaker. Also told her he had \"a small heart attack.\" She will update us. Records request sent to the hospital. PCP notified."
-            }
-          ]
-        },
-        {
-          "id": "2025-04-10a",
-          "kind": "office_visit",
-          "start": "2025-04-10T14:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hospital follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
-          "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-10T14:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-10T14:40", "results": [{"test": "Hemoglobin"}]}
-          ],
-          "procedures": [
-            {"procedure": "Transitional care management, high complexity", "performed": "2025-04-10T14:00"},
-            {"procedure": "Venipuncture", "performed": "2025-04-10T14:40"}
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-hospital visit",
-              "author": "PCP",
-              "date": "2025-04-10T14:45",
-              "body": "TCM visit. Daughter with him. Discharge summary not yet received; reviewed the ED fax and his discharge instruction sheet, which he brought.\n\nPer the sheet and the patient: admitted 4/1-4/5 with complete heart block after passing out at home. Temporary wire, then a dual-chamber pacemaker 4/3. Troponin went up and he was told he had a heart attack; the cath (premedicated, no reaction) showed the old stent open and no new stent placed. Metoprolol 50 mg was restarted now that he has a pacemaker.\n\nSince home: no lightheadedness, no chest pain, sore at the device site. Keeping the left arm down. Ankles a little puffy at night, wearing the stockings.\n\nMed reconciliation against the discharge sheet: aspirin 81, atorvastatin 40, metoprolol succinate 50 daily (restarted), lisinopril 20, nifedipine ER 30, mirtazapine 30, acetaminophen prn. He has all of them at home. Contrast allergy confirmed.\n\nExam: vitals reviewed. Left upper chest incision clean, dry, edges together, small bruise, no swelling. Heart regular (paced). Lungs clear. Trace to 1+ ankle edema, symmetric.\n\nA/P:\n1. Complete heart block s/p dual-chamber pacemaker: device clinic wound check scheduled 4/14. Arm precautions.\n2. NSTEMI on top of known CAD: continue aspirin, atorvastatin, metoprolol, lisinopril. Cardiology 5/2025.\n3. Nifedipine edema: improved with stockings.\n4. Mood: says it was scary but he is ok; will screen at next visit.\nBMP and CBC today. Discharge summary requested again. RTC 2 months."
-            }
-          ]
-        },
-        {
-          "id": "2025-06-17a",
-          "kind": "office_visit",
-          "start": "2025-06-17T10:15",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-17T10:15"}],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Follow-up",
-              "author": "PCP",
-              "date": "2025-06-17T10:45",
-              "body": "Two and a half months after the pacemaker. Feels good, no fainting, no palpitations. Chest pressure uncommon now, maybe twice since April. Cardiology saw him in May, no changes. Back in the garden, smaller this year. Mood ok, PHQ-9 5, sleeping well.\nDischarge summary from April finally arrived 5/2, reviewed.\nExam: vitals reviewed. Pacemaker pocket well healed. Heart regular. Lungs clear. 1+ ankle edema with stockings off; he wears them most days.\nA/P: CAD after NSTEMI, angina well controlled on metoprolol plus nifedipine. Pacemaker for complete heart block, device clinic following. HTN controlled. Nifedipine edema stable, continue stockings. MDD partial remission on mirtazapine 30. AWV in September."
-            }
-          ]
-        },
-        {
           "id": "2025-07-22a",
           "kind": "outside_records",
           "start": "2025-07-22T13:15",
@@ -233,52 +300,6 @@
           ]
         },
         {
-          "id": "2025-08-12a",
-          "kind": "pharmacy",
-          "start": "2025-08-12T09:00",
-          "reason": "Refill requests",
-          "documents": [
-            {
-              "type": "Refill Request",
-              "title": "Mail-order renewals",
-              "author": "MA",
-              "date": "2025-08-12T09:00",
-              "body": "Renewal requests from mail order: lisinopril 20, atorvastatin 40, mirtazapine 30, metoprolol succinate 50, nifedipine ER 30. Nifedipine and metoprolol are prescribed by cardiology; pharmacy redirected to them. Others approved x 90 days with 3 refills."
-            }
-          ]
-        },
-        {
-          "id": "2025-09-16a",
-          "kind": "annual_physical",
-          "start": "2025-09-16T08:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual wellness visit",
-          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
-          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-16T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
-            {"panel": "Lipid Panel", "collected": "2025-09-16T08:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-16T08:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2025-09-16T08:40", "results": [{"test": "Hemoglobin A1c"}]}
-          ],
-          "procedures": [
-            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-09-16T08:30"},
-            {"procedure": "Venipuncture", "performed": "2025-09-16T08:40"}
-          ],
-          "orders": [
-            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung cancer screening"}
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Medicare Annual Wellness Visit",
-              "author": "PCP",
-              "date": "2025-09-16T09:20",
-              "body": "AWV.\nYear: pacemaker in April for complete heart block with an NSTEMI; recovered well. Edema from nifedipine controlled with stockings. No syncope since. Angina rare. Mood steady on mirtazapine, PHQ-9 4.\nHRA: independent in ADLs/IADLs, drives, mows his own lawn, walks the dog twice a day. No falls. Lives alone, daughter nearby. Alcohol 1-2/wk.\nMeds: aspirin 81, atorvastatin 40 qhs, metoprolol succinate 50, lisinopril 20, nifedipine ER 30, mirtazapine 30 qhs, acetaminophen prn.\nAllergies: iodinated contrast (anaphylactoid).\nExam: vitals reviewed. Heart regular, paced. Lungs clear. Trace ankle edema. Knees unchanged.\nPrevention: LDCT due 11/2025, ordered. Colon UTD to 2028. Flu and COVID next month. Health care proxy on file (daughter).\nLabs: CMP, lipids, CBC, A1c.\nA/P: chronic problems stable. RTC 4 months."
-            }
-          ]
-        },
-        {
           "id": "2025-10-06a",
           "kind": "hospital_admission",
           "start": "2025-10-06T15:35",
@@ -286,21 +307,76 @@
           "service": "Cardiology",
           "reason": "Syncope with wide-complex tachycardia",
           "vitals": [
-            {"time": "2025-10-06T15:38", "hr": 160, "bp": [74, 46]},
-            {"time": "2025-10-06T16:05", "hr": 72, "bp": [108, 66], "rr": 18, "spo2": 97},
-            {"time": "2025-10-10T08:00", "hr": 70, "bp": [122, 72], "rr": 14, "spo2": 98, "temp_c": 36.8}
+            {
+              "time": "2025-10-06T15:38",
+              "hr": 160,
+              "bp": [
+                74,
+                46
+              ]
+            },
+            {
+              "time": "2025-10-06T16:05",
+              "hr": 72,
+              "bp": [
+                108,
+                66
+              ],
+              "rr": 18,
+              "spo2": 97
+            },
+            {
+              "time": "2025-10-10T08:00",
+              "hr": 70,
+              "bp": [
+                122,
+                72
+              ],
+              "rr": 14,
+              "spo2": 98,
+              "temp_c": 36.8
+            }
           ],
-          "state": {"labs": {"Magnesium": 2.1}},
-          "conditions": [
-            {"label": "Ventricular tachycardia", "icd10": "I47.20", "action": "diagnosed", "onset": "2025-10-06"},
-            {"label": "Non-ST elevation (NSTEMI) myocardial infarction", "icd10": "I21.4", "action": "resolved"},
-            {"label": "Presence of cardiac pacemaker", "action": "resolved"},
-            {"label": "Presence of automatic (implantable) cardiac defibrillator", "action": "diagnosed", "note": "Upgraded from pacemaker to dual-chamber ICD 2025-10-09"}
-          ],
+          "state": {
+            "labs": {
+              "Magnesium": 2.1
+            }
+          },
+          "conditions": [],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-06T15:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
-            {"panel": null, "collected": "2025-10-06T15:50", "results": [{"test": "Magnesium"}, {"test": "Troponin I, High Sensitivity"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-06T15:50", "results": [{"test": "Hemoglobin"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-06T15:50",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-06T15:50",
+              "results": [
+                {
+                  "test": "Magnesium"
+                },
+                {
+                  "test": "Troponin I, High Sensitivity"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-06T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
           ],
           "reports": [
             {
@@ -323,10 +399,22 @@
             }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, high MDM", "performed": "2025-10-06T15:35"},
-            {"procedure": "Cardioversion, external", "performed": "2025-10-06T15:55"},
-            {"procedure": "Initial hospital inpatient care", "performed": "2025-10-06T19:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-10-10T12:00"}
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-06T15:35"
+            },
+            {
+              "procedure": "Cardioversion, external",
+              "performed": "2025-10-06T15:55"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-06T19:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-10T12:00"
+            }
           ],
           "documents": [
             {
@@ -335,68 +423,6 @@
               "author": "emergency medicine",
               "date": "2025-10-14T10:40",
               "body": "Regional hospital emergency department. Faxed 10/14/2025. Date of service 10/06/2025.\n\nCC: passed out mowing the lawn.\nHPI: 72-year-old man with CAD, NSTEMI in April of this year, prior AV block with a dual-chamber pacemaker since April, brought by EMS. A neighbor saw him go down behind the mower; he was out briefly and woke up weak and dizzy. EMS found him hypotensive with a regular pulse of 160.\nMeds: aspirin, atorvastatin, metoprolol succinate 50 mg, lisinopril, nifedipine ER, mirtazapine, acetaminophen prn.\nAllergies: iodinated contrast media (anaphylactoid).\nExam: confused, slow to answer, BP 74/46 and HR 160 despite IV fluid bolus en route and on arrival.\nECG: wide-complex tachycardia, rate 160.\nCourse: hemodynamically unstable wide-complex tachycardia, treated as VT. Sedated and given one synchronized shock, converting to sinus rhythm with ventricular pacing. Mental status cleared within minutes; BP 108/66. Potassium, magnesium and troponin normal.\nImpression: sustained ventricular tachycardia with syncope and shock, 6 months after MI.\nDisposition: admitted to cardiology for electrophysiology evaluation and probable defibrillator upgrade. No driving."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-16a",
-          "kind": "office_visit",
-          "start": "2025-10-16T11:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hospital follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
-          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-16T11:40"}],
-          "procedures": [
-            {"procedure": "Transitional care management, high complexity", "performed": "2025-10-16T11:00"},
-            {"procedure": "Immunization administration", "performed": "2025-10-16T11:40"}
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-hospital visit",
-              "author": "PCP",
-              "date": "2025-10-16T11:50",
-              "body": "TCM. Daughter drove him. ED record received 10/14; no discharge summary yet.\n\nPer ED record and patient: 10/6 passed out mowing, VT at 160 with low pressure, one shock in the ED. Admitted; echo with the same pumping function as April. On 10/9 the pacemaker was swapped for a defibrillator (he calls it \"the upgraded box\"). Home 10/10. Told no driving for 6 months. Metoprolol same dose.\n\nNow: sore at the device site, otherwise feels normal. No palpitations, no lightheadedness, no shocks. A bit shaken. Sleeping ok. Denies low mood beyond being \"rattled\"; daughter agrees he's himself.\n\nMeds unchanged from discharge per patient: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 20, nifedipine ER 30, mirtazapine 30, acetaminophen prn.\n\nExam: vitals reviewed. Left chest incision clean and closed, mild bruising, no fluctuance. Heart regular. Lungs clear. Trace ankle edema.\n\nA/P:\n1. VT s/p ICD upgrade: device clinic follow-up arranged by cardiology. Reviewed what to do if shocked: one shock and feels fine, call cardiology the same day; more than one or feels unwell, 911.\n2. No driving for 6 months (until April); daughter and a neighbor are covering rides.\n3. CAD post-NSTEMI, HTN: unchanged.\n4. Flu shot today. COVID at pharmacy.\nRecords request for the discharge summary and implant report. RTC 3 months."
-            }
-          ]
-        },
-        {
-          "id": "2025-11-04a",
-          "kind": "pharmacy",
-          "start": "2025-11-04T16:10",
-          "reason": "Vaccine given at pharmacy",
-          "immunizations": [{"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-11-04T16:10"}],
-          "documents": [
-            {
-              "type": "Immunization Record",
-              "title": "Pharmacy vaccine administration record",
-              "author": "pharmacist",
-              "date": "2025-11-05T08:00",
-              "body": "Community pharmacy immunization report: COVID-19 vaccine, 2025-2026 formula, 0.5 mL IM right deltoid, 11/04/2025. No adverse event observed."
-            }
-          ]
-        },
-        {
-          "id": "2025-11-18a",
-          "kind": "imaging",
-          "start": "2025-11-18T13:10",
-          "reason": "Annual lung cancer screening",
-          "reports": [
-            {
-              "study": "Low-dose CT chest for lung cancer screening",
-              "performed": "2025-11-18T13:10",
-              "text": "LOW-DOSE CT CHEST, ANNUAL SCREENING. No contrast.\nComparison: 11/12/2024.\nFindings: No pulmonary nodules. No consolidation, effusion or pneumothorax. No adenopathy. Heart normal size. Left chest wall cardiac device with leads in the right atrium and right ventricle, new since prior. Coronary artery calcification and LAD stent, unchanged.",
-              "conclusion": "Lung-RADS 1: negative. Interval placement of a cardiac device. Continue annual screening."
-            }
-          ],
-          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-11-18T13:10"}],
-          "documents": [
-            {
-              "type": "Result Note",
-              "title": "LDCT result",
-              "author": "PCP",
-              "date": "2025-11-19T07:55",
-              "body": "Lung-RADS 1. Device noted, expected. Patient notified. Next 11/2026."
             }
           ]
         },

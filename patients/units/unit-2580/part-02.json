@@ -1,0 +1,312 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002580",
+      "events": [
+        {
+          "id": "2022-01-18a",
+          "kind": "lab_only",
+          "start": "2022-01-18T08:05",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2022-01-18T08:05", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-01-18T08:05", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-01-19T12:40", "body": "Liver numbers are in your usual range for PSC and bilirubin is normal. Blood count normal. We still don't have the October note from the liver group; we'll keep asking."}
+          ]
+        },
+        {
+          "id": "2022-07-11a",
+          "kind": "portal_message",
+          "start": "2022-07-11T22:18",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood in stool", "author": "patient", "date": "2022-07-11T22:18", "body": "I should have written sooner. Since around February I've had loose stools with blood in them, with cramping, and it's gotten more frequent. Thought it was stress from quals. I've dropped about 10 pounds and the last couple of months I run low fevers some evenings. Can I come in this week?"},
+            {"type": "Patient Message", "title": "RE: Blood in stool", "author": "PCP", "date": "2022-07-12T07:10", "body": "Thanks for telling me. Please come in today, 10:20 is open. If you have heavy bleeding, dizziness or a high fever before then, go to the ED."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "office_visit",
+          "start": "2022-07-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bloody diarrhea, weight loss",
+          "state": {"weight_kg": 68.5, "labs": {"Hemoglobin": 11.2, "C Reactive Protein": 24, "Erythrocyte Sedimentation Rate": 45}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-07-12T11:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-07-12T11:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": null, "collected": "2022-07-12T11:05", "results": [{"test": "C Reactive Protein"}]},
+            {"panel": null, "collected": "2022-07-12T11:05", "results": [{"test": "Erythrocyte Sedimentation Rate"}]},
+            {"panel": null, "collected": "2022-07-12T14:30", "resulted": "2022-07-13T16:00", "results": [{"test": "Clostridioides difficile toxin genes, stool PCR", "loinc": "54067-4", "text": "Not detected"}]},
+            {"panel": null, "collected": "2022-07-12T14:30", "resulted": "2022-07-15T09:30", "results": [{"test": "Stool culture", "loinc": "625-4", "text": "No enteric pathogens isolated"}]}
+          ],
+          "orders": [
+            {"id": "gi-referral-2022", "action": "placed", "order": "Gastroenterology referral, urgent", "category": "referral", "to": "Gastroenterology", "reason": "Bloody diarrhea with weight loss in a patient with PSC"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-07-12T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-07-12T11:30", "body": "CC: blood in stool for months.\n\nHPI: 26M with PSC. About five months of loose stools, now 5-6 a day, mixed with blood, and crampy lower abdominal pain that eases after a BM. Urgency, sometimes wakes at night. Weight down about 10 lb since winter. Low-grade evening temps to the high 99s-100 for roughly two months. Tired. No travel, no antibiotics, no sick contacts, no NSAIDs. No itch or jaundice.\nMeds: ursodiol 300 mg TID. NKDA.\nFH: maternal uncle with ulcerative colitis.\n\nExam: vitals as charted, weight 68.5 kg (72-73 last year). Tired-looking but not toxic. Anicteric. Abdomen soft, tender in the left lower quadrant, no guarding or rebound, no mass. No hepatosplenomegaly. Rectal exam deferred to GI.\n\nA/P: subacute bloody diarrhea with weight loss and low-grade fevers in a young man with PSC: inflammatory bowel disease is the leading concern, infection to exclude first.\n- C. diff PCR and stool culture.\n- CBC with diff, CMP, CRP, ESR today.\n- Urgent GI referral; called the GI group and they can do a consult with colonoscopy in about four weeks, sooner if a cancellation opens.\n- Return or call for heavier bleeding, fever over 101, lightheadedness."}
+          ]
+        },
+        {
+          "id": "2022-07-15a",
+          "kind": "portal_message",
+          "start": "2022-07-15T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results", "author": "PCP", "date": "2022-07-15T12:10", "body": "Rowan, the stool tests found no infection, including C. diff. Your hemoglobin is low at around 11 (it was normal in January) and the inflammation markers CRP and sed rate are up, which fits inflamed bowel. Liver tests are at your usual baseline. Keep the GI appointment on August 9; they have you on their cancellation list too. Let me know if the bleeding picks up."},
+            {"type": "Patient Message", "title": "RE: Your results", "author": "patient", "date": "2022-07-15T18:44", "body": "OK thanks. About the same, not worse."}
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "specialist_visit",
+          "start": "2022-08-09T08:00",
+          "end": "2022-08-09T11:30",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Bloody diarrhea; colonoscopy",
+          "conditions": [
+            {"label": "Extensive ulcerative colitis (pancolitis)", "icd10": "K51.00", "action": "diagnosed", "onset": "2022-02-01"},
+            {"label": "Anemia, unspecified", "action": "diagnosed", "onset": "2022-07-01", "note": "Normocytic; anemia of chronic inflammation"}
+          ],
+          "medications": [
+            {"drug": "mesalamine 1200 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 4 tablets (4.8 g) by mouth once daily with food", "dose": {"value": 4800, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Extensive ulcerative colitis"}
+          ],
+          "state": {"weight_kg": 68.0},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-09T08:10", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Mean Corpuscular Volume", "value": 86}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-08-09T08:10", "results": [{"test": "C Reactive Protein", "value": 24}]},
+            {"panel": null, "collected": "2022-08-09T08:10", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 45}]}
+          ],
+          "procedures": [{"procedure": "Colonoscopy with biopsy", "performed": "2022-08-09T10:15"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-08-09T10:30", "issued": "2022-08-12T15:00", "text": "Specimens: colon biopsies, cecum, ascending, transverse, descending, sigmoid and rectum (6 jars). All segments: colonic mucosa with active inflammation, cryptitis and crypt abscesses. No granulomas. No dysplasia. No viral cytopathic change.", "conclusion": "Active colitis with crypt abscesses in all segments sampled, rectum to cecum. Negative for dysplasia."}
+          ],
+          "orders": [
+            {"id": "gi-referral-2022", "action": "done", "date": "2022-08-09T08:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation and Colonoscopy", "author": "gastroenterology", "date": "2022-08-16T10:00", "body": "Outside gastroenterology and hepatology group. Date of service 08/09/2022.\n\nReferred by his primary care physician for bloody stools. Known to us with PSC.\n\nHistory: half a year of bloody diarrhea with intermittent cramps, about ten pounds lost, and low-grade fevers over the last two months. Infectious stool studies at your office were negative.\nMedications: ursodiol 300 mg three times daily. Allergies: NKDA.\nFamily history: mother with rheumatoid arthritis; maternal uncle with ulcerative colitis.\nSocial: never smoker; alcohol rarely, one or two drinks a month because of his liver; graduate student and Army Reservist.\n\nExam: fatigued-appearing. Abdomen tender in the left lower quadrant, no rebound, no guarding. Rectal: stool streaked with blood.\n\nLabs today: hemoglobin 11.2 g/dL, MCV 86 fL, CRP 24 mg/L, ESR 45 mm/hr.\n\nColonoscopy (same day): inflamed, ulcerated mucosa beginning at the rectum and continuing without skip areas to the cecum. Ileum normal. Biopsies taken throughout. Pathology: active inflammation with crypt abscesses, no dysplasia.\n\nImpression: ulcerative colitis, extensive (pancolitis), moderately active, in the setting of PSC. Normocytic anemia from active inflammation and blood loss.\n\nPlan:\n1. Mesalamine 4.8 g once daily (Lialda 1.2 g x 4).\n2. Continue ursodiol.\n3. Recheck CBC and CRP at follow-up in about three months.\n4. Because PSC with colitis carries higher colorectal cancer risk, he will need surveillance colonoscopy with biopsies every year from now on.\n5. Return sooner if bleeding worsens or fevers rise."}
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "office_visit",
+          "start": "2022-08-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up ulcerative colitis",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-23T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-08-23T16:20", "body": "Follow-up after GI. Colonoscopy 8/9 showed pancolitis, biopsies with crypt abscesses, so ulcerative colitis, extensive. On mesalamine 4.8 g daily for 10 days. Says stools down to 3-4 a day with less blood already. Fevers stopped last week. Tolerating the pills, no headache or rash.\n\nExam: vitals as charted, afebrile. Abdomen mildly tender LLQ, much less than before.\n\nA/P:\n- Extensive UC, new, on mesalamine per GI. Added to list. Will watch creatinine yearly while on mesalamine. GI rechecks in November.\n- Anemia, normocytic, from active colitis: GI rechecking CBC at follow-up.\n- PSC: ursodiol unchanged. Surveillance colonoscopy now yearly per GI.\nTalked about his uncle's UC and that his own course may be quite different. Message me with a flare: more blood, more than 6 stools a day, fevers."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "pharmacy",
+          "start": "2022-08-30T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization", "author": "MA", "date": "2022-08-30T09:15", "body": "Pharmacy says the student plan wants a PA for brand Lialda 1.2 g. GI wrote the script but pharmacy faxed us as PCP of record. Called GI office, they are submitting it. Patient has samples through the end of next week. Pt informed via portal."},
+            {"type": "Telephone Encounter", "title": "Prior authorization update", "author": "MA", "date": "2022-09-02T14:00", "body": "PA approved for 12 months, generic mesalamine DR 1.2 g covered. Pharmacy filling today."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T16:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T16:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2022-10-04T16:25", "body": "Flu IM left arm, bivalent COVID booster IM right arm. Feeling well, bowels settled per pt. No reactions during observation."}
+          ]
+        },
+        {
+          "id": "2022-11-15a",
+          "kind": "specialist_visit",
+          "start": "2022-11-15T14:00",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Ulcerative colitis and PSC follow-up",
+          "state": {"weight_kg": 71.0, "labs": {"Hemoglobin": 12.6, "C Reactive Protein": 2, "Erythrocyte Sedimentation Rate": 9}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-11-15T14:10", "results": [{"test": "Hemoglobin", "value": 12.6}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-11-15T14:10", "results": [{"test": "C Reactive Protein"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Follow-up Letter", "author": "gastroenterology", "date": "2022-11-22T11:30", "body": "Outside gastroenterology and hepatology group. Visit 11/15/2022.\n\nUlcerative colitis (pancolitis) diagnosed in August, here three months into mesalamine. Bleeding stopped within the first month. Now one or two formed stools daily, no urgency, no nocturnal stools. Weight back up to 71 kg. No fevers.\nMedications: mesalamine 4.8 g daily; ursodiol 300 mg three times daily. NKDA.\n\nExam: well, abdomen soft and nontender.\nLabs: hemoglobin 12.6, CRP normal.\n\nAssessment: clinical remission on mesalamine. Anemia improving. PSC stable; MRCP and CA 19-9 this autumn unchanged and normal respectively.\nPlan: continue mesalamine at 4.8 g daily as maintenance. First surveillance colonoscopy August 2023. Review in six months."}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "annual_physical",
+          "start": "2023-01-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-01-24T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-24T09:10", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Urinalysis", "collected": "2023-01-24T09:10", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-01-24T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-01-24T09:30", "body": "27M. Problems: PSC, extensive UC (dx 8/2022) in remission on mesalamine, anemia.\n\nInterval: UC quiet since the fall, 1-2 formed BMs a day, no blood. Back running. Passed his qualifying exams in December. Reserve drills monthly.\nMeds: mesalamine 1.2 g x4 daily, ursodiol 300 mg TID. NKDA.\n\nExam: vitals as charted, weight steady. Anicteric. Mouth normal. Heart and lungs normal. Abdomen soft, nontender, no organomegaly. Skin clear.\nPHQ-9: 3.\n\nA/P:\n- UC in remission: continue mesalamine. Creatinine and UA today for mesalamine kidney monitoring.\n- PSC: LFTs today; GI follows with yearly MRCP.\n- Anemia: CBC today; was 12.6 in November.\n- Vaccines: flu and bivalent COVID done in October.\nNext physical in a year; labs again in summer."}
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "portal_message",
+          "start": "2023-03-29T21:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Mouth sores and blisters", "author": "patient", "date": "2023-03-29T21:30", "body": "For about a week I've had really sore spots inside my cheeks and on the roof of my mouth, it hurts to eat. Now I have blisters on my chest and a couple on my back that pop and leave raw patches. I switched soap thinking it was that but it's getting worse. No fever. Could I be seen?"},
+            {"type": "Patient Message", "title": "RE: Mouth sores and blisters", "author": "PCP", "date": "2023-03-30T07:20", "body": "Yes, come in at 11:00 today."}
+          ]
+        },
+        {
+          "id": "2023-03-30a",
+          "kind": "office_visit",
+          "start": "2023-03-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Oral erosions and blistering rash",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "orders": [
+            {"id": "derm-referral-2023", "action": "placed", "order": "Dermatology referral, urgent", "category": "referral", "to": "Dermatology", "reason": "Oral erosions and flaccid blisters, concern for autoimmune blistering disease"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-03-30T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-03-30T11:45", "body": "About a week of painful mouth sores, then blisters on the chest and back that break easily and leave raw areas. Changed soaps and detergent, no help. No fever, joint pain, eye symptoms or new meds; mesalamine and ursodiol unchanged for months. UC quiet.\n\nExam: afebrile. Shallow erosions on both buccal mucosae and the soft palate. Several flaccid blisters on the anterior chest with surrounding redness and a few crusted erosions; two smaller erosions on the upper back. No target lesions. Eyes and genitals not involved per pt.\n\nA/P: oral erosions with flaccid bullae, worry for an autoimmune blistering disease such as pemphigus. Needs dermatology with biopsy this week. Called the outside dermatology group, seen 4/6. Salt-water rinses and soft diet meanwhile; petrolatum and nonstick dressings for raw areas. Call if spreading fast, fever, or trouble eating or drinking."}
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "specialist_visit",
+          "start": "2023-04-06T09:20",
+          "service": "Dermatology",
+          "reason": "Oral erosions and blistering eruption",
+          "conditions": [
+            {"label": "Pemphigus vulgaris", "action": "diagnosed", "onset": "2023-03-23"}
+          ],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "start", "sig": "Take 3 tablets (60 mg) by mouth every morning; taper per dermatology schedule", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pemphigus vulgaris"}
+          ],
+          "state": {"labs": {"Hemoglobin": 12.4}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-06T10:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-04-06T10:00", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-04-06T10:00", "results": [{"test": "Hepatitis B Surface Antigen", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Punch skin biopsy, single lesion", "performed": "2023-04-06T09:50"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-04-06T09:50", "issued": "2023-04-11T13:00", "text": "A. Skin, left anterior chest, perilesional, punch biopsy (H&E): intraepidermal blister with suprabasal acantholysis; basal keratinocytes retained along the dermal-epidermal junction. Sparse superficial dermal inflammatory infiltrate. B. Skin, left anterior chest, perilesional, punch biopsy for direct immunofluorescence: intercellular IgG and C3 deposition within the epidermis. IgA, IgM and fibrinogen negative.", "conclusion": "Suprabasal acantholytic blister with intercellular IgG and C3, diagnostic of pemphigus vulgaris."}
+          ],
+          "orders": [
+            {"id": "derm-referral-2023", "action": "done", "date": "2023-04-06T09:20"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Consultation", "author": "dermatology", "date": "2023-06-13T10:00", "body": "Outside dermatology group. Date of service 04/06/2023. Received after records request.\n\nReason for referral: oral sores and blisters.\n\nHistory: 27-year-old man with PSC and extensive ulcerative colitis diagnosed last August. Two weeks of painful oral erosions and a blistering eruption on the chest and back that has kept worsening even after he stopped using new soaps and detergents. He denies fever, joint pain and recent travel.\nMedications: ursodiol 300 mg three times daily. Allergies: NKDA.\nFamily history: rheumatoid arthritis in his mother, ulcerative colitis in a maternal uncle.\nSocial: graduate student.\n\nExam: several flaccid bullae and erosions on red bases across the anterior chest. Light traction on skin beside the lesions extends the erosions and raises new ones (Nikolsky positive). Shallow erosions of the buccal mucosa and soft palate. Conjunctivae and genitals spared.\n\nLabs: unremarkable apart from mild anemia. Hepatitis B surface antigen negative.\nBiopsy (H&E and DIF, left chest): suprabasal acantholysis; intercellular IgG and C3 on DIF.\n\nAssessment: pemphigus vulgaris, mucocutaneous.\nPlan:\n1. Prednisone 60 mg daily, then taper over about five months guided by response.\n2. Rituximab 1000 mg IV x 2, two weeks apart, at our infusion center (4/20 and 5/4). Hepatitis B screen negative. Recommend pneumococcal vaccination before the first dose if not done.\n3. Continue saline rinses; bland emollient to erosions.\n4. Follow up in three months."}
+          ]
+        },
+        {
+          "id": "2023-04-10a",
+          "kind": "portal_message",
+          "start": "2023-04-10T08:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Dermatology update", "author": "patient", "date": "2023-04-10T08:55", "body": "Derm called with the biopsy: pemphigus vulgaris. I'm on prednisone 60 mg a day and they're setting up rituximab infusions on 4/20 and 5/4. They said I should get a pneumonia shot before the first infusion. Can I do that with you?"},
+            {"type": "Patient Message", "title": "RE: Dermatology update", "author": "PCP", "date": "2023-04-10T13:20", "body": "Sorry you're dealing with this on top of everything. We haven't gotten their note yet, so thank you for the details. I see the prednisone fill from the pharmacy and added it to your list. Nurse visit Wednesday for the pneumococcal vaccine (PCV20), well before 4/20. Take the prednisone in the morning with food."},
+            {"type": "Telephone Encounter", "title": "Med list update", "author": "MA", "date": "2023-04-10T13:30", "body": "Prednisone 20 mg tabs, 60 mg daily, prescribed by outside dermatology, filled 4/6 per pharmacy fill history. Entered on med list as outside prescription. PCV20 nurse visit booked 4/12."}
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "nurse_visit",
+          "start": "2023-04-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumococcal vaccine before rituximab",
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-04-12T15:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-04-12T15:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2023-04-12T15:50", "body": "PCV20 0.5 mL IM left deltoid ahead of planned rituximab. Pt reports mouth a bit less sore on prednisone. Waited 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2023-05-05a",
+          "kind": "portal_message",
+          "start": "2023-05-05T17:10",
+          "medications": [
+            {"drug_text": "rituximab 10 MG/ML Injection", "action": "historical", "sig": "1000 mg IV, two doses two weeks apart (4/20/2023 and 5/4/2023), given at dermatology infusion center", "dose": {"value": 1000, "unit": "mg"}, "route": "Intravenous", "course": "short", "reason": "Pemphigus vulgaris"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Infusions done", "author": "patient", "date": "2023-05-05T17:10", "body": "Second rituximab infusion was yesterday, both went OK. Mouth is healing and the chest spots are crusting over. Prednisone is down a bit already per their schedule."},
+            {"type": "Patient Message", "title": "RE: Infusions done", "author": "PCP", "date": "2023-05-05T19:02", "body": "Good to hear. I've noted both infusions in your chart. Let me know about any fevers in the next few months, since rituximab lowers your defenses for a while."}
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "telephone",
+          "start": "2023-06-06T11:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2023-06-06T11:40", "body": "No consult note received from the outside dermatology group for the 4/6 visit. Called their records line, request plus release faxed for the consult note and biopsy report. They will send within a week."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "specialist_visit",
+          "start": "2023-07-18T13:30",
+          "service": "Dermatology",
+          "reason": "Pemphigus vulgaris follow-up",
+          "state": {"weight_kg": 74.0},
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Follow-up", "author": "dermatology", "date": "2023-07-25T09:00", "body": "Outside dermatology group. Visit 07/18/2023.\n\nPemphigus vulgaris, three months after diagnosis. Rituximab 1 g given 4/20 and 5/4. Prednisone tapered from 60 mg and now at 10 mg daily.\nNo new blisters for six weeks. Eating normally.\nExam: oral mucosa healed. Chest and back show healed erosions with postinflammatory pink macules only. Nikolsky negative.\nMedications: prednisone 10 mg daily, ursodiol 300 mg three times daily. NKDA.\n\nAssessment: pemphigus vulgaris in remission on minimal therapy.\nPlan: continue taper by 2.5 mg every two weeks, off by late September. Reassess in nine months, sooner with any new lesion."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "specialist_visit",
+          "start": "2023-08-22T09:00",
+          "service": "Gastroenterology and Hepatology",
+          "reason": "Surveillance colonoscopy, PSC with ulcerative colitis",
+          "procedures": [{"procedure": "Colonoscopy with biopsy", "performed": "2023-08-22T09:30"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-08-22T09:45", "issued": "2023-08-25T12:00", "text": "Random surveillance biopsies, right, transverse, left colon and rectum, separately labeled: colonic mucosa with mild chronic changes without active inflammation. No dysplasia in any specimen.", "conclusion": "Quiescent colitis. Negative for dysplasia."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Surveillance Colonoscopy and PSC Review", "author": "gastroenterology", "date": "2023-08-31T10:00", "body": "Outside gastroenterology and hepatology group. Procedure and clinic 08/22/2023.\n\nIndication: surveillance in PSC with extensive ulcerative colitis.\nColonoscopy: good prep, to the cecum and terminal ileum. Mucosa healed throughout without ulceration or friability. No polyps or raised lesions. Segmental random biopsies taken.\nPathology: quiescent colitis, no dysplasia.\n\nPSC: annual MRCP stable, no dominant stricture or mass. CA 19-9 normal. Liver tests at baseline.\nMedications on our list: mesalamine 4.8 g daily, ursodiol 300 mg three times daily. NKDA.\n\nPlan: continue mesalamine and ursodiol. Next colonoscopy and MRCP in about a year."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "lab_only",
+          "start": "2023-09-12T07:45",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-09-12T07:45", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T07:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-12T07:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-09-13T09:10", "body": "Liver tests stable for you. Hemoglobin is still a little below normal, same as spring. Kidney function and sugar fine on the prednisone. No changes."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T16:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T16:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T16:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2023-10-03T17:00", "body": "Flu (L deltoid) and 2023-24 COVID (R deltoid) given. Pt states he finished the steroid taper last week. Observed, no reaction."}
+          ]
+        }
+      ]
+    }
+  ]
+}

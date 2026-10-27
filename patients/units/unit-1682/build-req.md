@@ -130,3 +130,8 @@ before this pregnancy.
 - Admin: work-leave paperwork forwarded to OB; a cancelled April check-in;
   scheduling messages; annual physical booked 2026-09-16 (flu shot then).
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001682 on 2026-05-20. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

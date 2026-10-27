@@ -1,0 +1,4025 @@
+{
+  "unit": "unit-1725",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"Prenatal Multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001725",
+      "given": "Denise",
+      "family": "Harris",
+      "birth_date": "1993-12-20",
+      "address_line": "36 Linden Street, Apt 3",
+      "phone": "+1-774-555-0151",
+      "email": "denise.harris@example.test",
+      "marital_status": "partnered",
+      "summary": "Administrative assistant who joins in 2020 with obesity and recurrent UTIs on nitrofurantoin prophylaxis. PCOS, hidradenitis and IBS are diagnosed by outside specialists in 2022; gallstones lead to cholangitis, ERCP with sphincterotomy for sphincter of Oddi dysfunction and cholecystectomy in 2024. Pregnant in 2025, she develops nitrofurantoin liver injury after her last practice visit and delivers at term in May 2026.",
+      "events": [
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish primary care",
+          "conditions": [
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2016-01-01"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2011-01-01"
+            },
+            {
+              "label": "Personal history of urinary tract infections",
+              "action": "history",
+              "onset": "2017-01-01",
+              "note": "three or more episodes a year before prophylaxis",
+              "icd10": "Z87.440"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nitrofurantoin macrocrystals 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth at bedtime",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "UTI prophylaxis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              70
+            ],
+            "hr": 76,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 96.1,
+            "height_cm": 162.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 296
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 90
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2020-09-14T10:05",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2020-09-14T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-14T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-14T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-09-14T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-14T09:20",
+              "author": "PCP",
+              "body": "New patient. 26 y/o woman moving her care here; prior PCP office closing its adult panel. Records requested.\n\nConcerns today: none acute. Wants a regular doctor and help with weight.\n\nPMH: recurrent bladder infections since about age 23, at least three a year, cultures at the old office per pt. Prior PCP put her on nightly nitrofurantoin and she has had none since starting it. Acne as a teen and in her early 20s, used prescription creams, nothing now. Weight has been her biggest frustration.\nPSH: none.\nMeds: nitrofurantoin 100 mg at bedtime.\nAllergies: none to medications.\nFH: mother with type 2 diabetes and gallstones; father with high blood pressure; one sister with polycystic ovaries.\nSH: administrative assistant. Smokes cigarettes daily, has tried to stop before. No alcohol. Lives locally.\n\nROS: negative except as above. No dysuria now.\n\nExam: well appearing, NAD. Vitals as recorded; BMI 36. HEENT normal. Neck supple, thyroid not enlarged. Heart RRR, no murmur. Lungs clear bilaterally. Abd soft, nontender, no organomegaly. Skin without rash. Ext warm, no edema. Mood and affect appropriate. PHQ-9: 3.\n\nA/P:\n1. Obesity, BMI 36. Talked about realistic targets, food log, walking at lunch. Recheck weight in a year or sooner.\n2. Tobacco use. Advised to quit; she is not ready to set a date but open to revisiting. Offered support whenever she wants it.\n3. Hx recurrent UTI on prophylaxis. Doing well on nitrofurantoin, will continue and refill here.\n4. Health maintenance: Tdap today (no record of one since high school). Baseline CMP, CBC, lipids, A1c, TSH. One-time HIV and hep C screening, she agrees. Pap 2019 at prior office, normal per pt; will confirm with records. Flu shot when this season's supply comes in.\n\nRTC 1 year for physical, sooner prn."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Immunization Record",
+              "date": "2020-09-14T10:02",
+              "author": "MA",
+              "body": "Tdap 0.5 mL IM given L deltoid. VIS provided. Tolerated without issue, observed 15 min."
+            }
+          ],
+          "state": {
+            "weight_kg": 95.6,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Low Density Lipoprotein": 86,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-17a",
+          "kind": "portal_message",
+          "start": "2020-09-17T14:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2020-09-17T14:40",
+              "author": "PCP",
+              "body": "Hi Denise, all of your blood work from Monday came back fine: blood count, kidney and liver tests, cholesterol, sugar (A1c) and thyroid were normal, and the HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-28a",
+          "kind": "outside_records",
+          "start": "2020-09-28T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2020-09-28T11:00",
+              "author": "front desk",
+              "body": "Records from prior primary care office received by fax, 22 pages, scanned to media. Includes office notes 2016-2020, urine cultures 2017-2018, and cervical cytology 08/2019 (negative for intraepithelial lesion or malignancy). Nitrofurantoin prophylaxis started there in 2018 after repeated cystitis. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2020-09-29T08:10",
+              "author": "PCP",
+              "body": "Reviewed outside records. Several E. coli cystitis cultures 2017-18, all pan-sensitive, then on nitrofurantoin since. Pap 2019 normal, next due 2022. Nothing else to add to her history."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-19a",
+          "kind": "nurse_visit",
+          "start": "2020-10-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-19T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-19T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2020-10-19T16:15",
+              "author": "RN",
+              "body": "Here after work for her flu shot. Screening questions negative, no egg or vaccine reactions. Quadrivalent influenza 0.5 mL IM R deltoid. Left without problems."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-11a",
+          "kind": "pharmacy",
+          "start": "2021-01-11T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2021-01-11T09:30",
+              "author": "MA",
+              "body": "Pharmacy fax: nitrofurantoin 100 mg caps, #90, last fill 10/2020. Last seen 9/2020. Pended for PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2021-01-11T12:05",
+              "author": "PCP",
+              "body": "Approved, 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-16a",
+          "kind": "pharmacy",
+          "start": "2021-04-16T15:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-26T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-16T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Immunization registry update",
+              "date": "2021-04-16T15:00",
+              "author": "MA",
+              "body": "State registry shows two Pfizer COVID-19 doses at a retail pharmacy, 3/26/21 and 4/16/21. Entered into her immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-19a",
+          "kind": "office_visit",
+          "start": "2021-04-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Quit smoking; planning pregnancy",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2021-04-12"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "Prenatal Multivitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "preconception"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 86,
+            "spo2": 97,
+            "weight_kg": 92.4
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-04-19T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-04-19T15:40",
+              "author": "PCP",
+              "body": "S: Came in to tell me she stopped smoking a week ago, cold turkey. She has started trying to get pregnant and that was the push. Some irritability, sleeping fine, no cravings she can't handle. Wants to know what she should be taking. Still on nightly nitrofurantoin, no bladder infections.\n\nO: Vitals as charted, weight down a little since September. Well appearing. Heart and lungs normal.\n\nA/P:\n- Former smoker as of last week. Congratulated her. Offered nicotine replacement; she prefers to do it without. Quitline number given.\n- Preconception: start a prenatal vitamin daily (folic acid). Nitrofurantoin is fine to continue while trying. Let me know when she has a positive test so we can get OB involved early.\n- Recheck at physical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 93.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "annual_physical",
+          "start": "2021-09-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              82
+            ],
+            "hr": 83,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 90.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-20T09:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-20T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 115
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-09-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-09-20T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-20T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-20T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-20T08:40",
+              "author": "PCP",
+              "body": "Annual exam, 27F.\n\nInterval: still not smoking since April, proud of it. Trying to conceive for about five months, no luck yet, not worried yet. Lost about 5 kg since last fall with walking and cutting soda. No UTIs on prophylaxis. Taking prenatal vitamin.\n\nMeds: nitrofurantoin 100 mg qhs, prenatal vitamin daily. NKDA.\n\nROS: no fevers, weight change intentional, no bowel or urinary complaints, mood good.\n\nExam: vitals as charted. Alert, comfortable. Eyes and ears normal. Neck without thyroid enlargement or nodes. CV regular rate, no murmur. Lungs clear. Abdomen soft, nontender. Skin warm and dry. No peripheral edema. Neuro grossly intact. PHQ-9 = 2.\n\nAssessment/plan:\n1. Well adult exam. Flu vaccine today. Labs: CMP, lipids, A1c.\n2. Obesity, improving. Keep at it.\n3. Former smoker, 5 months.\n4. UTI prophylaxis, continue.\n5. Pap due next year.\nCOVID booster when she becomes eligible."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2021-09-22T07:55",
+              "author": "PCP",
+              "body": "Labs look good: sugar, cholesterol, kidney and liver numbers all normal. Keep doing what you're doing."
+            }
+          ],
+          "state": {
+            "weight_kg": 90.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-06a",
+          "kind": "pharmacy",
+          "start": "2021-12-06T17:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-04T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization notice",
+              "date": "2021-12-06T17:30",
+              "author": "MA",
+              "body": "Pharmacy notification: Pfizer COVID-19 booster given 12/4/21. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-07a",
+          "kind": "office_visit",
+          "start": "2022-03-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Irregular periods, not conceiving; painful lumps under arms",
+          "vitals": {
+            "bp": [
+              120,
+              69
+            ],
+            "hr": 83,
+            "spo2": 96,
+            "weight_kg": 84.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-07T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "obgyn-referral-2022",
+              "action": "placed",
+              "order": "OB/GYN referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "oligomenorrhea, unable to conceive for 11 months, increased hair growth"
+            },
+            {
+              "id": "derm-referral-2022",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "recurrent painful draining nodules axillae and groin"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-03-07T10:20",
+              "author": "PCP",
+              "body": "CC: two things - can't get pregnant, and the bumps under her arms.\n\n1) Trying since last April, about 11 months. Periods only come every 2-3 months, and when they do they're heavy and go on for a long time. Has noticed more hair on her chin, lip and lower belly over the last couple of years and has been plucking. No nipple discharge. No heat/cold intolerance.\n\n2) Keeps getting painful lumps in both armpits and in the groin creases that swell, open and drain, then heal and come back in the same spots. Has had them on and off for a while, getting more frequent.\n\nStill smoke free. On nitrofurantoin qhs and prenatal vitamin.\n\nExam: vitals as charted, BMI 32 - down from 36 when she started here. Some coarse dark hairs on chin and upper lip. Thyroid normal size. Axillae: a few tender nodules both sides with healed scarring and a draining tract on the L. Inguinal folds with similar scarred nodules. No fluctuant abscess today.\n\nAssessment:\n- Oligomenorrhea with hirsutism and subfertility. Sister has PCOS. Referring to OB/GYN for evaluation; they'll do the hormone workup and imaging.\n- Recurrent draining nodules in intertriginous areas, looks like hidradenitis. Derm referral.\n- Weight down nicely.\nFollow up after the consults."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-18a",
+          "kind": "specialist_visit",
+          "start": "2022-04-18T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Oligomenorrhea and subfertility",
+          "conditions": [
+            {
+              "label": "Polycystic ovary syndrome",
+              "action": "diagnosed",
+              "onset": "2022-04-18"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "polycystic ovary syndrome"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-18T13:50",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "unit": "mg/dL",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-04-18T13:50",
+              "results": [
+                {
+                  "test": "Testosterone, Total",
+                  "unit": "ng/dL",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-04-18T13:50",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "unit": "ng/mL",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-04-18T13:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "unit": "u[IU]/mL",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-04-18T13:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 159
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 83
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2022-04-18T14:30",
+              "text": "Transabdominal and transvaginal imaging. Uterus anteverted, normal in size and contour, endometrium uniform. Both ovaries contain multiple small follicles arranged around the periphery. No dominant cyst or adnexal mass. No free fluid.",
+              "conclusion": "Multiple small peripheral follicles in both ovaries. Otherwise normal pelvic ultrasound."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2022-04-25T09:00",
+              "author": "obstetrics and gynecology",
+              "body": "Gynecology consultation, seen 04/18/2022. Referred by primary care.\n\nThank you for sending Ms. Harris, 28, for irregular cycles and difficulty conceiving. Menses come roughly every two to three months and are often heavy and prolonged. She has been trying to conceive for a year without success. Over about two years she has seen more hair on the face and abdomen. She denies thyroid symptoms and galactorrhea.\n\nMedications: nitrofurantoin 100 mg nightly, prenatal vitamin. Allergies: NKDA. Former smoker, stopped a year ago when they began trying. No alcohol. Family: mother with type 2 diabetes and gallstones, sister with PCOS, father with hypertension.\n\nExam: BMI 32. Darkened velvety skin at the back and sides of the neck consistent with acanthosis nigricans. Mild terminal hair on the upper lip and chin. Remainder unremarkable.\n\nResults: fasting glucose 98 mg/dL. Total testosterone 82 ng/dL (reference 15-70). Prolactin 14 ng/mL. TSH 2.1. Lipids within normal limits. Pelvic ultrasound shows numerous small peripheral follicles in both ovaries.\n\nImpression: polycystic ovary syndrome, with oligo-ovulation, clinical and biochemical hyperandrogenism, and polycystic ovarian morphology. Insulin resistance suggested by the acanthosis.\n\nPlan: start metformin, increasing to 1000 mg twice daily with meals over a few weeks as tolerated. Continue the prenatal vitamin. Continue weight efforts. Will follow in clinic.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2022-04-25a",
+          "kind": "outside_records",
+          "start": "2022-04-25T15:10",
+          "orders": [
+            {
+              "id": "obgyn-referral-2022",
+              "action": "done",
+              "date": "2022-04-25T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside letter reviewed",
+              "date": "2022-04-25T15:10",
+              "author": "PCP",
+              "body": "GYN letter reviewed: PCOS. Metformin started there, titrating to 1000 mg BID. Added to med list and problem list."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-02a",
+          "kind": "portal_message",
+          "start": "2022-05-02T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Metformin question",
+              "date": "2022-05-02T20:15",
+              "author": "patient",
+              "body": "Hi, the gyn started me on metformin. My stomach is a little off since I went up on the dose. Is that normal and will it go away?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Metformin question",
+              "date": "2022-05-03T08:30",
+              "author": "PCP",
+              "body": "Very common in the first few weeks, and it usually settles. Take it in the middle of a meal rather than before. If it's still bothering you in a month, let me or the GYN office know and we can slow the increase."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-13a",
+          "kind": "specialist_visit",
+          "start": "2022-06-13T10:30",
+          "service": "Dermatology",
+          "reason": "Recurrent axillary and groin nodules",
+          "conditions": [
+            {
+              "label": "Hidradenitis suppurativa",
+              "action": "diagnosed",
+              "onset": "2020-01-01",
+              "note": "Hurley stage II"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clindamycin phosphate 10 MG/ML Topical Gel",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas twice daily",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "hidradenitis suppurativa and acne"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "date": "2022-06-21T10:00",
+              "author": "dermatology",
+              "body": "Dermatology new patient consultation\nDate of service: 06/13/2022\nReason for referral: recurrent painful nodules\n\nHistory: 28-year-old woman with recently diagnosed PCOS who reports recurring painful nodules and abscesses in both axillae and the groin, with spots that drain and reform along tracts. Meds: metformin, nitrofurantoin, prenatal vitamin. NKDA. Former smoker.\n\nExamination: bilateral axillae with several inflamed nodules, two interconnected sinus tracts, and rope-like scarring. Inguinal folds with recurrent nodules and a single sinus tract on the right, with areas of normal skin between lesions. A few comedones and papules on the jawline.\n\nAssessment: hidradenitis suppurativa, Hurley stage II. Mild acne.\n\nPlan: clindamycin 1% gel to affected areas twice daily, which will also cover the jawline. Loose cotton clothing, avoid shaving over active lesions. Weight loss helps. Return in about 6 to 9 months.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-21T16:00",
+          "orders": [
+            {
+              "id": "derm-referral-2022",
+              "action": "done",
+              "date": "2022-06-21T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside letter reviewed",
+              "date": "2022-06-21T16:00",
+              "author": "PCP",
+              "body": "Derm: HS, Hurley II. Clindamycin gel BID. Lists updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-15a",
+          "kind": "office_visit",
+          "start": "2022-08-15T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal cramping with bowel changes",
+          "vitals": {
+            "bp": [
+              138,
+              69
+            ],
+            "hr": 88,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 85.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-15T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "recurrent lower abdominal pain relieved by defecation with alternating stool pattern"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-08-15T14:00",
+              "author": "PCP",
+              "body": "Belly cramps since about April. More than once a week, crampy lower abdominal pain, often within an hour of eating, better after she has a bowel movement. Goes back and forth between loose stools for a few days and then constipated for a few days. No blood, no black stools, no nighttime waking with diarrhea. No travel, nobody sick at home, no antibiotics other than her usual nitrofurantoin. Weight stable. Taking metformin 1000 BID, PCOS follow-up with GYN.\n\nExam: afebrile, vitals as charted. Abdomen soft, mild diffuse discomfort lower quadrants without guarding, no masses, normal bowel sounds.\n\nA/P: recurrent abdominal pain with altered bowel habit. Pattern sounds functional but she would like a specialist opinion and that's reasonable. GI referral. Fiber, regular meals, food diary in the meantime. Return precautions reviewed."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "date": "2022-08-18T11:20",
+              "author": "front desk",
+              "body": "GI office called, new patient appt set for 10/3. Pt notified by phone."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "annual_physical",
+          "start": "2022-09-26T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "vitals": {
+            "bp": [
+              124,
+              83
+            ],
+            "hr": 64,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 85.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-26T09:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-26T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 162
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 73
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 102
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-26T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-09-26T08:50",
+              "text": "Liquid-based preparation. Specimen adequate, transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2022-09-30T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-09-26T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-26T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-26T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-26T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-26T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-26T08:20",
+              "author": "PCP",
+              "body": "Preventive visit, 28 y/o.\n\nSince last year: PCOS diagnosed by GYN in April, on metformin 1000 BID, GI side effects settled. Derm diagnosed hidradenitis in June; using clindamycin gel, still gets flares but fewer draining spots. Bowel symptoms continue on and off, GI appt next week. Still trying to conceive, cycles still irregular. Not smoking. No UTIs.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg qhs, prenatal vitamin, clindamycin 1% gel BID. NKDA.\n\nExam: vitals as charted, BMI 32. NAD. HEENT clear. Neck: acanthosis at nape, thyroid normal. Heart RRR without murmur. Lungs clear to auscultation. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin: healing scars and two small nodules R axilla, no abscess. No edema. PHQ-9: 4.\n\nPlan:\n- Pap today, cytology only at 28.\n- Flu and bivalent COVID today.\n- CMP, lipids, A1c.\n- Keep GI and GYN follow-up.\nSee next fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Pap and lab results",
+              "date": "2022-09-30T15:20",
+              "author": "PCP",
+              "body": "Your Pap smear was normal, so the next one is due in three years. Blood work also normal, including sugar and liver tests."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "specialist_visit",
+          "start": "2022-10-03T09:00",
+          "service": "Gastroenterology",
+          "reason": "Recurrent abdominal pain with alternating bowel habit",
+          "conditions": [
+            {
+              "label": "Irritable bowel syndrome",
+              "action": "diagnosed",
+              "onset": "2022-04-01",
+              "note": "mixed type"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "dicyclomine hydrochloride 10 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily as needed for abdominal cramping",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "TID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "irritable bowel syndrome"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-03T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 11.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "unit": "fL",
+                  "value": 86
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.81
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 296
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-03T09:45",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-03T09:45",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "unit": "mm/h",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2022-10-12T08:30",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY - NEW PATIENT\nVisit date: 10/03/2022\n\nReferral question: recurrent abdominal pain with change in bowel habit.\n\nHPI: 28-year-old with PCOS (seen by gynecology) and hidradenitis (seen by dermatology). For roughly six months she has had abdominal pain more than weekly, commonly brought on by meals and relieved by defecation, with alternating stretches of diarrhea and constipation. No recent travel, no ill contacts, no antibiotic courses apart from long-standing low-dose nitrofurantoin. No rectal bleeding or nocturnal stools.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg nightly, prenatal vitamin, topical clindamycin. NKDA.\nFamily history: noncontributory.\nSocial: former smoker, no alcohol.\n\nExam: abdomen soft and not distended, no tenderness, no masses, bowel sounds normal.\n\nLabs today: Hgb 11.2 g/dL, MCV 86 fL, WBC 7.0. CRP 2 mg/L, ESR 15 mm/hr.\n\nImpression: irritable bowel syndrome, mixed subtype, by Rome IV criteria. Normal inflammatory markers are reassuring.\n\nRecommendations: dicyclomine 10 mg up to three times a day as needed for cramping. Dietary fiber and a low-FODMAP trial with handout. Follow up here as needed.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "outside_records",
+          "start": "2022-10-12T13:30",
+          "orders": [
+            {
+              "id": "gi-referral-2022",
+              "action": "done",
+              "date": "2022-10-12T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside letter reviewed",
+              "date": "2022-10-12T13:30",
+              "author": "PCP",
+              "body": "GI consult reviewed: IBS-M, dicyclomine prn. Med and problem lists updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-07a",
+          "kind": "portal_message",
+          "start": "2022-11-07T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update on stomach",
+              "date": "2022-11-07T12:10",
+              "author": "patient",
+              "body": "Just an update - the dicyclomine helps on bad days and the fiber seems to be helping too. Mostly using it a couple times a week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update on stomach",
+              "date": "2022-11-07T15:45",
+              "author": "RN",
+              "body": "Glad to hear it. Doctor has seen your message. Keep us posted."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-13a",
+          "kind": "office_visit",
+          "start": "2023-02-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up PCOS, hidradenitis, IBS",
+          "vitals": {
+            "bp": [
+              127,
+              76
+            ],
+            "hr": 82,
+            "spo2": 96,
+            "weight_kg": 86.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-02-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-02-13T11:00",
+              "author": "PCP",
+              "body": "Routine check in.\n\nPCOS: on metformin, cycles still 5-8 weeks apart. Not pregnant yet, coming up on two years of trying. GYN following.\nHS: using clindamycin gel, flares in the armpits about monthly, groin quieter.\nIBS: dicyclomine a few times a week, fiber daily. Better than last summer.\nNo urinary infections.\nShe mentions her hair seems thinner at the top of her head; has a derm follow-up in April and will bring it up there.\n\nExam: BMI 32. Well appearing. Heart regular, no murmur; lungs clear. Abdomen benign. Axillae with old scars, one small tender nodule L, no abscess.\n\nA/P: stable on current regimen. Continue meds. Derm in April. Physical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "specialist_visit",
+          "start": "2023-04-06T14:15",
+          "service": "Dermatology",
+          "reason": "Thinning hair at crown",
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ]
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-06T15:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "unit": "mg/dL",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-06T15:00",
+              "results": [
+                {
+                  "test": "Testosterone, Total",
+                  "unit": "ng/dL",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-06T15:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "unit": "u[IU]/mL",
+                  "value": 2.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-04-06T15:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 152
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 77
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 85
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 94
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "date": "2023-04-14T09:40",
+              "author": "dermatology",
+              "body": "Dermatology return visit - 04/06/2023\n\nKnown to our practice for hidradenitis suppurativa since June 2022, with polycystic ovary syndrome diagnosed by gynecology in April 2022. Today her main concern is gradual thinning over the crown during the past year. She describes cycles every 35 to 60 days and finds weight hard to shift even with regular exercise and careful eating. Past acne treated with topicals. Using clindamycin gel for HS.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg daily, prenatal vitamin, dicyclomine prn, clindamycin 1% gel BID. NKDA.\n\nBP 125/78. BMI 32. Diffuse widening of the central part over the vertex with preserved frontal hairline; no scarring, no scale. Coarse terminal hair on the chin, upper lip and sideburn area in a male-type distribution. Thyroid not enlarged, no nodules felt. Axillary HS quiet today.\n\nLabs: fasting glucose 96 mg/dL; total testosterone 82 ng/dL (reference 8-60); TSH 2.5; lipids normal.\n\nAssessment: thinning at the crown and hirsutism, both consistent with the androgen excess of her known PCOS. Thyroid normal. HS stable on topical therapy.\n\nPlan: continue current topical regimen for HS. Gentle hair care, avoid tight styles. Coordinate hormonal management with gynecology. Return in one year or sooner for flares.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-14a",
+          "kind": "outside_records",
+          "start": "2023-04-14T16:20",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside letter reviewed",
+              "date": "2023-04-14T16:20",
+              "author": "PCP",
+              "body": "Derm f/u reviewed. Crown thinning and hirsutism attributed to PCOS. No med changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "office_visit",
+          "start": "2023-06-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "telephone",
+          "start": "2023-06-13T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2023-06-13T10:00",
+              "author": "front desk",
+              "body": "Called re: missed appt yesterday. Pt says she forgot, work was busy. Doing fine. Will just keep her physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "annual_physical",
+          "start": "2023-09-25T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 67,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 86.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-25T08:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-25T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 335
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-25T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 159
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 82
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-25T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-25T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-25T08:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-25T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-25T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-25T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-25T08:00",
+              "author": "PCP",
+              "body": "29F, physical.\n\nInterval: missed June visit. Derm in April said hair thinning is from PCOS, no new treatment. HS flares come and go, managing with gel. IBS mostly controlled, dicyclomine maybe once a week. Still trying to conceive; she would rather not talk about it much today. Not smoking for 2.5 years. No alcohol.\n\nMeds reviewed, unchanged: metformin 1000 BID, nitrofurantoin 100 qhs, prenatal vitamin, dicyclomine 10 prn, clindamycin gel BID. NKDA.\n\nExam: vitals per flowsheet, BMI 32.5. NAD. Thyroid normal. Heart: regular, no murmurs. Lungs: clear. Abd: soft, NT/ND. Skin: axillary scarring, no active abscess; facial hair. Extremities without edema. PHQ-9 3.\n\nPlan: flu and updated COVID given. Labs - CMP, CBC, lipids, A1c. Pap next due 2025. Continue current meds. RTC 1 yr."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-09-27T07:40",
+              "author": "PCP",
+              "body": "Results are back and look fine. Blood count is normal, liver and kidney tests normal, cholesterol and A1c normal. See you next year, or sooner if you need us."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.4,
+            "labs": {
+              "Hemoglobin": 12.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "pharmacy",
+          "start": "2024-01-22T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization",
+              "date": "2024-01-22T10:15",
+              "author": "MA",
+              "body": "Pharmacy says new plan year, insurer wants PA for clindamycin 1% gel 60 g. Started PA online with dx hidradenitis suppurativa and dermatology plan."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PA approved",
+              "date": "2024-01-24T09:00",
+              "author": "MA",
+              "body": "PA approved through 1/2025. Pharmacy notified, pt picking up after work."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-04a",
+          "kind": "ed_visit",
+          "start": "2024-04-04T21:40",
+          "end": "2024-04-05T03:10",
+          "service": "Emergency Medicine",
+          "reason": "Right upper quadrant pain after a large meal",
+          "conditions": [
+            {
+              "label": "Cholelithiasis",
+              "action": "diagnosed",
+              "onset": "2024-04-04",
+              "note": "symptomatic, biliary colic"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "historical",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              68
+            ],
+            "hr": 82,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-04T22:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 12.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 10.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-04T22:05",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 1.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 120
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 40
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 45
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-04T22:05",
+              "results": [
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-04T22:05",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "unit": "U/L",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-04T22:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2024-04-04T23:30",
+              "text": "Gallbladder contains multiple mobile shadowing stones. Gallbladder wall is not thickened and there is no pericholecystic fluid. Common bile duct is not dilated. Liver normal in size and echotexture. Visualized pancreas and right kidney unremarkable.",
+              "conclusion": "Cholelithiasis without sonographic evidence of acute cholecystitis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-04-04T21:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-04-08T10:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 04/04/2024 21:40\n\nChief complaint: right upper abdominal pain.\n\nHPI: 30 yo F with PCOS, hidradenitis (Hurley II), IBS and history of recurrent UTIs, followed for her IBS and HS, here with 5 hours of severe, waxing and waning RUQ pain that bores through to her back, starting after a big dinner. Nauseated, has not vomited. Bowel movements unchanged, urine normal color.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg qhs, prenatal vitamin, dicyclomine prn, clindamycin gel. Allergies: NKDA. Former smoker, no EtOH.\n\nExam: vital signs stable, afebrile. Uncomfortable, shifting on the stretcher. Abdomen: marked RUQ tenderness, no rebound, no guarding; positive Murphy's sign. Lungs clear, heart regular.\n\nLabs: Hgb 12.5, WBC 10.0. T bili 1.2, alk phos 120, AST 40, ALT 45. Amylase 90, lipase 45. Urine hCG negative.\n\nImaging: RUQ US with multiple gallstones, no cholecystitis.\n\nED course: IV ketorolac and IV ondansetron with relief; tolerated PO.\n\nImpression: symptomatic cholelithiasis (biliary colic).\n\nDisposition: discharged home. Ondansetron ODT 4 mg q8h prn. Low-fat diet. Follow up with PCP this week to arrange general surgery evaluation; return for fever, jaundice or pain lasting more than a few hours.\n\nEmergency Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "outside_records",
+          "start": "2024-04-08T10:30",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED record reviewed",
+              "date": "2024-04-08T13:00",
+              "author": "PCP",
+              "body": "ED 4/4: biliary colic, gallstones on US, no cholecystitis, LFTs near normal. Gallstones added to problem list. MA to call for post-ED visit this week."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED scheduling",
+              "date": "2024-04-08T14:10",
+              "author": "MA",
+              "body": "Reached pt, pain gone. Booked Thursday 4/11."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "office_visit",
+          "start": "2024-04-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for gallstones",
+          "vitals": {
+            "bp": [
+              135,
+              68
+            ],
+            "hr": 81,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 85.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-11T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral-2024",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "symptomatic cholelithiasis, elective cholecystectomy evaluation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2024-04-11T09:40",
+              "author": "PCP",
+              "body": "S: ED last Thursday night for RUQ pain after a big meal, gallstones on ultrasound, no infection of the gallbladder. Sent home with ondansetron, used it twice. No pain since Saturday. Eating lighter. Mother had gallstones too.\n\nO: afebrile, vitals as charted. Not jaundiced. Abdomen soft, minimal RUQ tenderness to deep palpation, Murphy negative today. ED labs and US reviewed.\n\nA/P: symptomatic gallstones. Discussed that attacks tend to recur and that removal is the usual fix. Referral to general surgery for elective cholecystectomy. Low-fat meals meanwhile. Go back to the ED for fever, yellow eyes, dark urine or pain that won't quit."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-06a",
+          "kind": "telephone",
+          "start": "2024-05-06T11:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral status",
+              "date": "2024-05-06T11:45",
+              "author": "front desk",
+              "body": "Surgery office reports two voicemails left for pt, no callback. Our office left a message too with their scheduling number. Letter mailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "annual_physical",
+          "start": "2024-09-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              131,
+              84
+            ],
+            "hr": 77,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 87.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-09T09:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-09T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 160
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 82
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-09T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-09-09T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-09T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-09T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-09T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-09T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-09T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-09T08:30",
+              "author": "PCP",
+              "body": "Physical, age 30.\n\nGallstones: never connected with the surgeons after the April ED visit. No attacks since. She agrees she should get it done; given the surgery scheduling line again and she'll call this week.\nPCOS on metformin, cycles irregular. Still hoping for pregnancy.\nHS: intermittent flares, gel.\nIBS: steady.\nNo UTIs on nitrofurantoin.\n\nMeds unchanged. NKDA. Former smoker, no alcohol.\n\nExam: BMI 32.9. Comfortable. Sclerae anicteric. Thyroid normal. Heart RRR. Lungs clear. Abdomen soft, nontender, no RUQ tenderness. Skin: axillary scars, no active lesion. No edema. PHQ-9 5, no concerns raised.\n\nPlan: flu and COVID today. CMP, lipids, A1c. Call surgery. RTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-04a",
+          "kind": "ed_visit",
+          "start": "2024-10-04T10:50",
+          "end": "2024-10-04T16:00",
+          "service": "Emergency Medicine",
+          "reason": "Right upper quadrant pain with fever and chills",
+          "conditions": [
+            {
+              "label": "Acute cholangitis",
+              "action": "diagnosed",
+              "onset": "2024-10-02",
+              "icd10": "K83.09"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-10-04T10:55",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-04T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 12.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 210
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-10-04T11:15",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 2.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 190
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 75
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-04T11:15",
+              "results": [
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-04T11:15",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "unit": "U/L",
+                  "value": 45
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-04T11:20",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days",
+                  "resulted": "2024-10-09T12:00"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-04T11:20",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2024-10-04T12:40",
+              "text": "Gallbladder contains multiple shadowing stones. The gallbladder wall is thickened. No pericholecystic collection or wall defect to suggest perforation. The common bile duct is dilated. Liver normal in echotexture without focal lesion. Pancreas partially obscured by bowel gas.",
+              "conclusion": "Cholelithiasis with gallbladder wall thickening and a dilated common bile duct. No evidence of gallbladder perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-10-04T10:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-10-10T09:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT NOTE - 10/04/2024\n\nCC: RUQ pain, fever.\n\n30-year-old woman with obesity, PCOS and known gallstones (ED visit in April, surgery not yet arranged) who returns with two days of on-and-off RUQ pain that has steadily worsened, going to the back, with nausea. Fever and shaking chills since yesterday.\n\nMeds: metformin, nitrofurantoin prophylaxis, prenatal vitamin, dicyclomine prn, topical clindamycin. NKDA.\n\nTriage: T 38.9 C, BP 100/60, HR 110, RR 22.\nExam: ill-appearing, jaundiced. RUQ markedly tender, no rebound or guarding. Murphy's sign positive. Lungs clear.\n\nLabs: WBC 15.0, Hgb 12.2, plt 210. Total bilirubin 3.2, direct 2.5, alk phos 190, AST 80, ALT 75. Amylase 90, lipase 45. Urine hCG negative. Blood cultures x2 drawn.\n\nUS: multiple gallstones, thickened GB wall, no perforation, CBD dilated.\n\nAssessment: acute cholangitis with gallstones. Fluids, IV piperacillin-tazobactam after cultures. GI consulted for ERCP. Admitted to medicine.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-04b",
+          "kind": "hospital_admission",
+          "start": "2024-10-04T16:00",
+          "end": "2024-10-08T13:00",
+          "service": "Internal Medicine — Hospital Medicine",
+          "reason": "Acute cholangitis",
+          "conditions": [
+            {
+              "label": "Sphincter of Oddi dysfunction",
+              "action": "diagnosed",
+              "onset": "2024-10-04",
+              "note": "papillary stenosis at ERCP, sphincterotomy done",
+              "icd10": "K83.4"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 5 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "complete treatment of cholangitis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-10-07T05:30",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 1.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 141
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 38
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 52
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-10-04T16:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-10-08T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-10-10T09:20",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY\nAdmitted 10/04/2024 from the ED. Discharged 10/08/2024.\n\nPrincipal diagnosis: acute cholangitis.\nSecondary: cholelithiasis; sphincter of Oddi dysfunction (papillary stenosis) s/p biliary sphincterotomy; PCOS; hidradenitis suppurativa; IBS; obesity.\n\nHospital course: admitted febrile and jaundiced with a dilated common duct. Treated with IV fluids and piperacillin-tazobactam. Blood cultures without growth. ERCP 10/05: cannulation of a tight, stenotic papilla; cholangiogram showed a dilated common bile duct with sludge and several small stones, cleared with balloon sweeps after biliary sphincterotomy. Endoscopist's impression was papillary stenosis (sphincter of Oddi dysfunction) with choledocholithiasis. No post-procedure pancreatitis. Defervesced within 24 hours, pain resolved, diet advanced. Bilirubin 1.3 and alk phos 141 on 10/07.\n\nDischarge medications: amoxicillin-clavulanate 875/125 mg BID for 5 more days. Resume metformin, nitrofurantoin, prenatal vitamin, dicyclomine prn, topical clindamycin.\n\nFollow-up: PCP within 1 week. General surgery for interval laparoscopic cholecystectomy in about 4-6 weeks; referral sent from inpatient team.\n\nAllergies: NKDA.\n\nHospital Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "outside_records",
+          "start": "2024-10-10T09:15",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital records reviewed",
+              "date": "2024-10-10T12:30",
+              "author": "PCP",
+              "body": "Admitted 10/4-10/8 with cholangitis. ERCP with sphincterotomy, stones/sludge cleared; papillary stenosis called SOD. Lap chole planned. Problem list updated. TCM visit Monday."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2024-10-10T14:00",
+              "author": "RN",
+              "body": "Transitional care call. Home since Tuesday, eating, no fever, taking the antibiotic. Knows to come in Monday 10/14. Meds reconciled with discharge list."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "office_visit",
+          "start": "2024-10-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, cholangitis",
+          "conditions": [
+            {
+              "label": "Acute cholangitis",
+              "action": "resolved",
+              "icd10": "K83.09"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              80
+            ],
+            "hr": 72,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 85.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-14T10:35",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-14T10:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-10-14T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-14T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Transitional Care Visit",
+              "date": "2024-10-14T10:00",
+              "author": "PCP",
+              "body": "Seen after discharge 10/8 for gallstone cholangitis.\n\nFinished amoxicillin-clavulanate yesterday. No fever since the hospital, no pain, appetite back, stools and urine normal color. A little tired. Surgery office already called her and she has a consult on 10/28.\n\nMeds reconciled: metformin 1000 BID, nitrofurantoin 100 qhs, prenatal vitamin, dicyclomine prn, clindamycin gel. NKDA.\n\nExam: afebrile, vitals as charted. Sclerae clear, no jaundice. Abdomen soft, no RUQ tenderness. \n\nA/P:\n- Acute cholangitis, treated, clinically resolved. Repeat CMP and CBC today to confirm the liver numbers came down.\n- Sphincter of Oddi dysfunction (papillary stenosis) s/p sphincterotomy at ERCP.\n- Gallstones, cholecystectomy pending - keep the 10/28 surgery appt.\nReturn sooner for fever or pain."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-10-15T08:15",
+              "author": "PCP",
+              "body": "Your liver tests and white count are back to normal. Good news - keep the surgery appointment on the 28th."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "procedure_visit",
+          "start": "2024-11-18T07:30",
+          "end": "2024-11-18T13:30",
+          "service": "General Surgery",
+          "reason": "Interval laparoscopic cholecystectomy",
+          "conditions": [
+            {
+              "label": "Cholelithiasis",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-11-18T09:40",
+              "text": "Gallbladder, cholecystectomy: received fresh, 7.5 cm in length, opened to reveal multiple yellow faceted stones. Wall with chronic inflammation and Rokitansky-Aschoff sinuses. No dysplasia or malignancy.",
+              "conclusion": "Chronic cholecystitis with cholelithiasis.",
+              "issued": "2024-11-21T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2024-11-18T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral-2024",
+              "action": "done",
+              "date": "2024-11-18T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2024-11-25T10:00",
+              "author": "general surgery",
+              "body": "OPERATIVE REPORT - 11/18/2024\nPreoperative diagnosis: symptomatic cholelithiasis, status post cholangitis and ERCP sphincterotomy.\nPostoperative diagnosis: same.\nProcedure: laparoscopic cholecystectomy.\nAnesthesia: general endotracheal.\n\nFindings: gallbladder as expected. Critical view of safety obtained. Cystic duct and artery clipped and divided. Gallbladder removed from the liver bed and extracted in a bag through the umbilical port.\nEBL minimal. No complications. Discharged home the same day, tolerating diet. Acetaminophen as needed; no opioids requested.\nPathology: chronic cholecystitis with cholelithiasis.\nFollow-up in surgery clinic in 2 weeks.\n\nGeneral Surgery"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "outside_records",
+          "start": "2024-11-25T10:00",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Op note reviewed",
+              "date": "2024-11-25T15:40",
+              "author": "PCP",
+              "body": "Lap chole 11/18, uncomplicated, path chronic cholecystitis. Surgical history updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "portal_message",
+          "start": "2024-12-02T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "After surgery",
+              "date": "2024-12-02T19:05",
+              "author": "patient",
+              "body": "Surgery went fine and the little cuts are healing. Back at work today. Surgeon visit is Wednesday. Just wanted you to know!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: After surgery",
+              "date": "2024-12-03T07:20",
+              "author": "PCP",
+              "body": "Thanks for the update, glad to hear you're back on your feet."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-17a",
+          "kind": "office_visit",
+          "start": "2025-03-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              79
+            ],
+            "hr": 73,
+            "spo2": 99,
+            "weight_kg": 88.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-17T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-17T16:00",
+              "author": "PCP",
+              "body": "Follow-up. Feels well since the gallbladder came out, no upper abdominal pain, eating normally. IBS about the same, dicyclomine here and there. HS: two flares this winter, using clindamycin gel. Cycles every 6-8 weeks on metformin. Still trying to conceive, still on prenatal vitamin. No bladder infections.\n\nExam: weight up a bit, BMI 33. Lap scars well healed. Abdomen soft, nontender. Axillae: one small inflamed nodule R, no drainage.\n\nPlan: no changes. Refills sent for 90 days. Physical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T07:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2025-08-25T07:10",
+              "author": "patient",
+              "body": "I got a positive pregnancy test this morning!!! First day of my last period was July 28. What do I do now? Should I keep taking my medicines?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2025-08-25T09:30",
+              "author": "PCP",
+              "body": "Congratulations! Keep taking your prenatal vitamin and your other medicines for now. Front desk will reach out to get you in next week so we can confirm and get you set up with OB."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "office_visit",
+          "start": "2025-09-03T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-07-28"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              72
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 87.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-03T13:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-03T13:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "intrauterine pregnancy, prenatal care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-09-03T13:20",
+              "author": "PCP",
+              "body": "Positive home test 8/25 after more than four years of trying. LMP 7/28/25, so about 5 weeks 2 days today. Mild nausea in the mornings, no bleeding, no cramping. Not smoking, no alcohol.\n\nUrine hCG in office positive.\n\nMeds: metformin 1000 BID, nitrofurantoin 100 qhs, prenatal vitamin, dicyclomine prn, clindamycin gel. Reviewed each with her. Continue for now and confirm with OB at the first prenatal visit.\n\nExam: well, vitals as charted. Abdomen soft, nontender.\n\nA/P: early pregnancy by LMP, EDD 5/4/2026. Referral to OB for prenatal care - they will date with ultrasound and do the first trimester labs. Flu shot is safe and recommended this fall; she'll come in for a nurse visit when the vaccine arrives. Bleeding or pain - call or go to L&D triage."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "specialist_visit",
+          "start": "2025-10-06T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 10 weeks",
+          "conditions": [
+            {
+              "label": "Asymptomatic bacteriuria in pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-10-06",
+              "icd10": "O23.41"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "asymptomatic bacteriuria in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72,
+            "temp_c": 37.0
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-10-06T10:20",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "1+"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "20-29 /hpf"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-06T10:20",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "E. coli, greater than 100,000 CFU/mL"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-10-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal Visit",
+              "date": "2025-10-09T11:30",
+              "author": "obstetrics and gynecology",
+              "body": "OBSTETRICS - PRENATAL VISIT, 10/06/2025\nGA 10w0d by LMP 7/28/25, consistent with dating scan. EDD 5/4/2026.\n\nKnown to us for PCOS with long-standing subfertility. Here for routine prenatal care; no complaints, pregnancy uneventful so far. No dysuria, frequency or flank pain.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg daily, prenatal vitamin, dicyclomine prn, topical clindamycin. NKDA.\nPMH also notable for hidradenitis, IBS, cholangitis 2024 with ERCP sphincterotomy and cholecystectomy, recurrent UTIs.\nFormer smoker, no alcohol.\n\nBP 120/78, HR 72, T 37.0 C. Exam unremarkable.\n\nUrinalysis: leukocyte esterase 1+, nitrite positive, 20-29 WBC/hpf. Culture: E. coli >100,000 CFU/mL.\n\nAssessment: intrauterine pregnancy at 10 weeks. Asymptomatic bacteriuria.\nPlan: amoxicillin 500 mg TID x 7 days. Repeat urine culture two weeks after finishing. Continue current medications. Return in 4 weeks.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "outside_records",
+          "start": "2025-10-09T11:30",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "OB note reviewed",
+              "date": "2025-10-09T16:00",
+              "author": "PCP",
+              "body": "OB 10 wk visit: asymptomatic bacteriuria, E. coli, amoxicillin x7d, test of cure planned. Added."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-13a",
+          "kind": "nurse_visit",
+          "start": "2025-10-13T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines in pregnancy",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-13T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-13T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-13T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2025-10-13T08:20",
+              "author": "RN",
+              "body": "11 weeks pregnant, here before work. Preservative-free trivalent flu 0.5 mL IM L deltoid and updated Pfizer COVID IM R deltoid. On day 7 of amoxicillin, feeling well. No reactions during observation."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "specialist_visit",
+          "start": "2025-10-27T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Test of cure urine culture",
+          "conditions": [
+            {
+              "label": "Asymptomatic bacteriuria in pregnancy",
+              "action": "resolved",
+              "icd10": "O23.41"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-27T09:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urine culture result",
+              "date": "2025-10-31T08:45",
+              "author": "obstetrics and gynecology",
+              "body": "Repeat urine culture collected 10/27/2025, two weeks after completing amoxicillin: no growth. Bacteriuria cleared. Continue routine prenatal care.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "office_visit",
+          "start": "2026-01-12T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up, 24 weeks pregnant",
+          "vitals": {
+            "bp": [
+              125,
+              74
+            ],
+            "hr": 78,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 93.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-12T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-01-12T11:40",
+              "author": "PCP",
+              "body": "24 weeks today. OB visits going well. Feeling the baby move. HS has been quiet. IBS fine. Taking metformin, nitrofurantoin, prenatal vitamin.\n\nSays the last few days she's been more wiped out than usual and not as hungry; figures it's the pregnancy and the holidays catching up with her. No vomiting, no abdominal pain, no fever, no urinary symptoms.\n\nExam: vitals as charted. Looks tired but well. Heart regular. Lungs clear. Abdomen gravid, fundus near the umbilicus, nontender. No edema.\n\nA/P: pregnancy at 24 weeks, followed by OB. Fatigue a few days, likely pregnancy-related; rest, hydrate, mention it at her OB visit next week and message me if it isn't easing. Continue meds. After delivery, come see me to catch up."
+            }
+          ],
+          "state": {
+            "weight_kg": 94.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "ed_visit",
+          "start": "2026-01-16T15:20",
+          "end": "2026-01-16T23:30",
+          "service": "Emergency Medicine",
+          "reason": "Fatigue, poor appetite and dark urine in pregnancy",
+          "vitals": {
+            "bp": [
+              138,
+              78
+            ],
+            "hr": 69,
+            "rr": 13,
+            "temp_c": 36.8,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 1.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 850
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 920
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 210
+                },
+                {
+                  "test": "Total Protein",
+                  "unit": "g/dL",
+                  "value": 7.1
+                },
+                {
+                  "test": "Albumin",
+                  "unit": "g/dL",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "unit": "s",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "unit": "10*3/uL",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "unit": "g/dL",
+                  "value": 12.1
+                },
+                {
+                  "test": "Platelets",
+                  "unit": "10*3/uL",
+                  "value": 210
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-16T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-01-21T10:40",
+              "author": "emergency medicine",
+              "body": "ED PROVIDER NOTE, 01/16/2026\n\nCC: tired, not eating, dark urine.\n\n32-year-old G1 at 24w4d with history of sphincter of Oddi dysfunction and cholangitis in 2024 (sphincterotomy, then cholecystectomy). About a week of fatigue and poor appetite, and her urine has turned dark. No prior liver disease, no alcohol, no drugs, no recent travel, no sick contacts. First-trimester prenatal screening was unremarkable.\n\nMeds: metformin 1000 mg BID, nitrofurantoin 100 mg nightly, prenatal vitamin, dicyclomine prn, clindamycin gel. NKDA.\n\nExam: afebrile, vitals within normal limits. Scleral icterus. Mild RUQ tenderness. No rash. Gravid abdomen appropriate for dates. Remainder normal.\n\nLabs: total bilirubin 3.2, direct 1.5, AST 850, ALT 920, alk phos 210, total protein 7.1, albumin 4.0. PT 12 sec (control 11). WBC 5.0, Hgb 12.1, platelets 210.\n\nMDM: marked hepatocellular injury in pregnancy with preserved synthetic function. Hepatitis serologies sent. OB evaluated in the ED: fetal heart tones normal. Patient stable for discharge with close hepatology follow-up arranged for next week; return for confusion, bleeding, vomiting, abdominal pain or decreased fetal movement.\n\nEmergency Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "outside_records",
+          "start": "2026-01-21T10:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record received",
+              "date": "2026-01-21T10:40",
+              "author": "front desk",
+              "body": "ED record 1/16/26 received by fax. Scanned and routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "ED record reviewed",
+              "date": "2026-01-21T17:10",
+              "author": "PCP",
+              "body": "Read ED note: transaminases in the 800-900s at 24 weeks, serologies pending, hepatology next week. Sent her a message to check in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "date": "2026-01-21T17:15",
+              "author": "PCP",
+              "body": "Hi Denise, I saw the ER note from Friday. I'm sorry you've been feeling so run down. Glad hepatology is seeing you next week. Please let me know what they find, and don't hesitate to reach out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Checking in",
+              "date": "2026-01-21T19:40",
+              "author": "patient",
+              "body": "Thank you. A little less tired today. Appointment is Friday."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "specialist_visit",
+          "start": "2026-01-23T13:30",
+          "service": "Hepatology",
+          "reason": "Acute hepatocellular injury in pregnancy",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-23T14:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 312
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 405
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 182
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 1.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "Hepatitis A IgM Antibody",
+                  "loinc": "13950-1",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "Hepatitis B Core IgM Antibody",
+                  "loinc": "31204-1",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-16T15:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Consultation",
+              "date": "2026-01-29T09:00",
+              "author": "hepatology",
+              "body": "HEPATOLOGY CONSULTATION - 01/23/2026\nReferred from the ED.\n\n32-year-old at 25 weeks with acute hepatocellular injury found 1/16 (AST 850, ALT 920, bilirubin 3.2). Prior biliary history: cholangitis 2024 treated by ERCP sphincterotomy for papillary stenosis, then cholecystectomy. Has taken nitrofurantoin 100 mg nightly for UTI prophylaxis continuously for about eight years. No alcohol, supplements other than the prenatal vitamin, or new medicines. Feels somewhat better, urine lighter.\n\nExam: mild scleral icterus, abdomen gravid and nontender, no stigmata of chronic liver disease.\n\nSerologies from 1/16: hepatitis A IgM, hepatitis B surface antigen, hepatitis B core IgM and hepatitis C antibody all nonreactive.\nToday: AST 312, ALT 405, alk phos 182, total bilirubin 1.6.\n\nImpression: toxic liver disease - drug-induced hepatocellular injury, most likely from long-term nitrofurantoin. Viral hepatitis excluded by serology; already improving.\n\nPlan: stop nitrofurantoin now and do not rechallenge. Do not restart for prophylaxis. Repeat hepatic panel in four weeks. OB aware.\n\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "outside_records",
+          "start": "2026-01-29T09:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hepatology letter received",
+              "date": "2026-01-29T09:00",
+              "author": "front desk",
+              "body": "Hepatology consult letter received, scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-20a",
+          "kind": "specialist_visit",
+          "start": "2026-02-20T14:00",
+          "service": "Hepatology",
+          "reason": "Follow-up liver tests",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-02-20T14:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "unit": "U/L",
+                  "value": 44
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "unit": "U/L",
+                  "value": 61
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "unit": "U/L",
+                  "value": 150
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "unit": "mg/dL",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "unit": "mg/dL",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Follow-up",
+              "date": "2026-02-26T11:15",
+              "author": "hepatology",
+              "body": "Hepatology follow-up, 02/20/2026, 29 weeks pregnant.\n\nOff nitrofurantoin since 1/23. Energy and appetite back, urine normal color, no itching.\n\nAST 44, ALT 61, alk phos 150 (placental contribution expected), total bilirubin 0.8.\n\nImpression: nitrofurantoin-associated liver injury, resolving.\nPlan: OB to repeat a hepatic panel at delivery admission. No further hepatology visits needed unless that is abnormal. Avoid nitrofurantoin in future; please add to her intolerance list.\n\nHepatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "pharmacy",
+          "start": "2026-03-09T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-03-09T08:50",
+              "author": "MA",
+              "body": "Pharmacy request: metformin 1000 mg tabs #180. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2026-03-09T12:30",
+              "author": "PCP",
+              "body": "Approved x90 days."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "hospital_admission",
+          "start": "2026-05-01T02:10",
+          "end": "2026-05-03T11:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Spontaneous labor at term",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-05-01T02:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-01T02:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 315
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-05-08T10:20",
+              "author": "obstetrics and gynecology",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted 05/01/2026 in spontaneous labor at 39w4d. Discharged 05/03/2026.\n\nAntepartum course: PCOS on metformin. Asymptomatic bacteriuria at 10 weeks, treated, test of cure negative. Drug-induced liver injury at 24 weeks attributed to nitrofurantoin, which was stopped; resolved by 29 weeks. Tdap given in the third trimester.\n\nAdmission labs: hepatic panel and CBC within normal limits.\n\nDelivery: uncomplicated spontaneous vaginal delivery on 05/01/2026 of a healthy infant. Mother and baby recovered routinely.\n\nDischarge medications: prenatal vitamin, metformin 1000 mg BID, acetaminophen as needed.\nIntolerance: nitrofurantoin (liver injury).\nFollow-up: postpartum visit with OB in 6 weeks; PCP for ongoing care.\n\nObstetrics & Gynecology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-08a",
+          "kind": "outside_records",
+          "start": "2026-05-08T10:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Delivery records received",
+              "date": "2026-05-08T10:20",
+              "author": "front desk",
+              "body": "OB discharge summary received, scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "portal_message",
+          "start": "2026-06-15T21:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2026-06-15T21:20",
+              "author": "patient",
+              "body": "Hi! Baby came May 1st, everyone is healthy. I had my 6 week check with OB. Can I get an appointment with you sometime in September when I'm back at work? I want to go over my liver stuff and my medicines."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2026-06-16T09:05",
+              "author": "front desk",
+              "body": "Congratulations! You're booked for Monday 9/14 at 10:00 with your doctor. We'll send a reminder the week before."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after delivery; review liver tests and medications",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute cholangitis|K83.09": {
+        "code": "K83.09",
+        "display": "Other cholangitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Asymptomatic bacteriuria in pregnancy|O23.41": {
+        "code": "O23.41",
+        "display": "Unspecified infection of urinary tract in pregnancy, first trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of urinary tract infections|Z87.440": {
+        "code": "Z87.440",
+        "display": "Personal history of urinary (tract) infections",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Sphincter of Oddi dysfunction|K83.4": {
+        "code": "K83.4",
+        "display": "Spasm of sphincter of Oddi",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "clindamycin phosphate 10 MG/ML Topical Gel": {
+        "code": "197519",
+        "display": "clindamycin 10 MG/ML Topical Lotion",
+        "ingredient": "clindamycin",
+        "receipt": "NLM RxNav drugs"
+      },
+      "dicyclomine hydrochloride 10 MG Oral Capsule": {
+        "code": "991061",
+        "display": "dicyclomine hydrochloride 10 MG Oral Capsule",
+        "ingredient": "dicyclomine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "nitrofurantoin macrocrystals 100 MG Oral Capsule": {
+        "code": "1648759",
+        "display": "nitrofurantoin, macrocrystals 100 MG Oral Capsule",
+        "ingredient": "nitrofurantoin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis A IgM Antibody": {
+        "code": "13950-1",
+        "display": "Hepatitis A virus IgM Ab [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B Core IgM Antibody": {
+        "code": "31204-1",
+        "display": "Hepatitis B virus core IgM Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "rejected": [
+      "drug \"Prenatal Multivitamin Oral Tablet\""
+    ]
+  }
+}

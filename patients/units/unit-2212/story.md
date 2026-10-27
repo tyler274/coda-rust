@@ -37,3 +37,8 @@
 - 2026-08-21 lab_only: lipid + hepatic panel pending (P)
 - 2026-08-24 portal_message: patient asks when flu shot is available (P)
 - 2026-09-22 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002212 on 2026-07-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

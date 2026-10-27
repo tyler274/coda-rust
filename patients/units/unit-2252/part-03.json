@@ -1,0 +1,593 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002252",
+   "events": [
+    {
+     "id": "2024-01-30a",
+     "kind": "outside_records",
+     "start": "2024-01-30T10:45",
+     "service": "Cardiology",
+     "reason": "Yearly cardiology follow-up",
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-01-25T09:50",
+       "text": "Sinus rhythm, rate 70. PR interval prolonged. Narrow QRS, normal axis. No ST-T abnormality. No change from prior.",
+       "conclusion": "Sinus rhythm with first-degree AV block."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up Letter",
+       "author": "cardiology",
+       "date": "2024-01-25T11:00",
+       "body": "Dear colleague,\n\nYearly visit for Mr. Woodward, 14 months after type A dissection repair. He is fully active without chest pain, dyspnea, palpitations or lightheadedness. BP 130/82, HR 70. Healed sternotomy, regular rhythm, no murmur, clear lungs, no edema. ECG: sinus rhythm with stable first-degree AV block.\n\nNovember CT angiography reviewed: intact graft, no residual dissection.\n\nPlan: continue lisinopril and atorvastatin; blood pressure goal as before. Next aortic imaging with cardiac surgery in 2025. See me in a year.\n\nRegards,\nCardiology\ncc: PCP"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Letter Filed",
+       "author": "MA",
+       "date": "2024-03-07T09:15",
+       "body": "Cardiology letter from 1/25 arrived by fax after a records request; filed and routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-05a",
+     "kind": "office_visit",
+     "start": "2024-03-05T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-03-05T11:30",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2024-03-05T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-03-05T11:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2024",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "Former smoker 40 pack-years, quit 4/2020; aortic CT now every 2 years"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-03-05T11:35",
+       "body": "Winter was quiet. No complaints. Cardiology yearly visit in January was routine per pt (letter pending). BP fine at home and here.\n\nNo chest/back pain, no breathlessness on the stairs, no cough.\n\nExam: regular rhythm, no murmur, lungs clear, no edema.\n\nPlan: continue lisinopril 20, atorvastatin 40. Restarting yearly lung screening this summer now that his aortic CTs are every other year - ordered for August. CRC screening offered, declined. Physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-11a",
+     "kind": "pharmacy",
+     "start": "2024-06-11T08:45",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Refill Encounter",
+       "title": "Refill: lisinopril, atorvastatin",
+       "author": "RN",
+       "date": "2024-06-11T08:45",
+       "body": "90-day refills lisinopril 20 mg and atorvastatin 40 mg requested by mail-order pharmacy. BMP 3/2024 normal. Sent, 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-20a",
+     "kind": "imaging",
+     "start": "2024-08-20T10:10",
+     "service": "Radiology",
+     "reason": "Lung cancer screening",
+     "orders": [
+      {
+       "id": "ldct-2024",
+       "action": "done",
+       "date": "2024-08-20T10:10"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2024-08-20T10:10",
+       "issued": "2024-08-21T15:30",
+       "text": "Indication: annual screening, former smoker, 40 pack-years. Comparison: CT angiography 11/14/2023 and LDCT 11/16/2021. Findings: New solid mass in the right upper lobe measuring 4.2 cm in greatest dimension, with spiculated margins. Enlarged right hilar and mediastinal lymph nodes, including a left paratracheal node. No pleural effusion. Postoperative ascending aortic graft. Heart size normal. No pericardial effusion. Upper abdomen unremarkable on this limited low-dose study.",
+       "conclusion": "Lung-RADS 4B: 4.2 cm solid right upper lobe mass with right hilar and mediastinal adenopathy including a left paratracheal node, suspicious for malignancy. Recommend PET-CT and tissue sampling."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-22a",
+     "kind": "telephone",
+     "start": "2024-08-22T08:20",
+     "reason": "Abnormal CT result",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Result call: lung screening CT",
+       "author": "PCP",
+       "date": "2024-08-22T08:40",
+       "body": "Called him myself with the LDCT result: a 4.2 cm mass in the right upper lung with enlarged lymph nodes, Lung-RADS 4B. Told him plainly this looks like it could be a lung cancer and needs a PET scan and a biopsy. He was quiet, then asked good questions. Wants to come in to talk face to face. Booked Tuesday 8/27. PET-CT order and pulmonology referral will go in then; he agreed I could start the authorization today."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-27a",
+     "kind": "office_visit",
+     "start": "2024-08-27T15:00",
+     "end": "2024-08-27T15:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Discuss abnormal lung CT",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2024-08-27T15:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pet-2024",
+       "action": "placed",
+       "order": "PET-CT skull base to mid-thigh",
+       "category": "imaging",
+       "reason": "Right upper lobe mass, Lung-RADS 4B"
+      },
+      {
+       "id": "pulm-2024",
+       "action": "placed",
+       "order": "Pulmonology referral",
+       "category": "referral",
+       "to": "Pulmonology",
+       "reason": "Lung mass with adenopathy; tissue diagnosis"
+      },
+      {
+       "id": "onc-2024",
+       "action": "placed",
+       "order": "Oncology referral",
+       "category": "referral",
+       "to": "Oncology",
+       "reason": "Suspected lung cancer"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-08-27T15:55",
+       "body": "Came in to talk through the CT. Feels completely well - no cough, no blood in sputum, no weight loss, no bone pain, no headaches. Breathing normal on stairs.\n\nWent over the images with him. Explained the likely next steps: a PET scan to see where it is active, then a biopsy, often by bronchoscopy through the windpipe with an ultrasound probe to sample the lymph nodes, which also tells the stage. Then oncology.\n\nHe asked whether quitting four years ago was \"for nothing.\" Told him no, and that his heart and aorta are better for it regardless.\n\nExam: well. Vitals as charted. No supraclavicular or cervical nodes. Lungs clear. Heart regular. No clubbing.\n\nA/P\n- Right upper lobe mass with adenopathy, Lung-RADS 4B: PET-CT ordered, pulmonology for EBUS, oncology referral placed in parallel so the consult is waiting.\n- Everything else stable.\nI'll call when results are back. He has my cell through the practice line."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-12a",
+     "kind": "outside_records",
+     "start": "2024-09-12T16:00",
+     "service": "Oncology",
+     "reason": "PET-CT, EBUS pathology and oncology consultation",
+     "conditions": [
+      {
+       "label": "Stage IIIB Non-Small Cell Lung Cancer (adenocarcinoma)",
+       "icd10": "C34.11",
+       "action": "diagnosed",
+       "onset": "2024-08-20",
+       "note": "Right upper lobe, T2b N3 M0; EGFR, ALK, ROS1 negative"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pet-2024",
+       "action": "done",
+       "date": "2024-09-03T08:00"
+      },
+      {
+       "id": "pulm-2024",
+       "action": "done",
+       "date": "2024-09-06T08:00"
+      },
+      {
+       "id": "onc-2024",
+       "action": "done",
+       "date": "2024-09-12T09:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-09-06T09:30",
+       "issued": "2024-09-10T14:00",
+       "text": "Specimens: EBUS-guided transbronchial needle aspirates of station 4L (left paratracheal), station 7 (subcarinal) and station 10R (right hilar) lymph nodes; transbronchial biopsy of the right upper lobe mass. Microscopic: malignant glandular epithelium in all three nodal stations and the lung biopsy. Immunostains: TTF-1 positive, napsin A positive, p40 negative. Molecular testing (next-generation sequencing): no EGFR mutation, no ALK rearrangement, no ROS1 rearrangement.",
+       "conclusion": "Adenocarcinoma of lung origin involving right upper lobe and lymph node stations 4L, 7 and 10R. EGFR, ALK and ROS1 negative."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "PET-CT and MRI Brain Reports",
+       "author": "radiology",
+       "date": "2024-09-05T17:00",
+       "body": "PET-CT 09/03/2024: hypermetabolic right upper lobe mass corresponding to the 4.2 cm lesion on recent CT. Hypermetabolic right hilar, subcarinal and left paratracheal lymph nodes. No hypermetabolic disease in the liver, adrenals or skeleton. Impression: findings consistent with primary lung malignancy with ipsilateral hilar, subcarinal and contralateral mediastinal nodal disease; no distant metastasis.\n\nMRI brain with and without gadolinium 09/05/2024: no intracranial metastasis. Normal ventricles. No acute infarct."
+      },
+      {
+       "type": "Consult Note",
+       "title": "Thoracic Oncology Consultation",
+       "author": "oncology",
+       "date": "2024-09-12T11:00",
+       "body": "Dear colleague,\n\nThank you for referring Mr. Woodward, 66, found on screening low-dose CT to have a right upper lobe mass.\n\nHe has no symptoms. ECOG 0. History of hypertension, hyperlipidemia, first-degree AV block, and emergency ascending aortic replacement with pericardial window for type A dissection with tamponade in 11/2022. Former smoker, 40 pack-years, quit 2020. NKDA.\n\nWorkup: PET-CT shows the right upper lobe primary with right hilar, subcarinal and left paratracheal nodes, no distant disease. MRI brain negative. EBUS: adenocarcinoma at 4L, 7 and 10R. NGS negative for EGFR, ALK and ROS1.\n\nStage: T2b N3 M0, stage IIIB non-small cell lung cancer, adenocarcinoma. The contralateral node makes this unresectable.\n\nPlan, discussed at length with him: curative-intent concurrent chemoradiation - carboplatin and pemetrexed every 3 weeks for 4 cycles with daily thoracic radiation to 60 Gy in 30 fractions - followed by a year of consolidation durvalumab if there is no progression. Pemetrexed requires folic acid daily starting now and vitamin B12 injections every 9 weeks; I have prescribed the folic acid and we will give the B12 here. Port placement scheduled 9/24. Target start 10/3.\n\nWe talked about what curative intent means at this stage. He is clear-eyed and wants to proceed.\n\nRegards,\nThoracic oncology\ncc: PCP, radiation oncology, pulmonology"
+      }
+     ]
+    },
+    {
+     "id": "2024-09-17a",
+     "kind": "office_visit",
+     "start": "2024-09-17T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after lung cancer diagnosis; vaccines",
+     "medications": [
+      {
+       "drug": "folic acid 1 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily during pemetrexed treatment",
+       "dose": {
+        "value": 1,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pemetrexed premedication (oncology)"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2024-09-17T09:50"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2024-09-17T09:52"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-09-17T09:54"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-17T10:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-09-17T10:00",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-09-17T10:00",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-09-17T09:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-09-17T09:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-09-17T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-09-17T10:05",
+       "body": "Seen after his oncology consult. Stage IIIB adenocarcinoma of the right upper lobe, T2b N3 M0, no driver mutations on NGS. Plan from oncology: carboplatin/pemetrexed x4 with 60 Gy radiation starting 10/3, then durvalumab for a year. Port 9/24.\n\nHow he's doing: \"Numb, then fine, then not fine.\" Sleeping ok most nights. PHQ-2 is 2 today - low mood some days, still interested in things, no hopelessness. We talked; he'd rather keep busy than see a counselor right now. Open door.\n\nStarted folic acid 1 mg daily per oncology last week. B12 injection given at the cancer center.\n\nStill no symptoms from the tumor. Weight stable.\n\nExam: vitals as charted. No adenopathy. Lungs clear. Heart regular. No edema.\n\nA/P\n- Stage IIIB NSCLC: oncology leading. I'll be the home base for everything else. Folic acid added to his list.\n- Vaccines before chemo: high-dose flu, RSV and updated COVID today.\n- HTN, HLD stable; labs today as a baseline before treatment.\n- Mood: adjustment to the news, monitoring. Recheck at each visit.\n- Colon screening: not the moment; parked."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-26a",
+     "kind": "outside_records",
+     "start": "2024-09-26T10:30",
+     "service": "Interventional Radiology",
+     "reason": "Port placement",
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Implanted Port Placement",
+       "author": "interventional radiology",
+       "date": "2024-09-24T13:10",
+       "body": "Procedure: placement of a right internal jugular single-lumen chest port for chemotherapy, 09/24/2024.\nUltrasound-guided right IJ access; catheter tip at the cavoatrial junction on fluoroscopy. Port pocket in the right upper chest. Moderate sedation. EBL minimal. No complications. Port accessed and flushed; ready for use.\nAllergies: NKDA."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Port",
+       "author": "patient",
+       "date": "2024-09-25T19:30",
+       "body": "Got the port in yesterday. Sore where they put it but not bad. Is it ok to shower? The paper they gave me got wet in the truck."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Port",
+       "author": "RN",
+       "date": "2024-09-26T08:20",
+       "body": "Yes - showering is fine after 48 hours; keep the dressing on until the clear film comes off on its own or at your first chemo visit. Call the cancer center if you see spreading redness, drainage, or a fever."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-24a",
+     "kind": "specialist_visit",
+     "start": "2024-10-24T13:30",
+     "service": "Oncology",
+     "reason": "Follow-up: new shortness of breath and dry cough after cycle 1",
+     "conditions": [
+      {
+       "label": "Pleural effusion",
+       "icd10": "J90",
+       "action": "diagnosed",
+       "onset": "2024-10-20",
+       "note": "Right; cytology negative for malignancy"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       138,
+       86
+      ],
+      "hr": 92,
+      "rr": 18,
+      "spo2": 94
+     },
+     "state": {
+      "weight_kg": 89.0
+     },
+     "measure": [
+      "temp_c",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2024-10-24T13:55",
+       "text": "PA and lateral. Opacity at the right lung base blunting the costophrenic angle with a meniscus, consistent with pleural effusion. Known right upper lobe mass. Right chest port with tip at the cavoatrial junction. Sternotomy wires intact. Heart size normal.",
+       "conclusion": "Right lower lobe opacity consistent with pleural effusion."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Thoracic Oncology Follow-up",
+       "author": "oncology",
+       "date": "2024-10-24T16:30",
+       "body": "Mr. Woodward is 66 with stage IIIB lung adenocarcinoma on concurrent chemoradiation, cycle 1 carboplatin/pemetrexed given 10/3, radiation ongoing. Background: hypertension, hyperlipidemia, first-degree AV block, and repair of a type A dissection with tamponade in 2022.\n\nSince cycle 1, three weeks ago, he has become short of breath and has a dry cough. Denies chest pain, fever, or weight loss.\n\nHe asked what to expect - his chances, and whether there are better options. He had read about a targeted pill for lung cancer that did better than chemotherapy in a trial. I explained that those drugs work on tumors carrying a specific mutation, and his tumor was tested and does not have one, so that drug would not help him; the chemoradiation and then immunotherapy plan is the best-supported treatment for his stage. We talked about curative intent and the uncertainty that comes with it.\n\nMeds: lisinopril 20, atorvastatin 40, multivitamin, folic acid 1 mg. B12 given 10/1.\nAllergies: NKDA.\nSH: former smoker, 40 pack-years, quit 2020. Social alcohol.\n\nVitals: BP 138/86, HR 92, RR 18, SpO2 94% on room air.\nExam: decreased breath sounds at the right lower lobe, no wheezes or crackles. Rest of the exam unremarkable. Port site clean.\n\nCXR: right lower lobe opacity consistent with pleural effusion.\n\nProcedure today: ultrasound-guided right thoracentesis, 900 mL straw-colored fluid removed, tolerated well; post-procedure film without pneumothorax. Breathing easier afterward.\n\nPleural fluid cytology (resulted 10/28): negative for malignant cells.\n\nAssessment: right pleural effusion, cytology negative - stage remains IIIB. Continue cycle 2 as scheduled 10/24 with radiation.\n\ncc: PCP"
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Outside Note Reviewed",
+       "author": "PCP",
+       "date": "2024-10-29T08:10",
+       "body": "Oncology note and cytology reviewed: right effusion drained 900 mL, cytology negative, stage unchanged. Messaged pt to check in."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-05a",
+     "kind": "portal_message",
+     "start": "2024-11-05T18:40",
+     "reason": "Check-in during treatment",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "RE: checking in",
+       "author": "patient",
+       "date": "2024-11-05T18:40",
+       "body": "Breathing is a lot better since they drained it. Still a tickle cough some nights. Radiation makes me tired by afternoon but I'm managing. 7 more treatments."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: checking in",
+       "author": "PCP",
+       "date": "2024-11-06T07:50",
+       "body": "Glad to hear it. Fatigue near the end of radiation is expected. If the breathing gets worse again, call oncology the same day - fluid can come back. I'll see you in December."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "office_visit",
+     "start": "2024-12-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after chemoradiation",
+     "state": {
+      "weight_kg": 88.0,
+      "labs": {
+       "Hemoglobin": 11.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-12-10T10:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "Neutrophils %"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-12-10T10:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-12-10T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-12-10T10:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2024-12-10T11:00",
+       "body": "Finished chemoradiation: radiation completed 11/14, fourth carboplatin/pemetrexed cycle on 12/5. Restaging CT in early January, then durvalumab if all goes well.\n\nFeels \"wrung out\" but improving every week. Breathing close to his usual; occasional dry cough. No fever. Appetite fair, down about 4 kg since September. Mood better than in September - PHQ-2 1.\n\nMeds: lisinopril 20, atorvastatin 40, multivitamin, folic acid 1 mg.\n\nExam: vitals as charted. Port site clean. Lungs clear, no crackles. Heart regular. No edema.\n\nLabs today: hemoglobin mildly low, expected after chemo; chemistry fine.\n\nA/P\n- Stage IIIB NSCLC, post chemoradiation: restaging per oncology.\n- Mild anemia after chemo: recheck in 2-3 months; expect recovery.\n- Weight: encouraged protein, small frequent meals.\n- HTN: fine on lisinopril.\nRTC February."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

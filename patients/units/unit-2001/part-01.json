@@ -1,0 +1,189 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002001",
+      "given": "Kevin",
+      "family": "Allard",
+      "birth_date": "1969-11-15",
+      "address_line": "27 Cottage Lane",
+      "phone": "+1-413-555-0109",
+      "email": "kevin.allard@example.test",
+      "marital_status": "married",
+      "summary": "Landscaping supervisor and daily smoker with hypertension, hyperlipidemia and nonobstructive coronary disease who joined in 2022. In 2024 a bleeding gastric ulcer needed operative repair and a transfusion caused an acute hemolytic reaction; in 2025 he had two inferior STEMIs, each stented, and he still smokes.",
+      "events": [
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2015-06-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2016-04-01"},
+            {"label": "Coronary artery disease", "action": "history", "onset": "2021-03-01", "note": "Nonobstructive RCA plaque on 2021 CT coronary angiography at prior practice"},
+            {"label": "Nicotine dependence, cigarettes", "action": "history", "onset": "1993-01-01"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [138, 86], "weight_kg": 94.2, "height_cm": 180.0, "labs": {"Low Density Lipoprotein": 98, "Hemoglobin A1c": 5.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T09:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-13T09:50", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-09-13T09:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-13T09:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "Occupation", "value": "Landscaping supervisor"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-13T09:55"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-13T09:00"}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "to": "Radiology", "reason": "Current smoker, 30 pack-years"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-13T10:00", "body": "NEW PATIENT. 52M, runs a landscaping crew, here to set up primary care; his last office closed its internal medicine side over the summer and he has been coasting on refills.\n\nKnown problems per pt: high blood pressure for years, cholesterol, and a heart scan last year that showed some plaque in one artery. Saw cardiology once for that, told to keep the statin and the BP pill, no stents, nothing further. Denies exertional chest discomfort, dyspnea, palpitations, leg swelling. Gets winded hauling mulch bags up a slope at the end of a long day but no different from the rest of the crew.\n\nMeds: lisinopril 20 daily, atorvastatin 40 daily. Takes both, rarely misses.\nAllergies: none to medicines.\nPSH: none.\nFH: dad had a heart attack at 62. Mom has blood pressure. One brother on a cholesterol pill.\nSH: smokes a pack a day, started in his early 20s, so roughly 30 pack-years. A drink or two a month at a cookout. No other substances. Outdoors all season, plows in winter.\n\nExam: well-appearing, weathered. BP above, recheck similar. Heart RRR, no murmur. Lungs clear, no wheeze. Abd benign. No peripheral edema, DP pulses 2+.\n\nA/P\n1. HTN on lisinopril 20: a bit above goal today. Home cuff readings requested before changing anything.\n2. Hyperlipidemia / CAD (nonobstructive on 2021 CT angio per pt): continue atorvastatin 40. Lipids today. Records request to prior office for the CT report.\n3. Tobacco: talked through what quitting would mean for the plaque already there. He is not ready, says the job and the smoking go together. Will keep asking.\n4. Lung cancer screening: qualifies by age and pack-years. Low-dose CT ordered.\n5. Health maintenance: colonoscopy around 2019 at old office, normal per pt. Hep C and HIV once, A1c screen, CMP, CBC today. Flu shot given.\n\nRTC 6 months or sooner with home BP numbers."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "portal_message",
+          "start": "2022-09-20T13:12",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-09-20T13:12", "body": "Hi Kevin, your bloodwork from last week is back. Kidney function, liver tests, blood count and sugar (A1c) are all fine. The hepatitis C and HIV screens were negative, so those are done for good. LDL cholesterol on the atorvastatin is acceptable for now; we will recheck next year. The radiology department will call you to schedule the lung CT. Thanks."}
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "outside_records",
+          "start": "2022-09-27T11:30",
+          "reason": "Prior practice records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "MA", "date": "2022-09-27T11:30", "body": "Prior PCP records, 38 pages, filed under media.\n\nPCP abstract of the relevant items:\n- CT coronary angiography, 03/2021: nonobstructive plaque in the right coronary artery, roughly 40% narrowing; no other significant stenosis. Cardiology consult after it recommended continuing statin and BP therapy, risk factor control, no further testing.\n- Screening colonoscopy, 2019: no polyps; repeat in 10 years.\n- Tdap 2018.\n- Med list matches ours (lisinopril 20, atorvastatin 40). No drug allergies listed.\n- BP log in the old chart mostly 130s-140s systolic.\n\nProblem list updated; no changes to plan."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "imaging",
+          "start": "2022-10-11T14:20",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-10-11T14:20", "text": "Indication: lung cancer screening, current smoker, 30 pack-years. Technique: low-dose helical CT of the chest without contrast. Findings: no pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable. Osseous structures intact.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "done", "date": "2022-10-11T14:20"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result note", "author": "RN", "date": "2022-10-13T09:40", "body": "Called pt with lung CT result per PCP: negative, repeat next fall. He asked if that means the smoking is not hurting him. Explained the scan only looks for cancer and not the damage to the heart or lungs. He laughed and said he figured."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "office_visit",
+          "start": "2023-03-14T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and cholesterol follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-03-14T08:10"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-14T07:40"},
+            {"procedure": "Immunization administration", "performed": "2023-03-14T08:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-03-14T08:15", "body": "S: Early slot before the season starts. Home BP cuff readings on his phone, mostly 132-140 over low 80s, one or two in the 140s after a night of bad sleep. No headaches, CP or SOB. Taking lisinopril and atorvastatin. Still a pack a day; tried cutting down over the winter, back to baseline by February.\n\nO: Vitals as charted. Alert, comfortable. RRR, lungs clear. No edema.\n\nA/P:\n- HTN: home average a little over goal for someone with coronary plaque. Discussed adding a second agent vs. lifestyle; he wants to see whether the busy season (more walking, less sitting) helps first. Recheck at physical.\n- CAD/lipids: on atorvastatin 40, LDL last fall acceptable. No change.\n- Tobacco: asked again. Not ready. Handed him the state quitline card.\n- Shingrix #1 today; #2 in 2 months, nurse visit."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "nurse_visit",
+          "start": "2023-05-16T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix second dose",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-05-16T16:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-05-16T16:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization", "author": "RN", "date": "2023-05-16T16:45", "body": "Shingrix dose 2 of 2, 0.5 mL IM, left deltoid. Came straight from a job site. Reports first dose gave him a sore arm and chills that night, nothing else. Advised similar is possible. Series complete."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "end": "2023-09-19T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"labs": {"Low Density Lipoprotein": 104}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:40", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:40", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-19T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-19T08:46"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-09-19T08:47"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-09-19T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-09-19T08:45"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "to": "Radiology", "reason": "Annual screening, current smoker"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-09-19T09:05", "body": "Annual exam. 53M.\n\nInterval: nothing new. Busy summer, crew of six. No chest pressure with work, no breathlessness beyond his usual, no claudication. Sleeping ok. Home BP still mostly 130s/80s.\n\nMeds: lisinopril 20 mg daily, atorvastatin 40 mg daily. NKDA.\nHabits: 1 ppd, unchanged. Alcohol rare. PHQ-2 0, AUDIT-C 1.\n\nExam: Vitals reviewed. HEENT unremarkable. Neck supple, no bruits. Cardiac: regular, S1 S2, no murmur. Chest clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin: sun damage on forearms and neck, no suspicious lesions. Extremities warm, pulses intact, no swelling. Neuro grossly intact.\n\nAssessment/plan\n- HTN: borderline control at home; he again prefers not to add a drug. Revisit in winter.\n- CAD and lipids: atorvastatin 40. Fasting panel today.\n- Tobacco use disorder: counseled; declines meds and NRT for now.\n- Lung screening: due next month, ordered.\n- Vaccines: flu, updated COVID, and PCV20 (smoker under 65) today. Shingrix done. Tdap 2018.\n- Colon: 2019 colonoscopy, next 2029.\n\nFollow up in about 4 months."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "imaging",
+          "start": "2023-10-10T15:05",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-10-10T15:05", "text": "Comparison: 10/2022. Technique: low-dose noncontrast helical chest CT. Lungs: no nodules or masses. No consolidation. No pleural effusion. Cardiomediastinal contours within normal limits. No adenopathy. Upper abdomen and bones unremarkable.", "conclusion": "Lung-RADS 1. Negative screen; next annual low-dose CT in 12 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "done", "date": "2023-10-10T15:05"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "CT result", "author": "PCP", "date": "2023-10-11T12:20", "body": "Kevin, this year's screening CT is clear again. Same plan for next October. The best thing you could do for your lungs and heart is still the cigarettes, whenever you are ready I'm here."}
+          ]
+        }
+      ]
+    }
+  ]
+}

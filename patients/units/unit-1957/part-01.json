@@ -1,0 +1,422 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001957",
+      "given": "Paige",
+      "family": "Sullivan",
+      "birth_date": "2001-01-03",
+      "address_line": "41 Woodbridge Street, Apt 3",
+      "phone": "+1-802-555-0176",
+      "email": "paige.sullivan@example.test",
+      "marital_status": "single",
+      "summary": "Healthy graduate student and summer lifeguard who joined in 2023. Tinea versicolor diagnosed by dermatology in March 2025, recurring each summer; the 2025 letter came only on request and the July 2026 letter arrived after her last physical.",
+      "events": [
+        {
+          "id": "2023-08-02a",
+          "kind": "telephone",
+          "start": "2023-08-02T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-02T10:40",
+              "body": "Paige called, 22 y/o, looking for a primary doctor closer to campus. Old office was back home in Vermont, hasn't been seen there since last year. Explained membership and that insurance still covers labs and specialists. She is on her parent's plan, card info taken. Release of records form emailed to her, she'll send it back today. New patient physical booked 8/23 at 9:00."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "outside_records",
+          "start": "2023-08-16T14:05",
+          "reason": "records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2023-08-16T14:05",
+              "body": "Received 11 pages from the patient's previous family practice (pediatric and adult visits, 2015-2022).\n\nSummary abstracted for the chart:\n- Problem list on file there: none.\n- Medications: none. Allergies: no known drug allergies.\n- Cervical cytology 06/2022: negative for intraepithelial lesion or malignancy.\n- Immunizations: childhood series complete; Tdap 2012; MenACWY x2; HPV 9-valent series completed 2014; flu vaccines most years.\n- Last visit there: 06/2022 well visit, unremarkable.\n\nOriginals scanned under Media."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "establish_care",
+          "start": "2023-08-23T09:00",
+          "end": "2023-08-23T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2,
+            "height_cm": 168.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student; seasonal lifeguard"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-23T09:55",
+              "resulted": "2023-08-24T13:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-23T09:55",
+              "resulted": "2023-08-24T13:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-23T09:55",
+              "resulted": "2023-08-24T13:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-23T09:55",
+              "resulted": "2023-08-24T13:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-08-23T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2023",
+              "action": "placed",
+              "order": "CBC, CMP, lipids, TSH, HIV, HCV, GC/CT urine",
+              "category": "lab",
+              "reason": "new patient screening"
+            },
+            {
+              "id": "labs-2023",
+              "action": "done",
+              "date": "2023-08-24T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2023-08-23T09:50",
+              "body": "NEW PATIENT - PREVENTIVE\n\nPaige is 22, starting the second year of a master's program here, and wanted a doctor in the area rather than driving back to Vermont. No concerns today. Feels well, sleeping fine, runs and swims.\n\nPMH: none. No hospitalizations.\nPSH: none.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nFH: mother - hypothyroidism. Father - high blood pressure. No melanoma or autoimmune skin disease in the family that she knows of.\nSH: grad student; lifeguards at a lake beach in the summers. Never smoked, no vaping. Alcohol a drink or two a month. No drugs. Single.\nGyn: regular cycles. Last Pap 6/2022 normal per outside records.\nImms: childhood series, Tdap 2012, HPV series done per old records.\n\nROS: negative in full except as above.\n\nExam: vitals as charted, BMI normal. Well appearing, pleasant. HEENT clear, TMs normal. Neck supple, no thyroid enlargement or nodules. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin without rashes or concerning lesions. No edema. Neuro grossly normal. Mood bright, PHQ-2 0.\n\nA/P: healthy young adult, establishing care.\n- Screening labs: CBC, CMP, lipids, TSH given mom's thyroid history, one-time HIV and hep C, urine GC/CT.\n- Pap due 2025.\n- Flu and COVID in the fall; she'll come in for a nurse visit.\n- Sunscreen talk, she knows the drill from lifeguarding.\nAnnual physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T08:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-08-25T08:15",
+              "body": "Hi Paige, all of your blood and urine tests from Wednesday came back normal: blood counts, kidney and liver tests, cholesterol, thyroid, and the HIV, hepatitis C and STI screens were all negative. Nothing to do. Good to meet you."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Your lab results",
+              "author": "patient",
+              "date": "2023-08-25T12:02",
+              "body": "great, thank you!! when can I come in for the flu shot"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Your lab results",
+              "author": "front desk",
+              "date": "2023-08-25T14:30",
+              "body": "Flu vaccine usually arrives late September. We'll send a scheduling message when it's in."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T16:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-11T16:40",
+              "body": "Here for seasonal vaccines. Afebrile, feels well, no prior reactions. Influenza 0.5 mL IM left deltoid; 2023-24 COVID (Pfizer) 0.3 mL IM right deltoid. VIS sheets reviewed. Observed 15 min, no reaction. Pt left for her 5 pm seminar."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "annual_physical",
+          "start": "2024-08-14T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-14T09:10",
+              "resulted": "2024-08-15T11:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-14T09:10",
+              "resulted": "2024-08-15T11:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-14T08:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2024",
+              "action": "placed",
+              "order": "CBC, TSH, urine GC/CT",
+              "category": "lab",
+              "reason": "annual screening"
+            },
+            {
+              "id": "labs-2024",
+              "action": "done",
+              "date": "2024-08-15T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-14T09:15",
+              "body": "Annual exam. Came straight from an early shift at the lake, finishing her last few weeks guarding before classes. No complaints. Eats reasonably, exercises daily. Sleep ok. Still essentially no alcohol, never smoker.\n\nMeds none. NKDA. FH unchanged (mom hypothyroid, dad HTN).\n\nExam: vitals reviewed. Comfortable. Thyroid normal size. Cardiac exam normal, lungs clear. Abdomen benign. Skin: tanned, no rash, no atypical moles on a quick look. PHQ-2 0.\n\nPlan: CBC, TSH, urine GC/CT. Last year's chemistry and lipids fine, not repeating. Pap next year. Flu shot in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-16a",
+          "kind": "portal_message",
+          "start": "2024-08-16T07:50",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2024-08-16T07:50",
+              "body": "Paige - CBC, thyroid and the urine screens are all normal. See you next summer, or sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-25a",
+          "kind": "portal_message",
+          "start": "2024-09-25T11:00",
+          "reason": "flu vaccine scheduling",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Flu vaccine is in",
+              "author": "front desk",
+              "date": "2024-09-25T11:00",
+              "body": "This season's flu vaccine has arrived. Reply or call to book a 10-minute nurse visit."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Flu vaccine is in",
+              "author": "patient",
+              "date": "2024-09-25T20:41",
+              "body": "Could I do Wed Oct 9 late afternoon?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Flu vaccine is in",
+              "author": "front desk",
+              "date": "2024-09-26T09:05",
+              "body": "Booked for Wednesday 10/9 at 4:40."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "outside_records",
+          "start": "2024-10-22T09:30",
+          "reason": "pharmacy immunization report",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-18T13:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy vaccine administration report",
+              "author": "MA",
+              "date": "2024-10-22T09:30",
+              "body": "Notice from a chain pharmacy: influenza vaccine (quadrivalent, 0.5 mL IM) given 10/18/2024. Entered into immunization record. She had missed the 10/9 nurse slot; no need to rebook."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

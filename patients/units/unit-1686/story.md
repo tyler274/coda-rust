@@ -52,3 +52,8 @@
 - 2026-07-20 lab_only: Hgb 10.9, ferritin 11, continue iron (P)
 - 2026-08-24 portal_message: patient asks about iron, visit booked (P)
 - 2026-09-22 office_visit: booked, anemia and thyroid follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00001686 on 2026-06-08. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

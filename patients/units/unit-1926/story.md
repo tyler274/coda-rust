@@ -34,3 +34,8 @@
 - 2026-07-15 pharmacy: sertraline 90-day refill (P)
 - 2026-08-12 portal_message: scheduling the fall physical (P)
 - 2026-10-07 annual_physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001926 on 2026-05-20. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

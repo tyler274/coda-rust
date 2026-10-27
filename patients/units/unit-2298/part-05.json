@@ -1,0 +1,185 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002298",
+      "events": [
+        {
+          "id": "2026-01-14a",
+          "kind": "office_visit",
+          "start": "2026-01-14T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-14T10:50", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-14T10:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-01-14T10:45", "body": "HF f/u, 5 weeks after the admission. Discharge summary finally arrived 1/12: BNP 1480, echo EF 30% with a dilated LV, troponins negative, home meds resumed unchanged.\nHe has filled everything on time at the generic program since December. Weight stable at home. One pillow. Walks to the store. No edema.\nExam: weight and vitals as charted. JVP flat. Lungs diminished, clear of crackles. RRR. No edema.\nA/P: HFrEF EF 30%, compensated, adherent. BMP today. Discussed adding further heart failure medicines; he asks to keep things as they are until he sees cardiology later this month and money settles - reasonable, will revisit at next visit. Smoking ~1/2 ppd. RTC 3 months."}
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "ed_visit",
+          "start": "2026-02-09T09:40",
+          "end": "2026-02-09T15:00",
+          "service": "Emergency Medicine",
+          "reason": "Low back pain, leg weakness, urinary retention",
+          "conditions": [{"label": "Cauda equina syndrome", "icd10": "G83.4", "action": "diagnosed", "onset": "2026-02-07"}],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-02-12T08:30", "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival 02/09/2026 09:40\nCC: Back pain, leg weakness, trouble urinating.\nHPI: 69-year-old man with metastatic prostate adenocarcinoma on leuprolide, treated small cell lung cancer and Lambert-Eaton syndrome. Lumbar ache that started dull and has steadily intensified, now with shooting pain into both legs. Recently hard to start his urine stream and feels he doesn't empty. For two days, numb over the inner thighs and buttocks.\nMeds: per list incl. amifampridine, leuprolide, oxycodone prn, metoprolol, lisinopril, furosemide, aspirin, atorvastatin, inhalers. NKDA.\nVitals: within normal limits.\nExam: Patellar and Achilles reflexes reduced on both sides. Sensation reduced over the perineum. Strength 3/5 in both lower extremities. Rectal tone decreased.\nAssessment: Cauda equina syndrome, suspected metastatic epidural compression.\nED course: Dexamethasone IV. Bladder catheter placed. Emergent MRI lumbar spine. Neurosurgery and radiation oncology consulted. Admitted to neurosurgery."}
+          ]
+        },
+        {
+          "id": "2026-02-09b",
+          "kind": "hospital_admission",
+          "start": "2026-02-09T15:00",
+          "end": "2026-02-17T11:00",
+          "service": "Neurosurgery",
+          "reason": "Metastatic epidural compression, cauda equina syndrome",
+          "medications": [
+            {"drug_text": "dexamethasone 4 MG Oral Tablet", "action": "historical", "sig": "Tapering dose by mouth over 2 weeks after IV dexamethasone (hospital)", "frequency": "TAPER", "route": "Oral", "course": "short", "reason": "Epidural spinal compression"}
+          ],
+          "reports": [
+            {"study": "MRI lumbar spine without contrast", "performed": "2026-02-09T12:10", "text": "MRI LUMBAR SPINE.\nIndication: Cauda equina syndrome; metastatic prostate cancer.\nFindings: Abnormal marrow signal replacing the L3 vertebral body with an epidural soft-tissue component extending into the canal, severely narrowing the thecal sac and compressing the cauda equina nerve roots at L3. Vertebral body heights preserved. Conus terminates normally at L1. Other lumbar levels without canal compromise. Paraspinal soft tissues unremarkable.", "conclusion": "L3 vertebral metastasis with epidural extension compressing the cauda equina."},
+            {"study": "Surgical pathology report", "performed": "2026-02-10T10:40", "issued": "2026-02-13T15:30", "text": "SURGICAL PATHOLOGY\nSpecimen: L3 epidural tumor and lamina, decompression.\nMicroscopic: Bone and fibrous tissue infiltrated by gland-forming adenocarcinoma; tumor cells positive for NKX3.1 and PSA, negative for synaptophysin and GATA3.", "conclusion": "Metastatic adenocarcinoma, consistent with prostatic primary."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary: Neurosurgery", "author": "neurosurgery", "date": "2026-02-24T10:00", "body": "REGIONAL HOSPITAL - NEUROSURGERY DISCHARGE SUMMARY\nAdmitted 02/09/2026 via ED. Discharged 02/17/2026 to inpatient rehabilitation.\nDiagnoses: Cauda equina syndrome from L3 vertebral metastasis with epidural extension; metastatic prostate adenocarcinoma.\nCourse: MRI lumbar spine showed an L3 metastasis with epidural tumor compressing the cauda equina. IV dexamethasone started in the ED. Decompressive L3 laminectomy and epidural tumor resection 02/10/2026; pathology: metastatic adenocarcinoma consistent with prostate. Radiation oncology plans post-operative radiation to the lumbar spine as an outpatient. Catheter removed day 5, voiding on his own after a voiding trial. Strength improving with PT. Heart failure stable on home regimen; amifampridine continued.\nDischarge meds: home medications unchanged plus a dexamethasone taper over two weeks.\nTo: inpatient rehabilitation."}
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "telephone",
+          "start": "2026-02-11T16:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Patient in hospital", "author": "RN", "date": "2026-02-11T16:55", "body": "Pt called from his hospital bed. Came in Monday with back pain and numbness 'down below', had back surgery yesterday for a cancer spot pressing on the nerves. Expects to go to rehab next week. Asked us to let urology know he'll miss this month's shot date - called urology, they will reschedule the leuprolide. Requested records."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after spine surgery and rehabilitation",
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-10T12:10", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-03-10T12:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional Care Visit", "author": "PCP", "date": "2026-03-10T12:05", "body": "Post-discharge visit. ED 2/9 with cauda equina syndrome from an L3 prostate metastasis; laminectomy 2/10; acute rehab 2/17-3/3; home since 3/3. Neurosurgery summary received; rehab summary not yet.\nNow: using a walker, home PT twice a week. Legs stronger every week, still numb in a strip on the inner thighs. Urinating on his own, no leaks, bowels moving. Incision healed, staples out at rehab. Dexamethasone taper finished. Pain: back ache mild, using oxycodone once or twice a day for now. Radiation to the spine starts next week.\nExam: thin, weight as charted. Gait slow with walker. Hip flexors and quads about 4/5 both sides. Ankle reflexes absent, knees reduced. Incision clean. Lungs diminished. RRR. No edema.\nA/P:\n1. Cauda equina syndrome after decompression - improving. Continue PT; home safety - grab bars ordered through the agency. Bowel regimen while on more oxycodone.\n2. Metastatic prostate cancer with spinal progression - oncology/radiation oncology managing.\n3. HFrEF stable through it all. BMP today.\n4. Smoking - says he 'mostly' stopped in the hospital, back to a few a day.\nRTC 4-5 weeks."}
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "outside_records",
+          "start": "2026-03-20T13:10",
+          "documents": [
+            {"type": "Outside Records", "title": "Inpatient rehabilitation discharge summary", "author": "physical medicine and rehabilitation", "date": "2026-03-20T13:10", "body": "ACUTE INPATIENT REHABILITATION - DISCHARGE SUMMARY\nAdmit 02/17/2026  Discharge 03/03/2026\nRehabilitation after L3 laminectomy for metastatic epidural compression with cauda equina syndrome.\nFunctional status at discharge: ambulates 150 feet with a rolling walker, supervision on stairs. Lower extremity strength 4/5 bilaterally. Voiding spontaneously with low post-void residuals; continent of bowel. Dexamethasone taper completed 03/01.\nDischarged home with home PT/OT and a rolling walker. Follow-up: neurosurgery 6 weeks, radiation oncology, oncology, PCP."}
+          ]
+        },
+        {
+          "id": "2026-03-27a",
+          "kind": "outside_records",
+          "start": "2026-03-27T15:00",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2026-03-27T15:00", "body": "REGIONAL CANCER CENTER - ONCOLOGY FOLLOW-UP\nVisit date: 03/24/2026\nMetastatic prostate adenocarcinoma, on leuprolide since 2019, now with progression in the spine (L3 epidural disease, decompressed 02/10/2026). Completed radiation to the lumbar spine, 5 fractions, 03/23/2026. Lung: limited-stage combined SCLC in remission; last surveillance imaging without recurrence.\nPlan: Continue leuprolide. Disease is progressing on androgen deprivation alone; discussed adding systemic therapy - options and cost (no Part D) reviewed with him and our financial counselor; decision and drug access to follow at next visit. Restaging scans in 3 months. cc: PCP, urology"}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "medications": [
+            {"drug": "spironolactone 25 MG Oral Tablet", "action": "start", "sig": "Take 1/2 tablet (12.5 mg) by mouth daily", "dose": {"value": 12.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Heart failure with reduced ejection fraction"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-14T10:15"}],
+          "orders": [{"id": "bmp-2026-04", "action": "placed", "order": "Basic Metabolic Panel (BMP) in 1 week", "category": "lab", "reason": "Potassium after starting spironolactone"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-04-14T10:15", "body": "S: Walking with a cane in the apartment, walker outside. Radiation to the back finished in March. Oncology talking about adding a cancer drug, working on cost. Breathing baseline, one pillow, no swelling, weights steady. Taking all meds - generic program working. Cardiology visit in January: 'they said keep going'. No letter from them.\nO: vitals and weight as charted. JVP flat. Lungs diminished, no crackles. RRR. No edema.\nA/P:\n1. HFrEF, EF 30%, after a recent admission. Adding spironolactone 12.5 mg daily - generic and inexpensive, and improves outcomes in his type of heart failure. BMP in 1 week for potassium/creatinine. Reviewed: avoid potassium supplements and salt substitutes.\n2. Cauda equina - recovering, PT continues.\n3. Prostate cancer - oncology.\n4. COPD stable.\nRTC 3 months (AWV in July)."}
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "lab_only",
+          "start": "2026-04-21T08:10",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-21T08:10", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]}
+          ],
+          "orders": [{"id": "bmp-2026-04", "action": "done", "date": "2026-04-21T08:10"}]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "portal_message",
+          "start": "2026-04-22T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Potassium check", "author": "PCP", "date": "2026-04-22T12:15", "body": "Mark, your potassium and kidney numbers a week into the spironolactone are normal. Keep taking it once a day. We'll check again at your July visit."}
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "portal_message",
+          "start": "2026-06-02T19:30",
+          "documents": [
+            {"type": "Patient Message", "title": "PT done + inhaler", "author": "patient", "date": "2026-06-02T19:30", "body": "Home PT signed me off last week, doing the exercises on my own. Using the cane mostly. Can you send the inhaler capsules to the pharmacy, I'm on my last few."},
+            {"type": "Patient Message", "title": "RE: PT done + inhaler", "author": "RN", "date": "2026-06-02T21:05", "body": "Nice work on finishing PT. Tiotropium sent, 90 days. See you July 27."}
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "annual_physical",
+          "start": "2026-07-27T09:00",
+          "end": "2026-07-27T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit and chronic care follow-up",
+          "state": {"weight_kg": 72.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-27T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-27T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2026-07-27T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current some day smoker"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2026-07-27T09:45"},
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-27T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit and Follow-up", "author": "PCP", "date": "2026-07-27T10:00", "body": "AWV + chronic care.\nFunction: lives alone, cane indoors, walker for longer distances; showers with a seat and grab bars; drives again short distances since June. Groceries delivered. No falls. PHQ-9 = 4. Recall 3/3.\nSmoking: a few cigarettes most days, down from half a pack. Counseled; still declines medication.\nInterval: oncology in June - he says scans were 'about the same' and they are still sorting out the new prostate drug through an assistance program; no letter yet. Urology continues leuprolide monthly. Neurology follow-up not since 2024; strength good on amifampridine, asked him to rebook.\nHeart: one pillow, no swelling, walks around the block with the cane. Taking spironolactone daily.\nExam: weight as charted. BP/HR as charted. JVP flat. Lungs diminished, no wheeze, no crackles. RRR. No edema. Hip flexors 4/5. Uses cane steadily.\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, furosemide 40, spironolactone 12.5, tiotropium 18 mcg, albuterol prn, amifampridine 15 QID, leuprolide 7.5 mg monthly (urology), oxycodone 5 prn (now a few a week).\nA/P:\n1. HFrEF EF 30% - compensated on metoprolol, lisinopril, furosemide, spironolactone. CMP today.\n2. CAD - aspirin, statin; lipids today.\n3. COPD - stable.\n4. Metastatic prostate cancer with treated L3 epidural disease; cauda equina syndrome with good recovery - oncology/urology.\n5. SCLC (combined) in remission; LEMS stable.\n6. Bladder urothelial carcinoma, surveillance at urology.\n7. Aspergilloma - no symptoms, followed on oncology CTs.\nPrevention: flu/COVID this fall. Advance care planning revisited - wants full treatment, proxy unchanged.\nRTC late September for heart and lung follow-up."}
+          ]
+        },
+        {
+          "id": "2026-07-29a",
+          "kind": "portal_message",
+          "start": "2026-07-29T13:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your visit", "author": "PCP", "date": "2026-07-29T13:40", "body": "Hi Mark - kidney function and potassium are fine on the spironolactone, blood counts are normal, and your cholesterol is in range on the atorvastatin. No changes. See you in September."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "pharmacy",
+          "start": "2026-08-11T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request: spironolactone", "author": "RN", "date": "2026-08-11T10:30", "body": "Pharmacy fax for spironolactone 25 mg, 1/2 tab daily. Last BMP 7/27 normal potassium. Refilled 90 days x1 per protocol."}
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and COPD follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

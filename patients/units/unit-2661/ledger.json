@@ -1556,73 +1556,11 @@
           ]
         },
         {
-          "id": "2025-09-25a",
-          "kind": "portal_message",
-          "start": "2025-09-25T11:15",
-          "reason": "Lab results",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Your labs",
-              "date": "2025-09-25T11:15",
-              "author": "PCP",
-              "body": "Everything from your physical is normal, including thyroid and cholesterol. Enjoy the fall."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-23a",
-          "kind": "portal_message",
-          "start": "2026-02-23T18:51",
-          "reason": "Dermatology referral request",
-          "orders": [
-            {
-              "id": "derm-referral-2026",
-              "action": "placed",
-              "order": "Dermatology referral",
-              "category": "referral",
-              "to": "Dermatology",
-              "reason": "recurrent tinea versicolor, discuss prevention"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "referral for derm",
-              "date": "2026-02-23T18:51",
-              "author": "patient",
-              "body": "Hi, the patches on my back and shoulders are showing up again, same as every year. I booked derm for March 9. Can you send the referral again? I'm going to ask them about the monthly thing you mentioned so it doesn't come back during the summer."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: referral for derm",
-              "date": "2026-02-24T07:20",
-              "author": "PCP",
-              "body": "Done, referral sent to the dermatology office. Good plan to ask them about prevention."
-            }
-          ]
-        },
-        {
           "id": "2026-03-09a",
           "kind": "specialist_visit",
           "start": "2026-03-09T11:20",
           "service": "Dermatology",
           "reason": "Recurrent rash of upper back and shoulders",
-          "medications": [
-            {
-              "drug_text": "ketoconazole 20 MG/ML Medicated Shampoo",
-              "action": "start",
-              "sig": "Lather onto back, shoulders and chest, leave on 5 minutes, rinse. Daily for 2 weeks, then once a month May through September to prevent recurrence.",
-              "dose": {
-                "value": 1,
-                "unit": "application"
-              },
-              "frequency": "DAILY",
-              "route": "Topical",
-              "course": "chronic",
-              "reason": "Tinea versicolor, treatment and seasonal prophylaxis"
-            }
-          ],
           "labs": [
             {
               "panel": null,
@@ -1635,13 +1573,6 @@
                   "text": "Positive: hyphae and spores in a \"spaghetti and meatballs\" arrangement"
                 }
               ]
-            }
-          ],
-          "orders": [
-            {
-              "id": "derm-referral-2026",
-              "action": "done",
-              "date": "2026-03-11T15:40"
             }
           ],
           "documents": [
@@ -1658,53 +1589,7 @@
           "id": "2026-03-12a",
           "kind": "outside_records",
           "start": "2026-03-12T08:10",
-          "reason": "Dermatology note review",
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Outside Note Review",
-              "date": "2026-03-12T08:10",
-              "author": "PCP",
-              "body": "Derm note 3/9 reviewed. KOH positive again. Ketoconazole 2% shampoo 2 wk course then monthly May-Sept as prophylaxis. Med list updated. Can refill from here when he needs it for summer."
-            }
-          ]
-        },
-        {
-          "id": "2026-05-27a",
-          "kind": "portal_message",
-          "start": "2026-05-27T09:44",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "refill",
-              "date": "2026-05-27T09:44",
-              "author": "patient",
-              "body": "Season starts this weekend. I finished the 2 weeks of the shampoo in March and the patches cleared up, but I'm almost out and I'm supposed to use it once a month through the summer now. Could you send a refill to my usual pharmacy?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: refill",
-              "date": "2026-05-27T12:30",
-              "author": "PCP",
-              "body": "Sent ketoconazole 2% shampoo, one bottle with a refill, to your pharmacy. Once a month, same way as before: lather on, 5 minutes, rinse. Have a good season."
-            },
-            {
-              "type": "Telephone Encounter",
-              "title": "Rx refill",
-              "date": "2026-05-27T12:28",
-              "author": "MA",
-              "body": "Refill: ketoconazole 2% shampoo 120 mL, 1 refill, sent electronically per PCP. Sig unchanged: monthly May-Sept, apply to trunk 5 min then rinse."
-            }
-          ]
-        },
-        {
-          "id": "2026-09-22a",
-          "kind": "annual_physical",
-          "start": "2026-09-22T08:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual physical",
-          "appointment": "booked"
+          "reason": "Dermatology note review"
         }
       ]
     }

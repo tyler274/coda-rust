@@ -42,3 +42,8 @@
 - 2026-06-23 pharmacy: mail-order refills (P)
 - 2026-08-04 portal: schedules physical (P)
 - 2026-09-22 annual physical, booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002735 on 2026-05-19. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

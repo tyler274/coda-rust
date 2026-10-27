@@ -67,3 +67,8 @@
 2026-07-14 lab only, CMP normal (P)
 2026-08-18 portal, flu shot timing (P)
 2026-09-10 booked follow-up visit (P)
+
+
+## Last seen
+
+The practice last saw MRN00002751 on 2026-05-12. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

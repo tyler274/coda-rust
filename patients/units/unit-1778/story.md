@@ -1,0 +1,35 @@
+# unit-1778 story (Melissa Nolan)
+
+- 2021-09-21 telephone: front desk, new-patient request, prior records release signed (A1)
+- 2021-10-05 establish_care: new-patient preventive visit; healthy, NKDA, crampy periods on OTC ibuprofen; CBC, CMP, lipids, HIV, HCV; flu shot (A1, S, P)
+- 2021-10-07 portal_message: result note, all normal (P)
+- 2021-10-26 outside_records: prior practice records; 2020 Pap normal, COVID primary series 2021, Tdap 2017 (P)
+- 2022-03-08 portal_message: school form / scheduling question (P)
+- 2022-10-13 annual_physical: plans to start trying to conceive this fall; flu and bivalent COVID (P, S)
+- 2023-04-18 portal_message: painful periods, painful sex, 7 months trying; asks for visit (S)
+- 2023-05-02 office_visit: pelvic pain and difficulty conceiving; gynecology referral placed (A2)
+- 2023-06-09 specialist_visit: gynecology consult (encounter 0); TVUS 4 cm left ovarian cyst; endometriosis diagnosed; laparoscopy recommended; letter received 06-14 (S, R1)
+- 2023-06-20 telephone: decides against laparoscopy for now; break from trying (R1, R2)
+- 2023-10-16 annual_physical: Pap (cytology) normal; flu, COVID (P)
+- 2023-10-20 portal_message: Pap result normal (P)
+- 2024-04-09 office_visit: cancelled (P)
+- 2024-10-23 annual_physical: still painful periods on OTC ibuprofen; will start trying again around year end; CBC, lipids; flu, COVID (P, R2)
+- 2025-05-13 portal_message: scheduling/admin (P)
+- 2025-10-30 annual_physical: pain and dyspareunia worse ~6 months; trying ~10 months; gynecology re-referral; flu, COVID (A3)
+- 2025-12-15 specialist_visit: gynecology (encounter 1); CBC, TSH, FT4, prolactin normal; secondary dysmenorrhea; naproxen (S, A4)
+- 2025-12-22 pharmacy: naproxen fill noted (A4, P)
+- 2026-01-06 specialist_visit: gynecology (encounter 2); CA-125 61; US bilateral ground-glass cysts (S, R3, R4, A5)
+- 2026-01-13 portal_message: asks about CA-125; PCP reply (P)
+- 2026-02-09 specialist_visit: gynecology infertility evaluation (encounter 3); TVUS left cyst; female infertility; CT/NG sent (S, R4)
+- 2026-03-05 imaging: hysterosalpingogram normal, received 03-09 (S)
+- 2026-04-21 procedure_visit: luteal endometrial biopsy, normal luteal function, received 04-27 (S)
+- 2026-05-19 pharmacy: naproxen refill (A4, P)
+- 2026-06-15 specialist_visit: gynecology (encounter 4); workup summary; REI referral (S, A6)
+- 2026-06-22 portal_message: patient update on plan; PCP reply (P)
+- 2026-08-11 portal_message: front desk reminder to book physical; booked (P)
+- 2026-10-15 annual_physical: booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00001778 on 2025-10-30. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

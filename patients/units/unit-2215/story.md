@@ -50,3 +50,8 @@
 - 2026-06-25 Medicare wellness visit (P)
 - 2026-08-24 routine labs, resulted, not yet commented on (P)
 - 2026-09-08 booked diabetes and kidney follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002215 on 2026-04-28. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

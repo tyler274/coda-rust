@@ -69,6 +69,40 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
         if !p.events.iter().all(|e| ids.insert(e.id.as_str())) {
             errors.push(format!("{mrn}: duplicate event ids"));
         }
+        // the practice last saw the patient on the seed's day, and books a visit only
+        // when the seed says so
+        let seen = seed.last_seen.0;
+        let held = (p.events.iter())
+            .filter(|e| e.booked() && e.appointment.is_none())
+            .map(|e| e.start.date())
+            .max();
+        if held != Some(seen) {
+            errors.push(format!(
+                "{mrn}: the last held practice visit must be on last_seen {seen} (seed), with \
+                 none after it; got {}",
+                held.map_or("none".into(), |d| d.to_string())
+            ));
+        }
+        let booked = (p.events.iter()).any(|e| e.appointment == Some(Appointment::Booked));
+        if booked != seed.booked {
+            errors.push(format!(
+                "{mrn}: the seed {} a visit booked after today",
+                if seed.booked { "wants" } else { "has no" }
+            ));
+        }
+        // after the last visit outside care arrives as records, and the practice's lists
+        // stand as that visit left them
+        for e in &p.events {
+            let lists =
+                !(e.conditions.is_empty() && e.medications.is_empty() && e.allergies.is_empty());
+            if e.start.date() > seen && e.appointment.is_none() && lists {
+                errors.push(format!(
+                    "{mrn}/{}: after last_seen {seen} the practice's lists do not change; its \
+                     conditions, medications and allergies belong in its records' text",
+                    e.id
+                ));
+            }
+        }
         let birth = seed.birth_date.0;
         let tl = Timeline::new(p);
         let mut recorded: HashSet<&str> = HashSet::new();

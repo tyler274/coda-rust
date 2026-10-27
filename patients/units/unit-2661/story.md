@@ -28,3 +28,8 @@
 - 2026-03-12 PCP chart review of dermatology letter, med list updated [P]
 - 2026-05-27 portal: refill of shampoo before lifeguard season; sent [P, A3]
 - 2026-09-22 annual physical booked [P]
+
+
+## Last seen
+
+The practice last saw MRN00002661 on 2025-09-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

@@ -1,0 +1,278 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002219",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure follow-up",
+          "conditions": [
+            {"label": "Acute decompensated heart failure", "icd10": "I50.9", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 110.0},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-14T10:35", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-14T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-01-14T10:00", "body": "HFrEF f/u, echo 12/19 EF 35% with global hypokinesis.\nS: Feels back to himself. Leg swelling gone for about two weeks. Home weights 241-244 lb, steady. Sleeps on one pillow. Walks the mall without stopping.\nO: Vitals as charted. Neck veins flat. RRR, no S3. Lungs clear. No edema.\nA/P:\n- The December decompensation has settled; taken off the active list. HFrEF remains.\n- HTN, T2DM: continue metformin, lisinopril, HCTZ.\n- BMP today.\n- Keep weighing daily, low salt.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "office_visit",
+          "start": "2025-04-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, blood pressure and heart failure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-04-21T14:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-04-21T14:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-04-21T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-04-21T14:00", "body": "Doing well over the winter. No orthopnea, no swelling. Weights steady on his bathroom scale. Got his eyes checked in March at the optometrist, says he was told all fine (no letter yet).\nExam: as charted. Lungs clear, heart regular, no edema.\nPlan: A1c and BMP. Same three meds. AWV June."}
+          ]
+        },
+        {
+          "id": "2025-06-12a",
+          "kind": "annual_physical",
+          "start": "2025-06-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Low Density Lipoprotein": 137, "Creatinine": 1.1}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-12T09:00", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2025-06-12T09:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-06-12T09:00", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-06-12T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-06-12T08:30", "body": "Medicare AWV.\nProblems reviewed: HTN, T2DM, HFrEF (EF 35%, Dec 2024), obesity, hyperlipidemia, ex-smoker.\nFunction: independent in self-care and household tasks. No falls. Drives.\nPHQ-2 0. Memory: no change he or I notice.\nEye exam: done this spring per patient, letter never came; front desk to request.\nScreening: LDCT next month (ordered). Colonoscopy due 2027. Vaccines current through last fall.\nExam: vitals as charted. Heart RRR, no gallop. Lungs clear. No edema. Feet intact to monofilament, pulses palpable.\nLabs: CMP, lipids, urine albumin/creatinine. Continue meds."}
+          ]
+        },
+        {
+          "id": "2025-07-15a",
+          "kind": "imaging",
+          "start": "2025-07-15T08:00",
+          "service": "Radiology",
+          "reason": "Lung cancer screening, annual",
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual screening"},
+            {"id": "ldct-2025", "action": "done", "date": "2025-07-15T08:00"}
+          ],
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-07-15T08:00", "text": "Annual low-dose screening CT chest without contrast. Compared with 2024-07-16. No pulmonary nodule. No consolidation. No pleural effusion. Heart size within normal limits. No enlarged nodes.", "conclusion": "Lung-RADS 1. Negative."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2025-07-16T09:30", "body": "Negative LDCT, Lung-RADS 1. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2025-09-04a",
+          "kind": "ed_visit",
+          "start": "2025-09-04T20:15",
+          "end": "2025-09-05T03:40",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, orthopnea",
+          "vitals": [
+            {"time": "2025-09-04T20:20", "bp": [150, 90], "hr": 102, "rr": 22, "spo2": 92}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-09-04T20:45", "resulted": "2025-09-04T21:50", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 4.5},
+              {"test": "Creatinine", "value": 1.2}
+            ]},
+            {"panel": null, "collected": "2025-09-04T20:45", "resulted": "2025-09-04T21:50", "results": [
+              {"test": "Fasting Glucose", "value": 160},
+              {"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-09-04T20:50", "text": "Portable AP view of the chest. Enlarged cardiac silhouette. Pulmonary vascular congestion. No pneumothorax.", "conclusion": "Cardiomegaly with pulmonary congestion."},
+            {"study": "12-lead ECG", "performed": "2025-09-04T20:25", "text": "Sinus tachycardia. Voltage criteria for left ventricular hypertrophy.", "conclusion": "Left ventricular hypertrophy."}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department record", "author": "emergency medicine", "date": "2025-10-21T11:15", "body": "EMERGENCY DEPARTMENT, area community hospital. Date of service 2025-09-04.\nAllergies: sulfa (rash).\nChief complaint: dyspnea, can't lie flat.\nHistory: 69 y/o M with chronic HFrEF, seen here about nine months ago for the same, now with two weeks of increasing breathlessness on exertion and needing to sleep propped up. He also notes his belt has gotten tighter around the middle though he hasn't changed how he eats and his weight is the same.\nPMH: HFrEF, HTN, T2DM, obesity, hyperlipidemia. PSH: appendectomy, R knee scope.\nMeds: metformin, lisinopril, HCTZ.\nSH: former smoker (25 pk-yr, quit 2016), occasional alcohol, retired postal worker.\nFH: father MI at 70, HTN; mother DM2 and CHF, died 81; brother HTN, CAD.\nVitals: BP 150/90, P 102, RR 22, SpO2 92% RA.\nExam: JVD. Crackles both lung fields. S3. Pitting edema both lower extremities.\nLabs: BNP 900 pg/mL. Na 140, K 4.5, Cr 1.2. Glucose 160 (reported as fasting).\nCXR: cardiomegaly, pulmonary vascular congestion.\nECG: LVH.\nImpression: acute decompensated heart failure.\nDisposition: discharged home on his home regimen; PCP follow-up."},
+            {"type": "Outside Records", "title": "ED record received", "author": "front desk", "date": "2025-10-21T11:15", "body": "Second request answered: ED record from 9/4 received, 5 pages. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2025-10-22T08:00", "body": "ED record from 9/4 reviewed, matches what he described at his 9/10 visit. BNP 900, Cr 1.2, K 4.5. CXR congestion, ECG LVH."}
+          ]
+        },
+        {
+          "id": "2025-09-06a",
+          "kind": "portal_message",
+          "start": "2025-09-06T10:40",
+          "reason": "ED visit",
+          "documents": [
+            {"type": "Patient Message", "title": "Was in the ER", "author": "patient", "date": "2025-09-06T10:40", "body": "Hi, wanted to let you know I ended up in the ER again Thursday night. Couldn't breathe lying down for about two weeks and finally went in. Same thing as last December they said, heart. They let me go early Friday morning. Feeling better but tired. Do you want to see me?"},
+            {"type": "Patient Message", "title": "RE: Was in the ER", "author": "RN", "date": "2025-09-06T11:25", "body": "Thanks for letting us know. The doctor wants to see you this week - you're booked for Wednesday 9/10 at 9:40. Please bring your weight log. If your breathing gets worse before then, call 911."}
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "office_visit",
+          "start": "2025-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-ED visit, heart failure",
+          "conditions": [
+            {"label": "Acute decompensated heart failure", "icd10": "I50.9", "action": "diagnosed", "onset": "2025-08-21"}
+          ],
+          "vitals": {"spo2": 95},
+          "measure": ["bp", "hr", "rr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-10T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2025-09-10T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2025-09-10T09:40", "body": "S: ED visit 9/4 for two weeks of DOE and orthopnea; per his account told it was the heart again and sent home in the early morning on the same meds. No ED paperwork yet - records requested. Today breathing close to his usual, sleeping on two pillows. Some ankle swelling at night. Notes his waistband is snugger but the scale hasn't moved.\nO: Vitals as charted, SpO2 95% RA. Faint crackles at the right base. Heart regular. 1+ ankle edema bilaterally.\nA/P:\n1. HFrEF (EF 35%) with a second decompensation by history. Back on the active list until settled.\n2. BMP today.\n3. Daily weights, salt limits reviewed with him again.\n4. Continue metformin, lisinopril, HCTZ.\nRecheck in about 10 weeks, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T13:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["bp", "hr", "spo2"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-09T13:52"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-09T13:54"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-09T13:52"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2025-10-09T13:50", "body": "Flu high-dose trivalent L arm and 2025-26 COVID R arm. RSV already done last year, not repeated. Pt says breathing is fine today. Tolerated, observed, discharged."}
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "office_visit",
+          "start": "2025-11-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure follow-up",
+          "conditions": [
+            {"label": "Acute decompensated heart failure", "icd10": "I50.9", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-11-20T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-11-20T15:20", "body": "S: Back to baseline since early October. One pillow. No ankle swelling. Weight log flat.\nO: As charted. JVP not elevated. Lungs clear. RRR. No edema.\nA/P: Second decompensation resolved, removed from active list. HFrEF, HTN, T2DM on the same regimen. Labs at the February visit."}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "pharmacy",
+          "start": "2025-12-16T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Mail-order refills", "author": "MA", "date": "2025-12-16T10:05", "body": "Mail-order pharmacy renewal request for metformin 1000 mg, lisinopril 20 mg and HCTZ 25 mg, 90 days x 3 refills. Sent per PCP."}
+          ]
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "office_visit",
+          "start": "2026-02-25T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, blood pressure and heart failure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-02-25T10:55", "resulted": "2026-02-26T08:30", "results": [{"test": "Hemoglobin A1c", "value": 7.8}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-25T10:55", "resulted": "2026-02-26T08:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-25T10:55", "resulted": "2026-02-26T08:30", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-02-25T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2026-02-25T10:20", "body": "S: Winter has been quiet. No ER trips since September. Walks indoors. One pillow. Ankles fine. Weights in his log within a couple of pounds.\nMeds: metformin 1000 BID, lisinopril 20, HCTZ 25. Refills via mail order through the summer.\nO: Vitals as charted. Neck veins not distended. Heart regular, no gallop. Lungs clear. No edema. Feet: sensation intact, pulses present.\nA/P:\n1. HFrEF, EF 35%: stable, euvolemic today.\n2. T2DM: A1c, BMP, CBC drawn.\n3. HTN: continue.\n4. Optometry due next month.\nReturn in 6 months - booked for September."}
+          ]
+        },
+        {
+          "id": "2026-02-26a",
+          "kind": "portal_message",
+          "start": "2026-02-26T13:15",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from yesterday", "author": "PCP", "date": "2026-02-26T13:15", "body": "Francis, your kidney numbers and potassium are where they've been, and your blood count is normal. A1c is 7.8, about the same range as the past few years. See you in September."},
+            {"type": "Patient Message", "title": "RE: Labs from yesterday", "author": "patient", "date": "2026-02-26T17:30", "body": "Ok thank you. Have a good spring."}
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T09:20",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry report", "author": "optometry", "date": "2026-03-24T09:20", "body": "Dilated diabetic eye exam 2026-03-12. Allergies per patient: sulfa. VA 20/25 right, 20/30 left with current glasses. Fundi: no diabetic retinopathy OU, no macular edema. Early lens opacities, follow. Return 12 months."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "portal_message",
+          "start": "2026-04-14T08:50",
+          "reason": "Refill question",
+          "documents": [
+            {"type": "Patient Message", "title": "Mail order", "author": "patient", "date": "2026-04-14T08:50", "body": "The mail order place says they changed their system and need a new script for the metformin. Can you send it again?"},
+            {"type": "Patient Message", "title": "RE: Mail order", "author": "MA", "date": "2026-04-14T11:05", "body": "Resent the metformin 1000 mg prescription to the mail-order pharmacy this morning. It should ship within a week."}
+          ]
+        },
+        {
+          "id": "2026-05-30a",
+          "kind": "ed_visit",
+          "start": "2026-05-30T07:10",
+          "end": "2026-05-30T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, orthopnea, leg swelling",
+          "vitals": [
+            {"time": "2026-05-30T07:15", "bp": [160, 90], "hr": 102, "rr": 22, "spo2": 88}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-30T07:40", "resulted": "2026-05-30T08:45", "results": [
+              {"test": "Sodium", "value": 138},
+              {"test": "Potassium", "value": 4.5},
+              {"test": "Creatinine", "value": 1.2}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-30T07:40", "resulted": "2026-05-30T08:20", "results": [
+              {"test": "White Blood Cells", "value": 7.5},
+              {"test": "Hemoglobin", "value": 14},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": null, "collected": "2026-05-30T07:40", "resulted": "2026-05-30T08:45", "results": [
+              {"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-05-30T07:50", "text": "Portable semi-upright AP chest. Bilateral pulmonary infiltrates. No pneumothorax.", "conclusion": "Bilateral pulmonary infiltrates."}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department record", "author": "emergency medicine", "date": "2026-06-16T14:00", "body": "EMERGENCY DEPARTMENT, area community hospital. Seen 2026-05-30.\nAllergies: sulfa drugs - rash.\nCC: SOB, orthopnea, both legs swollen.\nHPI: 69-year-old man with chronic heart failure, two prior ED visits for similar episodes, now with two days of worsening breathlessness, unable to lie flat and swelling of both legs. No fever, cough or sick contacts.\nPMH: chronic HFrEF, HTN, DM2, obesity, hyperlipidemia. PSH: appendectomy; R knee arthroscopy.\nMeds: metformin, lisinopril, HCTZ.\nSocial: ex-smoker, 25 pack-years, quit 2016; drinks once or twice a month; retired from the post office.\nFamily: father MI age 70 and HTN; mother DM2 and CHF, died age 81; brother HTN and CAD.\nVitals: BP 160/90, HR 102, RR 22, SpO2 88% on room air.\nExam: JVP elevated. Rales to mid-lung fields bilaterally. S3 gallop. 2+ pitting edema to mid-shins.\nLabs: Na 138, K 4.5, Cr 1.2, BNP 900, WBC 7.5, Hgb 14, Plt 250.\nCXR: bilateral pulmonary infiltrates.\nImpression: acute decompensated heart failure."},
+            {"type": "Outside Records", "title": "ED record received", "author": "front desk", "date": "2026-06-16T14:00", "body": "Unsolicited fax from hospital ED, visit 5/30/2026, 4 pages. Filed to chart, routed to PCP inbox."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2026-07-21T09:40", "body": "Mail-order pharmacy requesting lisinopril 20 mg and HCTZ 25 mg, 90-day supply. Last visit 2/25, next booked 9/10. Approved per standing refill protocol."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Six-month follow-up: diabetes, blood pressure, heart failure",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

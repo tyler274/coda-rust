@@ -1,0 +1,815 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001772",
+      "events": [
+        {
+          "id": "2025-02-06a",
+          "kind": "ed_visit",
+          "start": "2025-02-06T19:40",
+          "end": "2025-02-07T03:10",
+          "service": "Emergency Medicine",
+          "reason": "Witnessed generalized seizure",
+          "vitals": {
+            "temp_c": 37.2,
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 88,
+            "rr": 16
+          },
+          "measure": [
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-06T20:05",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-06T20:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                },
+                {
+                  "test": "Clozapine",
+                  "loinc": "6896-5",
+                  "unit": "ng/mL",
+                  "value": 650
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-06T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-02-10T08:45",
+              "body": "EMERGENCY MEDICINE - PHYSICIAN NOTE\nArrival: 02/06/2025 19:40 by ambulance\n\nCC: seizure at home, witnessed.\n\nHPI: 30 year old woman with schizophrenia. Family saw a generalized tonic-clonic seizure at home this evening; no prior seizure history. Per psychiatry history she has been stable on clozapine for about six months, having not responded to two earlier antipsychotics. Family states she takes it every night as prescribed.\nMedications: clozapine 300 mg nightly.\nAllergies: NKDA.\nSocial: never smoker, no alcohol, no drug use.\n\nVitals on arrival: T 37.2 C (99.0 F), BP 130/85, HR 88, RR 16.\nExam: postictal, becoming more alert over the first hour. Neurological examination nonfocal. No tongue laceration noted. Remainder unremarkable.\n\nLabs: Na 140, K 4.1, Ca 9.2, Mg 2.0. CBC within normal limits. Serum clozapine 650 ng/mL (reference 350-600).\n\nAssessment: Generalized tonic-clonic seizure, attributed to clozapine; level above the usual therapeutic range. Electrolytes normal.\nPlan: observed until back to baseline. Discussed with on-call psychiatry, who will review dosing at her outpatient visit. Seizure precautions reviewed with patient and sister. Discharged home. Follow up with primary care this week and with outpatient psychiatry.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "ED record received",
+              "author": "MA",
+              "date": "2025-02-10T09:00",
+              "body": "ED note from 2/6 seizure visit faxed by the hospital at the sister's request. Scanned, flagged for PCP before Wednesday's visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-07a",
+          "kind": "telephone",
+          "start": "2025-02-07T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - ED visit last night",
+              "author": "RN",
+              "date": "2025-02-07T09:20",
+              "body": "Sister called. Sharon had a seizure at home last evening, shaking all over for about a minute, then very sleepy. Ambulance to the ED, home around 3 am. Told it was likely from the clozapine and the level was a little high. She is tired but talking normally this morning, no further episodes. No driving (she does not drive anyway). Seizure safety reviewed: no baths alone, no heights, call 911 for a seizure longer than five minutes or a second one. Visit with PCP Wednesday 2/12. Asked sister to bring the discharge papers."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "office_visit",
+          "start": "2025-02-12T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, seizure",
+          "conditions": [
+            {
+              "label": "Clozapine-induced seizure",
+              "icd10": "R56.9",
+              "action": "diagnosed",
+              "onset": "2025-02-06"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-12T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post-ED",
+              "author": "PCP",
+              "date": "2025-02-12T11:30",
+              "body": "Seen with sister after the ED visit on 2/6 for a first generalized seizure. ED record came on 2/10: nonfocal exam, normal sodium, calcium and magnesium, normal CBC, clozapine level 650 (above their reference range). Attributed to clozapine.\n\nSince then no further events. A bit sore the next day, otherwise back to herself. Psychiatry saw her on Monday: they are keeping clozapine at 300 mg at bedtime. No new medicines.\n\nExam: vitals normal. Alert, oriented, answering appropriately. Cranial nerves intact, strength and sensation symmetric, reflexes equal, gait steady.\n\nA/P\n1. Clozapine-induced seizure. Problem list updated. Dosing is psychiatry's decision; their plan is no change. Seizure precautions reviewed again; she does not drive.\n2. Schizophrenia, on clozapine, psychiatry managing.\nReturn in May as planned, sooner for any further event."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "lab_only",
+          "start": "2025-03-19T08:30",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-19T08:30",
+              "results": []
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside lab copy - ANC",
+              "author": "MA",
+              "date": "2025-03-21T10:40",
+              "body": "Psychiatry clinic lab CBC/diff from 3/19 received by fax, ANC normal. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "portal_message",
+          "start": "2025-04-09T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "form for rides",
+              "author": "patient",
+              "date": "2025-04-09T13:05",
+              "body": "Hi, this is Sharon's sister writing for her. The ride company needs a form from the doctor saying she needs transportation to appointments since she can't drive. Can I drop it off?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: form for rides",
+              "author": "front desk",
+              "date": "2025-04-09T15:20",
+              "body": "Yes, drop it at the front desk or fax it to us. The doctor usually completes these within a few business days. We'll call when it's ready."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Transportation form completed",
+              "author": "PCP",
+              "date": "2025-04-14T17:10",
+              "body": "Medicaid transportation form completed and signed. Copy scanned. Sister notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-14T14:35",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-14T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-14T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-14T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-05-14T14:00",
+              "body": "Routine. No seizures since February. Clozapine 300 mg qhs unchanged, sister supervises it. Voices quiet most days. Spends time at home, helps with cooking, walks with her sister.\n\nNo eye symptoms. Not trying for pregnancy at present.\n\nVitals fine, weight stable around 65. Exam: calm, linear, affect a little brighter. Heart regular. Lungs clear. No edema.\n\nPHQ-9 3, GAD-7 5.\n\nA/P\n1. Schizophrenia on clozapine, stable. A1c and lipids today.\n2. Clozapine-induced seizure, none since.\n3. Situational anxiety, mild.\nPhysical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "portal_message",
+          "start": "2025-05-16T08:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2025-05-16T08:25",
+              "body": "Sharon - A1c and cholesterol both normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-15a",
+          "kind": "ed_visit",
+          "start": "2025-08-15T11:50",
+          "end": "2025-08-16T14:20",
+          "service": "Emergency Medicine",
+          "reason": "Confusion and lethargy",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-15T12:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 125
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 96
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 10
+                },
+                {
+                  "test": "Osmolality, serum",
+                  "loinc": "2692-2",
+                  "unit": "mosm/kg",
+                  "value": 260
+                },
+                {
+                  "test": "Osmolality, urine",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "value": 80
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-15T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Summary",
+              "author": "emergency medicine",
+              "date": "2025-08-28T13:15",
+              "body": "ED VISIT SUMMARY / OBSERVATION DISCHARGE\nArrived 08/15/2025 11:50; discharged from observation 08/16/2025 14:20\n\nPresenting complaint: confusion, lethargy.\n\nHistory: 30 year old woman with schizophrenia and a prior seizure attributed to clozapine. Taking her antipsychotic as prescribed. The sister she lives with reports that for the last several days she has been drinking very large volumes of water, saying she is always thirsty.\nMedications: clozapine 300 mg at bedtime. Allergies: NKDA.\n\nExam: vital signs stable. Disoriented to time and place. No focal neurologic deficit.\n\nLabs: sodium 125, potassium 4.0, chloride 96, bicarbonate 24, BUN 10. Serum osmolality 260, urine osmolality 80 (maximally dilute).\n\nAssessment: hypotonic hyponatremia from psychogenic polydipsia.\nCourse: fluid restriction, serial sodium checks, observation overnight. Mental status back to baseline and sodium improving by the next day.\nDischarge instructions: fluid restriction as instructed, daily morning weights at home, follow up with primary care within one week and with psychiatry.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "ED summary received",
+              "author": "MA",
+              "date": "2025-08-28T13:30",
+              "body": "ED and observation summary 8/15 to 8/16 received. Labs abstracted and filed. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "telephone",
+          "start": "2025-08-18T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - ED and observation stay",
+              "author": "RN",
+              "date": "2025-08-18T10:05",
+              "body": "Sister reports Sharon was confused Friday and was taken to the ED; her sodium was low from drinking too much water. Kept overnight, home Saturday afternoon. Told to limit fluids and weigh every morning. More like herself now. Post-ED visit set for Wednesday; sister will request the ED summary be sent to us."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "office_visit",
+          "start": "2025-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, low sodium",
+          "conditions": [
+            {
+              "label": "Psychogenic polydipsia",
+              "icd10": "R63.1",
+              "action": "diagnosed",
+              "onset": "2025-08-15"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-20T10:10",
+              "results": []
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-20T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-20T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post-ED",
+              "author": "PCP",
+              "date": "2025-08-20T09:40",
+              "body": "Seen with her sister. ED visit 8/15 for confusion and lethargy after days of drinking large amounts of water; per family the ED found her sodium low and kept her overnight on fluid restriction. No ED paperwork yet, sister has asked for it.\n\nSince home: sister is measuring her water in a marked bottle, she is staying within the limit most days, and doing a morning weight. Thirst still bothers her. Thinking clear. Clozapine 300 mg qhs unchanged.\n\nExam: vitals normal. Alert and oriented x3. No edema. Mucous membranes moist. Neuro nonfocal.\n\nA/P\n1. Psychogenic polydipsia with hyponatremia, per ED. BMP today. Continue the fluid limit and daily weights; a jump of more than a couple of pounds in a day, headache, vomiting or confusion means a same-day call. Psychiatry informed by sister.\n2. Schizophrenia on clozapine.\n3. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium recheck",
+              "author": "PCP",
+              "date": "2025-08-21T12:40",
+              "body": "Sharon, your sodium is back in the normal range. Keep following the fluid plan we discussed, it is what's working."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "nurse_visit",
+          "start": "2025-10-15T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-15T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-15T15:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-15T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza / COVID-19",
+              "author": "RN",
+              "date": "2025-10-15T15:30",
+              "body": "Trivalent influenza 0.5 mL IM L deltoid, Moderna 2025-26 COVID 0.5 mL IM R deltoid. Well today, no fever or sore throat. No prior reactions. Monitored 15 min. Sister present."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "annual_physical",
+          "start": "2025-11-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-12T10:40",
+              "results": []
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-12T10:40",
+              "results": []
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-12T10:40",
+              "results": []
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-12T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-12T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2025-11-12T10:00",
+              "body": "Annual. With sister.\n\nED summary from August arrived 8/28: sodium 125, serum osm 260, urine osm 80, psychogenic polydipsia, fluid restriction, observed overnight. Since then she has kept to the fluid limit with the marked bottle. No confusion. Weights steady.\n\nNo further seizures. Clozapine 300 mg qhs. Psychiatry every 1 to 2 months, ANC monthly at their lab.\n\nOphthalmology: says she was seen in the summer and nothing changed; no letter received this year.\nGyn: no visits since 2024. Husband's carrier testing still not done. Pap still overdue; offered again, she declines a speculum exam, aware of the reason for screening.\n\nMeds: clozapine 300 mg qhs. NKDA. Never smoker, no alcohol.\n\nExam: vitals normal, weight 66 kg. Calm, organized. Glasses. Neck supple. Heart regular rate and rhythm. Lungs clear. Abdomen soft. Skin intact. No edema. Neuro nonfocal.\n\nPHQ-9 4, GAD-7 6.\n\nA/P\n1. Health maintenance. Flu and COVID done 10/15. Pap declined, will keep offering.\n2. Schizophrenia on clozapine. CBC/diff, CMP, lipids, A1c.\n3. Psychogenic polydipsia, controlled with fluid limit. Sodium on CMP today.\n4. Clozapine-induced seizure, none since February.\n5. Factitious disorder, situational anxiety: stable; consistent visits.\n6. Degenerative high myopia, ophthalmology yearly.\n7. Tay-Sachs carrier.\n\nRTC January."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "portal_message",
+          "start": "2025-11-14T11:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2025-11-14T11:55",
+              "body": "All normal, Sharon, including your sodium. Keep doing what you're doing. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "office_visit",
+          "start": "2026-01-14T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2026-01-14T14:20",
+              "body": "Patient did not come to 1:40 follow-up. Left voicemail on her phone and on the sister's. Will offer the next opening when they call back."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "ed_visit",
+          "start": "2026-02-09T15:10",
+          "end": "2026-02-10T01:30",
+          "service": "Emergency Medicine",
+          "reason": "Erratic behavior, talking to herself",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-09T15:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-09T15:45",
+              "results": []
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-09T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-06-10T09:50",
+              "body": "EMERGENCY DEPARTMENT NOTE\nDate of service: 02/09/2026, arrival 15:10\n\nChief complaint: behavior change.\n\nHPI: 31 year old with established schizophrenia, recent history of a clozapine-associated seizure and of psychogenic polydipsia, brought in by her sister for two days of erratic behavior and talking to herself. According to the sister she has not been taking her medications for about a month.\nMedications listed: clozapine 300 mg at bedtime (not taking).\nAllergies: NKDA.\nSocial: unemployed, lives with her sister. No history of substance use.\n\nVitals: within normal limits.\nExam: disheveled. Appears to be responding to internal stimuli. Agitated; states she has been chosen to defend the world against an alien invasion. No focal neurologic findings.\n\nLabs: Na 140, K 4.1, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98, Ca 9.2. CBC within normal limits. Urine toxicology negative.\n\nImpression: acute exacerbation of schizophrenia in the setting of a month off clozapine. No medical cause found.\nDisposition: evaluated by emergency psychiatry; admitted to the inpatient psychiatric unit.\n\nEmergency Medicine"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "hospital_admission",
+          "start": "2026-02-10T01:30",
+          "end": "2026-02-27T11:00",
+          "service": "Psychiatry",
+          "reason": "Acute exacerbation of schizophrenia",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-10T01:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Psychiatry Discharge Summary",
+              "author": "psychiatry",
+              "date": "2026-05-20T14:35",
+              "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmitted 02/10/2026 from the emergency department. Discharged 02/27/2026.\n\nReason for admission: psychotic relapse of schizophrenia (auditory hallucinations, grandiose and persecutory delusions, agitation) after about one month without clozapine.\n\nHospital course: Because more than two days had passed since her last dose, clozapine was restarted at a low dose and re-titrated, with ANC monitoring, reaching 300 mg at bedtime before discharge. Agitation settled within the first week. Hallucinations decreased and she became organized and able to engage in planning. Fluid intake was monitored on the unit given her history of psychogenic polydipsia. No seizures during the stay.\n\nCondition at discharge: calm, linear, denies suicidal and homicidal ideation, accepting of medication.\n\nDischarge medication: clozapine 300 mg by mouth at bedtime.\nAllergies: NKDA.\n\nFollow-up: outpatient psychiatry within one week; ANC per the monitoring schedule; primary care follow-up. Sister to supervise medication.\n\nInpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "telephone",
+          "start": "2026-02-11T16:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - hospitalization",
+              "author": "RN",
+              "date": "2026-02-11T16:20",
+              "body": "Sister called to let us know Sharon is on the inpatient psychiatry unit. She had stopped her clozapine around the new year without telling anyone, became very disorganized, and on Monday the sister took her to the ED; she was admitted from there. Sister apologized for the missed January visit. Asked her to let us know when she is discharged so we can see her. Will request records."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2026-02-12T09:00",
+              "body": "Release on file. Requested ED note of 2/9/26 and inpatient records at discharge from the hospital HIM office."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "telephone",
+          "start": "2026-03-03T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - discharged",
+              "author": "RN",
+              "date": "2026-03-03T11:10",
+              "body": "Sister reports discharge on 2/27. Clozapine was restarted in the hospital and built back up to 300 mg at bedtime. First psychiatry follow-up done this week. Sister now hands her the dose every night and watches her take it. Calm, sleeping. Offered PCP visit; the first opening that works with their rides is mid-April. No discharge paperwork has come to us; sister does not have a copy."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "office_visit",
+          "start": "2026-04-15T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after psychiatric hospitalization",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-15T10:55",
+              "results": []
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-15T10:55",
+              "results": []
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-15T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-15T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post-Hospitalization",
+              "author": "PCP",
+              "date": "2026-04-15T10:20",
+              "body": "First visit since the February ED visit and inpatient psychiatry stay (2/10 to 2/27 per sister). Neither the ED note nor the discharge summary has reached us despite a request in February; re-requested today.\n\nHistory from Sharon and her sister: stopped clozapine around the start of the year, \"felt fine and didn't think I needed it.\" Became disorganized; sister took her to the ED 2/9 and she was admitted. Clozapine restarted and slowly increased back to 300 mg at bedtime in the hospital. Since discharge she takes it every night with her sister watching. Seeing psychiatry every two weeks for now, ANC at their lab. Voices quieter. No seizures. Keeping to her fluid limit, no confusion, no swelling.\n\nMeds: clozapine 300 mg qhs. NKDA.\n\nExam: vitals in flowsheet, normal. Neatly dressed, calm, a little slowed, linear, affect restricted. No tremor. Heart regular. Lungs clear. Abdomen soft. No edema. Neuro nonfocal.\n\nPHQ-9 5, GAD-7 6. No SI.\n\nA/P\n1. Schizophrenia, relapse after stopping clozapine, now back on 300 mg qhs with supervised dosing; psychiatry following closely. CBC with diff today since we are drawing.\n2. Psychogenic polydipsia: BMP today for sodium.\n3. Clozapine-induced seizure: none.\n4. Health maintenance: Pap still declined. Vaccines current for the season.\nFollow up in about three months, sooner as needed. Sister has our direct line."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-17a",
+          "kind": "portal_message",
+          "start": "2026-04-17T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Wednesday",
+              "author": "PCP",
+              "date": "2026-04-17T09:05",
+              "body": "Hi Sharon, blood counts including neutrophils are normal, and your sodium and kidney tests are normal. Glad to see you doing better."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "outside_records",
+          "start": "2026-05-20T14:35",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Discharge summary received",
+              "author": "MA",
+              "date": "2026-05-20T14:50",
+              "body": "Inpatient psychiatry discharge summary for 2/10-2/27/26 received by fax and scanned. ED note of 2/9 not included; HIM says it is a separate request. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "outside_records",
+          "start": "2026-06-10T09:50",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "ED record received",
+              "author": "front desk",
+              "date": "2026-06-10T10:05",
+              "body": "Emergency department note from 2/9/26 arrived today after the separate request. Scanned to the encounter and sent to PCP's inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "portal_message",
+          "start": "2026-07-08T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "vaccine record",
+              "author": "patient",
+              "date": "2026-07-08T18:30",
+              "body": "Hi it's Sharon. Can you send me a copy of my shot records? My sister wants us to have a copy at home."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: vaccine record",
+              "author": "MA",
+              "date": "2026-07-09T09:40",
+              "body": "Hi Sharon, your immunization record is attached to this message and is also under the Health tab in the portal any time you need it."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "pharmacy",
+          "start": "2026-08-05T12:15",
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "External fill history",
+              "author": "MA",
+              "date": "2026-08-05T12:15",
+              "body": "Quarterly fill history pull for panel review. Clozapine 100 mg tablets, 3 at bedtime, filled every 28 days since March without gaps; prescriber outpatient psychiatry. No other medications filled. No action needed."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

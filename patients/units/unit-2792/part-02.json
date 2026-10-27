@@ -1,0 +1,337 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002792",
+      "events": [
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T19:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash and feeling weak",
+              "author": "patient",
+              "date": "2024-06-20T19:52",
+              "body": "Hi, school just ended and I finally have time to deal with this. For maybe two months I've had a purplish-red color on my upper eyelids and some red blotchy patches on the backs of my hands. I thought it was a reaction to a new eye cream but I stopped it and nothing changed. The other thing - and maybe unrelated - stairs have been a real effort since the winter, and holding my arms up to blow-dry or comb my hair wears me out. I'm not sick otherwise. Could I come in next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash and feeling weak",
+              "author": "front desk",
+              "date": "2024-06-21T08:14",
+              "body": "Hi Heather, Dr. reviewed your message and would like to see you Monday 6/24 at 10:30. Please plan to have blood drawn while you're here."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-24a",
+          "kind": "office_visit",
+          "start": "2024-06-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Eyelid and hand rash, trouble with stairs",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-06-24T11:15", "results": [
+              {"test": "Creatine Kinase", "value": 1840},
+              {"test": "Antinuclear Antibodies", "text": "Positive, titer 1:640, speckled pattern"},
+              {"test": "Thyroid Stimulating Hormone"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-24T11:15", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 58},
+              {"test": "Alanine Aminotransferase", "value": 44},
+              {"test": "Creatinine"},
+              {"test": "Glucose"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-24T11:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "derm-referral-2024", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "eyelid and dorsal hand rash with proximal weakness"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-24T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-06-24T10:30",
+              "body": "S: 53F, last seen 8/2023 for physical. About 2 months of violet-red discoloration of both upper lids and red patches on the backs of both hands. Not itchy to speak of. Stopped a new eye cream, no change. Separately, since roughly winter, climbing the stairs to her 2nd-floor classroom takes effort and her arms tire holding a hair dryer or comb. No muscle pain, no trouble swallowing, no shortness of breath. Denies fever, weight loss, night sweats. No new meds or supplements.\n\nO: Afebrile, vitals reviewed. Violaceous discoloration of the upper eyelids bilaterally. Blanching erythematous patches over the dorsal hands. Joints without synovitis. Strength 4+/5 deltoids and hip flexors bilaterally, symmetric; distal strength 5/5. Reflexes 2+ and symmetric. Heart and lungs normal.\n\nA/P: Rash of the lids and hands with symmetric proximal weakness - concerned for an inflammatory myopathy such as dermatomyositis.\n- CK, ANA, CMP, CBC, TSH today.\n- Dermatology referral for the rash; asked their office to see her this summer.\n- Will call with results. If swallowing or breathing trouble, call right away."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "portal_message",
+          "start": "2024-06-26T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Monday",
+              "author": "PCP",
+              "date": "2024-06-26T17:05",
+              "body": "Heather - your CK, a muscle enzyme, is high at 1,840, and the ANA (an autoimmune screening test) is positive at 1:640. Two liver tests are mildly up, which goes along with muscle inflammation rather than a liver problem. Thyroid and blood counts are normal. Together with the rash and the weakness this fits an inflammatory muscle condition, most likely dermatomyositis. Dermatology has you on July 19; I've sent them these results. We'll talk after that visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Monday",
+              "author": "patient",
+              "date": "2024-06-26T20:31",
+              "body": "Thank you for explaining. I looked it up and it sounds scary but I'll wait to hear what they say. See you after the 19th."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "specialist_visit",
+          "start": "2024-07-19T13:20",
+          "service": "Dermatology",
+          "reason": "Rash of eyelids and hands, proximal weakness",
+          "vitals": {"temp_c": 36.8, "bp": [124, 76], "hr": 80, "rr": 14, "spo2": 99},
+          "conditions": [
+            {"label": "Dermatomyositis", "icd10": "M33.12", "action": "diagnosed", "onset": "2024-04-01", "note": "clinical diagnosis by dermatology"}
+          ],
+          "orders": [
+            {"id": "derm-referral-2024", "action": "done", "date": "2024-07-19T13:20"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "author": "dermatology",
+              "date": "2024-07-25T09:30",
+              "body": "OUTSIDE DERMATOLOGY GROUP - CONSULTATION\nDate of visit: 07/19/2024\nRe: Heather Fournier, DOB 10/25/1970\n\nThank you for asking us to see this 53-year-old teacher. Over several months she has found it steadily harder to get up stairs and to keep her arms raised to comb her hair, and more recently noticed red skin changes on the face and hands. No fevers, no weight loss.\n\nPSH: cholecystectomy, tubal ligation. Meds: none. Allergies: NKDA.\nFamily: mother with autoimmune thyroiditis; maternal aunt with rheumatoid arthritis; father with hypertension.\nSocial: never smoker, a glass or two of wine weekly, high school math teacher.\n\nVitals: T 36.8 C (98.2 F), BP 124/76, P 80, RR 14, SpO2 99% RA.\n\nExam: Violaceous erythema of both upper eyelids (heliotrope pattern). Erythematous macules and thin patches on the dorsal hands. Scalp, trunk and nails otherwise unremarkable. Symmetric weakness of proximal arm and leg muscles on confrontation.\n\nData: Labs drawn by her primary care office on 06/24 - creatine kinase 1,840 U/L and ANA positive (1:640, speckled).\n\nImpression: Heliotrope eruption with hand involvement, symmetric proximal weakness and a raised CK - clinically dermatomyositis.\n\nRecommendations:\n1. Rheumatology for confirmation (myositis antibodies, EMG/biopsy as they see fit) and systemic treatment.\n2. Daily broad-spectrum sunscreen and sun-protective clothing; the eruption is often photosensitive.\n3. We are glad to see her again for the skin as needed.\n\ncc: primary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-30a",
+          "kind": "telehealth_visit",
+          "start": "2024-07-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review dermatology consult",
+          "orders": [
+            {"id": "rheum-referral-2024", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "dermatomyositis, confirmation and treatment"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-07-30T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-07-30T11:00",
+              "body": "Video, she is at home; verified name and DOB.\n\nReviewed the dermatology letter with her. Their read is dermatomyositis on clinical grounds. She says the lids look about the same, hands a little less red with sunscreen. Stairs still slow. Swallowing fine, no breathing complaints.\n\nA/P: Dermatomyositis, clinical diagnosis - added to problem list.\n- Rheumatology referral placed today for confirmation and treatment.\n- Explained why confirming matters and that treatment is usually steroids plus a second medicine.\n- She will call if weakness worsens quickly, or with choking or breathlessness."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-11a",
+          "kind": "telephone",
+          "start": "2024-09-11T07:05",
+          "reason": "Rheumatology appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheumatology appointment cancelled",
+              "author": "front desk",
+              "date": "2024-09-11T07:05",
+              "body": "Pt called before school. Rheumatology offered 10/2 at 1:40; she cancelled it - can't take an afternoon off in the first weeks of classes, says the weakness hasn't changed and the rash is quieter. Asked her to reschedule with them directly when she can. Referral left open."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:30",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-09T15:34"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-09T15:36"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-09T15:34"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2024-10-09T15:30",
+              "body": "Trivalent flu L deltoid and 2024-25 Moderna R deltoid, both IM. No immunosuppressive meds currently. Tolerated, waited 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "imaging",
+          "start": "2024-12-04T16:20",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-12-04T16:20",
+              "text": "Digital breast tomosynthesis, screening. Prior studies 2021-2023 available. The breasts are heterogeneously dense in small areas, unchanged in appearance. No masses, suspicious calcifications or architectural distortion. Stable.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "annual_physical",
+          "start": "2025-08-13T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-08-13T09:05", "results": [
+              {"test": "Creatine Kinase", "value": 2650},
+              {"test": "Hemoglobin A1c"},
+              {"test": "Thyroid Stimulating Hormone"}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-13T09:05", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 71},
+              {"test": "Alanine Aminotransferase", "value": 52},
+              {"test": "Creatinine"},
+              {"test": "Glucose"},
+              {"test": "Albumin"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-13T09:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-13T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2025-08-13T08:50",
+              "issued": "2025-08-19T14:00",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV testing. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HR-HPV negative."
+            }
+          ],
+          "orders": [
+            {"id": "rheum-referral-2024", "action": "cancelled", "date": "2025-08-13T08:20"},
+            {"id": "rheum-referral-2025", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "dermatomyositis, weakness worsening; please see soon"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-08-13T08:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-13T08:20",
+              "body": "Physical; last full exam 8/2023. Dermatomyositis (clinical dx by derm 7/2024), never made it to rheumatology - the October appointment was cancelled and not rebooked.\n\nShe says the weakness held steady through the year, but since early summer stairs are harder again and she rests partway up. Lifting her arms to put things on high shelves is tiring. Lids still dusky, knuckles red. No dysphagia, no dyspnea, no fevers.\n\nMeds: none. NKDA.\n\nExam: Well appearing. Violaceous upper-lid discoloration. Erythematous patches over the knuckles. Heart regular, lungs clear, abdomen benign. Strength 4+/5 shoulder abductors and hip flexors bilaterally, 5/5 distally. Pelvic: normal external genitalia, cervix normal, Pap/HPV collected. Breasts without mass.\n\nPHQ-9 = 2.\n\nA/P:\n1. Dermatomyositis, with weakness worse this summer. CK today. New rheumatology referral, asked for an early slot; she has agreed to take the time off this time.\n2. Preventive: Pap/HPV today. Labs CBC, CMP, lipids, A1c, TSH. Mammogram due in fall - order in. Colonoscopy not due until 2031. Flu/COVID in October.\n3. RTC after rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "portal_message",
+          "start": "2025-08-18T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results and rheumatology",
+              "author": "PCP",
+              "date": "2025-08-18T13:30",
+              "body": "Hi Heather, your CK came back at 2,650 - higher than last summer's 1,840, which matches the weakness you've noticed. The liver tests are mildly up again from the muscle. Everything else (blood counts, kidney, sugar, cholesterol, thyroid) is fine. Rheumatology has your referral marked as soon; their scheduler should call this week. The Pap result will follow in a few days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results and rheumatology",
+              "author": "patient",
+              "date": "2025-08-20T06:48",
+              "body": "Got the Pap result too, thanks. Rheumatology called - first visit is November 19. They said they'd put me on the cancellation list. I'll take whatever comes up."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T15:40",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-08T15:44"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-08T15:46"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-08T15:44"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu and COVID",
+              "author": "MA",
+              "date": "2025-10-08T15:40",
+              "body": "Flu IM L arm, Pfizer 2025-26 IM R arm. Pt asked whether to get these before any rheum meds - told her yes, good timing. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "imaging",
+          "start": "2025-11-05T16:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-11-05T16:00",
+              "text": "Bilateral screening mammography with tomosynthesis; compared with 12/2024 and 11/2023. Scattered fibroglandular tissue. No suspicious finding in either breast. No change from prior.",
+              "conclusion": "Negative (BI-RADS 1). Next screening in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "specialist_visit",
+          "start": "2025-11-19T14:00",
+          "service": "Rheumatology",
+          "reason": "Dermatomyositis, new consult",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-11-19T15:00", "results": [{"test": "Creatine Kinase", "value": 3120}]},
+            {"panel": null, "collected": "2025-11-19T15:00", "resulted": "2025-12-08T11:30", "results": [{"test": "Mi-2 alpha IgG Antibody", "loinc": "82997-8", "text": "Positive"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2025-11-19T15:00", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 96},
+              {"test": "Alanine Aminotransferase", "value": 71}
+            ]}
+          ],
+          "orders": [
+            {"id": "rheum-referral-2025", "action": "done", "date": "2025-11-19T14:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Consultation",
+              "author": "rheumatology",
+              "date": "2025-11-24T10:00",
+              "body": "RHEUMATOLOGY - NEW PATIENT CONSULTATION\nSeen 11/19/2025. Referred by her primary care physician.\n\nMs. Fournier is a 55-year-old math teacher with a heliotrope eruption, red knuckle patches and proximal weakness. Dermatology diagnosed dermatomyositis clinically in July 2024 (CK 1,840, ANA 1:640 speckled). She deferred the first rheumatology visit. Weakness was stable for about a year, then progressed from early summer 2025 (CK 2,650 in August). Now rests halfway up a flight of stairs. No dysphagia, dyspnea, cough, fevers or joint swelling.\n\nMeds: none. Allergies: NKDA.\n\nExam: Heliotrope discoloration of the lids; scaly erythematous patches over the MCP and PIP joints. Proximal muscle weakness, symmetric, upper and lower limbs (deltoids and hip flexors 4/5). Distal strength full. Lungs clear. No synovitis.\n\nToday: CK 3,120 U/L; AST 96, ALT 71 (muscle source likely).\n\nImpression: Probable dermatomyositis, progressing.\n\nPlan:\n1. Myositis-specific and associated antibody panel.\n2. EMG/NCS - requested at our neurophysiology lab.\n3. Muscle biopsy guided by the EMG, contralateral side.\n4. Return after results to discuss treatment.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "procedure_visit",
+          "start": "2025-12-10T09:00",
+          "service": "Neurology — Neurophysiology",
+          "reason": "EMG/NCS for proximal weakness",
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2025-12-10T09:00",
+              "text": "Nerve conduction: right median, ulnar, peroneal and sural nerves with normal distal latencies, amplitudes and conduction velocities; F-waves normal. Needle EMG: right deltoid, biceps, iliopsoas and vastus lateralis show fibrillation potentials and positive sharp waves, with early recruitment of short-duration, low-amplitude, polyphasic motor unit potentials. Right first dorsal interosseous and tibialis anterior normal. Thoracic paraspinals not sampled.",
+              "conclusion": "Irritable myopathy affecting proximal muscles of the right arm and leg, with normal nerve conduction. Consistent with an inflammatory myopathy. Left vastus lateralis suggested for biopsy."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Nerve conduction study with needle EMG", "performed": "2025-12-10T09:00"}
+          ]
+        }
+      ]
+    }
+  ]
+}

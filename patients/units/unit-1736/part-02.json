@@ -1,0 +1,794 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001736",
+      "events": [
+        {
+          "id": "2022-01-11a",
+          "kind": "outside_records",
+          "start": "2022-01-11T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-30T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Employee health immunization record",
+              "author": "employee health",
+              "date": "2022-01-11T10:30",
+              "body": "Employee health immunization summary for staff member K. Hurley. COVID-19 vaccine Pfizer-BioNTech booster dose given 11/30/2021, lot on file. Prior doses 01/06/2021 and 01/27/2021. Annual TB screening questionnaire negative."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up depression, migraine",
+          "state": {
+            "weight_kg": 65.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-22T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-03-22T15:55",
+              "body": "Routine f/u, overdue by a few months (rescheduled twice for work).\n\nShe is tired. Short staffed at the facility since the winter surge, lots of doubles. PHQ-9 up a little to 8, no SI, sleeping okay on days off. Does not want a dose change; agrees to call the counseling number again. Migraines 7 to 9 days a month, sumatriptan helps. Bowels unchanged.\n\nVitals as charted, weight up 2 kg since we met. Exam not repeated beyond a brief look; appears tired but engaged.\n\nA/P: MDD recurrent, mild uptick with work stress - continue sertraline 100, counseling referral info again, recheck in 6 mo or sooner. Migraine and IBS-D stable."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "portal_message",
+          "start": "2022-06-14T21:04",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2022-06-14T21:04",
+              "body": "Hi, my pharmacy says the sertraline needs a new script. Could you send it to the same place? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "author": "MA",
+              "date": "2022-06-15T09:12",
+              "body": "Sent this morning, 90 days with 3 refills. -MA"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "office_visit",
+          "start": "2022-09-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diarrhea for 2 months",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-20T11:45",
+              "results": [
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T11:45",
+              "resulted": "2022-09-22T10:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-21T07:30",
+              "resulted": "2022-09-24T12:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova or parasites seen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-20T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chronic watery diarrhea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Diarrhea",
+              "author": "PCP",
+              "date": "2022-09-20T11:50",
+              "body": "CC: loose stools x about 2 months.\n\nHPI: Since mid-July has had watery stools most days, she counts 4 to 6 a day, worse than her usual IBS pattern which was a couple of loose days a week. Some crampy lower abdominal discomfort before BMs. No blood, no black stools, no mucus. No nighttime stools that wake her. Appetite fine, weight steady. No travel, no camping or well water, no sick contacts, no new foods or supplements, no recent antibiotics. Loperamide helps for a few hours. Still working full time.\n\nExam: vitals as charted, afebrile. Not dehydrated, mucous membranes moist. Abdomen soft, nondistended, mild diffuse tenderness without guarding, normal bowel sounds. No masses.\n\nA/P: chronic diarrhea, more than her baseline IBS-D. CBC, BMP, celiac serology; stool culture and O&P (kit given, drop off tomorrow). Referring to GI given duration. Fluids, loperamide as needed up to the max. Call if blood, fever, or she cannot keep up with fluids."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "portal_message",
+          "start": "2022-09-27T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stool and blood tests",
+              "author": "PCP",
+              "date": "2022-09-27T13:30",
+              "body": "Karen, the stool culture and parasite check were both negative, the celiac blood test was negative, and your blood count and electrolytes were normal. GI has the referral; their office should call you to schedule. How are things this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stool and blood tests",
+              "author": "patient",
+              "date": "2022-09-27T19:48",
+              "body": "About the same. GI called, I see them in November for a scope."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "telephone",
+          "start": "2022-10-04T14:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI referral",
+              "author": "MA",
+              "date": "2022-10-04T14:15",
+              "body": "GI office confirmed referral received with notes and stool results. Colonoscopy set for 11/29 with prep instructions mailed to pt. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T07:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T07:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "author": "RN",
+              "date": "2022-10-18T08:00",
+              "body": "Flu (L deltoid) and bivalent COVID booster (R deltoid). No acute illness today. Tolerated well, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "procedure_visit",
+          "start": "2022-11-29T08:30",
+          "end": "2022-11-29T10:15",
+          "service": "Gastroenterology",
+          "reason": "Chronic diarrhea",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2022-11-29T09:05"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-11-29T09:20",
+              "issued": "2022-12-02T16:00",
+              "text": "A. Terminal ileum, biopsy: small bowel mucosa with normal villous architecture; no active inflammation or granulomas. B. Right colon, random biopsies: colonic mucosa without diagnostic abnormality. C. Left colon, random biopsies: colonic mucosa without diagnostic abnormality; surface epithelial lymphocytes not increased and subepithelial collagen table not thickened. No microscopic colitis.",
+              "conclusion": "Benign ileal and colonic mucosa. No microscopic colitis, no inflammatory bowel disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2022-12-05T09:00",
+              "body": "OUTSIDE GASTROENTEROLOGY - COLONOSCOPY REPORT (received by fax)\nDate of procedure: 11/29/2022\nIndication: chronic watery diarrhea\nAllergies: sulfa\nSedation: monitored anesthesia care\nPrep: good (BBPS 8)\n\nThe scope was passed to the cecum and the terminal ileum was intubated for about 5 cm. The ileal mucosa looked normal. Throughout the colon the mucosa was normal in appearance with a normal vascular pattern. No polyps, ulcers or masses. Random biopsies taken from the right and left colon and from the terminal ileum. Retroflexion in the rectum unremarkable.\n\nImpression: normal colonoscopy to the terminal ileum; biopsies sent to look for microscopic colitis.\nPlan: follow up pathology; stool studies to be sent; clinic visit in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "specialist_visit",
+          "start": "2023-01-09T13:30",
+          "service": "Gastroenterology",
+          "reason": "Chronic diarrhea follow-up",
+          "conditions": [
+            {
+              "label": "Factitious diarrhea",
+              "icd10": "R19.7",
+              "action": "diagnosed",
+              "onset": "2022-07-15"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-28T09:15",
+              "resulted": "2022-12-30T11:00",
+              "results": [
+                {
+                  "test": "Osmolality of Stool",
+                  "loinc": "2693-0",
+                  "unit": "mOsm/kg",
+                  "value": 260
+                },
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 290
+                },
+                {
+                  "test": "Sodium in Stool",
+                  "loinc": "15207-4",
+                  "unit": "mmol/L",
+                  "value": 30
+                },
+                {
+                  "test": "Potassium in Stool",
+                  "loinc": "15202-5",
+                  "unit": "mmol/L",
+                  "value": 40
+                },
+                {
+                  "test": "Magnesium in Stool",
+                  "loinc": "29911-5",
+                  "unit": "mg/dL",
+                  "value": 5
+                },
+                {
+                  "test": "Phosphate in Stool",
+                  "loinc": "88713-3",
+                  "unit": "mg/dL",
+                  "value": 4
+                },
+                {
+                  "test": "Osmol gap of Stool",
+                  "loinc": "73571-2",
+                  "unit": "mOsm/kg",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2023-01-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2023-01-12T10:40",
+              "body": "OUTSIDE GASTROENTEROLOGY - CLINIC LETTER\nDate of service: 01/09/2023\nRe: Karen Hurley, DOB 12/22/1990\nReferred by: primary care physician\n\nThank you for asking us to see Ms. Hurley, a 32 year old LPN, for chronic diarrhea.\n\nShe describes half a year now of watery stools, five or six a day, with occasional cramping. No blood and no mucus. She has not traveled, has had no sick contacts and has not changed her diet. Background of IBS with diarrhea, depression, chronic migraine and remote epilepsy. Medicines: sertraline 100 mg daily, sumatriptan 100 mg as needed, loperamide as needed. Allergy: sulfa (rash). Family: sister with IBS.\n\nOn exam today she looks well. Abdomen is soft without tenderness or distension.\n\nData: stool culture and ova and parasites negative (primary care, 9/2022). Tissue transglutaminase IgA negative. Colonoscopy to the terminal ileum 11/29/2022 normal, with random biopsies showing no microscopic colitis.\n\nStool studies collected 12/28/2022:\n- stool osmolality 260 mOsm/kg\n- serum osmolality 290 mOsm/kg\n- stool sodium 30 mEq/L, stool potassium 40 mEq/L\n- stool magnesium 5 mg/dL\n- stool phosphate 4 mg/dL\n\nCalculated stool osmotic gap 290 - 2 x (30 + 40) = 150 mOsm/kg.\n\nAssessment: the measured stool osmolality is lower than plasma. Stool leaving the colon is never hypotonic to plasma, so a value like this tells us the sample has been diluted with water or another dilute fluid after passage. The gap is not interpretable for that reason, and the stool magnesium is not elevated, so I do not suspect a magnesium-containing laxative. With an otherwise complete and negative evaluation, the findings are most consistent with factitious diarrhea.\n\nI discussed the results with her in a straightforward way. She was upset and disagreed. I have recommended a psychiatric evaluation and would ask primary care to help with that. No further GI testing planned; she can continue loperamide for her IBS symptoms. Happy to see her again if anything new develops.\n\nGastroenterology attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "office_visit",
+          "start": "2023-01-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review GI consultation",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-19T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-01-19T17:05",
+              "body": "She asked to talk about the GI letter. Read it together. She is hurt by it, says she has been sick for months and 'nobody believes nurses.' I told her I was not there to accuse her of anything, that the test result is what it is, and that I care how she is doing either way. Stools now 'a bit better.' PHQ-9 10, no SI, no plan, safe at home with her husband.\n\nExam: vitals as charted, weight stable. Tearful at times, organized, linear.\n\nA/P\n1. Factitious diarrhea per GI evaluation. Offered referral to psychiatry; she declines for now. Left the door open.\n2. MDD recurrent, PHQ-9 up to 10. Continue sertraline 100; she will think about counseling. Recheck 2 to 3 months.\n3. IBS-D: loperamide as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-23a",
+          "kind": "pharmacy",
+          "start": "2023-02-23T14:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sumatriptan refill",
+              "author": "MA",
+              "date": "2023-02-23T14:10",
+              "body": "Pharmacy request for sumatriptan 100 mg #9. Last fill 33 days ago, within the plan limit. Approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-05a",
+          "kind": "ed_visit",
+          "start": "2023-04-05T11:35",
+          "end": "2023-04-06T13:20",
+          "service": "Emergency Medicine",
+          "reason": "Episodes of confusion, sweating and tremor",
+          "vitals": [
+            {
+              "time": "2023-04-05T11:40",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-05T11:45",
+              "results": [
+                {
+                  "test": "Glucose in Capillary blood by Glucometer",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 40
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-04-05T11:50",
+              "results": [
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-05T11:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-05T11:50",
+              "resulted": "2023-04-10T09:30",
+              "results": [
+                {
+                  "test": "Insulin",
+                  "loinc": "20448-7",
+                  "unit": "u[IU]/mL",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "C peptide",
+                  "loinc": "1986-9",
+                  "unit": "ng/mL",
+                  "text": "Elevated"
+                },
+                {
+                  "test": "Sulfonylurea screen",
+                  "loinc": "15374-2",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-04-05T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2023-04-07T08:30",
+              "body": "AREA MEDICAL CENTER, EMERGENCY SERVICES - PHYSICIAN RECORD (received by fax)\nArrival 04/05/2023 11:35, discharged from ED observation 04/06/2023 13:20\n\nCC: spells of confusion, sweating and shakiness.\n\n32 y/o F, LPN, known factitious diarrhea per GI evaluation this January, who reports roughly two months of intermittent spells: she gets foggy and confused, sweaty and tremulous, sometimes with a racing heart. Most happen late morning. Today a coworker found her confused at the nurses' station and checked a glucose. She takes sertraline, sumatriptan when needed and loperamide when needed and says she takes nothing else; no insulin or diabetes pills at home, no alcohol, no drugs. Allergies: sulfa.\n\nExam: vitals in normal range on arrival. Anxious, diaphoretic forehead, otherwise unremarkable; nonfocal neuro exam once glucose corrected.\n\nED course: point-of-care glucose 40 mg/dL during the spell. Critical sample drawn (insulin, C-peptide, sulfonylurea screen) before 25 g IV dextrose, with prompt return to baseline. Placed on a dextrose infusion and observed overnight with hourly checks; infusion weaned and fingersticks stayed normal for 8 hours off it. BMP unremarkable. A1c 5.2%.\n\nImpression: hypoglycemia, cause pending. No diabetes. Send-out tests pending at discharge.\nDisposition: home with husband; eat regularly; follow up with PCP within one week. The patient was told the ED would call with results.\n\nEmergency medicine attending"
+            },
+            {
+              "type": "ED Notes",
+              "title": "ED Addendum - Send-out Results",
+              "author": "emergency medicine",
+              "date": "2023-04-11T10:15",
+              "body": "ADDENDUM 04/10/2023 (received 04/11)\nResults from the critical sample drawn 04/05 during glucose 40: insulin elevated, C-peptide elevated, sulfonylurea screen positive. Together these show hypoglycemia from a sulfonylurea, which is not one of her prescribed medicines. I called the patient and reviewed the result; she denies taking one. Given the prior factitious diarrhea, I strongly recommended psychiatric evaluation and faxed this to her PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "office_visit",
+          "start": "2023-04-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-04-12T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "factitious hypoglycemia, depression"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "author": "PCP",
+              "date": "2023-04-12T09:30",
+              "body": "Post-ED. Seen at the regional ED 4/5 for confusion and sweating with a glucose of 40; observed overnight. ED addendum: insulin and C-peptide both high, sulfonylurea screen positive.\n\nWe went through it together. She was quiet for a long time, then said she has been under a lot of strain and does not know why she does things sometimes. She did not say more and I did not press. No spells since discharge. PHQ-9 11. Denies SI, no intent, no plan; husband is aware of the ED visit.\n\nExam: vitals as charted. Calm, tearful, good eye contact. Not diaphoretic. Neuro nonfocal.\n\nA/P\n1. Hypoglycemia from a non-prescribed sulfonylurea, in the setting of prior factitious diarrhea. She accepts a psychiatry referral today; placed as urgent.\n2. MDD recurrent - continue sertraline 100 for now; psychiatry to advise.\n3. Safety: crisis line numbers given; she agrees to call or go to the ED if thoughts of self-harm.\nCall in 2 weeks to touch base."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-26a",
+          "kind": "specialist_visit",
+          "start": "2023-04-26T10:00",
+          "service": "Psychiatry",
+          "reason": "Psychiatric evaluation",
+          "conditions": [
+            {
+              "label": "Factitious disorder imposed on self (Munchausen syndrome)",
+              "icd10": "F68.12",
+              "action": "diagnosed",
+              "onset": "2022-07-15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2023-04-26T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Evaluation",
+              "author": "psychiatry",
+              "date": "2023-05-02T14:20",
+              "body": "OUTSIDE PSYCHIATRY - INITIAL EVALUATION\nDate of service: 04/26/2023\nReferral: PCP, after hypoglycemia with positive sulfonylurea screen\n\nMs. Hurley is a 32 year old married LPN with a long history of recurrent depression on sertraline. Over the past nine months she has had diarrhea that GI found to be produced by dilution of stool samples, and this month an ED visit for hypoglycemia with high insulin, high C-peptide and a positive sulfonylurea screen. In session she did not offer an explanation for either finding and became tearful when they were reviewed. There is no outside gain we can identify: no leave from work, disability claim or legal matter. She denies any wish to die. She described feeling calmer when she is being looked after as a patient.\n\nMSE: casually dressed, cooperative, guarded at first. Mood 'embarrassed.' Affect constricted, tearful. Thought process linear. No SI or HI. No psychosis. Insight partial, judgment fair.\n\nDiagnoses: factitious disorder imposed on self, based on two objectively documented episodes of falsified illness without outside gain; major depressive disorder, recurrent.\n\nPlan: weekly psychotherapy with our clinic; psychiatry follow-up monthly at first. Continue sertraline 100 mg daily; we will prescribe from here on. Safety plan completed. With her permission we will coordinate with her PCP; we asked that one physician hold her medical care and that new testing be ordered thoughtfully.\n\nOutpatient psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-26b",
+          "kind": "telephone",
+          "start": "2023-04-26T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in",
+              "author": "PCP",
+              "date": "2023-04-26T16:45",
+              "body": "Called as promised. She saw psychiatry this morning and will start weekly therapy there. No further spells. Feels 'raw but okay.' No SI. Will see her in May for the headaches as planned."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "office_visit",
+          "start": "2023-05-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-24T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "chronic migraine"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Migraine",
+              "author": "PCP",
+              "date": "2023-05-24T14:40",
+              "body": "Headaches. Diary over the last year shows about 15 headache days a month now, most of them migraine type, one-sided throbbing with light sensitivity, no aura. Using sumatriptan on maybe 8 of those days and riding out the rest. Wants to see a headache specialist; a coworker told her about a migraine study at the neurology clinic.\n\nPsychiatry intake done 4/26, in weekly therapy. Mood 'a little lighter.' PHQ-9 9.\n\nExam: vitals as charted. Fundi sharp. Cranial nerves intact, strength and reflexes symmetric, gait and coordination normal.\n\nA/P\n1. Chronic migraine without aura, about 15 days a month, not controlled with as-needed treatment. Referral to neurology. Keep the diary going. Continue sumatriptan, max 2 days a week.\n2. Factitious disorder, MDD - followed by psychiatry, who now prescribes sertraline. Will keep in close touch with them."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "specialist_visit",
+          "start": "2023-07-17T09:15",
+          "service": "Neurology",
+          "reason": "Chronic migraine, research visit",
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2023-07-17T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Consultation",
+              "author": "neurology",
+              "date": "2023-07-21T11:00",
+              "body": "OUTSIDE NEUROLOGY - HEADACHE CLINIC LETTER\nVisit 07/17/2023\n\nDear colleague,\n\nI saw Ms. Hurley, 32, for chronic migraine. She has had migraine since her teens and, over the past year, headaches on about 15 days a month. Sumatriptan helps the attacks it is used for; she has not had lasting control with as-needed treatment alone. She also has depression and factitious disorder followed by psychiatry, IBS with diarrhea, and epilepsy in remission off medication for more than ten years. Allergy: sulfa.\n\nGeneral and neurological examinations are normal today.\n\nShe met criteria for, and consented to, our crossover study of an investigational preventive. Each participant takes the study medicine for three months and a matching placebo for three months; neither she nor the treating team knows the order. Headache days are counted monthly from an electronic diary. She keeps sumatriptan for attacks.\n\nI will write again when she completes the six months.\n\nHeadache neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "portal_message",
+          "start": "2023-08-22T18:31",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Question about study",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Migraine study",
+              "author": "patient",
+              "date": "2023-08-22T18:31",
+              "body": "I started the migraine study last month. They said to tell you. Is it okay to keep taking my sertraline with the study pills?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Migraine study",
+              "author": "PCP",
+              "date": "2023-08-22T20:10",
+              "body": "Thanks for letting me know. The study team checked your medicine list when you enrolled, so yes, keep taking sertraline as psychiatry prescribes it. If anything new comes up with the study pills, the study team is the first call."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Research study notice",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Research study enrollment notice",
+              "author": "neurology",
+              "date": "2023-09-12T10:00",
+              "body": "Research coordinator notice: participant K. Hurley enrolled 07/17/2023 in a randomized, double-blind, placebo-controlled crossover study of an investigational migraine preventive. Please contact the study team before starting any new migraine preventive. Emergency unblinding line provided on her study card."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "annual_physical",
+          "start": "2023-10-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-24T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-24T08:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T08:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-10-24T09:15",
+              "body": "Annual, age 32.\n\nSeeing psychiatry monthly and a therapist weekly, which she says is helping; PHQ-9 8, GAD-7 7. No more hypoglycemic spells. Bowels back to her old IBS pattern. In month four of the neurology migraine study, keeps a diary, will not guess which arm she is on. No seizures.\n\nROS negative.\n\nExam: vitals as charted. Well appearing. Skin clear. Thyroid normal. Heart regular, no murmur; lungs clear to auscultation. Breast exam deferred at her request. Abdomen soft and nontender. No edema. Neuro nonfocal.\n\nA/P\n- Health maintenance: Pap/HPV 2021 normal, next 2026. Flu and updated COVID given. CBC and CMP.\n- Factitious disorder and MDD: psychiatry following, sertraline 100 from psychiatry.\n- Chronic migraine: in study, sumatriptan for attacks.\n- IBS-D, epilepsy in remission: no change.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "pharmacy",
+          "start": "2023-12-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline refill request",
+              "author": "MA",
+              "date": "2023-12-12T10:05",
+              "body": "Pharmacy asked us for a sertraline refill. Fill history shows psychiatry has been writing it since May. Pharmacy told to route to psychiatry; our open prescription inactivated to avoid duplicate fills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

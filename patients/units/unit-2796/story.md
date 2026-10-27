@@ -40,3 +40,8 @@
 - 2026-06-09 urology follow-up, ultrasound clear (A4)
 - 2026-08-11 portal: books September physical (P)
 - 2026-09-22 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002796 on 2025-02-11. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

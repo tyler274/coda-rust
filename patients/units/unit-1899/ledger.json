@@ -738,26 +738,6 @@
           "start": "2025-10-13T10:45",
           "service": "Dermatology",
           "reason": "Rash on left forearm again",
-          "conditions": [
-            {
-              "label": "Tinea corporis",
-              "action": "diagnosed",
-              "onset": "2025-10-06",
-              "note": "Recurrence, same site",
-              "icd10": "B35.4"
-            }
-          ],
-          "medications": [
-            {
-              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
-              "action": "start",
-              "sig": "Apply twice daily to the plaques and surrounding skin; continue for 2 weeks after the skin looks clear",
-              "frequency": "BID",
-              "route": "Topical",
-              "course": "short",
-              "reason": "Recurrent tinea corporis"
-            }
-          ],
           "documents": [
             {
               "type": "Consult Note",
@@ -765,41 +745,6 @@
               "date": "2025-10-16T14:20",
               "author": "dermatology",
               "body": "Dermatology follow-up. Visit date 10/13/2025. Received 10/16/2025.\n\nSeen here 06/30 for tinea corporis of the left forearm, which cleared with 4 weeks of clotrimazole. She is now 20 weeks pregnant. For the past week the same area has been itching intensely again: ring-shaped patches with a red, flaky edge that are spreading outward and paler in the middle. She has kept going to hot yoga since early summer on her own mat, and the two dogs still sleep on the bed.\nMedications: prenatal vitamin.\nAllergies: NKDA.\n\nExam: two annular erythematous plaques on the left forearm with raised scaly borders and central clearing. No other sites involved.\n\nKOH preparation: branching septate hyphae.\n\nAssessment: recurrent tinea corporis, left forearm, likely reinfection from a household or gym source.\n\nPlan:\n1. Restart clotrimazole 1% cream twice daily and continue for 2 full weeks after the skin looks clear.\n2. Wipe down the mat after every class and wash it weekly; shower soon after class.\n3. Have the dogs checked by their veterinarian for ringworm; keep them off the bed until then.\n4. Return if it recurs again.\nDermatology"
-            }
-          ]
-        },
-        {
-          "id": "2025-11-21a",
-          "kind": "portal_message",
-          "start": "2025-11-21T12:10",
-          "conditions": [
-            {
-              "label": "Tinea corporis",
-              "action": "resolved",
-              "icd10": "B35.4"
-            }
-          ],
-          "medications": [
-            {
-              "drug_text": "clotrimazole 10 MG/ML Topical Cream",
-              "action": "stop",
-              "reason": "Course complete"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Rash",
-              "date": "2025-11-21T12:10",
-              "author": "patient",
-              "body": "The ringworm cleared up again a couple of weeks ago and I kept the cream going 2 more weeks like they said, just stopped it. Fingers crossed it stays away this time."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Rash",
-              "date": "2025-11-21T15:02",
-              "author": "MA",
-              "body": "Thanks for letting us know! The doctor has updated your chart."
             }
           ]
         },
@@ -850,20 +795,6 @@
           "end": "2026-02-04T19:30",
           "service": "Emergency Medicine",
           "reason": "Fever, body aches, lower abdominal cramping at 36 weeks",
-          "medications": [
-            {
-              "drug_text": "ampicillin 2000 MG Injection",
-              "action": "start",
-              "sig": "2 g IV every 4 hours",
-              "dose": {
-                "value": 2,
-                "unit": "g"
-              },
-              "route": "Intravenous",
-              "course": "short",
-              "reason": "Suspected listeriosis in pregnancy"
-            }
-          ],
           "vitals": {
             "bp": [
               137,
@@ -1099,15 +1030,6 @@
           "end": "2026-02-08T13:00",
           "service": "Obstetrics",
           "reason": "Febrile illness in pregnancy, suspected listeriosis",
-          "conditions": [
-            {
-              "label": "Listeriosis",
-              "action": "diagnosed",
-              "onset": "2026-02-02",
-              "note": "Ampicillin-susceptible Listeria monocytogenes bacteremia at 36 weeks",
-              "icd10": "A32.9"
-            }
-          ],
           "vitals": {
             "bp": [
               134,
@@ -1169,60 +1091,10 @@
           ]
         },
         {
-          "id": "2026-02-05a",
-          "kind": "portal_message",
-          "start": "2026-02-05T08:22",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "In the hospital",
-              "date": "2026-02-05T08:22",
-              "author": "patient",
-              "body": "Wanted you to know I'm in the hospital since yesterday with a fever. They think it might be listeria from something I ate. Baby is ok on the monitor. They've got me on IV antibiotics."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: In the hospital",
-              "date": "2026-02-05T09:40",
-              "author": "PCP",
-              "body": "Thank you for telling me, Wanda. You're in the right place, and starting antibiotics early matters most. I'll watch for the hospital records. Message me when you're home and we'll set up a video visit."
-            }
-          ]
-        },
-        {
-          "id": "2026-02-10a",
-          "kind": "telehealth_visit",
-          "start": "2026-02-10T12:15",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Follow-up after hospital stay",
-          "procedures": [
-            {
-              "procedure": "Telehealth visit, established patient, moderate MDM",
-              "performed": "2026-02-10T12:15"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Telehealth Visit: Post-Discharge",
-              "date": "2026-02-10T12:45",
-              "author": "PCP",
-              "body": "Video visit, patient at home, identity verified.\n\nAdmitted 2/4-2/8 at 36 weeks with Listeria bacteremia; ED record and discharge summary reviewed. On ampicillin 2 g IV q4h by home infusion through 2/17, PICC right arm. Infusion nurse visiting; pump working.\n\nFeels much better. No fever since the hospital. Aches gone. No contractions or leaking, baby moving well. PICC site looks clean on camera, no redness or swelling in the arm. Seeing OB twice a week for NSTs.\n\nA/P: listeriosis in pregnancy, responding to treatment.\n- Finish the full 14 days; infusion nurse to pull the PICC after the last dose.\n- Call for fever, arm swelling or redness at the line, or any OB warning signs.\n- Reviewed foods to avoid for the rest of the pregnancy, per the discharge instructions.\n- Will see her in clinic after the baby comes."
-            }
-          ]
-        },
-        {
           "id": "2026-02-18a",
           "kind": "outside_records",
           "start": "2026-02-19T09:30",
           "reason": "Home infusion nursing note",
-          "medications": [
-            {
-              "drug_text": "ampicillin 2000 MG Injection",
-              "action": "stop",
-              "reason": "14-day course complete"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1240,17 +1112,6 @@
           "end": "2026-02-25T11:30",
           "service": "Obstetrics",
           "reason": "Labor at term",
-          "conditions": [
-            {
-              "label": "Supervision of normal pregnancy",
-              "action": "resolved"
-            },
-            {
-              "label": "Listeriosis",
-              "action": "resolved",
-              "icd10": "A32.9"
-            }
-          ],
           "documents": [
             {
               "type": "Discharge Summary",
@@ -1258,27 +1119,6 @@
               "date": "2026-02-27T14:05",
               "author": "obstetrics",
               "body": "OBSTETRIC DISCHARGE SUMMARY. Admitted 02/23/2026 in labor, discharged 02/25/2026. Received 02/27/2026.\n\n29-year-old G1P0 at 39w0d, admitted in spontaneous labor. Antepartum course notable for Listeria bacteremia at 36 weeks treated with 14 days of IV ampicillin (completed 02/17), blood cultures cleared. Afebrile throughout labor.\n\nUncomplicated spontaneous vaginal delivery 02/23/2026 of a liveborn girl, 3240 g, Apgars 8 and 9. Placenta delivered intact. Pediatrics examined the newborn given the maternal infection: well appearing, no signs of infection, routine newborn care.\n\nPostpartum course routine; mother afebrile and well. Now G1P1.\nDischarge medications: prenatal vitamin daily.\nAllergies: NKDA.\nFollow-up: OB postpartum visit in 6 weeks; pediatrics for the baby.\nObstetrics"
-            }
-          ]
-        },
-        {
-          "id": "2026-03-03a",
-          "kind": "portal_message",
-          "start": "2026-03-03T21:15",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "She's here",
-              "date": "2026-03-03T21:15",
-              "author": "patient",
-              "body": "Just wanted to share our daughter arrived on the 23rd! Everything went smoothly and the pediatrician said she's perfect. I'm tired but feeling good. Should I keep taking the prenatal vitamin?"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: She's here",
-              "date": "2026-03-04T07:30",
-              "author": "PCP",
-              "body": "Congratulations to you all! So glad it went smoothly after February. Yes, keep taking the prenatal vitamin for now. Let's see you in clinic after your OB postpartum visit; the front desk will reach out to schedule."
             }
           ]
         },
@@ -1297,160 +1137,12 @@
               "body": "Postpartum visit 04/06/2026, 6 weeks after an uncomplicated vaginal delivery. Copy to primary care.\nFeeling well. Bleeding stopped. No fevers. Sleeping when the baby sleeps; good support at home. Postpartum mood screen normal.\nExam: BP normal. Breasts normal. Abdomen soft, uterus involuted. Perineum healed. \nAssessment: normal postpartum recovery. Continue prenatal vitamin. Routine gynecologic care; next Pap per screening guidelines. Return to primary care for general care.\nObstetrics"
             }
           ]
-        },
-        {
-          "id": "2026-05-12a",
-          "kind": "office_visit",
-          "start": "2026-05-12T10:20",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Postpartum check-in",
-          "vitals": {
-            "bp": [
-              127,
-              71
-            ],
-            "hr": 67,
-            "temp_c": 36.7,
-            "spo2": 97,
-            "weight_kg": 65.9
-          },
-          "labs": [
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2026-05-12T10:50",
-              "results": [
-                {
-                  "test": "Hemoglobin",
-                  "value": 13.9
-                },
-                {
-                  "test": "White Blood Cells",
-                  "value": 8.4
-                },
-                {
-                  "test": "Red Blood Cells",
-                  "value": 4.34
-                },
-                {
-                  "test": "Hematocrit",
-                  "value": 40.4
-                },
-                {
-                  "test": "Mean Corpuscular Volume",
-                  "value": 93
-                },
-                {
-                  "test": "Mean Corpuscular Hemoglobin",
-                  "value": 32.0
-                },
-                {
-                  "test": "Mean Corpuscular Hemoglobin Concentration",
-                  "value": 34.4
-                },
-                {
-                  "test": "Red Cell Distribution Width",
-                  "value": 12.7
-                },
-                {
-                  "test": "Platelets",
-                  "value": 291
-                },
-                {
-                  "test": "Mean Platelet Volume",
-                  "value": 10.3
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-9 total score",
-              "value": 3
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, low MDM",
-              "performed": "2026-05-12T10:20"
-            },
-            {
-              "procedure": "Venipuncture",
-              "performed": "2026-05-12T10:50"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Primary Care Office Visit",
-              "date": "2026-05-12T11:05",
-              "author": "PCP",
-              "body": "29F, about 11 weeks after a vaginal delivery on 2/23, here to check in. Baby with her, doing well.\n\nInterval: Listeria bacteremia at 36 weeks, 14 days IV ampicillin, PICC out 2/18, cultures cleared. Delivered at term, uncomplicated; newborn well per pediatrics. OB postpartum visit 4/6 normal.\n\nToday: feels good, tired in the expected way. No fevers since February. No rash on the arm since November. Mood good; PHQ-9 3. Eating and sleeping okay for a new parent. Still on the prenatal vitamin.\n\nExam: vitals as charted, weight down to 66 kg. Well appearing. Old PICC site right arm healed. Heart regular, lungs clear. Abdomen soft. Left forearm skin clear. No edema.\n\nA/P:\n1. Listeriosis, resolved. No further testing needed.\n2. Postpartum, well. CBC today to check her counts after the infection and delivery.\n3. Tinea corporis, no recurrence.\n4. Health maintenance: Pap 07/2025 NILM. Flu and COVID vaccines this fall. Rebook the physical she postponed last year for late summer."
-            }
-          ],
-          "state": {
-            "weight_kg": 66.0
-          },
-          "measure": [
-            "bp",
-            "hr",
-            "temp_c",
-            "spo2",
-            "weight_kg"
-          ]
-        },
-        {
-          "id": "2026-05-13a",
-          "kind": "portal_message",
-          "start": "2026-05-13T14:25",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Your blood count",
-              "date": "2026-05-13T14:25",
-              "author": "PCP",
-              "body": "Hi Wanda, your blood count from yesterday is normal: no anemia, white count back in the normal range. Nothing to do. Enjoy the summer with her."
-            }
-          ]
-        },
-        {
-          "id": "2026-07-28a",
-          "kind": "portal_message",
-          "start": "2026-07-28T09:02",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Booking my physical",
-              "date": "2026-07-28T09:02",
-              "author": "patient",
-              "body": "Hi, I'd like to book the physical I skipped last year. Mornings are easiest, mid September if possible. Also my prenatal vitamin is getting low, I think there's a refill left."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Booking my physical",
-              "date": "2026-07-28T11:40",
-              "author": "front desk",
-              "body": "You're booked for Wednesday 9/16 at 9:00 with your doctor. The pharmacy shows one refill left on the prenatal vitamin, so you can request it directly. See you then!"
-            }
-          ]
-        },
-        {
-          "id": "2026-09-16a",
-          "kind": "annual_physical",
-          "start": "2026-09-16T09:00",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Annual physical",
-          "appointment": "booked"
         }
       ]
     }
   ],
   "terms": {
     "conditions": {
-      "Listeriosis|A32.9": {
-        "code": "A32.9",
-        "display": "Listeriosis, unspecified",
-        "receipt": "NLM Clinical Tables ICD-10-CM"
-      },
       "Tinea corporis|B35.4": {
         "code": "B35.4",
         "display": "Tinea corporis",
@@ -1458,12 +1150,6 @@
       }
     },
     "medications": {
-      "ampicillin 2000 MG Injection": {
-        "code": "1721476",
-        "display": "ampicillin 2000 MG Injection",
-        "ingredient": "ampicillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
-      },
       "clotrimazole 10 MG/ML Topical Cream": {
         "code": "309367",
         "display": "clotrimazole 10 MG/ML Topical Cream",

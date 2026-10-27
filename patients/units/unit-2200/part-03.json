@@ -1,0 +1,1057 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002200",
+   "events": [
+    {
+     "id": "2025-01-21a",
+     "kind": "portal_message",
+     "start": "2025-01-21T18:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Heart doctor appointment",
+       "author": "patient",
+       "date": "2025-01-21T18:30",
+       "body": "The cardiology office finally gave me February 10. Is that ok or should I be pushing for sooner? The chest tightness still comes on with the hill and the porch steps, same as I told you, and goes away when I stop. Nothing at rest."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Heart doctor appointment",
+       "author": "PCP",
+       "date": "2025-01-22T08:15",
+       "body": "Thanks for letting me know. If it is the same pattern - only with effort, gone in a few minutes with rest - the 10th is reasonable, and I'll ask our referral coordinator to put you on their cancellation list. If it starts happening at rest, lasts longer than 10 minutes, or comes with sweating or shortness of breath, call 911. Keep taking the metoprolol every morning."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-10a",
+     "kind": "specialist_visit",
+     "start": "2025-02-10T13:30",
+     "service": "Cardiology",
+     "reason": "Exertional chest pain, new dyspnea on stairs",
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ],
+      "hr": 78,
+      "weight_kg": 101.4
+     },
+     "orders": [
+      {
+       "id": "cards-referral-2024",
+       "action": "done",
+       "date": "2025-02-10T13:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2025-02-10T13:50",
+       "text": "Sinus rhythm at 77. Normal axis and intervals. No acute ST-segment changes. No Q waves.",
+       "conclusion": "No acute ST changes or Q waves."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up letter",
+       "author": "cardiology",
+       "date": "2025-02-18T10:05",
+       "body": "CARDIOLOGY CLINIC NOTE\nVisit date: 2025-02-10\nRe: Charles Leblanc, 1960-04-22\nTo: primary care physician - thank you for sending him back.\n\nHPI: Seen here 18 months ago with stable coronary disease. Since last summer he has had chest pressure with exertion, settling with rest, as described in your July note; that has continued. What is new over the past several months is breathlessness on climbing a flight of stairs, which he did not have when you saw him in July. No rest symptoms, no syncope.\n\nMeds: aspirin 81 mg, metformin 1000 mg BID, lisinopril 20 mg, atorvastatin 40 mg, metoprolol succinate 50 mg. NKDA.\n\nExam: BP 142/88, HR 78, BMI 32. Regular rhythm. Lungs clear.\n\nData reviewed: your labs of 7/24/24 - A1c 7.2%, TC 190, LDL 100, HDL 40, TG 150, creatinine 1.1. ECG today without acute ST change or Q waves.\n\nImpression: stable angina with new exertional dyspnea in a patient with prior MI and stent - concerning for progression of coronary disease.\n\nPlan: exercise treadmill stress test in the next few weeks. Continue current antianginal and secondary prevention regimen in the meantime. Will contact him with results and next steps.\n\nCardiology attending"
+      }
+     ]
+    },
+    {
+     "id": "2025-03-12a",
+     "kind": "outside_records",
+     "start": "2025-03-12T08:50",
+     "reports": [
+      {
+       "study": "Exercise stress test",
+       "performed": "2025-03-06T09:00",
+       "text": "Indication: exertional chest pain and dyspnea, known CAD. Protocol: Bruce. Resting ECG sinus rhythm without ST abnormality. Exercise stopped early in stage 1 for chest pressure and breathlessness. At that low workload there was significant horizontal ST-segment depression in multiple leads, resolving in recovery. Blood pressure rose appropriately. No arrhythmia.",
+       "conclusion": "Positive for ischemia: significant ST depression at low workload. High-risk result; angiography to be considered."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Outside stress test received",
+       "author": "PCP",
+       "date": "2025-03-12T16:40",
+       "body": "Stress test from cardiology: positive, ST depression early in stage 1. Cardiology managing - per the report they will plan angiography. Called pt, he knows; cardiology already spoke with him. Continuing meds."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-08a",
+     "kind": "office_visit",
+     "start": "2025-04-08T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.3
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-04-08T11:30",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-08T11:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.3
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-04-08T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Follow-up",
+       "author": "PCP",
+       "date": "2025-04-08T11:00",
+       "body": "Turns 65 this month. Here for diabetes and BP and to talk through the heart workup.\n\nCardiology saw him in February; stress test in March was positive early. He says they told him he needs a catheter study and they are working on scheduling it; he hasn't been given a date. Chest pressure still with hills and stairs, eases with rest; also winded on a flight of stairs. Nothing at rest. He admits he is worried - \"I've never liked hospitals.\" Sleeping fine. PHQ-2 1.\n\nExam: vitals as charted. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P:\n- CAD with stable angina, positive stress test: cardiology leading; continue aspirin, metoprolol, atorvastatin, lisinopril. Reinforced when to call 911.\n- DM2: A1c drawn. Metformin.\n- HTN: about the same as last summer; leaving the regimen while cardiology sorts out the coronary plan.\n- Health maintenance: physical due next spring; lung CT will wait until the heart workup settles.\nFollow up after the catheterization."
+      },
+      {
+       "type": "Result Note",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2025-04-09T10:10",
+       "body": "A1c 7.3. BMP normal. Portal: stable, same plan."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-29a",
+     "kind": "outside_records",
+     "start": "2025-07-29T13:15",
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2025-07-21T08:00",
+       "text": "Indication: coronary artery disease, pre-procedure assessment. Left ventricle normal in size with reduced systolic function; LVEF estimated 38% by biplane method. Hypokinesis of the anterior wall. Right ventricle normal in size and function. Atria normal. No significant valvular stenosis or regurgitation. No pericardial effusion. IVC normal with normal respiratory variation.",
+       "conclusion": "Reduced left ventricular ejection fraction, 38%, with anterior wall hypokinesis."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Outside echo received",
+       "author": "PCP",
+       "date": "2025-07-29T17:00",
+       "body": "Echo 7/21 from cardiology: EF 38%, anterior hypokinesis. He had his catheterization the same day per his phone call to the front desk; no cath report has come. Will wait for the cardiology letter."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2025-07-30T09:10",
+       "body": "Faxed request to cardiology for the 7/21 catheterization report and visit notes."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-04a",
+     "kind": "specialist_visit",
+     "start": "2025-08-04T09:30",
+     "service": "Cardiology",
+     "reason": "Pre-operative evaluation for coronary artery bypass grafting",
+     "state": {
+      "weight_kg": 98.2,
+      "labs": {
+       "Hemoglobin": 12.4,
+       "Hemoglobin A1c": 7.6
+      }
+     },
+     "vitals": {
+      "bp": [
+       138,
+       80
+      ],
+      "hr": 70,
+      "weight_kg": 98.2
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-07-21T06:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.4
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-21T06:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology pre-operative evaluation",
+       "author": "cardiology",
+       "date": "2025-08-12T11:20",
+       "body": "CARDIOLOGY - PRE-OPERATIVE CONSULTATION\nDate seen: 2025-08-04\nPatient: Charles Leblanc, 65\ncc: primary care physician; cardiac surgery\n\nHe returns after cardiac catheterization. His exertional angina has been treated medically on metoprolol succinate, atorvastatin 40 mg and lisinopril, and it has not settled: he still gets chest pain with exertion and now has occasional episodes at rest. The March treadmill test showed marked ST depression at a low workload. Coronary angiography on 7/21 showed severe disease of all three major coronary arteries, not suitable for a percutaneous approach; surgical revascularization is recommended.\n\nPMH: CAD with MI and stent 2016; type 2 diabetes; hypertension; hyperlipidemia; PAD; severe osteoarthritis of the knee, with a knee replacement anticipated after he recovers.\nMeds: aspirin 81 mg daily, metformin 1000 mg BID, lisinopril 20 mg daily, atorvastatin 40 mg daily, metoprolol succinate 50 mg daily. NKDA.\nFH: his father had a heart attack and heart surgery at 68; he remembers visiting him in the hospital.\nSH: former smoker, quit about 12 years ago. No alcohol. Retired construction foreman.\n\nHe is frank that surgery frightens him, but he wants more years with his grandchildren and has decided to go ahead.\n\nExam: Vital signs stable. BMI 31. Soft S4. Mild pitting edema at both ankles. Peripheral pulses present but diminished. Lungs clear.\n\nLabs (7/21): hemoglobin 12.4 g/dL - mild anemia; HbA1c 7.6%.\nEcho 7/21: LVEF 38%, anterior wall hypokinesis.\nCath 7/21: severe three-vessel coronary artery disease.\n\nAssessment: stable angina due to coronary artery disease, three-vessel, refractory to medical therapy, with reduced LV function.\n\nPlan: referral accepted by cardiac surgery for CABG; the surgeon met him today and explained that a vein from the leg will be taken for the grafts, with the incision placed along known landmarks, and he agreed to proceed. Continue all current medications until surgery; the surgical team will give peri-operative instructions. We will see him after recovery.\n\nCardiology attending"
+      },
+      {
+       "type": "Result Note",
+       "title": "Cardiology letter reviewed",
+       "author": "PCP",
+       "date": "2025-08-12T16:30",
+       "body": "Pre-op letter received. Three-vessel disease on cath, EF 38%, CABG planned with cardiac surgery. Hgb 12.4, A1c 7.6. Cath report itself still not sent; the letter gives the findings. Problem list: CAD, angina as is; will update after surgery."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-14a",
+     "kind": "telephone",
+     "start": "2025-08-14T15:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pt call - upcoming bypass",
+       "author": "PCP",
+       "date": "2025-08-14T15:05",
+       "body": "Charles called; surgery is set for September 9. Wanted to hear from me whether he should go through with it. Went over why the surgeons recommend it - three arteries involved, symptoms despite medicine. He feels better having talked. Asked about his pills: surgical team will tell him what to hold; he should keep the aspirin and metoprolol unless they say otherwise. Offered a visit after discharge - will book when he is home."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-09a",
+     "kind": "hospital_admission",
+     "start": "2025-09-09T06:00",
+     "end": "2025-09-14T11:30",
+     "service": "Cardiac Surgery",
+     "reason": "Elective coronary artery bypass grafting",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-09-14T05:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 10.8
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-09-14T05:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.8
+      }
+     },
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge summary - cardiac surgery",
+       "author": "cardiac surgery",
+       "date": "2025-10-07T10:40",
+       "body": "REGIONAL HOSPITAL - CARDIAC SURGERY DISCHARGE SUMMARY\nAdmitted: 2025-09-09  Discharged: 2025-09-14\nPatient: Charles Leblanc, DOB 1960-04-22\nAllergies: NKDA\n\nAdmitting diagnosis: severe three-vessel coronary artery disease with stable angina refractory to medical therapy; LVEF 38%.\nProcedure 9/9/25: coronary artery bypass grafting x3 - left internal mammary artery graft and two reverse saphenous vein grafts, vein harvested from the right leg. Cardiopulmonary bypass. No intraoperative complications.\n\nHospital course: extubated the evening of surgery. Chest tubes removed POD 2. Remained in sinus rhythm. Glucose monitored closely; metformin resumed at discharge. Mobilizing in the halls by POD 3. Sternal and leg incisions clean and dry. Hemoglobin 10.8 on the day of discharge, expected post-operative; no transfusion.\n\nDischarge medications: aspirin 81 mg daily; atorvastatin 40 mg daily; metoprolol succinate 50 mg daily; lisinopril 20 mg daily; metformin 1000 mg twice daily.\n\nFollow-up: cardiac surgery wound check 2 weeks; cardiology 2 months; outpatient cardiac rehabilitation referral placed; primary care within 1-2 weeks.\nInstructions: sternal precautions, no driving 4 weeks, no lifting over 10 lb for 6 weeks.\n\nCardiac surgery attending"
+      },
+      {
+       "type": "Result Note",
+       "title": "Discharge summary filed",
+       "author": "PCP",
+       "date": "2025-10-07T15:20",
+       "body": "Discharge summary arrived today, three weeks after discharge. Matches what he told us. Hgb 10.8 at discharge. Recheck CBC at next visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-17a",
+     "kind": "telephone",
+     "start": "2025-09-17T09:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pt home after bypass",
+       "author": "RN",
+       "date": "2025-09-17T09:40",
+       "body": "Pt called: had his bypass 9/9, home since Sunday. Three grafts, he says. Sore chest, using a pillow to cough, walking in the house and driveway. No fever, incisions dry. Taking the same five pills as before. No discharge paperwork has reached us - asked him to bring his packet to the visit. Booked post-hospital visit 9/23 with PCP. Records request sent to the hospital."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-23a",
+     "kind": "office_visit",
+     "start": "2025-09-23T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hospital follow-up after CABG",
+     "conditions": [
+      {
+       "label": "Presence of aortocoronary bypass graft",
+       "icd10": "Z95.1",
+       "action": "diagnosed",
+       "onset": "2025-09-09",
+       "note": "CABG x3 2025-09-09"
+      }
+     ],
+     "state": {
+      "weight_kg": 95.5,
+      "bp": [
+       128,
+       76
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2025-09-23T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-Hospital Visit",
+       "author": "PCP",
+       "date": "2025-09-23T13:40",
+       "body": "Two weeks after three-vessel bypass, here with his discharge folder (the hospital's summary has not reached us yet; his folder has the med list and instructions).\n\nHe is doing better than he expected. Chest wall soreness, improving; acetaminophen only. Walking 10 minutes twice a day. No chest pressure like before, no breathlessness at rest, sleeping in bed. Appetite low; down a few kilos. Leg incision a little tender. Rehab intake is booked for next week.\n\nMeds (reconciled with the folder): aspirin 81, metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, acetaminophen prn - unchanged from before surgery. NKDA.\n\nExam: vitals in flowsheet. Sternal incision healing, no drainage, sternum stable. Right leg vein-harvest incision clean, mild bruising along it. Heart regular, no rub. Lungs clear.\n\nA/P:\n- S/p CABG x3: recovering well. Added to problem list. Continue all meds; cardiac rehab; surgeon follow-up next week; cardiology in November.\n- DM2: sugars running 130s-150s at home per his log. Metformin.\n- Anemia after surgery per his folder: CBC at the December visit.\nSee in 2-3 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-10-14T10:17"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-10-14T10:19"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T10:17"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2025-10-14T10:15",
+       "body": "High-dose flu (now 65) L deltoid; 2025-26 COVID R deltoid. He is in cardiac rehab three mornings a week and came straight from there. Feels well. 15 min observation without issue."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-17a",
+     "kind": "specialist_visit",
+     "start": "2025-11-17T14:00",
+     "service": "Cardiology",
+     "reason": "Follow-up after CABG",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2025-11-17T13:00",
+       "text": "Post-CABG reassessment. Comparison 2025-07-21. Left ventricle normal in size. LVEF estimated 50%, improved. Mild hypokinesis of the anterior wall. Right ventricular size and function normal. Valves without significant disease. No pericardial effusion.",
+       "conclusion": "LVEF 50%, improved from 38%; mild anterior hypokinesis."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology post-operative visit",
+       "author": "cardiology",
+       "date": "2025-11-25T08:45",
+       "body": "CARDIOLOGY FOLLOW-UP\nDate: 2025-11-17\nCharles Leblanc, 65. Ten weeks after CABG x3.\n\nHe is without angina. Climbing stairs again without stopping. Halfway through cardiac rehabilitation and enjoying it. Incisions healed.\n\nMedications: aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 50 mg, lisinopril 20 mg, metformin 1000 mg BID.\n\nExam: regular rhythm, no murmur or rub. Lungs clear. No edema.\n\nEcho today: LVEF 50%, mild anterior hypokinesis - improved after revascularization.\n\nAssessment: CAD s/p CABG, doing well; LV function improved.\nPlan: continue current regimen without change. Finish rehab. From our standpoint he may plan the knee replacement once he is 6 months out from surgery. Return in 6 months.\n\nCardiology attending"
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09a",
+     "kind": "office_visit",
+     "start": "2025-12-09T08:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up; right knee pain",
+     "state": {
+      "weight_kg": 98.5,
+      "bp": [
+       134,
+       82
+      ],
+      "labs": {
+       "Hemoglobin": 12.9,
+       "Hemoglobin A1c": 7.4,
+       "Glucose": 148
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-12-09T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 12.9
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-12-09T09:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-12-09T09:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-12-09T08:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "xr-knee-2025",
+       "action": "placed",
+       "order": "Knee X-ray",
+       "category": "imaging",
+       "reason": "right knee osteoarthritis, worsening pain"
+      },
+      {
+       "id": "ortho-referral",
+       "action": "placed",
+       "order": "Orthopedic surgery referral",
+       "category": "referral",
+       "to": "Orthopedic Surgery",
+       "reason": "severe right knee osteoarthritis, consider arthroplasty"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Primary Care Follow-up",
+       "author": "PCP",
+       "date": "2025-12-09T08:50",
+       "body": "Three months after bypass. Heart-wise he feels the best he has in two years - no chest pressure, does the rehab bike and treadmill without symptoms. Cardiology saw him in November, echo better, no changes.\n\nThe problem now is the right knee. More walking for rehab has made it much worse: aching most days, grinding, stiff after sitting, hard on stairs going down. Acetaminophen takes the edge off. Cardiology told him no anti-inflammatories, which he follows. No locking, no falls.\n\nExam: vitals reviewed, BP better than last year. Sternum healed. Heart regular. Lungs clear. No edema. Right knee: crepitus throughout motion, bony enlargement, flexion to about 100, no effusion, no warmth.\n\nA/P:\n1. Right knee OA, now severe clinically - x-ray today, refer to orthopedics to discuss replacement (cardiology says ok to plan after the 6-month mark). Continue acetaminophen.\n2. S/p CABG: doing well; continue all meds.\n3. DM2: A1c drawn, metformin.\n4. Post-op anemia: CBC today.\n5. HTN: fine.\nPhysical in April."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-09b",
+     "kind": "imaging",
+     "start": "2025-12-09T10:10",
+     "orders": [
+      {
+       "id": "xr-knee-2025",
+       "action": "done",
+       "date": "2025-12-09T10:10"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Knee X-ray",
+       "performed": "2025-12-09T10:10",
+       "text": "Right knee, three views including standing AP. Marked narrowing of the medial joint space with marginal osteophytes and subchondral sclerosis. Lateral and patellofemoral compartments relatively preserved. No fracture. No joint effusion. Soft tissues unremarkable.",
+       "conclusion": "Advanced medial compartment osteoarthritis of the right knee."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-11a",
+     "kind": "portal_message",
+     "start": "2025-12-11T12:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your x-ray and labs",
+       "author": "PCP",
+       "date": "2025-12-11T12:05",
+       "body": "Charles - the knee x-ray shows advanced wear-and-tear arthritis on the inner side of the right knee, which fits with how much it is bothering you. The orthopedic office has the referral and should call you. Blood count is recovering nicely after surgery (12.9, up from 10.8). A1c 7.4, a little higher than before surgery - not unusual after a big operation; we'll look again in the spring. Kidney function normal."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-19a",
+     "kind": "outside_records",
+     "start": "2025-12-19T10:20",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Cardiac rehabilitation discharge summary",
+       "author": "cardiac rehabilitation",
+       "date": "2025-12-19T10:20",
+       "body": "OUTPATIENT CARDIAC REHABILITATION - PROGRAM COMPLETION\nPatient: Charles Leblanc, DOB 1960-04-22\nReferral diagnosis: CABG x3, 2025-09-09\nProgram: 36 monitored sessions, 2025-09-30 to 2025-12-17. Attended 34.\n\nExercise: treadmill, recumbent bike and arm ergometer. No angina, arrhythmia or abnormal blood pressure response during sessions. Treadmill work limited at times by right knee pain; shifted to the bike.\nEducation completed: heart-healthy eating, medication review, diabetes and exercise, stress management.\nMedications at discharge from program: aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 50 mg, lisinopril 20 mg, metformin 1000 mg BID.\n\nRecommendation: continue 150 minutes a week of moderate exercise; maintenance program available.\n\nCardiac rehabilitation staff"
+      }
+     ]
+    },
+    {
+     "id": "2026-01-13a",
+     "kind": "outside_records",
+     "start": "2026-01-13T09:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2026-01-13T09:30",
+       "body": "Optometry - diabetic eye exam\nDate of service: 2025-12-02 (exam delayed from fall by patient's surgery)\nDilated fundus exam both eyes: no diabetic retinopathy, no macular edema. Optic nerves normal.\nImpression: no retinopathy. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "portal_message",
+     "start": "2026-03-10T20:14",
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "done",
+       "date": "2026-03-10T20:14"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Knee surgery",
+       "author": "patient",
+       "date": "2026-03-10T20:14",
+       "body": "Wanted you to know I saw the orthopedic surgeon on February 19th. He looked at the x-ray and said the right knee needs to be replaced. He wants a letter from cardiology and from you before, and they have me down for July 31. Do you need anything from me?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Knee surgery",
+       "author": "PCP",
+       "date": "2026-03-11T08:30",
+       "body": "Thanks for the update - their office hasn't sent us a note yet, so this helps. Your physical is already booked for April 14. We'll plan a separate pre-op visit in June, within 30 days or so of surgery, and I'll send my letter after that. Let cardiology know too."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request - orthopedics",
+       "author": "front desk",
+       "date": "2026-03-11T09:15",
+       "body": "Faxed request to orthopedic surgery for consult note of 2/19/26."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-14a",
+     "kind": "annual_physical",
+     "start": "2026-04-14T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 100.6,
+      "labs": {
+       "Low Density Lipoprotein": 94
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-04-14T08:45",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-04-14T08:45",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 94
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Total Cholesterol"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-04-14T08:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 65+",
+       "performed": "2026-04-14T08:30"
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us-2026",
+       "action": "placed",
+       "order": "Abdominal ultrasound",
+       "category": "imaging",
+       "reason": "AAA screening, male former smoker age 65-75"
+      },
+      {
+       "id": "ldct-2026",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual lung screening"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2026-04-14T08:30",
+       "body": "65 (66 next week). Annual exam, fasting.\n\nSeven months out from bypass. Finished cardiac rehab in December and kept going at the rehab gym twice a week until the knee made the treadmill too painful; now uses the bike. No angina, no dyspnea on stairs. Knee surgery planned for July 31 with orthopedics; consult note still not received. Weight creeping back up. Mood good, PHQ-2 0. No falls.\n\nMeds: aspirin 81, metformin 1000 BID, lisinopril 20, atorvastatin 40, metoprolol succinate 50, acetaminophen prn. NKDA.\n\nExam: well. Eyes, ears, mouth normal. No carotid bruit. Healed sternotomy. Heart regular, no murmur or gallop. Lungs clear. Abdomen soft, no pulsatile mass. No edema. Feet: diminished pedal pulses as always, sensation intact, skin fine. Right knee as in December.\n\nPlan:\n- Fasting CMP, lipids, urine albumin today. A1c with the pre-op labs in June.\n- One-time abdominal aortic ultrasound (male, former smoker, 65) - ordered.\n- Lung CT skipped last year during the heart workup; ordered now. Still within 15 years of quitting.\n- Colonoscopy due 2029. Vaccines current; flu/COVID in fall.\n- Pre-op visit in June for the knee.\nAll meds continued."
+      },
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2026-04-15T10:20",
+       "body": "LDL 94. CMP normal. Urine albumin normal. Portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-05a",
+     "kind": "imaging",
+     "start": "2026-05-05T14:20",
+     "orders": [
+      {
+       "id": "aaa-us-2026",
+       "action": "done",
+       "date": "2026-05-05T14:20"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2026-05-05T14:20",
+       "text": "Limited study for abdominal aortic aneurysm screening. The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximal outer-to-outer diameter 2.0 cm in the infrarenal segment. No aneurysm. Common iliac arteries normal in caliber.",
+       "conclusion": "Normal-caliber abdominal aorta, 2.0 cm. No abdominal aortic aneurysm."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "AAA screen",
+       "author": "PCP",
+       "date": "2026-05-06T08:05",
+       "body": "Aorta 2.0 cm, normal. No further screening needed."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-12a",
+     "kind": "imaging",
+     "start": "2026-05-12T10:30",
+     "orders": [
+      {
+       "id": "ldct-2026",
+       "action": "done",
+       "date": "2026-05-12T10:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2026-05-12T10:30",
+       "text": "Annual lung cancer screening; most recent prior 2024-08-20. Interval median sternotomy with intact wires and bypass graft clips. No pulmonary nodule. Lungs clear. No effusion. Coronary calcification. No adenopathy.",
+       "conclusion": "Lung-RADS 1. Negative. Post-surgical changes of CABG. Continue annual screening."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 2026",
+       "author": "PCP",
+       "date": "2026-05-13T07:50",
+       "body": "Negative, Lung-RADS 1. Expected sternotomy changes. Annual."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-10a",
+     "kind": "outside_records",
+     "start": "2026-06-10T13:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Cardiology pre-operative clearance letter",
+       "author": "cardiology",
+       "date": "2026-06-10T13:40",
+       "body": "To the orthopedic surgeon and primary care physician:\n\nRe: Charles Leblanc, DOB 1960-04-22. Planned right total knee arthroplasty, 2026-07-31.\n\nMr. Leblanc is nine months out from three-vessel bypass surgery with an uneventful recovery. He has had no angina since the operation, and his ejection fraction improved to 50% on the November echo. Functional capacity is limited by the knee rather than by his heart.\n\nFrom a cardiac standpoint he is at acceptable risk for the planned procedure. Please continue aspirin, atorvastatin and metoprolol through the peri-operative period. No further cardiac testing is needed before surgery.\n\nCardiology attending"
+      }
+     ]
+    },
+    {
+     "id": "2026-06-19a",
+     "kind": "office_visit",
+     "start": "2026-06-19T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Pre-operative evaluation for right total knee arthroplasty",
+     "state": {
+      "weight_kg": 101.4,
+      "bp": [
+       136,
+       84
+      ],
+      "labs": {
+       "Hemoglobin": 13.6,
+       "Hemoglobin A1c": 7.2,
+       "Glucose": 140
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-06-19T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 13.6
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-06-19T10:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-06-19T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2026-06-19T10:20",
+       "text": "Sinus rhythm, rate 74. Normal axis. Normal intervals. No acute ST-T changes. No Q waves.",
+       "conclusion": "Normal sinus rhythm."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-06-19T10:00"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2026-06-19T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Pre-operative Evaluation",
+       "author": "PCP",
+       "date": "2026-06-19T10:00",
+       "body": "Pre-op H&P for elective right total knee arthroplasty, 7/31/26, orthopedic surgery.\n\nHPI: 66M with severe right knee OA, failed conservative care (acetaminophen, activity changes, home exercise). CAD s/p MI with stent 2016 and CABG x3 9/2025, EF improved to 50%. No angina since bypass; can climb a flight of stairs without chest symptoms, limited only by the knee. No orthopnea, no palpitations, no syncope. No bleeding problems besides easy bruising on aspirin. No prior problems with anesthesia during the bypass. Cardiology clearance letter 6/10 on file.\n\nPMH: DM2, HTN, hyperlipidemia, CAD/old MI/stent, s/p CABG, PAD, obesity, R knee OA.\nMeds: aspirin 81 daily, metformin 1000 BID, lisinopril 20 daily, atorvastatin 40 daily, metoprolol succinate 50 daily, acetaminophen prn. NKDA.\nSH: former smoker, quit 2013. No alcohol.\n\nExam: vitals as charted. Airway: good mouth opening, full neck motion. Heart regular, no murmur. Lungs clear. Healed sternotomy and right leg incisions. No edema. Right knee: crepitus, no effusion, skin intact without breaks or infection.\n\nData: ECG today sinus rhythm, no acute changes. CBC, BMP, A1c drawn.\n\nAssessment: acceptable risk for planned surgery from a medical standpoint; cardiac risk addressed by cardiology.\nRecommendations:\n- Continue aspirin, atorvastatin and metoprolol, including the morning of surgery, per cardiology.\n- Hold metformin and lisinopril the morning of surgery; resume when eating and drinking.\n- Glucose monitoring peri-operatively.\n- VTE prophylaxis and antibiotic prophylaxis per the surgical team.\nWill fax this note and labs to orthopedics once results are back.\nFollow up in September after recovery."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-23a",
+     "kind": "telephone",
+     "start": "2026-06-23T11:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pre-op labs and clearance",
+       "author": "RN",
+       "date": "2026-06-23T11:10",
+       "body": "Called pt with pre-op results per PCP: hemoglobin 13.6, back to normal; A1c 7.2; kidneys and potassium normal. Clearance note, ECG and labs faxed to orthopedic surgery, confirmation received. Pt aware to hold metformin and lisinopril the morning of 7/31. Post-op follow-up booked 9/15."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-31a",
+     "kind": "procedure_visit",
+     "start": "2026-07-31T07:30",
+     "end": "2026-08-02T12:00",
+     "service": "Orthopedic Surgery",
+     "reason": "Elective right total knee arthroplasty",
+     "vitals": {
+      "bp": [
+       135,
+       85
+      ],
+      "hr": 78,
+      "weight_kg": 101.4
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-24T08:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-07-24T08:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose",
+         "value": 96
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Total knee arthroplasty",
+       "performed": "2026-07-31T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Operative Note",
+       "title": "Operative report - right total knee arthroplasty",
+       "author": "orthopedic surgery",
+       "date": "2026-08-18T14:30",
+       "body": "OPERATIVE REPORT - ORTHOPEDIC SURGERY\nDate of surgery: 2026-07-31\nPatient: Charles Leblanc, 66, DOB 1960-04-22\nAllergies: no known drug allergies\n\nPre-operative diagnosis: severe primary osteoarthritis, right knee.\nPost-operative diagnosis: same.\nProcedure: right total knee arthroplasty, cemented.\n\nPre-operative assessment: BP 135/85, HR 78, BMI 32. Right knee without erythema, warmth or any sign of infection; marked joint space narrowing on imaging and crepitus through range of motion. Pre-admission labs within normal limits. Medical and cardiology clearance on file. Home medications: aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 50 mg, metformin, lisinopril.\n\nAntibiotic prophylaxis: cefazolin 2 g IV given within 60 minutes before incision for surgical site infection prophylaxis.\nAnesthesia: spinal with sedation; adductor canal block.\n\nDescription: Tourniquet applied. Medial parapatellar approach. Advanced medial compartment wear with full-thickness cartilage loss and osteophytes confirmed. Standard femoral and tibial cuts, ligament balancing, cemented femoral and tibial components with patellar resurfacing. Wound irrigated and closed in layers. Sterile dressing. Estimated blood loss 150 mL. No complications.\n\nPost-operative course: walked with physical therapy on the day of surgery. Discharged home 2026-08-02 with home physical therapy.\nDischarge plan: weight bearing as tolerated; aspirin 81 mg twice daily for 4 weeks for clot prevention, then back to once daily; oxycodone-acetaminophen 5/325 one tablet every 6 hours as needed for severe pain; ice and elevation. Staple removal and follow-up in clinic at 2 weeks.\n\nOrthopedic surgery attending"
+      },
+      {
+       "type": "Result Note",
+       "title": "Op note filed",
+       "author": "PCP",
+       "date": "2026-08-19T08:40",
+       "body": "TKA op note received and filed. No discharge summary sent. Will review at the September visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-03a",
+     "kind": "pharmacy",
+     "start": "2026-08-03T16:25",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Pharmacy fill notification",
+       "author": "MA",
+       "date": "2026-08-03T16:25",
+       "body": "Fill history alert from pharmacy benefit: oxycodone-acetaminophen 5/325, #20, filled 8/2/26, prescriber orthopedic surgery. FYI to PCP. Pt is post right TKA per our records; not on our med list as it's from the surgeon."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "portal_message",
+     "start": "2026-08-11T09:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Home from knee surgery",
+       "author": "patient",
+       "date": "2026-08-11T09:55",
+       "body": "Knee done July 31, home August 2. Physical therapist comes to the house three times a week. Sore but I'm on the walker less every day. Using the pain pills mostly at night now, and the surgeon has me on the aspirin twice a day for a month. Sugars ok. See you in September."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Home from knee surgery",
+       "author": "RN",
+       "date": "2026-08-11T13:30",
+       "body": "Great to hear, Charles. Keep up the exercises. Call the surgeon's office for any fever, redness or drainage at the incision, or calf swelling or pain. Your September 15 visit is on the books."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-15a",
+     "kind": "office_visit",
+     "start": "2026-09-15T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-operative and diabetes follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

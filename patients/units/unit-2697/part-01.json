@@ -1,0 +1,235 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002697",
+      "given": "Bernice",
+      "family": "Merrill",
+      "birth_date": "1965-11-08",
+      "address_line": "27 Bardwell Hollow Road",
+      "phone": "+1-603-555-0144",
+      "email": "bernice.merrill@example.test",
+      "marital_status": "single",
+      "summary": "Librarian with controlled hypertension, obesity, bilateral knee osteoarthritis and reflux with a hiatal hernia who develops an estrogen-secreting adult granulosa cell tumor of the ovary in 2023, recurs twice despite chemotherapy, and has a progestin-treated grade 1 endometrial cancer before definitive surgery in April 2026. Primary care follows her blood pressure, joints and prevention around the oncology care.",
+      "events": [
+        {
+          "id": "2019-09-24a",
+          "kind": "telephone",
+          "start": "2019-09-24T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2019-09-24T10:52", "body": "Caller would like to establish with the practice. Has been with another primary care office for years, says she wants a doctor she can text when something comes up instead of waiting three weeks for a callback. Membership explained, agreement emailed. Records release faxed to her previous office. New patient visit booked 10/8 at 8:30, asked to bring medication bottles and any recent lab printouts."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "establish_care",
+          "start": "2019-10-08T08:30",
+          "end": "2019-10-08T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2012-06-01", "note": "on two agents, controlled"},
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2010-01-01"},
+            {"label": "Asymptomatic menopausal state", "icd10": "Z78.0", "action": "diagnosed", "onset": "2017-05-01", "note": "menopause at 51, never on HRT"}
+          ],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [128, 80], "weight_kg": 85.5, "height_cm": 163.0, "labs": {"Hemoglobin A1c": 5.3, "Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-10-08T09:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-10-08T09:35", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-10-08T09:35", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2019-10-08T09:35", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink alcohol"},
+            {"item": "Occupation", "value": "Librarian"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-10-08T09:25"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-08T09:26"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-10-08T08:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-10-08T11:10", "body": "New patient, 53F, transferring from a group practice where she'd seen a different covering clinician nearly every visit. Main standing issue is blood pressure, on HCTZ 25 mg qAM and amlodipine 5 mg for roughly seven years. Home cuff numbers she brought in a notebook run mostly 120s-130s over high 70s-low 80s. No headaches, chest discomfort, dyspnea, palpitations or ankle swelling. Weight has been a long-running frustration; tried a commercial program twice, lost and regained.\n\nGYN: menopause 2017 at 51, a year or so of hot flashes that settled on their own, never took hormones. No bleeding since. Never pregnant. No gyn surgery, no surgery of any kind.\nPMH: HTN, obesity. PSH: none.\nMeds: HCTZ 25 daily, amlodipine 5 daily. No supplements.\nAllergies: no known drug allergies.\nFH: nobody in the family with cancer, heart disease or blood clots that she knows of.\nSH: reference librarian at a public library, a lot of time on her feet and up and down at the stacks. Has never smoked. Doesn't drink at all.\n\nExam: well appearing. BP and vitals per flowsheet. Neck supple, no thyromegaly. Heart RRR, no murmur. Lungs clear. Abdomen obese, soft, nontender. Legs without edema. Skin unremarkable.\n\nA/P\n1. Hypertension - controlled on current regimen. Continue both. CMP for K and creatinine on the thiazide.\n2. Obesity, BMI ~32 - talked about realistic goals, walking most days. Will revisit.\n3. Postmenopausal, no HRT, no bleeding. Asked her to call for any spotting at all.\n4. Health maintenance - lipids, A1c, TSH, CBC; one-time hep C and HIV screen (she agreed). Tdap and flu today. Prior office is sending colonoscopy, Pap and mammogram records. PHQ-2 negative.\nRTC 6 mo or sooner."}
+          ]
+        },
+        {
+          "id": "2019-10-10a",
+          "kind": "portal_message",
+          "start": "2019-10-10T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-10-10T16:05", "body": "Hi Bernice, everything from Tuesday came back fine. Kidney function and potassium are right where they should be on the water pill, blood count and thyroid normal, A1c in the normal range, cholesterol acceptable for now. Hepatitis C and HIV screens negative. Nothing to change. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2019-10-21a",
+          "kind": "outside_records",
+          "start": "2019-10-21T13:20",
+          "reason": "prior primary care records",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "MA", "date": "2019-10-21T13:20", "body": "41 pages received from previous PCP office and filed to media. Abstracted for the chart:\n- Screening colonoscopy 05/2018: normal to the cecum, good prep, no polyps. Repeat in 10 years.\n- Cervical cytology with HPV co-test 03/2018: negative for intraepithelial lesion or malignancy, HPV not detected.\n- Screening mammogram 02/2019: BI-RADS 1, negative.\n- Medication list matches ours (HCTZ 25, amlodipine 5). No allergies listed.\n- Office BPs 2016-2019 mostly 120s-130s/70s-80s.\nHealth maintenance updated. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2020-02-12a",
+          "kind": "nurse_visit",
+          "start": "2020-02-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine",
+          "measure": ["bp", "hr"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-02-12T15:38"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-02-12T15:38"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Shingrix #1", "author": "RN", "date": "2020-02-12T15:50", "body": "Here for first recombinant zoster dose. No prior shingles vaccine, no fever today. Given IM L deltoid, VIS reviewed. Warned arm may be sore and she may feel run down for a day. Observed 15 min, fine. Dose 2 due in 2-6 months, she will book at the desk. BP rechecked per flowsheet."}
+          ]
+        },
+        {
+          "id": "2020-03-05a",
+          "kind": "imaging",
+          "start": "2020-03-05T09:10",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2020-03-05T09:10", "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison 02/2019. The breasts are scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications. Skin and nipples unremarkable.", "conclusion": "BI-RADS 1: Negative. Routine annual screening."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening Mammogram", "author": "radiology", "date": "2020-03-06T08:00", "body": "Outside breast imaging center report received and filed. BI-RADS 1, negative. Annual screening recommended."}
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-14T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit - Hypertension", "author": "PCP", "date": "2020-04-14T11:30", "body": "Converted to video given the shutdown. She is home; library is closed and she is doing some remote cataloguing. Home BP log for the past 3 weeks, morning readings 118-134 / 72-84. Taking both pills every day, no dizziness, no swelling. Walking the neighborhood loop daily now that she isn't commuting. Feels fine otherwise.\n\nA/P: HTN at goal on HCTZ 25 + amlodipine 5. No change. Refills sent as 90-day supplies. Second Shingrix when we're doing in-person shots again. Fall physical."}
+          ]
+        },
+        {
+          "id": "2020-05-27a",
+          "kind": "pharmacy",
+          "start": "2020-05-27T09:15",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill request", "author": "MA", "date": "2020-05-27T09:15", "body": "Pharmacy fax requesting 90-day supplies of hydrochlorothiazide 25 mg and amlodipine 5 mg with 3 refills. Last BP visit 4/14, at goal. Approved per protocol, sent."}
+          ]
+        },
+        {
+          "id": "2020-06-23a",
+          "kind": "nurse_visit",
+          "start": "2020-06-23T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "second shingles vaccine",
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-06-23T14:10"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-06-23T14:10"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Shingrix #2", "author": "RN", "date": "2020-06-23T14:25", "body": "Masked, screened at door. Second recombinant zoster dose given IM R deltoid. Said the first one gave her a sore arm and an early night, nothing more. Series complete, entered in immunization record. BP and weight per flowsheet, BP in range."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "annual_physical",
+          "start": "2020-10-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-10-20T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2020-10-20T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2020-10-20T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-20T08:40"}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2020-10-20T08:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-10-20T10:05", "body": "Annual exam, 54F. Back at the library part time with limited hours. Feels well. Daily walks continued through the summer, weight about the same. Occasional stiffness getting up from a chair, nothing she wants worked up. No postmenopausal bleeding. No chest pain or breathlessness on hills.\n\nMeds: HCTZ 25, amlodipine 5. NKDA.\n\nExam: BP per flowsheet, at goal. HEENT normal. Thyroid not enlarged. Heart regular, no murmur. Lungs clear bilaterally. Breasts: no masses, no axillary nodes. Abdomen soft, obese, no organomegaly. Extremities without edema. Skin no concerning lesions.\n\nPlan:\n- HTN controlled, continue.\n- Labs: CMP, lipids, A1c.\n- Screening: colonoscopy 2018 normal, next 2028. Mammogram March, normal, next spring. Pap/HPV 2018 negative, next due 2023.\n- Vaccines: flu today. Shingrix complete. Tdap 2019.\n- PHQ-2 0.\nFollow-up spring for BP."}
+          ]
+        },
+        {
+          "id": "2021-03-26a",
+          "kind": "portal_message",
+          "start": "2021-03-26T19:42",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-04T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-25T13:20"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "COVID shots", "author": "patient", "date": "2021-03-26T19:42", "body": "Got my second Pfizer shot yesterday at the pharmacy clinic, the first was March 4th. Library staff were eligible this round. Sending a photo of my card so you have it. Arm is sore, otherwise fine."},
+            {"type": "Patient Message", "title": "RE: COVID shots", "author": "MA", "date": "2021-03-29T09:10", "body": "Thanks Bernice, both doses entered in your chart from the card photo."}
+          ]
+        },
+        {
+          "id": "2021-04-07a",
+          "kind": "imaging",
+          "start": "2021-04-07T10:30",
+          "reason": "screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2021-04-07T10:30", "text": "Bilateral screening mammogram with tomosynthesis compared with 03/2020 and 02/2019. Scattered fibroglandular tissue. No mass, distortion or suspicious calcification in either breast.", "conclusion": "BI-RADS 1: Negative. Annual screening."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Screening Mammogram", "author": "radiology", "date": "2021-04-08T08:00", "body": "Breast imaging report received. Negative, BI-RADS 1. Next screening in one year."}
+          ]
+        },
+        {
+          "id": "2021-09-06a",
+          "kind": "office_visit",
+          "start": "2021-09-06T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "bilateral knee pain",
+          "conditions": [
+            {"label": "Bilateral primary osteoarthritis of knee", "action": "diagnosed", "onset": "2020-09-01"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 1 to 2 tablets by mouth up to three times daily as needed for knee pain. Max 3,000 mg per day.", "dose": {"value": 1000, "unit": "mg"}, "frequency": "TID PRN", "route": "Oral", "course": "chronic", "reason": "knee osteoarthritis"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "state": {"weight_kg": 85.0},
+          "reports": [
+            {"study": "Knee X-ray", "performed": "2021-09-06T11:20", "text": "Bilateral knees, standing AP, lateral and sunrise views. No fracture or dislocation. Joint space narrowing in both knees, most apparent medially, with subchondral sclerosis and marginal osteophytes. No joint effusion. Soft tissues unremarkable.", "conclusion": "Degenerative changes of both knees consistent with osteoarthritis."}
+          ],
+          "orders": [
+            {"id": "knee-xr-2021", "action": "placed", "order": "Knee X-ray, bilateral", "category": "imaging", "reason": "knee pain"},
+            {"id": "knee-xr-2021", "action": "done", "date": "2021-09-06T11:20"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-09-06T10:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Knee Pain", "author": "PCP", "date": "2021-09-06T12:40", "body": "S: Both knees have been bothering her for about a year and are clearly getting worse. Stiffest first thing in the morning and when she stands after a long stretch at the reference desk; loosens up once she has been moving a while. No fall, twist or injury she can recall. No locking, no giving way. Nothing tried yet beyond a heating pad. Opened the office today, holiday hours, because she has the day off.\n\nMeds: HCTZ 25, amlodipine 5. NKDA.\n\nO: BMI 32 (wt per flowsheet). Knees: neither red nor warm. Bony enlargement palpable at both joints, tender along the joint lines bilaterally. No effusion on either side. Full flexion and extension but painful at the end of range both ways. Ligaments stable. Gait slightly stiff. Hips move freely without pain.\n\nStanding knee films done downstairs today: bilateral joint space loss with sclerosis under the joint surfaces and osteophytes. Read as OA.\n\nA/P: Bilateral knee osteoarthritis.\n- Acetaminophen 500 mg, 1-2 tabs up to TID as needed. Would rather avoid regular ibuprofen/naproxen with her blood pressure.\n- Quad strengthening handout, low-impact activity (pool, bike), weight loss would take load off the joints - every pound counts several times over at the knee.\n- Ortho or PT if not improving.\nBP fine today."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "annual_physical",
+          "start": "2021-10-19T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-10-19T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-10-19T09:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-10-19T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-10-19T09:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T08:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-19T08:56"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-10-19T08:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-10-19T10:30", "body": "55F, yearly exam. Knees: acetaminophen most mornings takes the edge off, still stiff after sitting. Started water aerobics once a week. BP checks at home fine. No bleeding. No new concerns.\n\nMeds: HCTZ 25 daily, amlodipine 5 daily, acetaminophen PRN. NKDA.\n\nExam: Vitals per flowsheet. Pleasant, well. Thyroid normal. Heart regular, no murmurs. Lungs clear. Breasts without mass, nodes negative. Abdomen soft, nontender. Knees with bony enlargement and some crepitus, no effusion. No edema.\n\nPlan: HTN controlled - continue. OA - continue current approach. Labs CMP/CBC/lipids/A1c. Flu shot and COVID booster today (L and R arm). Mammogram due April. Colonoscopy 2028. Pap/HPV due 2023. Follow up in 6 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

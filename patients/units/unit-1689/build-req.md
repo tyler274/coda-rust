@@ -190,3 +190,8 @@ Gestational ages use the final dating (R8): LMP 2024-12-24, redated by ultrasoun
 - Weight about 66 kg at joining (height 165 cm), higher postpartum and drifting back.
 - Booked follow-up 2026-09-15.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001689 on 2026-01-13. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

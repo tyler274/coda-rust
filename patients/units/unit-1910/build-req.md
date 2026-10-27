@@ -116,3 +116,8 @@ temperature probe at the ED; no CK. Nobody remarks on these.
   notes, scheduling, a cancelled physical slot (2024-09-11), a no-show nurse visit
   for a flu shot (2024-10-09), RN call after the ED record arrives.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001910 on 2025-09-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

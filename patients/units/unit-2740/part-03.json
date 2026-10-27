@@ -9,14 +9,39 @@
           "start": "2025-03-11T14:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Abdominal pain and change in bowel habits",
-          "state": {"weight_kg": 64.6},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-03-11T14:00"}],
+          "state": {
+            "weight_kg": 64.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-03-11T14:00"
+            }
+          ],
           "orders": [
-            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "change in bowel habit with weight loss, father with colon cancer"}
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "change in bowel habit with weight loss, father with colon cancer"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-03-11T14:00", "body": "CC: belly cramps, bowels off.\n\nHPI: 55F. About 2 months of crampy lower abdominal pain that lets up after she has a BM. Swings between a few days of constipation and then loose stools. Lately the cramps have been waking her at night, which is new. Not hungry - a lot of pressure at work this quarter, she's skipping lunch. Scale at home is down several pounds and it's confirmed here. No travel, no antibiotics, no blood she has noticed, no vomiting.\n\nMeds unchanged: levothyroxine, MTX 15/wk, folic acid, pred 5, clobetasol twice weekly.\n\nExam: vitals and weight noted, down from 68 kg. Abdomen soft, mildly tender in both lower quadrants without guarding, no masses, bowel sounds normal.\n\nA/P\nAltered bowel habit with nocturnal symptoms and weight loss in a 55yo whose father had colon cancer; last colonoscopy 2016. Not something to watch. Urgent GI referral for evaluation and colonoscopy; they'll do the workup labs. If pain becomes severe, fever, or bleeding, call same day.\nRA/thyroid stable."}
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-03-11T14:00",
+              "body": "CC: belly cramps, bowels off.\n\nHPI: 55F. About 2 months of crampy lower abdominal pain that lets up after she has a BM. Swings between a few days of constipation and then loose stools. Lately the cramps have been waking her at night, which is new. Not hungry - a lot of pressure at work this quarter, she's skipping lunch. Scale at home is down several pounds and it's confirmed here. No travel, no antibiotics, no blood she has noticed, no vomiting.\n\nMeds unchanged: levothyroxine, MTX 15/wk, folic acid, pred 5, clobetasol twice weekly.\n\nExam: vitals and weight noted, down from 68 kg. Abdomen soft, mildly tender in both lower quadrants without guarding, no masses, bowel sounds normal.\n\nA/P\nAltered bowel habit with nocturnal symptoms and weight loss in a 55yo whose father had colon cancer; last colonoscopy 2016. Not something to watch. Urgent GI referral for evaluation and colonoscopy; they'll do the workup labs. If pain becomes severe, fever, or bleeding, call same day.\nRA/thyroid stable."
+            }
           ]
         },
         {
@@ -25,29 +50,88 @@
           "start": "2025-04-14T09:30",
           "service": "Gastroenterology",
           "reason": "Abdominal pain, altered bowel habit, weight loss",
-          "state": {"weight_kg": 63.5},
-          "vitals": {"weight_kg": 63.5},
-          "measure": ["weight_kg"],
+          "state": {
+            "weight_kg": 63.5
+          },
+          "vitals": {
+            "weight_kg": 63.5
+          },
+          "measure": [
+            "weight_kg"
+          ],
           "conditions": [
-            {"label": "Iron deficiency anemia", "action": "diagnosed"}
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed"
+            }
           ],
           "medications": [
-            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Iron deficiency anemia"}
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
           ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-04-14T10:15", "results": [
-              {"test": "Hemoglobin", "value": 10.8},
-              {"test": "Mean Corpuscular Volume", "value": 74}
-            ]},
-            {"panel": null, "collected": "2025-04-14T10:15", "results": [
-              {"test": "Ferritin", "loinc": "2276-4", "unit": "ng/mL", "value": 15},
-              {"test": "C Reactive Protein", "value": 8, "unit": "mg/L"},
-              {"test": "Tissue Transglutaminase IgA", "text": "Negative"}
-            ]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-14T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T10:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "loinc": "2276-4",
+                  "unit": "ng/mL",
+                  "value": 15
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8,
+                  "unit": "mg/L"
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Negative"
+                }
+              ]
+            }
           ],
-          "orders": [{"id": "gi-referral", "action": "done", "date": "2025-04-14T09:30"}],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2025-04-14T09:30"
+            }
+          ],
           "documents": [
-            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2025-04-22T08:15", "body": "GI consultation, 04/14/2025.\n\n55-year-old with hypothyroidism and RA on methotrexate and prednisone, also followed for restless legs and lichen sclerosus. Two months of lower abdominal cramping relieved by defecation, mixed constipation and diarrhea, now worse at night, and ten pounds of weight loss over the same period that she puts down to poor appetite under work stress. No travel or recent antibiotics. Father with colorectal cancer at 65. Last colonoscopy 2016, normal.\n\nExam: abdomen soft, mild diffuse tenderness, no rebound or guarding. Rectal exam unremarkable.\n\nLabs: hemoglobin 10.8 g/dL, MCV 74 fL, ferritin 15 ng/mL, CRP 8 mg/L, tissue transglutaminase IgA negative.\n\nAssessment: microcytic iron deficiency anemia with altered bowel habit and weight loss; celiac serology negative. A colonic source needs to be excluded.\n\nPlan: colonoscopy, scheduled 05/08. Ferrous sulfate 325 mg daily. We will send the report.\n\nOutpatient Gastroenterology"}
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2025-04-22T08:15",
+              "body": "GI consultation, 04/14/2025.\n\n55-year-old with hypothyroidism and RA on methotrexate and prednisone, also followed for restless legs and lichen sclerosus. Two months of lower abdominal cramping relieved by defecation, mixed constipation and diarrhea, now worse at night, and ten pounds of weight loss over the same period that she puts down to poor appetite under work stress. No travel or recent antibiotics. Father with colorectal cancer at 65. Last colonoscopy 2016, normal.\n\nExam: abdomen soft, mild diffuse tenderness, no rebound or guarding. Rectal exam unremarkable.\n\nLabs: hemoglobin 10.8 g/dL, MCV 74 fL, ferritin 15 ng/mL, CRP 8 mg/L, tissue transglutaminase IgA negative.\n\nAssessment: microcytic iron deficiency anemia with altered bowel habit and weight loss; celiac serology negative. A colonic source needs to be excluded.\n\nPlan: colonoscopy, scheduled 05/08. Ferrous sulfate 325 mg daily. We will send the report.\n\nOutpatient Gastroenterology"
+            }
           ]
         },
         {
@@ -58,14 +142,36 @@
           "service": "Gastroenterology",
           "reason": "Colonoscopy",
           "conditions": [
-            {"label": "Benign neoplasm of ascending colon", "icd10": "D12.2", "action": "diagnosed", "note": "22 mm tubulovillous adenoma with high-grade dysplasia, resected by EMR"}
+            {
+              "label": "Benign neoplasm of ascending colon",
+              "icd10": "D12.2",
+              "action": "diagnosed",
+              "note": "22 mm tubulovillous adenoma with high-grade dysplasia, resected by EMR"
+            }
           ],
-          "procedures": [{"procedure": "Colonoscopy with snare polypectomy", "performed": "2025-05-08T08:10"}],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with snare polypectomy",
+              "performed": "2025-05-08T08:10"
+            }
+          ],
           "reports": [
-            {"study": "Surgical pathology report", "performed": "2025-05-08T08:30", "issued": "2025-05-13T16:00", "text": "Specimen: ascending colon polyp, endoscopic mucosal resection, piecemeal, multiple fragments up to 1.4 cm in aggregate 2.3 cm.\n\nMicroscopic: adenomatous epithelium with tubular and villous architecture. Foci of high-grade dysplasia. No invasive carcinoma identified in the material examined.", "conclusion": "Tubulovillous adenoma with high-grade dysplasia. Negative for invasive carcinoma."}
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-05-08T08:30",
+              "issued": "2025-05-13T16:00",
+              "text": "Specimen: ascending colon polyp, endoscopic mucosal resection, piecemeal, multiple fragments up to 1.4 cm in aggregate 2.3 cm.\n\nMicroscopic: adenomatous epithelium with tubular and villous architecture. Foci of high-grade dysplasia. No invasive carcinoma identified in the material examined.",
+              "conclusion": "Tubulovillous adenoma with high-grade dysplasia. Negative for invasive carcinoma."
+            }
           ],
           "documents": [
-            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2025-05-20T09:00", "body": "Colonoscopy 05/08/2025. Indication: iron deficiency anemia, change in bowel habit, weight loss, family history of colorectal cancer.\n\nMonitored anesthesia care. Prep good. Cecum reached and identified by appendiceal orifice and ileocecal valve; terminal ileum not intubated. Withdrawal time 14 minutes.\n\nFindings: a 22 mm sessile polyp in the ascending colon, lifted with submucosal injection and removed by endoscopic mucosal resection in several pieces; defect margins inspected with no visible residual tissue; defect closed with 3 clips. The remainder of the colon was normal to the cecum. Retroflexion in the rectum unremarkable.\n\nImpression: large ascending colon polyp, resected. No other abnormality.\n\nRecommendations: await pathology. Continue iron. Because the resection was piecemeal, repeat colonoscopy in about 6 months to check the site. Copy to PCP."}
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2025-05-20T09:00",
+              "body": "Colonoscopy 05/08/2025. Indication: iron deficiency anemia, change in bowel habit, weight loss, family history of colorectal cancer.\n\nMonitored anesthesia care. Prep good. Cecum reached and identified by appendiceal orifice and ileocecal valve; terminal ileum not intubated. Withdrawal time 14 minutes.\n\nFindings: a 22 mm sessile polyp in the ascending colon, lifted with submucosal injection and removed by endoscopic mucosal resection in several pieces; defect margins inspected with no visible residual tissue; defect closed with 3 clips. The remainder of the colon was normal to the cecum. Retroflexion in the rectum unremarkable.\n\nImpression: large ascending colon polyp, resected. No other abnormality.\n\nRecommendations: await pathology. Continue iron. Because the resection was piecemeal, repeat colonoscopy in about 6 months to check the site. Copy to PCP."
+            }
           ]
         },
         {
@@ -74,11 +180,27 @@
           "start": "2025-05-20T15:30",
           "reason": "Colonoscopy results",
           "conditions": [
-            {"label": "Benign neoplasm of ascending colon", "icd10": "D12.2", "action": "resolved", "note": "resected 05/08/2025"},
-            {"label": "History of adenomatous colon polyps", "action": "diagnosed", "onset": "2025-05-08", "note": "advanced adenoma (tubulovillous, high-grade dysplasia), ascending colon"}
+            {
+              "label": "Benign neoplasm of ascending colon",
+              "icd10": "D12.2",
+              "action": "resolved",
+              "note": "resected 05/08/2025"
+            },
+            {
+              "label": "History of adenomatous colon polyps",
+              "action": "diagnosed",
+              "onset": "2025-05-08",
+              "note": "advanced adenoma (tubulovillous, high-grade dysplasia), ascending colon"
+            }
           ],
           "documents": [
-            {"type": "Telephone Encounter", "title": "Colonoscopy and pathology reviewed", "author": "PCP", "date": "2025-05-20T15:30", "body": "GI report and pathology arrived today. 22 mm ascending colon polyp removed piecemeal, tubulovillous adenoma with high-grade dysplasia, no cancer. Called her - relieved. This is the likely bleeding source for her iron deficiency. Reviewed: keep taking iron daily, GI wants a look at the site in ~6 months. Suggested she let her sister know, since with their dad's history this is worth mentioning to her own doctor. Recheck CBC and ferritin in July."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Colonoscopy and pathology reviewed",
+              "author": "PCP",
+              "date": "2025-05-20T15:30",
+              "body": "GI report and pathology arrived today. 22 mm ascending colon polyp removed piecemeal, tubulovillous adenoma with high-grade dysplasia, no cancer. Called her - relieved. This is the likely bleeding source for her iron deficiency. Reviewed: keep taking iron daily, GI wants a look at the site in ~6 months. Suggested she let her sister know, since with their dad's history this is worth mentioning to her own doctor. Recheck CBC and ferritin in July."
+            }
           ]
         },
         {
@@ -87,17 +209,69 @@
           "start": "2025-07-15T11:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Anemia follow-up",
-          "state": {"weight_kg": 66.0},
-          "vitals": {"weight_kg": 66.0},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-15T11:30", "results": [{"test": "Hemoglobin", "value": 11.6}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2025-07-15T11:30", "results": [{"test": "Ferritin", "loinc": "2276-4", "unit": "ng/mL", "value": 32}]}
+          "state": {
+            "weight_kg": 66.0
+          },
+          "vitals": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-07-15T11:00"}],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-15T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-15T11:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "loinc": "2276-4",
+                  "unit": "ng/mL",
+                  "value": 32
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-07-15T11:00"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-07-15T11:00", "body": "S: Bowels have been much more regular since the colonoscopy, the night cramping stopped. Appetite back, weight coming up. Taking iron daily with a little constipation she manages with fiber. Legs at night a bit better too.\n\nO: weight 66 kg (63.5 at GI in April). Abdomen soft, nontender.\n\nA/P\nIron deficiency anemia from colon adenoma, improving. CBC and ferritin today. Continue iron.\nAdvanced adenoma s/p EMR - surveillance colonoscopy due around November per GI.\nPhysical next month."},
-            {"type": "Result Note", "title": "CBC and ferritin", "author": "PCP", "date": "2025-07-16T09:40", "body": "Hgb 11.6, up from 10.8. Ferritin 32, up from 15. Moving the right way. Continue iron, recheck at a later visit."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-07-15T11:00",
+              "body": "S: Bowels have been much more regular since the colonoscopy, the night cramping stopped. Appetite back, weight coming up. Taking iron daily with a little constipation she manages with fiber. Legs at night a bit better too.\n\nO: weight 66 kg (63.5 at GI in April). Abdomen soft, nontender.\n\nA/P\nIron deficiency anemia from colon adenoma, improving. CBC and ferritin today. Continue iron.\nAdvanced adenoma s/p EMR - surveillance colonoscopy due around November per GI.\nPhysical next month."
+            },
+            {
+              "type": "Result Note",
+              "title": "CBC and ferritin",
+              "author": "PCP",
+              "date": "2025-07-16T09:40",
+              "body": "Hgb 11.6, up from 10.8. Ferritin 32, up from 15. Moving the right way. Continue iron, recheck at a later visit."
+            }
           ]
         },
         {
@@ -106,20 +280,84 @@
           "start": "2025-08-12T08:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Annual physical",
-          "state": {"labs": {"Thyroid Stimulating Hormone": 1.8}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
-          "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-12T09:10", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
-            {"panel": "Lipid Panel", "collected": "2025-08-12T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}]},
-            {"panel": null, "collected": "2025-08-12T09:10", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-08-12T08:30"}],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-12T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-12T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-12T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-08-12T08:30"
+            }
+          ],
           "orders": [
-            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine screening"}
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "routine screening"
+            }
           ],
           "documents": [
-            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-08-12T08:30", "body": "Annual exam, 55F.\n\nGood stretch. Bowels normal, eating well, weight stable at 66. No fevers or sweats, no new lumps. Joints ok on her RA regimen. Skin controlled on twice-weekly clobetasol. RLS occasional.\n\nMeds: levothyroxine 100 mcg, methotrexate 15 mg weekly, folic acid 1 mg, prednisone 5 mg, ferrous sulfate 325 mg daily, clobetasol 0.05% twice weekly.\n\nExam: well appearing. Neck supple, no lymphadenopathy, thyroid normal. Heart RRR. Lungs clear. Breasts no masses. Abdomen soft, nontender. Hands without active synovitis. No edema.\n\nA/P\n1. HM - mammogram ordered. Pap/HPV done 2024. Colonoscopy surveillance per GI in the fall. Flu/COVID in October. PHQ-2 0.\n2. Hypothyroidism - TSH.\n3. Iron deficiency - CBC deferred, rechecked last month; continue iron.\n4. RA, LS, RLS - stable, per specialists.\nCMP, lipids, TSH today."}
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-12T08:30",
+              "body": "Annual exam, 55F.\n\nGood stretch. Bowels normal, eating well, weight stable at 66. No fevers or sweats, no new lumps. Joints ok on her RA regimen. Skin controlled on twice-weekly clobetasol. RLS occasional.\n\nMeds: levothyroxine 100 mcg, methotrexate 15 mg weekly, folic acid 1 mg, prednisone 5 mg, ferrous sulfate 325 mg daily, clobetasol 0.05% twice weekly.\n\nExam: well appearing. Neck supple, no lymphadenopathy, thyroid normal. Heart RRR. Lungs clear. Breasts no masses. Abdomen soft, nontender. Hands without active synovitis. No edema.\n\nA/P\n1. HM - mammogram ordered. Pap/HPV done 2024. Colonoscopy surveillance per GI in the fall. Flu/COVID in October. PHQ-2 0.\n2. Hypothyroidism - TSH.\n3. Iron deficiency - CBC deferred, rechecked last month; continue iron.\n4. RA, LS, RLS - stable, per specialists.\nCMP, lipids, TSH today."
+            }
           ]
         },
         {
@@ -128,9 +366,20 @@
           "start": "2025-09-16T07:50",
           "reason": "Screening mammogram",
           "reports": [
-            {"study": "Screening mammogram, bilateral", "performed": "2025-09-16T07:50", "text": "Bilateral screening mammogram with tomosynthesis. Comparison 2021 through 2024. Heterogeneously dense breasts. No suspicious mass, calcification or architectural distortion. Unchanged.", "conclusion": "BI-RADS 1. Negative."}
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-09-16T07:50",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 2021 through 2024. Heterogeneously dense breasts. No suspicious mass, calcification or architectural distortion. Unchanged.",
+              "conclusion": "BI-RADS 1. Negative."
+            }
           ],
-          "orders": [{"id": "mammo-2025", "action": "done", "date": "2025-09-16T07:50"}]
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-09-16T07:50"
+            }
+          ]
         },
         {
           "id": "2025-10-06a",
@@ -139,12 +388,29 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Flu and COVID vaccines",
           "immunizations": [
-            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-06T16:44"},
-            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-06T16:46"}
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-06T16:44"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-06T16:46"
+            }
           ],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-06T16:44"}],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T16:44"
+            }
+          ],
           "documents": [
-            {"type": "Nurse Note", "title": "Immunizations", "author": "MA", "date": "2025-10-06T16:47", "body": "Flu vaccine R deltoid, 2025-26 COVID L deltoid. Screening questions negative. Left after 15 min without problems."}
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "author": "MA",
+              "date": "2025-10-06T16:47",
+              "body": "Flu vaccine R deltoid, 2025-26 COVID L deltoid. Screening questions negative. Left after 15 min without problems."
+            }
           ]
         },
         {
@@ -154,27 +420,83 @@
           "end": "2025-10-21T23:55",
           "service": "Emergency Medicine",
           "reason": "Night sweats, fevers, weight loss, neck mass",
-          "state": {"weight_kg": 61.5},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-21T19:20", "results": [
-              {"test": "Hemoglobin", "value": 11.2},
-              {"test": "White Blood Cells", "value": 7.0},
-              {"test": "Platelets", "value": 250}
-            ]},
-            {"panel": null, "collected": "2025-10-21T19:20", "results": [
-              {"test": "Lactate Dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 245},
-              {"test": "Erythrocyte Sedimentation Rate", "value": 50},
-              {"test": "Antinuclear Antibodies", "text": "Positive"},
-              {"test": "Rheumatoid Factor", "text": "Positive (elevated)"}
-            ]}
+          "state": {
+            "weight_kg": 61.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2025-10-21T18:40"}],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-21T19:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T19:20",
+              "results": [
+                {
+                  "test": "Lactate Dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 245
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 50
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive (elevated)"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-10-21T18:40"
+            }
+          ],
           "orders": [
-            {"id": "node-biopsy", "action": "placed", "order": "General surgery referral for excisional lymph node biopsy", "category": "referral", "to": "General Surgery", "reason": "left cervical lymphadenopathy with B symptoms"}
+            {
+              "id": "node-biopsy",
+              "action": "placed",
+              "order": "General surgery referral for excisional lymph node biopsy",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "left cervical lymphadenopathy with B symptoms"
+            }
           ],
           "documents": [
-            {"type": "ED Note", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2025-10-23T07:30", "body": "ED visit 10/21/2025, brief summary.\n\n55F with hypothyroidism, RA on methotrexate and prednisone, and a colon adenoma removed earlier this year. Two months of night sweats, low-grade fevers at home and about 10 lb of weight loss she was not trying for. Has felt a lump on the left side of her neck that has slowly grown. Home meds as listed by patient: levothyroxine, folic acid. NKDA.\n\nExam: firm, rubbery, non-tender 3 cm lymph node in the left cervical chain. No hepatosplenomegaly.\n\nLabs: Hgb 11.2, WBC 7,000, platelets 250,000, LDH 245, ESR 50, ANA positive, RF elevated.\n\nImpression: cervical lymphadenopathy with constitutional symptoms, concerning for lymphoma.\n\nDisposition: stable for discharge. Urgent outpatient excisional node biopsy arranged with general surgery. Return for high fevers, trouble swallowing or breathing. PCP notified."}
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-10-23T07:30",
+              "body": "ED visit 10/21/2025, brief summary.\n\n55F with hypothyroidism, RA on methotrexate and prednisone, and a colon adenoma removed earlier this year. Two months of night sweats, low-grade fevers at home and about 10 lb of weight loss she was not trying for. Has felt a lump on the left side of her neck that has slowly grown. Home meds as listed by patient: levothyroxine, folic acid. NKDA.\n\nExam: firm, rubbery, non-tender 3 cm lymph node in the left cervical chain. No hepatosplenomegaly.\n\nLabs: Hgb 11.2, WBC 7,000, platelets 250,000, LDH 245, ESR 50, ANA positive, RF elevated.\n\nImpression: cervical lymphadenopathy with constitutional symptoms, concerning for lymphoma.\n\nDisposition: stable for discharge. Urgent outpatient excisional node biopsy arranged with general surgery. Return for high fevers, trouble swallowing or breathing. PCP notified."
+            }
           ]
         },
         {
@@ -183,7 +505,13 @@
           "start": "2025-10-23T12:15",
           "reason": "ED follow-up call",
           "documents": [
-            {"type": "Telephone Encounter", "title": "Post-ED call", "author": "PCP", "date": "2025-10-23T12:15", "body": "Read the ED note and called her. Frightened but organized. Surgery has her for excisional biopsy of the left neck node on 10/30. Explained what the biopsy tells us and that I'll call as soon as pathology is back. She asked about her methotrexate - told her not to change anything until we have a diagnosis and rheum weighs in. Reminded her she can call or text me directly with questions."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "PCP",
+              "date": "2025-10-23T12:15",
+              "body": "Read the ED note and called her. Frightened but organized. Surgery has her for excisional biopsy of the left neck node on 10/30. Explained what the biopsy tells us and that I'll call as soon as pathology is back. She asked about her methotrexate - told her not to change anything until we have a diagnosis and rheum weighs in. Reminded her she can call or text me directly with questions."
+            }
           ]
         },
         {
@@ -194,14 +522,37 @@
           "service": "General Surgery",
           "reason": "Excisional biopsy, left cervical lymph node",
           "conditions": [
-            {"label": "Diffuse large B-cell lymphoma, lymph nodes of head, face, and neck", "icd10": "C83.31", "action": "diagnosed", "onset": "2025-08-15"}
+            {
+              "label": "Diffuse large B-cell lymphoma, lymph nodes of head, face, and neck",
+              "icd10": "C83.31",
+              "action": "diagnosed",
+              "onset": "2025-08-15"
+            }
           ],
           "reports": [
-            {"study": "Surgical pathology report", "performed": "2025-10-30T08:15", "issued": "2025-11-03T17:00", "text": "Specimen: lymph node, left neck, excisional biopsy. Received fresh, 3.2 x 2.4 x 1.9 cm.\n\nMicroscopic: nodal architecture is effaced by a diffuse proliferation of large lymphoid cells. Immunohistochemistry supports a B-cell lineage.", "conclusion": "Diffuse large B-cell lymphoma."}
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-30T08:15",
+              "issued": "2025-11-03T17:00",
+              "text": "Specimen: lymph node, left neck, excisional biopsy. Received fresh, 3.2 x 2.4 x 1.9 cm.\n\nMicroscopic: nodal architecture is effaced by a diffuse proliferation of large lymphoid cells. Immunohistochemistry supports a B-cell lineage.",
+              "conclusion": "Diffuse large B-cell lymphoma."
+            }
           ],
-          "orders": [{"id": "node-biopsy", "action": "done", "date": "2025-10-30T08:15"}],
+          "orders": [
+            {
+              "id": "node-biopsy",
+              "action": "done",
+              "date": "2025-10-30T08:15"
+            }
+          ],
           "documents": [
-            {"type": "Outside Records", "title": "Surgical pathology received", "author": "front desk", "date": "2025-11-04T08:20", "body": "Lymph node pathology from general surgery (biopsy 10/30) received by fax. Flagged urgent to PCP."}
+            {
+              "type": "Outside Records",
+              "title": "Surgical pathology received",
+              "author": "front desk",
+              "date": "2025-11-04T08:20",
+              "body": "Lymph node pathology from general surgery (biopsy 10/30) received by fax. Flagged urgent to PCP."
+            }
           ]
         },
         {
@@ -210,10 +561,23 @@
           "start": "2025-11-04T09:05",
           "reason": "Pathology results",
           "orders": [
-            {"id": "onc-referral", "action": "placed", "order": "Hematology/Oncology referral", "category": "referral", "to": "Hematology/Oncology", "reason": "diffuse large B-cell lymphoma"}
+            {
+              "id": "onc-referral",
+              "action": "placed",
+              "order": "Hematology/Oncology referral",
+              "category": "referral",
+              "to": "Hematology/Oncology",
+              "reason": "diffuse large B-cell lymphoma"
+            }
           ],
           "documents": [
-            {"type": "Telephone Encounter", "title": "Lymph node pathology discussed", "author": "PCP", "date": "2025-11-04T09:05", "body": "Called pt with her husband on speaker. Node shows diffuse large B-cell lymphoma. Talked through what that means in plain terms: an aggressive but often curable lymphoma, treatment is usually chemo-immunotherapy, staging scan comes first. Urgent heme/onc referral placed, they can see her Monday 11/10. Called rheumatology to let them know given methotrexate; they will coordinate with oncology on stopping it. She knows to reach me any time."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Lymph node pathology discussed",
+              "author": "PCP",
+              "date": "2025-11-04T09:05",
+              "body": "Called pt with her husband on speaker. Node shows diffuse large B-cell lymphoma. Talked through what that means in plain terms: an aggressive but often curable lymphoma, treatment is usually chemo-immunotherapy, staging scan comes first. Urgent heme/onc referral placed, they can see her Monday 11/10. Called rheumatology to let them know given methotrexate; they will coordinate with oncology on stopping it. She knows to reach me any time."
+            }
           ]
         },
         {
@@ -223,12 +587,32 @@
           "service": "Hematology/Oncology",
           "reason": "New diffuse large B-cell lymphoma",
           "medications": [
-            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "stop", "reason": "stopped at lymphoma diagnosis with rheumatology agreement"},
-            {"drug": "folic acid 1 MG Oral Tablet", "action": "stop", "reason": "stopped with methotrexate"}
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "stopped at lymphoma diagnosis with rheumatology agreement"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "stopped with methotrexate"
+            }
           ],
-          "orders": [{"id": "onc-referral", "action": "done", "date": "2025-11-10T13:00"}],
+          "orders": [
+            {
+              "id": "onc-referral",
+              "action": "done",
+              "date": "2025-11-10T13:00"
+            }
+          ],
           "documents": [
-            {"type": "Consult Note", "title": "Hematology/Oncology Consultation", "author": "oncology", "date": "2025-11-20T10:00", "body": "Hematology/Oncology new patient consultation, 11/10/2025.\n\nDiagnosis: diffuse large B-cell lymphoma, left cervical lymph node, excised 10/30/2025.\n\n55-year-old woman with seropositive RA treated with methotrexate and prednisone, hypothyroidism, and an advanced colon adenoma removed in May. Two months of night sweats, low-grade fevers and 10 lb weight loss with an enlarging left neck node.\n\nStaging: PET-CT 11/07/2025 shows FDG-avid lymph nodes in the left neck only, the largest 3.1 cm. No other nodal or extranodal disease; bone marrow and spleen not involved. Stage I with B symptoms.\n\nPre-treatment: hepatitis B surface antigen and core antibody negative. HIV negative. Echocardiogram LVEF 60%.\n\nPlan: methotrexate stopped today in agreement with her rheumatologist; folic acid stopped with it. R-CHOP every 21 days for 6 cycles, first cycle 11/13/2025. She continues prednisone 5 mg daily on the days she is not taking the chemotherapy prednisone. Restaging PET after completion. Supportive medicines will be prescribed by our clinic.\n\nThank you for referring her.\nHematology/Oncology"}
+            {
+              "type": "Consult Note",
+              "title": "Hematology/Oncology Consultation",
+              "author": "oncology",
+              "date": "2025-11-20T10:00",
+              "body": "Hematology/Oncology new patient consultation, 11/10/2025.\n\nDiagnosis: diffuse large B-cell lymphoma, left cervical lymph node, excised 10/30/2025.\n\n55-year-old woman with seropositive RA treated with methotrexate and prednisone, hypothyroidism, and an advanced colon adenoma removed in May. Two months of night sweats, low-grade fevers and 10 lb weight loss with an enlarging left neck node.\n\nStaging: PET-CT 11/07/2025 shows FDG-avid lymph nodes in the left neck only, the largest 3.1 cm. No other nodal or extranodal disease; bone marrow and spleen not involved. Stage I with B symptoms.\n\nPre-treatment: hepatitis B surface antigen and core antibody negative. HIV negative. Echocardiogram LVEF 60%.\n\nPlan: methotrexate stopped today in agreement with her rheumatologist; folic acid stopped with it. R-CHOP every 21 days for 6 cycles, first cycle 11/13/2025. She continues prednisone 5 mg daily on the days she is not taking the chemotherapy prednisone. Restaging PET after completion. Supportive medicines will be prescribed by our clinic.\n\nThank you for referring her.\nHematology/Oncology"
+            }
           ]
         },
         {
@@ -237,8 +621,20 @@
           "start": "2025-12-09T19:22",
           "reason": "Treatment update",
           "documents": [
-            {"type": "Patient Message", "title": "Two down", "author": "patient", "date": "2025-12-09T19:22", "body": "Just checking in - second round of chemo was last Thursday. Tired for about a week after each one and some nausea the first few days, the oncology nurses gave me medicine for it and it mostly works. The lump in my neck already feels smaller. Joints feel better than they have in ages, oddly. I'm working from home on the bad days."},
-            {"type": "Patient Message", "title": "RE: Two down", "author": "PCP", "date": "2025-12-09T21:10", "body": "So good to hear the node is shrinking already. Lean on the oncology team for nausea or fevers - a fever during chemo is a call-them-right-away situation. Let's do a short video check-in in January."}
+            {
+              "type": "Patient Message",
+              "title": "Two down",
+              "author": "patient",
+              "date": "2025-12-09T19:22",
+              "body": "Just checking in - second round of chemo was last Thursday. Tired for about a week after each one and some nausea the first few days, the oncology nurses gave me medicine for it and it mostly works. The lump in my neck already feels smaller. Joints feel better than they have in ages, oddly. I'm working from home on the bad days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Two down",
+              "author": "PCP",
+              "date": "2025-12-09T21:10",
+              "body": "So good to hear the node is shrinking already. Lean on the oncology team for nausea or fevers - a fever during chemo is a call-them-right-away situation. Let's do a short video check-in in January."
+            }
           ]
         },
         {
@@ -247,9 +643,20 @@
           "start": "2026-01-20T12:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Check-in during chemotherapy",
-          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2026-01-20T12:30"}],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-01-20T12:30"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2026-01-20T12:30", "body": "Video, pt at home, identity verified.\n\nFour cycles of R-CHOP done, last 1/15. Fatigue worst days 3-7 after each cycle, nausea controlled with the oncology regimen. No fevers since starting treatment, sweats gone. Eating ok. Neck node no longer palpable to her. Joints quiet. Still taking levothyroxine, prednisone 5 on non-chemo days, iron.\n\nA/P\nDLBCL on R-CHOP, tolerating. Per oncology.\nHypothyroidism - stable, TSH at next in-person visit.\nRA quiet off methotrexate.\nCheck in after restaging in the spring."}
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2026-01-20T12:30",
+              "body": "Video, pt at home, identity verified.\n\nFour cycles of R-CHOP done, last 1/15. Fatigue worst days 3-7 after each cycle, nausea controlled with the oncology regimen. No fevers since starting treatment, sweats gone. Eating ok. Neck node no longer palpable to her. Joints quiet. Still taking levothyroxine, prednisone 5 on non-chemo days, iron.\n\nA/P\nDLBCL on R-CHOP, tolerating. Per oncology.\nHypothyroidism - stable, TSH at next in-person visit.\nRA quiet off methotrexate.\nCheck in after restaging in the spring."
+            }
           ]
         },
         {
@@ -258,8 +665,20 @@
           "start": "2026-03-03T08:05",
           "reason": "Chemotherapy complete",
           "documents": [
-            {"type": "Patient Message", "title": "Done!", "author": "patient", "date": "2026-03-03T08:05", "body": "Sixth and last treatment was February 26th. They rang the bell for me. Scan is set for early April."},
-            {"type": "Patient Message", "title": "RE: Done!", "author": "PCP", "date": "2026-03-03T12:20", "body": "Congratulations, Jennifer - that's a big milestone. I'll watch for the scan results. Let's get you in after that for a full visit and labs."}
+            {
+              "type": "Patient Message",
+              "title": "Done!",
+              "author": "patient",
+              "date": "2026-03-03T08:05",
+              "body": "Sixth and last treatment was February 26th. They rang the bell for me. Scan is set for early April."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Done!",
+              "author": "PCP",
+              "date": "2026-03-03T12:20",
+              "body": "Congratulations, Jennifer - that's a big milestone. I'll watch for the scan results. Let's get you in after that for a full visit and labs."
+            }
           ]
         },
         {
@@ -269,7 +688,13 @@
           "service": "Hematology/Oncology",
           "reason": "End-of-treatment restaging",
           "documents": [
-            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2026-04-20T11:30", "body": "Hematology/Oncology follow-up.\n\nDLBCL, stage I with B symptoms, left neck. Completed R-CHOP x6 on 02/26/2026.\n\nEnd-of-treatment PET-CT 04/09/2026: complete metabolic response, Deauville 2. No residual FDG-avid disease.\n\nShe feels well, energy returning, no night sweats or fevers.\n\nPlan: surveillance visits with exam and labs every 3 months for the first two years. Routine imaging not planned unless symptoms. Rheumatology to manage RA from here.\nHematology/Oncology"}
+            {
+              "type": "Consult Note",
+              "title": "Oncology Follow-up",
+              "author": "oncology",
+              "date": "2026-04-20T11:30",
+              "body": "Hematology/Oncology follow-up.\n\nDLBCL, stage I with B symptoms, left neck. Completed R-CHOP x6 on 02/26/2026.\n\nEnd-of-treatment PET-CT 04/09/2026: complete metabolic response, Deauville 2. No residual FDG-avid disease.\n\nShe feels well, energy returning, no night sweats or fevers.\n\nPlan: surveillance visits with exam and labs every 3 months for the first two years. Routine imaging not planned unless symptoms. Rheumatology to manage RA from here.\nHematology/Oncology"
+            }
           ]
         },
         {
@@ -278,18 +703,87 @@
           "start": "2026-05-12T09:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Post-treatment follow-up",
-          "state": {"weight_kg": 64.0, "labs": {"Thyroid Stimulating Hormone": 2.1}},
-          "vitals": {"weight_kg": 64.0},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T10:10", "results": [{"test": "Hemoglobin", "value": 12.4}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2026-05-12T10:10", "results": [{"test": "Ferritin", "loinc": "2276-4", "unit": "ng/mL", "value": 58}, {"test": "Thyroid Stimulating Hormone"}]},
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-12T10:10", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          },
+          "vitals": {
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
           ],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-12T09:40"}],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T10:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "loinc": "2276-4",
+                  "unit": "ng/mL",
+                  "value": 58
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-12T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-12T09:40"
+            }
+          ],
           "documents": [
-            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2026-05-12T09:40", "body": "S: First in-person visit since finishing chemo. PET in April showed complete response. Energy maybe 80%. Back at the office full time. No sweats, fevers or new lumps. Saw rheumatology 4/28: joints quiet since the chemo, staying on prednisone 5 mg alone, no new arthritis drug for now, they'll revisit if she flares. Bowels normal. Surveillance colonoscopy got pushed by chemo, now set for June.\n\nMeds: levothyroxine 100 mcg, prednisone 5 mg, ferrous sulfate 325 mg, clobetasol twice weekly.\n\nO: weight 64 kg. Neck without adenopathy. Heart RRR, lungs clear. Abdomen soft, no organomegaly. Hands without synovitis.\n\nA/P\n1. DLBCL in complete metabolic response - oncology surveillance q3mo.\n2. Iron deficiency anemia - CBC, ferritin.\n3. Hypothyroidism - TSH.\n4. RA - on prednisone alone per rheum.\n5. Adenoma surveillance - colonoscopy June.\nAnnual in September."},
-            {"type": "Result Note", "title": "Labs", "author": "PCP", "date": "2026-05-13T08:50", "body": "Hgb 12.4, ferritin 58 - anemia resolved and stores recovering. TSH normal. Kidney and liver tests normal. Continue iron for now, messaged her."}
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-05-12T09:40",
+              "body": "S: First in-person visit since finishing chemo. PET in April showed complete response. Energy maybe 80%. Back at the office full time. No sweats, fevers or new lumps. Saw rheumatology 4/28: joints quiet since the chemo, staying on prednisone 5 mg alone, no new arthritis drug for now, they'll revisit if she flares. Bowels normal. Surveillance colonoscopy got pushed by chemo, now set for June.\n\nMeds: levothyroxine 100 mcg, prednisone 5 mg, ferrous sulfate 325 mg, clobetasol twice weekly.\n\nO: weight 64 kg. Neck without adenopathy. Heart RRR, lungs clear. Abdomen soft, no organomegaly. Hands without synovitis.\n\nA/P\n1. DLBCL in complete metabolic response - oncology surveillance q3mo.\n2. Iron deficiency anemia - CBC, ferritin.\n3. Hypothyroidism - TSH.\n4. RA - on prednisone alone per rheum.\n5. Adenoma surveillance - colonoscopy June.\nAnnual in September."
+            },
+            {
+              "type": "Result Note",
+              "title": "Labs",
+              "author": "PCP",
+              "date": "2026-05-13T08:50",
+              "body": "Hgb 12.4, ferritin 58 - anemia resolved and stores recovering. TSH normal. Kidney and liver tests normal. Continue iron for now, messaged her."
+            }
           ]
         },
         {
@@ -299,22 +793,29 @@
           "end": "2026-06-11T09:30",
           "service": "Gastroenterology",
           "reason": "Surveillance colonoscopy after piecemeal EMR",
-          "procedures": [{"procedure": "Colonoscopy with biopsy", "performed": "2026-06-11T07:55"}],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2026-06-11T07:55"
+            }
+          ],
           "reports": [
-            {"study": "Surgical pathology report", "performed": "2026-06-11T08:05", "issued": "2026-06-16T15:00", "text": "Specimen: ascending colon, resection scar, cold forceps biopsies, three fragments.\n\nMicroscopic: colonic mucosa with preserved crypt architecture and mild submucosal fibrosis. No adenomatous change.", "conclusion": "Benign colonic mucosa. Negative for adenoma and dysplasia."}
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-11T08:05",
+              "issued": "2026-06-16T15:00",
+              "text": "Specimen: ascending colon, resection scar, cold forceps biopsies, three fragments.\n\nMicroscopic: colonic mucosa with preserved crypt architecture and mild submucosal fibrosis. No adenomatous change.",
+              "conclusion": "Benign colonic mucosa. Negative for adenoma and dysplasia."
+            }
           ],
           "documents": [
-            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2026-06-19T08:40", "body": "Surveillance colonoscopy 06/11/2026, one year after piecemeal EMR of a 22 mm tubulovillous adenoma with high-grade dysplasia (interval extended for lymphoma treatment).\n\nPrep adequate. Cecum reached. Clipped resection scar in the ascending colon, flat and pale, with no residual polyp; scar biopsied. Remainder of the colon normal.\n\nImpression: no residual adenoma at the EMR site.\nRecommendation: repeat colonoscopy in 1 year. Copy to PCP."}
-          ]
-        },
-        {
-          "id": "2026-07-21a",
-          "kind": "portal_message",
-          "start": "2026-07-21T13:12",
-          "reason": "Oncology visit update",
-          "documents": [
-            {"type": "Patient Message", "title": "Good news week", "author": "patient", "date": "2026-07-21T13:12", "body": "Two good reports to pass on. The colonoscopy last month was clear where they took the polyp, next one in a year. And I saw oncology on the 16th for my 3-month check - exam and blood work all fine, no sign of the lymphoma. Next one in October. See you in September for my physical."},
-            {"type": "Patient Message", "title": "RE: Good news week", "author": "RN", "date": "2026-07-21T15:40", "body": "Wonderful news, thank you for letting us know! The doctor saw your message. Your physical is on the books for September 15."}
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "author": "gastroenterology",
+              "date": "2026-06-19T08:40",
+              "body": "Surveillance colonoscopy 06/11/2026, one year after piecemeal EMR of a 22 mm tubulovillous adenoma with high-grade dysplasia (interval extended for lymphoma treatment).\n\nPrep adequate. Cecum reached. Clipped resection scar in the ascending colon, flat and pale, with no residual polyp; scar biopsied. Remainder of the colon normal.\n\nImpression: no residual adenoma at the EMR site.\nRecommendation: repeat colonoscopy in 1 year. Copy to PCP."
+            }
           ]
         },
         {

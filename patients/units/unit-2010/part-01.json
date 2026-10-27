@@ -1,0 +1,1234 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002010",
+      "given": "Mark",
+      "family": "Barrett",
+      "birth_date": "1963-10-05",
+      "address_line": "27 Kennel Hill Road",
+      "phone": "+1-802-555-0125",
+      "email": "mark.barrett@example.test",
+      "marital_status": "single",
+      "summary": "Construction site supervisor with hypertension, seropositive RA on methotrexate and low-dose prednisone, and a remote ventricular tachycardia history who joined in 2019. His chart runs through an H. pylori duodenal ulcer, procainamide-induced lupus, a right quadriceps tendon rupture, atrial fibrillation on warfarin with a left calf DVT, and amiodarone lung toxicity after his last practice visit.",
+      "events": [
+        {
+          "id": "2019-03-05a",
+          "kind": "telephone",
+          "start": "2019-03-05T10:20",
+          "reason": "new patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "author": "front desk",
+              "date": "2019-03-05T10:20",
+              "body": "Caller is a prospective member, 55, moving his care to us from his old office. Booked new patient visit for 3/12 at 8:40 AM. Sees an outside rheumatologist and an outside cardiologist, will keep both. Signed release on file; request sent to the prior primary care office and to both specialist offices for notes, labs and med list. Asked him to bring all bottles to the visit."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-12a",
+          "kind": "establish_care",
+          "start": "2019-03-12T08:40",
+          "end": "2019-03-12T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2011-06-01",
+              "note": "long-standing, on lisinopril and amlodipine"
+            },
+            {
+              "label": "Seropositive rheumatoid arthritis",
+              "icd10": "M05.79",
+              "action": "diagnosed",
+              "onset": "2013-01-01",
+              "note": "followed by outside rheumatology"
+            },
+            {
+              "label": "History of ventricular tachycardia",
+              "icd10": "Z86.79",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "followed by outside cardiology, no antiarrhythmic at present"
+            },
+            {
+              "label": "Seasonal allergic rhinitis",
+              "icd10": "J30.2",
+              "action": "diagnosed",
+              "onset": "1990-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 6 tablets (15 mg) by mouth once weekly",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "with methotrexate"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              78
+            ],
+            "weight_kg": 91.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9,
+              "Free Thyroxine": 1.2,
+              "Prostate Specific Antigen": 0.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction site supervisor"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-03-12T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-03-12T09:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-03-12T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-03-12T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2019-03-12T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2019-03-12T10:30",
+              "body": "55M here to establish. Supervises construction crews, on his feet most of the day.\n\nBP: high for 8 or so years per his account, on lisinopril 20 and amlodipine 5, no side effects, home cuff runs mid-120s.\nRA: seropositive, about six years, sees outside rheum twice a year. Methotrexate 15 mg every Saturday, folic acid daily, prednisone 5 every morning. Hands are his barometer, mild stiffness most mornings, works through it.\nHeart: had a run of VT years back, evaluated by outside cardiology, nothing to take for it at present. Sees them yearly. No palpitations or syncope lately.\nSpring and fall sneezing and itchy eyes, nothing prescribed.\nNKDA. Never smoked, a beer or two on the weekend. No NSAIDs, rheum told him to avoid them.\nFHx: mother RA. Father HTN and CAD. Paternal grandfather had AF.\n\nExam: pleasant, comfortable. HEENT benign, no thyromegaly. Heart regular, no murmur. Lungs clear. Abd soft, nontender. Hands with mild MCP bogginess both sides, no deformity. Legs no edema. Skin clear.\n\nA/P\n1. HTN, at goal. Continue both.\n2. Seropositive RA on MTX, prednisone, folate. Labs today for MTX monitoring; will copy rheum.\n3. Hx VT, cardiology following. Records requested.\n4. Seasonal allergic rhinitis, no prescription needed.\n5. Prevention: lipids, HCV and HIV once today. Prior colonoscopy reportedly normal around 50, getting the report. Flu shot in the fall. Discussed PCV and Shingrix given MTX and steroids, he'd like to wait until next year.\nRTC 6 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-14a",
+          "kind": "portal_message",
+          "start": "2019-03-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your new patient labs",
+              "author": "PCP",
+              "date": "2019-03-14T16:05",
+              "body": "Mark, welcome aboard. Your blood counts, kidney and liver tests are all normal, which is what we want on methotrexate. Cholesterol is fine. Hepatitis C and HIV screens negative. I've sent a copy to your rheumatologist."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-26a",
+          "kind": "outside_records",
+          "start": "2019-03-26T11:00",
+          "reason": "records from prior practice and specialists",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2013-02-07T09:00",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2019-03-26T11:00",
+              "body": "Records received from prior primary care office, covering 2012 to early 2019.\n\nProblem list: hypertension; rheumatoid arthritis (rheumatology); history of ventricular tachycardia (cardiology); seasonal allergies.\nMedications: lisinopril 20 mg daily, amlodipine 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily.\nAllergies: NKDA.\nHealth maintenance: screening colonoscopy 2014, normal, repeat in 10 years. Tdap 2016. Influenza yearly.\nLabs on file unremarkable."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Rheumatology records",
+              "author": "rheumatology",
+              "date": "2019-03-26T11:05",
+              "body": "Outside rheumatology group, summary letter.\n\nSeen since 2013 for symmetric small-joint polyarthritis of the hands and wrists. Serologies at diagnosis (February 2013): rheumatoid factor positive, anti-CCP positive. Seropositive rheumatoid arthritis. Methotrexate titrated to 15 mg weekly with folic acid 1 mg daily; prednisone 5 mg daily maintained, attempts below that flared him. Low disease activity at last visit. Monitoring labs every 3 months, which may be drawn through his primary care office.\nAllergies: none known."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Cardiology summary",
+              "author": "cardiology",
+              "date": "2019-03-26T11:10",
+              "body": "Outside cardiology group. Brief summary for new PCP.\n\nThis patient is followed in our office for a history of ventricular tachycardia. He is not on antiarrhythmic therapy at this time. Seen yearly. Please call with questions."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-18a",
+          "kind": "office_visit",
+          "start": "2019-06-18T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "stomach burning",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-06-18T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2019",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "upper endoscopy for months of epigastric pain with early satiety"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-06-18T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2019-06-18T16:10",
+              "body": "S: Burning in the pit of his stomach for a few months now. Worst a couple of hours after meals and some nights it wakes him around 2. Antacids from the drugstore take the edge off for maybe half an hour. Some nausea, fills up quicker than he used to. Weight steady. No vomiting, no black or bloody stools. No ibuprofen or naproxen, ever. Still on prednisone 5.\nO: Vitals per flowsheet. Abdomen soft, mildly tender in the epigastrium, no guarding, no mass, no organomegaly.\nA: Dyspepsia, ulcer-type pattern, with early satiety in a 55 year old on daily steroid.\nP: CBC today. GI referral for upper endoscopy; holding off on starting a PPI until he's scoped so we don't blunt any testing. OK to keep using antacids. Call if dark stools, vomiting or worse pain."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-19a",
+          "kind": "portal_message",
+          "start": "2019-06-19T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count normal",
+              "author": "RN",
+              "date": "2019-06-19T12:40",
+              "body": "Hi Mark, your blood count is normal, no sign of anemia. GI has the referral and should call you within the week to book the scope. Let us know if you don't hear from them."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-01a",
+          "kind": "specialist_visit",
+          "start": "2019-08-01T09:30",
+          "service": "Gastroenterology",
+          "reason": "epigastric pain, upper endoscopy",
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2019-08-01T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2019",
+              "action": "done",
+              "date": "2019-08-01T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2019-08-05T14:00",
+              "body": "Outside gastroenterology group\nDate of visit: 08/01/2019\nReferred by: primary care, for epigastric pain\n\nMr. Barrett is a 55 year old man with a few months of burning epigastric pain, worse when his stomach is empty and at times waking him from sleep, poorly helped by over-the-counter antacids. Occasional nausea and early fullness. He has not lost weight and reports no vomiting, melena or hematochezia.\nPMH: hypertension, controlled. Seropositive rheumatoid arthritis. Remote ventricular tachycardia, followed by cardiology. Seasonal allergies.\nMeds: lisinopril 20 mg daily, amlodipine 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily.\nAllergies: no known drug allergies.\nSocial: never smoker, minimal alcohol, no NSAIDs.\nFamily: mother RA, father hypertension and coronary disease, grandfather atrial fibrillation.\n\nExam: well appearing. Abdomen with mild epigastric tenderness, no guarding or rebound. Liver and spleen not enlarged. No masses.\nStool guaiac: negative.\n\nEGD performed same day (see procedure report). Impression: duodenal ulcer, biopsies pending. Will treat based on pathology."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "author": "gastroenterology",
+              "date": "2019-08-05T14:05",
+              "body": "Procedure: esophagogastroduodenoscopy with biopsy\nDate: 08/01/2019\nIndication: epigastric pain, early satiety\nSedation: monitored anesthesia care. Tolerated well.\n\nFindings:\nEsophagus: normal mucosa, Z-line regular.\nStomach: normal-appearing mucosa throughout. Biopsies of antrum and body taken for Helicobacter pylori.\nDuodenum: a single shallow clean-based ulcer in the proximal duodenal bulb. No visible vessel, no active bleeding. Second portion normal.\n\nImpression: shallow proximal duodenal ulcer. Gastric biopsies sent.\nRecommendations: await pathology; avoid NSAIDs."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-09a",
+          "kind": "outside_records",
+          "start": "2019-08-09T13:30",
+          "reason": "pathology and GI treatment plan",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2019-08-01T10:15",
+              "issued": "2019-08-06T15:00",
+              "text": "Specimen: gastric antrum and body, biopsies.\nMicroscopic: gastric mucosa with chronic active gastritis. Curved rod-shaped organisms consistent with Helicobacter pylori are seen along the surface epithelium. No intestinal metaplasia, dysplasia or malignancy.",
+              "conclusion": "Chronic active gastritis with Helicobacter pylori organisms. Negative for dysplasia and malignancy."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily before meals for 14 days",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "H. pylori treatment"
+            },
+            {
+              "drug": "amoxicillin 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules (1000 mg) by mouth twice daily for 14 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "H. pylori treatment"
+            },
+            {
+              "drug_text": "clarithromycin 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 14 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "H. pylori treatment"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "After the 14 days, take 1 capsule by mouth daily for 4 more weeks",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "duodenal ulcer healing"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Helicobacter pylori infection",
+              "action": "diagnosed",
+              "onset": "2019-08-01",
+              "note": "duodenal ulcer, gastric biopsies positive"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "GI letter: pathology and treatment",
+              "author": "gastroenterology",
+              "date": "2019-08-09T13:30",
+              "body": "Dear colleague,\nBiopsies from your patient's 8/1 endoscopy show chronic active gastritis with H. pylori organisms, no dysplasia. The duodenal ulcer is attributable to this. We have started 14 days of omeprazole 20 mg twice daily, amoxicillin 1 g twice daily and clarithromycin 500 mg twice daily, followed by omeprazole 20 mg daily for four more weeks. We reviewed his medicines; no change to methotrexate needed. Urea breath test planned at least four weeks after the omeprazole is finished to confirm eradication.\nAllergies: NKDA.\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2019-08-14a",
+          "kind": "telephone",
+          "start": "2019-08-14T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Question about antibiotics",
+              "author": "RN",
+              "date": "2019-08-14T09:10",
+              "body": "Pt on day 5 of H. pylori antibiotics from GI. Metallic taste and loose-ish stools, no blood, eating fine. Wanted to know if OK to take his Saturday methotrexate during the course. Reviewed with PCP: yes, keep everything as is, finish the full 14 days. Advised fluids, call if diarrhea becomes frequent or bloody. Pt verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "office_visit",
+          "start": "2019-09-24T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and medication follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-24T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-24T08:20",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-09-24T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2019-09-24T08:35",
+              "body": "Finished the antibiotics 8/25, now on the last stretch of once-daily omeprazole, ends this week. Stomach feels normal again, sleeping through. Bowels back to baseline. BP fine at home.\nRA quiet, mornings ok.\nExam: abdomen soft, nontender. Heart regular. Lungs clear. No edema.\nA/P: H. pylori duodenal ulcer, treated. GI to do breath test end of October, needs to be off omeprazole 4 weeks first, reminded him. HTN at goal. MTX labs today. Flu shot at a nurse visit next month. RTC December."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-17a",
+          "kind": "nurse_visit",
+          "start": "2019-10-17T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-17T16:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-17T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2019-10-17T16:40",
+              "body": "Quadrivalent influenza 0.5 mL IM left deltoid. VIS given. No egg or vaccine reactions in the past. Tolerated, left after 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-30a",
+          "kind": "outside_records",
+          "start": "2019-10-30T15:15",
+          "reason": "breath test result from GI",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-10-28T08:10",
+              "results": [
+                {
+                  "test": "Helicobacter pylori Breath Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urea breath test",
+              "author": "gastroenterology",
+              "date": "2019-10-30T15:15",
+              "body": "Urea breath test 10/28/2019, performed more than four weeks after completion of PPI and antibiotics: negative for Helicobacter pylori. Eradication confirmed. No routine follow-up needed in GI; return if symptoms recur."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Helicobacter pylori infection",
+              "action": "resolved",
+              "note": "eradication confirmed by breath test"
+            },
+            {
+              "label": "History of Helicobacter pylori infection",
+              "icd10": "Z86.19",
+              "action": "diagnosed",
+              "onset": "2019-10-28"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-12-10T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2019-12-10T11:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-12-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2019-12-10T11:40",
+              "body": "No stomach symptoms since September, off all acid medicine. Breath test from GI negative. Knows to stay away from NSAIDs.\nHands a little worse with the cold, rheum saw him in November, no changes. Busy season winding down at work.\nBP at goal on lisinopril/amlodipine.\nExam unremarkable today; abdomen benign, MCPs without synovitis.\nA/P: H. pylori, eradicated, moved to history. HTN stable. RA, CBC and LFTs today for MTX. Physical in March."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-20a",
+          "kind": "pharmacy",
+          "start": "2020-02-20T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: lisinopril, amlodipine",
+              "author": "MA",
+              "date": "2020-02-20T10:05",
+              "body": "Pharmacy request for 90-day supply of lisinopril 20 mg and amlodipine 5 mg (previously written by his old office). Seen 12/10, BP at goal. Sent per protocol, 90 days with 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2020-03-17a",
+          "kind": "annual_physical",
+          "start": "2020-03-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Physical postponed",
+              "author": "front desk",
+              "date": "2020-03-16T13:20",
+              "body": "Called pt to postpone tomorrow's physical given current pandemic restrictions on non-urgent visits. He's fine, no concerns. Will reach out to rebook in a few months; offered video visit if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-29a",
+          "kind": "pharmacy",
+          "start": "2020-05-29T14:45",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill history: new medication",
+              "author": "MA",
+              "date": "2020-05-29T14:45",
+              "body": "Pharmacy called asking us to verify an interaction alert on a new prescription for procainamide ER, prescriber is his cardiologist. We have no cardiology note on this. Told pharmacy the prescriber's office is the right contact for the alert. Routed to PCP; will ask pt at June video visit and request cardiology notes."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-16a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-16T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up by video",
+          "medications": [
+            {
+              "drug_text": "procainamide hydrochloride 500 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (1000 mg) by mouth every 12 hours",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ventricular tachycardia history, per cardiology"
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2020-06",
+              "action": "placed",
+              "order": "CBC and comprehensive metabolic panel",
+              "category": "lab",
+              "reason": "methotrexate monitoring"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-06-16T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2020-06-16T13:35",
+              "body": "Video visit, pt at his kitchen table, identity verified, consents to video.\nSays cardiology started him on procainamide about three weeks ago, a slow-release tablet twice a day. His understanding is it's for the old VT, they did some monitoring this spring. No palpitations, dizziness or fainting. Tolerating it.\nOtherwise working, RA steady, no stomach trouble. Home BPs 120s/70s.\nA/P: Procainamide per cardiology, added to med list as theirs; we have no letter, requesting one. Continue lisinopril, amlodipine, MTX/folate, prednisone. Labs at the lab this week for MTX. Physical rebooked for August."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request: cardiology",
+              "author": "front desk",
+              "date": "2020-06-16T14:10",
+              "body": "Faxed records request to pt's cardiology office for most recent note and monitor results."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-18a",
+          "kind": "lab_only",
+          "start": "2020-06-18T07:30",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-06-18T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-06-18T07:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "labs-2020-06",
+              "action": "done",
+              "date": "2020-06-18T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "MTX monitoring labs",
+              "author": "PCP",
+              "date": "2020-06-18T17:20",
+              "body": "CBC, kidney and liver numbers all normal. Portal note sent, copy to rheum."
+            }
+          ]
+        },
+        {
+          "id": "2020-08-25a",
+          "kind": "annual_physical",
+          "start": "2020-08-25T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-25T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-25T08:50",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-25T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-25T08:50",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2020-08-25T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2020-08-25T09:20",
+              "body": "Physical, delayed from spring. Feels well. Work picked back up in June. No chest pain, palpitations, shortness of breath. No GI symptoms. Joints at baseline. On procainamide from cardiology since late May, no issues; still no letter from them.\nROS otherwise negative. PHQ-2 negative.\nExam: well, BMI about 28. Eyes, ears, throat normal. Neck supple, no nodes. Heart regular, no murmur, no rub. Lungs clear. Abdomen soft. GU deferred. Skin without rashes. Mild MCP thickening, no active synovitis. Neuro grossly normal.\nA/P\n- HTN at goal.\n- RA stable on current regimen.\n- Hx VT on procainamide per cardiology.\n- Prevention: lipids, CMP, CBC, PSA after shared discussion. Colonoscopy 2014 normal, next 2024. Flu at a nurse visit in October. Again offered pneumococcal and shingles vaccines, he'd rather wait until things settle down."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "portal_message",
+          "start": "2020-10-06T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Joints and a rash",
+              "author": "patient",
+              "date": "2020-10-06T19:50",
+              "body": "Hi, for about 3 weeks my joints have been really stiff in the mornings, wrists, elbows and knees, more than my usual. Achy muscles, tired, some low fevers around 99-100 at night. And I got a red rash across my cheeks and nose after a fishing trip that hasn't gone away. I already have my rheumatology appointment next Tuesday. Should I wait for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Joints and a rash",
+              "author": "PCP",
+              "date": "2020-10-07T08:15",
+              "body": "Thanks for letting me know. Keep the rheumatology appointment next week, they're the right people for this and they'll want to see the rash. Keep the rash out of the sun. If the fevers go above 101, you get short of breath, chest pain, or feel much worse before then, call us and we'll see you the same day."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "specialist_visit",
+          "start": "2020-10-13T10:40",
+          "service": "Rheumatology",
+          "reason": "joint pain, fatigue, fevers, facial rash",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-10-13T11:30",
+              "resulted": "2020-10-14T15:00",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Positive, titer 1:320, homogeneous pattern"
+                },
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 34
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-13T11:30",
+              "resulted": "2020-10-19T12:00",
+              "results": [
+                {
+                  "test": "Histone Antibody",
+                  "loinc": "8071-3",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Double-stranded DNA Antibody",
+                  "loinc": "5130-0",
+                  "unit": "[IU]/mL",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Visit",
+              "author": "rheumatology",
+              "date": "2020-12-01T10:00",
+              "body": "Outside rheumatology group\nDate of visit: 10/13/2020\n\nEstablished patient, 57 years old, seropositive rheumatoid arthritis on methotrexate 15 mg weekly, folic acid and prednisone 5 mg, seen early for three weeks of a different picture. Morning stiffness of the wrists, elbows and knees, symmetric, loosening as the day goes on. Diffuse myalgias, fatigue, evening temperatures to about 100. A red rash over both cheeks and the bridge of the nose came on after a day fishing in the sun and persists.\nOf note, cardiology started procainamide about five months ago. Denies supplements or other new medicines.\nOther history: hypertension, remote ventricular tachycardia, treated H. pylori ulcer 2019, seasonal allergies.\nMeds: procainamide ER 1000 mg twice daily, methotrexate 15 mg weekly, folic acid 1 mg, prednisone 5 mg, lisinopril 20 mg, amlodipine 5 mg.\nAllergies: none known.\n\nExam: mild swelling and tenderness of both wrists and the MCP joints. Erythematous maculopapular eruption over the malar areas, nasolabial folds spared. Heart and lungs normal. Neurologic exam normal.\n\nLabs today: ANA positive at 1:320, homogeneous. ESR 34, mildly up.\n\nImpression: suspect drug-induced lupus from procainamide superimposed on his RA. Sent anti-histone and anti-dsDNA. Will contact cardiology regarding the antiarrhythmic once results are back.\n\nAddendum 10/19: anti-histone antibody positive, anti-dsDNA negative, consistent with procainamide-induced lupus. Discussed with cardiology, who are stopping procainamide today and changing to amiodarone. Continue methotrexate, folic acid and prednisone 5 mg. Recheck in 3 months; expect the rash and fevers to clear over weeks."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "telephone",
+          "start": "2020-10-20T08:45",
+          "conditions": [
+            {
+              "label": "Drug-induced systemic lupus erythematosus",
+              "icd10": "M32.0",
+              "action": "diagnosed",
+              "onset": "2020-09-20",
+              "note": "procainamide, per rheumatology"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "procainamide hydrochloride 500 MG Extended Release Oral Tablet",
+              "action": "stop",
+              "reason": "drug-induced lupus"
+            },
+            {
+              "drug_text": "amiodarone hydrochloride 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (400 mg) by mouth twice daily for 2 weeks, then 1 tablet (200 mg) daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ventricular tachycardia history, per cardiology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rheum results and med change",
+              "author": "PCP",
+              "date": "2020-10-20T08:45",
+              "body": "Pt called. Rheumatology told him yesterday his bloodwork points to lupus caused by the procainamide. Cardiology stopped procainamide yesterday and started amiodarone, two tablets twice a day for two weeks then one a day. Rash a little lighter, still stiff in the mornings, fever down to 99s.\nUpdated problem and med lists. Will see him in 4 weeks; plan baseline thyroid, liver tests and chest x-ray for amiodarone at that visit if cardiology hasn't done them. Requested rheum note. Pt agrees."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-27a",
+          "kind": "nurse_visit",
+          "start": "2020-10-27T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-27T12:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-27T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "author": "MA",
+              "date": "2020-10-27T12:20",
+              "body": "Flu vaccine given IM right deltoid, VIS reviewed. Afebrile today. No issues after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "office_visit",
+          "start": "2020-11-17T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up drug-induced lupus, amiodarone baseline",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Free Thyroxine"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2020-11-17T10:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-11-17T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2020-11-17T10:20",
+              "text": "PA and lateral views. Lungs are clear. No focal consolidation, effusion or pneumothorax. Heart size normal. Mediastinal contours normal. No acute osseous abnormality.",
+              "conclusion": "Normal chest radiograph."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-11-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2020-11-17T10:45",
+              "body": "4 weeks off procainamide. Rash mostly faded, a faint pink over the cheeks. No fevers for two weeks. Joints back to his usual morning stiffness. Now on amiodarone 200 daily after the 2-week load. No palpitations, no dyspnea, no cough.\nExam: faint malar erythema, folds spared. Heart regular. Lungs clear. Wrists without effusion. No edema.\nA/P\n1. Drug-induced lupus, improving off procainamide. Rheum recheck January.\n2. Amiodarone per cardiology: baseline TSH/free T4, LFTs and chest x-ray today. Will repeat TSH and LFTs every 6 months. Counseled on sun protection, which also helps the rash. Cardiology to arrange PFTs/eye exam if they want them.\n3. HTN at goal.\nStill no rheum or cardiology letters, second request sent."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-18a",
+          "kind": "portal_message",
+          "start": "2020-11-18T11:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid, liver, x-ray",
+              "author": "PCP",
+              "date": "2020-11-18T11:30",
+              "body": "Your thyroid and liver tests are normal and your chest x-ray is clear. These are the baselines we'll compare against while you're on amiodarone. Next check in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-01a",
+          "kind": "outside_records",
+          "start": "2020-12-01T10:00",
+          "reason": "rheumatology letter received",
+          "documents": [
+            {
+              "type": "Scanned Document",
+              "title": "Rheumatology letter filed",
+              "author": "MA",
+              "date": "2020-12-01T10:05",
+              "body": "Rheumatology visit note from 10/13 with 10/19 addendum received by fax and filed under Consults. Flagged for PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "outside_records",
+          "start": "2020-12-08T14:20",
+          "reason": "cardiology letter received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology letter",
+              "author": "cardiology",
+              "date": "2020-12-08T14:20",
+              "body": "Outside cardiology group\nRe: antiarrhythmic change\n\nYour patient with a history of ventricular tachycardia was started on procainamide extended-release 1000 mg every 12 hours in May. In October rheumatology diagnosed procainamide-induced lupus; procainamide was discontinued on 10/19 and amiodarone started, 400 mg twice daily for two weeks, now 200 mg daily. He is tolerating it. We would appreciate TSH and liver function every six months and will see him yearly.\nAllergies: NKDA.\nCurrent medications: amiodarone 200 mg daily, lisinopril 20 mg daily, amlodipine 5 mg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

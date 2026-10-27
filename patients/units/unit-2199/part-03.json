@@ -1,0 +1,525 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002199",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: coronary disease, diabetes, blood pressure",
+          "conditions": [
+            {
+              "label": "Non-ST elevation (NSTEMI) myocardial infarction",
+              "icd10": "I21.4",
+              "action": "resolved"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2025-10-08"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "diagnosed",
+              "onset": "2025-10-08"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "diagnosed",
+              "onset": "2025-10-09"
+            }
+          ],
+          "state": {
+            "weight_kg": 90.0,
+            "labs": {
+              "Hemoglobin A1c": 7.6,
+              "Low Density Lipoprotein": 66
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-20T10:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-20T10:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-20T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-20T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2026-01-20T11:00",
+              "body": "Three months out from the MI. Going to rehab twice a week, likes the staff. Saw cardiology in November - says no changes, keep everything the same; we never got that note. No chest pain, no nitro used. A little less winded on the bike than at the start. No bleeding on the two blood thinners.\nSmoking: still about a pack a day. Not willing to use anything to quit.\nMeds: aspirin, clopidogrel, atorvastatin 80, metoprolol succ 25, amlodipine 10, metformin 1000 BID, NTG prn.\nExam: vitals flowsheet. Cor RRR, no murmur. Lungs clear. Feet warm, pulses diminished bilat, no lesions.\nA/P\n- CAD s/p mid LCx DES 10/2025, old NSTEMI: problem list updated. Continue DAPT through ~10/2026 per cardiology, statin, BB.\n- DM2: A1c today.\n- Lipids on atorva 80 today.\n- Tobacco: counseled.\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "pharmacy",
+          "start": "2026-02-24T14:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2026-02-24T14:40",
+              "body": "Mail-order asking us to take over clopidogrel 75, metoprolol succinate 25 and atorvastatin 80 (hospital scripts running out). PCP ok'd 90 days + 1 refill each. Pt notified by voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "outside_records",
+          "start": "2026-03-10T09:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2026-03-10T09:30",
+              "body": "Eye exam 03/03/2026 for diabetes.\nVision 20/25 OD, 20/20 OS with correction. Normal pressures. Dilated fundi: no diabetic retinopathy OU, no emboli seen, discs and maculae normal.\nAllergies: none known.\nNext exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-30a",
+          "kind": "telephone",
+          "start": "2026-04-30T15:10",
+          "orders": [
+            {
+              "id": "records-hosp-2026",
+              "action": "placed",
+              "order": "Records request, outside hospital",
+              "category": "procedure",
+              "reason": "ED, operative and discharge records 4/26-4/30/26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pt call - hospitalized for leg",
+              "author": "RN",
+              "date": "2026-04-30T15:25",
+              "body": "Pt called on his way home from the hospital. Went to the ED Sunday night 4/26 with sudden bad pain and a cold left foot. Told it was a clot in the leg artery; vascular surgery operated that night to take the clot out. Home today. Same pills as before per him, nothing new. Foot feels normal now, incision sore. Requested records. Post-hospital visit set for 5/5 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "outside_records",
+          "start": "2026-05-01T13:15",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-26T21:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-26T21:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 162
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside emergency department record",
+              "author": "emergency medicine",
+              "date": "2026-05-01T13:15",
+              "body": "EMERGENCY DEPARTMENT NOTE - outside hospital\nVisit date: 04/26/2026, arrival 21:20\nCC: left leg pain\nHPI: 67-year-old man with PAD, hypertension, type 2 diabetes, hyperlipidemia, a prior TIA and a prior NSTEMI. Six hours ago the left leg became suddenly and severely painful; rest has not helped, and the foot feels cold.\nPSH: right femoral-popliteal bypass.\nHome meds: amlodipine 10 mg daily; metformin 1000 mg twice daily with meals; atorvastatin 40 mg at bedtime; aspirin 81 mg daily.\nAllergies: NKDA.\nFH: father MI 54, sudden cardiac arrest death 61; mother ischemic stroke 74, HTN; older brother DM2, HTN.\nSH: history of smoking.\nExam: Left foot pale and cool, with weaker pulses than the right. Decreased sensation of the left foot. Dorsiflexion and plantar flexion 3/5 on the left. Capillary refill delayed. ABI 0.5 left, 0.9 right.\nLabs: Hgb 13.2, Hct 39.8, WBC 7.2, Plt 210. Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 1.1, glucose 162.\nBedside arterial Doppler: monophasic signal in the left popliteal artery.\nImpression: acute arterial thrombosis/embolism, left lower extremity, with threatened limb.\nPlan: heparin bolus and infusion; vascular surgery emergently consulted; to OR."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2026-05-01T16:40",
+              "body": "ED record 4/26 received; their home med list is outdated (still atorva 40, no clopidogrel/metoprolol). Operative note and discharge summary still outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "office_visit",
+          "start": "2026-05-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up, left leg arterial clot",
+          "conditions": [
+            {
+              "label": "Embolism and thrombosis of arteries of the lower extremities",
+              "icd10": "I74.3",
+              "action": "diagnosed",
+              "onset": "2026-04-26",
+              "note": "acute, left leg; thromboembolectomy 4/26/26 at outside hospital"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-05-05T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2026-05-05T11:45",
+              "body": "TCM. RN call 4/30 day of discharge.\nWe have the ED note only. Per Walter: vascular surgery took him to the OR the same night and pulled the clot out through the groin and behind the knee; when he woke up the foot was warm and pink, and by discharge the numbness and weakness were gone. Heart monitor the whole stay was normal rhythm, and the heart ultrasound showed no clot, he was told. They never found where it came from. Discharged 4/30 on his same meds - nothing added, nothing stopped. Vascular follow-up 6/2.\nToday: incisions sore, walking around the apartment and to the car. Foot feels normal. No chest pain.\nExam: vitals flowsheet. L groin and L medial knee incisions clean, staples out, mild bruising, no drainage. L foot warm, pink, cap refill brisk, sensation and strength normal. R leg incisions old and healed.\nMeds (bottles): aspirin 81, clopidogrel 75, atorvastatin 80, metoprolol succ 25, amlodipine 10, metformin 1000 BID, NTG prn.\nA/P\n1. Acute arterial thrombosis/embolism L leg s/p thromboembolectomy - added to list. Antiplatelets and statin as per vascular. Vascular 6/2.\n2. Smoking - he looked at me and said 'I know.' Discussed again; quitline number given. Declines meds.\n3. Re-requested operative note and discharge summary.\n4. CBC and BMP today after surgery and on two antiplatelets."
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-05T11:50",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-05T11:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "outside_records",
+          "start": "2026-06-12T10:50",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outside vascular surgery follow-up",
+              "author": "vascular surgery",
+              "date": "2026-06-12T10:50",
+              "body": "VASCULAR SURGERY - POSTOPERATIVE VISIT\nDate of service: 06/02/2026\nS/p emergent left femoral-popliteal thromboembolectomy 04/26/2026 for acute limb ischemia. Etiology undetermined; sinus rhythm throughout admission, TTE LVEF 55% without LV thrombus.\nDoing well, walking daily, no rest pain.\nMeds: aspirin 81, clopidogrel 75, atorvastatin 80, metoprolol succinate 25, amlodipine 10, metformin. Allergies: NKDA.\nExam: left groin and knee incisions healed. Left foot warm, good color, Doppler signals at DP and PT. Left ABI 0.85.\nPlan: continue aspirin and clopidogrel and statin. Walking program. Stop smoking - discussed at length. Arterial duplex surveillance in 6 months."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2026-06-12T14:00",
+              "body": "Vascular note 6/2 reviewed. L ABI 0.85 post-op. Duplex in ~6 mo through them. Op note and discharge summary never came - no further request."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "portal_message",
+          "start": "2026-06-16T18:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Walking",
+              "author": "patient",
+              "date": "2026-06-16T18:22",
+              "body": "Vascular doc says walk every day. Is it ok if I go back to doing the rail trail, about 2 miles? Heart rehab finished in the winter."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Walking",
+              "author": "PCP",
+              "date": "2026-06-17T08:10",
+              "body": "Yes - the trail is a great idea. Start with what feels comfortable and build up. Stop and call if you get chest pressure, or if the left foot gets cold, numb or painful. Carry your nitro."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-17a",
+          "kind": "office_visit",
+          "start": "2026-07-17T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, blood pressure and vascular follow-up",
+          "conditions": [
+            {
+              "label": "Embolism and thrombosis of arteries of the lower extremities",
+              "icd10": "I74.3",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4,
+              "Low Density Lipoprotein": 64
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-17T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-17T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-17T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-17T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-17T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2026-07-17T10:20",
+              "body": "S: Walking the rail trail most mornings, up to two miles, no leg pain, no chest pressure. Hasn't used nitroglycerin. Taking everything. Bruises easily on the two antiplatelets, nothing worse. Still smoking a pack a day.\nO: Vitals flowsheet. Cor regular, no murmur. Lungs clear. L groin and knee incisions well healed. Both feet warm, no lesions, monofilament intact, pedal pulses diminished bilaterally, L DP/PT dopplerable per vascular.\nA/P\n1. Acute L leg arterial thrombosis - treated, recovered. Marked resolved; PAD and vascular follow-up continue (duplex ~Dec).\n2. CAD s/p LCx stent - DAPT; cardiology seeing him in August, they will decide clopidogrel duration.\n3. DM2 - A1c today. Metformin.\n4. HTN - at goal on amlodipine + metoprolol.\n5. Lipids on atorva 80 today.\n6. Tobacco - counseled; declines pharmacotherapy.\nFlu/COVID at the October visit. RTC Oct."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "portal_message",
+          "start": "2026-07-20T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2026-07-20T12:15",
+              "body": "Walter, your labs look good. A1c 7.4, holding steady. LDL cholesterol 64 on the higher atorvastatin, right where we want it after a heart attack. Kidney function and potassium are normal. Keep walking. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T08:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Clopidogrel refill",
+              "author": "patient",
+              "date": "2026-08-04T08:02",
+              "body": "Mail order says no refills left on the clopidogrel. About 10 days of pills. Heart doc appointment is the 11th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Clopidogrel refill",
+              "author": "PCP",
+              "date": "2026-08-04T11:30",
+              "body": "Sent a 90-day supply to the mail-order pharmacy, and I'll have your local pharmacy fill a short supply so you don't run out. Keep taking it until cardiology tells you otherwise."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-20a",
+          "kind": "outside_records",
+          "start": "2026-08-20T14:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outside cardiology follow-up",
+              "author": "cardiology",
+              "date": "2026-08-20T14:45",
+              "body": "CARDIOLOGY OFFICE VISIT\nDate of service: 08/11/2026\nCAD s/p DES to mid LCx 10/2025 for NSTEMI; PAD with right fem-pop bypass 2019 and left femoral-popliteal thromboembolectomy 04/2026; TIA (amaurosis fugax) 05/2025.\nNo angina. Walking 2 miles daily. No bleeding beyond easy bruising.\nMeds: aspirin 81 mg, clopidogrel 75 mg, atorvastatin 80 mg, metoprolol succinate 25 mg, amlodipine 10 mg, metformin 1000 mg BID, NTG SL PRN. NKDA.\nExam: BP and heart rate acceptable. Regular rhythm, no murmur. Lungs clear. No edema.\nAssessment: stable after NSTEMI and recent limb ischemia.\nPlan: continue current regimen; duration of clopidogrel to be decided at the next visit in light of the April limb event. Continue to urge smoking cessation. Return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "office_visit",
+          "start": "2026-10-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

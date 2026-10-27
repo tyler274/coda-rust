@@ -184,3 +184,8 @@ difficulty beyond latch is not pursued.
   and 2025; medical alert ID question; a cancelled visit; booked flu-shot visit
   2026-10-07.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001673 on 2026-08-17. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

@@ -1,0 +1,334 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002263",
+      "given": "Alan",
+      "family": "Babcock",
+      "birth_date": "1955-05-24",
+      "address_line": "112 Kendall Hill Road",
+      "phone": "+1-646-555-0106",
+      "email": "alan.babcock@example.test",
+      "marital_status": "divorced",
+      "summary": "Self-employed handyman who joined in 2019 with treated hypertension and an old duodenal ulcer. An unrecognized anterior MI surfaces in late 2022 as HFrEF with an LV aneurysm, followed by LAD stenting, Dressler syndrome, a neck injury with neuropathic hand pain, two heart-failure admissions and an NSAID-related duodenal ulcer bleed in 2026.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2019-08-27T10:20", "body": "Mr. Babcock called about membership. Says his old doctor's office keeps rolling him to a different covering provider every time and he can never get through on the phone. Works for himself as a handyman, wants evening or early-morning slots when possible. Membership agreement and welcome packet emailed. Records release signed electronically and sent to his prior primary care office. New patient visit set for 9/10 at 8:00."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:00",
+          "end": "2019-09-10T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2011-06-01", "note": "long-standing, controlled on lisinopril"},
+            {"label": "Cervical spondylosis", "icd10": "M47.812", "action": "diagnosed", "onset": "2016-01-01", "note": "chronic neck stiffness; degenerative changes on prior films"},
+            {"label": "History of duodenal ulcer disease (H. pylori eradicated)", "icd10": "Z87.11", "action": "diagnosed", "onset": "2015-04-01", "note": "found on workup for melena in 2015; H. pylori treated; no recurrence"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cardiovascular prevention"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "cardiovascular prevention"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [128, 78], "weight_kg": 92.0, "height_cm": 178.0, "labs": {"Hemoglobin": 14.2, "Hemoglobin A1c": 5.6, "Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2019-09-10T08:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T08:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Total Cholesterol"}]},
+            {"panel": null, "collected": "2019-09-10T08:50", "results": [{"test": "Hemoglobin A1c", "value": 5.6}, {"test": "Thyroid Stimulating Hormone"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 1}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Handyman (self-employed)"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per month"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-09-10T09:00"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-10T08:00"},
+            {"procedure": "Venipuncture", "performed": "2019-09-10T08:50"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T09:00"}
+          ],
+          "orders": [
+            {"id": "ldct-2019", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "former smoker, 20 pack-years, quit 2014"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T08:00", "body": "64M here to establish. Self-employed handyman (carpentry, small repairs, some roofing), lives alone in Granby, divorced. Previous PCP office he describes as hard to reach.\n\nPMH\n- HTN, on lisinopril 20 for about 8 years. Home cuff log he brought is at goal.\n- Duodenal ulcer 2015: had black stools, scoped at his old practice, ulcer in the duodenum, H. pylori positive, treated, did a course of acid blocker afterward and stopped it. Nothing since.\n- Neck: stiff for years, worse turning to back out of a driveway. Was told the neck films showed arthritis/disc wear. No arm symptoms.\nNo surgeries. NKDA.\n\nMeds: lisinopril 20 daily, aspirin 81 daily, atorvastatin 40 daily. Aspirin and statin were started by the old PCP for prevention given BP, smoking history and his father's heart attack. He has no cholesterol diagnosis he knows of.\n\nFH: father MI at 58. Mother arthritis. Brother has high blood pressure.\nSH: smoked about a pack a day for 20 years, quit 2014. 1-2 drinks a month. No drugs.\n\nROS: no chest pain, no exertional breathlessness, no leg swelling, no melena since 2015, no reflux symptoms.\n\nExam: well-appearing, vitals as charted. HEENT normal. Neck: rotation mildly limited both ways, no tenderness. Heart RRR, no murmur. Lungs clear. Abd soft, nontender. No edema. Neuro: strength and reflexes symmetric in the arms.\n\nA/P\n1. Hypertension, at goal on lisinopril 20. Continue.\n2. Prevention: aspirin and atorvastatin continue for now; lipids today.\n3. History of duodenal ulcer, quiet for 4 years. If he ever needs an anti-inflammatory he is to call first.\n4. Cervical spondylosis, mechanical, stable.\n5. Health maintenance: Tdap today. CBC, CMP, lipids, A1c, TSH, one-time HCV and HIV screens. He qualifies for lung screening (20 pk-yr, quit 5 yr ago) and wants it: LDCT ordered. Colonoscopy 2017 per his report, getting the record. Flu shot when the vaccine arrives next month.\nRTC 5-6 months."}
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-12T16:40", "body": "Alan, your labs from Tuesday look good. Blood counts, kidney function, liver tests and thyroid are normal. A1c is 5.6, which is in the normal range. Cholesterol numbers are where we want them on the atorvastatin. Hepatitis C and HIV screens were negative. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "outside_records",
+          "start": "2019-09-24T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "prior practice records received",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "outside primary care", "date": "2019-09-24T11:15", "body": "Records received by fax, 46 pages, scanned to media. Summary for the chart:\n- 2015: evaluated for dark stools; upper endoscopy at an outside GI group showed a duodenal ulcer; biopsy positive for H. pylori; treated with a 14-day eradication regimen, then 8 weeks of a proton pump inhibitor. Stool antigen after treatment negative. PPI stopped.\n- 2016: cervical spine x-rays for neck stiffness: multilevel disc space narrowing and facet degenerative change, no fracture or listhesis.\n- 2017: screening colonoscopy, complete exam, no polyps or other findings; 10-year interval recommended.\n- Hypertension managed on lisinopril 20 mg; aspirin 81 mg and atorvastatin 40 mg on the list.\n- Allergies: none recorded.\nAbstracted by MA; PCP reviewed."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2019-10-08T07:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-08T07:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2019-10-08T07:50", "body": "High-dose flu vaccine IM left deltoid. Screening questions negative. VIS reviewed. Tolerated well, on his way to a job in Southwick."}
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "imaging",
+          "start": "2019-11-19T13:30",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2019-11-19T13:30", "text": "Technique: low-dose helical CT of the chest without contrast. Comparison: none. Lungs: no pulmonary nodules. No consolidation or effusion. Airways patent. Mediastinum: no lymphadenopathy. Visualized upper abdomen unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2019", "action": "done", "date": "2019-11-19T13:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2019-11-20T08:10", "body": "LDCT negative, Lung-RADS 1. Repeat next November. Patient notified via portal."}
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "office_visit",
+          "start": "2020-02-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-02-11T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2020-02-11T07:40"},
+            {"procedure": "Venipuncture", "performed": "2020-02-11T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2020-02-11T07:40", "body": "BP check. Home readings fine, mostly under 130 systolic. No lightheadedness. Busy with indoor jobs this winter. Neck about the same. No GI symptoms.\nExam: BP at goal today. Heart RRR. Lungs clear. No edema.\nA/P: HTN controlled, continue lisinopril 20. BMP for K/Cr. He turns 65 in May; reviewed Medicare enrollment timing, he is signing up for Part B starting June. Welcome to Medicare visit this summer."}
+          ]
+        },
+        {
+          "id": "2020-03-30a",
+          "kind": "pharmacy",
+          "start": "2020-03-30T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2020-03-30T09:05", "body": "Pharmacy fax for lisinopril 20 mg. Patient asked for 90-day supply so he does not have to go in during the shutdown. Sent 90 days x 1 refill per protocol."}
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "annual_physical",
+          "start": "2020-07-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare visit",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-07-14T08:15", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-07-14T08:15", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-07-14T08:15", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-07-14T08:20"}],
+          "procedures": [
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2020-07-14T07:30"},
+            {"procedure": "Venipuncture", "performed": "2020-07-14T08:15"},
+            {"procedure": "Immunization administration", "performed": "2020-07-14T08:20"}
+          ],
+          "orders": [
+            {"id": "aaa-us-2020", "action": "placed", "order": "Abdominal aorta ultrasound, AAA screening", "category": "imaging", "reason": "male ever-smoker age 65-75"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Initial Preventive Physical Examination", "author": "PCP", "date": "2020-07-14T07:30", "body": "Welcome to Medicare visit, masks on. Feels well. Working steadily, mostly outdoor jobs now. No chest pain or breathlessness carrying lumber or on ladders. No black stools.\nFunctional: independent, drives, manages own meds and money. Hearing fine by whisper test. No falls. Home safety reviewed; he is careful on roofs and uses a harness.\nDepression screen negative. Alcohol low.\nExam: vitals as charted. Visual acuity by chart normal with readers. Heart RRR, no murmur. Lungs clear. Abd no pulsatile mass. Ext no edema.\nPlan: CBC, CMP, lipids. Shingrix #1 today, #2 in 2-6 months. AAA ultrasound once (ever-smoker). LDCT due November. Colonoscopy 2017 normal, next 2027. Advance directive packet given; he wants his brother as his health care agent and will bring the form back."}
+          ]
+        },
+        {
+          "id": "2020-08-11a",
+          "kind": "imaging",
+          "start": "2020-08-11T15:00",
+          "service": "Radiology",
+          "reason": "AAA screening",
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2020-08-11T15:00", "text": "Limited ultrasound of the abdominal aorta for aneurysm screening. The aorta is visualized from the diaphragm to the bifurcation and is normal in caliber throughout, maximal diameter 2.1 cm. No aneurysm. Common iliac arteries normal in caliber.", "conclusion": "No abdominal aortic aneurysm."}
+          ],
+          "orders": [{"id": "aaa-us-2020", "action": "done", "date": "2020-08-11T15:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "AAA screen", "author": "PCP", "date": "2020-08-12T07:55", "body": "Aorta normal caliber, no aneurysm. One-time screen complete, no repeat needed."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-06T07:35"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-10-06T07:36"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunizations", "author": "RN", "date": "2020-10-06T07:40", "body": "Flu high-dose L deltoid, Shingrix dose 2 R deltoid. He remembers the first Shingrix made his arm ache for two days; advised acetaminophen if needed, not ibuprofen given his ulcer history. Observed 15 min, fine. Shingles series complete."}
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "imaging",
+          "start": "2020-11-17T14:10",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2020-11-17T14:10", "text": "Technique: low-dose noncontrast CT chest. Comparison: 11/2019. No pulmonary nodules. No consolidation, effusion or pneumothorax. No mediastinal or hilar adenopathy.", "conclusion": "Lung-RADS 1. Annual screening in 12 months."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2020-11-18T12:20", "body": "Annual LDCT negative again, Lung-RADS 1. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "telehealth_visit",
+          "start": "2021-02-09T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2021-02-09T17:30"}],
+          "orders": [{"id": "bmp-2021-02", "action": "placed", "order": "Basic metabolic panel", "category": "lab", "reason": "on lisinopril"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2021-02-09T17:30", "body": "Video from his truck after a job, parked. Identity verified. Home BP log for the last month is at goal. Taking lisinopril, aspirin, atorvastatin daily. No side effects. Neck stiff in the cold, nothing radiating. Asked about the COVID vaccine: eligible at 65, helped him find a pharmacy appointment.\nA/P: HTN controlled. BMP at the lab this week. Next in-person visit at the summer wellness visit."}
+          ]
+        },
+        {
+          "id": "2021-02-11a",
+          "kind": "lab_only",
+          "start": "2021-02-11T07:15",
+          "service": "Laboratory",
+          "reason": "BMP",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-02-11T07:15", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "orders": [{"id": "bmp-2021-02", "action": "done", "date": "2021-02-11T07:15"}],
+          "documents": [
+            {"type": "Result Note", "title": "BMP", "author": "PCP", "date": "2021-02-11T15:30", "body": "Kidney function and potassium normal. No changes."}
+          ]
+        },
+        {
+          "id": "2021-03-05a",
+          "kind": "pharmacy",
+          "start": "2021-03-05T10:00",
+          "service": "Pharmacy",
+          "reason": "COVID vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-05T10:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside immunization", "author": "MA", "date": "2021-03-08T09:30", "body": "State registry shows Pfizer COVID dose 1 given 3/5/21 at a retail pharmacy. Added to immunization history."}
+          ]
+        },
+        {
+          "id": "2021-03-26a",
+          "kind": "pharmacy",
+          "start": "2021-03-26T10:30",
+          "service": "Pharmacy",
+          "reason": "COVID vaccine",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-26T10:30"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Second shot done", "author": "patient", "date": "2021-03-27T08:12", "body": "Got the 2nd covid shot yesterday. Felt like I got hit by a truck last night, chills, but better this morning. Just letting you know for my record."},
+            {"type": "Patient Message", "title": "RE: Second shot done", "author": "RN", "date": "2021-03-27T10:02", "body": "Thanks Alan, that reaction is common after dose two and should be gone in a day or so. Fluids and rest, acetaminophen if needed. We've added the dose to your record."}
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "annual_physical",
+          "start": "2021-07-13T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-07-13T08:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2021-07-13T08:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-07-13T08:10", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2021-07-13T07:30"},
+            {"procedure": "Venipuncture", "performed": "2021-07-13T08:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2021-07-13T07:30", "body": "AWV. Doing well. Busy summer, deck rebuilds. Exercise is his work. No chest discomfort, no breathlessness on ladders, no ankle swelling. Occasional neck stiffness in the morning, unchanged.\nScreens: PHQ-2 0, AUDIT-C low. No falls. Lives alone, brother nearby. Health care proxy form returned, brother named, scanned.\nExam: vitals as charted, BP at goal. Heart RRR without murmur. Lungs clear. No edema.\nPlan: CMP, lipids, CBC. Flu in the fall; pneumococcal vaccine this fall too. LDCT November. Continue current meds."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-12T07:40"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-12T07:40"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2021-10-12T07:40", "body": "Fluzone high-dose L deltoid. No issues. Pneumococcal not yet stocked, will call him when the new 20-valent arrives."}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "nurse_visit",
+          "start": "2021-11-09T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pneumococcal vaccine",
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-11-09T07:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-11-09T07:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization", "author": "RN", "date": "2021-11-09T07:35", "body": "PCV20 given IM R deltoid. No prior pneumococcal vaccines per records. Single dose completes the series."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "imaging",
+          "start": "2021-11-16T13:45",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2021-11-16T13:45", "text": "Low-dose noncontrast CT chest. Compared with 11/2020. No pulmonary nodules. Lungs clear. No effusion. No adenopathy.", "conclusion": "Lung-RADS 1, negative. Return to annual screening."}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2021-11-17T07:40", "body": "Negative, Lung-RADS 1. Released to portal with a short note."}
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "pharmacy",
+          "start": "2021-11-23T11:00",
+          "service": "Pharmacy",
+          "reason": "COVID booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-23T11:00"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside immunization", "author": "MA", "date": "2021-11-29T10:15", "body": "Registry reconciliation: Pfizer booster 11/23/21 at retail pharmacy. Entered."}
+          ]
+        }
+      ]
+    }
+  ]
+}

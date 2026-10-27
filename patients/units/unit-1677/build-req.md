@@ -224,3 +224,8 @@ no comment on why the stump became inflamed.
   portal messages about results and scheduling, a no-show in 2017 and in 2022,
   records requests, OTP consent paperwork.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001677 on 2026-04-21. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

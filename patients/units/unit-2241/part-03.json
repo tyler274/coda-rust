@@ -1,0 +1,299 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002241",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "specialist_visit",
+          "start": "2025-01-21T10:45",
+          "service": "Medical Oncology",
+          "reason": "Prostate cancer follow-up",
+          "labs": [
+            {"panel": null, "collected": "2025-01-21T10:00", "results": [{"test": "Prostate Specific Antigen", "value": 0.1}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology follow-up", "author": "oncology", "date": "2025-01-21T15:30", "body": "Medical Oncology Follow-up\nMetastatic hormone-sensitive prostate cancer (L2, L4) on leuprolide q12 weeks and enzalutamide 160 mg daily since 10/2023.\nInterval: left eye vein occlusion in November, followed by retina. No bone pain. Energy fair.\nAllergies: NKDA.\nExam: ECOG 1. No spinal tenderness.\nPSA 0.1 ng/mL.\nPlan: continue current therapy; leuprolide today. Next PSA April; visit July.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "annual_physical",
+          "start": "2025-02-10T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 9.0, "Glucose": 195}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-02-10T08:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Glucose"}, {"test": "Alkaline Phosphatase"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-02-10T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-10T08:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2025-02-10T08:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-02-10T09:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-02-10T10:05", "body": "AWV.\nYear in review: right metatarsal osteomyelitis (MSSA) treated and healed by July. Left CRVO in November, retina observing, no edema. Prostate cancer responding, PSA 0.1 last month.\nFunction: independent in the apartment. Not driving since the eye; uses the van and grocery delivery. No falls.\nMood: PHQ-2 1 - some low days in the winter, nothing more than that he says.\nVaccines up to date (flu/COVID/RSV in the fall, Shingrix complete, PCV20). Tdap not found in registry - offered, he declined today.\nLDCT due this month - ordered.\nExam: vitals as charted. Heart regular. Lungs clear. Feet: right forefoot scar intact, no new lesions; vibration reduced both feet; faint pedal pulses.\nLabs: A1c around 9. Kidney function at baseline. Counts normal.\nPlan: meds unchanged. RTC 3-4 months."}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "specialist_visit",
+          "start": "2025-02-18T09:30",
+          "service": "Ophthalmology — Retina",
+          "reason": "CRVO follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Retina follow-up", "author": "ophthalmology", "date": "2025-02-18T12:30", "body": "Retina Follow-up\nLeft CRVO, three months out. Hemorrhages largely resolved, disc swelling resolved. No neovascularization of iris, angle or disc. OCT without macular edema. Right eye normal.\nPlan: observation; next visit in 6 months, sooner for any change in vision.\nOphthalmology - Retina"}
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "imaging",
+          "start": "2025-02-25T11:10",
+          "reason": "Annual lung cancer screening",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-02-25T11:10", "text": "Comparison 1/2024. Lungs clear, no nodules. No consolidation or effusion. No adenopathy. Coronary calcifications. No suspicious bone lesions in the imaged skeleton.", "conclusion": "Lung-RADS 1, negative. Next annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-02-25T11:10"}]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "hospital_admission",
+          "start": "2025-05-13T03:20",
+          "end": "2025-05-17T12:00",
+          "service": "General Surgery",
+          "reason": "Right upper quadrant pain with fever",
+          "conditions": [
+            {"label": "Acute cholecystitis", "icd10": "K81.0", "action": "diagnosed", "onset": "2025-05-11"}
+          ],
+          "vitals": [
+            {"time": "2025-05-13T03:30", "temp_c": 38.9, "hr": 110, "bp": [135, 85], "rr": 20, "spo2": 96},
+            {"time": "2025-05-15T08:00", "temp_c": 37.1, "hr": 84, "bp": [146, 88], "rr": 16, "spo2": 97}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-05-13T03:45", "results": [
+              {"test": "White Blood Cells", "value": 18.0},
+              {"test": "Hemoglobin", "value": 13.2},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-13T03:45", "results": [
+              {"test": "Bilirubin, Total", "value": 1.2},
+              {"test": "Alkaline Phosphatase", "value": 120},
+              {"test": "Aspartate Aminotransferase", "value": 50},
+              {"test": "Alanine Aminotransferase", "value": 45},
+              {"test": "Glucose", "value": 300},
+              {"test": "Creatinine"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2025-05-13T05:10", "text": "Gallbladder wall thickening with pericholecystic fluid. No gallstones or sludge identified. Common bile duct not dilated. Liver normal in echotexture without focal lesion. Right kidney without hydronephrosis.", "conclusion": "Acalculous acute cholecystitis pattern: wall thickening and pericholecystic fluid, no stones."},
+            {"study": "Abdominal radiograph", "loinc": "37636-8", "performed": "2025-05-13T05:40", "text": "Supine and upright views of the abdomen. Curvilinear lucencies follow the contour of the gallbladder wall in the right upper quadrant, in keeping with gas in the wall. Nonobstructive bowel gas pattern. No free air.", "conclusion": "Gas within the gallbladder wall."},
+            {"study": "Surgical pathology report", "performed": "2025-05-14T10:30", "issued": "2025-05-16T15:00", "text": "Specimen: gallbladder. Wall thickened and edematous with transmural acute inflammation and mucosal ulceration. No calculi in the specimen. No dysplasia or malignancy.", "conclusion": "Acute acalculous cholecystitis. Negative for malignancy."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-05-13T04:30"},
+            {"procedure": "Laparoscopic cholecystectomy", "performed": "2025-05-14T09:15"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-05-17T11:00"}
+          ],
+          "medications": [
+            {"drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 5 days", "dose": {"value": 875, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "After cholecystectomy for acute cholecystitis"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "General surgery discharge summary", "author": "general surgery", "date": "2025-05-17T12:30", "body": "Hospital Discharge Summary - General Surgery\nPatient: Lawrence Leary, 68 M\nAdmitted: 05/13/2025 via the emergency department. Discharged: 05/17/2025.\nDiagnosis: acute acalculous cholecystitis with gas in the gallbladder wall.\nProcedure: laparoscopic cholecystectomy 05/14/2025.\n\nPresentation: two days of severe, constant, sharp pain in the right upper abdomen spreading to the right shoulder, with fevers and shaking chills. Background of poorly controlled type 2 diabetes, recent right foot osteomyelitis (treated) and left central retinal vein occlusion; also hypertension, CKD 3, PAD, BPH, prostate cancer (suspected per transferred list).\nOn arrival: temperature 38.9 C (102 F), HR 110, BP 135/85. Marked right upper quadrant tenderness with a positive Murphy sign.\nLabs: WBC 18,000, hemoglobin 13.2, platelets 250,000, total bilirubin 1.2, alkaline phosphatase 120, AST 50, ALT 45, glucose 300.\nImaging: ultrasound with gallbladder wall thickening and pericholecystic fluid but no stones; plain film with curvilinear gas in the gallbladder wall.\n\nCourse: IV piperacillin-tazobactam, fluids, insulin sliding scale while inpatient. Laparoscopic cholecystectomy the next morning without conversion; gallbladder inflamed, no perforation. Afebrile from postoperative day 1, tolerating diet, pain controlled with acetaminophen. Pathology: acute acalculous cholecystitis, no malignancy.\n\nHome medications on discharge: metformin 1000 mg BID, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, tamsulosin 0.4 mg qhs, aspirin 81 mg daily. NEW: amoxicillin-clavulanate 875/125 mg twice daily for 5 days.\nAllergies: NKDA.\nFollow-up: primary care within 1 week; general surgery clinic in 2-3 weeks. Return for fever, worsening pain, jaundice or wound drainage.\n\nGeneral Surgery"},
+            {"type": "Operative Note", "title": "Laparoscopic cholecystectomy", "author": "general surgery", "date": "2025-05-14T11:00", "body": "Operative Report\nPreop/postop dx: acute cholecystitis, acalculous, with gas in the wall.\nProcedure: laparoscopic cholecystectomy.\nAnesthesia: general.\nFindings: distended, edematous, inflamed gallbladder with surrounding omental adhesions; no perforation, no abscess. Critical view of safety obtained; cystic duct and artery clipped and divided. Gallbladder removed in a retrieval bag via the umbilical port. Hemostasis confirmed.\nEBL minimal. No complications. Specimen to pathology.\nGeneral Surgery"}
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "office_visit",
+          "start": "2025-05-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-21T11:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-05-21T11:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2025-05-21T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional care visit", "author": "PCP", "date": "2025-05-21T11:45", "body": "Discharged 5/17 after lap chole for acute acalculous cholecystitis (gas in the wall on films). Pathology benign. Finished amox-clav yesterday.\nFeels sore at the port sites, eating small meals, bowels moving, no fever. Some fatigue.\nExam: afebrile, vitals as charted. Port sites clean, no redness or drainage. Abd soft, appropriately tender near the umbilicus.\nMeds reconciled against discharge list (hospital list did not include his oncology drugs - he confirms still taking enzalutamide and had leuprolide in April).\nLabs today to make sure the white count settled.\nPlan: surgical follow-up 6/3. Call for fever or yellowing."}
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "specialist_visit",
+          "start": "2025-06-03T14:00",
+          "service": "General Surgery",
+          "reason": "Post-op visit",
+          "conditions": [
+            {"label": "Acute cholecystitis", "icd10": "K81.0", "action": "resolved"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "General surgery post-operative visit", "author": "general surgery", "date": "2025-06-03T16:00", "body": "General Surgery Clinic - Post-operative Visit\nThree weeks after laparoscopic cholecystectomy for acalculous acute cholecystitis. Pathology without malignancy.\nEating normally, no pain medicine needed, no fevers. Bowels regular.\nAllergies: NKDA.\nExam: incisions healed. Abdomen soft, nontender.\nPlan: no restrictions after 6 weeks from surgery. Follow up as needed.\nGeneral Surgery"}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "specialist_visit",
+          "start": "2025-07-22T10:30",
+          "service": "Medical Oncology",
+          "reason": "Prostate cancer follow-up",
+          "labs": [
+            {"panel": null, "collected": "2025-07-22T09:45", "results": [{"test": "Prostate Specific Antigen", "value": 0.1}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology follow-up", "author": "oncology", "date": "2025-07-22T14:00", "body": "Medical Oncology Follow-up\nMetastatic hormone-sensitive prostate cancer, bone lesions L2/L4, on leuprolide + enzalutamide.\nInterval: gallbladder removed in May for acute cholecystitis, recovered.\nNo bone pain. Hot flashes and fatigue unchanged.\nAllergies: NKDA.\nPSA 0.1 ng/mL, stable.\nPlan: continue therapy, leuprolide today. PSA in 3 months; visit in January.\n\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; sore on left heel",
+          "conditions": [
+            {"label": "Non-pressure chronic ulcer of left heel and midfoot", "icd10": "L97.429", "action": "diagnosed", "onset": "2025-07-01"}
+          ],
+          "state": {"labs": {"Hemoglobin A1c": 9.3, "Glucose": 210}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2025-08-19T09:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-08-19T09:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "orders": [
+            {"id": "pod-referral-2025", "action": "placed", "order": "Podiatry wound care referral", "category": "referral", "to": "Podiatry", "reason": "left heel ulcer, diabetes, PAD"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-08-19T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Diabetes follow-up", "author": "PCP", "date": "2025-08-19T10:30", "body": "Routine DM/HTN visit. Mentions at the end that he has had a sore on the back of the left heel since early summer - thought it was from his slippers and has been putting a bandage on it.\nDM: metformin, A1c still around 9.\nExam: BP as charted. Heart regular. Lungs clear. Left heel: ulcer on the posterior plantar heel with a dark eschar cap, dry, no surrounding redness or drainage today. Left foot cool compared with the right, pedal pulses not felt on the left. Right foot intact, old forefoot scar healed.\nA/P:\n- Left heel ulcer with PAD - needs wound care and offloading. Podiatry wound clinic referral, asked for the next available.\n- DM, HTN: unchanged.\nDaily dressing, heel off the mattress with a pillow under the calf. Call for redness, swelling, drainage, fever."}
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "specialist_visit",
+          "start": "2025-08-26T08:45",
+          "service": "Ophthalmology — Retina",
+          "reason": "CRVO follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Retina follow-up", "author": "ophthalmology", "date": "2025-08-26T11:30", "body": "Retina Follow-up\nLeft CRVO, nine months. Stable. No neovascularization of iris, angle or disc. OCT without macular edema. Right eye normal, no diabetic retinopathy.\nPlan: return in 6 months; annual dilated exam serves as his diabetic eye exam.\nOphthalmology - Retina"}
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "specialist_visit",
+          "start": "2025-09-02T13:30",
+          "service": "Podiatry",
+          "reason": "Left heel ulcer",
+          "orders": [
+            {"id": "pod-referral-2025", "action": "done", "date": "2025-09-02T13:30"},
+            {"id": "vasc-referral", "action": "placed", "order": "Vascular surgery referral", "category": "referral", "to": "Vascular Surgery", "reason": "left heel ulcer with absent pedal pulses"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Podiatry wound clinic", "author": "podiatry", "date": "2025-09-02T15:00", "body": "Podiatry - Wound Clinic\nPatient: Lawrence Leary. Known to us from the 2024 right foot biopsy.\nLeft posterior heel ulcer for a couple of months, capped with dry eschar. No probe to bone through the eschar edge, no cellulitis. Left pedal pulses not palpable.\nAllergies: NKDA.\nPlan: keep eschar dry and stable (no debridement with this circulation), betadine paint and dry dressing, heel offloading boot. Referral to vascular surgery for arterial assessment. Wound clinic every 2 weeks.\nPodiatry"}
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T10:15",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-09T10:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-09T10:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-09T10:20"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2025-10-09T10:40", "body": "Flu and 2025-26 COVID given, one each arm. Pt in heel offloading boot; says the wound clinic is still doing dressings and he is waiting on a vascular appointment date. No reactions."}
+          ]
+        },
+        {
+          "id": "2025-11-15a",
+          "kind": "hospital_admission",
+          "start": "2025-11-15T16:40",
+          "end": "2025-11-26T11:00",
+          "service": "Vascular Surgery",
+          "reason": "Infected left heel ulcer with ischemic leg",
+          "conditions": [
+            {"label": "Infected gangrene of left lower extremity with nonrevascularizable critical limb ischemia", "icd10": "I70.262", "action": "diagnosed", "onset": "2025-11-01"},
+            {"label": "Non-pressure chronic ulcer of left heel and midfoot", "icd10": "L97.429", "action": "resolved", "note": "removed with below-knee amputation"}
+          ],
+          "vitals": [
+            {"time": "2025-11-15T16:50", "temp_c": 38.6, "bp": [150, 90], "hr": 88, "rr": 18, "spo2": 96},
+            {"time": "2025-11-21T08:00", "temp_c": 37.0, "bp": [148, 86], "hr": 80, "rr": 16, "spo2": 97}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-11-15T17:10", "results": [
+              {"test": "White Blood Cells", "value": 18.0},
+              {"test": "Hemoglobin", "value": 12},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-15T17:10", "results": [
+              {"test": "Creatinine", "value": 1.8},
+              {"test": "Potassium"}, {"test": "Glucose"}
+            ]},
+            {"panel": null, "collected": "2025-11-15T17:10", "results": [{"test": "C Reactive Protein", "value": 24}]}
+          ],
+          "reports": [
+            {"study": "Arterial duplex, left lower extremity", "loinc": "39499-9", "performed": "2025-11-15T21:00", "text": "Left lower extremity arterial duplex. Common femoral, superficial femoral and popliteal arteries patent with calcified plaque. No flow detected in the anterior tibial, posterior tibial or peroneal arteries.", "conclusion": "No flow in the left anterior tibial, posterior tibial and peroneal arteries."}
+          ],
+          "orders": [{"id": "vasc-referral", "action": "done", "date": "2025-11-15T16:40"}],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-11-15T18:00"},
+            {"procedure": "Diagnostic angiogram, left lower extremity", "performed": "2025-11-17T10:00"},
+            {"procedure": "Below-knee amputation, left", "performed": "2025-11-19T08:30"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-11-26T10:00"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for residual limb pain", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "Post-amputation pain"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Vascular surgery discharge summary", "author": "vascular surgery", "date": "2025-11-26T12:00", "body": "Hospital Discharge Summary - Vascular Surgery\nPatient: Lawrence Leary, 69 M\nAdmitted 11/15/2025 through the ED; discharged 11/26/2025 to an inpatient rehabilitation facility.\nPrincipal diagnosis: infected gangrene of the left lower extremity with critical limb ischemia not amenable to revascularization.\nProcedures: diagnostic left leg angiogram 11/17; left below-knee amputation 11/19.\n\nPresentation: two weeks of increasing pain, swelling and redness of the left leg, and a left heel ulcer draining foul material for months. History of poorly controlled diabetes, PAD and a prior right foot osteomyelitis; also hypertension, CKD 3, BPH, angiodysplasia of cecum, CRVO, cholecystitis, prostate cancer (suspected).\nAdmission: temperature 38.6 C (101.5 F), BP 150/90, pulse 88, RR 18. Left heel ulcer 3 x 4 cm with black eschar and surrounding cellulitis. No palpable left dorsalis pedis or posterior tibial pulse. Diminished sensation both legs.\nLabs: WBC 18,000, hemoglobin 12, platelets 250,000, creatinine 1.8, CRP 24 mg/L (normal <5).\nArterial duplex: no flow in the left anterior tibial, posterior tibial or peroneal arteries.\n\nCourse: IV vancomycin and piperacillin-tazobactam. Angiogram 11/17 confirmed occlusion of all three tibial vessels with no distal target for bypass or endovascular treatment; popliteal artery patent. Left below-knee amputation 11/19. Fever resolved within 48 hours of surgery and antibiotics were stopped after source control. Creatinine back to about 1.7 by discharge. Insulin sliding scale inpatient. Residual limb incision intact on discharge; staples in place.\n\nDischarge medications: metformin 1000 mg BID, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, tamsulosin 0.4 mg qhs, aspirin 81 mg daily; NEW oxycodone-acetaminophen 5/325 one tablet every 6 hours as needed, short supply.\nAllergies: NKDA.\nFollow-up: vascular surgery clinic in 3-4 weeks for staple removal and wound check; primary care after rehab discharge.\n\nVascular Surgery"}
+          ]
+        },
+        {
+          "id": "2025-12-12a",
+          "kind": "outside_records",
+          "start": "2025-12-12T15:00",
+          "reason": "Rehabilitation discharge summary",
+          "conditions": [{"label": "Acquired absence of left leg below knee", "action": "diagnosed", "onset": "2025-11-19"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Inpatient rehabilitation discharge summary", "author": "physical medicine and rehabilitation", "date": "2025-12-12T15:00", "body": "Inpatient Rehabilitation Facility - Discharge Summary\nPatient: Lawrence Leary\nAdmit 11/26/2025, discharge 12/12/2025.\nReason: rehabilitation after left below-knee amputation (11/19) for infected gangrene with nonrevascularizable ischemia.\nCourse: daily PT and OT. Independent with transfers and wheelchair mobility; walks short distances with a walker hopping on the right leg, with standby assist. Residual limb wound healing, staples removed 12/10, shrinker sock started. Pain controlled with acetaminophen; oxycodone no longer needed after the first week.\nMedications at discharge: metformin 1000 mg BID, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, tamsulosin 0.4 mg nightly, aspirin 81 mg daily, enzalutamide 160 mg daily (patient's own supply).\nAllergies: NKDA.\nDisposition: home (first-floor apartment) with home health PT/OT and nursing. Wheelchair and walker supplied.\nFollow-up: vascular surgery 1/2026; prosthetics evaluation once the limb has matured; primary care within 1 week.\nPhysical Medicine and Rehabilitation"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "stop", "reason": "no longer needed"}
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "office_visit",
+          "start": "2025-12-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after amputation",
+          "state": {"weight_kg": 90.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-17T14:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-17T14:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-12-17T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Transitional care visit", "author": "PCP", "date": "2025-12-17T14:30", "body": "Seen in wheelchair. Admitted 11/15 with infected gangrene of the left heel and no reconstructable arteries below the knee; left BKA 11/19. Rehab 11/26-12/12, now home with home health starting this week.\nHow he is: tired, sleeping ok, phantom sensations at night but not painful. Using acetaminophen only. Getting around the apartment in the chair and with the walker for short hops. Says he was expecting it after the heel turned black.\nMeds reconciled: home meds unchanged from before admission. Enzalutamide continues; leuprolide next due in January.\nExam: afebrile. Weight down after the amputation. Heart regular. Lungs clear. Left residual limb: incision closed, no drainage or redness, shrinker on. Right foot: skin intact, no ulcer, faint pulses.\nPlan:\n- home health PT/OT/RN orders to sign when they arrive.\n- check right foot daily - mirror demonstrated.\n- vascular f/u in January; prosthetics after.\n- labs today.\nTalked about how he is coping alone; he wants to stay home and has the van and delivery set up. Will call him next week."}
+          ]
+        },
+        {
+          "id": "2025-12-18a",
+          "kind": "telephone",
+          "start": "2025-12-18T09:20",
+          "reason": "Home health orders",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Home health certification", "author": "RN", "date": "2025-12-18T09:20", "body": "Home health agency faxed start-of-care plan: PT 2x/week, OT 1x/week, skilled nursing weekly for residual limb checks, 6 weeks. Signed by PCP and faxed back. Agency will call with any wound concerns."},
+            {"type": "Telephone Encounter", "title": "Check-in call", "author": "PCP", "date": "2025-12-23T17:10", "body": "Called to check in. PT has been out twice. Limb looks fine per the nurse. Mood ok, a little bored. No questions. Will see him after the vascular visit."}
+          ]
+        }
+      ]
+    }
+  ]
+}

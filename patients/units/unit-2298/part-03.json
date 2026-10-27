@@ -1,0 +1,188 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002298",
+      "events": [
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg and arm weakness",
+          "state": {"weight_kg": 70.5, "labs": {"Creatine Kinase": 84, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-01-23T14:10", "results": [{"test": "Creatine Kinase"}, {"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-23T14:10", "results": [{"test": "Potassium"}, {"test": "Calcium"}, {"test": "Sodium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-01-23T14:05"}],
+          "orders": [{"id": "neuro-referral", "action": "placed", "order": "Neurology referral, urgent", "category": "referral", "to": "Neurology", "reason": "Proximal weakness after small cell lung cancer treatment"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-01-23T14:05", "body": "CC: weak legs.\nHPI: Finished chemo and chest radiation 01/05. About two weeks ago he started having real trouble getting up out of his recliner and the car, and the stairs up to his apartment are now hand-over-hand on the railing. Arms tire when he lifts a pot. Mouth feels dry. No double vision, no droopy lids, swallowing is actually better than in the fall, no numbness or tingling. No falls.\nExam: Weight as charted. Alert. Proximal weakness hips and shoulders, roughly 4-/5 symmetric; distal strength good. Needs arms to rise from chair. Reflexes hard to get at knees and ankles. Sensation intact to light touch. Cranial nerves normal, no ptosis. Lungs diminished R, no wheeze. Heart regular.\nA/P: New symmetric proximal weakness with dry mouth and depressed reflexes in a patient with small cell lung cancer - concerned for a paraneoplastic neuromuscular junction disorder (Lambert-Eaton) vs a chemotherapy-related myopathy or electrolyte problem. CK, TSH, BMP today. Urgent neurology referral, spoke with their triage nurse - earliest 02/06. Fall precautions; he'll use a cane on stairs.\nOther: restaging CT pending with oncology. Smoking ~1/2 ppd."}
+          ]
+        },
+        {
+          "id": "2024-01-24a",
+          "kind": "portal_message",
+          "start": "2024-01-24T17:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2024-01-24T17:30", "body": "Your muscle enzyme (CK), thyroid, potassium and calcium were all normal, which points away from a muscle inflammation or a chemistry problem. Neurology on Feb 6 is the next step - they can do the nerve testing there. Call me if the weakness gets worse quickly or you have trouble swallowing or breathing."}
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "outside_records",
+          "start": "2024-01-30T10:10",
+          "medications": [
+            {"drug_text": "carboplatin 10 MG/ML Injectable Solution", "action": "historical", "sig": "IV every 21 days x 4 cycles (cancer center)", "frequency": "Q21D", "route": "Intravenous", "course": "short", "reason": "Small cell lung cancer"},
+            {"drug_text": "etoposide 20 MG/ML Injectable Solution", "action": "historical", "sig": "IV days 1-3 every 21 days x 4 cycles (cancer center)", "frequency": "Q21D", "route": "Intravenous", "course": "short", "reason": "Small cell lung cancer"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology treatment summary", "author": "oncology", "date": "2024-01-30T10:10", "body": "REGIONAL CANCER CENTER - END OF TREATMENT SUMMARY\nDiagnosis: Limited-stage combined small cell carcinoma (with squamous component), right upper lobe, N2 nodal disease.\nTreatment: Carboplatin and etoposide, 4 cycles, 10/16/2023 through 12/2023. Concurrent thoracic radiation, 60 Gy in 30 fractions, completed 01/05/2024.\nCourse: Fatigue and expected count nadirs, no admissions. Swallowing improved over the course; tolerating a regular diet by the end.\nNext: Restaging CT chest in February; then CT every 3-6 months and MRI brain surveillance (PCI declined). Prostate cancer: leuprolide continues through urology.\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "specialist_visit",
+          "start": "2024-02-06T14:00",
+          "service": "Neurology",
+          "reason": "Proximal weakness",
+          "conditions": [{"label": "Lambert-Eaton myasthenic syndrome", "icd10": "G73.1", "action": "diagnosed", "onset": "2024-01-09", "note": "Paraneoplastic, small cell lung cancer"}],
+          "medications": [
+            {"drug_text": "amifampridine 10 MG Oral Tablet", "action": "historical", "sig": "Take 1.5 tablets (15 mg) by mouth four times daily (neurology; titrated up from a lower starting dose)", "dose": {"value": 15, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "chronic", "reason": "Lambert-Eaton myasthenic syndrome"}
+          ],
+          "orders": [{"id": "neuro-referral", "action": "done", "date": "2024-02-06T14:00"}],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2024-02-06T13:30", "text": "Single frontal view of the chest.\nComparison: 06/12/2023.\nFindings: Right hilar mass, smaller than before. Post-radiation streaky opacity in the right paramediastinal lung. Known right upper lobe cavity. No effusion. Heart size normal.", "conclusion": "Right hilar mass, decreased. Expected post-treatment change."},
+            {"study": "Nerve conduction study and EMG", "performed": "2024-02-06T15:00", "text": "Motor nerve conductions: low compound muscle action potential amplitudes at rest in the ulnar, median and peroneal nerves with normal distal latencies and conduction velocities. Sensory responses normal. Repetitive nerve stimulation: decrement at 3 Hz; marked increment of the CMAP amplitude after 10 seconds of maximal exercise and with 50 Hz stimulation. Needle EMG of proximal muscles: no fibrillations; motor units of normal morphology with variable amplitude.", "conclusion": "Presynaptic neuromuscular junction disorder: reduced baseline motor responses with incremental response to high-frequency repetitive stimulation, consistent with Lambert-Eaton myasthenic syndrome."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Consultation", "author": "neurology", "date": "2024-03-26T09:40", "body": "NEUROLOGY - OUTPATIENT CONSULTATION\nDate of service: 02/06/2024\nReferral: PCP, urgent, proximal weakness.\n\n67-year-old man with limited-stage small cell lung cancer just through chemoradiation, metastatic prostate cancer on leuprolide. Four weeks of steadily worsening trouble getting up from chairs, climbing stairs and lifting things. Occasional dry mouth. No diplopia, no dysphagia, no sensory symptoms.\n\nExam: Symmetric proximal weakness in the arms and legs. Deep tendon reflexes diminished, but they become brisker after a few seconds of muscle contraction; strength likewise improves on repeated testing. Sensory examination normal. Cranial nerves intact.\nChest film today: right hilar mass, smaller than on prior imaging.\nNCS/RNS/EMG today: low baseline motor responses that increase markedly with high-frequency repetitive stimulation and post-exercise.\n\nImpression: Lambert-Eaton myasthenic syndrome, paraneoplastic in the setting of small cell lung cancer.\nPlan: Amifampridine, start low and increase over 2-3 weeks to 15 mg four times daily; enrolled through the manufacturer's patient assistance program (no Part D). Treating the cancer remains the main therapy. Avoid magnesium, aminoglycosides and fluoroquinolones where possible. Follow-up in 6 months."}
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "imaging",
+          "start": "2024-02-12T10:00",
+          "service": "Radiology",
+          "reports": [
+            {"study": "CT chest", "performed": "2024-02-12T10:00", "issued": "2024-02-12T17:00", "text": "CT CHEST WITH CONTRAST (restaging).\nComparison: 06/12/2023.\nFindings: The right hilar/central right upper lobe mass is smaller, with residual soft tissue measuring about 1.8 cm. Right paratracheal and subcarinal nodes have decreased and are now subcentimeter. Radiation change in the right paramediastinal lung. The right upper lobe aspergilloma cavity is unchanged. No new nodule. No effusion. Visualized bones show the known sclerotic lesions, unchanged.", "conclusion": "Partial response of right hilar mass and mediastinal nodes. No new disease."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Restaging CT received", "author": "RN", "date": "2024-02-20T11:30", "body": "Restaging CT chest 02/12/2024 report received from the cancer center: partial response, no new disease. Filed; routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "telephone",
+          "start": "2024-02-13T15:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New medication from neurology", "author": "RN", "date": "2024-02-13T16:00", "body": "Pt called. Neurology told him he has Lambert-Eaton, 'an immune thing from the lung cancer', and started a pill called amifampridine that comes by mail from the drug company's assistance program; he goes up on the dose over the next couple of weeks. First box arrived yesterday. No neurology note in our chart yet - requested. Told him to bring the bottle to his April visit so we can add it properly. PCP aware."}
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "office_visit",
+          "start": "2024-04-09T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; medication reconciliation",
+          "state": {"weight_kg": 71.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-04-09T10:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-09T10:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-09T10:25"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-04-09T10:25", "body": "Med reconciliation after a busy winter. Brought the amifampridine bottle: 10 mg tabs, 1.5 tabs four times a day = 15 mg QID, has been at full dose about six weeks. Neurology letter arrived 3/26.\nHow he feels: legs noticeably stronger, can get out of the recliner without rocking, still uses the rail on stairs. Dry mouth better. Eating normally again, weight creeping up. Cough small, no blood. Restaging CT in Feb showed the tumor shrank.\nExam: Vitals as charted. Rises from chair without arms (slowly). Reflexes present at knees, reduced at ankles. Lungs diminished R. Heart regular. No edema.\nMeds now: aspirin 81, atorvastatin 40, metoprolol succ 50, lisinopril 10, furosemide 40, tiotropium, albuterol prn, leuprolide monthly (urology), oxycodone 5 prn (using rarely), amifampridine 15 QID (neurology). List updated.\nA/P: LEMS improving on amifampridine. SCLC partial response, surveillance per oncology. HFrEF/CAD/COPD stable. CMP/CBC today. Smoking ~1/2 ppd; he says he 'can't quit everything at once' - revisit. AWV in July."}
+          ]
+        },
+        {
+          "id": "2024-07-10a",
+          "kind": "annual_physical",
+          "start": "2024-07-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-07-10T09:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-10T09:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-07-10T09:20", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-07-10T09:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2024-07-10T09:15", "body": "Subsequent AWV.\nHRA: lives alone, independent in self-care, drives short distances, does his own shopping. No falls. Hearing fine. PHQ-9 = 3. Recall 3/3.\nSmoking: half a pack, sometimes less. Alcohol rare.\nInterval: SCLC surveillance CT in May was stable per his report (no report received yet). Neurology follow-up in August. Bladder: urology scope was clear, he says. Leuprolide monthly.\nExam: vitals as charted, weight stable. Lungs diminished R. RRR. No edema. Gets up from chair without help.\nPrevention: colonoscopy 2018, no further screening planned given his cancers - he agrees. Lung screening not applicable now (on oncology surveillance). Flu/COVID in fall; RSV vaccine recommended this fall with his COPD and heart failure.\nAdvance care planning: health care proxy form on file (brother). Discussed what he'd want if very sick; he wants full treatment for now, will revisit.\nLabs: lipids, BMP, CBC."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "specialist_visit",
+          "start": "2024-08-13T11:00",
+          "service": "Neurology",
+          "reason": "Lambert-Eaton follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology Follow-up", "author": "neurology", "date": "2024-08-20T13:50", "body": "NEUROLOGY - FOLLOW-UP\nDate of service: 08/13/2024\nLEMS, paraneoplastic (small cell lung cancer, treated). On amifampridine 15 mg four times daily since late February. Reports clearly improved strength: up from chairs without help, stairs with a rail, lifting groceries. No side effects he has noticed.\nExam: Proximal strength 5-/5 in the arms, 4+/5 at the hips. Reflexes present, enhanced after brief exercise.\nPlan: Continue amifampridine 15 mg four times daily through the assistance program. Follow-up 6 months, sooner if weakness returns (could signal tumor recurrence)."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "specialist_visit",
+          "start": "2024-09-10T13:00",
+          "service": "Oncology",
+          "reason": "Small cell lung cancer surveillance",
+          "reports": [
+            {"study": "MRI brain without contrast", "performed": "2024-09-06T16:00", "text": "MRI BRAIN, surveillance.\nComparison: 09/28/2023.\nFindings: No intracranial mass or abnormal signal. No restricted diffusion. Ventricles and sulci stable.", "conclusion": "No evidence of intracranial metastatic disease."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Surveillance Visit", "author": "oncology", "date": "2024-09-17T10:05", "body": "REGIONAL CANCER CENTER - SURVEILLANCE\nVisit date: 09/10/2024\nLimited-stage combined SCLC s/p chemoradiation (completed 01/2024). CT chest 08/2024: stable post-treatment changes at the right hilum, no new nodules or adenopathy, aspergilloma cavity unchanged. MRI brain 09/06/2024 negative. No new symptoms; weight stable. LEMS improved on amifampridine per neurology.\nProstate cancer: leuprolide continues with urology.\nPlan: CT chest every 4-6 months through year 2, MRI brain every 6 months. Encouraged smoking cessation."}
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "nurse_visit",
+          "start": "2024-10-01T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-01T10:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-01T10:22"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-10-01T10:25"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-01T10:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Vaccines", "author": "RN", "date": "2024-10-01T10:45", "body": "Three vaccines today per PCP: high-dose flu L deltoid, 2024-25 COVID R deltoid, RSV L deltoid (separate site, 1 inch apart). Afebrile. RSV is a one-time dose. Waited 15 min, fine."}
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "office_visit",
+          "start": "2024-11-14T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heart failure and COPD follow-up",
+          "conditions": [{"label": "Unintentional weight loss", "action": "resolved", "note": "Weight regained after cancer treatment"}],
+          "state": {"weight_kg": 74.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-14T15:40", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-14T15:35"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-11-14T15:35", "body": "f/u CHF/COPD\nFeels okay. Breathing at his usual, uses albuterol a couple of times a week. Sleeps on one pillow. No swelling. Weight back up some (as charted), eating well.\nStrength holding on amifampridine. Oncology 9/10: scans stable.\nSmoking ~1/2 ppd.\nExam: BP/HR as charted. JVP not elevated. Lungs diminished, no crackles. RRR. No edema.\nA/P: HFrEF compensated, CAD stable, COPD stable. BMP. Cost check: all generics at the cash program, tiotropium with discount card, amifampridine via assistance. Cardiology yearly - he's overdue, number given. RTC 3 mo."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "portal_message",
+          "start": "2024-12-10T07:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2024-12-10T07:55", "body": "Need my atorvastatin and lisinopril called in, the pharmacy on Union St said no refills left. Thanks. Mark"},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "RN", "date": "2024-12-10T11:20", "body": "Sent both, 90 days with 3 refills. Should be ready this afternoon."}
+          ]
+        }
+      ]
+    }
+  ]
+}

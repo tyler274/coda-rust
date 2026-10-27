@@ -61,3 +61,8 @@
 - 2026-07-14 AF/BP follow-up (P)
 - 2026-08-11 INR draw, portal result (P)
 - 2026-09-10 booked AF/anticoagulation follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002832 on 2026-01-27. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

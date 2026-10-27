@@ -38,3 +38,8 @@
 - 2026-05-14 office visit: spring asthma check; albuterol refill (P)
 - 2026-08-18 portal: scheduling the physical (P)
 - 2026-11-05 annual physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002653 on 2026-05-14. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

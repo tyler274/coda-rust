@@ -184,3 +184,8 @@ continued through every pregnancy, as the source has them.
   prenatal vitamin refills; pregnancy announcements; records requests; work notes.
 - Cervical screening: co-test 2021 normal at prior practice; next due 2026.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001685 on 2025-02-26. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

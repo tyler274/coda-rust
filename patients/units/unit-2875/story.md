@@ -36,3 +36,8 @@
 - 2026-06-08 portal: scheduling fall follow-up (P)
 - 2026-08-10 pharmacy: alendronate refill (P)
 - 2026-09-21 booked office visit: osteopenia follow-up on alendronate (P)
+
+
+## Last seen
+
+The practice last saw MRN00002875 on 2025-12-01. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

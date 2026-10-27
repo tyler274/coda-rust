@@ -1,0 +1,323 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002573",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T09:00",
+          "reason": "Follow-up reminder",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your follow-up blood test",
+              "author": "MA",
+              "date": "2026-01-20T09:00",
+              "body": "Hi Gavin, it has been about six months since your treatment in July, so it's time for the follow-up visit and RPR blood test. We have openings the first week of February. Reply with a day that works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your follow-up blood test",
+              "author": "patient",
+              "date": "2026-01-21T22:15",
+              "body": "Tuesday the 3rd after 3 works"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "office_visit",
+          "start": "2026-02-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Syphilis follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-03T15:45",
+              "resulted": "2026-02-04T11:20",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-03T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-03T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up after syphilis treatment",
+              "author": "PCP",
+              "date": "2026-02-03T15:55",
+              "body": "Six-month check after benzathine penicillin for primary syphilis on 7/28/25. The sore healed within a couple of weeks and he has had no new sores, rash, hair loss, headaches or vision change. No urinary symptoms. Says he has been more careful with condoms since the summer.\n\nExam: well. Genital skin without ulcer or scar of note. No inguinal nodes. No rash on palms or soles.\n\nA/P: primary syphilis, treated. RPR today to document the response. Continue condoms; STI testing at the yearly physical or sooner with any symptoms or new partners."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "portal_message",
+          "start": "2026-02-04T13:05",
+          "reason": "Lab result",
+          "conditions": [
+            {
+              "label": "Primary syphilis",
+              "icd10": "A51.0",
+              "action": "resolved",
+              "onset": "2025-07-21",
+              "note": "treated 7/28/25; RPR non-reactive 2/2026"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RPR result",
+              "author": "PCP",
+              "date": "2026-02-04T13:05",
+              "body": "Good news, Gavin: your RPR is now non-reactive, which is what we hope to see after treatment. I've moved the syphilis to your past history. The other syphilis test (FTA-ABS) usually stays positive for life, so if anyone ever tests you, let them know you were treated in July 2025."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "annual_physical",
+          "start": "2026-06-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 78.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-19T10:40",
+              "resulted": "2026-06-22T08:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Chlamydia trachomatis NAAT",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-19T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-06-19T10:50",
+              "body": "23 y/o here for his yearly. Still finishing his degree, one more semester. Feels well. No genital sores, discharge or dysuria since last winter's follow-up. No medications. NKDA.\n\nPast history: gonococcal urethritis 1/2025 and primary syphilis 7/2025, both treated; RPR non-reactive in February.\n\nSocial: no tobacco ever. Weekend drinking, 2-3 drinks. Sexually active with new partners at times; condoms most but not all of the time.\n\nExam: healthy-appearing. BP in normal range. HEENT clear. No lymphadenopathy. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft and nontender. Genital exam normal, no lesions. Skin without rash. No edema. PHQ-2 0.\n\nA/P:\n- Routine physical, well.\n- High risk sexual behavior: STI screen today with HIV, RPR, urine gonorrhea/chlamydia. Reinforced condom use and testing with symptoms or new partners.\n- Vaccines current; flu this fall.\n- Yearly follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T11:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "author": "PCP",
+              "date": "2026-06-22T11:45",
+              "body": "Hi Gavin, your HIV test, RPR, and urine tests for gonorrhea and chlamydia from Friday are all negative. Have a good summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-25a",
+          "kind": "ed_visit",
+          "start": "2026-07-25T13:10",
+          "end": "2026-07-25T17:45",
+          "service": "Emergency Medicine",
+          "reason": "Rectal pain and discharge",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-25T13:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                }
+              ],
+              "resulted": "2026-07-25T14:32"
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-25T13:50",
+              "resulted": "2026-07-25T16:30",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Non-reactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-25T14:05",
+              "resulted": "2026-07-27T09:10",
+              "results": [
+                {
+                  "test": "Neisseria gonorrhoeae NAAT",
+                  "text": "Positive (rectal swab)"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-07-25T13:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2026-08-11T14:20",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nVisit date: 07/25/2026, arrival 13:10\nPatient: Gavin Davidson, 23 y/o M\nAllergies: no known drug allergies\nHome medications: none\n\nCC: rectal pain with discharge x 1 week.\n\nHPI: 23-year-old man with a past history of gonococcal urethritis and primary syphilis, both treated, presenting with a week of rectal pain, a mucopurulent discharge from the anus and blood on and off, along with tenesmus. Also anal itching. Defecation is painful. Reports condomless sex with more than one partner including receptive anal sex, most recently about two weeks ago.\n\nPMH: gonococcal urethritis; primary syphilis. PSH: none. FH: father hypertension (onset 45); mother major depression. SH: never smoker; social alcohol on weekends; college student.\n\nVitals: within normal limits throughout the stay.\n\nExam: uncomfortable-appearing but nontoxic. Abdomen soft, nontender. Perianal skin intact. Anal canal erythematous and tender, with a small amount of purulent discharge. No palpable masses. Prostate nontender on DRE.\n\nLabs: WBC 12.0 K/uL. RPR non-reactive. HIV-1/2 Ag/Ab non-reactive. Rectal swab sent for gonorrhea and chlamydia NAAT.\n\nMDM: presentation consistent with infectious proctitis in the setting of receptive anal exposure; gonococcal most likely. Treated empirically in the department.\n\nED course: ceftriaxone 500 mg IM given. Discharged with doxycycline 100 mg PO BID x 7 days.\n\nAddendum 07/27/2026 09:40: rectal NAAT positive for Neisseria gonorrhoeae. Patient already treated. Chlamydia result not available at time of this addendum.\n\nDiagnosis: gonococcal proctitis.\nDisposition: discharged home. Abstain from sex for 7 days after treatment and until partners are treated. Follow up with primary care physician within 1-2 weeks."
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-07-25T13:18",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 99
+            },
+            {
+              "time": "2026-07-25T17:20",
+              "bp": [
+                118,
+                74
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "portal_message",
+          "start": "2026-07-27T19:30",
+          "reason": "ED visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Went to the ER this weekend",
+              "author": "patient",
+              "date": "2026-07-27T19:30",
+              "body": "Hi, wanted to let you know I went to the emergency room Saturday for pain and some bleeding from my rear end. They said it's probably gonorrhea again, gave me a shot and doxycycline for a week. They told me to see my regular doctor. Already feeling better."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Went to the ER this weekend",
+              "author": "PCP",
+              "date": "2026-07-28T08:15",
+              "body": "Thanks for telling me, Gavin. I'm glad it's settling. Finish all of the doxycycline and hold off on sex until a week after the last dose and until your partners are treated. We're asking the hospital for the ER record. The front desk will reach out to set a follow-up visit."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2026-07-28T09:00",
+              "body": "Faxed records request with signed release to the regional hospital ED for the 7/25/26 visit. Patient booked for follow-up Wednesday 9/2/26 at 3:00, first opening that fits his schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "outside_records",
+          "start": "2026-08-11T14:20",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record received",
+              "author": "front desk",
+              "date": "2026-08-11T14:25",
+              "body": "ED provider note with addendum and lab page for 7/25/26 received by fax after a second request. Filed under outside records and routed to PCP inbox for review at the 9/2 visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-02a",
+          "kind": "office_visit",
+          "start": "2026-09-02T15:00",
+          "reason": "ED follow-up, gonococcal proctitis",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

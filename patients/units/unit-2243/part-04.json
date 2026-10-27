@@ -9,7 +9,10 @@
           "start": "2025-01-13T10:00",
           "service": "Cardiology",
           "reason": "CAD follow-up",
-          "measure": ["bp", "hr"],
+          "measure": [
+            "bp",
+            "hr"
+          ],
           "documents": [
             {
               "type": "Consult Note",
@@ -49,16 +52,53 @@
           "start": "2025-03-10T09:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Annual wellness visit",
-          "state": {"weight_kg": 77.8},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "state": {
+            "weight_kg": 77.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-10T09:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-10T09:40", "results": [{"test": "Hemoglobin"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-10T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-10T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-03-10T09:00"},
-            {"procedure": "Venipuncture", "performed": "2025-03-10T09:40"}
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-03-10T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-10T09:40"
+            }
           ],
           "documents": [
             {
@@ -76,9 +116,16 @@
           "start": "2025-06-23T09:30",
           "service": "Cardiology",
           "reason": "One year after STEMI",
-          "measure": ["bp", "hr"],
+          "measure": [
+            "bp",
+            "hr"
+          ],
           "medications": [
-            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "stop", "reason": "Completed 12 months of dual antiplatelet therapy after STEMI"}
+            {
+              "drug": "clopidogrel 75 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Completed 12 months of dual antiplatelet therapy after STEMI"
+            }
           ],
           "documents": [
             {
@@ -97,20 +144,99 @@
           "end": "2025-07-06T20:00",
           "service": "Emergency Medicine",
           "reason": "Painless rectal bleeding with large clots",
-          "state": {"labs": {"Hemoglobin": 10.2, "Hematocrit": 30.5, "Platelets": 250, "Prothrombin Time": 12, "Prothrombin Time-International Normalized Ratio": 1.0, "Blood Urea Nitrogen": 18, "Creatinine": 1.0}},
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.2,
+              "Hematocrit": 30.5,
+              "Platelets": 250,
+              "Prothrombin Time": 12,
+              "Prothrombin Time-International Normalized Ratio": 1.0,
+              "Blood Urea Nitrogen": 18,
+              "Creatinine": 1.0
+            }
+          },
           "vitals": [
-            {"time": "2025-07-06T15:35", "bp": [100, 60], "hr": 110},
-            {"time": "2025-07-06T17:30", "bp": [112, 68], "hr": 96, "rr": 16, "spo2": 98}
+            {
+              "time": "2025-07-06T15:35",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110
+            },
+            {
+              "time": "2025-07-06T17:30",
+              "bp": [
+                112,
+                68
+              ],
+              "hr": 96,
+              "rr": 16,
+              "spo2": 98
+            }
           ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-06T15:45", "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Hematocrit", "value": 30.5}, {"test": "Platelets", "value": 250}]},
-            {"panel": "Prothrombin Time with INR", "collected": "2025-07-06T15:45", "results": [{"test": "Prothrombin Time", "value": 12}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.0}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-07-06T15:45", "results": [{"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 1.0}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-06T15:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-07-06T15:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-06T15:45",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                }
+              ]
+            }
           ],
           "conditions": [
-            {"label": "Diverticular hemorrhage of large intestine", "icd10": "K57.31", "action": "diagnosed", "onset": "2025-07-06"}
+            {
+              "label": "Diverticular hemorrhage of large intestine",
+              "icd10": "K57.31",
+              "action": "diagnosed",
+              "onset": "2025-07-06"
+            }
           ],
-          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-07-06T15:30"}],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-07-06T15:30"
+            }
+          ],
           "documents": [
             {
               "type": "ED Notes",
@@ -129,18 +255,63 @@
           "service": "Internal Medicine — Hospital Medicine",
           "reason": "Recurrent diverticular hemorrhage",
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-07T05:30", "results": [{"test": "Hemoglobin"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-08T05:30", "results": [{"test": "Hemoglobin"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-09T05:30", "results": [{"test": "Hemoglobin"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-07T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-08T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-09T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "Upper endoscopy report", "loinc": "18751-8", "performed": "2025-07-06T21:30", "text": "Indication: hematochezia with tachycardia, exclude upper GI source. Sedation: monitored anesthesia care. Esophagus normal. Stomach normal, no blood or coffee-ground material. Duodenal bulb and second portion normal, no blood. No ulcer, varix or vascular lesion.", "conclusion": "Normal EGD. No upper GI bleeding source."},
-            {"study": "Colonoscopy report", "loinc": "18746-8", "performed": "2025-07-07T11:00", "text": "Indication: recurrent hematochezia, prior diverticular bleed 2021. Prep: rapid purge, adequate. Scope advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Blood and clots in the sigmoid and descending colon, cleared with washing. Scattered sigmoid diverticula. One sigmoid diverticulum with an adherent clot and visible vessel at its neck; three hemostatic clips placed with hemostasis. No polyps or masses. Remainder of colon without blood after washing.", "conclusion": "Bleeding sigmoid diverticulum, treated with clips, hemostasis. Sigmoid diverticulosis. No polyps."}
+            {
+              "study": "Upper endoscopy report",
+              "loinc": "18751-8",
+              "performed": "2025-07-06T21:30",
+              "text": "Indication: hematochezia with tachycardia, exclude upper GI source. Sedation: monitored anesthesia care. Esophagus normal. Stomach normal, no blood or coffee-ground material. Duodenal bulb and second portion normal, no blood. No ulcer, varix or vascular lesion.",
+              "conclusion": "Normal EGD. No upper GI bleeding source."
+            },
+            {
+              "study": "Colonoscopy report",
+              "loinc": "18746-8",
+              "performed": "2025-07-07T11:00",
+              "text": "Indication: recurrent hematochezia, prior diverticular bleed 2021. Prep: rapid purge, adequate. Scope advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Blood and clots in the sigmoid and descending colon, cleared with washing. Scattered sigmoid diverticula. One sigmoid diverticulum with an adherent clot and visible vessel at its neck; three hemostatic clips placed with hemostasis. No polyps or masses. Remainder of colon without blood after washing.",
+              "conclusion": "Bleeding sigmoid diverticulum, treated with clips, hemostasis. Sigmoid diverticulosis. No polyps."
+            }
           ],
           "procedures": [
-            {"procedure": "Initial hospital inpatient care", "performed": "2025-07-06T20:00"},
-            {"procedure": "Colonoscopy, diagnostic", "performed": "2025-07-07T11:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-07-09T11:30"}
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-07-06T20:00"
+            },
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2025-07-07T11:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-07-09T11:30"
+            }
           ],
           "documents": [
             {
@@ -174,14 +345,46 @@
           "start": "2025-07-14T09:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, diverticular bleed",
-          "state": {"labs": {"Hemoglobin": 10.9, "Hematocrit": 32.8}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.9,
+              "Hematocrit": 32.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-14T10:00", "results": [{"test": "Hemoglobin", "value": 10.9}, {"test": "Hematocrit", "value": 32.8}, {"test": "Platelets"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-14T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.8
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Transitional care management, moderate complexity", "performed": "2025-07-14T09:30"},
-            {"procedure": "Venipuncture", "performed": "2025-07-14T10:00"}
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-07-14T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-14T10:00"
+            }
           ],
           "documents": [
             {
@@ -215,14 +418,41 @@
           "start": "2025-08-11T08:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Repeat CBC after GI bleed",
-          "state": {"labs": {"Hemoglobin": 12.4, "Hematocrit": 37.9}},
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.4,
+              "Hematocrit": 37.9
+            }
+          },
           "conditions": [
-            {"label": "Diverticular hemorrhage of large intestine", "icd10": "K57.31", "action": "resolved"}
+            {
+              "label": "Diverticular hemorrhage of large intestine",
+              "icd10": "K57.31",
+              "action": "resolved"
+            }
           ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-11T08:20", "results": [{"test": "Hemoglobin", "value": 12.6}, {"test": "Hematocrit", "value": 37.8}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-11T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.8
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2025-08-11T08:20"}],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-11T08:20"
+            }
+          ],
           "documents": [
             {
               "type": "Result Note",
@@ -240,7 +470,15 @@
           "service": "Urology",
           "reason": "Yearly BPH follow-up",
           "labs": [
-            {"panel": null, "collected": "2025-09-22T14:10", "results": [{"test": "Prostate Specific Antigen"}]}
+            {
+              "panel": null,
+              "collected": "2025-09-22T14:10",
+              "results": [
+                {
+                  "test": "Prostate Specific Antigen"
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -259,10 +497,21 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Fall vaccines",
           "immunizations": [
-            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-06T10:15"},
-            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-06T10:17"}
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-06T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-06T10:17"
+            }
           ],
-          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-06T10:15"}],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T10:15"
+            }
+          ],
           "documents": [
             {
               "type": "Nurse Note",
@@ -295,16 +544,67 @@
           "start": "2025-11-17T09:15",
           "service": "Internal Medicine — Primary Care",
           "reason": "Chronic disease follow-up",
-          "state": {"labs": {"Hemoglobin": 13.8, "Hematocrit": 41.2}},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {
+            "labs": {
+              "Hemoglobin": 13.8,
+              "Hematocrit": 41.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-17T09:45", "results": [{"test": "Hemoglobin", "value": 13.8}, {"test": "Hematocrit", "value": 41.2}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-17T09:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
-            {"panel": "Lipid Panel", "collected": "2025-11-17T09:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]}
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-17T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-17T09:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-17T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-11-17T09:15"},
-            {"procedure": "Venipuncture", "performed": "2025-11-17T09:45"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-17T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-17T09:45"
+            }
           ],
           "documents": [
             {
@@ -339,26 +639,102 @@
           "end": "2026-01-10T16:00",
           "service": "Emergency Medicine",
           "reason": "Sudden painless vision loss, left eye",
-          "state": {"labs": {"Erythrocyte Sedimentation Rate": 12, "C Reactive Protein": 2.0}},
+          "state": {
+            "labs": {
+              "Erythrocyte Sedimentation Rate": 12,
+              "C Reactive Protein": 2.0
+            }
+          },
           "vitals": [
-            {"time": "2026-01-10T10:50", "bp": [145, 90], "hr": 78},
-            {"time": "2026-01-10T13:00", "bp": [138, 84], "hr": 74, "rr": 16, "spo2": 98, "temp_c": 36.7}
+            {
+              "time": "2026-01-10T10:50",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 78
+            },
+            {
+              "time": "2026-01-10T13:00",
+              "bp": [
+                138,
+                84
+              ],
+              "hr": 74,
+              "rr": 16,
+              "spo2": 98,
+              "temp_c": 36.7
+            }
           ],
           "labs": [
-            {"panel": null, "collected": "2026-01-10T11:05", "results": [{"test": "Erythrocyte Sedimentation Rate"}, {"test": "C Reactive Protein"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-10T11:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-10T11:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+            {
+              "panel": null,
+              "collected": "2026-01-10T11:05",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate"
+                },
+                {
+                  "test": "C Reactive Protein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-10T11:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-10T11:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "CT head without contrast", "performed": "2026-01-10T11:30", "text": "Technique: axial non-contrast images of the head. No acute intracranial hemorrhage, mass effect or midline shift. No acute territorial infarct. Ventricles and sulci appropriate for age. Orbits and globes symmetric. Calvarium intact.", "conclusion": "No acute intracranial abnormality."},
-            {"study": "12-lead ECG", "performed": "2026-01-10T11:00", "text": "Sinus rhythm. Normal axis. No acute ST changes.", "conclusion": "Sinus rhythm."}
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-01-10T11:30",
+              "text": "Technique: axial non-contrast images of the head. No acute intracranial hemorrhage, mass effect or midline shift. No acute territorial infarct. Ventricles and sulci appropriate for age. Orbits and globes symmetric. Calvarium intact.",
+              "conclusion": "No acute intracranial abnormality."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-01-10T11:00",
+              "text": "Sinus rhythm. Normal axis. No acute ST changes.",
+              "conclusion": "Sinus rhythm."
+            }
           ],
           "conditions": [
-            {"label": "Central retinal artery occlusion, left eye", "icd10": "H34.12", "action": "diagnosed", "onset": "2026-01-10"}
+            {
+              "label": "Central retinal artery occlusion, left eye",
+              "icd10": "H34.12",
+              "action": "diagnosed",
+              "onset": "2026-01-10"
+            }
           ],
           "procedures": [
-            {"procedure": "Emergency department visit, high MDM", "performed": "2026-01-10T10:45"},
-            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-01-10T11:00"}
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-10T10:45"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-01-10T11:00"
+            }
           ],
           "documents": [
             {
@@ -378,19 +754,62 @@
           "service": "Internal Medicine — Hospital Medicine",
           "reason": "Left central retinal artery occlusion",
           "labs": [
-            {"panel": "Lipid Panel", "collected": "2026-01-11T05:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Total Cholesterol"}]},
-            {"panel": null, "collected": "2026-01-11T05:30", "results": [{"test": "Hemoglobin A1c", "value": 5.5}]}
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-01-11T05:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-11T05:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "Carotid duplex ultrasound", "performed": "2026-01-11T09:00", "text": "Bilateral carotid duplex. Right: common, internal and external carotid arteries with less than 50% stenosis by velocity criteria. Left: common, internal and external carotid arteries with less than 50% stenosis by velocity criteria. Antegrade vertebral flow bilaterally.", "conclusion": "No hemodynamically significant carotid stenosis; less than 50% bilaterally."},
-            {"study": "Transthoracic echocardiogram", "performed": "2026-01-11T13:30", "text": "Normal left ventricular size. LVEF 50%. Inferior wall hypokinesis, unchanged from 6/2024. No left ventricular or left atrial thrombus seen. Valves without significant regurgitation or stenosis. No pericardial effusion.", "conclusion": "LVEF 50%, known inferior hypokinesis, no intracardiac thrombus."}
+            {
+              "study": "Carotid duplex ultrasound",
+              "performed": "2026-01-11T09:00",
+              "text": "Bilateral carotid duplex. Right: common, internal and external carotid arteries with less than 50% stenosis by velocity criteria. Left: common, internal and external carotid arteries with less than 50% stenosis by velocity criteria. Antegrade vertebral flow bilaterally.",
+              "conclusion": "No hemodynamically significant carotid stenosis; less than 50% bilaterally."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-01-11T13:30",
+              "text": "Normal left ventricular size. LVEF 50%. Inferior wall hypokinesis, unchanged from 6/2024. No left ventricular or left atrial thrombus seen. Valves without significant regurgitation or stenosis. No pericardial effusion.",
+              "conclusion": "LVEF 50%, known inferior hypokinesis, no intracardiac thrombus."
+            }
           ],
           "orders": [
-            {"id": "event-monitor-2026", "action": "placed", "order": "14-day ambulatory cardiac monitor", "category": "procedure", "to": "Cardiology", "reason": "Central retinal artery occlusion, evaluate for atrial fibrillation"}
+            {
+              "id": "event-monitor-2026",
+              "action": "placed",
+              "order": "14-day ambulatory cardiac monitor",
+              "category": "procedure",
+              "to": "Cardiology",
+              "reason": "Central retinal artery occlusion, evaluate for atrial fibrillation"
+            }
           ],
           "procedures": [
-            {"procedure": "Initial hospital inpatient care", "performed": "2026-01-10T16:00"},
-            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-01-12T12:30"}
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-01-10T16:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-01-12T12:30"
+            }
           ],
           "documents": [
             {
@@ -424,8 +843,18 @@
           "start": "2026-01-16T10:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, central retinal artery occlusion",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-01-16T10:00"}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-16T10:00"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -458,12 +887,24 @@
           "start": "2026-02-09T09:00",
           "service": "Cardiology",
           "reason": "CAD follow-up and monitor review",
-          "measure": ["bp", "hr"],
+          "measure": [
+            "bp",
+            "hr"
+          ],
           "orders": [
-            {"id": "event-monitor-2026", "action": "done", "date": "2026-02-09T09:00"}
+            {
+              "id": "event-monitor-2026",
+              "action": "done",
+              "date": "2026-02-09T09:00"
+            }
           ],
           "reports": [
-            {"study": "Holter monitor", "performed": "2026-02-09T09:00", "text": "14-day patch monitor, worn 01/14/2026 to 01/28/2026. Underlying rhythm sinus throughout. No atrial fibrillation or atrial flutter. No sustained arrhythmia. No pauses.", "conclusion": "Sinus rhythm throughout; no atrial fibrillation."}
+            {
+              "study": "Holter monitor",
+              "performed": "2026-02-09T09:00",
+              "text": "14-day patch monitor, worn 01/14/2026 to 01/28/2026. Underlying rhythm sinus throughout. No atrial fibrillation or atrial flutter. No sustained arrhythmia. No pauses.",
+              "conclusion": "Sinus rhythm throughout; no atrial fibrillation."
+            }
           ],
           "documents": [
             {
@@ -481,15 +922,50 @@
           "start": "2026-03-16T09:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Annual wellness visit",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-16T09:40", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-16T09:40", "results": [{"test": "Hemoglobin"}]}
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-16T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-16T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Annual wellness visit, subsequent", "performed": "2026-03-16T09:00"},
-            {"procedure": "Venipuncture", "performed": "2026-03-16T09:40"}
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-03-16T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-16T09:40"
+            }
           ],
           "documents": [
             {
@@ -539,13 +1015,35 @@
           "start": "2026-06-22T09:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Chronic disease follow-up",
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-22T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-22T10:00",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-22T09:30"},
-            {"procedure": "Venipuncture", "performed": "2026-06-22T10:00"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-22T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-22T10:00"
+            }
           ],
           "documents": [
             {
@@ -554,29 +1052,6 @@
               "author": "PCP",
               "date": "2026-06-22T09:30",
               "body": "F/u.\n\nRetina 4/20: L eye unchanged, no neovascularization. Neuro 4/27 stable. No CP, no bleeding, no falls. Walking with wife in the evenings.\n\nExam: BP ok. L RAPD. Heart RRR, lungs clear, no edema. R tremor.\n\nA/P: CAD, HTN, HLD, PD, BPH stable. BMP today. Retina in October, cardiology February. AWV booked September."
-            }
-          ]
-        },
-        {
-          "id": "2026-08-24a",
-          "kind": "portal_message",
-          "start": "2026-08-24T08:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Refill request",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "Metoprolol refill",
-              "author": "patient",
-              "date": "2026-08-24T08:40",
-              "body": "Hello, mail order says no refills left on the metoprolol. Can you send a new one? We have about two weeks left. Thank you. (his wife)"
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: Metoprolol refill",
-              "author": "RN",
-              "date": "2026-08-24T13:15",
-              "body": "Sent metoprolol succinate 50 mg, 90 days with 3 refills, to the mail-order pharmacy. See you both on September 21."
             }
           ]
         },

@@ -1,0 +1,2981 @@
+{
+  "unit": "unit-1730",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001730",
+      "given": "Maya",
+      "family": "Klein",
+      "birth_date": "1991-02-23",
+      "address_line": "212 Cape Street",
+      "phone": "+1-413-555-0122",
+      "email": "maya.klein@example.test",
+      "marital_status": "married",
+      "summary": "Librarian in her thirties with type 1 von Willebrand disease, Kallmann syndrome on hormone replacement, and chronic iron deficiency, who conceives twice through ovulation induction. Her first vaginal birth in 2023 brings a uterine inversion, two hemorrhages and a D&C; a 2025 cesarean bleeds again. The low cortisol and free T4 flagged in 2023 go unpursued until endocrinology names postpartum hypopituitarism in June 2026.",
+      "events": [
+        {
+          "id": "2022-05-10a",
+          "kind": "establish_care",
+          "start": "2022-05-10T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {
+              "label": "Von Willebrand disease",
+              "action": "diagnosed",
+              "onset": "2004-06-01",
+              "note": "Type 1; lifelong easy bruising and nosebleeds"
+            },
+            {
+              "label": "Kallmann syndrome",
+              "action": "diagnosed",
+              "onset": "2008-03-01",
+              "note": "Isolated hypogonadotropic hypogonadism with anosmia; on estrogen-progestin replacement",
+              "icd10": "E23.0"
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2015-01-01",
+              "note": "Chronic, on oral iron"
+            },
+            {
+              "label": "Female infertility",
+              "action": "diagnosed",
+              "onset": "2008-03-01",
+              "note": "Due to hypogonadotropic hypogonadism; needs ovulation induction"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            },
+            {
+              "drug_text": "desmopressin acetate 0.15 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "1 spray (150 mcg) in one nostril as needed for bleeding episodes",
+              "dose": {
+                "value": 150,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "Von Willebrand disease"
+            },
+            {
+              "drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily, continuously",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hormone replacement for hypogonadism"
+            },
+            {
+              "drug_text": "cholecalciferol 0.05 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Latex",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              62
+            ],
+            "hr": 58,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 57.0,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.21
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 82
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 9
+                },
+                {
+                  "test": "Iron",
+                  "value": 42
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 10
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 425
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 31
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Librarian"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-05-10T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-10T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-05-10T09:20",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\nMs. Klein is a 31-year-old librarian moving her care here; her old office was an hour's drive and she wanted one closer to home in Goshen. She and her husband would like to start a family this year and she already has a reproductive endocrinology consult on the calendar for next month.\n\nHISTORY\n- Von Willebrand disease, type 1. Bruised easily and had a lot of nosebleeds as a child; worked up and diagnosed around age 13. Follows with a hematologist who prescribes nasal desmopressin. She uses it a few times a year for nosebleeds that won't stop. Never needed a transfusion.\n- Kallmann syndrome. No puberty by 17 and has never been able to smell much; diagnosed then with hypogonadotropic hypogonadism. Has been on continuous estrogen-progestin replacement since. Understands she will need ovulation induction to conceive.\n- Iron deficiency anemia for years, on ferrous sulfate daily. Tolerates it with some constipation.\n- Surgical: none.\n\nMEDICATIONS: ferrous sulfate 325 mg daily; desmopressin nasal 150 mcg PRN bleeding; ethinyl estradiol 5 mcg / norethindrone acetate 1 mg one tab daily; vitamin D3 2000 IU daily.\nALLERGIES: latex causes a contact rash. No drug allergies.\n\nFAMILY HISTORY: Mother has type 1 vWD too, with heavy periods that ended in a hysterectomy at 42. Father went through puberty late (about 16) and has a poor sense of smell; his doctors thought he probably carries a milder form of the same condition. One sister has primary infertility and lost her periods.\n\nSOCIAL: Married. Works at a public library. Never smoked, does not drink.\n\nROS: Energy fair. Occasional nosebleeds. No melena. Otherwise negative.\n\nEXAM: Thin, well appearing. Vitals as recorded. HEENT unremarkable. Neck supple, thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: a couple of small bruises on the shins, no petechiae. Neuro grossly intact.\n\nASSESSMENT / PLAN\n1. Iron deficiency anemia, chronic - CBC, iron studies today. Continue iron.\n2. vWD type 1 - stable. Will need a delivery plan with obstetrics and her hematologist once pregnant. Requesting hematology records.\n3. Kallmann syndrome / infertility - REI consult next month. Continue hormone replacement until they say otherwise.\n4. Health maintenance - CMP, TSH, lipids, vitamin D; HIV and hep C screening once, she agrees. Pap last year at old practice, normal per patient; records requested. PHQ-2 0.\n\nReturn after the REI visit or sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              104,
+              64
+            ],
+            "weight_kg": 57.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Ferritin": 9,
+              "Hemoglobin": 11.4,
+              "Iron": 34,
+              "Mean Corpuscular Volume": 79,
+              "Total Iron-Binding Capacity": 425,
+              "Transferrin Saturation": 8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "portal_message",
+          "start": "2022-05-12T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2022-05-12T16:40",
+              "author": "PCP",
+              "body": "Hi Maya, your labs are back. Hemoglobin is 11.4, a little low, and your ferritin (iron stores) is 9, which is low - consistent with the iron deficiency you've had for years. Please keep taking the iron every day; taking it with a little orange juice and away from tea or coffee helps it absorb. Kidney, liver, thyroid, cholesterol and vitamin D are all fine, and the HIV and hepatitis C screens are negative. Good luck at your REI appointment."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-18a",
+          "kind": "outside_records",
+          "start": "2022-05-18T11:10",
+          "reason": "Records from prior primary care and hematology",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2022-05-18T11:10",
+              "author": "outside primary care",
+              "body": "RECORDS FROM PRIOR PRIMARY CARE OFFICE (summary sheet and last two visit notes)\n\nProblem list: von Willebrand disease type 1 (hematology follows); Kallmann syndrome on HRT; iron deficiency anemia.\nMedications: ferrous sulfate 325 mg daily, desmopressin nasal spray PRN bleeding, ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily, vitamin D3 2000 IU daily.\nAllergy: latex (contact dermatitis).\nScreening: cervical cytology 2021, negative for intraepithelial lesion. Immunizations per state registry, COVID primary series complete.\nLast visit note: routine follow-up, hemoglobin in the low 11s on iron, no changes made."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hematology Summary Letter",
+              "date": "2022-05-18T11:10",
+              "author": "hematology",
+              "body": "Outside hematology - summary for new primary care physician\n\nThis 31-year-old woman has been followed here for type 1 von Willebrand disease since her early teens. Her bleeding history has been mucocutaneous: easy bruising and recurrent epistaxis. She responds to desmopressin and keeps an intranasal spray at home for nosebleeds that do not settle with pressure. She has not needed factor concentrate or transfusion.\n\nShe has told us she plans a pregnancy through reproductive endocrinology. When she is pregnant, her obstetric team should contact us so a delivery plan can be made. Avoid NSAIDs and aspirin. Latex allergy noted.\n\nPlease contact our office with questions."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-24T09:30",
+          "reason": "Reproductive endocrinology consultation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Reproductive Endocrinology Consultation",
+              "date": "2022-06-24T09:30",
+              "author": "reproductive endocrinology",
+              "body": "REPRODUCTIVE ENDOCRINOLOGY - NEW CONSULTATION\nDate of visit: 2022-06-21\n\nReason: desires conception; known Kallmann syndrome.\n\nMs. Klein, 31, has isolated hypogonadotropic hypogonadism with anosmia, diagnosed at 17, maintained on continuous ethinyl estradiol/norethindrone. She has never ovulated spontaneously. Her husband's evaluation is pending. Type 1 von Willebrand disease is followed by hematology. Iron deficiency on oral iron. Latex allergy - our procedure rooms are latex-free.\n\nImpression: hypogonadotropic infertility, a good candidate for gonadotropin ovulation induction.\n\nPlan:\n- Gonadotropin ovulation induction with ultrasound and estradiol monitoring here, then an hCG trigger.\n- Stop the hormone replacement once we schedule the first stimulation cycle; we will tell her when.\n- We will keep her primary care physician updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-28a",
+          "kind": "telephone",
+          "start": "2022-07-28T13:15",
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held for ovulation induction cycle"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication update - REI cycle",
+              "date": "2022-07-28T13:15",
+              "author": "RN",
+              "body": "Pt called to update her med list. REI is starting her first stimulation cycle next week and told her to stop the estradiol/norethindrone tablet as of today. Taken off active list. Iron and vit D continue. Pt aware to call with any bleeding concerns since desmopressin is still at home."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "portal_message",
+          "start": "2022-10-11T19:52",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "action": "diagnosed",
+              "onset": "2022-10-08",
+              "note": "Conceived with gonadotropin ovulation induction; von Willebrand disease",
+              "icd10": "O09.90"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Good news",
+              "date": "2022-10-11T19:52",
+              "author": "patient",
+              "body": "Hi - just wanted you to know the REI office called today and my blood test is positive! We're over the moon. They'll do an ultrasound in a couple of weeks. Is there anything I should stop taking? I'm on iron and vitamin D. Also do I still get a flu shot?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Good news",
+              "date": "2022-10-12T08:10",
+              "author": "PCP",
+              "body": "Congratulations to you both! Keep the iron and vitamin D. Use the desmopressin only if you have a bleed that won't stop, and let us or your OB know if you do. Yes - the flu shot is recommended in pregnancy and so is the updated COVID booster. The nurse can give both; the front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T15:30",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              113,
+              70
+            ],
+            "hr": 65
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2022-10-20T15:30",
+              "author": "RN",
+              "body": "About 5 weeks pregnant per pt. Latex allergy - non-latex gloves and bandage used. Flu (quadrivalent) L deltoid and bivalent COVID R deltoid. Pressure held 2 minutes at each site given vWD; no bleeding. Observed 15 min, felt fine, left with husband."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "outside_records",
+          "start": "2022-10-31T10:20",
+          "reason": "Reproductive endocrinology update",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Reproductive Endocrinology Early Pregnancy Note",
+              "date": "2022-10-31T10:20",
+              "author": "reproductive endocrinology",
+              "body": "REPRODUCTIVE ENDOCRINOLOGY\nDate of visit: 2022-10-27\n\nTransvaginal ultrasound today: single intrauterine pregnancy with cardiac activity, size consistent with dates. Conceived on her second stimulation cycle with gonadotropins and an hCG trigger.\n\nShe is released from our care to obstetrics; records sent. We recommended that obstetrics coordinate a delivery plan with her hematologist given von Willebrand disease. Continue iron.\n\nThank you for allowing us to share in her care."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "telehealth_visit",
+          "start": "2022-11-29T12:10",
+          "reason": "Pregnancy check-in, medication review",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2022-11-29T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2022-11-29T12:10",
+              "author": "PCP",
+              "body": "Video visit from her car during her lunch break; identity verified.\n\nAbout 11 weeks along. First OB visit went well. Some nausea, now easing. One nosebleed two weeks ago that stopped with pressure; did not need desmopressin. Bowels a little slow on iron - drinking more water.\n\nMeds reviewed: ferrous sulfate daily, vitamin D3, desmopressin spray PRN. Hormone replacement stopped in July.\n\nA/P:\n- Pregnancy, early, under OB care. Asked her to make sure OB has the hematology letter; she will bring a copy.\n- Iron deficiency - continue iron; OB will follow CBC.\n- vWD - avoid NSAIDs and aspirin.\nWe'll see her again after delivery, or sooner for anything non-obstetric."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "pharmacy",
+          "start": "2023-01-17T10:02",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill - ferrous sulfate",
+              "date": "2023-01-17T10:02",
+              "author": "MA",
+              "body": "Pharmacy request for ferrous sulfate 325 mg #90 with 3 refills. Last seen by PCP via video 11/29. Sent per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-24a",
+          "kind": "outside_records",
+          "start": "2023-02-27T14:20",
+          "reason": "Obstetrics update",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Prenatal Update",
+              "date": "2023-02-27T14:20",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS - PRENATAL UPDATE TO PRIMARY CARE\nDate of visit: 2023-02-24\n\nG1 at 20 weeks by early ultrasound dating, conceived with ovulation induction. Doing well.\n\nAnatomy ultrasound today: single live intrauterine fetus, growth appropriate for gestational age, anatomy survey complete and normal. Placenta posterior and well clear of the cervix. Amniotic fluid normal.\n\nHistory reviewed: type 1 von Willebrand disease (hematology aware of the pregnancy), Kallmann syndrome, iron deficiency on oral iron. Latex allergy flagged on her chart and on the labor unit.\n\nPlan: routine prenatal visits; no further ultrasound planned unless there is a clinical question. Delivery at our hospital's labor unit with hematology available."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "outside_records",
+          "start": "2023-04-25T09:45",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-04-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Immunization Record",
+              "date": "2023-04-25T09:45",
+              "author": "obstetrics",
+              "body": "Immunization administered at obstetrics office: Tdap 0.5 mL IM, 2023-04-20, at 28 weeks gestation. Tolerated without reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-01a",
+          "kind": "hospital_admission",
+          "start": "2023-07-01T01:10",
+          "end": "2023-07-03T13:00",
+          "service": "Obstetrics — Labor and Delivery",
+          "reason": "Term labor",
+          "conditions": [
+            {
+              "label": "Postpartum inversion of uterus",
+              "action": "diagnosed",
+              "onset": "2023-07-01",
+              "icd10": "O71.2"
+            },
+            {
+              "label": "Acute postpartum hemorrhage",
+              "action": "diagnosed",
+              "onset": "2023-07-01",
+              "icd10": "O72.1"
+            },
+            {
+              "label": "Hypovolemic shock",
+              "action": "diagnosed",
+              "onset": "2023-07-01",
+              "icd10": "R57.1"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "diagnosed",
+              "onset": "2023-07-01",
+              "icd10": "D62"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-07-01T01:20",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 88,
+              "temp_c": 36.8
+            },
+            {
+              "time": "2023-07-01T04:15",
+              "bp": [
+                80,
+                50
+              ],
+              "hr": 120
+            },
+            {
+              "time": "2023-07-01T04:50",
+              "bp": [
+                80,
+                40
+              ],
+              "hr": 124
+            },
+            {
+              "time": "2023-07-01T05:45",
+              "bp": [
+                92,
+                60
+              ],
+              "hr": 122,
+              "temp_c": 36.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-01T01:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 76
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-01T04:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.29
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 82
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-01T04:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-01T04:20",
+              "results": [
+                {
+                  "test": "ABO and Rh group",
+                  "loinc": "882-1",
+                  "text": "A positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-01T05:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.87
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 22.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2023-07-11T10:30",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 2023-07-01  Discharged: 2023-07-03\n\nPatient: 32-year-old G1, term, conceived with ovulation induction. Type 1 von Willebrand disease, Kallmann syndrome, chronic iron deficiency on oral iron. Latex allergy (contact dermatitis); no drug allergies.\n\nCOURSE\nPresented in spontaneous labor. Labor progressed on its own with no induction, augmentation or instruments. At 03:40 she had a vaginal delivery of a healthy boy. Oxytocin was given for the third stage only. The placenta delivered a few minutes later; on inspection its margin was irregular and a vessel coursed out onto the membranes.\n\nWithin about half an hour she was bleeding heavily. Pressure fell to 80/50 with a heart rate of 120; she became agitated and confused, and her skin was cool and clammy. The fundus could not be felt abdominally and a large, red, rounded mass was protruding from the vagina - acute uterine inversion. Hemoglobin had been 12 on admission and was 9 at that point; platelets 250, INR 1.1. Type A positive.\n\nShe was taken to the operating room and the uterus was manually replaced under anesthesia. Her pressure reached a low of 80/40 during the reduction, and she received 4 units of packed red cells. After replacement the uterus was firm and of expected postpartum size, with no vaginal or cervical lacerations, but bleeding persisted despite oxytocin and did not respond to fundal massage. Afebrile, BP 92/60, HR 122; hemoglobin 7.4. Given her von Willebrand disease, intravenous desmopressin was given on hematology's advice and the bleeding settled over the next hour.\n\nShe recovered on the postpartum unit, ambulating and tolerating diet. Breastfeeding was started with lactation support.\n\nDIAGNOSES: vaginal delivery at term; acute uterine inversion, manually reduced; acute postpartum hemorrhage with hypovolemic shock; acute blood-loss anemia, transfused; type 1 von Willebrand disease.\n\nDISCHARGE MEDICATIONS: ferrous sulfate 325 mg daily; vitamin D3 2000 IU daily; desmopressin nasal spray as needed for bleeding.\n\nFOLLOW-UP: obstetrics postpartum visit; primary care in 1-2 weeks for anemia. Return for heavy bleeding, fever or dizziness."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-04a",
+          "kind": "ed_visit",
+          "start": "2023-07-04T06:10",
+          "end": "2023-07-04T10:40",
+          "service": "Emergency Medicine",
+          "reason": "Postpartum vaginal bleeding",
+          "vitals": [
+            {
+              "time": "2023-07-04T06:15",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 98,
+              "temp_c": 36.9,
+              "spo2": 99
+            },
+            {
+              "time": "2023-07-04T09:10",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-04T06:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 81
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-04T06:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-04T06:30",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-04T06:30",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "text": "Within normal limits"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-04T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.96
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 81
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-04T09:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-04T09:15",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-07-04T07:20",
+              "text": "Transabdominal and transvaginal views. Postpartum uterus, enlarged as expected for day 3 after vaginal delivery, normal in orientation. Endometrial cavity contains a small amount of fluid; no echogenic mass and no internal vascularity to suggest retained placental tissue. Ovaries unremarkable. No free fluid.",
+              "conclusion": "No sonographic evidence of retained products of conception."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2023-07-11T10:35",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD\nDate of service: 2023-07-04\n\nCC: postpartum bleeding.\n\nHPI: 32F, day 3 after a vaginal delivery complicated by uterine inversion and hemorrhage (discharged from our L&D yesterday). Bleeding has been steady since she got home and heavier through the night; her husband says she has been soaking pads. Has type 1 vWD and chronic iron deficiency. Bruises easily and has had frequent nosebleeds all her life; says her mother bleeds the same way.\nAllergies: latex (rash). No drug allergies.\nMeds: ferrous sulfate, vitamin D3, desmopressin nasal PRN.\n\nEXAM on arrival: BP 110/70, HR 98, afebrile. Pale. Uterus firm on palpation. Steady vaginal bleeding.\nLabs: Hgb 9.2, plt 250, PT 12, aPTT 38 (mildly prolonged), fibrinogen normal.\nPelvic US: no retained tissue seen.\nGiven IV desmopressin per hematology by phone; IV fluids; OB called.\n\nAt 09:10 she developed severe crampy abdominal pain and felt faint. Pale and diaphoretic. BP 90/60, HR 120. Speculum: cervix dilated with a firm, rounded mass of tissue sitting in the os. Repeat labs Hgb 8, Hct 24%, plt 250, PT 12, PTT 30.\n\nIMPRESSION: secondary postpartum hemorrhage, likely retained tissue despite the ultrasound; vWD.\nDISPOSITION: to the OR with OB for evacuation, then admission to obstetrics."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-04b",
+          "kind": "hospital_admission",
+          "start": "2023-07-04T10:40",
+          "end": "2023-07-09T12:30",
+          "service": "Obstetrics",
+          "reason": "Secondary postpartum hemorrhage",
+          "conditions": [
+            {
+              "label": "Secondary postpartum hemorrhage due to retained products of conception",
+              "action": "diagnosed",
+              "onset": "2023-07-04",
+              "icd10": "O72.2"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-07-04T11:30",
+              "text": "Specimen: uterine contents, dilation and curettage. Gross: multiple fragments of red-tan soft tissue and blood clot, 4.0 x 3.0 x 1.0 cm in aggregate. Microscopic: chorionic villi and decidua admixed with blood clot.",
+              "conclusion": "Placental tissue (retained products of conception).",
+              "issued": "2023-07-06T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Readmission Discharge Summary",
+              "date": "2023-07-11T10:40",
+              "author": "obstetrics",
+              "body": "OBSTETRIC READMISSION - DISCHARGE SUMMARY\nAdmitted: 2023-07-04  Discharged: 2023-07-09\n\nReason: secondary postpartum hemorrhage, postpartum day 3.\n\nShe came back through our ED with ongoing bleeding (see ED record). Ultrasound had not shown retained tissue, but on exam there was tissue at a dilated os and she was becoming unstable. Suction dilation and curettage was done the morning of 07/04 with a moderate amount of placental tissue removed; bleeding stopped promptly afterward. Pathology confirmed placental tissue.\n\nOn 07/08, one week out from delivery, medicine was asked to see her for fatigue (see consult). Pressures ran soft but she stayed stable. Breastfeeding has been hard - very little milk despite frequent feeds; lactation saw her twice and she is supplementing with formula.\n\nDIAGNOSES: secondary postpartum hemorrhage due to retained products of conception, s/p D&C; recent uterine inversion and primary PPH (07/01); acute blood-loss anemia; type 1 von Willebrand disease; Kallmann syndrome; chronic iron deficiency.\n\nDISCHARGE MEDICATIONS: unchanged - ferrous sulfate 325 mg daily, vitamin D3, desmopressin nasal PRN.\n\nFOLLOW-UP: obstetrics postpartum visit; primary care within 2 weeks."
+            },
+            {
+              "type": "Consult Note",
+              "title": "Internal Medicine Inpatient Consultation",
+              "date": "2023-07-11T10:45",
+              "author": "internal medicine",
+              "body": "INTERNAL MEDICINE CONSULTATION\nDate: 2023-07-08\nRequested by obstetrics for fatigue.\n\nShe is a week out from the birth of her son. The delivery was followed by a uterine inversion reduced in the OR (pressure down to 80/40 there, 4 units PRBC) and on day 3 a second bleed needing D&C. Since then she has felt more and more worn out, struggles to manage the baby's care, and her milk supply is poor even though she is putting him to the breast often. Background: type 1 vWD, Kallmann syndrome, iron deficiency.\n\nExam: pale, pressures mildly low, alert. No fever. Abdomen soft, uterus firm and nontender. No signs of infection.\n\nImpression: postpartum fatigue, most likely from heavy blood loss on top of chronic iron deficiency and the demands of a newborn.\nRecommendations: continue oral iron; primary care follow-up within 2 weeks with a CBC; return for worsening dizziness or bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "outside_records",
+          "start": "2023-07-11T10:50",
+          "reason": "Hospital records received",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Hospital Records Received",
+              "date": "2023-07-11T10:50",
+              "author": "front desk",
+              "body": "Received from the hospital: two discharge summaries (07/01-07/03 and 07/04-07/09), ED record 07/04, pathology. Indexed and routed to PCP. Pt's husband called asking for a post-hospital appointment; RN to call."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "telephone",
+          "start": "2023-07-12T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2023-07-12T11:30",
+              "author": "RN",
+              "body": "Called pt 3 days after discharge. Bleeding now light, no clots. No fever. Very tired; a bit dizzy getting out of bed, careful on the stairs. Baby doing well; mostly formula now. Taking iron. Reviewed reasons to go back to the ED (soaking a pad an hour, fainting, fever). Video visit booked with PCP for next week, CBC to follow."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "telehealth_visit",
+          "start": "2023-07-19T13:40",
+          "reason": "Post-hospital follow-up",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "action": "resolved",
+              "onset": "2022-10-08",
+              "icd10": "O09.90"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2023-07-19T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2023-07",
+              "action": "placed",
+              "order": "CBC",
+              "category": "lab",
+              "reason": "Postpartum blood-loss anemia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit - Post-Hospital",
+              "date": "2023-07-19T13:40",
+              "author": "PCP",
+              "body": "Video visit; she is at home with the baby asleep beside her. Identity confirmed.\n\nTwo hospital stays after her son's birth on 7/1: uterine inversion manually reduced with PPH and 4 units PRBC, then day-3 readmission for secondary PPH with retained placenta, D&C on 7/4. Discharge summaries and pathology reviewed.\n\nNow 18 days postpartum. Bleeding light. Exhausted, short of breath on the stairs, lightheaded when she first stands. Milk never really came in; the baby is on formula and she has stopped trying to pump. Appetite poor. Mood: tearful at times, but says it's mostly fatigue; no thoughts of harming herself or the baby. Husband home on leave for another week.\n\nMeds: ferrous sulfate daily, vitamin D3, desmopressin nasal PRN (has not needed it at home). Hormone replacement still off since the induction cycles.\n\nA/P:\n- Acute blood-loss anemia on chronic iron deficiency: CBC tomorrow. Continue iron. Discussed IV iron if no recovery.\n- Postpartum, s/p uterine inversion and secondary PPH: OB visit scheduled.\n- Hormone replacement: will revisit at the 6-week mark since she is not breastfeeding.\n- In-person visit at 6 weeks postpartum. Sooner if dizziness worsens."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "lab_only",
+          "start": "2023-07-20T08:40",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-20T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-20T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2023-07",
+              "action": "done",
+              "date": "2023-07-20T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC result",
+              "date": "2023-07-20T16:05",
+              "author": "PCP",
+              "body": "Hgb 8.7, up from the hospital nadir. Platelets fine. Message sent: recovering slowly; keep iron daily; see me at 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "office_visit",
+          "start": "2023-08-14T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue six weeks postpartum",
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily, continuously",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hormone replacement for hypogonadism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              90,
+              60
+            ],
+            "hr": 55,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 59.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-08-14T08:05",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 11
+                },
+                {
+                  "test": "Iron",
+                  "value": 29
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 441
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-14T07:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-14T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-08-14T07:50",
+              "author": "PCP",
+              "body": "OFFICE VISIT - 6 weeks postpartum\n\nFirst slot of the day so we could draw fasting morning labs.\n\nS: Six weeks after a vaginal delivery complicated by uterine inversion with major hemorrhage (4 u PRBC) and a day-3 secondary PPH with D&C. Still bone-tired; naps whenever the baby does and wakes unrefreshed. Never got a real milk supply and gave up nursing; baby thriving on formula. Gets woozy when she stands up quickly, has had to sit on the floor twice. Not hungry; eats because she should. Lochia finished. No fevers. No headaches or vision change.\n\nMeds: ferrous sulfate 325 daily, vitamin D3, desmopressin nasal PRN (unused). HRT off since last summer's induction cycles.\n\nO: BP 90/60, HR 55. Pale, skin a little dry. Conjunctivae pale. Heart regular, slow, no murmur. Lungs clear. Abdomen soft, nontender, uterus not palpable. No edema. PHQ-9 5, no self-harm thoughts.\n\nA/P:\n1. Postpartum fatigue with orthostatic dizziness and failed lactation after severe hemorrhage. Anemia is part of it, but the poor milk supply and low pressure after a bleed this size make me want to look at the pituitary too. Drawing BMP, morning cortisol, TSH and free T4, prolactin, CBC and ferritin.\n2. Acute blood-loss anemia on iron deficiency - continue iron, recheck counts today.\n3. Kallmann syndrome - not breastfeeding and six weeks out, so restarting her estradiol/norethindrone today.\n4. Fluids and salt liberally; rise slowly.\nWill call with results."
+            }
+          ],
+          "state": {
+            "bp": [
+              90,
+              60
+            ],
+            "weight_kg": 60.0,
+            "labs": {
+              "Ferritin": 11,
+              "Hemoglobin": 10.3,
+              "Iron": 31,
+              "Transferrin Saturation": 7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "telephone",
+          "start": "2023-08-16T12:20",
+          "conditions": [
+            {
+              "label": "Hyponatremia",
+              "action": "diagnosed",
+              "onset": "2023-08-14",
+              "icd10": "E87.1"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-ref-2023",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Low morning cortisol and low free T4 after postpartum hemorrhage"
+            },
+            {
+              "id": "repeat-am-labs-2023",
+              "action": "placed",
+              "order": "Repeat morning cortisol and BMP",
+              "category": "lab",
+              "reason": "Low cortisol, hyponatremia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Results - 8/14 labs",
+              "date": "2023-08-16T12:20",
+              "author": "PCP",
+              "body": "Na 130, K 5.2. AM cortisol 3. TSH 0.5 with free T4 0.7 (low). Prolactin 5. Hgb 10.3, ferritin 11.\n\nSodium low and cortisol and free T4 both low with a TSH that isn't elevated - in the setting of her hemorrhage this needs endocrinology. Referral placed, asked for a soon appointment. Repeat AM cortisol and BMP in 1-2 weeks. Hgb improving.\n\nSpoke with pt by phone, explained results and that endocrinology will evaluate her pituitary function. She has the referral number."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled specialist appointment",
+              "date": "2023-09-12T09:05",
+              "author": "front desk",
+              "body": "Pt called: endocrinology appointment for 9/14 - she cancelled it. Baby has had a rough week and she can't make the drive. Says she's feeling a little better. Will call them to rebook. Reminded her the repeat lab order is in for her to get drawn here."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T16:10",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              94,
+              64
+            ],
+            "hr": 64
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-12T16:10",
+              "author": "RN",
+              "body": "Flu L deltoid, 2023-24 COVID R deltoid. Non-latex supplies. Firm pressure 2 min each site (vWD), no oozing. Brought the baby along in his car seat. Waited 15 min, fine."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anemia follow-up",
+          "conditions": [
+            {
+              "label": "Postpartum inversion of uterus",
+              "action": "resolved",
+              "onset": "2023-07-01",
+              "icd10": "O71.2"
+            },
+            {
+              "label": "Acute postpartum hemorrhage",
+              "action": "resolved",
+              "onset": "2023-07-01",
+              "icd10": "O72.1"
+            },
+            {
+              "label": "Hypovolemic shock",
+              "action": "resolved",
+              "onset": "2023-07-01",
+              "icd10": "R57.1"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "resolved",
+              "onset": "2023-07-01",
+              "icd10": "D62"
+            },
+            {
+              "label": "Secondary postpartum hemorrhage due to retained products of conception",
+              "action": "resolved",
+              "onset": "2023-07-04",
+              "icd10": "O72.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              101,
+              65
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 57.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-14T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 75
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-11-14T11:00",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 17
+                },
+                {
+                  "test": "Iron",
+                  "value": 49
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 408
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-11-14T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-14T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-11-14T10:30",
+              "author": "PCP",
+              "body": "F/u anemia, 4.5 months postpartum.\n\nSays she is tired but less than in the summer - the baby sleeps longer stretches now. Back at the library part-time since October. Lightheadedness only now and then. Eating better. Back on her estradiol/norethindrone. No nosebleeds lately.\n\nShe never rebooked endocrinology; encouraged her again and gave her the number.\n\nExam: BP and pulse as recorded. Pale-ish but better color. Heart and lungs normal. PHQ-9 3.\n\nA/P:\n- Iron deficiency anemia - CBC and ferritin today, continue iron.\n- Postpartum hemorrhage, inversion, retained placenta - resolved; cleaning up problem list.\n- Kallmann syndrome - continue HRT.\nRTC spring for a physical."
+            }
+          ],
+          "state": {
+            "bp": [
+              102,
+              64
+            ],
+            "weight_kg": 58.0,
+            "labs": {
+              "Ferritin": 17,
+              "Hemoglobin": 11.2,
+              "Iron": 52,
+              "Mean Corpuscular Volume": 81,
+              "Transferrin Saturation": 13
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "portal_message",
+          "start": "2023-11-16T09:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-11-16T09:12",
+              "author": "PCP",
+              "body": "Hi Maya - hemoglobin is 11.2 and ferritin 17, both moving in the right direction. Keep up the daily iron. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "telephone",
+          "start": "2024-01-09T14:00",
+          "orders": [
+            {
+              "id": "endo-ref-2023",
+              "action": "cancelled",
+              "date": "2024-01-09T14:00"
+            },
+            {
+              "id": "repeat-am-labs-2023",
+              "action": "cancelled",
+              "date": "2024-01-09T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Referral closed",
+              "date": "2024-01-09T14:00",
+              "author": "front desk",
+              "body": "Referral audit: endocrinology referral from 8/2023 never scheduled after the 9/14 cancellation; closed per 90-day policy. Associated lab order (AM cortisol/BMP) expired, not drawn. Left voicemail for pt that she can call if she still wants the appointment."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "portal_message",
+          "start": "2024-02-20T20:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill - nose spray",
+              "date": "2024-02-20T20:31",
+              "author": "patient",
+              "body": "Could you send a refill of my desmopressin spray? My hematologist retired and the bottle I have expired in January. I've only used it twice this winter for nosebleeds."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill - nose spray",
+              "date": "2024-02-21T08:44",
+              "author": "PCP",
+              "body": "Sent a new bottle to your pharmacy. Same as before: one spray in one nostril only for a bleed that won't stop with 10-15 minutes of pressure, and no more than one dose in a day without calling. Limit how much water you drink for the rest of that day. If you'd like a new hematologist, let us know and we'll set it up."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "annual_physical",
+          "start": "2024-05-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              95,
+              61
+            ],
+            "hr": 62,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 56.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-21T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 225
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-05-21T09:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 21
+                },
+                {
+                  "test": "Iron",
+                  "value": 71
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 435
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-05-21T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-21T09:10",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-05-21T08:55",
+              "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM; high-risk HPV negative.",
+              "issued": "2024-05-24T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-05-21T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-21T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-05-21T08:30",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n33 y/o, son is 10 months old and walking along the furniture. Working full time at the library again. Energy 'fine for a parent of a baby.' Occasional nosebleed. On HRT, no breakthrough bleeding. No new concerns.\n\nMeds: ferrous sulfate 325 daily, ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily, vitamin D3 2000 IU, desmopressin nasal PRN.\nAllergies: latex.\nPMH: vWD type 1, Kallmann syndrome, iron deficiency; 2023 delivery with uterine inversion, PPH x2, D&C.\nFH/SH unchanged. Never smoker, no alcohol.\n\nROS otherwise negative.\n\nEXAM: Slim, well. Vitals as recorded. HEENT normal, no epistaxis. Thyroid normal. Heart RRR without murmur; lungs clear. Breasts deferred - pt declined today. Abdomen benign. Pelvic: external genitalia normal, cervix normal; Pap/HPV obtained (non-latex speculum cover and gloves). Skin: no bruising today. Mood bright, PHQ-2 0.\n\nPLAN:\n- CBC, ferritin, lipids, vitamin D.\n- Pap with HPV today.\n- Continue meds. Flu and COVID in the fall.\n- Hematology: her doctor has retired; she'll think about a new one before any future pregnancy."
+            }
+          ],
+          "state": {
+            "bp": [
+              104,
+              66
+            ],
+            "weight_kg": 56.5,
+            "labs": {
+              "25-hydroxy Vitamin D": 34,
+              "Ferritin": 21,
+              "Hemoglobin": 11.7,
+              "Iron": 64,
+              "Mean Corpuscular Volume": 83,
+              "Transferrin Saturation": 17
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-24a",
+          "kind": "portal_message",
+          "start": "2024-05-24T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2024-05-24T15:20",
+              "author": "PCP",
+              "body": "Maya, your Pap is normal and HPV negative, so the next one isn't due for five years. Hemoglobin 11.7 and ferritin 21 - the best they've been since you joined us. Cholesterol is good and vitamin D is 34. Keep the iron going."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T17:00",
+          "reason": "Influenza and COVID vaccines",
+          "vitals": {
+            "bp": [
+              106,
+              68
+            ],
+            "hr": 55
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-17T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-17T17:00",
+              "author": "MA",
+              "body": "Late-day vaccine clinic. Flu (trivalent) L arm, 2024-25 COVID R arm. Latex-free supplies. Held pressure longer for vWD; small bandage only. Stayed 15 min without problems."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-11-19T12:20",
+          "reason": "Planning a second pregnancy",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-11-19T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-11-19T12:20",
+              "author": "PCP",
+              "body": "Video visit from the library break room; identity confirmed.\n\nShe and her husband want a second child and she has asked the same REI group to see her again in January. Wants to know what to tell them and whether anything should change first.\n\nDiscussed: last pregnancy ended with inversion and two hemorrhages; obstetrics and REI should know that from the start, and a hematologist should be involved in delivery planning. She'll ask obstetrics to arrange one. Iron stores were at their best in May; keep iron going. She will stop HRT when REI tells her to.\n\nNo symptoms today. Continue current meds. Will send her a summary of the 2023 hospital stays through the portal so she can share it."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "outside_records",
+          "start": "2025-01-17T10:05",
+          "reason": "Reproductive endocrinology consultation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Reproductive Endocrinology Return Consultation",
+              "date": "2025-01-17T10:05",
+              "author": "reproductive endocrinology",
+              "body": "REPRODUCTIVE ENDOCRINOLOGY - RETURN VISIT\nDate of visit: 2025-01-14\n\nMs. Klein, now 33, returns hoping for a second pregnancy. Kallmann syndrome; conceived in 2022 on her second gonadotropin cycle. That pregnancy ended in a vaginal birth complicated by acute uterine inversion and primary postpartum hemorrhage, then a secondary hemorrhage from retained placenta needing D&C. Type 1 von Willebrand disease; iron deficiency on oral iron. Latex allergy.\n\nPlan:\n- Gonadotropin ovulation induction as before, with monitoring here.\n- Stop her estradiol/norethindrone now; first stimulation with her next scheduled start.\n- Early referral to obstetrics once pregnant, with a request that hematology take part in delivery planning given the prior hemorrhages."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telephone",
+          "start": "2025-01-21T10:40",
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Held for ovulation induction"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication update",
+              "date": "2025-01-21T10:40",
+              "author": "RN",
+              "body": "Pt reports REI had her stop the estradiol/norethindrone last week ahead of stimulation. Removed from active med list. Iron, vitamin D, desmopressin unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T18:05",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-04-01",
+              "note": "Conceived with gonadotropin ovulation induction; prior uterine inversion and postpartum hemorrhage; von Willebrand disease",
+              "icd10": "O09.90"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive again",
+              "date": "2025-04-22T18:05",
+              "author": "patient",
+              "body": "REI just called - positive test on the first try this time. Wanted to let you know. Same meds as before?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive again",
+              "date": "2025-04-23T07:58",
+              "author": "PCP",
+              "body": "Wonderful news, congratulations. Yes - keep the iron and vitamin D, and the desmopressin only for a bleed that won't stop. Please make sure your OB has the 2023 hospital summaries; I can fax them if that's easier."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "outside_records",
+          "start": "2025-05-08T13:30",
+          "reason": "Reproductive endocrinology update",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Reproductive Endocrinology Early Pregnancy Note",
+              "date": "2025-05-08T13:30",
+              "author": "reproductive endocrinology",
+              "body": "REPRODUCTIVE ENDOCRINOLOGY\nDate of visit: 2025-05-06\n\nUltrasound: single intrauterine pregnancy, cardiac activity present, measurements match dates. Conceived on the first gonadotropin cycle this year.\n\nCare transferred to her obstetrician. We flagged the prior uterine inversion, the two postpartum hemorrhages and her von Willebrand disease in the transfer letter."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-10T12:15",
+          "reason": "Pregnancy check-in, refills",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-10T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-06-10T12:15",
+              "author": "PCP",
+              "body": "Brief video check-in, about 12 weeks. Nausea most mornings but keeping food down. OB visits started. One nosebleed last month, stopped with pressure. Needs iron refill. Son is almost two and keeps her busy.\n\nMeds: ferrous sulfate, vitamin D3, desmopressin PRN. HRT off since January.\n\nPlan: iron refilled x 12 months. OB and hematology to plan the delivery. We'll see her after the baby comes."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-22T11:15",
+          "reason": "Obstetrics update",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Prenatal Update",
+              "date": "2025-08-22T11:15",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS - LETTER TO PRIMARY CARE\nDate of visit: 2025-08-19\n\nG2P1 at about 22 weeks, conceived with ovulation induction. Anatomy ultrasound normal: appropriately grown single fetus, normal survey, placenta fundal and clear of the os.\n\nHistory: her first birth (2023) was vaginal and was followed by an acute uterine inversion with primary postpartum hemorrhage needing manual replacement and transfusion, then a secondary hemorrhage from retained placenta needing D&C. Type 1 von Willebrand disease. Kallmann syndrome. Iron deficiency.\n\nPlan after counseling: scheduled cesarean at 39 weeks given the prior inversion, with hematology input on hemostatic support. She has asked for tubal ligation at the same operation and has signed consent. Blood bank sample and crossmatch to be arranged before surgery."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "outside_records",
+          "start": "2025-10-21T09:20",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T10:30"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2025-10-14T10:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics Immunization Record",
+              "date": "2025-10-21T09:20",
+              "author": "obstetrics",
+              "body": "Given at the obstetrics office 2025-10-14 at 30 weeks: influenza (trivalent) 0.5 mL IM left deltoid; Tdap 0.5 mL IM right deltoid. No reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "hospital_admission",
+          "start": "2025-12-16T06:00",
+          "end": "2025-12-19T12:00",
+          "service": "Obstetrics",
+          "reason": "Scheduled cesarean delivery with tubal ligation",
+          "conditions": [
+            {
+              "label": "Acute postpartum hemorrhage",
+              "action": "diagnosed",
+              "onset": "2025-12-16",
+              "icd10": "O72.1"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "diagnosed",
+              "onset": "2025-12-16",
+              "icd10": "D62"
+            },
+            {
+              "label": "Supervision of high risk pregnancy",
+              "action": "resolved",
+              "onset": "2025-04-01",
+              "icd10": "O09.90"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-12-23T14:10",
+              "author": "obstetrics",
+              "body": "OBSTETRIC DISCHARGE SUMMARY\nAdmitted: 2025-12-16  Discharged: 2025-12-19\n\n34-year-old G2P1 at 39 weeks for scheduled cesarean (indication: prior acute uterine inversion) and bilateral tubal ligation. Type 1 von Willebrand disease - hematology recommendations followed in the OR. Kallmann syndrome. Iron deficiency. Latex allergy - latex-free room.\n\nPROCEDURE 12/16: low transverse cesarean section under spinal anesthesia with delivery of a healthy infant, followed by bilateral tubal ligation. The case was complicated by significant hemorrhage; she was transfused 2 units of packed red cells and hemostasis was achieved.\n\nPostoperative course: slow to mobilize because of fatigue and lightheadedness, otherwise unremarkable. Incision clean. Breastfeeding attempted with lactation support; supply low, supplementing.\n\nDIAGNOSES: term pregnancy, delivered by cesarean; bilateral tubal ligation; postpartum hemorrhage with acute blood-loss anemia, transfused; type 1 von Willebrand disease.\n\nDISCHARGE MEDICATIONS: ferrous sulfate 325 mg daily; vitamin D3 2000 IU daily; desmopressin nasal PRN.\n\nFOLLOW-UP: obstetrics wound check in one week."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-22a",
+          "kind": "specialist_visit",
+          "start": "2025-12-22T10:00",
+          "service": "Obstetrics and Gynecology",
+          "reason": "Post-operative visit after cesarean",
+          "vitals": {
+            "bp": [
+              92,
+              56
+            ],
+            "hr": 92
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-22T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 132
+                },
+                {
+                  "test": "Glucose",
+                  "value": 64
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-22T10:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Post-operative Visit",
+              "date": "2025-12-29T15:30",
+              "author": "obstetrics",
+              "body": "OBSTETRICS - POSTOPERATIVE VISIT\nDate of visit: 2025-12-22\n\nOne week after her cesarean and tubal ligation (second child), a delivery complicated by hemorrhage requiring transfusion. She came with her husband and the baby.\n\nShe describes deep exhaustion, an inability to produce any milk though she has been putting the baby to the breast often, lightheadedness whenever she stands, and difficulty keeping her mind on things. Of note she has had no vaginal bleeding or lochia at all since the delivery.\n\nVitals: BP 92/56, pulse 92. Exam unremarkable other than pallor; incision healing well.\nLabs today: sodium 132, glucose 64. Urine pregnancy test negative.\n\nAssessment: postoperative check after cesarean with significant hemorrhage. Her symptoms, absent lochia, low sodium and low glucose after a second major postpartum bleed raise concern for pituitary insufficiency.\nPlan: we are sending this note to her primary care physician and recommend prompt endocrinology evaluation of pituitary function. Return precautions given for vomiting, confusion or fainting."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "outside_records",
+          "start": "2025-12-29T15:40",
+          "reason": "Obstetrics records received",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Outside Records Received",
+              "date": "2025-12-29T15:40",
+              "author": "front desk",
+              "body": "Obstetric discharge summary (12/16-12/19, received 12/23) and post-op visit note 12/22 (received today) filed. Post-op note flagged by OB for PCP attention - routed."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "telephone",
+          "start": "2025-12-30T08:35",
+          "orders": [
+            {
+              "id": "endo-ref-2025",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Suspected pituitary insufficiency after postpartum hemorrhage"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: OB note",
+              "date": "2025-12-30T08:35",
+              "author": "PCP",
+              "body": "Read the OB post-op note: Na 132, glucose 64, orthostatic symptoms, no lactation and no lochia after a second hemorrhage. Called pt: endocrinology referral placed today for a pituitary evaluation, asked for the first available. Told her to eat regularly, salt her food, and go to the ED for vomiting, confusion or fainting. She understands. She'll get the baby's checkup done this week and is home with her husband."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "telephone",
+          "start": "2026-01-06T11:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduling",
+              "date": "2026-01-06T11:25",
+              "author": "front desk",
+              "body": "Endocrinology referral processed. Their first opening for her is Tuesday 6/23; pt put on their cancellation list. Pt informed and agrees."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up",
+          "conditions": [
+            {
+              "label": "Acute postpartum hemorrhage",
+              "action": "resolved",
+              "onset": "2025-12-16",
+              "icd10": "O72.1"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "resolved",
+              "onset": "2025-12-16",
+              "icd10": "D62"
+            },
+            {
+              "label": "History of previous cesarean delivery",
+              "action": "diagnosed",
+              "onset": "2025-12-16",
+              "icd10": "Z98.891"
+            },
+            {
+              "label": "Tubal ligation status",
+              "action": "diagnosed",
+              "onset": "2025-12-16",
+              "icd10": "Z98.51"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              98,
+              62
+            ],
+            "hr": 83,
+            "spo2": 98,
+            "weight_kg": 55.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-10T14:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.81
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-02-10T14:55",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                },
+                {
+                  "test": "Iron",
+                  "value": 36
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 8
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 429
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-10T14:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-10T14:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-10T14:20",
+              "author": "PCP",
+              "body": "Postpartum f/u, 8 weeks after cesarean + BTL (12/16), which was complicated by hemorrhage and 2 u PRBC.\n\nS: Still very tired and foggy; the baby is up twice a night but she says it's more than that. Lightheaded on standing most days. No milk ever came in - bottle-feeding. No bleeding since the surgery. Appetite meh. Incision healed. Husband is doing nights on weekends. Endocrinology appointment is 6/23, on their cancellation list. HRT still off since REI stopped it last January; would rather wait for endocrinology's advice.\n\nMeds: ferrous sulfate 325 daily, vitamin D3, desmopressin PRN.\n\nO: BP 98/62, vitals otherwise as recorded. Thin, pale. Heart regular, lungs clear. Abdomen: low transverse scar well healed, nontender. No edema. PHQ-9 6 - mostly tiredness and concentration items; no thoughts of self-harm.\n\nA/P:\n1. Fatigue and orthostatic symptoms after second PPH - endocrinology pending for pituitary evaluation. Return or ED for vomiting, confusion, fainting.\n2. Iron deficiency anemia after blood loss - CBC, iron studies today; continue oral iron.\n3. S/p cesarean and tubal ligation - added to history. Postpartum hemorrhage resolved.\n4. Mood - PHQ-9 6, will rescreen.\nFollow-up after the endocrinology visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              98,
+              62
+            ],
+            "weight_kg": 55.0,
+            "labs": {
+              "Ferritin": 8,
+              "Hemoglobin": 10.6,
+              "Iron": 29,
+              "Mean Corpuscular Volume": 80,
+              "Transferrin Saturation": 7
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T12:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "date": "2026-02-12T12:48",
+              "author": "PCP",
+              "body": "Hi Maya - hemoglobin is 10.6 and ferritin 8. The iron stores were drained by December's bleeding. Please take the iron every day without skipping; we'll recheck when I see you after endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "pharmacy",
+          "start": "2026-03-24T09:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill - desmopressin nasal",
+              "date": "2026-03-24T09:50",
+              "author": "MA",
+              "body": "Pharmacy request: desmopressin acetate nasal spray 150 mcg/spray, 1 bottle. Last filled 2/2024. Approved by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrinology appointment",
+              "date": "2026-05-12T21:14",
+              "author": "patient",
+              "body": "No luck with the cancellation list, still 6/23. Should I book with you the week after? I can do Tuesday afternoons."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrinology appointment",
+              "date": "2026-05-13T09:02",
+              "author": "front desk",
+              "body": "Booked you with your PCP on Tuesday 6/30 at 3:40. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "specialist_visit",
+          "start": "2026-06-23T08:15",
+          "service": "Endocrinology",
+          "reason": "Amenorrhea and failed lactation after second delivery",
+          "conditions": [
+            {
+              "label": "Hypopituitarism",
+              "action": "diagnosed",
+              "onset": "2023-07-01",
+              "note": "Postpartum pituitary insufficiency (Sheehan syndrome) with secondary adrenal insufficiency and central hypothyroidism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              90,
+              60
+            ],
+            "hr": 68,
+            "weight_kg": 51.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-23T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T08:05",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T08:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T08:05",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T08:05",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Consultation",
+              "date": "2026-06-26T10:10",
+              "author": "endocrinology",
+              "body": "ENDOCRINOLOGY - CONSULTATION LETTER\nDate of visit: 2026-06-23\nReferred by: primary care\n\nDear colleague,\n\nI saw Ms. Klein, 35, whom our group last followed years ago for her Kallmann syndrome. She delivered her second child by cesarean six months ago; that delivery was complicated by hemorrhage and transfusion, as was her first in 2023 (uterine inversion, then retained placenta). Since December she has not had a period and never produced milk. She is tired all the time and has noticed thinning of her pubic and axillary hair. Her estradiol/norethindrone has been off since January 2025 for fertility treatment.\n\nOther history: type 1 von Willebrand disease; iron deficiency anemia; tubal ligation at the cesarean. Medications: ferrous sulfate, vitamin D3, desmopressin nasal as needed. Allergy: latex.\n\nExam: BP 90/60. BMI 19. Pale. No galactorrhea on breast exam.\n\nLabs this morning (08:05): sodium 130, potassium 5.2, calcium 9.0; cortisol 3 mcg/dL; TSH 0.5 with free T4 0.8; prolactin 5.\n\nAssessment: hypopituitarism following postpartum hemorrhage (Sheehan syndrome), with secondary adrenal insufficiency and central hypothyroidism. Low prolactin explains the failed lactation. The underlying Kallmann syndrome means her gonadotropin deficiency predates this.\n\nPlan:\n1. Hydrocortisone 10 mg on waking and 5 mg at about 2 PM, started today. Sick-day rules reviewed: double the doses for fever or illness, and seek care for vomiting. A medical alert ID and an emergency steroid letter given.\n2. Levothyroxine 50 mcg daily, starting four days after the hydrocortisone. Dose by free T4, not TSH.\n3. Resume ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily for estrogen replacement.\n4. Desmopressin only for bleeding; with her low sodium, limit fluids that day.\n5. Labs and visit here in 6 weeks.\n\nThank you for the referral."
+            }
+          ],
+          "state": {
+            "weight_kg": 51.7
+          },
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "outside_records",
+          "start": "2026-06-26T10:20",
+          "reason": "Endocrinology letter received",
+          "orders": [
+            {
+              "id": "endo-ref-2025",
+              "action": "done",
+              "date": "2026-06-26T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Consult Letter Received",
+              "date": "2026-06-26T10:20",
+              "author": "front desk",
+              "body": "Endocrinology consult letter (visit 6/23) received by fax, filed, routed to PCP ahead of pt's 6/30 appointment. Referral closed as completed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "office_visit",
+          "start": "2026-06-30T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after endocrinology",
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (10 mg) on waking and 1/2 tablet (5 mg) at about 2 PM; double doses when ill",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Secondary adrenal insufficiency"
+            },
+            {
+              "drug": "levothyroxine sodium 0.05 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 50,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Central hypothyroidism"
+            },
+            {
+              "drug_text": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily, continuously",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hormone replacement for hypogonadism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              94,
+              62
+            ],
+            "hr": 72,
+            "spo2": 96,
+            "weight_kg": 51.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-30T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-06-30T15:40",
+              "author": "PCP",
+              "body": "F/u after endocrinology (letter 6/23 reviewed).\n\nS: Endocrinology diagnosed postpartum hypopituitarism - Sheehan's - with secondary adrenal insufficiency and central hypothyroidism. Started hydrocortisone 10 mg on waking / 5 mg early afternoon on 6/23; levothyroxine 50 mcg began 6/27; back on her estradiol/norethindrone. After a week she already feels steadier on her feet and a bit less flat in the afternoons. No vomiting, no fevers. Has her alert bracelet ordered and the emergency letter in her bag.\n\nMeds: hydrocortisone 10 mg AM / 5 mg PM, levothyroxine 50 mcg daily, ethinyl estradiol/norethindrone acetate 5 mcg/1 mg daily, ferrous sulfate 325 daily, vitamin D3 2000 IU, desmopressin nasal PRN.\n\nO: BP 94/62. Weight 51.7 kg. Thin, pale. Heart regular, lungs clear. No edema. PHQ-2 1.\n\nA/P:\n1. Hypopituitarism after postpartum hemorrhage - added to problem list; replacement per endocrinology. Reviewed sick-day doubling and when to go to the ED. Flagged chart: stress-dose steroids for any procedure or acute illness.\n2. Hyponatremia - expect improvement on hydrocortisone; endocrinology rechecks in 6 weeks.\n3. Kallmann syndrome - HRT resumed.\n4. Iron deficiency - continue iron.\n5. vWD - desmopressin sparingly, fluids limited that day.\nRTC September."
+            }
+          ],
+          "state": {
+            "bp": [
+              94,
+              62
+            ],
+            "weight_kg": 51.7
+          },
+          "measure": [
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T20:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Two weeks in",
+              "date": "2026-07-09T20:02",
+              "author": "patient",
+              "body": "Just a note - two weeks on the hydrocortisone and I'm noticeably better. I took the stairs at work today without having to stop. My husband says I'm talking more. The bracelet came. Thank you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Two weeks in",
+              "date": "2026-07-10T07:50",
+              "author": "PCP",
+              "body": "That is so good to hear. Keep everything as endocrinology set it, and remember to double the hydrocortisone if you get sick. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T10:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill - hydrocortisone",
+              "date": "2026-08-04T10:30",
+              "author": "MA",
+              "body": "Pharmacy faxed request for hydrocortisone 10 mg tablets (endocrinology prescription, first fill 6/23). Pt has an endocrinology visit this week; routed to endocrinology to renew. Pt notified she has enough tablets until then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T15:40",
+          "reason": "Follow-up on pituitary hormone replacement",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute posthemorrhagic anemia|D62": {
+        "code": "D62",
+        "display": "Acute posthemorrhagic anemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute postpartum hemorrhage|O72.1": {
+        "code": "O72.1",
+        "display": "Other immediate postpartum hemorrhage",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of previous cesarean delivery|Z98.891": {
+        "code": "Z98.891",
+        "display": "History of uterine scar from previous surgery",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyponatremia|E87.1": {
+        "code": "E87.1",
+        "display": "Hypo-osmolality and hyponatremia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypovolemic shock|R57.1": {
+        "code": "R57.1",
+        "display": "Hypovolemic shock",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Kallmann syndrome|E23.0": {
+        "code": "E23.0",
+        "display": "Hypopituitarism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postpartum inversion of uterus|O71.2": {
+        "code": "O71.2",
+        "display": "Postpartum inversion of uterus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary postpartum hemorrhage due to retained products of conception|O72.2": {
+        "code": "O72.2",
+        "display": "Delayed and secondary postpartum hemorrhage",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of high risk pregnancy|O09.90": {
+        "code": "O09.90",
+        "display": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tubal ligation status|Z98.51": {
+        "code": "Z98.51",
+        "display": "Tubal ligation status",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "cholecalciferol 0.05 MG Oral Tablet": {
+        "code": "801663",
+        "display": "cholecalciferol 0.05 MG Oral Tablet",
+        "ingredient": "cholecalciferol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "desmopressin acetate 0.15 MG/ACTUAT Metered Dose Nasal Spray": {
+        "code": "1797859",
+        "display": "desmopressin acetate 0.15 MG/ACTUAT Metered Dose Nasal Spray",
+        "ingredient": "desmopressin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet": {
+        "code": "1090992",
+        "display": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
+        "ingredient": "ethinyl",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "hydrocortisone 10 MG Oral Tablet": {
+        "code": "197782",
+        "display": "hydrocortisone 10 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "ABO and Rh group": {
+        "code": "882-1",
+        "display": "ABO and Rh group [Type] in Blood",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

@@ -1,0 +1,540 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002067",
+      "events": [
+        {
+          "id": "2024-01-11a",
+          "kind": "procedure_visit",
+          "start": "2024-01-11T07:45",
+          "end": "2024-01-11T13:10",
+          "service": "Dermatology — Mohs Surgery",
+          "reason": "Squamous cell carcinoma right forearm",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Mohs micrographic surgery",
+              "author": "dermatology",
+              "date": "2024-01-15T10:00",
+              "body": "Mohs Surgery Report\nDate: 01/11/2024\nDiagnosis: invasive squamous cell carcinoma, well differentiated, right dorsal forearm (biopsy 12/04/2023).\nAllergies: NKDA.\n\nPre-op lesion 2.0 cm. Local anesthesia.\nStage 1: tumor present at one deep edge. Stage 2: clear on all margins.\nFinal defect 3.1 x 2.6 cm, repaired with layered (intermediate) closure. Estimated blood loss minimal.\nWound care reviewed; sutures out in 14 days.\n\nPlan: full skin checks every 6 months given his immunosuppression. Sun protection reviewed.\nMohs Surgery / Dermatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "imaging",
+          "start": "2024-01-22T12:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-01-22T12:30",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Lung cancer surveillance, 1 year after right upper lobectomy.\nCOMPARISON: 07/17/2023.\nFINDINGS: Stable postoperative changes of right upper lobectomy. No new or enlarging nodule. No lymphadenopathy. No effusion. Bones unremarkable.\nIMPRESSION: Stable. No evidence of recurrent or metastatic disease.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "author": "oncology",
+              "date": "2024-01-29T09:40",
+              "body": "Thoracic Oncology 01/24/2024: one year after resection, no symptoms, CT clear. Also had Mohs for a forearm SCC this month. Next CT July 2024. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-11a",
+          "kind": "office_visit",
+          "start": "2024-03-11T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; cholesterol and heart risk",
+          "conditions": [
+            {
+              "label": "Squamous cell carcinoma of skin of right upper limb",
+              "icd10": "C44.622",
+              "action": "resolved",
+              "onset": "2023-12-04",
+              "note": "Mohs 1/2024, clear margins"
+            },
+            {
+              "label": "History of other malignant neoplasm of skin",
+              "action": "diagnosed",
+              "onset": "2024-01-11",
+              "note": "SCC right forearm, Mohs 1/2024"
+            }
+          ],
+          "state": {
+            "weight_kg": 81.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-11T14:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Total Cholesterol"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-03-11T14:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Cardiovascular risk review: family history of premature MI, kidney transplant, LDL 120 on atorvastatin"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-11T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-03-11T13:30",
+              "body": "S: Mohs done in Jan, forearm healed with a neat scar. CT in Jan clear. Feeling well, training for a spring half.\nHe's been thinking about his heart since his dad's MI at 62 (he's 58) and wants a cardiology opinion. Also heard about another big trial of a new cholesterol medicine and wonders if he'd qualify.\nMeds unchanged. NKDA.\nO: BP and HR as charted. Heart RRR, no murmur. Lungs clear. Forearm scar well healed, no nodules. No edema.\nA/P\n- Lipids/CV risk: LDL has been ~120 on atorvastatin 40. Referral to cardiology for a risk review as he asked; lipids today for them.\n- SCC R forearm s/p Mohs - moved to history. Derm checks q6 mo.\n- Lung ca stage IA2 s/p lobectomy, NED.\n- HTN controlled."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-31a",
+          "kind": "specialist_visit",
+          "start": "2024-05-31T10:00",
+          "service": "Cardiology",
+          "reason": "Cardiovascular risk evaluation",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "cards-referral",
+              "action": "done",
+              "date": "2024-05-31T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "author": "cardiology",
+              "date": "2024-06-04T15:30",
+              "body": "Cardiology Consultation\nDate: 05/31/2024\nReferred by primary care for cardiovascular risk review.\n\nMr. Moran is 58, a kidney transplant recipient (2018) with hypertension (transplant renal artery stent 2022), hyperlipidemia on atorvastatin 40 mg, resected early-stage lung adenocarcinoma, cutaneous SCC treated with Mohs, and a former 25 pack-year smoker. Father had an MI at 62. He has no chest pain, exertional symptoms or palpitations and runs several days a week.\n\nMedications: tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, naproxen sodium 220 mg BID as needed, albuterol as needed.\nAllergies: NKDA.\n\nExam: BP and heart rate normal. Regular rhythm, no murmur. Carotids without bruit. Lungs clear. No edema.\nLipids (03/2024, primary care): LDL about 120.\n\nHe asked about enrolling in a large multicenter outcomes trial comparing a new lipid-lowering agent with statin therapy. We reviewed what participation would involve, including several years of visits, blinded assignment and frequent blood draws. Given the visit burden with his work and his transplant care, he decided not to enroll.\n\nImpression: elevated cardiovascular risk, asymptomatic. Continue atorvastatin 40 mg daily and current blood pressure regimen. Follow up with us as needed.\nCardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "outside_records",
+          "start": "2024-06-05T08:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Cardiology letter reviewed",
+              "author": "PCP",
+              "date": "2024-06-05T08:20",
+              "body": "Cardiology consult from 5/31 reviewed. Not enrolling in the lipid trial; keep atorvastatin 40 and current BP meds. No changes. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-22a",
+          "kind": "imaging",
+          "start": "2024-07-22T11:15",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-07-22T11:15",
+              "text": "EXAM: CT chest without contrast.\nINDICATION: Surveillance after right upper lobectomy for adenocarcinoma (01/2023).\nCOMPARISON: 01/22/2024.\nFINDINGS: Unchanged postoperative appearance. No pulmonary nodule. No mediastinal or hilar adenopathy. No pleural effusion.\nIMPRESSION: No evidence of recurrence.",
+              "conclusion": "No evidence of recurrence."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Oncology surveillance visit",
+              "author": "oncology",
+              "date": "2024-07-29T14:20",
+              "body": "Thoracic Oncology 07/24/2024: 18 months out, well, CT without recurrence. Final 6-month scan January 2025, then yearly. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "outside_records",
+          "start": "2024-07-29T16:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Dermatology skin check",
+              "author": "dermatology",
+              "date": "2024-07-29T16:00",
+              "body": "Dermatology full-skin exam 07/25/2024. Right forearm Mohs site well healed, no recurrence. Chronic sun damage on the left arm and face, no suspicious lesions today. Recheck in 6 months. Continue daily sunscreen and a sun sleeve while driving."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "outside_records",
+          "start": "2024-08-19T10:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Transplant nephrology annual visit",
+              "author": "transplant nephrology",
+              "date": "2024-08-19T10:20",
+              "body": "Transplant Nephrology, visit 08/14/2024. Six years post-transplant, graft stable (creatinine 1.2), tacrolimus level in range, BP 126/78. After this year's skin cancer we discussed immunosuppression and will keep the current regimen: tacrolimus 5 mg BID, prednisone 5 mg daily. NKDA. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "annual_physical",
+          "start": "2024-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-16T08:45",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-16T08:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-16T08:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-16T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-16T08:00",
+              "body": "Physical, turned 59 next week. Ran his spring half. Feels well. Knees stiff after long runs, using naproxen more this summer - a couple of tablets most days during training. No GI complaints.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, naproxen 220 prn, albuterol prn. NKDA.\nROS negative.\nExam: vitals as charted. Skin: forearm scar fine, no new lesions. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Knees: crepitus, no effusion. No edema.\nA/P: healthy visit. Flu + COVID today. Labs. Colonoscopy due 2027. Cardiology saw him in May, no changes. Derm and oncology surveillance on track."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T07:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-09-18T07:30",
+              "body": "Charles, your physical labs are all in the usual range - kidney, liver, blood count, sugar and magnesium. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-28a",
+          "kind": "hospital_admission",
+          "start": "2024-11-28T15:40",
+          "end": "2024-12-01T12:30",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "Hematemesis and melena",
+          "vitals": [
+            {
+              "time": "2024-11-28T15:45",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120
+            },
+            {
+              "time": "2024-11-28T18:30",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 98
+            },
+            {
+              "time": "2024-11-30T08:00",
+              "bp": [
+                124,
+                76
+              ],
+              "hr": 80
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Acute duodenal ulcer with hemorrhage",
+              "icd10": "K26.0",
+              "action": "diagnosed",
+              "onset": "2024-11-28",
+              "note": "NSAID-related; EGD 11/29/2024"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily before meals for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "reason": "Bleeding duodenal ulcer"
+            },
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily for 3 months",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "reason": "Blood loss"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-28T15:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4,
+                  "unit": "g/dL"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-29T05:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.3,
+                  "unit": "g/dL"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-11-28T15:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2024-12-03T09:00",
+              "body": "Emergency Department Physician Record\nArrival: 11/28/2024 15:40\n\nCC: vomiting blood, black stools.\nHPI: 59-year-old man with a kidney transplant and a history of peptic ulcer disease vomited blood twice and passed black stool over the last two hours. A sharp, gnawing upper abdominal pain has been building over the past week. He has been taking over-the-counter naproxen frequently for knee pain while training. Also on daily prednisone.\nMeds: tacrolimus, prednisone, amlodipine, hydrochlorothiazide, atorvastatin, naproxen OTC, albuterol prn.\nAllergies: NKDA.\n\nExam: BP 90/60, HR 120. Pale and diaphoretic. Abdomen soft with mild epigastric tenderness; no masses, no hepatosplenomegaly.\nLabs: hemoglobin 9.4. INR normal.\n\nED course: two large-bore IVs, crystalloid bolus with improvement in pressure, IV pantoprazole bolus and infusion, type and cross. GI consulted for endoscopy. Admitted to medicine.\nImpression: acute upper GI hemorrhage, likely peptic ulcer, NSAID-associated."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "author": "gastroenterology",
+              "date": "2024-12-03T09:05",
+              "body": "Esophagogastroduodenoscopy\nDate: 11/29/2024\nIndication: hematemesis and melena.\nAllergies: NKDA. Moderate sedation.\nFindings: Esophagus normal. Stomach with a small amount of old blood, mucosa otherwise normal; biopsies of antrum and body for H. pylori. Duodenal bulb: 1.5 cm ulcer with a non-bleeding visible vessel. Second portion normal.\nTherapy: dilute epinephrine injection around the vessel, then two hemostatic clips. Good hemostasis.\nImpression: duodenal bulb ulcer with non-bleeding visible vessel, treated endoscopically.\nRecommendations: high-dose PPI, avoid all NSAIDs, follow biopsy results.\nAddendum 12/02: gastric biopsies negative for Helicobacter pylori."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2024-12-03T09:10",
+              "body": "Discharge Summary\nAdmitted 11/28/2024, discharged 12/01/2024.\nDiagnosis: acute upper GI hemorrhage from a duodenal bulb ulcer, NSAID-associated, H. pylori negative.\n\nCourse: Hemoglobin 9.4 on arrival, 8.3 the next morning; transfused 1 unit packed red cells. EGD 11/29 with epinephrine and clips to a visible vessel. No rebleeding. Diet advanced. Tacrolimus and prednisone continued; antihypertensives held on day 1 and resumed day 2 as pressures recovered. Creatinine at baseline.\n\nDischarge medications:\nNEW pantoprazole 40 mg twice daily for 8 weeks, then stop if off NSAIDs (review with PCP)\nNEW ferrous sulfate 325 mg daily for 3 months\nSTOP naproxen and all NSAIDs\nCONTINUE tacrolimus 5 mg BID, prednisone 5 mg daily, amlodipine 10 mg daily, hydrochlorothiazide 25 mg daily, atorvastatin 40 mg daily, albuterol as needed\nAllergies: NKDA.\nFollow-up: PCP within 1 week with CBC."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "telephone",
+          "start": "2024-12-03T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2024-12-03T11:20",
+              "body": "TCM call 2 days after discharge. No vomiting, stools turning brown. Some fatigue. Taking pantoprazole twice a day and iron. Knows to stop naproxen. Has not driven since. Appt 12/6 with PCP, CBC that day. Return precautions for black stool, vomiting blood, fainting."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-06a",
+          "kind": "office_visit",
+          "start": "2024-12-06T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, GI bleed",
+          "medications": [
+            {
+              "drug_text": "naproxen sodium 220 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Bleeding duodenal ulcer"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for knee pain, no more than 6 tablets a day",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Knee osteoarthritis"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-06T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4,
+                  "unit": "g/dL"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-12-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2024-12-06T10:00",
+              "body": "Seen 1 week after admission for a bleeding duodenal ulcer (11/28-12/1). Records reviewed: EGD with visible vessel, clipped; 1 unit PRBC; H. pylori neg.\nNow: no further black stools since 11/30, no vomiting. Tired but improving. No lightheadedness. Taking pantoprazole BID and ferrous sulfate; mild constipation from iron.\nHe was taking a lot more naproxen than I realized during his training. We went over why it can't come back - ulcer history plus prednisone.\nMeds: tacrolimus 5 BID, prednisone 5, amlodipine 10, HCTZ 25, atorvastatin 40, pantoprazole 40 BID, ferrous sulfate 325 daily, albuterol prn. NKDA.\nExam: BP/HR as charted, no orthostasis. Mild pallor. Abdomen soft, nontender. Heart regular.\nHgb today 11.4.\nA/P\n1. Duodenal ulcer bleed, NSAID-related: complete 8 wks pantoprazole BID. Naproxen removed from list - no NSAIDs at all, including OTC. Will reassess PPI at end of course.\n2. Blood loss: Hgb recovering, iron x 3 months, CBC in ~2 months.\n3. Knee pain: acetaminophen up to 3 g/day.\n4. Off driving another week."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

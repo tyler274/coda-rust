@@ -1,0 +1,315 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002816",
+      "given": "Jada",
+      "family": "Washington",
+      "birth_date": "1981-03-25",
+      "address_line": "23 Cosgrove Avenue",
+      "phone": "+1-978-555-0195",
+      "email": "jada.washington@example.test",
+      "marital_status": "partnered",
+      "summary": "45-year-old woman with HIV/AIDS followed at an outside ID clinic and opioid use disorder in remission on buprenorphine-naloxone prescribed by the practice. Develops CMV retinitis of the left eye in September 2025 and primary CNS lymphoma in May 2026, after her last practice visit; sparse outside records.",
+      "events": [
+        {
+          "id": "2024-08-06a",
+          "kind": "telephone",
+          "start": "2024-08-06T10:12",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-08-06T10:12",
+              "body": "Caller wants to establish with Dr. as her new PCP. Her old primary care office stopped taking her plan. Has Medicaid, card info taken. Sees an infectious disease clinic for HIV and says she will keep seeing them. Also needs someone to keep writing her Suboxone, last script from old office runs out end of the month. Booked new patient visit Tue 8/20 9:00, 60 min. Membership info emailed. Asked her to bring all her medicine bottles and the name of her ID doctor's office."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T09:00",
+          "end": "2024-08-20T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; continue buprenorphine",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "diagnosed",
+              "note": "AIDS, CD4 under 200; managed by outside ID clinic"
+            },
+            {
+              "label": "Opioid dependence, in remission",
+              "icd10": "F11.21",
+              "action": "diagnosed",
+              "note": "sustained remission on buprenorphine-naloxone maintenance"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2024-03-01",
+              "note": "quit March 2024, 20 pack-years"
+            },
+            {
+              "label": "Personal history of HIV-related opportunistic skin infection",
+              "icd10": "Z86.19",
+              "action": "history",
+              "note": "HIV-related opportunistic skin infection, treated and resolved before joining"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV infection (prescribed by ID)"
+            },
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 DS tablet by mouth three times weekly on Monday, Wednesday and Friday",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pneumocystis prophylaxis (prescribed by ID)"
+            },
+            {
+              "drug": "buprenorphine 8 MG / naloxone 2 MG Sublingual Film",
+              "action": "start",
+              "sig": "Dissolve 1 film under the tongue once daily",
+              "dose": {
+                "value": 1,
+                "unit": "film"
+              },
+              "frequency": "DAILY",
+              "route": "Sublingual",
+              "course": "chronic",
+              "reason": "Opioid use disorder in remission"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 68.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Part-time customer service representative"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-08-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-08-20T10:40",
+              "body": "43F here to establish. Moving her primary care from a prior office; keeps her HIV care with an outside infectious disease clinic.\n\nHIV: AIDS-defining CD4 (under 200) per her report, on bictegravir/emtricitabine/TAF one pill a day and TMP-SMX DS M/W/F for PJP prophylaxis, both from ID. She does not know her last numbers offhand. Sees ID every few months, labs there. Feels well.\n\nOUD: in sustained remission, years now by her account, on buprenorphine-naloxone 8/2 mg film once daily. Prior prescriber was at the old office. No cravings, no use, no recent ED visits. Brother has struggled with opioids too and she says watching that keeps her steady. Asks us to take over the prescription; agreed. PMP reviewed today: single prescriber, single pharmacy, buprenorphine only, fills on time.\n\nPast history: had a skin infection tied to the HIV some time ago, treated and cleared, no recurrence. No surgeries.\nMeds: as above. Allergies: none to medicines.\nFH: mother with type 2 diabetes. Father had high blood pressure and a stroke at 67. Older brother with opioid use disorder.\nSH: lives in Florence with her partner. Works part time doing customer service by phone. Smoked about a pack a day for 20 years, stopped in March, no slips, no vaping. Drinks once or twice a month, socially. No other substances.\n\nROS: no fevers, sweats, weight change, cough, rash, mouth sores, vision change, headaches.\n\nExam: well appearing, pleasant. Vitals as recorded. Oropharynx clear, no thrush. No lymphadenopathy. Heart RRR, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, no organomegaly. Skin: no lesions or rashes. Neuro grossly intact.\n\nPHQ-9: 3.\n\nA/P\n1. HIV with AIDS: continue ART and TMP-SMX per ID. Will request their notes and recent labs.\n2. OUD in remission on buprenorphine-naloxone: e-prescribed 8/2 mg film daily, #28, 2 refills. Follow up every 2-3 months.\n3. Former smoker: congratulated; continue abstinence.\n4. Health maintenance: CMP, lipids, A1c, HCV antibody today. Records release signed for prior office and ID clinic. Vaccines at next visit when flu is in.\n\nReturn in about 2 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-23a",
+          "kind": "portal_message",
+          "start": "2024-08-23T16:02",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2024-08-23T16:02",
+              "body": "Hi Jada, your labs from Tuesday came back fine. Kidney and liver tests normal, cholesterol in a good range, A1c (diabetes screen) normal, and hepatitis C screen negative. Nothing to change. See you in October."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "author": "patient",
+              "date": "2024-08-23T18:40",
+              "body": "Thank you!! good to hear"
+            }
+          ]
+        },
+        {
+          "id": "2024-09-05a",
+          "kind": "outside_records",
+          "start": "2024-09-05T11:30",
+          "reason": "Prior practice records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "MA",
+              "date": "2024-09-05T11:30",
+              "body": "38 pages from prior PCP office. Mostly visit notes and buprenorphine prescribing record. Relevant: cervical cytology 03/2023 negative for intraepithelial lesion, HPV not detected. Screening mammogram 05/2023 BI-RADS 1. Immunization history incomplete in their records. ID clinic records requested again, not yet received. Abstracted, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "office_visit",
+          "start": "2024-10-23T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Buprenorphine follow-up; vaccines",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-23T14:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-23T14:52"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-10-23T14:54"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-10-23T14:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-23T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-10-23T15:05",
+              "body": "Follow-up, buprenorphine maintenance.\nDoing well. Taking film every morning, no missed doses, no cravings, no use. Work is steady, partner supportive. Saw ID last month, she says they were happy and kept everything the same. Still not smoking.\nPMP checked, consistent.\nExam: comfortable, vitals reviewed. Mouth without thrush. Lungs clear, heart regular.\nPHQ-9 2.\nPlan: buprenorphine-naloxone 8/2 daily continued, new script #28 x2 refills. Flu, updated COVID and PCV20 today (immunocompromised, no prior pneumococcal on record). Shingrix series to start next visit. Back in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-18a",
+          "kind": "pharmacy",
+          "start": "2024-12-18T09:20",
+          "reason": "Refill authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2024-12-18T09:20",
+              "body": "Pharmacy faxed request for buprenorphine-naloxone 8/2 mg films, last refill on current script used. Pt has follow-up 1/16. Sent to PCP to authorize a bridge."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill authorized",
+              "author": "PCP",
+              "date": "2024-12-18T12:45",
+              "body": "PMP reviewed. Bridge sent, #28, no refills. Keep January visit."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

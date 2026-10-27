@@ -1,0 +1,252 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002869",
+      "events": [
+        {
+          "id": "2025-01-27a",
+          "kind": "office_visit",
+          "start": "2025-01-27T14:00",
+          "end": "2025-01-27T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: mood, bladder, standing blood pressure",
+          "conditions": [
+            {"label": "Orthostatic hypotension", "action": "resolved"},
+            {"label": "Adverse effect of anticholinergic medication", "icd10": "T44.3X5A", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "sertraline 25 MG Oral Tablet", "action": "stop", "reason": "Dose increase"},
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"},
+            {"drug": "24 HR mirabegron 25 MG Extended Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Overactive bladder"}
+          ],
+          "vitals": {"bp": [120, 74], "hr": 72},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 9}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-27T14:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-27T14:40",
+              "body": "Follow-up after stopping oxybutynin and tapering off amitriptyline (off since early December). Daughter here.\n\nS: Daughter says her memory and attention are back to her usual self; patient agrees, back to managing her own pills and bills. No dizziness when she gets up, no falls. Dry mouth gone, bowels regular. Mood: better than November but still flat some days, sleeping okay. Tolerating sertraline 25. Bladder: urgency and some urge leaking most days since oxybutynin stopped, 1-2 pads a day, up once at night.\n\nO: Seated BP 120/74, HR 72. Standing (2 min) BP 116/72, HR 78, no symptoms. Pupils equal, normal size, briskly reactive. Mucous membranes moist. Bowel sounds normal. Alert, engaged, oriented, conversation fluent and appropriate.\nPHQ-9 9.\n\nA/P:\n1. Orthostatic hypotension: resolved off amitriptyline; standing drop now 4 mmHg.\n2. Anticholinergic adverse effect: resolved. Added both anticholinergics to her list of drugs to avoid in her own notes; she should mention it to any new prescriber.\n3. Depression: partial response. Increase sertraline to 50 mg daily.\n4. Overactive bladder: start mirabegron 25 mg ER daily, a non-anticholinergic option. Continue timed voiding. Will watch BP on it.\n5. Video visit in about 10 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-04a",
+          "kind": "pharmacy",
+          "start": "2025-02-04T10:05",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Coverage review - mirabegron",
+              "author": "MA",
+              "date": "2025-02-04T10:05",
+              "body": "Part D plan requires coverage review for mirabegron ER 25 mg. Submitted with history of anticholinergic adverse effect on oxybutynin (stopped 11/11/2024)."
+            },
+            {
+              "type": "Prior Authorization",
+              "title": "Coverage review approved",
+              "author": "MA",
+              "date": "2025-02-06T15:40",
+              "body": "Plan approved mirabegron for 12 months. Pharmacy notified; patient called and told it can be picked up."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Depression and bladder follow-up",
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-04-14T11:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2025-04-14T11:20",
+              "body": "Video from home, name and DOB confirmed.\nMood steadier on sertraline 50, more like herself. PHQ-9 6. No side effects.\nBladder: leaking much less since mirabegron, down to a pad on outings only. Home cuff readings she sends run in the 110s-120s over 70s.\nBack pain at its usual level, ibuprofen a few times a week.\nPlan: continue sertraline 50 and mirabegron 25. Annual wellness visit in May with fasting labs."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "annual_physical",
+          "start": "2025-05-20T08:30",
+          "end": "2025-05-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Initial annual wellness visit",
+          "state": {"labs": {"Thyroid Stimulating Hormone": 1.8}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-20T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-20T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-05-20T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-05-20T08:45", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2025-05-20T08:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-05-20T09:20"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-05-20T09:22"}
+          ],
+          "orders": [{"id": "dxa-2025", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "Osteoporosis screening; mother with osteoporosis"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2025-05-20T08:30"},
+            {"procedure": "Venipuncture", "performed": "2025-05-20T08:45"},
+            {"procedure": "Immunization administration", "performed": "2025-05-20T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-05-20T09:30",
+              "body": "Initial annual wellness visit, 74 y/o F.\n\nHealth risk review: lives independently, drives in daytime, manages own medications again. No falls in the past year. Hearing and vision adequate; eye practice yearly for glaucoma. Never smoker; wine a glass or two a month. Walks most days.\nCurrent problems: depression on sertraline 50; lumbar osteoarthritis with chronic low back pain, ibuprofen prn; open-angle glaucoma on timolol; overactive bladder on mirabegron. History of anticholinergic adverse effect and orthostatic hypotension, both resolved off amitriptyline and oxybutynin.\nPHQ-9 5.\n\nExam: well appearing. Heart regular, no murmur. Lungs clear. Abdomen benign. No edema. Gait steady, rises from chair without using arms.\n\nPrevention:\n- Colonoscopy 2016 normal. At 74 we talked through whether to repeat; she would rather not do another prep. Will revisit next year.\n- Mammogram 5/2024 negative.\n- Bone density: never done; mother had osteoporosis. DXA ordered.\n- Pneumococcal: PCV13 and PPSV23 in the past; PCV20 today to complete.\n- Shingrix dose 1 today, dose 2 in fall.\n- Tdap 2019.\n- Hepatitis C screening today.\nLabs: CMP, CBC, lipids, TSH.\nFollow-up in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "portal_message",
+          "start": "2025-05-22T12:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Wellness visit labs",
+              "author": "PCP",
+              "date": "2025-05-22T12:10",
+              "body": "Nancy, all of your labs from Tuesday came back normal: kidney and liver tests, blood count, cholesterol, thyroid, and the hepatitis C screen is negative. Please call the imaging center to book the bone density test."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "imaging",
+          "start": "2025-06-10T13:00",
+          "orders": [{"id": "dxa-2025", "action": "done", "date": "2025-06-10T13:00"}],
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2025-06-10T13:00",
+              "issued": "2025-06-11T10:00",
+              "text": "Dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and both hips. Lumbar spine L1-L4 T-score -0.4. Left femoral neck T-score -0.7. Left total hip T-score -0.3. Right femoral neck T-score -0.6. No vertebrae excluded. No prior study for comparison.",
+              "conclusion": "Normal bone density. Lowest T-score -0.7 at the left femoral neck."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Bone density result",
+              "author": "PCP",
+              "date": "2025-06-12T09:15",
+              "body": "DXA normal, lowest T-score -0.7. No treatment needed. Message sent to patient; repeat not needed for several years."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T14:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Eye practice letter",
+              "author": "ophthalmology",
+              "date": "2025-08-19T14:30",
+              "body": "Annual glaucoma visit 8/12/2025. Stable open-angle glaucoma both eyes on timolol twice daily; no change. Medications reviewed per patient; allergies NKDA. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "nurse_visit",
+          "start": "2025-09-23T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-23T10:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-23T10:37"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-09-23T10:39"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-09-23T10:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2025-09-23T10:55",
+              "body": "Three vaccines today per standing orders and her request. Shingrix #2 left deltoid; high-dose influenza right deltoid; 2025-26 COVID right deltoid lower site. Observed 15 minutes without problem. Shingles series now complete."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "office_visit",
+          "start": "2025-10-21T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-10-21T15:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-10-21T15:30",
+              "body": "Routine follow-up.\nMood good, PHQ-9 4. Wants to stay on sertraline 50 through the winter. Bladder controlled on mirabegron, rare leak. Back aches on and off, same as for years; ibuprofen a few times a week, takes it with food. Drops twice a day.\nExam: BP and pulse normal today. Heart and lungs normal. Lumbar spine nontender, straight leg raise negative both sides. Gait normal.\nA/P: depression in good control; OAB controlled; chronic back pain stable. Continue all. Recheck in winter."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T08:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2025-11-18T08:12",
+              "body": "Can you send a new prescription for the sertraline? The pharmacy says no refills left."
+            },
+            {
+              "type": "Refill Note",
+              "title": "Sertraline renewed",
+              "author": "MA",
+              "date": "2025-11-18T11:30",
+              "body": "Sertraline 50 mg #90 with 3 refills sent per PCP. Patient messaged back."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "telephone",
+          "start": "2025-12-08T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2025-12-08T16:05",
+              "body": "Patient cancelled tomorrow's follow-up; storm forecast and she does not want to drive on the hills. Rebooked for 2/10 in the afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "appointment": "cancelled"
+        }
+      ]
+    }
+  ]
+}

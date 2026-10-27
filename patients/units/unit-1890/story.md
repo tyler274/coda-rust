@@ -1,0 +1,22 @@
+# unit-1890 story (Kayla Andrade)
+
+- 2025-04-30 S: community hospital ED, anaphylaxis after birthday cake (peanut); record filed 2025-06-24.
+- 2025-05-20 P: front desk call, new-patient request; asked to bring ED discharge papers.
+- 2025-06-11 A1: new-patient visit; lists built; refills including two epinephrine pens.
+- 2025-06-24 S/P: April ED record received after request, PCP reviews.
+- 2025-07-09 P: prior practice records received (vaccines, HPV series, Tdap 2019, Pap 2023 normal).
+- 2025-08-19 P: portal refill request for fluticasone and cetirizine before the fall term.
+- 2025-10-08 P: nurse visit, influenza and updated COVID vaccines.
+- 2025-11-16 S: community hospital ED, anaphylaxis after fruit salad; record arrives late.
+- 2025-11-17 P: patient portal message about the ED visit; PCP replies, new pens, follow-up booked.
+- 2025-11-24 P: follow-up no-show.
+- 2025-12-02 R2: post-ED office visit; kiwi, banana, avocado added to allergies.
+- 2026-01-13 S/P: November ED record received after second request.
+- 2026-02-03 P: portal, hand eczema flare, triamcinolone refill.
+- 2026-03-10 P: telehealth, spring rhinitis; refills fluticasone, cetirizine, albuterol.
+- 2026-06-05 P: annual physical (last seen); PHQ-2, Pap, CBC, CMP, lipids, HIV, HCV.
+- 2026-06-08 P: result note, labs normal.
+- 2026-06-11 P: Pap result normal, portal note.
+- 2026-06-30 S: community hospital ED, third anaphylaxis, cake with possible peanut oil.
+- 2026-07-02 P/S: pharmacy fill notice for ED-prescribed epinephrine pens; MA note, filed.
+- 2026-08-14 S: June ED record received and filed; lists unchanged.

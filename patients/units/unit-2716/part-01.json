@@ -1,0 +1,319 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002716",
+      "given": "Bernice",
+      "family": "Marino",
+      "birth_date": "1966-08-09",
+      "address_line": "41 Cady Lane",
+      "phone": "+1-917-555-0194",
+      "email": "bernice.marino@example.test",
+      "marital_status": "partnered",
+      "summary": "Woman with long-stable schizophrenia (outside psychiatry, haloperidol and benztropine) and thiazide-controlled hypertension who joins in 2022. Over four years she is diagnosed with spinal osteoporosis, severe right hip osteoarthritis, diffuse esophageal spasm, dermatomyositis and BPPV; after her last visit in August 2025 she has an antipsychotic dystonic crisis and then a ruptured right PComm aneurysm with SAH.",
+      "events": [
+        {
+          "id": "2022-08-23a",
+          "kind": "telephone",
+          "start": "2022-08-23T10:40",
+          "reason": "New patient intake call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake", "author": "front desk", "date": "2022-08-23T10:40", "body": "Caller is looking for a new primary doctor; her previous PCP retired and the office closed over the summer. Has Medicare through disability plus MassHealth. Lives in Ludlow with her partner. Sees a psychiatrist at an outside clinic and wants to keep that arrangement. New patient slot booked 9/13. Release of records signed by e-form for the old practice's archive custodian. Asked her to bring every pill bottle including anything from psychiatry."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T09:00",
+          "end": "2022-09-13T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2011-01-01", "note": "controlled on hydrochlorothiazide"},
+            {"label": "Schizophrenia", "action": "history", "onset": "2002-06-01", "note": "stable about 20 years; outside psychiatry"}
+          ],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug_text": "haloperidol 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "schizophrenia; prescribed by outside psychiatry"},
+            {"drug_text": "benztropine mesylate 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "prescribed by outside psychiatry with haloperidol"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth as needed for joint pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "joint pain"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [128, 80], "weight_kg": 85.2, "height_cm": 163.0, "labs": {"Hemoglobin A1c": 5.4}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Part-time administrative assistant, on medical leave"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-13T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T10:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2022-09-13T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-13T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": "Urinalysis", "collected": "2022-09-13T10:05", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-09-13T09:55"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-09-13T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-09-13T09:55"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T10:05"}
+          ],
+          "orders": [
+            {"id": "dxa-2022", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "postmenopausal; mother with hip fracture; former smoker"},
+            {"id": "mammo-2022", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "routine screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-13T10:00", "body": "56F here to establish. Old PCP retired; records requested.\n\nHTN: on HCTZ 25 for roughly a decade, no side effects she notices, doesn't check at home. Schizophrenia: diagnosed in her mid-thirties, stable for about twenty years on haloperidol 5 mg daily with benztropine 1 mg, both from her outside psychiatrist, whom she sees every few months. Says she has not been hospitalized for it in many years and that the meds 'keep things quiet.' Acetaminophen now and then for achy joints. No other meds, no supplements.\n\nPMH as above. PSH: none. Allergies: none to drugs.\nFH: mother with osteoporosis, broke a hip at 78, also had breast cancer; father had HTN and a stroke at 82; sister has schizophrenia and has had breast cancer.\nSH: lives with her partner in Ludlow. Part-time admin assistant, currently on medical leave. Quit cigarettes ~15 yrs ago, about 12 pack-years total. Drinks once or twice a month. Medicare (disability) + MassHealth.\n\nROS negative except as above.\nExam: well appearing, calm, good eye contact, linear thought. BP as charted. Heart RRR without murmur, lungs clear bilaterally, abdomen soft and nontender, no edema. No tremor or abnormal movements noted. Gait normal.\nPHQ-2: 1.\n\nA/P\n1. HTN, controlled. Continue HCTZ 25. CMP today.\n2. Schizophrenia, stable, managed by psychiatry. Metabolic monitoring on antipsychotic: A1c, lipids today. Will copy results to her psychiatrist if she wants (she does).\n3. Bone health: postmenopausal, mother had a hip fracture, ex-smoker. Ordering baseline DXA.\n4. HCM: Tdap given today. Hep C and HIV screening sent (once). Mammogram ordered; she thinks her last was last year. Colonoscopy per her was ~3 years ago and normal, will confirm from records. Flu and COVID boosters when available next month, nurse visit.\nRTC 4-5 months, sooner prn."}
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2022-09-15T16:20", "body": "Hi Bernice, everything from Tuesday's blood work came back in range: blood counts, kidney and liver tests, and sugar (A1c). Cholesterol is fine for your risk level; the LDL is a touch above the lab's flag but nothing needs treating. Hepatitis C and HIV screens were negative. Urine was clean. I'll send a copy to your psychiatrist's office as we discussed. Still waiting to hear back on scheduling your bone density scan and mammogram."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "outside_records",
+          "start": "2022-09-20T13:10",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "MA", "date": "2022-09-20T13:10", "body": "27 pages from the prior PCP's records custodian, scanned. Abstracted:\n- Problem list: hypertension; schizophrenia (followed by psychiatry).\n- Meds: hydrochlorothiazide 25 mg daily. Psych meds listed as haloperidol and benztropine 'per psychiatry.'\n- Colonoscopy 2019: normal exam to the cecum, no polyps; recall 10 years.\n- Pap with HPV 2020: negative for intraepithelial lesion, HPV negative.\n- Mammogram 2021: BI-RADS 1.\n- No DXA on file.\nFlagged for PCP review."},
+            {"type": "Pharmacy", "title": "Fill history", "author": "MA", "date": "2022-09-20T13:25", "body": "Pharmacy fill history pulled for med rec: hydrochlorothiazide 25 mg #90 monthly-ish fills through August; haloperidol 5 mg #30 and benztropine 1 mg #30 filled every month for the past year, prescriber outside psychiatry. Consistent with what she reported."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T14:07"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-11T14:05"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2022-10-11T14:20", "body": "Here for seasonal vaccines. Screening questions negative, no prior reactions. Influenza quadrivalent 0.5 mL IM left deltoid; Pfizer bivalent COVID booster IM right deltoid. Lots and expirations in the immunization record. Observed 15 min, felt fine, left with VIS sheets."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T08:30",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-11-08T08:30", "text": "Bilateral screening mammogram with tomosynthesis. Comparison: none available. Breasts are scattered fibroglandular density. No suspicious mass, architectural distortion or suspicious calcification in either breast.", "conclusion": "BI-RADS 1, negative. Routine annual screening."}
+          ],
+          "orders": [
+            {"id": "mammo-2022", "action": "done", "date": "2022-11-08T08:30"}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "imaging",
+          "start": "2023-01-24T10:15",
+          "reports": [
+            {"study": "DXA bone density, hip and spine", "performed": "2023-01-24T10:15", "text": "Indication: postmenopausal, maternal hip fracture, former smoker. Technique: lumbar spine L1-L4 and left proximal femur. Lumbar spine L1-L4: T-score -2.5. Left femoral neck: T-score -0.9. Left total hip: T-score -0.7. No vertebra excluded.", "conclusion": "Osteoporosis by WHO criteria at the lumbar spine. Hip bone density within normal range."}
+          ],
+          "orders": [
+            {"id": "dxa-2022", "action": "done", "date": "2023-01-24T10:15"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Bone density result", "author": "PCP", "date": "2023-01-25T12:10", "body": "Bernice, your bone density scan shows thinning in the lower spine in the osteoporosis range; the hips look fine. This is very treatable. I'd like to go over options at your physical on the 7th. I've ordered a few blood tests to do a week ahead so we have them that day."}
+          ]
+        },
+        {
+          "id": "2023-01-31a",
+          "kind": "lab_only",
+          "start": "2023-01-31T08:15",
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-01-31T08:15", "results": [{"test": "Calcium", "value": 9.8}, {"test": "Alkaline Phosphatase", "value": 70}, {"test": "Creatinine", "value": 0.9}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2023-01-31T08:15", "results": [{"test": "Phosphorus", "value": 3.5}]},
+            {"panel": null, "collected": "2023-01-31T08:15", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.1}]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2023-01-31T08:15"}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "annual_physical",
+          "start": "2023-02-07T09:30",
+          "end": "2023-02-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit; bone density discussion",
+          "conditions": [
+            {"label": "Osteoporosis", "action": "diagnosed", "onset": "2023-01-24", "note": "lumbar spine T-score -2.5; no fractures"}
+          ],
+          "medications": [
+            {"drug_text": "raloxifene hydrochloride 60 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "osteoporosis"},
+            {"drug": "cholecalciferol 0.025 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet (1000 units) by mouth daily", "dose": {"value": 1000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "osteoporosis"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2023-02-07T09:30"},
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-07T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-02-07T10:20", "body": "Wellness visit plus bone density follow-up.\n\nS: Has read up on osteoporosis since the scan and is worried; never broken a bone. Wants to start something to protect her bones. Separately, breast cancer is on her mind with both her mother and sister having had it, and she'd like whatever we choose not to add to that risk if possible. No hot flashes now. No history of blood clots. Mood steady, sleeping okay, still seeing psychiatry.\nMeds: HCTZ 25 daily; haloperidol 5 daily and benztropine 1 daily (psychiatry); acetaminophen prn.\nNKDA.\n\nO: Vitals as charted. Unremarkable exam: heart regular, no murmur; lungs clear; abdomen benign; spine nontender; no edema; skin clear. Gait steady. PHQ-9 = 2.\nLabs 1/31: Ca 9.8, phos 3.5, alk phos 70, Cr 0.9, TSH 2.1. No secondary cause evident.\nDXA 1/24: L1-L4 T -2.5; femoral neck -0.9, total hip -0.7.\n\nA/P\n1. Osteoporosis, lumbar spine, no fracture. Talked through bisphosphonates vs raloxifene. Given her family history of breast cancer and preference, starting raloxifene 60 mg daily. Reviewed clot risk and what leg swelling or chest symptoms would mean. Vitamin D3 1000 units daily; aim for about 1200 mg calcium a day mostly from food. Weight-bearing walking. Repeat DXA in two years.\n2. HTN: at goal, continue HCTZ.\n3. Schizophrenia: stable, per psychiatry.\n4. HCM: mammogram 11/22 negative. Colonoscopy 2019 normal. Pap/HPV 2020 negative, next due 2025. Shingrix series to start, nurse visit next month.\nFollow up in about 6 months."}
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "pharmacy",
+          "start": "2023-02-21T11:30",
+          "documents": [
+            {"type": "Pharmacy", "title": "Prior authorization - raloxifene", "author": "MA", "date": "2023-02-21T11:30", "body": "Pharmacy faxed a PA request for raloxifene 60 mg from the MassHealth plan. Completed with DXA T-score and diagnosis; submitted electronically. Approval came back same afternoon, valid 12 months. Pharmacy notified, pt called and told she can pick it up."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "nurse_visit",
+          "start": "2023-03-14T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 1",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-03-14T13:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-03-14T13:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #1", "author": "RN", "date": "2023-03-14T13:45", "body": "Recombinant zoster vaccine dose 1 of 2, 0.5 mL IM L deltoid. Told her to expect a sore arm and maybe feeling run down for a day or two. Dose 2 due in 2-6 months; scheduled for mid-May. Tolerating raloxifene, no issues."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "nurse_visit",
+          "start": "2023-05-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-05-16T13:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-05-16T13:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #2", "author": "RN", "date": "2023-05-16T13:45", "body": "Second recombinant zoster dose, IM R deltoid. Says after the first one she was tired the next day and that was all. Series complete. She mentioned her right hip has been bothering her since the winter; suggested she book with the doctor to have it looked at."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right hip pain",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "Pain severity (0-10)", "value": 6}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-20T10:40"}
+          ],
+          "orders": [
+            {"id": "ortho-2023", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "progressive right hip pain"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - right hip", "author": "PCP", "date": "2023-06-20T11:05", "body": "R hip pain since about February, slowly getting worse. Groin/front of hip, worst going up stairs or after she's been walking a while, settles when she sits. No fall or injury. No fevers. Acetaminophen takes the edge off. Pain 6/10 with activity today.\nExam: walks with a mild antalgic gait. R hip flexion limited at the end of range; internal rotation reproduces the groin pain. No tenderness laterally. Skin over hip normal. L hip full and painless. Distal pulses and sensation intact.\nA/P: R hip pain, mechanical, likely intra-articular. She'd rather see orthopedics directly than do several rounds here, which is reasonable. Referral placed; they'll do films in their office. Continue acetaminophen up to 1 g three times a day max. Avoiding NSAIDs for now with the HCTZ.\nBP up a little today, she's uncomfortable; recheck at next visit."}
+          ]
+        },
+        {
+          "id": "2023-08-07a",
+          "kind": "specialist_visit",
+          "start": "2023-08-07T14:00",
+          "service": "Orthopedics",
+          "reason": "Right hip pain",
+          "conditions": [
+            {"label": "Primary osteoarthritis of hip", "action": "diagnosed", "onset": "2023-02-01", "note": "right hip, severe"}
+          ],
+          "orders": [
+            {"id": "ortho-2023", "action": "done", "date": "2023-08-07T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedic consultation - right hip", "author": "orthopedics", "date": "2023-08-16T09:00", "body": "Outside orthopedic surgery group. Date of visit: 08/07/2023.\nReason for referral: right hip pain.\n\nThank you for sending Ms. Marino. She describes half a year of right hip pain that has been creeping up, most bothersome on stairs or after a long walk, easing with rest. There was no trauma. She uses acetaminophen.\nMeds per patient: HCTZ, haloperidol, benztropine, raloxifene, vitamin D, acetaminophen. NKDA.\nBMI 32.\nExam: no redness or warmth about the right hip. Passive internal rotation is painful. Greater trochanter nontender.\nRadiographs, AP pelvis and right hip, obtained today: narrowed joint space, subchondral sclerosis and osteophytes.\n\nImpression: severe osteoarthritis, right hip.\nPlan: physical therapy referral placed with a therapy group near her home. Continue acetaminophen. Weight loss would help both symptoms and any future surgery. We discussed that total hip arthroplasty is the definitive option if she stops getting relief from conservative care; she is not interested at present. Return as needed."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T15:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Hip follow-up call", "author": "RN", "date": "2023-08-29T15:10", "body": "Pt called asking whether she needed a separate referral from us for PT. Explained the orthopedic office sent it directly; she has her first PT appt next week. Asked about taking more Tylenol. Reviewed max 3 g/day. She'll bring up the hip at her September visit."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "office_visit",
+          "start": "2023-09-26T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-09-26T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-26T09:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-26T09:46"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-09-26T09:20"},
+            {"procedure": "Immunization administration", "performed": "2023-09-26T09:45"},
+            {"procedure": "Venipuncture", "performed": "2023-09-26T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up - HTN", "author": "PCP", "date": "2023-09-26T09:55", "body": "Routine f/u.\nHTN: taking HCTZ daily, no dizziness or cramps.\nR hip: orthopedics saw her in August, films showed severe OA. Three PT sessions so far, doing the home program, thinks stairs are a little easier. Not interested in surgery yet.\nBones: on raloxifene + D since Feb, no leg swelling, no side effects.\nPsych: stable, saw her psychiatrist last month.\nExam: BP and pulse as charted, at goal. Heart regular; lungs clear. No calf swelling or tenderness. R hip limited internal rotation, unchanged.\nA/P: HTN controlled, BMP today. Severe R hip OA per ortho, continue PT and acetaminophen. Osteoporosis on raloxifene. Flu and updated COVID vaccines given in clinic. RTC early winter."},
+            {"type": "Result Note", "title": "BMP result", "author": "PCP", "date": "2023-09-27T08:40", "body": "BMP normal, potassium fine on the HCTZ. No changes. Message sent to patient."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Trouble swallowing and chest pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2023-11-14T11:15", "text": "Sinus rhythm, rate 72. Normal axis. PR, QRS and QT intervals normal. No ST or T wave abnormality. No prior for comparison.", "conclusion": "Normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-14T11:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2023-11-14T11:15"}
+          ],
+          "orders": [
+            {"id": "gi-2023", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "intermittent dysphagia with non-cardiac chest pain"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - dysphagia, chest pain", "author": "PCP", "date": "2023-11-14T11:40", "body": "CC: food sticking + chest pain.\nHPI: Since around July, off and on, food feels like it hangs up mid-chest, solids and sometimes liquids. Separately, or sometimes with meals, gets a crampy pain behind the breastbone that doesn't travel anywhere and passes on its own. Tried Tums-type antacids with no help. Not brought on by exertion; walks to PT without it. No vomiting, no weight loss she's noticed, no black stools.\nExam: vitals as charted, afebrile. Comfortable. Chest wall nontender. Heart RRR, no murmur or rub. Lungs clear. Abdomen soft, nontender.\nECG in office: sinus, normal intervals, no ST-T changes.\nA/P: Intermittent dysphagia to solids and liquids with cramp-like retrosternal pain unrelated to effort and unaffected by antacids; normal ECG. Pattern sounds esophageal rather than cardiac. Referring to GI for evaluation (they'll likely want a swallow study and possibly manometry). Told her to go to the ED for chest pain that is prolonged, exertional or comes with shortness of breath or sweating.\nWeight stable."}
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "imaging",
+          "start": "2023-11-28T08:45",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-11-28T08:45", "text": "Bilateral screening mammogram with tomosynthesis. Compared with 11/08/2022. Scattered areas of fibroglandular density. No new mass, distortion or suspicious calcifications. Stable appearance.", "conclusion": "BI-RADS 1, negative. Annual screening recommended."}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Mammogram", "author": "RN", "date": "2023-11-29T10:05", "body": "Your mammogram from yesterday was normal. Next one in a year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

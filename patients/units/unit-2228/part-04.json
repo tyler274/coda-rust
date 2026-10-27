@@ -1,0 +1,896 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002228",
+   "events": [
+    {
+     "id": "2025-01-22a",
+     "kind": "office_visit",
+     "start": "2025-01-22T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-01-22T10:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-01-22T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-01-22T10:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-01-22T10:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-01-22T10:35",
+       "body": "Cardiology discharge summary arrived in November (about a month late) and the December cardiology note - both consistent with what the family told us: proximal LAD DES, reperfusion injury on the CK-MB curve, EF ~50%, clopidogrel through October 2025.\nFeels well. Walks daily, no angina, no breathlessness, no bleeding. Wife says appetite fine.\nExam: BP and HR at goal. Lungs clear. No edema.\nPlan: BMP, CBC, A1c. Continue all. Oncology surveillance scan in March."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "ST elevation myocardial infarction of anterior wall",
+       "icd10": "I21.09",
+       "action": "resolved",
+       "note": "acute phase over"
+      },
+      {
+       "label": "Old myocardial infarction",
+       "action": "diagnosed",
+       "onset": "2024-10-17",
+       "note": "anterior STEMI 10/2024, LAD DES"
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11a",
+     "kind": "specialist_visit",
+     "start": "2025-03-11T13:00",
+     "service": "Medical Oncology",
+     "reason": "surveillance",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-03-04T10:00",
+       "text": "Comparison 08/13/2024. Stable postsurgical changes of pancreaticoduodenectomy. No mass in the surgical bed. Liver without focal lesion. No adenopathy or ascites. Lung bases clear.",
+       "conclusion": "No evidence of recurrence."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Medical Oncology Surveillance",
+       "author": "medical oncology",
+       "date": "2025-03-18T09:45",
+       "body": "OUTSIDE MEDICAL ONCOLOGY - SURVEILLANCE\nDate of visit: 03/11/2025\nResected pT2 N0 mucin-producing pancreatic adenocarcinoma, adjuvant gemcitabine completed 01/2024. Interval anterior STEMI 10/2024 with LAD stent, recovering well.\nCT 03/04/2025: no evidence of recurrence. CA 19-9 normal.\nPlan: CT and CA 19-9 in about six months.\nOutside medical oncology"
+      }
+     ]
+    },
+    {
+     "id": "2025-04-28a",
+     "kind": "hospital_admission",
+     "start": "2025-04-28T10:30",
+     "end": "2025-05-09T14:00",
+     "service": "Critical Care",
+     "reason": "fever, abdominal pain, hypotension",
+     "conditions": [
+      {
+       "label": "Septic shock",
+       "icd10": "R65.21",
+       "action": "diagnosed",
+       "onset": "2025-04-28",
+       "note": "E. coli bacteremia; bowel wall thickening concerning for ischemia with translocation"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2025-04-28T10:40",
+       "temp_c": 39.4,
+       "hr": 128,
+       "rr": 28,
+       "bp": [
+        84,
+        52
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug": "furosemide 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "stopped at discharge after septic shock"
+      },
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "stop",
+       "reason": "held after septic shock and acute kidney injury"
+      },
+      {
+       "drug": "ciprofloxacin 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily to complete 14 days of antibiotics",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "E. coli bacteremia"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-04-28T10:50",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 21.8
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 89
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-28T10:50",
+       "resulted": "2025-04-28T11:35",
+       "results": [
+        {
+         "test": "Lactate",
+         "value": 4.7
+        },
+        {
+         "test": "Procalcitonin",
+         "value": 18.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-28T10:55",
+       "resulted": "2025-04-30T09:10",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "Gram-negative rods in 2 of 2 sets, identified as E. coli, susceptible to ciprofloxacin and piperacillin-tazobactam"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-04-29T05:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 2.74
+        },
+        {
+         "test": "Aspartate Aminotransferase",
+         "value": 318
+        },
+        {
+         "test": "Alanine Aminotransferase",
+         "value": 266
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-05-09T05:00",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.62
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2025-04-28T11:20",
+       "text": "Portable AP view. Low lung volumes. Bibasilar atelectasis. No focal consolidation, no effusion, no edema. Heart size normal.",
+       "conclusion": "Low lung volumes with bibasilar atelectasis."
+      },
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-04-28T13:00",
+       "text": "Postsurgical changes of pancreaticoduodenectomy. Diffuse bowel wall thickening. No free air. No abscess or drainable collection. No biliary dilation. Liver without focal lesion.",
+       "conclusion": "Diffuse bowel wall thickening concerning for ischemia, with possible bacterial translocation. No free air or abscess."
+      },
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2025-04-29T10:00",
+       "text": "Hyperdynamic left ventricle with preserved systolic function. No pericardial effusion. No significant valvular disease.",
+       "conclusion": "Hyperdynamic LV, preserved systolic function; cardiogenic shock unlikely."
+      },
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2025-05-03T09:30",
+       "text": "Comparison 04/28/2025. Interval improvement in bowel wall thickening. No free air, no pneumatosis, no collection.",
+       "conclusion": "Resolving bowel wall thickening."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Discharge Summary - Septic Shock",
+       "author": "critical care",
+       "date": "2025-05-20T10:15",
+       "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY\nAdmitted 04/28/2025 through the ED to the ICU; transferred to the medical floor 05/03; discharged home 05/09/2025.\n\nPresenting history: 73-year-old man with resected mucin-producing pancreatic adenocarcinoma, mild cognitive impairment and a recent anterior STEMI with LAD stent (10/2024) and flash pulmonary edema (04/2024), with 18 hours of worsening abdominal pain, fever and chills. Per his wife he had two days of tiredness and poor appetite; rigors and the sharper pain began abruptly the morning of admission. His daughter had noticed he was more withdrawn and eating less than usual. Travel history noncontributory.\n\nOn arrival: T 39.4 C, HR 128, RR 28, BP 84/52. Acutely ill, diaphoretic and intermittently confused; warm skin with bounding pulses suggesting distributive shock. Abdomen diffusely tender without rebound or guarding; hypoactive bowel sounds.\nLabs: WBC 21.8 K/uL with 89% neutrophils and left shift; lactate 4.7 mmol/L; procalcitonin 18.4 ng/mL; creatinine rising to 2.74 mg/dL on day 2; AST 318 / ALT 266 U/L on day 2, consistent with hypoperfusion. Blood cultures: gram-negative rods in 2 of 2 sets, E. coli.\nImaging: CXR low volumes with bibasilar atelectasis. Echo hyperdynamic LV with preserved function, cardiogenic shock unlikely. CT abdomen/pelvis: diffuse bowel wall thickening concerning for ischemia and bacterial translocation, no free air or abscess.\n\nCourse: IV fluids and piperacillin-tazobactam started in the ED. Hypotension persisted despite fluids over the first 12 hours, requiring norepinephrine and ICU transfer. On day 2 his confusion worsened, hands and feet became mottled and urine output fell; he was intubated for worsening mental status and respiratory distress. Surgery consulted: no operative indication, bowel rest. He then turned the corner - norepinephrine weaned off and extubated on day 4, ICU for 5 days total. His son flew in from Germany during the ICU stay. Repeat CT 05/03: bowel wall thickening resolving. Diet advanced. Delirium cleared by discharge; family feels he is near his pre-illness baseline.\nAKI resolved toward baseline: creatinine 1.62 mg/dL at discharge.\n\nDischarge diagnoses: septic shock due to E. coli bacteremia; bowel wall thickening concerning for ischemia, resolving with nonoperative care; acute kidney injury; ischemic hepatitis, resolving.\nDischarge medications: ciprofloxacin 500 mg twice daily to complete 14 days of antibiotics; aspirin 81 mg; clopidogrel 75 mg; metoprolol succinate 25 mg; atorvastatin 40 mg; metformin 1000 mg BID (resumed at discharge with creatinine 1.62); omeprazole 20 mg; donepezil 10 mg; acetaminophen PRN. HOLD lisinopril until primary care rechecks kidney function. Furosemide STOPPED.\nAllergies: NKDA.\nFollow-up: primary care within 1 week with BMP.\nRegional hospital"
+      }
+     ]
+    },
+    {
+     "id": "2025-05-12a",
+     "kind": "telephone",
+     "start": "2025-05-12T09:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Wife - home after ICU stay",
+       "author": "RN",
+       "date": "2025-05-12T09:00",
+       "body": "Wife called: he was in the hospital for nearly two weeks with a blood infection, several days in the ICU on a breathing machine, home since Friday. Taking an antibiotic twice a day, eating better, walking in the house with the cane. Hospital told them to hold the lisinopril and stop the water pill. Booked post-hospital visit tomorrow with BMP. Requested discharge summary."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-13a",
+     "kind": "office_visit",
+     "start": "2025-05-13T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up, septic shock",
+     "state": {
+      "bp": [
+       118,
+       70
+      ],
+      "weight_kg": 71.8,
+      "labs": {
+       "Creatinine": 1.62
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-05-13T14:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2025-05-13T14:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2025-05-13T14:30",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2025-05-13T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital Visit",
+       "author": "PCP",
+       "date": "2025-05-13T14:50",
+       "body": "With wife and daughter. Admitted 4/28-5/9 for septic shock with gram-negative bacteremia (E. coli per the discharge instructions), ICU with pressors and intubation, bowel wall thickening managed without surgery. Summary not yet received; history from family and the discharge medication sheet.\nNow: no fever since discharge, no abdominal pain, eating three small meals, stools normal. Day 12 of 14 of antibiotics (ciprofloxacin). Weak but walking in the house with the cane. Wife says his thinking is back to about where it was.\nMeds per discharge: lisinopril on hold, furosemide stopped, metformin resumed; others unchanged. Med list updated.\nExam: vitals as charted, afebrile. Thin. Lungs clear. Abdomen soft, nontender. No edema. Alert, conversant, oriented.\nA/P\n1. Septic shock, recovering. Finish ciprofloxacin.\n2. AKI on CKD 3a - discharge creatinine 1.62. BMP today and again in 10 days; restart lisinopril if stable.\n3. Shock liver - LFTs today.\n4. Off furosemide - no signs of fluid; BP 110s-120s at home; watch weight and breathing.\n5. Deconditioning - home PT offered; family prefers to walk with him daily.\nRecheck BMP 5/23."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Septic shock",
+       "icd10": "R65.21",
+       "action": "resolved",
+       "note": "recovered; discharged 05/09/2025"
+      }
+     ]
+    },
+    {
+     "id": "2025-05-20a",
+     "kind": "portal_message",
+     "start": "2025-05-20T16:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2025-05-20T16:30",
+       "body": "Hi Mr. and Mrs. Gallo - last week's labs: liver tests have come almost all the way back down, white count normal, and kidney function is improving but not quite at your usual. Hospital summary arrived today and matches what you told me. Please do the repeat kidney test on Friday 5/23 and I'll decide about restarting the lisinopril."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-23a",
+     "kind": "lab_only",
+     "start": "2025-05-23T08:20",
+     "state": {
+      "labs": {
+       "Creatinine": 1.48
+      }
+     },
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-05-23T08:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "2025-05-27a",
+     "kind": "telephone",
+     "start": "2025-05-27T12:15",
+     "medications": [
+      {
+       "drug": "lisinopril 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension, CKD"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Restart lisinopril",
+       "author": "PCP",
+       "date": "2025-05-27T12:15",
+       "body": "Called wife with 5/23 BMP: creatinine back near his usual, potassium fine. Home BP creeping up to the 130s-140s. Restart lisinopril 10 mg daily - he has tablets at home; new script sent so the pharmacy record is current. Recheck BMP at the July visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-16a",
+     "kind": "office_visit",
+     "start": "2025-07-16T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "state": {
+      "bp": [
+       128,
+       76
+      ],
+      "weight_kg": 73.9,
+      "labs": {
+       "Creatinine": 1.45
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-07-16T10:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-16T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-07-16T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-07-16T09:55",
+       "body": "Two months after the sepsis admission. Regained some weight. Walking a mile with his wife most mornings again. No fevers, no abdominal pain. Back on lisinopril since late May without dizziness.\nExam: BP at goal, lungs clear, no edema.\nPlan: BMP, A1c. Continue meds. AWV in September. Cardiology due in October - clopidogrel decision is theirs at 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-17a",
+     "kind": "portal_message",
+     "start": "2025-07-17T09:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2025-07-17T09:30",
+       "body": "Kidney function has settled back near your usual after the spring, potassium normal on the lisinopril, A1c fine. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-14a",
+     "kind": "outside_records",
+     "start": "2025-08-14T11:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination - optometry",
+       "author": "optometry",
+       "date": "2025-08-14T11:40",
+       "body": "Dilated eye exam 08/11/2025 (first in two years; missed during illness). VA cc 20/30 OU. Anterior segments unremarkable. No diabetic retinopathy OU. Recheck 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-24a",
+     "kind": "annual_physical",
+     "start": "2025-09-24T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-24T09:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-09-24T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-09-24T09:15",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-09-24T09:15",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2025-09-24T09:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+       "date": "2025-09-24T09:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2025-09-24T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-24T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2025-09-24T09:55",
+       "body": "AWV with wife. Hard year - heart attack last fall, ICU in the spring - and he is back to daily walks and reading.\nFunction: ADLs independent with reminders; wife manages IADLs and medications (blister packs from pharmacy). Cane outdoors. No falls. PHQ-2 1. Hearing fine.\nCognition: wife notes no new decline since recovering from the hospitalization. Donepezil continues. Neurology not seen since 2021; they decline a new referral for now.\nEye exam August: no retinopathy.\nACP revisited: wishes as documented in 2023; proxy wife, alternate daughter.\nExam: vitals as charted. Heart regular, lungs clear, no edema. Feet: monofilament intact.\nPlan: labs; high-dose flu and updated COVID today. Oncology CT due in October; cardiology October."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-26a",
+     "kind": "portal_message",
+     "start": "2025-09-26T11:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical labs",
+       "author": "PCP",
+       "date": "2025-09-26T11:15",
+       "body": "Your wellness labs look good: blood count normal, kidney function stable, cholesterol on target, no protein in the urine."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-21a",
+     "kind": "specialist_visit",
+     "start": "2025-10-21T14:30",
+     "service": "Cardiology",
+     "reason": "12-month post-MI follow-up",
+     "medications": [
+      {
+       "drug": "clopidogrel 75 MG Oral Tablet",
+       "action": "stop",
+       "reason": "12 months of dual antiplatelet therapy completed"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2025-10-28T10:00",
+       "body": "OUTSIDE CARDIOLOGY - OFFICE NOTE\nDate of visit: 10/21/2025\nOne year after anterior STEMI with proximal LAD DES. Interval septic shock admission in April-May, recovered. No angina, no dyspnea, no bleeding on dual antiplatelet therapy.\nMedications reviewed: aspirin 81 mg, clopidogrel 75 mg, metoprolol succinate 25 mg, atorvastatin 40 mg, lisinopril 10 mg, metformin, omeprazole, donepezil.\nExam: BP and heart rate at goal; lungs clear; no edema.\nPlan: 12 months of DAPT complete - stop clopidogrel today. Continue aspirin 81 mg indefinitely, metoprolol succinate, atorvastatin, lisinopril. Return in one year.\nOutside cardiology"
+      }
+     ]
+    },
+    {
+     "id": "2025-11-05a",
+     "kind": "portal_message",
+     "start": "2025-11-05T10:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Scan and heart doctor update",
+       "author": "patient",
+       "date": "2025-11-05T10:05",
+       "body": "Writing for Russell. His cancer scan in October was clear, the oncologist told us in person - next scan in the spring. The cardiologist stopped the clopidogrel, so he's down one pill. Thought you would want to know. - his wife"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Scan and heart doctor update",
+       "author": "RN",
+       "date": "2025-11-05T15:20",
+       "body": "Thank you - great news on both. We have the cardiology note. We don't have the oncology note yet and have requested it."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-06a",
+     "kind": "telephone",
+     "start": "2025-11-06T09:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request - oncology",
+       "author": "front desk",
+       "date": "2025-11-06T09:30",
+       "body": "Faxed request to the oncology office for the October 2025 surveillance visit note and CT report."
+      }
+     ]
+    },
+    {
+     "id": "2025-12-10a",
+     "kind": "office_visit",
+     "start": "2025-12-10T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-12-10T14:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-12-10T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-12-10T14:05",
+       "body": "Doing well. Cardiology stopped clopidogrel in October after 12 months - list updated; aspirin continues with omeprazole. Oncology note from October still not received; per wife, CT clear.\nNo chest pain, no breathlessness, eating well. September labs in his usual range.\nExam: BP at goal. Heart regular, lungs clear. No edema.\nPlan: A1c today. Continue lisinopril, metformin, metoprolol, atorvastatin, aspirin, omeprazole, donepezil, acetaminophen PRN. Visit in March."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "pharmacy",
+     "start": "2026-01-20T10:45",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Renewal requests",
+       "author": "RN",
+       "date": "2026-01-20T10:45",
+       "body": "Pharmacy (blister-pack service) requested renewals: lisinopril 10, metformin 1000, metoprolol succinate 25, atorvastatin 40, omeprazole 20, donepezil 10, aspirin 81. Renewed x 90 days with 3 refills per PCP. Clopidogrel removed from their profile at our request."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-06a",
+     "kind": "office_visit",
+     "start": "2026-03-06T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-03-06T11:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-03-06T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-03-06T11:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-03-06T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-03-06T11:05",
+       "body": "Routine visit with wife. Quiet winter. No chest pain, dyspnea, edema, fevers or abdominal symptoms. Walks indoors at the mall on cold days. December A1c 7.3, acceptable for him.\nOncology next CT due this spring - they will schedule.\nExam: BP at goal. Heart regular, lungs clear. Abdomen soft. No edema. Gait steady with cane.\nA/P: HTN, T2DM, CKD 3a, CAD s/p LAD stent, resected pancreatic cancer under surveillance, MCI, L hip OA - all stable. BMP, CBC, A1c today. No changes. Return in about 6 months, sooner as needed."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-09a",
+     "kind": "portal_message",
+     "start": "2026-03-09T08:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2026-03-09T08:40",
+       "body": "Friday's labs: kidney function and potassium are right where they usually sit for you, blood count normal, A1c fine for your goal. Nothing to change. See you in the late summer."
+      }
+     ]
+    },
+    {
+     "id": "2026-04-23a",
+     "kind": "ed_visit",
+     "start": "2026-04-23T08:50",
+     "end": "2026-04-23T13:30",
+     "service": "Emergency Medicine",
+     "reason": "acute left-sided neglect and weakness",
+     "vitals": [
+      {
+       "time": "2026-04-23T08:55",
+       "bp": [
+        150,
+        90
+       ],
+       "hr": 78,
+       "rr": 16
+      }
+     ],
+     "reports": [
+      {
+       "study": "CT head without contrast",
+       "performed": "2026-04-23T09:15",
+       "text": "No intracranial hemorrhage. No mass effect or midline shift. Ventricles and sulci appropriate for age. No extra-axial collection. Calvarium intact.",
+       "conclusion": "No acute intracranial hemorrhage."
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency Department Record",
+       "author": "emergency medicine",
+       "date": "2026-05-12T14:20",
+       "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nDate of service: 04/23/2026\n\nCC: sudden difficulty eating, bumping into things on the left.\nHPI: 74-year-old man with hypertension, diabetes, a resected pancreatic adenocarcinoma and septic shock last spring, brought in by his daughter. At breakfast this morning she saw him struggling to eat, knocking into objects on his left side, and apparently unaware of his left arm.\nHome meds (per pharmacy list): lisinopril 10 mg, metformin 1000 mg BID, omeprazole 20 mg, donepezil 10 mg, aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 25 mg, acetaminophen PRN.\nAllergies: NKDA.\nVitals: BP 150/90, HR 78, RR 16.\nNeuro exam: does not respond to visual stimuli on the left; left-sided weakness; reading a sentence, he reads only its right half; speech fluent; appears unaware of his deficits.\nCT head non-contrast: no acute hemorrhage.\nImpression: acute right middle cerebral artery territory stroke.\nDisposition: stroke team at bedside; admitted to the stroke service for further evaluation and management.\nRegional hospital emergency department"
+      }
+     ]
+    },
+    {
+     "id": "2026-04-27a",
+     "kind": "portal_message",
+     "start": "2026-04-27T19:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Dad is in the hospital",
+       "author": "patient",
+       "date": "2026-04-27T19:10",
+       "body": "This is Russell's daughter, writing from his account with Mom's permission. Dad had a stroke on Thursday morning - I took him to the ER when he couldn't manage his breakfast and kept missing things on his left. He's still in the hospital on the stroke unit. We'll let you know when he's coming home. Please let his doctor know."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Dad is in the hospital",
+       "author": "PCP",
+       "date": "2026-04-28T07:50",
+       "body": "Thank you for telling us, and I'm so sorry. Please ask the hospital team to send us his discharge summary, and let us know when he is home so we can see him. Thinking of all of you."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-16a",
+     "kind": "pharmacy",
+     "start": "2026-06-16T09:10",
+     "documents": [
+      {
+       "type": "Pharmacy Communication",
+       "title": "Refill request - metformin",
+       "author": "RN",
+       "date": "2026-06-16T09:10",
+       "body": "Pharmacy requested an early refill of metformin 1000 mg for the blister-pack cycle. Last renewal 1/20. Approved per PCP. Hospital discharge summary still not received - re-requested."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "portal_message",
+     "start": "2026-08-11T11:25",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Follow-up appointment for Dad",
+       "author": "patient",
+       "date": "2026-08-11T11:25",
+       "body": "Hi, it's Russell's daughter again. Dad has been home with us for a while now and is doing his therapy. We'd like to get him in to see his regular doctor. Mornings are best. We'll bring his hospital paperwork."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Follow-up appointment for Dad",
+       "author": "front desk",
+       "date": "2026-08-11T14:05",
+       "body": "Hi - we've booked him with his physician on Tuesday 9/1 at 9:30, a longer appointment. Please bring the hospital paperwork and all his current medications."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-01a",
+     "kind": "office_visit",
+     "start": "2026-09-01T09:30",
+     "reason": "post-stroke follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,178 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002311",
+      "given": "Arthur",
+      "family": "Cummings",
+      "birth_date": "1948-07-24",
+      "address_line": "27 Kendall Lane, Granby, MA 01033",
+      "phone": "+1-603-555-0150",
+      "email": "arthur.cummings@example.test",
+      "marital_status": "widowed",
+      "summary": "Retired postal worker with moderate Alzheimer disease, hypertension, knee osteoarthritis and BPH who joined in 2023 with his daughter. Delirium superimposed on dementia at an ED visit in late 2023 cleared; he moved into a nursing home in 2024 and had classic heat stroke there in July 2025, after his last practice visit.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T10:00",
+          "end": "2023-08-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establishing care; memory loss and blood pressure",
+          "conditions": [
+            {"label": "Alzheimer disease", "action": "history", "note": "Moderate stage; diagnosed before joining the practice"},
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Bilateral primary osteoarthritis of knee", "action": "history"},
+            {"label": "Benign prostatic hyperplasia with lower urinary tract symptoms", "action": "history"}
+          ],
+          "medications": [
+            {"drug": "donepezil hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Alzheimer disease"},
+            {"drug_text": "memantine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Alzheimer disease"},
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"},
+            {"drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth at bedtime", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Benign prostatic hyperplasia"},
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 6 hours as needed for knee pain", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "Knee osteoarthritis"},
+            {"drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution", "action": "historical", "sig": "Mix 17 g in 8 oz of liquid and drink daily as needed for constipation", "dose": {"value": 17, "unit": "g"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "Constipation"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"bp": [134, 80], "weight_kg": 74.0, "height_cm": 176.0, "labs": {"Creatinine": 1.0, "Thyroid Stimulating Hormone": 1.8, "Vitamin B12": 512}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T10:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T10:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T10:50", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-08-22T10:50", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Vitamin B12"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker, quit 2005, 25 pack-years"},
+            {"item": "History of alcohol use", "value": "None since 2018"},
+            {"item": "Occupation", "value": "Retired postal worker"},
+            {"item": "Housing status", "value": "Lives with his daughter"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-08-22T10:00"}, {"procedure": "Venipuncture", "performed": "2023-08-22T10:50"}],
+          "orders": [{"id": "prior-records-2023", "action": "placed", "order": "Records request, prior primary care practice", "category": "procedure", "reason": "establishing care"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-08-22T11:20", "body": "NEW PATIENT VISIT\n\nArthur is a 75 y/o retired mail carrier here with his daughter, who does most of the talking and keeps his pills. They are moving his care closer to her. Memory trouble has been going on for several years; he was given an Alzheimer's diagnosis before he came to us and is now in the moderate stage. Per daughter he needs reminders for meals and showers, can still dress himself with some setting out of clothes, gets turned around outside the house. Some evenings are worse than mornings. No falls. She manages his medications with a weekly box.\n\nOther problems: blood pressure, on amlodipine for years. Both knees ache with walking, worse on stairs, takes Tylenol a couple of times a day and that is enough. Prostate: up once or twice a night to urinate on tamsulosin, stream fine. Occasional constipation, uses MiraLAX powder a few times a week.\n\nPSH: bilateral cataract surgery with lens implants 2020; open inguinal hernia repair 2016.\nMeds: donepezil 10 mg qhs, memantine 10 mg BID, amlodipine 5 mg daily, tamsulosin 0.4 mg qhs, acetaminophen 500 mg q6h prn, PEG 3350 17 g daily prn.\nAllergies: PENICILLIN (anaphylaxis), SULFA (rash).\nFH: mother had Alzheimer dementia starting around 79. Father had CAD, heart attack at 76. One sister with type 2 diabetes.\nSH: worked for the post office until retirement. Smoked about 25 pack-years, quit in 2005. Has not had alcohol since 2018, the family stopped keeping it in the house as his memory slipped. Lives with his daughter in Granby; she works part time.\n\nExam: vitals as recorded. Pleasant, cooperative, smiles a lot, answers simple questions, looks to his daughter for anything about dates. Oriented to self, not to month or year. Pupils equal, pseudophakic. Neck supple. Heart regular rate, no murmur. Lungs clear throughout. Abdomen soft, nontender. Knees: crepitus both sides, no effusion, full extension, flexion a bit limited. Gait slow but steady without a device. No edema.\n\nAssessment and plan:\n1. Alzheimer disease, moderate. Continue donepezil and memantine; we will take over refills. Labs today to make sure nothing reversible is piling on (TSH, B12, CMP, CBC).\n2. Hypertension, at goal on amlodipine 5.\n3. Knee OA, both. Acetaminophen as he is doing, no NSAIDs.\n4. BPH, stable on tamsulosin.\n5. Health maintenance: PHQ-2 negative. Requesting old records to sort out vaccines. Flu and COVID in the fall.\n\nRTC about 3 months, sooner if needed. Daughter has the portal login."},
+            {"type": "Administrative", "title": "Records Request", "author": "front desk", "date": "2023-08-22T13:05", "body": "Faxed signed release and request for records to his prior primary care office. Asked for last 5 years of notes, labs, immunizations and any neurology letters."}
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:10",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab Results", "author": "PCP", "date": "2023-08-24T16:10", "body": "Hi, sharing your dad's bloodwork from Tuesday. Kidney and liver tests, blood counts, thyroid and B12 are all normal, and his cholesterol is fine for his age with no need for a medicine. Nothing here that would be adding to his memory trouble. No changes to his medicines."}
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T09:30",
+          "orders": [{"id": "prior-records-2023", "action": "done", "date": "2023-09-05T09:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2023-09-05T09:30", "body": "Records from prior primary care office, received by fax, 38 pages.\n\nProblem list on their side: Alzheimer disease, hypertension, osteoarthritis of knees, BPH. Allergy list: penicillin (anaphylaxis), sulfa (rash).\n\nPreventive: colonoscopy 2016, normal, no further screening advised given age. Tdap 2019. Shingrix 2 doses, 2021. Last flu shot fall 2022. COVID primary series and a booster, last in 2022.\n\nSurgical: cataracts both eyes 2020; open right inguinal hernia repair 2016.\n\nMedication list matches what he takes now. Notes from 2021 onward describe steady memory decline with family support.\n\nReviewed and abstracted. Immunization history updated."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-11T14:25"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-11T14:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-11T14:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2023-10-11T14:40", "body": "In with daughter for fall vaccines. Screening questions answered by daughter, no prior reactions. High-dose flu given left deltoid, updated Moderna COVID given right deltoid. Tolerated well, waited 15 minutes, left with daughter. VIS sheets given."}
+          ]
+        },
+        {
+          "id": "2023-11-12a",
+          "kind": "ed_visit",
+          "start": "2023-11-12T18:40",
+          "end": "2023-11-13T01:10",
+          "service": "Emergency Medicine",
+          "reason": "Worsening confusion and agitation",
+          "conditions": [
+            {"label": "Delirium superimposed on dementia", "icd10": "F05", "action": "diagnosed", "onset": "2023-11-10"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-12T19:30", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 4.2},
+              {"test": "Chloride", "value": 102},
+              {"test": "Bicarbonate", "value": 24},
+              {"test": "Blood Urea Nitrogen", "value": 18},
+              {"test": "Creatinine", "value": 1.0},
+              {"test": "Glucose", "value": 98},
+              {"test": "Calcium", "value": 9.2}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-12T19:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Urinalysis", "collected": "2023-11-12T20:05", "results": [{"test": "Urine Leukocyte Esterase"}, {"test": "Urine Nitrite"}, {"test": "Urine Blood"}, {"test": "Urine Protein"}]}
+          ],
+          "reports": [
+            {"study": "CT head without contrast", "performed": "2023-11-12T20:30", "text": "Non-contrast CT of the head. No intracranial hemorrhage, mass effect or midline shift. No acute territorial infarct. Ventricles and sulci appropriate for age. Basal cisterns patent. Calvarium intact. Bilateral lens implants.", "conclusion": "No acute intracranial abnormality."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2023-11-12T18:40"}]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "telephone",
+          "start": "2023-11-13T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Daughter Call re ED Visit", "author": "RN", "date": "2023-11-13T09:15", "body": "Daughter called. Took him to the ED last night, he had been confused and riled up for two days, up walking around the house at night and did not know who she was at times. Bloodwork, urine and head scan were all OK per ED and they sent him home around 1 am. This morning he is quieter, ate breakfast, still not himself. No fever, no falls, taking his usual meds. Advised to keep the house calm, lights on in the evening, keep him on his routine. Booked with PCP Thursday. ED precautions reviewed."}
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "office_visit",
+          "start": "2023-11-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, confusion",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-16T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up after ED Visit", "author": "PCP", "date": "2023-11-16T11:45", "body": "F/u ED visit Sunday night for acute confusion. Daughter says the last few nights have been better, he is sleeping through mostly, less agitated, but still foggier than his usual and asked twice today where his mother was. No fever, cough, burning with urination, new meds or missed doses. Eating and drinking OK. Bowels moving.\n\nED did BMP, CBC, UA and a head CT, all fine per daughter; I don't have their note yet, asked front desk to chase it.\n\nExam: vitals reviewed, afebrile. Sitting calmly, distractible, oriented to self only today. Follows one-step commands. Mucous membranes moist. Heart regular. Lungs clear. Abdomen soft, not tender, bladder not palpable. Moves all extremities, no focal weakness.\n\nA/P: Delirium on top of his Alzheimer's, slowly clearing, cause not found. Nothing to add with a negative workup. Keep his routine steady, lights and clock in his room, daytime activity, avoid naps late. No sedating meds. Continue current meds unchanged. Recheck in about 4 weeks, call if it worsens or he has fever or stops eating."}
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "outside_records",
+          "start": "2023-11-20T10:40",
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note (11/12/2023)", "author": "emergency medicine", "date": "2023-11-20T10:40", "body": "Regional hospital emergency department. Seen 11/12/2023.\n\nCC: confusion, agitation x 2 days.\n\n75M with moderate Alzheimer disease, HTN, knee OA, BPH, brought by daughter. Two days of increasing confusion and agitation, up wandering at night, at times not recognizing family. Became more agitated when held for IV access.\n\nMeds: donepezil, memantine, amlodipine, tamsulosin, acetaminophen prn, PEG prn. Allergies: penicillin (anaphylaxis), sulfa (rash).\n\nExam: VS stable. Disoriented to time and place, knows who he is. Cannot follow multistep commands, easily pulled off task by surroundings. Remainder of exam unremarkable.\n\nResults: Na 140, K 4.2, Cl 102, HCO3 24, BUN 18, Cr 1.0, glucose 98, Ca 9.2. CBC WNL. UA negative. CT head without contrast: no acute abnormality.\n\nImpression: delirium superimposed on dementia, no acute precipitant identified.\nDispo: discharged home with daughter. Follow up with PCP this week. Return for fever, falls, worsening confusion.\n\nScanned to chart; PCP reviewed, consistent with what family described."}
+          ]
+        },
+        {
+          "id": "2023-12-14a",
+          "kind": "office_visit",
+          "start": "2023-12-14T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up confusion, blood pressure",
+          "conditions": [
+            {"label": "Delirium superimposed on dementia", "icd10": "F05", "action": "resolved", "onset": "2023-11-10"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-12-14T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-12-14T11:05", "body": "S: Back for recheck after last month's delirium. Daughter feels he is back to where he was in the summer: knows her, calmer in the evenings, sleeping most nights, though he still gets up to use the bathroom once or twice and sometimes wanders the hall before she steers him back. Appetite fine. Knees about the same, Tylenol in the morning helps. No new meds.\n\nO: Vitals as charted, BP at goal. Alert, chatting about the weather, oriented to self, guesses the season correctly. Heart regular, lungs clear. Knees with crepitus, no effusion. Walking steadily.\n\nA/P:\n- Delirium superimposed on dementia: resolved, at baseline.\n- Alzheimer disease, moderate: continue donepezil and memantine.\n- HTN: controlled on amlodipine 5.\n- Knee OA, BPH: stable, no changes.\nNext visit in 2 to 3 months."}
+          ]
+        },
+        {
+          "id": "2023-12-28a",
+          "kind": "portal_message",
+          "start": "2023-12-28T08:50",
+          "documents": [
+            {"type": "Patient Communication", "title": "Refill Request", "author": "patient", "date": "2023-12-28T08:50", "body": "Hi, this is Arthur's daughter. Dad is down to about a week of the memantine. Can you send a new script to the pharmacy? Happy new year to all of you."},
+            {"type": "Patient Communication", "title": "Refill Sent", "author": "PCP", "date": "2023-12-28T12:15", "body": "Done, memantine 10 mg twice daily, 90-day supply with refills sent this morning. Happy new year to you both."}
+          ]
+        }
+      ]
+    }
+  ]
+}

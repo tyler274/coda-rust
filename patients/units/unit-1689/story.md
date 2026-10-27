@@ -66,3 +66,8 @@
 - 2026-07-14 portal_message: employer wellness form completed. [P]
 - 2026-08-18 portal_message: schedules BP follow-up. [P]
 - 2026-09-15 office_visit: booked BP follow-up. [P]
+
+
+## Last seen
+
+The practice last saw MRN00001689 on 2026-01-13. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

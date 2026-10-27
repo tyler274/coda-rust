@@ -31,3 +31,8 @@
 - 2026-06-23 portal_message: patient reports 1-year CTA stable; records request (A5, P)
 - 2026-07-21 telephone: records request re-sent (P)
 - 2026-09-22 annual_physical booked (P)
+
+
+## Last seen
+
+The practice last saw MRN00002534 on 2024-09-10. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

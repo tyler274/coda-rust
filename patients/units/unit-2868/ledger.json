@@ -1,0 +1,3642 @@
+{
+  "unit": "unit-2868",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002868",
+      "given": "Heather",
+      "family": "Cronin",
+      "birth_date": "1960-07-02",
+      "address_line": "41 Jabish Brook Road",
+      "phone": "+1-978-555-0108",
+      "email": "heather.cronin@example.test",
+      "marital_status": "single",
+      "summary": "Two-time cancer survivor (triple-negative right breast cancer 2018, cervical SCC 2021) with right-arm lymphedema who develops radiation proctitis, then metastatic midgut NET with carcinoid syndrome on lanreotide, then a lymphedema/radiation-associated angiosarcoma of the right chest wall treated with resection and paclitaxel.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T10:12",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2021-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller Heather Cronin, DOB 07/02/1960. Her primary care doctor of many years retired this summer and she would like to establish here. Medicare through disability. Currently finishing up follow-up with an outside cancer center. Membership info emailed. Booked new patient visit 9/13 at 9:00, 60 min. Asked her to sign the records release for the old office and the cancer center when she comes in."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-13a",
+          "kind": "establish_care",
+          "start": "2021-09-13T09:00",
+          "end": "2021-09-13T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "History of breast cancer",
+              "action": "diagnosed",
+              "onset": "2018-02-01",
+              "note": "Right breast IDC, triple-negative, stage IIA; lumpectomy, SLNB and completion ALND, adjuvant chemotherapy via port, adjuvant radiation, 2018"
+            },
+            {
+              "label": "History of cervical cancer",
+              "action": "diagnosed",
+              "onset": "2021-02-01",
+              "note": "Squamous cell carcinoma stage IB2; radical hysterectomy with BSO and pelvic radiation, 2021"
+            },
+            {
+              "label": "Lymphedema",
+              "action": "diagnosed",
+              "onset": "2018-09-01",
+              "note": "Secondary lymphedema right upper extremity, chronic, grade 2, after axillary dissection"
+            },
+            {
+              "label": "Osteopenia",
+              "action": "diagnosed",
+              "onset": "2020-05-01",
+              "note": "DXA 2020 at prior practice"
+            },
+            {
+              "label": "Personal history of irradiation",
+              "action": "diagnosed",
+              "onset": "2018-10-01",
+              "note": "Right breast 2018; pelvis 2021",
+              "icd10": "Z92.3"
+            },
+            {
+              "label": "Acquired absence of uterus and cervix",
+              "action": "diagnosed",
+              "onset": "2021-04-01"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              76
+            ],
+            "hr": 68,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 67.3,
+            "height_cm": 162.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-09-13T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-13T10:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-13T10:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-13T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.82
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-13T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-13T10:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired elementary school teacher (on disability)"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-13T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rec-req-2021",
+              "action": "placed",
+              "order": "Outside records request (prior PCP, cancer center)",
+              "category": "procedure",
+              "to": "Medical Records",
+              "reason": "establish care"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-13T10:05",
+              "author": "PCP",
+              "body": "New patient, 61F, establishing after her longtime PCP retired.\n\nShe has been through a lot in a short stretch. In 2018 she was treated for a right breast cancer (invasive ductal, triple-negative, stage IIA): lumpectomy with sentinel node and then a full axillary dissection, chemotherapy through a port on the right, and breast radiation finished in the fall of 2018. Port came out in 2019. The right arm has been swollen ever since the node dissection; she wears a compression sleeve most days and a gauntlet when gardening. Grade 2 per her therapist.\n\nThen early this year she was diagnosed with cervical squamous cell carcinoma, stage IB2. Radical hysterectomy with both tubes and ovaries in the spring, pelvic radiation after, wrapped up in July. Gyn onc is following her every 6 months. She is tired but says the worst is behind her.\n\nTold at the old office that her bones were thin (DXA last year). No fractures.\n\nMeds: none. Not on any supplements. NKDA.\nFH: mother had breast cancer after menopause, in her 70s (74). Father MI at 68. One sister, well.\nSH: taught second and third grade for many years, on disability since the breast cancer treatment. Never smoked. Does not drink. Lives in Belchertown.\n\nROS: fatigue, otherwise negative. No bowel or bladder change, no bleeding since surgery, no bone pain, no cough.\n\nExam: vitals as charted. Well appearing. Right breast with healed lumpectomy scar and post-radiation skin change, no masses; left breast normal. No axillary or supraclavicular nodes. Right arm visibly fuller than the left, non-pitting, skin intact. Heart RRR, no murmur. Lungs clear. Abdomen soft, healed midline scar. No leg edema.\n\nAssessment/plan\n1. Breast cancer survivor, 3 years out. Survivorship with outside breast oncology; yearly diagnostic mammograms.\n2. Cervical cancer, recently completed treatment. Surveillance with gyn onc.\n3. RUE lymphedema, chronic. Continue sleeve. Will refer to lymphedema therapy for refitting when she is ready.\n4. Osteopenia. Get prior DXA report. Repeat at a 2-3 year interval.\n5. Health maintenance: CBC, CMP, lipids, TSH. Hep C and HIV screening once, she agreed. Flu and COVID booster at a nurse visit next month. Records requested.\n\nRTC for wellness visit in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "height_cm": 163.0,
+            "labs": {
+              "Hemoglobin": 12.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-15a",
+          "kind": "portal_message",
+          "start": "2021-09-15T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-15T16:40",
+              "author": "PCP",
+              "body": "Hi Heather, your blood work from Monday is all normal: blood counts, kidney and liver tests, thyroid, and cholesterol. The hepatitis C and HIV screens were negative. Nothing to do. See you in the spring, and the nurse will see you for the vaccines in October."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-27a",
+          "kind": "outside_records",
+          "start": "2021-09-27T11:20",
+          "orders": [
+            {
+              "id": "rec-req-2021",
+              "action": "done",
+              "date": "2021-09-27T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care and cancer center records",
+              "date": "2021-09-27T11:20",
+              "author": "MA",
+              "body": "Records received from prior primary care office and the outside cancer center (138 pages), scanned to media.\n\nSummary for the chart:\n- Prior PCP: screening colonoscopy 2017, normal to the cecum, no polyps, 10-year interval. DXA 05/2020: lowest T-score -1.7 at the left femoral neck, osteopenia. Routine labs normal through 2020.\n- Breast oncology: right breast invasive ductal carcinoma, ER/PR/HER2 negative, stage IIA, 02/2018. Lumpectomy with sentinel node biopsy then completion axillary dissection 03/2018. Adjuvant chemotherapy via right subclavian port 2018. Whole-breast radiation completed 10/2018. Port removed 03/2019. Survivorship visits yearly.\n- Gyn oncology: cervical squamous cell carcinoma stage IB2, 02/2021. Radical hysterectomy with bilateral salpingo-oophorectomy 04/2021. Pelvic external beam radiation completed 07/2021. Surveillance every 6 months.\n- Allergies on all records: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T14:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2021-10-19T14:20",
+              "author": "RN",
+              "body": "Here for flu vaccine and COVID booster. Screening questions negative, no fever today. Flu 0.5 mL IM left deltoid. Pfizer booster IM left deltoid (right arm avoided, lymphedema). Waited 15 minutes, tolerated well. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "outside_records",
+          "start": "2022-01-11T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic Oncology surveillance visit",
+              "date": "2022-01-11T09:30",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE VISIT\nDate of service: 01/06/2022\nDiagnosis: cervical squamous cell carcinoma, FIGO IB2, s/p radical hysterectomy, BSO and adjuvant pelvic radiation (completed 07/2021).\n\nInterval: 6 months from completion of therapy. Mild fatigue. No vaginal bleeding or discharge, no pelvic pain, no leg swelling. Bowel and bladder function at baseline.\nAllergies: NKDA. Medications: none.\nExam: no inguinal or supraclavicular adenopathy. Speculum: vaginal cuff intact, healed, mild post-radiation pallor, no lesions. Bimanual/rectovaginal: no masses or nodularity.\nVaginal cuff cytology obtained: negative for intraepithelial lesion or malignancy.\nImpression: no evidence of disease.\nPlan: return in 6 months with pelvic MRI before the visit. Vaginal dilator use reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "imaging",
+          "start": "2022-02-08T08:40",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2022-02-08T08:40",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. History of right breast cancer treated with lumpectomy and radiation 2018. Comparison 02/2021. Breasts are scattered fibroglandular density. Right breast post-lumpectomy architectural distortion and skin thickening at the surgical site, stable. No suspicious mass, calcifications or new distortion in either breast.",
+              "conclusion": "Benign post-treatment change, right breast. BI-RADS 2. Annual diagnostic mammogram."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Diagnostic mammogram result",
+              "date": "2022-02-08T15:10",
+              "author": "MA",
+              "body": "Diagnostic mammogram report received from the outside breast imaging center, BI-RADS 2. Routed to PCP. Patient will see it in the portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "annual_physical",
+          "start": "2022-03-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              119,
+              76
+            ],
+            "hr": 62,
+            "temp_c": 36.3,
+            "spo2": 98,
+            "weight_kg": 68.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-03-08T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 221
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-08T10:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-08T10:50",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 33
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2022-03-08T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-08T10:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-08T10:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lymph-pt-2022",
+              "action": "placed",
+              "order": "Lymphedema therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy - Lymphedema",
+              "reason": "chronic RUE lymphedema, sleeve refit"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-03-08T11:00",
+              "author": "PCP",
+              "body": "Initial Medicare AWV. Heather is 61, on Medicare through disability.\n\nSince fall: saw gyn onc in January, cuff cytology negative, no evidence of disease. Mammogram last month BI-RADS 2. Energy slowly coming back; walking 30 min most days with her sister. Sleeve is wearing out and the fit is poor since she lost some weight during treatment.\n\nFunctional: independent, drives, manages finances. No falls. Hearing and vision fine (glasses). Lives alone, sister nearby. Advance directive: has a health care proxy (sister), copy requested.\nPHQ-9 3.\nMeds none. NKDA.\n\nExam: vitals charted. Comfortable. HEENT normal. Neck no nodes. Lungs clear. Heart regular, no murmur. Breasts: right lumpectomy scar, radiation change, no mass; left normal. Axillae clear. Abdomen soft. RUE non-pitting swelling, unchanged. Legs without edema.\n\nPlan\n- Shingrix #1 today, #2 in two months.\n- Lymphedema therapy referral for measurement and a new sleeve.\n- CBC, CMP, vitamin D.\n- Colonoscopy due 2027. Mammogram yearly. Cervical surveillance per gyn onc.\n- DXA next spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "outside_records",
+          "start": "2022-03-29T13:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Breast Oncology survivorship visit",
+              "date": "2022-03-29T13:00",
+              "author": "medical oncology",
+              "body": "BREAST MEDICAL ONCOLOGY - SURVIVORSHIP\nVisit date: 03/24/2022\n61-year-old woman with right breast IDC, triple-negative, stage IIA, diagnosed 02/2018, treated with lumpectomy, SLNB and completion ALND, adjuvant chemotherapy and whole-breast radiation (completed 10/2018). Also treated in 2021 for cervical SCC, now under gyn onc surveillance.\n\nShe feels well apart from fatigue. No new breast changes, bone pain, cough, headache or weight loss.\nAllergies: NKDA. Medications: none.\nExam: well. Right breast post-surgical and radiation change without mass. Left breast normal. No regional adenopathy. Right arm lymphedema, stable.\nMammogram 02/08/2022: BI-RADS 2.\n\nAssessment: no evidence of recurrence, 4 years from diagnosis.\nPlan: continue annual diagnostic mammography. Return in 1 year; after the 5-year mark we will transition survivorship to her PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "outside_records",
+          "start": "2022-04-19T10:15",
+          "orders": [
+            {
+              "id": "lymph-pt-2022",
+              "action": "done",
+              "date": "2022-04-19T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Lymphedema therapy evaluation",
+              "date": "2022-04-19T10:15",
+              "author": "physical therapy",
+              "body": "OUTPATIENT REHABILITATION - LYMPHEDEMA EVALUATION\nDate: 04/14/2022\nReferral: chronic secondary lymphedema RUE after ALND (2018).\nSubjective: arm heavy by evening, sleeve loose. No cellulitis episodes. Right-hand dominant.\nObjective: skin intact, Stemmer sign positive at the right second digit, circumferential measurements taken and recorded in the therapy flowsheet. No pitting.\nAssessment: stable grade 2 lymphedema, poorly fitted garment.\nPlan: measured for custom flat-knit sleeve and gauntlet (2 sets), home program of self manual lymph drainage and exercises reviewed, 4 visits. Garment Rx request sent to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "nurse_visit",
+          "start": "2022-05-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix #2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-10T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-05-10T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Shingrix dose 2",
+              "date": "2022-05-10T15:50",
+              "author": "RN",
+              "body": "Second Shingrix dose IM left deltoid. First dose gave her a sore arm for a day, fine to proceed. Observed, no reaction. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "portal_message",
+          "start": "2022-06-14T08:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sleeve prescription",
+              "date": "2022-06-14T08:55",
+              "author": "patient",
+              "body": "Hi, the therapist said the medical supply place still hasn't gotten the prescription for my new sleeves. Can you resend it? They need it to say custom flat knit, 2 sets. Thank you, Heather"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sleeve prescription",
+              "date": "2022-06-14T11:30",
+              "author": "MA",
+              "body": "Hi Heather, the prescription for 2 sets of custom flat-knit compression sleeves and gauntlets for the right arm was signed by the doctor and faxed to the supplier this morning, with the diagnosis and measurements from the therapist. Give them a day or two to process."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "outside_records",
+          "start": "2022-07-12T14:10",
+          "conditions": [
+            {
+              "label": "Post-radiation pelvic fibrosis",
+              "action": "diagnosed",
+              "onset": "2022-07-01",
+              "icd10": "N94.89"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic Oncology surveillance visit and pelvic MRI",
+              "date": "2022-07-12T14:10",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate of service: 07/07/2022\nCervical SCC IB2, one year from completion of adjuvant pelvic radiation.\n\nMRI pelvis with and without contrast (06/30/2022): post-hysterectomy and post-oophorectomy pelvis. Vaginal cuff smooth without mass or abnormal enhancement. Low T2 signal fibrotic change in the parametrial and presacral soft tissues consistent with post-radiation fibrosis. No pelvic or inguinal lymphadenopathy. Bladder and rectum unremarkable.\n\nShe notes occasional pelvic tightness, no bleeding, no pain. Bowel and bladder at baseline.\nAllergies: NKDA. Medications: none.\nExam: cuff intact with radiation pallor; firm, smooth parametrial tissues on rectovaginal exam, no nodularity. Cytology: negative.\nImpression: no evidence of recurrence. Post-radiation pelvic fibrosis.\nPlan: continue dilator use, pelvic floor PT offered and declined for now. Visits every 6 months through year 2, then yearly."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "office_visit",
+          "start": "2022-09-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 60,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 67.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-20T11:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-09-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-09-20T11:35",
+              "author": "PCP",
+              "body": "Six-month check.\nLymphedema: new custom sleeves since June, much more comfortable, finished therapy and does the drainage routine at night. No infections.\nGyn onc July: MRI showed scar-type change in the pelvis from radiation, no cancer. She gets an occasional pulling feeling low in the pelvis, not painful.\nFeels like herself again; volunteering at the library reading program twice a week.\nNKDA, no meds.\n\nExam: vitals charted, weight stable. Lungs clear, heart regular. Abdomen soft, nontender. RUE in sleeve, skin fine.\n\nA/P\n- Lymphedema RUE, stable on new garments.\n- Post-radiation pelvic fibrosis, noted from gyn onc; symptoms mild.\n- CBC today since she asked about fatigue earlier in the year.\n- Flu and new bivalent COVID at a nurse visit in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T09:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T09:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Flu and COVID",
+              "date": "2022-10-18T09:35",
+              "author": "RN",
+              "body": "Influenza and bivalent COVID booster, both IM left deltoid, left arm only per her lymphedema. No reaction during observation."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "outside_records",
+          "start": "2023-01-10T10:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic Oncology surveillance visit",
+              "date": "2023-01-10T10:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nSeen 01/05/2023 for surveillance, cervical SCC IB2 treated 2021 (radical hysterectomy/BSO, pelvic RT).\nNo bleeding, no new pain. Pelvic tightness unchanged.\nAllergies: NKDA. Meds: none.\nExam: no adenopathy. Cuff intact, atrophic and pale. Rectovaginal: smooth fibrotic parametria, unchanged.\nCuff cytology: NILM.\nImpression: NED at 18 months. Known post-radiation pelvic fibrosis.\nNext: July 2023, then yearly from 2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "imaging",
+          "start": "2023-02-14T09:10",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2023-02-14T09:10",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. Comparison 02/08/2022. Scattered fibroglandular density. Stable post-lumpectomy scar and radiation skin thickening, right breast. No suspicious mass, grouped calcifications or new distortion bilaterally.",
+              "conclusion": "BI-RADS 2, benign. Continue annual mammography."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Mammogram received",
+              "date": "2023-02-14T16:00",
+              "author": "MA",
+              "body": "Diagnostic mammogram 2/14 received, BI-RADS 2, filed and routed."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "annual_physical",
+          "start": "2023-03-07T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              106,
+              78
+            ],
+            "hr": 64,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 68.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-07T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.22
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-07T10:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-07T10:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 124
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-03-07T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2023",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "osteopenia, follow-up after BSO and pelvic radiation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-03-07T10:20",
+              "author": "PCP",
+              "body": "Subsequent AWV.\nYear in review: gyn onc twice, no evidence of disease; mammogram in February BI-RADS 2; breast oncology says this is her last year with them before survivorship comes here. Sleeves working. Walking and some light weights at the senior center.\nFunction independent, no falls, safe at home. Proxy on file. PHQ-2 0.\nNo meds, NKDA.\n\nExam: vitals charted. Well. Lungs clear, heart regular. Abdomen soft. RUE lymphedema stable, skin intact. No spine tenderness.\n\nPlan\n- Osteopenia, last DXA 2020. After oophorectomy and pelvic radiation she is at some added risk; repeat DXA ordered. Diet calcium and vitamin D, keep up the weight-bearing exercise.\n- CBC, CMP, lipids.\n- Vaccines current. Colonoscopy due 2027.\nRTC 6 months or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "imaging",
+          "start": "2023-03-21T13:00",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-03-21T13:00",
+              "text": "Lumbar spine L1-L4 BMD T-score -1.3. Left femoral neck T-score -1.9. Left total hip T-score -1.5. Right hip not scanned per protocol. FRAX 10-year probability: major osteoporotic fracture 12%, hip fracture 1.6%. Comparison 05/2020 outside study: left femoral neck T-score -1.7.",
+              "conclusion": "Osteopenia. FRAX below treatment thresholds."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2023",
+              "action": "done",
+              "date": "2023-03-21T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-03-23a",
+          "kind": "portal_message",
+          "start": "2023-03-23T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bone density result",
+              "date": "2023-03-23T17:05",
+              "author": "PCP",
+              "body": "Hi Heather - your bone density shows osteopenia, a little lower at the hip than in 2020 (-1.9 vs -1.7). Your 10-year fracture risk score is under the level where we would start a bone medicine. Keep the walking and weights going and aim for calcium-rich foods. We will recheck in a couple of years. Your blood work from the 7th was normal too."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "office_visit",
+          "start": "2023-09-12T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Rectal bleeding",
+          "vitals": {
+            "bp": [
+              114,
+              81
+            ],
+            "hr": 70,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 64.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-09-12T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-ref-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "rectal bleeding, incomplete evacuation, weight loss after pelvic radiation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Rectal bleeding",
+              "date": "2023-09-12T14:55",
+              "author": "PCP",
+              "body": "CC: blood with bowel movements.\n\nShe has noticed bright red blood on the tissue and sometimes in the bowl, off and on for about six months. Thought it was hemorrhoids and waited. Also a sense that she never quite finishes, going back two or three times. No black stools, no belly pain. Weight down about 3.5 kg since spring without trying (68 -> 64.5). Appetite okay. Pelvic radiation finished July 2021. Colonoscopy 2017 was normal.\n\nNKDA, no meds.\n\nExam: vitals charted. Thin, comfortable. Abdomen soft, nontender, no masses. External exam without hemorrhoids or fissure; she preferred to defer the digital exam to GI, who will scope her.\n\nA/P: rectal bleeding with tenesmus-type symptoms and weight loss in a woman with prior pelvic radiation. Radiation proctitis is the leading thought but this needs a colonoscopy. Urgent GI referral placed; they will do labs and scope. Call if bleeding gets heavier, dizziness, or black stools."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-02a",
+          "kind": "specialist_visit",
+          "start": "2023-10-02T08:30",
+          "service": "Gastroenterology",
+          "reason": "Rectal bleeding",
+          "conditions": [
+            {
+              "label": "Radiation proctitis",
+              "action": "diagnosed",
+              "onset": "2023-03-01",
+              "note": "Chronic, rectum; colonoscopy 2023-10-02",
+              "icd10": "K62.7"
+            },
+            {
+              "label": "Anemia, unspecified",
+              "action": "diagnosed",
+              "onset": "2023-09-01",
+              "note": "Normocytic, with rectal bleeding"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              74
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-10-02T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2023-10-02T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-ref-2023",
+              "action": "done",
+              "date": "2023-10-02T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2023-10-02T15:30",
+              "author": "gastroenterology",
+              "body": "GASTROENTEROLOGY CONSULTATION AND COLONOSCOPY\nDate: 10/02/2023\nReferring: primary care\n\nReason: rectal bleeding.\n\nHPI: 63-year-old woman with intermittent bright red rectal bleeding for roughly half a year and a persistent feeling of incomplete emptying. Denies abdominal pain. Weight has dropped 5 kg over the past four months. History of cervical SCC treated in 2021 with radical hysterectomy/BSO and pelvic external beam radiation; right breast cancer 2018 treated with surgery, chemotherapy and radiation. Prior colonoscopy 2017 normal.\nMedications: none. Allergies: NKDA.\nFamily history: negative for colorectal cancer.\nSocial: never smoker, no alcohol. Retired teacher.\n\nExam: vitals normal. Abdomen benign. Digital rectal exam: no palpable mass; bright red blood on the glove.\n\nLabs today: Hgb 10.2 g/dL, MCV 85 fL, WBC 6.0, platelets 250.\n\nColonoscopy (same day, MAC sedation): prep good. Cecum reached, appendiceal orifice photographed. Colon from cecum to sigmoid normal, no polyps. Rectum: pale mucosa, friable to scope contact, with numerous telangiectasias limited to the rectum. No ulceration, stricture or mass. Retroflexion confirms changes extend to the dentate line.\n\nImpression:\n1. Chronic radiation proctitis, causing hematochezia.\n2. Normocytic anemia, likely from chronic blood loss.\n\nPlan: argon plasma coagulation of the rectal telangiectasias, likely two sessions about 8 weeks apart; first scheduled 11/06. Avoid straining; fiber as tolerated. CBC through primary care in a few months."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "labs": {
+              "Hemoglobin": 10.2
+            }
+          }
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "portal_message",
+          "start": "2023-10-05T19:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about the GI procedure",
+              "date": "2023-10-05T19:20",
+              "author": "patient",
+              "body": "The GI doctor wants to do something called argon plasma for the bleeding. Is that safe with all the radiation I had down there? I trust you, just want your opinion before I go ahead."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about the GI procedure",
+              "date": "2023-10-06T08:15",
+              "author": "PCP",
+              "body": "Good question. Argon plasma coagulation is the usual treatment for the kind of bleeding blood vessels radiation leaves in the rectum. It is done through the scope, seals the vessels with heat, and most people need one to three sessions. It is a sensible next step given your blood count is down. Go ahead and keep the November date, and we will check your counts after."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T10:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T10:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-24T10:50",
+              "author": "RN",
+              "body": "Flu and 2023-24 COVID given IM, left deltoid both (no injections right arm). Tolerated. Reminded her to bring the GI procedure paperwork to her next visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-06a",
+          "kind": "procedure_visit",
+          "start": "2023-11-06T09:00",
+          "service": "Gastroenterology",
+          "reason": "Argon plasma coagulation",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Flexible sigmoidoscopy with argon plasma coagulation",
+              "date": "2023-11-06T11:00",
+              "author": "gastroenterology",
+              "body": "ENDOSCOPY REPORT\nProcedure: flexible sigmoidoscopy with argon plasma coagulation\nDate: 11/06/2023\nIndication: hematochezia from chronic radiation proctitis; anemia.\nSedation: MAC. Allergies: NKDA.\nFindings: friable rectal mucosa with multiple telangiectasias, distal 10 cm. Sigmoid normal to 35 cm.\nIntervention: APC to the larger telangiectatic areas, low flow, short pulses. Not all lesions treated, staged approach planned.\nComplications: none.\nPlan: second session in about 8 weeks. Expect some spotting for a few days."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "procedure_visit",
+          "start": "2024-01-08T09:30",
+          "service": "Gastroenterology",
+          "reason": "Argon plasma coagulation",
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Flexible sigmoidoscopy with APC, session 2",
+              "date": "2024-01-08T11:20",
+              "author": "gastroenterology",
+              "body": "ENDOSCOPY REPORT\nProcedure: flexible sigmoidoscopy with argon plasma coagulation, second session\nDate: 01/08/2024\nSince November she reports bleeding only occasionally and lightly.\nFindings: treated areas healing with pale scar. Residual telangiectasias in the distal rectum.\nIntervention: APC to residual lesions.\nComplications: none. Allergies: NKDA.\nImpression: chronic radiation proctitis, improved after APC.\nPlan: no scheduled session; return if bleeding recurs. CBC with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "outside_records",
+          "start": "2024-01-09T12:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic Oncology annual surveillance",
+              "date": "2024-01-09T12:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY - ANNUAL SURVEILLANCE\nVisit 01/04/2024. Cervical SCC IB2 (2021), 2.5 years from therapy.\nNew since last visit: radiation proctitis diagnosed by GI in October, treated with APC.\nAllergies: NKDA. Meds: none.\nExam: no adenopathy. Cuff atrophic, intact. Rectovaginal exam with stable fibrotic change.\nCuff cytology: negative.\nImpression: no evidence of disease. Yearly visits from here."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "imaging",
+          "start": "2024-02-13T08:20",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-02-13T08:20",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. Comparison 2023 and 2022. Stable right lumpectomy site distortion and skin thickening. No suspicious findings in either breast.",
+              "conclusion": "BI-RADS 2. Benign. Annual mammogram."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "lab_only",
+          "start": "2024-02-20T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-02-20T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-20T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "CBC after APC",
+              "date": "2024-02-21T12:40",
+              "author": "PCP",
+              "body": "Hgb 10.7, up a little from 10.2 in October. Bleeding now occasional per GI's January note. Recheck at next visit. Portal message sent."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.7
+            }
+          }
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, flushing, diarrhea",
+          "vitals": {
+            "bp": [
+              107,
+              84
+            ],
+            "hr": 70,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 61.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T14:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T14:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.14
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-ap-2024",
+              "action": "placed",
+              "order": "CT abdomen and pelvis with contrast",
+              "category": "imaging",
+              "reason": "unintentional weight loss, diarrhea"
+            },
+            {
+              "id": "cards-ref-2024",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "fatigue, ankle edema, nocturnal wheeze"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Fatigue and flushing",
+              "date": "2024-03-19T14:30",
+              "author": "PCP",
+              "body": "She comes in because \"something is off.\" Over the winter, increasing tiredness, and spells where her face goes hot and red for a few minutes, several times a week, sometimes after eating. Loose watery stools a few times a day for a couple of months, no blood (rectal bleeding much better after the APC). Some wheezing at night that she never had before. Ankles puffy by evening. Weight keeps drifting down, 61.5 kg today.\nNo fever, no travel, no antibiotics, nobody sick at home.\nNo meds. NKDA. Never smoker.\n\nExam: vitals charted. Thin. Face not flushed at present. Lungs clear today, no wheeze. Heart regular, no murmur heard. Abdomen soft, nontender, liver edge not felt. Trace ankle edema both sides. RUE lymphedema, baseline.\n\nAssessment: weight loss with flushing, diarrhea and wheeze. The bowel symptoms are not what radiation proctitis does. Needs imaging of the abdomen. With the ankle swelling and fatigue I want cardiology to look at her heart.\nPlan: CMP and TSH today. CT abdomen/pelvis with contrast. Cardiology referral. Stool diary. Will call with CT result."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-04-03a",
+          "kind": "imaging",
+          "start": "2024-04-03T10:30",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-04-03T10:30",
+              "text": "Indication: unintentional weight loss, diarrhea. Technique: multiphase CT with IV contrast. Liver: several hypervascular lesions enhancing avidly on the arterial phase with washout, the largest 2.4 cm (measured in axial plane). Spleen, pancreas, adrenals and kidneys normal. No biliary dilatation. Bowel without obstruction. No ascites or adenopathy. Pelvis: post-hysterectomy and oophorectomy, post-radiation soft-tissue stranding in the presacral space and parametria. Bones without destructive lesion.",
+              "conclusion": "Several hypervascular liver lesions, indeterminate; a hypervascular metastatic process such as neuroendocrine tumor should be considered. Post-treatment pelvic change."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ct-ap-2024",
+              "action": "done",
+              "date": "2024-04-03T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2024-04-04a",
+          "kind": "telephone",
+          "start": "2024-04-04T12:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result discussed",
+              "date": "2024-04-04T12:30",
+              "author": "PCP",
+              "body": "Called Heather with CT. Several spots in the liver that light up with contrast. Explained these need a diagnosis and that the pattern can go with a slow-growing hormone-making tumor, which would fit the flushing and diarrhea, but we need tests to say. She was quiet, then asked good questions; sister with her on speaker. Cardiology is 4/15 and I sent them the CT. I will also message the cardiologist. She knows to call me any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "specialist_visit",
+          "start": "2024-04-15T10:00",
+          "service": "Cardiology",
+          "reason": "Fatigue, flushing, weight loss",
+          "conditions": [
+            {
+              "label": "Carcinoid syndrome",
+              "action": "diagnosed",
+              "onset": "2023-12-01",
+              "icd10": "E34.00"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              75
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 60.5
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-15T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 212
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2024",
+              "action": "done",
+              "date": "2024-04-15T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2024-04-16T09:00",
+              "author": "cardiology",
+              "body": "CARDIOLOGY CONSULTATION\nDate: 04/15/2024\nReferred by primary care for fatigue and ankle swelling.\n\nHPI: 63-year-old woman, treated for right breast cancer (2018) and cervical cancer (2021, pelvic radiation), with chronic right arm lymphedema and post-radiation pelvic fibrosis, seen by GI six months ago for chronic radiation proctitis. Over several months she has grown more fatigued, has frequent facial flushing episodes and has lost weight unintentionally. Several watery stools a day, no blood or mucus, unchanged by dietary changes. No travel, antibiotics or sick contacts. New intermittent wheeze, mostly at night; no asthma history and she has never smoked. Appetite fair. Ankles swell by evening.\nMedications: none. Allergies: NKDA.\nFH: mother breast cancer at 74; father MI at 68; sister healthy. No family history of colorectal cancer, neuroendocrine tumors or sarcoma.\nSH: never smoker, no alcohol; retired elementary school teacher on disability.\n\nExam: vital signs normal. Comfortable appearing. Subtle darkening of the skin around both eyes. JVP not elevated. Heart regular, no murmur or rub. Lungs clear. Abdomen benign. Mild bilateral lower extremity edema. Right arm lymphedema.\n\nData: Hgb 11.1 g/dL, normocytic. ECG: sinus rhythm, normal intervals, no ST changes. CT abdomen/pelvis 04/03/2024: several hypervascular liver lesions.\n\nAssessment: flushing, secretory-type diarrhea, wheeze and weight loss with hypervascular liver lesions: carcinoid syndrome until proven otherwise, likely from metastatic neuroendocrine tumor. Edema and fatigue raise the question of carcinoid heart disease.\nPlan:\n1. Transthoracic echocardiogram, attention to the right-sided valves.\n2. 24-hour urine 5-HIAA (food/med restrictions given) and serum chromogranin A.\n3. Referral to medical oncology for tissue diagnosis and management; discussed with her PCP.\nCardiology follow-up depending on echo."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.5,
+            "labs": {
+              "Hemoglobin": 11.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "lab_only",
+          "start": "2024-04-23T08:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-22T08:00",
+              "resulted": "2024-04-26T14:00",
+              "results": [
+                {
+                  "test": "5-Hydroxyindoleacetate, 24 hour urine",
+                  "loinc": "1695-6",
+                  "unit": "mg/(24.h)",
+                  "value": 86
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-22T08:00",
+              "resulted": "2024-04-25T11:00",
+              "results": [
+                {
+                  "test": "Chromogranin A",
+                  "loinc": "9811-1",
+                  "unit": "ng/mL",
+                  "value": 412
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside lab results received",
+              "date": "2024-04-26T15:00",
+              "author": "MA",
+              "body": "Results from the cancer center lab (ordered by cardiology): 24-hr urine 5-HIAA 86 mg/24 h (ref 2-9), chromogranin A 412 ng/mL (ref <93). Filed and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-24a",
+          "kind": "imaging",
+          "start": "2024-04-24T13:15",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-04-24T13:15",
+              "text": "Normal left ventricular size and wall thickness. LVEF 60% by biplane method. Normal diastolic function for age. Right ventricle normal in size and function. Tricuspid valve leaflets thin and mobile, no regurgitation beyond trace; pulmonic valve normal. Mitral and aortic valves normal. Estimated RVSP normal. No pericardial effusion. IVC normal with respiratory variation.",
+              "conclusion": "Normal echocardiogram. No evidence of carcinoid valve disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology note - echo result",
+              "date": "2024-04-29T09:00",
+              "author": "cardiology",
+              "body": "Echo 4/24 normal, EF 60%, right-sided valves normal. No carcinoid heart disease. Urine 5-HIAA markedly elevated at 86. Oncology consult 5/13. Cardiology will see her as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "specialist_visit",
+          "start": "2024-05-13T14:00",
+          "service": "Medical Oncology",
+          "reason": "Liver lesions, carcinoid syndrome",
+          "vitals": {
+            "bp": [
+              115,
+              75
+            ],
+            "hr": 85,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 60.0
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical Oncology - neuroendocrine consult",
+              "date": "2024-05-14T08:30",
+              "author": "medical oncology",
+              "body": "MEDICAL ONCOLOGY CONSULTATION - NEUROENDOCRINE TUMORS\nDate: 05/13/2024\nReason: hypervascular liver lesions with carcinoid syndrome.\n\n63F with prior right breast TNBC (2018) and cervical SCC (2021). Months of flushing, watery diarrhea, nocturnal wheeze and weight loss. CT 4/3: several arterially enhancing liver lesions, largest 2.4 cm. Urine 5-HIAA 86 mg/24 h, chromogranin A 412. Echo 4/24 normal.\nMeds: none. NKDA.\nExam: thin, comfortable. Periorbital darkening. No adenopathy. Liver not palpable. Trace ankle edema.\n\nImpression: presentation strongly suggests metastatic well-differentiated neuroendocrine tumor with carcinoid syndrome. Given two prior cancers, tissue is required.\nPlan: ultrasound-guided core biopsy of a liver lesion; Ga-68 DOTATATE PET for staging and receptor status. Return with results to start therapy."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "procedure_visit",
+          "start": "2024-05-22T08:00",
+          "service": "Interventional Radiology",
+          "reason": "Liver biopsy",
+          "conditions": [
+            {
+              "label": "Secondary carcinoid tumors of liver",
+              "action": "diagnosed",
+              "onset": "2024-04-03",
+              "note": "Well-differentiated NET grade 2, Ki-67 4%, midgut origin by CDX2, primary not localized",
+              "icd10": "C7B.02"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-05-22T09:10",
+              "text": "Specimen: liver lesion, ultrasound-guided core biopsy (3 cores). Microscopic: nests and trabeculae of uniform cells with salt-and-pepper chromatin in a vascular stroma. Immunohistochemistry: synaptophysin and chromogranin positive; CDX2 positive; TTF-1 negative; GATA3 negative; p40 negative. Ki-67 proliferation index 4%. Mitoses less than 2 per 2 mm2.",
+              "conclusion": "Metastatic well-differentiated neuroendocrine tumor, grade 2 (Ki-67 4%). Immunoprofile consistent with midgut origin. No features of breast or cervical carcinoma.",
+              "issued": "2024-05-28T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Ultrasound-guided liver biopsy",
+              "date": "2024-05-22T10:00",
+              "author": "interventional radiology",
+              "body": "Ultrasound-guided percutaneous core biopsy of a liver lesion, 18-gauge, three cores, right intercostal approach. Moderate sedation. No immediate complications; 2-hour observation unremarkable. Discharged home with her sister. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "outside_records",
+          "start": "2024-05-31T10:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Ga-68 DOTATATE PET/CT report",
+              "date": "2024-05-31T10:00",
+              "author": "nuclear medicine",
+              "body": "NUCLEAR MEDICINE - Ga-68 DOTATATE PET/CT\nDate of exam: 05/29/2024\nIndication: biopsy-proven metastatic well-differentiated NET, liver; staging.\nFindings: the hepatic lesions seen on CT 4/3/2024 show intense somatostatin-receptor uptake (Krenning-equivalent above liver background). No abnormal uptake in the bowel, mesentery, pancreas, lymph nodes, lungs or bones. Physiologic uptake in spleen, adrenals, pituitary and kidneys.\nImpression: somatostatin-receptor-avid hepatic metastases. No extrahepatic disease. Primary not localized."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T11:00",
+          "service": "Medical Oncology",
+          "reason": "Start treatment",
+          "medications": [
+            {
+              "drug_text": "0.5 ML lanreotide 240 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "120 mg deep subcutaneous injection every 28 days, given at the cancer center",
+              "dose": {
+                "value": 120,
+                "unit": "mg"
+              },
+              "frequency": "EVERY 28 DAYS",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "metastatic NET with carcinoid syndrome"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              83
+            ],
+            "hr": 73,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 59.6
+          },
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medical Oncology follow-up - treatment start",
+              "date": "2024-06-11T08:00",
+              "author": "medical oncology",
+              "body": "MEDICAL ONCOLOGY - NET\nDate: 06/10/2024\nResults reviewed with patient and sister: liver biopsy shows metastatic well-differentiated NET, grade 2, Ki-67 4%, midgut profile. DOTATATE PET: avid liver metastases only, primary not seen.\nSymptoms: flushing 4-5 times a week, 3-4 loose stools daily, night wheeze.\nNKDA.\nPlan: lanreotide 120 mg deep SC every 28 days, first injection today in the infusion suite; tolerated. Expect GI upset early and some injection-site tenderness. Imaging with multiphase CT every 6 months; 5-HIAA with visits. Liver-directed therapy held in reserve. Copy to PCP and cardiology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "office_visit",
+          "start": "2024-07-16T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after NET diagnosis",
+          "vitals": {
+            "bp": [
+              113,
+              83
+            ],
+            "hr": 65,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 61.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-16T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-16T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "date": "2024-07-16T10:00",
+              "author": "PCP",
+              "body": "First time I have seen her since the diagnosis. Metastatic well-differentiated neuroendocrine tumor to the liver, grade 2, primary not found, carcinoid syndrome. Echo normal. Lanreotide every 4 weeks at the cancer center since June 10; on her second shot now.\nHow she is doing: flushing down to once or twice a week, stools 2 a day and more formed. Tolerating the shots. Night wheeze less. Weight holding at 61. Mood: scared at first, steadier now; sister and a friend from school drive her. PHQ-9 6, she does not want counseling referral now but knows it is available.\nRectal bleeding: rare spotting only.\nMeds: lanreotide 120 mg q28d (oncology). NKDA.\n\nExam: vitals charted. Looks better than in March. Lungs clear. Heart regular. Abdomen soft, nontender. Mild bilateral ankle edema, less than before. RUE lymphedema unchanged.\n\nA/P\n- Metastatic NET with carcinoid syndrome, responding symptomatically to lanreotide. Oncology leads.\n- Radiation proctitis, improved after 2 APC sessions. Anemia improving, CBC today.\n- Lymphedema stable.\n- Mood: steadier, will keep asking.\nFlu/COVID in the fall. RTC 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "labs": {
+              "Hemoglobin": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "portal_message",
+          "start": "2024-07-18T13:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-07-18T13:00",
+              "author": "PCP",
+              "body": "Your blood count is better: hemoglobin 11.6, up from 10.2 last fall. Kidney and liver tests are normal and your sugar is fine on the lanreotide. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T11:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T11:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T11:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2024-10-22T11:30",
+              "author": "RN",
+              "body": "Flu and updated COVID vaccine, left deltoid. Lanreotide shot was last week, no issues. Observed 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "vitals": {
+            "bp": [
+              107,
+              80
+            ],
+            "hr": 69,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-19T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.02
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-19T15:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-11-19T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-11-19T15:40",
+              "author": "PCP",
+              "body": "Four-month follow-up.\nLanreotide monthly, no trouble with the shots. Flushing maybe once every week or two. Stools formed most days. Night wheeze gone. CT due next month with oncology.\nProctitis: a spot of blood now and then, no clots.\nMood better, sleeping fine. Back to the library reading program.\nMeds: lanreotide 120 mg q28d. NKDA.\nExam: vitals charted, weight stable. Lungs clear. Heart regular. Abdomen soft. Ankles without edema. RUE lymphedema stable.\nA/P: NET with carcinoid syndrome, well controlled; anemia, CBC today; lymphedema stable. Next visit in January."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T13:30",
+          "service": "Medical Oncology",
+          "reason": "NET surveillance",
+          "vitals": {
+            "bp": [
+              127,
+              77
+            ],
+            "hr": 66,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-02T08:00",
+              "resulted": "2024-12-06T10:00",
+              "results": [
+                {
+                  "test": "5-Hydroxyindoleacetate, 24 hour urine",
+                  "loinc": "1695-6",
+                  "unit": "mg/(24.h)",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-12-02T11:00",
+              "text": "Multiphase CT. Comparison 04/03/2024. The hypervascular hepatic lesions are unchanged in number and size, the largest 2.4 cm. No new liver lesion. No adenopathy or ascites. Pancreas and bowel unremarkable. Stable post-radiation pelvic change.",
+              "conclusion": "Stable hepatic metastases. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medical Oncology - NET follow-up",
+              "date": "2024-12-10T09:00",
+              "author": "medical oncology",
+              "body": "MEDICAL ONCOLOGY - NET FOLLOW-UP\nDate: 12/09/2024\nOn lanreotide 120 mg q28d since 06/2024.\nFlushing now rare. 1-2 stools a day. No wheeze. Weight stable around 61-62 kg.\nCT 12/02: liver metastases stable. Urine 5-HIAA 34 mg/24 h (was 86).\nNKDA.\nAssessment: stable disease, good symptom control.\nPlan: continue lanreotide. CT and visit in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "outside_records",
+          "start": "2025-01-14T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic Oncology annual surveillance",
+              "date": "2025-01-14T10:30",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nAnnual surveillance 01/09/2025, cervical SCC IB2 (2021), 3.5 years from treatment.\nInterval: diagnosed with metastatic NET to the liver last spring, on lanreotide.\nNo vaginal bleeding, no new pelvic pain. NKDA.\nExam: cuff intact, atrophic. Rectovaginal: stable post-radiation fibrosis.\nCuff cytology: negative.\nImpression: NED. Return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-01-28T07:40",
+              "author": "front desk",
+              "body": "Pt called, roads not plowed on her street yet, cancel today's follow-up. Moved to her wellness visit in March."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "imaging",
+          "start": "2025-02-11T09:00",
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2025-02-11T09:00",
+              "text": "Bilateral diagnostic mammogram with tomosynthesis. Comparison 2022 through 2024. Stable right lumpectomy scar and radiation change. No suspicious mass, calcification or distortion in either breast.",
+              "conclusion": "BI-RADS 2, benign. Annual mammography."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "annual_physical",
+          "start": "2025-03-11T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              111,
+              79
+            ],
+            "hr": 58,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-11T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 215
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 56
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-11T09:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-11T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-11T09:45",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 37
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-03-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-03-11T09:50",
+              "author": "PCP",
+              "body": "AWV. Missed January for the snow.\nPast year: NET in the liver diagnosed in spring, lanreotide since June, CT in December stable and 5-HIAA way down. Flushing rare. Stools 1-2/day. Gyn onc in January, still clear. Mammogram February BI-RADS 2. Proctitis quiet, maybe a streak of blood once a month.\nFunction: independent, drives, cooking again. No falls. Proxy current. PHQ-9 3, much better than last summer.\nMeds: lanreotide 120 mg q28d. NKDA.\n\nExam: vitals charted, weight 62. Well appearing. Lungs clear, heart regular. Abdomen soft, nontender. No edema today. RUE lymphedema stable. Breasts and axillae without change. Skin of chest and arms without lesions.\n\nPlan\n- NET, stable. Per oncology.\n- Anemia: CBC today.\n- Osteopenia: DXA due 2025-26; she would like to wait until fall.\n- Turns 65 in July: pneumococcal vaccine after her birthday (nurse visit). High-dose flu this fall.\n- Labs: CBC, CMP, lipids, vitamin D."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "labs": {
+              "Hemoglobin": 12.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "portal_message",
+          "start": "2025-03-13T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2025-03-13T12:10",
+              "author": "PCP",
+              "body": "Heather, hemoglobin is 12.0, back in the normal range for the first time since 2023. Cholesterol, vitamin D, kidney and liver numbers all fine. Nice news to have."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "specialist_visit",
+          "start": "2025-06-09T14:00",
+          "service": "Medical Oncology",
+          "reason": "NET surveillance",
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 67,
+            "temp_c": 36.2,
+            "spo2": 97,
+            "weight_kg": 62.0
+          },
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2025-06-02T10:45",
+              "text": "Multiphase CT. Comparison 12/02/2024 and 04/03/2024. Hepatic lesions unchanged, largest 2.4 cm. No new hepatic or extrahepatic lesion. Gallbladder without stones. Stable post-radiation pelvis.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medical Oncology - NET follow-up",
+              "date": "2025-06-10T08:15",
+              "author": "medical oncology",
+              "body": "MEDICAL ONCOLOGY - NET\n06/09/2025. Metastatic well-differentiated NET G2 to liver, on lanreotide 1 year.\nDoing well. Flushing a few times a month. Stools formed. Weight 62.\nCT 6/2: stable.\nNKDA.\nPlan: continue lanreotide q28d. CT in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "nurse_visit",
+          "start": "2025-07-22T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumococcal vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-07-22T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-07-22T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit - PCV20",
+              "date": "2025-07-22T14:45",
+              "author": "RN",
+              "body": "65 as of this month. PCV20 0.5 mL IM left deltoid. No prior pneumococcal vaccines on record or in the state registry. No reaction during observation. Completes pneumococcal series."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "ed_visit",
+          "start": "2025-10-14T16:20",
+          "end": "2025-10-14T21:05",
+          "service": "Emergency Medicine",
+          "reason": "Enlarging painful purple nodule right chest wall",
+          "vitals": {
+            "bp": [
+              116,
+              85
+            ],
+            "hr": 73,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 61.6
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-10-14T16:20"
+            },
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2025-10-14T19:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department record",
+              "date": "2025-10-14T21:05",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nDate: 10/14/2025, arrival 16:20\n\nCC: painful growing purple bump on the right chest.\n\nHPI: 65-year-old woman with prior right breast cancer (lumpectomy, ALND, chemotherapy and radiation, about seven years ago) and cervical cancer (surgery and pelvic radiation 2021), chronic right arm lymphedema, radiation proctitis and carcinoid syndrome from metastatic NET on lanreotide. Two months ago she noticed a small purplish spot on the right chest wall; it has grown quickly and become tender. Came in tonight because it now hurts against her bra and looks darker. Her right arm has been swollen since breast cancer treatment; she wears compression sleeves. No fever, no drainage, no trauma.\nMeds: lanreotide 120 mg monthly. Allergies: NKDA.\nFH: mother breast cancer; father MI; sister healthy; no family history of colon cancer, neuroendocrine tumors or sarcomas.\nSH: never smoker, no alcohol, retired elementary teacher on disability.\n\nExam: vitals reviewed, afebrile. Right upper chest wall: violaceous nodule roughly 3 cm across, irregular border, fine telangiectatic vessels over it; no discharge, no ulceration. Skin around it thickened. Right arm with non-pitting edema. No palpable axillary lymph nodes. Lungs clear, heart regular.\n\nMDM: rapidly enlarging vascular-appearing lesion in a previously irradiated field with chronic lymphedema. Concern for a vascular malignancy. Discussed with the on-call dermatology service; 4 mm punch biopsy performed at the lesion edge after lidocaine, one suture, hemostasis good. Specimen to pathology.\n\nDisposition: home. Acetaminophen for pain. Wound care given. Pathology to her PCP and the cancer center; urgent oncology follow-up. Return for bleeding, fever or rapid change."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "portal_message",
+          "start": "2025-10-16T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I was in the ER",
+              "date": "2025-10-16T07:50",
+              "author": "patient",
+              "body": "I wanted you to hear it from me. I went to the ER Tuesday night about the purple bump on my right chest. They did a biopsy. The ER doctor said it might be something from the radiation. I am trying not to panic. Will you get the results?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I was in the ER",
+              "date": "2025-10-16T12:20",
+              "author": "PCP",
+              "body": "Thank you for telling me. Yes, the pathology will come to me and to your oncologist. I will call you as soon as I see it, likely in the next day or two. I also booked you with me Monday the 20th so we can sit down together and plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "outside_records",
+          "start": "2025-10-17T14:40",
+          "conditions": [
+            {
+              "label": "Lymphedema-associated angiosarcoma of right chest wall (Stewart-Treves syndrome)",
+              "action": "diagnosed",
+              "onset": "2025-08-01",
+              "icd10": "C49.3"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-10-14T19:30",
+              "text": "Specimen: skin, right chest wall, 4 mm punch biopsy. Clinical: rapidly enlarging violaceous nodule in a previously irradiated field with chronic right arm lymphedema. Microscopic: dermis infiltrated by atypical endothelial cells with enlarged hyperchromatic nuclei forming irregular, anastomosing vascular channels that dissect collagen. Immunostains: CD31 positive, ERG positive in the atypical cells. Cytokeratin negative.",
+              "conclusion": "Angiosarcoma. Arising in the setting of chronic lymphedema and prior radiation.",
+              "issued": "2025-10-17T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17b",
+          "kind": "telephone",
+          "start": "2025-10-17T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Biopsy result call",
+              "date": "2025-10-17T16:30",
+              "author": "PCP",
+              "body": "Called Heather with the pathology: angiosarcoma, a cancer of blood vessel cells, in the skin of the right chest wall, the kind that can come up years after radiation and with long-standing lymphedema. Separate from the liver tumor. Told her it needs a sarcoma team quickly and that I have already reached out to the cancer center. She cried, then wanted to know the next steps; we went over Monday's visit. Her sister will come."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "office_visit",
+          "start": "2025-10-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, new angiosarcoma",
+          "vitals": {
+            "bp": [
+              103,
+              64
+            ],
+            "hr": 79,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 61.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-10-20T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-20T09:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-20T09:17"
+            }
+          ],
+          "orders": [
+            {
+              "id": "sarcoma-ref-2025",
+              "action": "placed",
+              "order": "Sarcoma oncology referral",
+              "category": "referral",
+              "to": "Sarcoma Oncology",
+              "reason": "angiosarcoma right chest wall"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - after ED",
+              "date": "2025-10-20T09:20",
+              "author": "PCP",
+              "body": "Here with her sister after Tuesday's ED visit.\nRight chest wall nodule over about 2 months, biopsied in the ED; pathology Friday: angiosarcoma (CD31/ERG positive) in the radiated field with her chronic right arm lymphedema. Tender, no bleeding from the biopsy site.\nNET: on lanreotide, last CT June stable. Feels otherwise as usual. Weight 61.\nMeds: lanreotide 120 mg q28d. NKDA.\n\nExam: vitals charted. Right upper chest: violaceous nodule ~3 cm, irregular edge, overlying small vessels, biopsy site healing with one suture. Thickened skin around it. No axillary or supraclavicular nodes. RUE non-pitting edema at baseline. Lungs clear. Heart regular.\n\nA/P\n1. Angiosarcoma, right chest wall, in the setting of lymphedema and prior radiation. Urgent referral to the sarcoma program at the cancer center; I spoke with their intake nurse, consult 10/28. Suture out at day 10, can be done here or there.\n2. Metastatic NET, stable, lanreotide continues.\n3. Flu (high-dose) and COVID today since she will be in treatment soon.\nSpent extended time on counseling; questions answered. I'll stay in touch through this."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "specialist_visit",
+          "start": "2025-10-28T09:00",
+          "service": "Sarcoma Oncology",
+          "reason": "Angiosarcoma right chest wall",
+          "vitals": {
+            "bp": [
+              109,
+              79
+            ],
+            "hr": 66,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 60.1
+          },
+          "orders": [
+            {
+              "id": "sarcoma-ref-2025",
+              "action": "done",
+              "date": "2025-10-28T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Sarcoma Oncology consultation",
+              "date": "2025-10-29T08:00",
+              "author": "sarcoma oncology",
+              "body": "SARCOMA MULTIDISCIPLINARY CLINIC - NEW CONSULT\nDate: 10/28/2025\nDiagnosis: angiosarcoma of the right chest wall skin, biopsy 10/14/2025 (CD31+, ERG+), arising in a previously irradiated field (whole-breast RT 2018) with chronic grade 2 right arm lymphedema after ALND.\nOther history: metastatic well-differentiated NET to liver (2024) on lanreotide, stable; cervical SCC 2021, NED; radiation proctitis.\nMeds: lanreotide. NKDA.\nExam: right upper chest wall violaceous nodule 3 cm with surrounding skin thickening; no satellite lesions identified on careful inspection; no adenopathy. Right arm lymphedema.\n\nAssessment: localized cutaneous angiosarcoma.\nPlan (tumor board): staging CT chest. If localized, wide resection with generous margins and flap reconstruction by surgical oncology and plastics, followed by adjuvant weekly paclitaxel. Re-irradiation not planned given prior dose. Discussed with NET oncology; lanreotide continues."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "imaging",
+          "start": "2025-10-30T12:00",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-10-30T12:00",
+              "text": "CT chest with IV contrast. Indication: staging, angiosarcoma right chest wall. Right anterior chest wall: 3 cm enhancing cutaneous and subcutaneous soft-tissue nodule without involvement of the pectoralis muscle or ribs. Post-treatment change of the right breast. No axillary, internal mammary or mediastinal adenopathy. Lungs clear, no nodules. No pleural or pericardial effusion. Upper abdomen: known hypervascular liver lesions, unchanged from 06/2025.",
+              "conclusion": "Localized right chest wall lesion. No thoracic metastatic disease."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "hospital_admission",
+          "start": "2025-11-19T06:30",
+          "end": "2025-11-21T12:00",
+          "service": "Surgical Oncology",
+          "reason": "Wide resection right chest wall angiosarcoma",
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-operative pain"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-11-19T09:00",
+              "text": "Specimen: right chest wall skin and subcutaneous tissue, wide excision, oriented. Gross: 14 x 11 cm ellipse with a 3.1 cm violaceous nodule. Microscopic: angiosarcoma, as on prior biopsy, confined to dermis and subcutis. Margins: all margins negative, closest 1.4 cm (superior).",
+              "conclusion": "Angiosarcoma, 3.1 cm, margins negative (closest 1.4 cm).",
+              "issued": "2025-11-25T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-19T06:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary - Surgical Oncology",
+              "date": "2025-11-21T12:00",
+              "author": "surgical oncology",
+              "body": "DISCHARGE SUMMARY\nAdmitted 11/19/2025, discharged 11/21/2025\nDiagnosis: angiosarcoma of the right chest wall (radiation and lymphedema associated).\nProcedure 11/19: wide resection of right chest wall skin and subcutaneous tissue with local flap reconstruction (surgical oncology with plastic surgery). EBL minimal. Drain placed.\nCourse: uncomplicated. Pain controlled with oral agents. Flap viable throughout. Tolerating diet, ambulating, voiding. Drain output decreasing; goes home with drain and teaching.\nOther active issues: metastatic NET to liver on lanreotide (next dose due 12/4 at the cancer center); radiation proctitis, no bleeding this admission; RUE lymphedema, no BP or sticks right arm.\nAllergies: NKDA.\nDischarge medications: oxycodone/acetaminophen 5/325 one tab every 6 h as needed, 20 tablets; lanreotide 120 mg every 28 days (unchanged).\nFollow-up: surgical oncology 12/2 for drain and pathology; sarcoma oncology 12/17 to start adjuvant chemotherapy. Final pathology pending at discharge."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "telephone",
+          "start": "2025-11-24T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-11-24T10:45",
+              "author": "RN",
+              "body": "Post-discharge call. Home with sister staying. Pain 3/10, using 1-2 oxycodone/APAP a day, tapering. Drain 20-30 mL/day, serous. No fever, flap looks pink per pt. BMs ok with prune juice. Has surgical f/u 12/2. Reviewed when to call. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "outside_records",
+          "start": "2025-12-03T09:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surgical Oncology post-operative visit",
+              "date": "2025-12-03T09:20",
+              "author": "surgical oncology",
+              "body": "SURGICAL ONCOLOGY - POST-OP\n12/02/2025, two weeks after wide resection of right chest wall angiosarcoma with local flap.\nDrain removed today. Incision and flap healing well, no seroma, no infection.\nFinal pathology reviewed: angiosarcoma 3.1 cm, all margins negative, closest 1.4 cm.\nOff oxycodone, acetaminophen only. NKDA.\nPlan: proceed to adjuvant chemotherapy with sarcoma oncology 12/17. Surgical follow-up in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "specialist_visit",
+          "start": "2025-12-17T09:30",
+          "service": "Sarcoma Oncology",
+          "reason": "Start adjuvant chemotherapy",
+          "medications": [
+            {
+              "drug_text": "paclitaxel 6 MG/ML Injectable Solution",
+              "action": "start",
+              "sig": "80 mg/m2 IV weekly x 12 doses (infusion center)",
+              "frequency": "WEEKLY",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "adjuvant therapy, angiosarcoma right chest wall"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 71,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 60.0
+          },
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sarcoma Oncology - chemotherapy start",
+              "date": "2025-12-17T15:00",
+              "author": "sarcoma oncology",
+              "body": "SARCOMA ONCOLOGY\n12/17/2025\nPost-op: wide resection 11/19, final pathology angiosarcoma 3.1 cm, all margins negative (closest 1.4 cm). Drain out 12/2. Flap healed well.\nPlan as discussed: adjuvant paclitaxel 80 mg/m2 IV weekly for 12 doses, cycle 1 day 1 today. Premedication per protocol. Labs before each dose. Lanreotide continues on its schedule.\nCounseled on expected side effects and infection precautions.\nNKDA.\nSurveillance after completion: CT chest and exam every 3 months for the first 2 years."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "outside_records",
+          "start": "2026-01-13T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecologic Oncology annual surveillance",
+              "date": "2026-01-13T11:00",
+              "author": "gynecologic oncology",
+              "body": "GYNECOLOGIC ONCOLOGY\nAnnual visit 01/08/2026. Cervical SCC IB2 (2021), 4.5 years out.\nNew: right chest wall angiosarcoma, resected 11/2025, on weekly paclitaxel.\nNKDA.\nExam: cuff intact, atrophic; post-radiation fibrosis unchanged. Cytology: negative.\nImpression: no evidence of recurrent cervical cancer. Next visit 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram reminder",
+              "date": "2026-02-10T09:10",
+              "author": "patient",
+              "body": "I got the reminder for my yearly mammogram. The sarcoma doctor said to hold off until the chest heals and chemo is done. Should I cancel?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mammogram reminder",
+              "date": "2026-02-10T14:00",
+              "author": "MA",
+              "body": "Hi Heather, the doctor agrees. We cancelled this month's mammogram and put a note to rebook after your sarcoma team clears it."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-04a",
+          "kind": "specialist_visit",
+          "start": "2026-03-04T10:00",
+          "service": "Sarcoma Oncology",
+          "reason": "Final paclitaxel dose",
+          "medications": [
+            {
+              "drug_text": "paclitaxel 6 MG/ML Injectable Solution",
+              "action": "stop",
+              "reason": "12 doses completed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              82
+            ],
+            "hr": 65,
+            "temp_c": 36.9,
+            "spo2": 100,
+            "weight_kg": 61.6
+          },
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Sarcoma Oncology - completion of chemotherapy",
+              "date": "2026-03-05T08:30",
+              "author": "sarcoma oncology",
+              "body": "SARCOMA ONCOLOGY\n03/04/2026: dose 12 of 12 of weekly paclitaxel given today. Adjuvant therapy complete.\nTolerated with fatigue and thinning hair.\nExam: flap well healed, no new skin lesions on the chest or arm.\nPlan: first surveillance CT chest/abdomen/pelvis in May, combined with her NET imaging. Lanreotide continues. Copy to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-06a",
+          "kind": "office_visit",
+          "start": "2026-03-06T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after chemotherapy",
+          "vitals": {
+            "bp": [
+              123,
+              77
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 59.5
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-06T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 201
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-06T13:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-06T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "date": "2026-03-06T13:50",
+              "author": "PCP",
+              "body": "Two days after her last paclitaxel. Wide resection of the right chest wall angiosarcoma in November, margins clear, then 12 weekly doses, done Wednesday.\nTired, napping afternoons, but eating. Hair thin, wearing a scarf. NET symptoms quiet on lanreotide; stools formed. Proctitis: no bleeding this winter. Weight 59.5.\nMeds: lanreotide 120 mg q28d. Paclitaxel finished. NKDA.\n\nExam: vitals charted. Tired but bright. Right chest flap healed, no new nodules on chest wall or right arm. RUE lymphedema at baseline. Lungs clear, heart regular. Abdomen soft.\n\nA/P\n- Angiosarcoma right chest wall s/p resection and adjuvant paclitaxel. Surveillance per sarcoma team, CT in May. She knows to show me or them any new purple spot on the chest or arm.\n- Metastatic NET, stable on lanreotide.\n- Anemia after chemo, CBC today.\n- Mammogram on hold until sarcoma team clears. DXA deferred again.\nRTC 6 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.5,
+            "labs": {
+              "Hemoglobin": 11.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T11:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2026-03-09T11:25",
+              "author": "PCP",
+              "body": "Your hemoglobin is 11.0, a little down from the chemo as expected, and your white count and platelets are fine. Liver and kidney numbers are normal. These should drift back up over the next couple of months. Rest when you need to."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "imaging",
+          "start": "2026-05-18T09:30",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-05-18T09:30",
+              "text": "CT chest with IV contrast. Comparison 10/30/2025. Postsurgical change of the right anterior chest wall with flap reconstruction; no soft-tissue nodule or mass at the resection bed. No axillary or mediastinal adenopathy. Lungs clear without nodules. No effusion.",
+              "conclusion": "No evidence of recurrent or metastatic angiosarcoma."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-05-18T09:35",
+              "text": "Multiphase CT. Comparison 06/02/2025. Hepatic lesions unchanged, largest 2.4 cm. No new lesion. No adenopathy. Stable post-radiation pelvis.",
+              "conclusion": "Stable hepatic metastases."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "outside_records",
+          "start": "2026-05-26T15:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Sarcoma Oncology surveillance visit",
+              "date": "2026-05-26T15:00",
+              "author": "sarcoma oncology",
+              "body": "SARCOMA ONCOLOGY - SURVEILLANCE\n05/21/2026. Right chest wall angiosarcoma, resected 11/2025 with negative margins, adjuvant weekly paclitaxel completed 03/04/2026.\nEnergy improving, hair regrowing.\nExam: flap healed, no skin lesions on chest wall or right arm. Lymphedema stable.\nCT chest 5/18: no recurrence, lungs clear.\nNKDA. Meds: lanreotide.\nPlan: exam and CT chest every 3 months. Okay to resume yearly mammography."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Medical Oncology - NET follow-up",
+              "date": "2026-05-26T15:05",
+              "author": "medical oncology",
+              "body": "MEDICAL ONCOLOGY - NET\n05/21/2026. Metastatic well-differentiated NET G2 to liver, lanreotide since 06/2024.\nCT abdomen/pelvis 5/18: stable.\nFlushing rare. Stools formed. Weight 60.\nPlan: continue lanreotide 120 mg every 28 days; CT in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T18:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "date": "2026-07-21T18:40",
+              "author": "patient",
+              "body": "Just checking I'm still on for September 14 with the doctor. My scans in May were clear and the sarcoma doctor says I can get my mammogram again. Thanks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "date": "2026-07-22T09:05",
+              "author": "front desk",
+              "body": "Yes, you're set for Monday, September 14 at 10:00. Glad to hear the news. We can set up the mammogram at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Carcinoid syndrome|E34.00": {
+        "code": "E34.00",
+        "display": "Carcinoid syndrome, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lymphedema-associated angiosarcoma of right chest wall (Stewart-Treves syndrome)|C49.3": {
+        "code": "C49.3",
+        "display": "Malignant neoplasm of connective and soft tissue of thorax",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of irradiation|Z92.3": {
+        "code": "Z92.3",
+        "display": "Personal history of irradiation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Post-radiation pelvic fibrosis|N94.89": {
+        "code": "N94.89",
+        "display": "Other specified conditions associated with female genital organs and menstrual cycle",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Radiation proctitis|K62.7": {
+        "code": "K62.7",
+        "display": "Radiation proctitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary carcinoid tumors of liver|C7B.02": {
+        "code": "C7B.02",
+        "display": "Secondary carcinoid tumors of liver",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "0.5 ML lanreotide 240 MG/ML Prefilled Syringe": {
+        "code": "749814",
+        "display": "0.5 ML lanreotide 240 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "paclitaxel 6 MG/ML Injectable Solution": {
+        "code": "312199",
+        "display": "paclitaxel 6 MG/ML Injectable Solution",
+        "ingredient": "paclitaxel",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "5-Hydroxyindoleacetate, 24 hour urine": {
+        "code": "1695-6",
+        "display": "5-Hydroxyindoleacetate [Mass/time] in 24 hour Urine",
+        "unit": "mg/(24.h)",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Chromogranin A": {
+        "code": "9811-1",
+        "display": "Chromogranin A [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

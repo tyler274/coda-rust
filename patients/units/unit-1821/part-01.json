@@ -1,0 +1,134 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001821",
+      "given": "Wendy",
+      "family": "Lavoie",
+      "birth_date": "1992-03-05",
+      "address_line": "52 Orchard Hill Rd",
+      "phone": "+1-646-555-0108",
+      "email": "wendy.lavoie@example.test",
+      "marital_status": "married",
+      "summary": "Daycare teacher with chronic hypertension on labetalol who joins in 2023, has a second pregnancy complicated by poor fetal growth (delivered at 37 weeks in 2024), then a right attic cholesteatoma treated surgically in 2025 and right lower lobe bronchiectasis found after a pneumonia in late 2025. Last seen February 2026.",
+      "events": [
+        {
+          "id": "2023-07-27a",
+          "kind": "telephone",
+          "start": "2023-07-27T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-07-27T10:40",
+              "body": "Caller looking for a new primary care doctor and asked about openings. 31 yo, works at a daycare, on a blood pressure pill. Booked new patient visit 8/9 at 9:00. Release signed by phone/e-sent for prior records. Membership info emailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "outside_records",
+          "start": "2023-08-02T14:15",
+          "reason": "prior primary care records",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2020-06-01", "note": "Chronic hypertension, diagnosed before first pregnancy per prior practice"}
+          ],
+          "medications": [
+            {"drug_text": "labetalol hydrochloride 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "chronic hypertension"},
+            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "front desk",
+              "date": "2023-08-02T14:15",
+              "body": "Received 38 pages from prior primary care office (visits 2019 through spring 2023). Summary abstracted for the chart:\n\n- Hypertension, chronic, picked up on repeat office readings about 2020, before her first pregnancy. Labetalol 200 mg twice daily since that pregnancy; prior office kept her on it as she was planning another.\n- Prenatal vitamin daily.\n- One term vaginal delivery 2021, uncomplicated per their notes.\n- Ear tubes both sides as a child.\n- Cervical cytology with HPV co-test 2021: negative for intraepithelial lesion, HPV not detected.\n- Former smoker. NKDA.\n- Last BMP and lipids there unremarkable.\n\nOriginals scanned to Media."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-09a",
+          "kind": "establish_care",
+          "start": "2023-08-09T09:00",
+          "end": "2023-08-09T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; hypertension",
+          "state": {"weight_kg": 70.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "vitals": {"weight_kg": 70.0, "height_cm": 165.0},
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Daycare teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-09T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-09T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-09T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-09T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-08-09T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": "Urinalysis", "collected": "2023-08-09T10:10", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-08-09T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-09T10:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-09T10:05",
+              "body": "NEW PATIENT\n\n31F here to establish. Prior PCP records reviewed (see Media).\n\nHTN: told she had high BP around 2020 on several office checks, before her first baby. Put on labetalol during that pregnancy and simply stayed on it - 200 mg BID. Takes it with breakfast and dinner, rarely misses. No home cuff. No headaches, chest pain, visual change. She and her husband would like a second child in the next year or so, which is why the prior office left her on labetalol. Already taking a prenatal vitamin daily.\n\nPMH: HTN. Lots of ear infections as a kid, tubes in both ears; no ear trouble as an adult.\nPSH: tympanostomy tubes (childhood). OB: G1P1, SVD 2021 at term, no complications she knows of.\nMeds: labetalol 200 mg BID; prenatal vitamin daily.\nAllergies: NKDA.\nFH: mother and father both with high blood pressure.\nSH: preschool/daycare teacher (toddler room). Smoked in her late teens and early 20s, roughly 5 pack-years, stopped at 26. No alcohol. No drugs. Married, one child.\n\nROS: negative except as above.\n\nExam: BP and HR as charted, at goal on labetalol. Well-appearing. HEENT: TMs intact bilaterally with some old tube scarring, canals clear. Neck supple, no thyroid enlargement. Heart RRR without murmur. Lungs clear to auscultation throughout. Abd soft. No LE edema. Skin warm.\n\nA/P\n1. Chronic hypertension - controlled on labetalol 200 BID. Reasonable agent given pregnancy plans; continue. Discussed home BP cuff. Baseline CBC, CMP, lipids, UA.\n2. Preconception - continue prenatal vitamin. Asked her to message us when pregnant so we can get her to OB early.\n3. Health maintenance: Pap/HPV 2021 normal, next due 2026. HIV and hep C screening offered, accepted. Flu and COVID this autumn at a nurse visit. PHQ-2 0.\n\nRTC 6 months for BP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "portal_message",
+          "start": "2023-08-14T16:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "author": "PCP",
+              "date": "2023-08-14T16:20",
+              "body": "Hi Wendy - everything from last week came back fine: kidney function, potassium, blood counts, cholesterol and urine all normal, and the HIV and hepatitis C screens were negative. Nothing to change. Keep up the labetalol and we'll check in again in the new year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "nurse_visit",
+          "start": "2023-10-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-18T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-18T15:36"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-18T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2023-10-18T15:50",
+              "body": "In after work for vaccines. Not pregnant per pt. No prior reactions. Influenza 0.5 mL IM L deltoid; COVID 2023-24 formula IM R deltoid. VIS given. Observed 15 min, tolerated well. BP checked while here, see vitals."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

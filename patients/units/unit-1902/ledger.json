@@ -1,0 +1,1571 @@
+{
+  "unit": "unit-1902",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "MRN00001902/2025-05-06a: allergen \"Lamotrigine\" not in catalog (text only)"
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001902",
+      "given": "Emily",
+      "family": "Ouellette",
+      "birth_date": "1999-07-19",
+      "address_line": "27 Fearing Street, Apt 2B",
+      "phone": "+1-802-555-0106",
+      "email": "emily.ouellette@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student with generalized epilepsy, seizure-free for years on levetiracetam, who joined the practice in 2023. In 2025 a planned switch to lamotrigine ended in a drug eruption and a permanent lamotrigine allergy, and that fall she had a breakthrough tonic-clonic seizure treated in an outside ED, after which neurology raised her levetiracetam.",
+      "events": [
+        {
+          "id": "2023-08-22a",
+          "kind": "telephone",
+          "start": "2023-08-22T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2023-08-22T10:12",
+              "author": "front desk",
+              "body": "Caller is starting a grad program at the university this fall and moved to town last week. Wants a primary care doctor here instead of going back home for care. Has epilepsy, sees a neurology group already and plans to keep seeing them. Student health plan card info taken, verified active. Booked new patient physical 9/12 at 8:40. Mailed records release for her old primary care office and emailed the intake packet. Reminded her to bring her med bottle."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T08:40",
+          "end": "2023-09-12T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {
+              "label": "Epilepsy",
+              "action": "history",
+              "onset": "2015-11-01",
+              "note": "Generalized tonic-clonic seizures from age 16; seizure-free since about age 19 on levetiracetam; followed by outside neurology"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              76
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 61.6,
+            "height_cm": 165.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-12T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-12T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-12T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-12T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, less than 1 drink per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-09-12T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-12T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2023-09-12T09:35",
+              "author": "PCP",
+              "body": "24F, new to the practice, first-year grad student. Here to set up primary care locally.\n\nEpilepsy: first convulsive seizures at 16, worked up and diagnosed by a pediatric neurologist, on levetiracetam since. Last seizure she can recall was around age 19. Takes levetiracetam 500 mg twice a day, rarely misses, keeps it in a pill case. Neuro follows her once a year (outside group) and writes the prescription; she intends to stay with them. No side effects she can name.\n\nPMH: as above. PSH: tonsils out at age 8. No other hospital stays.\nMeds: levetiracetam 500 mg BID.\nAllergies: none known.\nFH: father with hypertension, mother with hypothyroidism, a cousin on her mother's side has epilepsy.\nSH: graduate student, lives with a roommate. Never smoked. Alcohol maybe once a month or less, a single drink. No other substances.\n\nROS negative across the board.\n\nExam: well-appearing. Vitals as charted, BMI about 22. HEENT clear, TMs normal, no thyroid enlargement. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Skin without rash. Neuro: CN intact, strength and reflexes symmetric, gait normal.\n\nA/P:\n1. Epilepsy, well controlled on levetiracetam. Continue; neurology manages. Will request their last note.\n2. Health maintenance: CBC, CMP (on an antiseizure med), lipids once, HIV and hep C screening today; she agrees. Records release signed for old PCP office for immunizations and Pap history. Flu and COVID vaccines at a nurse visit next month once the fall supply is in.\n3. PHQ-2 is 0.\nNext physical in about a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "date": "2023-09-14T16:48",
+              "author": "PCP",
+              "body": "Hi Emily, all of your blood work from Tuesday came back normal: blood counts and kidney and liver tests are normal, your cholesterol is fine for your age, and the HIV and hepatitis C screens are negative. Nothing to do on your end. Good meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "outside_records",
+          "start": "2023-10-03T11:20",
+          "immunizations": [
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2011-09-06T00:00"
+            },
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2012-03-20T00:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T00:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T00:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2021-06-22T00:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-10-03T11:20",
+              "author": "front desk",
+              "body": "Records received from prior primary care office (14 pages), abstracted by MA:\n- Immunizations: HPV two-dose series 2011 and 2012; Tdap 6/2021; COVID mRNA primary series spring 2021. Childhood series complete per their record.\n- Cervical cytology 2021: negative for intraepithelial lesion or malignancy.\n- Problem list there: epilepsy, on levetiracetam per neurology.\n- No allergies recorded.\nImmunizations entered. Scanned to media tab for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-10T15:40",
+              "author": "RN",
+              "body": "Here for fall vaccines. Screening questions negative, no prior vaccine reactions. Influenza 0.5 mL IM left deltoid. Updated COVID mRNA IM right deltoid. Lot numbers and VIS dates in the immunization record. Observed 15 minutes, no issues, left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "outside_records",
+          "start": "2024-01-23T09:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology annual follow-up letter",
+              "date": "2024-01-23T09:05",
+              "author": "neurology",
+              "body": "Outpatient Neurology — annual epilepsy visit, seen 01/16/2024\n\nDear colleague,\n\nI saw Ms. Ouellette for her yearly epilepsy review. She has generalized epilepsy with tonic-clonic seizures beginning in adolescence and has had no events in roughly five years on levetiracetam monotherapy. She reports good adherence and no mood or sleep complaints she attributes to the drug. Her move for graduate school has gone smoothly.\n\nExamination today was normal, including mental status, cranial nerves, motor, sensory, coordination and gait.\n\nImpression: generalized epilepsy, in remission on levetiracetam.\n\nPlan: continue levetiracetam 500 mg twice daily; 90-day prescription sent with refills. Seizure precautions reviewed. I will see her in one year, sooner for any event.\n\nAllergies: none known.\nMedications: levetiracetam 500 mg twice daily.\n\nWith thanks for allowing me to share in her care,\nAttending neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "portal_message",
+          "start": "2024-03-19T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Keppra refill",
+              "date": "2024-03-19T20:14",
+              "author": "patient",
+              "body": "Hi, my pharmacy says my last refill on the levetiracetam ran out and they're waiting on the neurology office, which hasn't answered in two days. I have about 4 days of pills left. Is there any way you could send a short supply so I don't run out? Sorry for the bother."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Keppra refill",
+              "date": "2024-03-20T08:31",
+              "author": "PCP",
+              "body": "No bother at all. I sent a 30-day supply of levetiracetam 500 mg twice daily to your usual pharmacy, same dose as always. Please keep nudging the neurology office for the long-term prescription. Don't skip doses while you wait."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "portal_message",
+          "start": "2024-05-07T13:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record",
+              "date": "2024-05-07T13:02",
+              "author": "patient",
+              "body": "My program needs a copy of my vaccine record for a summer field placement. Could you upload it here or send it to me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record",
+              "date": "2024-05-07T15:40",
+              "author": "MA",
+              "body": "Your immunization record is attached as a PDF under Documents. It includes everything we have from your old office plus the shots you got here in the fall. Let us know if the program needs a signed form too."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              85
+            ],
+            "hr": 74,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 61.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-09-17T10:50",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2024-09-23T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-17T10:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-17T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T11:01"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-17T11:20",
+              "author": "PCP",
+              "body": "Annual exam. Second year of her program, busy but doing well.\n\nEpilepsy: no seizures. Levetiracetam 500 mg twice daily, the neurology office sorted out the refill problem in the spring. Saw neuro in January, no changes. Sleeping 7 hours most nights.\n\nMeds: levetiracetam 500 mg BID. Allergies: NKDA.\nSH unchanged; never smoker, alcohol rare.\nPHQ-9 = 2.\n\nExam: vitals as charted. Pleasant, well. Neck supple, no nodes or thyroid enlargement. Cardiac regular rhythm, no murmurs. Lungs clear throughout. Abd soft, no masses. Pelvic: normal external genitalia, vaginal walls normal, cervix without lesions; cytology collected. Skin clear. Neuro grossly intact.\n\nA/P:\n- Epilepsy in remission on levetiracetam; continue, neuro follows.\n- Pap due (last 2021): collected today, cytology alone at her age.\n- CBC and CMP for medication monitoring.\n- Flu and updated COVID given today.\nReturn in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "portal_message",
+          "start": "2024-09-24T09:17",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and labs",
+              "date": "2024-09-24T09:17",
+              "author": "PCP",
+              "body": "Emily, your Pap test was normal, and your blood counts and chemistry panel look fine too. The next Pap would be due in three years. Have a good semester."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "telephone",
+          "start": "2025-02-11T08:05",
+          "reason": "Cancel appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancellation",
+              "date": "2025-02-11T08:05",
+              "author": "front desk",
+              "body": "Pt left voicemail overnight: needs to cancel Thursday's check-in, has a qualifying exam that week and says nothing is wrong. Cancelled. Told her to book when her schedule opens up."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-13a",
+          "kind": "office_visit",
+          "start": "2025-02-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "specialist_visit",
+          "start": "2025-04-14T13:30",
+          "service": "Neurology",
+          "reason": "Epilepsy follow-up",
+          "medications": [
+            {
+              "drug_text": "lamotrigine 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (25 mg) by mouth daily for 14 days, then 2 tablets (50 mg) daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              77
+            ],
+            "hr": 82,
+            "weight_kg": 61.3
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "date": "2025-04-17T10:40",
+              "author": "neurology",
+              "body": "Outpatient Neurology — epilepsy follow-up, seen 04/14/2025\n\nDear colleague,\n\nMs. Ouellette returns for her yearly visit. She remains free of seizures on levetiracetam 500 mg twice daily. She asked about alternatives for long-term treatment, and after going over the options together we agreed on a gradual transition to lamotrigine.\n\nNeurological examination is normal.\n\nPlan:\n1. Start lamotrigine 25 mg daily for two weeks, then 50 mg daily. We will reassess before any further increase.\n2. Continue levetiracetam 500 mg twice daily unchanged until lamotrigine is at target; a taper schedule will follow.\n3. I reviewed the risk of a serious rash with lamotrigine. She knows to stop the medication and call us the same day for any new rash, fever, mouth sores or swollen glands.\n\nAllergies: none known.\nMedications: levetiracetam 500 mg twice daily; lamotrigine as above.\n\nAttending neurologist"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-05a",
+          "kind": "portal_message",
+          "start": "2025-05-05T07:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash",
+              "date": "2025-05-05T07:52",
+              "author": "patient",
+              "body": "Since yesterday I have an itchy red rash on my stomach and back and this morning it's on my arms and legs too. I started lamotrigine about three weeks ago and went up to 2 pills last week. No fever, my mouth and eyes are fine. Neurology told me to call about any rash. Should I come in to you or them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash",
+              "date": "2025-05-05T08:20",
+              "author": "PCP",
+              "body": "Thanks for messaging right away. Please call the neurology office as soon as they open and tell them you have a rash on lamotrigine; they will want to see you quickly and decide about the medicine. Keep taking your levetiracetam as usual. If you get a fever, blisters, sores in your mouth or eyes, or feel unwell, go to the emergency department instead. Let me know what they say."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash",
+              "date": "2025-05-05T11:34",
+              "author": "patient",
+              "body": "They're seeing me tomorrow morning. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "specialist_visit",
+          "start": "2025-05-06T09:15",
+          "service": "Neurology",
+          "reason": "Rash on lamotrigine",
+          "conditions": [
+            {
+              "label": "Lamotrigine drug eruption",
+              "action": "diagnosed",
+              "onset": "2025-05-04",
+              "icd10": "L27.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "lamotrigine 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Drug eruption"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Lamotrigine",
+              "reaction": "Rash",
+              "severity": "moderate",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              88
+            ],
+            "hr": 82,
+            "temp_c": 36.7,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-06T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-06T09:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 125
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology urgent visit letter",
+              "date": "2025-05-08T15:10",
+              "author": "neurology",
+              "body": "Outpatient Neurology — urgent visit, seen 05/06/2025\n\nDear colleague,\n\nI saw Ms. Ouellette at short notice for a rash. She began lamotrigine on 04/14 as part of a planned switch from levetiracetam and moved to 50 mg daily about a week ago. Two days before this visit she noticed itching and redness over the trunk, which has since extended to both arms and legs. She has had no fever, no involvement of the mouth, eyes or genitals, and she feels otherwise well.\n\nMedications: levetiracetam 500 mg twice daily; lamotrigine 50 mg daily (stopped today).\n\nExamination: vital signs normal. Scattered erythematous macules and papules over the trunk and all four limbs. No blisters, bullae, skin sloughing or targetoid lesions. Mucous membranes clear. No enlarged lymph nodes.\n\nLabs today: complete blood count, comprehensive metabolic panel with liver tests, and creatinine all normal.\n\nImpression: maculopapular drug eruption due to lamotrigine. There is no fever, mucosal disease or organ involvement at present, so this does not meet criteria for DRESS or SJS, but given that risk with this drug I have stopped lamotrigine permanently.\n\nPlan:\n1. Lamotrigine discontinued today; she should never be rechallenged. Please add lamotrigine to her allergy list (severe cutaneous reaction/DRESS risk).\n2. Continue levetiracetam 500 mg twice daily, which she never stopped; she remains protected.\n3. She will contact us urgently for fever, blistering, mouth sores or facial swelling.\n4. Return in six months, sooner as needed.\n\nAllergies: lamotrigine (drug eruption; do not rechallenge).\n\nAttending neurologist"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "telephone",
+          "start": "2025-05-08T16:05",
+          "reason": "Medication reconciliation after neurology letter",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Med list update",
+              "date": "2025-05-08T16:05",
+              "author": "RN",
+              "body": "Neurology letter from 5/6 reviewed with PCP. Called pt to confirm: she stopped lamotrigine Tuesday on neuro's instructions and is still taking levetiracetam 500 mg BID, no missed doses. Rash about the same, still itchy, no fever, mouth fine. Lamotrigine removed from active meds and added to allergies, high criticality. Pt aware to message if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "portal_message",
+          "start": "2025-05-20T18:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash update",
+              "date": "2025-05-20T18:41",
+              "author": "patient",
+              "body": "Just an update — the rash is almost all gone. A little pink on my back still but it doesn't itch anymore. Never got a fever."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash update",
+              "date": "2025-05-21T07:55",
+              "author": "PCP",
+              "body": "Glad to hear it. That's the expected course once the medicine is stopped. We have lamotrigine on your allergy list now, so it will flag if anyone tries to prescribe it again."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "annual_physical",
+          "start": "2025-09-09T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Lamotrigine drug eruption",
+              "action": "resolved",
+              "icd10": "L27.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              77
+            ],
+            "hr": 78,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-09T10:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T10:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-09T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-09T10:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-09T10:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-09T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-09T10:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-09T10:40",
+              "author": "PCP",
+              "body": "Yearly visit, 26 now.\n\nInterval: lamotrigine trial in the spring stopped after a maculopapular rash (neuro letter 5/8). Rash cleared within about two weeks, no fever, nothing on the mucosa. Never off levetiracetam, still 500 mg twice a day, no seizures. Neuro plans a recheck in the fall.\n\nMeds: levetiracetam 500 mg BID.\nAllergies: LAMOTRIGINE — drug eruption, do not rechallenge (SCAR/DRESS risk).\nSH: third year of the program, never smoker, alcohol rarely.\nPHQ-9 1.\n\nExam: vitals as charted, weight stable. NAD. Oropharynx clear, tonsils surgically absent. Heart RRR, no murmur. Lungs clear. Abdomen benign. Skin: no residual rash, no hyperpigmentation, no lesions of concern. Neuro intact.\n\nA/P:\n- Epilepsy: stable, continue levetiracetam; neuro follow-up as scheduled.\n- Lamotrigine eruption: resolved; allergy stays on the list.\n- Monitoring labs: CBC, CMP drawn.\n- Pap normal 2024, next 2027.\n- Flu and COVID vaccines today, both arms, tolerated.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-11a",
+          "kind": "portal_message",
+          "start": "2025-09-11T12:26",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-09-11T12:26",
+              "author": "PCP",
+              "body": "Your blood work from the physical is all normal, including the liver and kidney tests. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "ed_visit",
+          "start": "2025-10-24T21:38",
+          "end": "2025-10-25T02:10",
+          "service": "Emergency Medicine",
+          "reason": "Convulsive episode",
+          "conditions": [
+            {
+              "label": "Breakthrough generalized tonic-clonic seizure",
+              "action": "diagnosed",
+              "onset": "2025-10-24",
+              "icd10": "G40.409"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-24T21:45",
+              "bp": [
+                125,
+                78
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 37.2,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-24T22:02",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-24T22:02",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-10-24T21:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-10-27T13:30",
+              "author": "emergency medicine",
+              "body": "Emergency Department Physician Record — date of service 10/24/2025\n\nArrival: brought in by roommate, private car.\n\nHPI: 26-year-old woman with known epilepsy on levetiracetam. Per her roommate, who witnessed it, she dropped to the floor without warning and was unresponsive, with rhythmic jerking of all four limbs lasting roughly two minutes, followed by a period of unresponsiveness. She came around after about five minutes but was confused and sleepy for a while afterward. She had a drug rash on lamotrigine in May, which was stopped. She takes levetiracetam for seizure control.\n\nPMH: epilepsy. PSH: tonsillectomy at 8.\nMedications: levetiracetam 500 mg twice daily.\nAllergies: lamotrigine (rash; risk of severe cutaneous reaction).\nFH: cousin on mother's side with epilepsy; father hypertension; mother hypothyroidism.\nSH: graduate student. Never smoker; alcohol less than once a month.\n\nVitals on arrival: T 37.2 C (99.0 F), BP 125/78, HR 88, RR 16.\n\nExam: drowsy, oriented to person, place and time. Lateral tongue bite. Contusion over the left cheek. Neck supple. Heart and lungs unremarkable. Neurologic examination without focal deficit.\n\nResults: Na 138, K 4.2, Cl 100, HCO3 24, BUN 14, Cr 0.9, glucose 98, Ca 9.2. CBC within normal limits. Levetiracetam level sent.\n\nED course: observed; she returned to her baseline mental status over several hours with no further events.\n\nImpression: breakthrough generalized tonic-clonic seizure in a patient with epilepsy.\n\nDisposition: discharged home with roommate at 02:10. Seizure precautions given. Follow up with her neurologist and primary care physician this week. No driving until cleared."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-25a",
+          "kind": "portal_message",
+          "start": "2025-10-25T10:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Seizure last night",
+              "date": "2025-10-25T10:47",
+              "author": "patient",
+              "body": "I had a seizure last night, my first in years. My roommate took me to the ER and they sent me home around 2am. I feel wiped out and my face is bruised where I hit the floor. They said to follow up with you and neurology. I already left a message for neurology."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Seizure last night",
+              "date": "2025-10-25T12:03",
+              "author": "PCP",
+              "body": "I'm sorry, that's a scary thing to go through. Rest today and keep taking your levetiracetam exactly as prescribed. Please don't drive, bathe alone, or swim for now. We've put you on the schedule Tuesday afternoon to check in. If you have another seizure, one lasting more than five minutes, or you don't wake up normally afterward, call 911."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "office_visit",
+          "start": "2025-10-28T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up after seizure",
+          "vitals": {
+            "bp": [
+              116,
+              71
+            ],
+            "hr": 69,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 60.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-28T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit",
+              "date": "2025-10-28T16:25",
+              "author": "PCP",
+              "body": "S: Seen in an outside ED Friday night after a witnessed generalized convulsion, first in about seven years. ED record received yesterday: BMP and CBC normal; levetiracetam level was sent, result not on the copy we received. Discharged the same night. Since then no further events, tired over the weekend and now back to normal. Tongue sore for a couple of days, better. Says she has been taking levetiracetam 500 mg twice a day. Neurology has her booked for 11/12.\n\nMeds: levetiracetam 500 mg BID. Allergies: lamotrigine.\n\nO: Vitals as charted. Alert, conversant, fully oriented. Fading yellow-green bruise over the left cheekbone, nontender, no step-off. Healing bite mark on the side of the tongue. Heart regular, lungs clear. Neuro: CN II–XII intact, strength 5/5 throughout, reflexes symmetric, finger-nose and gait normal.\n\nA/P: Breakthrough generalized tonic-clonic seizure in known epilepsy, back to baseline.\n- Continue levetiracetam; any dose change will come from neurology at the 11/12 visit.\n- Driving: state rule is six months seizure-free before driving; she does not drive often and understands.\n- Seizure safety reviewed: showers rather than baths, no swimming alone, no heights.\n- Return in about two months, or sooner if anything happens."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "specialist_visit",
+          "start": "2025-11-12T10:00",
+          "service": "Neurology",
+          "reason": "Follow-up after breakthrough seizure",
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased"
+            },
+            {
+              "drug_text": "levetiracetam 750 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 750,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Epilepsy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              76
+            ],
+            "hr": 86
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "date": "2025-11-14T11:15",
+              "author": "neurology",
+              "body": "Outpatient Neurology — follow-up, seen 11/12/2025\n\nDear colleague,\n\nMs. Ouellette had a generalized tonic-clonic seizure on 10/24, her first in many years, and was evaluated in an emergency department and discharged. She has had no further events. She remains on levetiracetam 500 mg twice daily and reports no missed doses.\n\nExamination today is normal.\n\nImpression: generalized epilepsy with a single breakthrough seizure.\n\nPlan:\n1. Increase levetiracetam to 750 mg twice daily; new prescription sent.\n2. Lamotrigine remains contraindicated given her prior eruption.\n3. No driving for six months from the date of the seizure.\n4. Follow-up in six months.\n\nAllergies: lamotrigine.\n\nAttending neurologist"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "telephone",
+          "start": "2025-11-14T14:30",
+          "reason": "Medication list update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Levetiracetam dose change",
+              "date": "2025-11-14T14:30",
+              "author": "RN",
+              "body": "Neuro letter received. Levetiracetam changed to 750 mg BID. Called pt, confirms she picked up the new tablets yesterday and is taking one twice daily; set the old 500 mg bottle aside. Med list updated. Keeping 12/24 appt."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "office_visit",
+          "start": "2025-12-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Epilepsy follow-up",
+          "conditions": [
+            {
+              "label": "Breakthrough generalized tonic-clonic seizure",
+              "action": "resolved",
+              "icd10": "G40.409"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 89,
+            "spo2": 97,
+            "weight_kg": 60.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-12-24T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-12-24T09:35",
+              "author": "PCP",
+              "body": "Two-month check after the October seizure. Neurology raised levetiracetam to 750 mg twice daily on 11/12. No seizures, auras or odd spells since. Tolerating the higher dose. Mood fine, PHQ-9 2. Semester wrapped up, heading home for the break this afternoon. Not driving; a friend is taking her.\n\nMeds: levetiracetam 750 mg BID. Allergies: lamotrigine (eruption; do not rechallenge).\n\nExam: vitals as charted. Well. Cheek bruise gone. Heart RRR, lungs clear. Neuro nonfocal.\n\nA/P:\n- Epilepsy, single breakthrough seizure in October, none since on the higher dose. Removing the seizure episode from the active list; epilepsy remains. Neurology follows, next visit in the spring.\n- Annual physical due next fall.\nHappy holidays."
+            }
+          ],
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T11:12",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request routed",
+              "date": "2026-01-20T11:12",
+              "author": "MA",
+              "body": "Pharmacy faxed a refill request for levetiracetam 750 mg BID to us. Prescriber of record is her neurologist; called the pharmacy and redirected. They confirm neurology's prescription has 3 refills on file and they will fill from that. No action needed here."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs before neurology?",
+              "date": "2026-03-10T21:05",
+              "author": "patient",
+              "body": "My neurology appointment is in May. Do I need any blood work before it, or should I just wait for my physical in the fall?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs before neurology?",
+              "date": "2026-03-11T08:14",
+              "author": "PCP",
+              "body": "Nothing needed from our side before May. If neurology wants a level or other tests they'll order them. We'll do your usual yearly labs at the physical."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "specialist_visit",
+          "start": "2026-05-12T14:15",
+          "service": "Neurology",
+          "reason": "Epilepsy follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up letter",
+              "date": "2026-05-14T09:50",
+              "author": "neurology",
+              "body": "Outpatient Neurology — follow-up, seen 05/12/2026\n\nDear colleague,\n\nMs. Ouellette has had no seizures since 10/24/2025 on levetiracetam 750 mg twice daily, which she tolerates well. Examination is normal.\n\nImpression: generalized epilepsy, controlled.\n\nPlan: continue levetiracetam 750 mg twice daily. She has reached six months seizure-free and may resume driving under state rules. Lamotrigine remains on her allergy list. Return in one year.\n\nAttending neurologist"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "portal_message",
+          "start": "2026-06-23T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "date": "2026-06-23T16:30",
+              "author": "patient",
+              "body": "Can I book my yearly physical for mid-September? Midweek mornings are easiest for me this fall."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "date": "2026-06-24T09:02",
+              "author": "front desk",
+              "body": "You're booked for your annual physical on 9/16 at 10:00. No need to fast. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "annual_physical",
+          "start": "2026-09-16T10:00",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Breakthrough generalized tonic-clonic seizure|G40.409": {
+        "code": "G40.409",
+        "display": "Other generalized epilepsy and epileptic syndromes, not intractable, without status epilepticus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Lamotrigine drug eruption|L27.0": {
+        "code": "L27.0",
+        "display": "Generalized skin eruption due to drugs and medicaments taken internally",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "lamotrigine 25 MG Oral Tablet": {
+        "code": "282401",
+        "display": "lamotrigine 25 MG Oral Tablet",
+        "ingredient": "lamotrigine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "levetiracetam 750 MG Oral Tablet": {
+        "code": "311290",
+        "display": "levetiracetam 750 MG Oral Tablet",
+        "ingredient": "levetiracetam",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    }
+  }
+}

@@ -1,0 +1,416 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002636",
+      "events": [
+        {
+          "id": "2023-02-21a",
+          "kind": "pharmacy",
+          "start": "2023-02-21T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy refill request",
+              "author": "MA",
+              "date": "2023-02-21T11:05",
+              "body": "Electronic refill request from pharmacy for albuterol HFA. Last filled 9/2022. Approved per standing protocol, 1 inhaler + 2 refills. Note to PCP: third inhaler in a year."
+            },
+            {
+              "type": "Result Note",
+              "title": "Refill review",
+              "author": "PCP",
+              "date": "2023-02-21T16:30",
+              "body": "Using more. Will bring up breathing testing again when he's in."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "office_visit",
+          "start": "2023-04-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shortness of breath",
+          "vitals": {
+            "spo2": 95
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "pulm-2023",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Progressive exertional dyspnea; brother with alpha-1 antitrypsin deficiency"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-18T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-04-18T08:25",
+              "body": "35M, breathing.\n\nThe winded feeling on site has been building for about a year. Now it's every flight of stairs with a load, and he stops halfway up a ladder run that he used to do without thinking. Albuterol helps a little, using it most workdays. No fevers, no blood in sputum, no chest pain, no ankle swelling. Usual smoker's morning cough.\n\nThe real reason he called: his older brother, 37, was just diagnosed with alpha-1 antitrypsin deficiency after a lung workup. Their mother has emphysema too. He's worried this is the same thing.\n\nSmoking: still about a pack a day, \"down from a pack and a half some weeks.\"\n\nExam: SpO2 95% at rest. No distress. Lungs: air movement reduced at the bases, no wheeze or crackles. Heart regular. No clubbing, no edema.\n\nA/P\nProgressive exertional dyspnea in a 35 y/o smoker with a brother newly diagnosed with AATD and a mother with emphysema. Needs a proper workup - pulmonology referral placed (they'll do imaging, PFTs and the AAT level/phenotype together). Continue albuterol prn. Asked him again to stop smoking; for the first time he said he'd \"think hard about it.\" Gave quitline info and offered varenicline - wants to wait for the lung doctor's verdict."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "specialist_visit",
+          "start": "2023-05-30T09:00",
+          "service": "Pulmonology",
+          "reason": "Progressive dyspnea; family history of alpha-1 antitrypsin deficiency",
+          "conditions": [
+            {
+              "label": "Alpha-1-antitrypsin deficiency",
+              "action": "diagnosed",
+              "onset": "2023-05-30"
+            },
+            {
+              "label": "Panlobular emphysema",
+              "icd10": "J43.1",
+              "action": "diagnosed",
+              "onset": "2023-05-30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2023-05-30T10:30",
+              "text": "Technique: noncontrast CT of the chest, thin-section reconstructions. Lungs: diffuse emphysema, predominantly in the lower lobes, with a panlobular pattern and relative sparing of the upper lobes. No consolidation, nodule or mass. No pleural effusion. Airways patent. Heart size normal, no pericardial effusion. No mediastinal or hilar adenopathy. Visualized upper abdomen: both kidneys incompletely imaged, containing cysts, consistent with known polycystic kidney disease.",
+              "conclusion": "Diffuse basilar-predominant emphysema."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2023-05-30T09:40",
+              "text": "Acceptable and reproducible efforts. Post-bronchodilator FEV1/FVC 0.62. FEV1 71% of predicted. FVC within normal limits. Minimal bronchodilator response.",
+              "conclusion": "Airflow obstruction, FEV1 71% predicted."
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-30T09:20",
+              "resulted": "2023-06-05T12:00",
+              "results": [
+                {
+                  "test": "Alpha-1 antitrypsin",
+                  "loinc": "1825-9",
+                  "unit": "mg/dL",
+                  "value": 28
+                },
+                {
+                  "test": "Alpha-1 antitrypsin phenotype",
+                  "loinc": "32769-2",
+                  "text": "Pi*ZZ"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-2023",
+              "action": "done",
+              "date": "2023-05-30T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "author": "pulmonology",
+              "date": "2023-06-08T15:00",
+              "body": "PULMONARY MEDICINE - OUTSIDE CONSULT LETTER\nVisit date: 05/30/2023\nReferred by: primary care\n\nDear colleague,\n\nI saw Mr. Webster for shortness of breath that has gradually worsened over the past year. His 37-year-old brother was recently found to have lung disease from alpha-1 antitrypsin deficiency; his mother has emphysema. He smokes about a pack a day and has since his late teens. He works construction. Medications: albuterol as needed, occasional ibuprofen. NKDA.\n\nOn examination breath sounds were reduced on both sides and the bases were hyperresonant to percussion. No wheeze, no clubbing.\n\nCT chest today shows diffuse emphysema that is worst at the bases. Spirometry: post-bronchodilator FEV1/FVC 0.62, FEV1 71% predicted. Serum alpha-1 antitrypsin returned at 28 mg/dL, and phenotyping shows Pi*ZZ.\n\nImpression: severe alpha-1 antitrypsin deficiency (ZZ) with basilar panlobular emphysema and moderate airflow obstruction, in an active smoker.\n\nPlan\n1. Smoking cessation is the single most important thing he can do. We talked frankly about how fast lungs decline in ZZ smokers. Nicotine replacement or varenicline are reasonable through your office.\n2. Augmentation therapy (weekly IV alpha-1 proteinase inhibitor) was discussed. We do not start it while he is smoking; we will revisit once he has quit.\n3. Continue albuterol as needed for now.\n4. Keep vaccines current (influenza, COVID, pneumococcal - I see PCV20 was given last fall).\n5. ZZ also affects the liver: a hepatic panel yearly would be appreciated, through your office.\n6. Avoid dusty work without a respirator where he can.\n7. Follow-up here in one year with repeat spirometry.\n\nAllergies: NKDA.\nPulmonology"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up pulmonology results",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-06-20T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-20T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-20T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-06-20T08:30",
+              "body": "Here to go over the lung consult.\n\nAATD, ZZ, level 28; emphysema at both bases; FEV1 71%. He's read about it online since. Understands the brother and he share it.\n\nSmoking: the big topic. Cut to about 15 cigarettes a day the past week. Wants to try on his own first. Offered varenicline again - declines for now, worried about \"weird dreams\" a coworker had. Not interested in patch either. Set a loose goal of a quit date before summer ends. Augmentation therapy off the table until he quits - he knows.\n\nBreathing same. Albuterol most workdays.\n\nExam: vitals as charted. Lungs with diminished breath sounds at bases, no wheeze. Heart regular.\n\nA/P\n1. Alpha-1 antitrypsin deficiency, ZZ, with panlobular emphysema - per pulm. Hepatic panel today, then yearly.\n2. Tobacco - as above, revisit monthly by text if he's willing. He said yes.\n3. ADPKD - nephrology in September.\n4. Albuterol prn continues."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-22a",
+          "kind": "portal_message",
+          "start": "2023-06-22T12:40",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Liver tests",
+              "author": "PCP",
+              "date": "2023-06-22T12:40",
+              "body": "Your liver tests are normal. We'll repeat them once a year with your physical. How are the cigarettes going?"
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Liver tests",
+              "author": "patient",
+              "date": "2023-06-22T20:15",
+              "body": "Good news. Cigarettes not great honestly, back to most of a pack. Still trying."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "specialist_visit",
+          "start": "2023-09-13T14:00",
+          "service": "Nephrology",
+          "reason": "ADPKD follow-up",
+          "state": {
+            "labs": {
+              "Creatinine": 1.25
+            }
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-09-13T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.25
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "author": "nephrology",
+              "date": "2023-09-19T09:30",
+              "body": "NEPHROLOGY FOLLOW-UP\nVisit: 09/13/2023\n\nADPKD, one year since diagnosis. Interval: diagnosed with alpha-1 antitrypsin deficiency and emphysema in the spring. Still smoking. No flank pain, no hematuria, no UTIs.\n\nHome BP 120s/70s. Office BP 122/76.\nCreatinine today 1.25 (1.2 last year). Urine albumin normal on your October draw.\n\nMeds: albuterol prn. He reports using ibuprofen rarely - reminded again to avoid it.\nNKDA.\n\nAssessment: ADPKD, stable kidney function, normotensive without medication.\nPlan: same - hydration, no NSAIDs, BP at home, labs yearly with PCP. Return 1 year.\nNephrology"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "annual_physical",
+          "start": "2023-10-03T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2023-10-03T08:10",
+              "body": "Pt did not arrive for 7:30 physical. Called - he got pulled to an early pour on a job in Hatfield (crew lead called him in at 6). Apologized. Rebooked 10/17 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-17T07:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-17T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T08:10"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-17T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-10-17T08:30",
+              "body": "Physical (rescheduled from 10/3).\n\n35M with ADPKD (normotensive, nephrology yearly), AATD ZZ with emphysema (pulm yearly), tobacco use.\n\nInterval: saw nephrology in Sept, creatinine 1.25, no changes. Breathing stable, albuterol most workdays. Smoking: \"between half and a whole pack.\" Quit for 4 days in August, irritable, went back. Still declines varenicline.\n\nNKDA. Meds: albuterol prn; ibuprofen rarely.\n\nExam: vitals as charted. Lungs diminished at bases, no wheeze, no crackles. Heart RRR. Abdomen: palpable kidneys, nontender. Ext warm, pulses palpable. No edema.\n\nPlan:\n- Labs: CMP (includes liver tests for AATD), CBC, lipids, UACR.\n- Flu and updated COVID vaccine today.\n- PHQ-2 1.\n- Tobacco: 4 days is a start. Door open on medication."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "portal_message",
+          "start": "2023-10-19T13:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2023-10-19T13:05",
+              "body": "Creatinine at his recent level, liver tests normal, UACR normal, lipids and CBC fine. Released with comment."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

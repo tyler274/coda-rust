@@ -1,0 +1,3374 @@
+{
+  "unit": "unit-1740",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001740",
+      "given": "Samantha",
+      "family": "Simard",
+      "birth_date": "1992-09-14",
+      "address_line": "38 Conway Street, Apt 2",
+      "phone": "+1-413-555-0164",
+      "email": "samantha.simard@example.test",
+      "marital_status": "single",
+      "summary": "Financial analyst with relapsing-remitting MS diagnosed in the South in January 2020, on interferon beta-1a, with neurogenic bladder; joined the practice in November 2020 after moving north. Relapses 2022-2025 at outside neurology and ED, febrile cystitis after catheterization began in 2025, and a T4 myelitis admission in June 2026 after her last practice visit.",
+      "events": [
+        {
+          "id": "2020-11-04a",
+          "kind": "telephone",
+          "start": "2020-11-04T10:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2020-11-04T10:20",
+              "author": "front desk",
+              "body": "Caller is 28, relocated from down south last month for work, looking for a primary doctor up here. Has MS, followed by a neurologist where she used to live and will need a new one locally. Insurance is BCBS PPO through employer, verified. Membership terms reviewed, she signed up online while we were on the phone. New patient slot given for the 17th, 60 min. Emailed the records release for her old PCP and old neurology office; she will sign and send back. Asked her to bring all meds including her injection, or a photo of the box."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "establish_care",
+          "start": "2020-11-17T09:00",
+          "end": "2020-11-17T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; multiple sclerosis",
+          "conditions": [
+            {
+              "label": "Relapsing-remitting multiple sclerosis",
+              "action": "diagnosed",
+              "onset": "2020-01-20",
+              "note": "Diagnosed by outside neurology in January 2020 after right optic neuritis."
+            },
+            {
+              "label": "Neurogenic bladder",
+              "action": "diagnosed",
+              "onset": "2020-06-01",
+              "note": "Detrusor overactivity with urgency, attributed to MS by prior neurologist."
+            },
+            {
+              "label": "History of recurrent optic neuritis, bilateral",
+              "action": "history",
+              "onset": "2019-12-10",
+              "note": "Right eye December 2019, left eye mid-2020; both recovered.",
+              "icd10": "Z86.69"
+            },
+            {
+              "label": "History of rheumatic fever",
+              "action": "history",
+              "onset": "2000-06-01",
+              "note": "Childhood, per patient; no known heart involvement.",
+              "icd10": "Z86.79"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.5 ML interferon beta-1a 0.088 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 44 mcg under the skin three times weekly",
+              "dose": {
+                "value": 44,
+                "unit": "mcg"
+              },
+              "frequency": "THREE TIMES WEEKLY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Relapsing-remitting multiple sclerosis"
+            },
+            {
+              "drug": "oxybutynin chloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily as needed for urinary urgency",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Neurogenic bladder"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 76,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 61.1,
+            "height_cm": 165.4
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-17T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Financial analyst"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-11-17T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-11-17T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2020",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "Relapsing-remitting MS, transfer of care after relocation"
+            },
+            {
+              "id": "records-south-2020",
+              "action": "placed",
+              "order": "Outside records request",
+              "category": "procedure",
+              "to": "Prior neurology and primary care",
+              "reason": "MS diagnosis records and imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-11-17T10:05",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n28F, financial analyst, moved up from the South in October for a job. Here to establish primary care and get connected with a local MS neurologist.\n\nNeuro history (her account; records requested): In December 2019 she lost vision in the right eye over a few days with pain on moving the eye. Optic neuritis; MRI brain showed white matter lesions and she was told she had relapsing-remitting MS in January 2020. Started interferon beta-1a 44 mcg SC three times a week in February 2020 and has stayed on it. Second optic neuritis, this time the left eye, around June 2020. Both eyes recovered to her satisfaction. No other attacks she knows of. Injections go fine, rotates sites, takes them at night.\n\nBladder: urgency since early 2020. Prior neurologist called it a neurogenic (overactive) bladder from the MS. Oxybutynin 5 mg, uses it some days, maybe 3-4 times a week, usually before long meetings. No leakage, no infections.\n\nPMH otherwise: rheumatic fever as a kid per her mother, she does not know details; never told she had a heart problem from it, no antibiotic prophylaxis.\nPSH: none.\nMeds: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID PRN.\nAllergies: NKDA.\nFH: mother with autoimmune hypothyroidism on thyroid replacement; father with hypertension. Nobody in the family with MS.\nSH: lives alone in an apartment in town. Analyst at a regional firm, hybrid schedule. Never smoked. Wine or a beer once or twice a week. No other substances. Walks most days.\nGyn: last Pap 2019 at her old practice, normal per her.\n\nROS: no current visual change, numbness, weakness or balance trouble. Mood fine, settling in. Otherwise negative.\n\nEXAM\nVitals as charted. Well appearing.\nHEENT: PERRL, no afferent defect today, EOM full without pain. Fundi not well seen without dilation.\nNeck supple, no thyromegaly.\nHeart RRR, no murmur. Lungs clear.\nAbd soft, NT, no suprapubic tenderness.\nNeuro: CN II-XII grossly intact. Strength 5/5 throughout. Reflexes 2+ and symmetric. Sensation intact to light touch. Gait normal, tandem ok.\nSkin: injection sites on abdomen and thighs without induration.\nPHQ-9 3.\n\nA/P\n1. Relapsing-remitting MS, on interferon beta-1a, last relapse ~5 months ago. Needs a local MS neurologist; referral placed. Baseline CBC with diff and CMP today (interferon labs), TSH as well given family thyroid disease. Records request to old neurology for MRI and notes.\n2. Neurogenic bladder, urgency only, managed with PRN oxybutynin. Continue.\n3. History of bilateral optic neuritis, recovered.\n4. Childhood rheumatic fever by history, no known cardiac involvement. Normal heart exam.\n5. Health maintenance: flu vaccine today. HIV and hep C screening offered, she agreed. Lipids with today's draw. Pap due 2022 based on 2019 result, will confirm once records arrive.\n\nFollow up after neurology sees her, sooner if any new symptoms."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-11-19a",
+          "kind": "portal_message",
+          "start": "2020-11-19T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent labs",
+              "date": "2020-11-19T16:40",
+              "author": "PCP",
+              "body": "Hi Samantha, all of your bloodwork from Tuesday came back normal: blood counts, liver and kidney tests, thyroid and cholesterol. The HIV and hepatitis C screens were negative. I've sent your results to neurology so they have a baseline when they see you. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-14a",
+          "kind": "outside_records",
+          "start": "2020-12-14T11:15",
+          "reason": "records from prior neurology and primary care",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-05-09T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "records-south-2020",
+              "action": "done",
+              "date": "2020-12-14T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior neurology records (2019-2020)",
+              "date": "2020-12-14T11:15",
+              "author": "outside neurology",
+              "body": "Outside neurology clinic records, 32 pages, received by fax.\n\nSummary of contents:\n- 12/2019 visit: painful right eye vision loss over 4 days. Exam with right RAPD and reduced acuity right eye. Impression right optic neuritis.\n- 01/2020 MRI brain with and without contrast: multiple periventricular T2/FLAIR white matter hyperintensities, appearance consistent with demyelinating disease.\n- 01/2020 visit: diagnosis of relapsing-remitting multiple sclerosis discussed with patient. Disease-modifying options reviewed; she chose interferon beta-1a.\n- 02/2020: interferon beta-1a 44 mcg SC three times weekly started after injection teaching.\n- 06/2020 visit: left eye blurring with pain on eye movement x5 days, left RAPD. Impression left optic neuritis. Recovery noted at the 08/2020 visit.\n- Urgency noted at the 06/2020 visit; assessed as neurogenic detrusor overactivity; oxybutynin 5 mg twice daily as needed prescribed.\n- 09/2020: last visit before her move. Exam without new findings. Plan to transfer care.\n\nReviewed by PCP; copy to the new neurology office with the referral."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2020-12-14T11:20",
+              "author": "outside primary care",
+              "body": "Prior PCP records, received with the neurology packet.\nImmunizations: Tdap 05/2017. Childhood series complete per school record.\nCervical cytology 03/2019: negative for intraepithelial lesion or malignancy.\nProblem list there: multiple sclerosis; urinary urgency. No other chronic problems.\nNo allergies recorded.\nReviewed, Tdap entered. Pap next due 2022."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-23a",
+          "kind": "specialist_visit",
+          "start": "2021-02-23T14:00",
+          "service": "Neurology",
+          "reason": "transfer of care, multiple sclerosis",
+          "orders": [
+            {
+              "id": "neuro-referral-2020",
+              "action": "done",
+              "date": "2021-02-23T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2021-03-02T09:30",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP - MS CLINIC\nDate of visit: 02/23/2021\nReferring: primary care\n\nThank you for sending Ms. Simard, a 28-year-old woman with relapsing-remitting multiple sclerosis who is transferring care after moving to the area.\n\nHer illness began with right optic neuritis in late 2019, diagnosed as RRMS in January 2020 on the basis of the MRI findings, followed by left optic neuritis in mid-2020. She has been on interferon beta-1a 44 mcg subcutaneously three times weekly since February 2020 and tolerates it without complaint. No new symptoms since the summer. Bladder urgency managed with oxybutynin as needed.\n\nMedications: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg twice daily as needed.\nAllergies: none known.\n\nExamination: Alert, fluent. Visual acuity grossly normal both eyes, pupils equal and reactive, no afferent defect, fields full to confrontation. Extraocular movements full. Face symmetric. Strength full in all four limbs, tone normal, reflexes symmetric, plantar responses flexor. Sensation intact to all modalities. Coordination and gait normal, tandem intact.\n\nImpression: RRMS, clinically stable on interferon beta-1a; no new deficits on examination.\n\nPlan:\n- Continue interferon beta-1a at the current dose.\n- Monitoring labs (CBC and hepatic panel every 6 months, TSH yearly) may be drawn through her PCP; please forward results.\n- Prescriptions for interferon will continue through our office and the specialty pharmacy.\n- Return as needed for new symptoms; she has our nurse line.\n\nNeurology, MS clinic"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "lab_only",
+          "start": "2021-05-18T08:10",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-18T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 305
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-05-18T08:10",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2021-05-19T12:05",
+              "author": "PCP",
+              "body": "CBC and liver tests normal on interferon. Faxed to neurology. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "annual_physical",
+          "start": "2021-06-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              71
+            ],
+            "hr": 78,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 61.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-06-08T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-06-08T09:20",
+              "author": "PCP",
+              "body": "Annual exam. 28F with RRMS on interferon beta-1a, neurogenic bladder.\n\nInterval: met her new neurologist in February, no changes. No relapses this year. Bladder about the same, oxybutynin a few times a week. Got both Pfizer doses at a pharmacy in April and May, card reviewed and entered. Working mostly from home, likes it. Sleeping ok. Exercise: walks, some yoga.\n\nMeds: interferon beta-1a 44 mcg SC TIW (neuro), oxybutynin 5 mg BID prn.\nNKDA.\n\nExam: vitals as charted. Well. Eyes: pupils symmetric, no APD. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen benign. Neuro: strength and reflexes symmetric, gait steady. Skin: injection sites clean.\nPHQ-2 0.\n\nA/P\n- RRMS: stable. Monitoring labs done last month, normal. Next set in the fall.\n- Neurogenic bladder: continue oxybutynin; refill sent, 90 days with 3 refills.\n- HM: COVID series complete. Tdap 2017. Pap due next year. Flu in the fall. Lipids normal last November.\n\nRTC 6 months or with any new symptoms."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "portal_message",
+          "start": "2021-06-10T19:12",
+          "reason": "refill question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Oxybutynin",
+              "date": "2021-06-10T19:12",
+              "author": "patient",
+              "body": "Hi, the pharmacy says they only got 30 pills of the oxybutynin not 90? Can you check? Thanks, Sam"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Oxybutynin",
+              "date": "2021-06-11T09:02",
+              "author": "RN",
+              "body": "Hi Sam, it looks like the 90-day quantity didn't go through on the e-prescription. I called the pharmacy and corrected it to 180 tablets (90-day supply). Should be ready later today."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2021-10-12T16:45",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. Screening questions negative. VIS given. Pt reminded that interferon flu-like effects can overlap with a sore arm/achiness after the vaccine. Tolerated, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "lab_only",
+          "start": "2021-11-16T07:55",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2021-11-17T08:40",
+              "author": "PCP",
+              "body": "Counts, LFTs, TSH all within range. Copy to neurology. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-09a",
+          "kind": "portal_message",
+          "start": "2021-12-09T12:30",
+          "reason": "vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-04T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Booster",
+              "date": "2021-12-09T12:30",
+              "author": "patient",
+              "body": "Got my booster Saturday at the pharmacy, attaching a pic of the card. Felt kind of crummy for a day, same as my shots usually make me feel."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Booster",
+              "date": "2021-12-09T14:10",
+              "author": "MA",
+              "body": "Thanks Samantha, booster dose added to your record."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "MS and bladder follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              78
+            ],
+            "hr": 55,
+            "spo2": 98,
+            "weight_kg": 61.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-22T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2022-03-22T16:15",
+              "author": "PCP",
+              "body": "S: Routine check. No relapses since mid-2020. Has not needed the MS clinic since the transfer visit last year. Some injection-night achiness, takes it in stride. Bladder: urgency most days but no accidents, oxybutynin before long drives or meetings. Dry mouth when she uses it, tolerable.\n\nO: Vitals as charted. Comfortable. Pupils equal, no APD. Strength full, reflexes symmetric, gait normal.\n\nA/P: RRMS stable on interferon beta-1a. Neurogenic bladder, urgency without incontinence, PRN oxybutynin working. Monitoring labs due in May, order in. Physical in the fall, Pap then."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "lab_only",
+          "start": "2022-05-17T08:05",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-17T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-05-17T08:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2022-05-18T07:50",
+              "author": "PCP",
+              "body": "Normal CBC and hepatic panel. Faxed to MS clinic."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "pharmacy",
+          "start": "2022-08-30T10:25",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oxybutynin refill",
+              "date": "2022-08-30T10:25",
+              "author": "MA",
+              "body": "Pharmacy fax: oxybutynin 5 mg tab, #180, no refills remaining. Last seen 3/2022, physical booked October. Pended for PCP, approved x1 with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "vitals": {
+            "bp": [
+              139,
+              74
+            ],
+            "hr": 62,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-18T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-18T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-10-18T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 67
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-18T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-10-18T08:55",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM; high-risk HPV negative.",
+              "issued": "2022-10-24T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-18T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-18T09:30",
+              "author": "PCP",
+              "body": "Preventive visit, 30F.\n\nSince last year: no new neuro symptoms. Interferon three nights a week. Bladder unchanged, urgency only, no leakage, no UTIs ever. Busy season at work. No new meds.\n\nROS negative except mild dry mouth with oxybutynin.\n\nExam: Vitals as charted. NAD. Eyes: no APD, EOM full. Neck: thyroid not enlarged. CV regular, no murmur. Lungs clear. Abdomen soft. Pelvic: normal external genitalia, cervix without lesions, Pap with HPV obtained. Neuro: strength 5/5, reflexes 2+ symmetric, sensation intact, gait normal. Skin: injection sites clean.\nPHQ-9: 2.\n\nAssessment/plan\n1. RRMS on interferon beta-1a, clinically quiet. CBC, CMP and TSH today double as her monitoring set.\n2. Neurogenic bladder, stable on PRN oxybutynin.\n3. Prevention: Pap/HPV co-test done. Flu and bivalent COVID booster given today, left and right arm. Lipids today.\n\nNext visit in about 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "portal_message",
+          "start": "2022-10-25T08:15",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2022-10-25T08:15",
+              "author": "PCP",
+              "body": "Hi Samantha, your Pap came back normal and the HPV test was negative, so the next one isn't due for five years. Blood counts, chemistries, thyroid and cholesterol were all fine as well. I've sent the counts and liver tests to your neurologist."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-05a",
+          "kind": "portal_message",
+          "start": "2022-12-05T21:48",
+          "reason": "numbness and blurred vision",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Numb arm and leg",
+              "date": "2022-12-05T21:48",
+              "author": "patient",
+              "body": "Hi, I wanted to ask about something that's been going on since around September. My left arm and left leg go numb and tingly on and off, sometimes for a few hours. A few times my right eye has gotten blurry and then it clears up by itself after a while. It's not getting worse exactly but it's not going away either and I'm worried it's the MS. Should I see you or neurology?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Numb arm and leg",
+              "date": "2022-12-06T07:35",
+              "author": "PCP",
+              "body": "Good morning Samantha. I'm glad you wrote. With your history this needs your neurologist, and they'll likely want a new MRI. I'm messaging the MS clinic this morning to ask for the earliest appointment. If you get sudden vision loss, weakness, or trouble walking or speaking before then, go to the emergency department. Our nurse will call you once we hear back."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to neurology",
+              "date": "2022-12-06T11:20",
+              "author": "RN",
+              "body": "Spoke with MS clinic nurse, shared PCP message. They are giving her a slot on 12/29 and will order an MRI before. Called pt, she has the date. Reviewed ED precautions."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-29a",
+          "kind": "specialist_visit",
+          "start": "2022-12-29T10:30",
+          "service": "Neurology",
+          "reason": "intermittent left-sided numbness and right eye blurring",
+          "conditions": [
+            {
+              "label": "Vitamin D deficiency",
+              "action": "diagnosed",
+              "onset": "2022-12-29"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2000 IU by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin D deficiency"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-29T11:30",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-29T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-29T11:30",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-29T11:30",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2022-12-27T18:00",
+              "text": "MRI BRAIN WITHOUT AND WITH CONTRAST\nIndication: multiple sclerosis, intermittent left-sided sensory symptoms and right visual blurring.\nTechnique: multiplanar multisequence imaging of the brain before and after intravenous gadolinium.\nFindings: Multiple ovoid T2/FLAIR hyperintense lesions in the periventricular white matter bilaterally. No mass effect. Ventricles and sulci normal in size for age. No acute infarct on diffusion imaging. No hemorrhage. Orbits and visualized sinuses unremarkable.",
+              "conclusion": "Multiple periventricular white matter lesions in this patient with known multiple sclerosis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2023-01-06T14:10",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP - MS CLINIC\nDate of visit: 12/29/2022\n\nReason for visit: early return for new symptoms, at the PCP's request.\n\nMs. Simard is a 30-year-old with relapsing-remitting MS on interferon beta-1a 44 mcg SC three times weekly. Over roughly the last three months she has had recurring spells of numbness and pins-and-needles in the left arm and left leg, and intermittent blurring of vision in the right eye that clears without treatment. No weakness, no gait change.\n\nMedications: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID as needed.\nAllergies: none known.\nSocial: relocated from the South about two years ago. Does not smoke.\n\nExam: Afferent pupillary defect on the right. Reflexes brisk in the left arm and left leg compared with the right. Strength full. Remainder of the exam unchanged.\n\nData:\n- 25-OH vitamin D 15 ng/mL (reference 30-100), low.\n- CBC, ESR and CRP normal. ANA negative.\n- MRI brain with and without contrast (12/27): multiple periventricular white matter lesions.\n\nImpression: RRMS with a mild relapse, left-sided sensory symptoms and right optic nerve involvement; corresponding exam findings. Vitamin D deficiency.\n\nPlan:\n1. Continue interferon beta-1a.\n2. Start vitamin D3 2000 IU daily.\n3. Return as needed for new or worsening symptoms.\n\nNeurology, MS clinic\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology",
+          "vitals": {
+            "bp": [
+              107,
+              70
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 60.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-24T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "vitd-recheck-2023",
+              "action": "placed",
+              "order": "25-hydroxy vitamin D",
+              "category": "lab",
+              "reason": "Vitamin D deficiency on replacement"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2023-01-24T16:35",
+              "author": "PCP",
+              "body": "Here to go over the MS clinic letter from 12/29.\n\nNeurology called it a mild relapse (left-sided sensory spells plus the right eye), staying on interferon. Vitamin D was 15, she started D3 2000 IU right after the visit and takes it with breakfast. Tingling spells still come and go, maybe a little less often. Right eye blurring hasn't happened in a couple of weeks. Bladder same. Feels a bit discouraged that the MS \"woke up\" after two quiet years, but sleeping and working fine. Declines counseling referral for now.\n\nExam: vitals as charted. Pupils: subtle right APD, matching the neurology note. Strength full all limbs. Reflexes brisker on the left. Gait normal.\n\nA/P\n1. RRMS, recent mild relapse, on interferon beta-1a per neurology. Neurology to see her again as needed.\n2. Vitamin D deficiency, on D3 2000 IU. Recheck 25-OH D in about 3 months with her monitoring labs, ordered.\n3. Neurogenic bladder, unchanged.\nCheck in by portal anytime."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "lab_only",
+          "start": "2023-04-11T08:00",
+          "reason": "vitamin D recheck and interferon monitoring",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-11T08:00",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-11T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-04-11T08:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "vitd-recheck-2023",
+              "action": "done",
+              "date": "2023-04-11T08:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-13a",
+          "kind": "portal_message",
+          "start": "2023-04-13T12:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vitamin D",
+              "date": "2023-04-13T12:20",
+              "author": "PCP",
+              "body": "Samantha, your vitamin D is up to 34, which is in the normal range now. Keep taking the 2000 units every day. The blood counts and liver tests for the interferon were normal too, and I've passed them along to the MS clinic."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vitamin D",
+              "date": "2023-04-13T18:02",
+              "author": "patient",
+              "body": "Yay, finally a good number. Thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "office_visit",
+          "start": "2023-06-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-06-19T08:45",
+              "author": "front desk",
+              "body": "Pt called, quarter-end at work, can't make tomorrow's follow-up. Doing fine, no new issues. Will just come in for her fall physical. Offered a video slot instead, declined."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "pharmacy",
+          "start": "2023-08-22T09:40",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oxybutynin refill",
+              "date": "2023-08-22T09:40",
+              "author": "MA",
+              "body": "Electronic refill request, oxybutynin 5 mg #180. Approved by PCP with 1 refill. Physical scheduled 10/17."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "annual_physical",
+          "start": "2023-10-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              130,
+              75
+            ],
+            "hr": 78,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-17T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 306
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-17T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-17T09:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-10-17T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T09:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-17T09:25",
+              "author": "PCP",
+              "body": "31F, yearly exam.\n\nMS: tingling spells faded out by about March. Has not needed to go back to the MS clinic. Interferon TIW, vitamin D3 daily. Bladder: urgency, no incontinence. Uses oxybutynin most days now rather than a few times a week.\n\nROS: no vision change, weakness, falls. Mood good.\n\nExam: Vitals as charted. Eyes: mild right APD, unchanged. Thyroid normal. Heart regular. Lungs clear. Abdomen soft. Neuro: strength full, reflexes brisker on left, gait normal.\nPHQ-9 3.\n\nPlan\n- RRMS stable on interferon beta-1a; CBC, CMP and TSH today.\n- Vitamin D deficiency, replete on D3.\n- Neurogenic bladder: oxybutynin refills sent for the year so she isn't running out.\n- Flu and 2023-24 COVID vaccines today. Pap next 2027.\nFollow-up in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-30a",
+          "kind": "portal_message",
+          "start": "2023-12-30T13:05",
+          "reason": "new visual symptoms",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Left eye",
+              "date": "2023-12-30T13:05",
+              "author": "patient",
+              "body": "Sorry to message on a holiday weekend. Since yesterday my LEFT eye is blurry, like looking through wax paper. Also when I put my chin down I get a zap down my back like an electric shock. My right hand has been tingly on and off for about a month too. I already left a message on the neuro clinic's after-hours line."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Left eye",
+              "date": "2023-12-30T14:20",
+              "author": "PCP",
+              "body": "Hi Samantha, thanks for letting me know. This sounds like it could be another flare and neurology is the right place. Good that you called their line. If they can't see you in the next day or two, or if the vision gets much worse, you lose vision, or you develop weakness, go to the emergency department. Please let me know what they say."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Left eye",
+              "date": "2023-12-30T17:48",
+              "author": "patient",
+              "body": "Neuro on-call called back. They are fitting me in at their urgent clinic Monday morning and getting an MRI."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-01a",
+          "kind": "specialist_visit",
+          "start": "2024-01-01T09:15",
+          "service": "Neurology",
+          "reason": "left eye blurring, neck-flexion shocks, right hand tingling",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-01T10:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.27
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-01T10:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-01T10:00",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 512
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-01T10:00",
+              "results": [
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Non-reactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-01-01T10:00",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2024-01-01T12:30",
+              "text": "MRI BRAIN WITHOUT AND WITH CONTRAST\nIndication: known MS, new left visual blurring.\nComparison: 12/27/2022.\nFindings: Multiple periventricular T2/FLAIR hyperintense white matter lesions. Several of these lesions show enhancement after gadolinium, indicating active demyelination. No mass effect or midline shift. No restricted diffusion. No hemorrhage. Ventricles normal in size.",
+              "conclusion": "Multiple periventricular white matter lesions, some enhancing, consistent with active multiple sclerosis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology urgent visit",
+              "date": "2024-01-09T15:40",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP - MS CLINIC (urgent slot)\nDate of visit: 01/01/2024\n\nMs. Simard, 31, RRMS on interferon beta-1a, was seen urgently after calling our after-hours line. One year after her last relapse (left-sided sensory symptoms and right visual blurring), she now has two days of blurred vision in the left eye, an electric sensation running down her spine whenever she flexes her neck, and on-and-off numbness and tingling in the right hand for about a month.\n\nMedications: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID PRN; vitamin D3 2000 IU daily.\nAllergies: NKDA.\n\nExam: Left afferent pupillary defect. Visual acuity reduced on the left. Light-touch sensation diminished in the right hand. Strength, coordination, reflexes and gait otherwise as before; the remainder of the neurologic exam is normal.\n\nLabs: CBC normal, ESR normal, B12 normal, RPR non-reactive, ANA negative.\nMRI brain with and without gadolinium: multiple periventricular white matter lesions, a number of them enhancing.\n\nImpression: Relapse of RRMS with left optic neuritis, Lhermitte phenomenon and right-hand sensory symptoms, with active lesions on MRI.\n\nPlan: Continue interferon beta-1a. Return visit in clinic in about 6 months, earlier for any worsening of vision or new deficits.\n\nNeurology, MS clinic\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after MS relapse",
+          "vitals": {
+            "bp": [
+              130,
+              75
+            ],
+            "hr": 80,
+            "spo2": 98,
+            "weight_kg": 60.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-01-23T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2024-01-23T15:40",
+              "author": "PCP",
+              "body": "Follow-up after the New Year relapse.\n\nRead the MS clinic letter: left optic neuritis plus Lhermitte and right-hand sensory change, active lesions on MRI, staying on interferon, return in ~6 months. She says the left eye is clearing slowly, reading is easier this week. Neck zaps rare now. Right hand still a little \"buzzy\" at times. Missed a few days of work. Mood lower the past few weeks, PHQ-9 5; she connects it to the relapse and the dark season, no SI. Has friends nearby and is back at the gym.\n\nMeds reviewed: interferon beta-1a TIW, oxybutynin PRN, D3 daily. Adherent, no missed injections.\n\nExam: Vitals as charted. Left APD noted, as in the neurology letter. Strength full. Gait normal.\n\nA/P\n1. RRMS, relapse 1/2024 with left optic neuritis; recovering. Management per neurology.\n2. Mild low mood related to the relapse; PHQ-9 5. Supportive discussion; offered therapy referral, she'll think about it. Recheck at next visit.\n3. Monitoring labs due in April.\n4. Bladder and vitamin D unchanged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "lab_only",
+          "start": "2024-04-16T07:50",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-16T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-04-16T07:50",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2024-04-17T08:20",
+              "author": "PCP",
+              "body": "CBC and LFTs normal. Sent to MS clinic. Portal message to pt."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "specialist_visit",
+          "start": "2024-07-01T13:30",
+          "service": "Neurology",
+          "reason": "right eye pain and blurred vision",
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2024-06-28T17:00",
+              "text": "MRI BRAIN WITHOUT CONTRAST\nIndication: MS, right eye pain and visual blurring.\nComparison: 01/01/2024.\nFindings: Multiple ovoid periventricular white matter T2/FLAIR hyperintensities, oriented perpendicular to the lateral ventricles. T2 hyperintense lesions are also present within the corpus callosum. No mass effect. No acute infarct. No hemorrhage. Ventricles and extra-axial spaces normal.",
+              "conclusion": "Periventricular lesions perpendicular to the ventricles and corpus callosum T2 lesions, typical of multiple sclerosis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2024-07-10T11:05",
+              "author": "neurology",
+              "body": "OUTSIDE NEUROLOGY GROUP - MS CLINIC\nDate of visit: 07/01/2024\n\nSeen in follow-up by a colleague of her usual MS neurologist. Ms. Simard (31) has RRMS with prior optic neuritis in each eye, most recently the left eye in January. For several weeks now the right eye has hurt, more when she moves it, and vision there has been getting blurrier, with colors looking washed out.\n\nMeds: interferon beta-1a 44 mcg SC TIW, oxybutynin 5 mg BID PRN, vitamin D3 2000 IU daily. NKDA.\n\nExam: Reduced visual acuity in the right eye with a relative afferent pupillary defect on that side. Remainder of the neurologic exam unchanged from January.\n\nMRI brain (06/28): multiple periventricular lesions perpendicular to the ventricles, plus corpus callosum T2 hyperintensities.\n\nImpression: Recurrent right optic neuritis in RRMS.\n\nPlan: Continue interferon beta-1a. Return as needed, sooner for worsening vision.\n\nNeurology, MS clinic\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-18a",
+          "kind": "telehealth_visit",
+          "start": "2024-07-18T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in after optic neuritis",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-07-18T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth visit",
+              "date": "2024-07-18T12:40",
+              "author": "PCP",
+              "body": "Video visit from her apartment, ID confirmed, consents to video.\n\nNeurology letter from 7/1 reviewed with her: recurrent right optic neuritis, MRI typical for MS, staying on interferon. Eye pain gone now; right eye vision still a little washed out, she says it is slowly coming back. Working from home this month so she doesn't have to drive with one weak eye. Mood ok, PHQ-9 4, she didn't pursue the therapy referral and feels she doesn't need it now.\n\nA/P: RRMS with right optic neuritis 6/2024, recovering. Per neurology. Physical in October with labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 76,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 61.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.75
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T09:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:12"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2024",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "Neurogenic bladder with worsening urgency and leakage"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T09:35",
+              "author": "PCP",
+              "body": "Annual, 32F.\n\nTwo relapses this year (left optic neuritis January, right optic neuritis June), both followed by the MS clinic, on interferon throughout. Vision has come back well enough to drive and work.\n\nMain issue today is the bladder. Over the last few months the urgency hits faster and she has started leaking before she gets to the bathroom, a few times a week. Wearing a pad now. Plans errands around restrooms. Takes oxybutynin twice a day most days, not enough. No dysuria, no fever, no hematuria.\n\nROS otherwise negative. Mood fine, PHQ-9 3.\n\nExam: vitals as charted. Eyes: right APD. Thyroid normal. Heart regular, lungs clear. Abdomen soft, nontender, no suprapubic fullness. Neuro: strength full, reflexes brisker on the left, gait normal.\n\nA/P\n1. Neurogenic bladder with worsening urgency and new urge leakage despite oxybutynin. Referral to urology for evaluation.\n2. RRMS, relapses 1/2024 and 6/2024, per neurology. CBC, CMP, TSH today.\n3. Vitamin D deficiency, on D3.\n4. Vaccines: flu and 2024-25 COVID today. Pap 2027.\nFollow-up after urology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-06a",
+          "kind": "specialist_visit",
+          "start": "2025-01-06T10:00",
+          "service": "Urology",
+          "reason": "urgency with leakage",
+          "conditions": [
+            {
+              "label": "Urinary incontinence",
+              "action": "diagnosed",
+              "onset": "2024-08-01",
+              "note": "Urge leakage with neurogenic detrusor overactivity.",
+              "icd10": "R32"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2024",
+              "action": "done",
+              "date": "2025-01-06T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology consultation",
+              "date": "2025-01-14T16:25",
+              "author": "urology",
+              "body": "OUTSIDE UROLOGY PRACTICE\nDate of visit: 01/06/2025\nReferred by: primary care, for neurogenic bladder with increasing leakage\n\nHPI: 32-year-old woman with relapsing-remitting MS (neurology following) and known neurogenic bladder with detrusor overactivity. Her leakage has become more frequent: the loss of urine comes on abruptly with little warning, sometimes before she can get to a toilet, preceded by a rapidly building urge she cannot hold off. She has become reluctant to be away from home for long stretches. Oxybutynin 5 mg twice daily as needed gives partial relief.\nNeurologic history per patient and records: several relapses with visual and sensory symptoms; brain MRIs with multiple lesions.\n\nMeds: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID PRN; vitamin D3 2000 IU daily.\nAllergies: none.\nPSH: none.\nSocial: never smoker, 1-2 drinks weekly, financial analyst.\n\nExam: Abdomen soft, no masses. Pelvic exam without masses. Lower extremities with increased tone, brisk reflexes, and reduced joint-position sense at the toes bilaterally.\nPost-void residual by bladder scan: 180 mL.\n\nAssessment: Urge urinary incontinence from neurogenic detrusor overactivity, with incomplete emptying (PVR 180 mL), in the setting of MS. Upper motor neuron signs in the legs.\n\nPlan:\n1. Clean intermittent catheterization twice daily; teaching done today with our nurse, she performed it independently. Prescription sent to a medical supply company.\n2. Continue oxybutynin as currently taken.\n3. Follow up in clinic as needed; call for fever or symptoms of infection.\n\nUrology\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telephone",
+          "start": "2025-01-21T13:50",
+          "reason": "catheter supply paperwork",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Catheter supplies",
+              "date": "2025-01-21T13:50",
+              "author": "MA",
+              "body": "Supply company called, insurer wants a PCP-signed certificate of medical necessity for intermittent catheters (urology wrote the order but their form went missing). Form pulled from fax, PCP signed with urology letter attached, faxed back. Pt aware; she has a starter box from urology so no gap."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "office_visit",
+          "start": "2025-04-03T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fever, chills and painful urination",
+          "conditions": [
+            {
+              "label": "Acute cystitis without hematuria",
+              "action": "diagnosed",
+              "onset": "2025-03-27"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ciprofloxacin 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute cystitis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 38.5,
+            "spo2": 97,
+            "weight_kg": 61.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-03T11:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-03T11:40",
+              "results": [
+                {
+                  "test": "Urine Clarity",
+                  "text": "Cloudy"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": ">50"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.6
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-03T11:40",
+              "resulted": "2025-04-05T09:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "E. coli, greater than 100,000 CFU/mL. Susceptible to ciprofloxacin."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-03T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute visit",
+              "date": "2025-04-03T12:25",
+              "author": "PCP",
+              "body": "Same-day visit, she texted this morning.\n\nS: Two days of fever with chills and burning on urination. For the past week, more frequent and more urgent than her usual baseline. Catheterizing twice a day since urology started it in January; this is her first urinary infection. No flank or back pain, no nausea or vomiting. No new neuro symptoms. Took acetaminophen last night.\n\nMeds: interferon beta-1a TIW, oxybutynin 5 mg BID PRN, vitamin D3 2000 IU, intermittent catheters. NKDA.\n\nO: T 38.5, BP 120/78, HR 88; rest as charted. Looks tired, not toxic. Abdomen soft and non-tender, no suprapubic tenderness to speak of. No CVA tenderness on either side.\nPOC urine (cath specimen): LE positive, nitrite positive. Micro: WBC >50/hpf, RBC 2/hpf, many gram-negative rods.\nCBC: WBC 12.0, Hgb 13.2, plt 250.\n\nA/P\n1. Acute cystitis with fever in a woman who self-catheterizes for neurogenic bladder. No flank pain or CVA tenderness. Treating as a complicated course given the fever and catheter use: ciprofloxacin 500 mg BID x 7 days. Urine culture sent, will adjust to sensitivities. Fluids, acetaminophen for fever. Clean catheter technique reviewed; new catheter each time.\n2. Go to the ED for vomiting, rigors, flank pain or fever that persists past 48 h on the antibiotic.\n3. RN call in about 10 days."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-05a",
+          "kind": "portal_message",
+          "start": "2025-04-05T10:10",
+          "reason": "urine culture result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urine culture",
+              "date": "2025-04-05T10:10",
+              "author": "PCP",
+              "body": "Hi Samantha, your urine culture grew E. coli and it is sensitive to the ciprofloxacin you're taking, so no change is needed. Please finish all 7 days. How is the fever?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urine culture",
+              "date": "2025-04-05T13:44",
+              "author": "patient",
+              "body": "Fever broke yesterday afternoon. Still burns a little but way better."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "telephone",
+          "start": "2025-04-14T14:30",
+          "reason": "UTI follow-up call",
+          "conditions": [
+            {
+              "label": "Acute cystitis without hematuria",
+              "action": "resolved",
+              "onset": "2025-03-27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "UTI follow-up",
+              "date": "2025-04-14T14:30",
+              "author": "RN",
+              "body": "Called pt. Finished cipro on the 10th. No fever since the 4th, no burning, frequency back to her usual. Catheterizing without trouble. Reviewed when to call. Routed to PCP, problem resolved."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "lab_only",
+          "start": "2025-05-13T08:00",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-13T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-05-13T08:00",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2025-05-14T07:45",
+              "author": "PCP",
+              "body": "Normal. WBC back in range after April infection. Copied to neurology."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-02a",
+          "kind": "ed_visit",
+          "start": "2025-07-02T18:40",
+          "end": "2025-07-03T01:15",
+          "service": "Emergency Medicine",
+          "reason": "right eye visual blurring, left hand spasms, urinary urgency",
+          "conditions": [
+            {
+              "label": "Right optic neuropathy",
+              "action": "diagnosed",
+              "onset": "2025-06-22",
+              "icd10": "H47.091"
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2025-07-02T22:10",
+              "text": "MRI BRAIN WITHOUT CONTRAST (ED)\nIndication: known MS, right visual blurring, left hand spasms.\nFindings: Multiple T2/FLAIR hyperintense lesions in the periventricular white matter. No acute infarct on diffusion-weighted imaging. No hemorrhage, mass or hydrocephalus.",
+              "conclusion": "Multiple periventricular hyperintense lesions compatible with known multiple sclerosis. No acute intracranial abnormality otherwise."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-07-07T10:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD, area hospital\nArrival 07/02/2025, 18:40\n\nCC: right eye vision blurry, left hand jerking, peeing constantly.\n\nHPI: 32F with RRMS, recurrent optic neuritis and neurogenic bladder (self-cath), here with symptoms she says feel like her earlier flares. Ten days ago she had a sudden sharp pain behind the right eye, then trouble focusing with that eye, worst in dim light. Since then also involuntary spasms of the left hand. Bladder: urgent trips more than 10 times a day, occasional leakage.\n\nMeds: interferon beta-1a 44 mcg SC TIW, oxybutynin 5 mg BID PRN, vitamin D3 2000 IU daily. Allergies: NKDA.\nFamily history: mother with autoimmune hypothyroidism; father with hypertension; no MS in the family.\n\nExam: Awake, oriented. Hyperreflexia with clonus in the left upper extremity. Vibration sense decreased in the right lower extremity. Subtle right afferent pupillary defect. Fundoscopy: mild swelling of the optic disc. Otherwise nonfocal.\n\nMRI brain: multiple hyperintense periventricular lesions.\n\nAssessment: MS relapse with right optic neuropathy (disc swelling), left arm corticospinal signs, bladder urgency.\n\nDisposition: Discussed with on-call neurology by phone. Discharged home in stable condition with instructions to see her neurologist this week; return for worsening vision, weakness or retention.\n\nEmergency medicine\nCopy to PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-11a",
+          "kind": "office_visit",
+          "start": "2025-07-11T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 60.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-11T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED follow-up",
+              "date": "2025-07-11T11:20",
+              "author": "PCP",
+              "body": "Seen after her ED visit on 7/2 (record received 7/7).\n\nED found a right optic neuropathy with mild disc swelling, left arm clonus and reduced vibration in the right leg; MRI showed periventricular lesions; sent home to see neurology. She has called the MS clinic and is waiting on an appointment date; staying on interferon in the meantime. Right eye still dim in low light. Left hand spasms less. Bladder: frequency settling back, catheterizing twice daily, no fever or dysuria.\n\nExam: vitals as charted, afebrile. Right APD. Strength full in all limbs, gait steady.\n\nA/P\n1. RRMS relapse 7/2025 with right optic neuropathy. Added to problem list. Neurology following.\n2. Neurogenic bladder with urge incontinence on CIC + PRN oxybutynin; frequency during the flare, no infection symptoms.\n3. Monitoring labs normal in May. Physical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "pharmacy",
+          "start": "2025-08-19T09:15",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oxybutynin refill",
+              "date": "2025-08-19T09:15",
+              "author": "MA",
+              "body": "Refill request oxybutynin 5 mg, 90-day supply. Approved per PCP protocol, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "annual_physical",
+          "start": "2025-10-21T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              79
+            ],
+            "hr": 65,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 60.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-21T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-21T09:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-21T09:15",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-21T09:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-21T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T09:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-21T09:30",
+              "author": "PCP",
+              "body": "Preventive visit, 33F.\n\nYear in review: April febrile cystitis (E. coli, treated, resolved). July relapse with right optic neuropathy seen in the ED, interferon continued. Since then no new symptoms. Right eye still a touch dim at night. Catheterizing twice daily, leakage much better than last year. Oxybutynin twice daily most days.\n\nROS: no fever, dysuria, falls, weakness. Mood ok, PHQ-9 4.\n\nExam: Vitals as charted. Right APD. Thyroid normal. Heart regular, lungs clear. Abdomen soft, nontender. Strength full, gait normal.\n\nA/P\n1. RRMS, last relapse 7/2025, on interferon beta-1a per neurology. Yearly CBC, CMP, TSH plus lipids today.\n2. Neurogenic bladder with urge incontinence, on CIC and oxybutynin; no infections since April.\n3. Right optic neuropathy, history of bilateral optic neuritis.\n4. Vitamin D deficiency on D3.\n5. Flu and 2025-26 COVID given today. Pap due 2027.\nSee me in spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "ed_visit",
+          "start": "2025-12-29T14:20",
+          "end": "2025-12-29T22:50",
+          "service": "Emergency Medicine",
+          "reason": "right leg weakness and numbness, left eye blurring",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-29T15:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-29T15:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24590-2",
+              "performed": "2025-12-29T19:30",
+              "text": "MRI BRAIN WITHOUT AND WITH CONTRAST (ED)\nIndication: MS, new right leg weakness, left visual blurring.\nFindings: Multiple periventricular T2/FLAIR hyperintense white matter lesions. One lesion demonstrates enhancement after gadolinium. No acute infarct. No hemorrhage or mass. Ventricles normal.",
+              "conclusion": "Multiple periventricular white matter lesions with one enhancing lesion, compatible with active multiple sclerosis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2026-01-05T09:10",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD, area hospital\nArrival 12/29/2025, 14:20\n\nCC: right leg weak and numb x2 days, left eye blurry x1 week.\n\nHPI: 33-year-old woman with RRMS and recurrent optic neuritis in both eyes. Two days ago her right leg abruptly became weak and numb. The left eye has been blurry for a week. MS for about six years, several prior optic neuritis and sensory relapses. On interferon beta-1a since diagnosis.\n\nMeds: interferon beta-1a SC TIW; oxybutynin 5 mg BID PRN; vitamin D3 2000 IU daily. NKDA.\nSH: never smoker, social alcohol, financial analyst.\n\nExam: RLE strength 3/5 with increased tone and hyperreflexia. Left eye visual acuity decreased, with an afferent pupillary defect. Otherwise as before per patient.\n\nLabs: WBC 7.0, Hgb 13.5, plt 250, Na 140, K 4.2, Cr 0.9, glucose 98.\nMRI brain with gadolinium: multiple periventricular lesions, one enhancing.\n\nAssessment: MS relapse with right leg weakness and left optic involvement, active lesion on MRI.\n\nDisposition: Neurology on call contacted; patient discharged home, appointment with her MS neurologist arranged within days. Return for worsening weakness, falls or urinary retention.\n\nEmergency medicine\nCopy to PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "telehealth_visit",
+          "start": "2026-01-08T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-01-08T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth follow-up",
+              "date": "2026-01-08T12:55",
+              "author": "PCP",
+              "body": "Video visit, patient at her kitchen table, identity verified.\n\nED record from 12/29 arrived 1/5: right leg 3/5 with increased tone and brisk reflexes, left eye acuity down with APD, labs unremarkable (WBC 7.0, Hgb 13.5, plt 250, Na 140, K 4.2, Cr 0.9, glucose 98), MRI with one enhancing lesion. Discharged to follow up with neurology.\n\nToday: right leg is \"coming back\", walking around the apartment and to the car without help, slower on stairs. Left eye blur easing. No falls. Bladder as usual with CIC. MS clinic appointment set for later this month. Feeling worn down by how often these are happening; she wants to ask neurology whether interferon is still the right drug.\n\nA/P\n1. RRMS relapse 12/2025, right leg and left eye, active lesion. Improving by report. Encouraged her to bring her question about treatment to neurology; I will forward this note.\n2. Fall precautions reviewed.\n3. Monitoring labs due in March.\nIn-person visit in spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "lab_only",
+          "start": "2026-03-10T07:45",
+          "reason": "interferon monitoring labs",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-10T07:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-10T07:45",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2026-03-11T08:05",
+              "author": "PCP",
+              "body": "CBC/LFTs unremarkable. Faxed to MS clinic. Pt messaged."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-15a",
+          "kind": "office_visit",
+          "start": "2026-05-15T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              70
+            ],
+            "hr": 71,
+            "spo2": 97,
+            "weight_kg": 62.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-15T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2026-05-15T14:40",
+              "author": "PCP",
+              "body": "Spring check-in.\n\nMS: no new symptoms since the December relapse. Walking her usual loop again. Left eye back to what she calls normal for her, right eye still dim at night. Still on interferon beta-1a three times a week; she says the MS clinic is keeping her on it for now. Vitamin D3 daily.\nBladder: CIC twice daily, oxybutynin most days. No infections since last April. Occasional leakage, manageable.\nMood: PHQ-9 4. Busy at work, good support from friends.\n\nMeds: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID PRN; vitamin D3 2000 IU daily. NKDA.\n\nExam: Vitals as charted. Right APD. Heart regular, lungs clear. Abdomen soft, nontender. Walks into the room without assistance, gait steady.\n\nA/P\n1. RRMS, relapses 7/2025 and 12/2025, per neurology on interferon beta-1a. Monitoring labs normal in March; next set in the fall with her physical.\n2. Neurogenic bladder with urge incontinence on CIC and oxybutynin; oxybutynin refills sent.\n3. Right optic neuropathy, history of bilateral optic neuritis; stable.\n4. Vitamin D deficiency, on D3.\nPhysical in October. Message me with any new symptoms."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "ed_visit",
+          "start": "2026-06-16T15:10",
+          "end": "2026-06-16T23:30",
+          "service": "Emergency Medicine",
+          "reason": "bilateral leg weakness, numbness below the navel, urinary retention",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-16T15:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-16T15:40",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-16T15:40",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 468
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2026-06-19T10:15",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD, area hospital\nArrival 06/16/2026, 15:10\n\nCC: legs giving out, numb from the belly button down, cannot urinate.\n\nHPI: 33F with relapsing-remitting MS and neurogenic bladder (self-catheterizes), whose last relapse was right leg weakness in December. Both legs have been getting weaker, she has trouble walking and has fallen several times at home. Numb below the navel. Has not been able to void since this morning. Recalls a right-eye blurring episode about two years ago that cleared on its own.\n\nMeds: interferon beta-1a 44 mcg SC TIW; oxybutynin 5 mg BID PRN; vitamin D3 2000 IU daily. NKDA. FH: mother autoimmune hypothyroidism, father hypertension, no MS.\n\nExam: Strength 2/5 in both lower extremities. Light touch and pinprick reduced below the T6 level. Lower extremity reflexes brisk. Bilateral upgoing toes.\n\nWorkup: CBC normal. ESR normal. B12 normal. Aquaporin-4 IgG negative. Lumbar puncture: CSF oligoclonal bands positive.\nMRI spinal cord: T2 hyperintense lesion at T4.\n\nAssessment: Acute myelitis at T4 in known MS, with paraparesis, sensory level and urinary retention.\n\nDisposition: Bladder catheter placed for retention. Admitted to the neurology service.\n\nEmergency medicine\nCopy to PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16b",
+          "kind": "hospital_admission",
+          "start": "2026-06-16T23:30",
+          "end": "2026-06-22T12:40",
+          "service": "Neurology",
+          "reason": "MS relapse with acute myelitis",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-06-24T15:30",
+              "author": "hospital neurology",
+              "body": "DISCHARGE SUMMARY - neurology inpatient service, area hospital\nAdmitted 06/16/2026 from the ED. Discharged 06/22/2026.\n\nPrincipal diagnosis: relapse of relapsing-remitting multiple sclerosis with acute myelitis at T4.\n\nHospital course: Admitted with bilateral leg weakness (2/5), a T6 sensory level and urinary retention. MRI showed a T2 lesion at T4; AQP4 antibody negative and CSF oligoclonal bands positive, consistent with MS. Treated with IV methylprednisolone 1 g daily for 5 days, tolerated. Indwelling catheter for retention; removed before discharge, and she resumed intermittent self-catheterization without difficulty. Inpatient physical therapy throughout. By discharge leg strength had improved to 4/5 on both sides and she walked the unit with a rolling walker.\n\nDischarge medications: interferon beta-1a 44 mcg SC three times weekly (continued until outpatient neurology review); oxybutynin 5 mg twice daily as needed; vitamin D3 2000 IU daily. Steroid course completed in hospital, no taper.\nAllergies: NKDA.\n\nDisposition: home. Rolling walker. Outpatient physical therapy referral placed.\n\nFollow-up: MS clinic within 2-3 weeks to review disease-modifying therapy. Primary care in 1-2 weeks.\n\nHospital neurology\ncc: primary care, MS clinic"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "portal_message",
+          "start": "2026-06-29T20:15",
+          "reason": "home from hospital",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back home",
+              "date": "2026-06-29T20:15",
+              "author": "patient",
+              "body": "Hi, wanted you to know I was in the hospital for almost a week, a big flare in my spinal cord. Had the IV steroids. I'm home now with a walker, PT starts next week. MS clinic appointment is mid-July and they want to talk about switching meds. Cathing on my own again. Not sure if I need to see you or if I can wait till the fall?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back home",
+              "date": "2026-06-30T07:40",
+              "author": "PCP",
+              "body": "Samantha, I'm so sorry you went through that, and thank you for letting me know. I received the hospital summary. I would like to see you in the next couple of weeks, either in person or by video if getting here is hard right now, to go over the hospital stay, your bladder and how you're managing at home. Our front desk will call to set it up. Meanwhile, please call or come in for fever, burning with urination, new weakness or a fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "telephone",
+          "start": "2026-07-02T10:05",
+          "reason": "scheduling outreach",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling call",
+              "date": "2026-07-02T10:05",
+              "author": "front desk",
+              "body": "Called per PCP to schedule post-hospital visit (in person or video). No answer, voicemail left with callback number. Portal message sent as well."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T09:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Oxybutynin refill",
+              "date": "2026-07-21T09:30",
+              "author": "MA",
+              "body": "Pharmacy request oxybutynin 5 mg, 90-day supply. Last office visit 5/15. Approved by PCP. Note on chart: post-hospital visit still not scheduled, second voicemail left today."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "History of recurrent optic neuritis, bilateral|Z86.69": {
+        "code": "Z86.69",
+        "display": "Personal history of other diseases of the nervous system and sense organs",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of rheumatic fever|Z86.79": {
+        "code": "Z86.79",
+        "display": "Personal history of other diseases of the circulatory system",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Right optic neuropathy|H47.091": {
+        "code": "H47.091",
+        "display": "Other disorders of optic nerve, not elsewhere classified, right eye",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Urinary incontinence|R32": {
+        "code": "R32",
+        "display": "Unspecified urinary incontinence",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "0.5 ML interferon beta-1a 0.088 MG/ML Prefilled Syringe": {
+        "code": "758025",
+        "display": "0.5 ML interferon beta-1a 0.088 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24590-2",
+        "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

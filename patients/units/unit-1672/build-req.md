@@ -239,3 +239,8 @@ anxiety beyond the PCP.
   2022-06-13); leave paperwork for school around each delivery and after the PPCM
   diagnosis; result notes.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001672 on 2026-03-26. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

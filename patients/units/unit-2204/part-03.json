@@ -1,0 +1,877 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002204",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "imaging",
+          "start": "2025-01-14T13:20",
+          "service": "Radiology",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-01-14T13:20",
+              "text": "OUTSIDE IMAGING CENTER - ULTRASOUND, ABDOMINAL AORTA (limited)\nIndication: abdominal aortic aneurysm screening, 65-year-old man, former smoker.\nTechnique: Grayscale and color Doppler imaging of the abdominal aorta from the diaphragm to the bifurcation; diameters measured outer wall to outer wall.\nFindings: Proximal, mid and distal abdominal aorta of normal caliber, each under 3 cm. No aneurysmal dilatation. Common iliac origins normal caliber. No periaortic fluid.\nAllergies on requisition: penicillin.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2025-01-14T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Aortic ultrasound",
+              "author": "PCP",
+              "date": "2025-01-15T08:20",
+              "body": "AAA screen normal, aorta under 3 cm throughout. No further screening needed. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "specialist_visit",
+          "start": "2025-02-11T15:00",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "author": "podiatry",
+              "date": "2025-02-12T11:40",
+              "body": "Podiatry progress note to PCP\nFrederick Esposito, DOB 11/15/1959. DOS 2/11/2025.\nAllergy: penicillin.\nRight plantar ulcer measures 0.7 x 0.6 cm today. Base granular, edges callused, no drainage. No periwound erythema, warmth or tracking. Pedal pulses present.\nDebridement of hyperkeratotic rim performed.\nA: chronic diabetic ulcer, right plantar surface, still open, no infection.\nP: keep using the boot; daily dressings; recheck in about 2 months. Advised him to call promptly for redness, swelling or fever."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "telephone",
+          "start": "2025-03-18T07:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "foot redness",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Text/phone - foot redness",
+              "author": "PCP",
+              "date": "2025-03-18T07:20",
+              "body": "Texted a photo at 6:50 this morning: right foot red and puffy around the sore, worse since Sunday. Called him back. Says the foot feels warm and tight, the dressing has more drainage. Has not checked a temperature. With an ulcer that has been open since June, spreading redness needs IV antibiotics and imaging today. Advised he go to the hospital emergency department this morning rather than wait for an office slot; his wife is driving. I called ahead to the ED with his history and the penicillin anaphylaxis."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18b",
+          "kind": "hospital_admission",
+          "start": "2025-03-18T09:40",
+          "end": "2025-03-24T12:30",
+          "service": "Internal Medicine — Hospital",
+          "reason": "right plantar diabetic foot ulcer with surrounding soft-tissue infection",
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily for 10 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "foot ulcer soft-tissue infection, after IV vancomycin"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-03-18T09:50",
+              "bp": [
+                132,
+                86
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.2,
+              "spo2": 97
+            },
+            {
+              "time": "2025-03-21T00:05",
+              "bp": [
+                136,
+                82
+              ],
+              "hr": 96,
+              "rr": 18,
+              "temp_c": 38.4,
+              "spo2": 96
+            },
+            {
+              "time": "2025-03-24T08:00",
+              "bp": [
+                128,
+                78
+              ],
+              "hr": 72,
+              "rr": 16,
+              "temp_c": 36.8,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-18T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T10:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-20T06:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 156
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-20T19:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.2
+                },
+                {
+                  "test": "Glucose, 2 hours post meal",
+                  "loinc": "6689-4",
+                  "unit": "mg/dL",
+                  "value": 198
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-21T06:10",
+              "results": [
+                {
+                  "test": "Glucose, point of care",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 48
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Foot X-ray",
+              "performed": "2025-03-18T11:00",
+              "text": "RIGHT FOOT, 3 VIEWS\nIndication: diabetic with chronic plantar ulcer, new redness and swelling.\nFindings: Plantar soft-tissue swelling. No soft-tissue gas. No cortical erosion, periosteal reaction or bone destruction to suggest osteomyelitis. No fracture. Joint spaces preserved. No radiopaque foreign body.",
+              "conclusion": "Soft-tissue swelling without radiographic evidence of osteomyelitis."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary - Internal Medicine",
+              "author": "hospitalist",
+              "date": "2025-03-25T10:15",
+              "body": "AREA HOSPITAL - INTERNAL MEDICINE DISCHARGE SUMMARY\nPatient: Frederick Esposito  DOB 11/15/1959\nAdmitted 3/18/2025 via ED. Discharged 3/24/2025 to home.\nAllergies: PENICILLIN (anaphylaxis); CEFAZOLIN (rash, pruritus - added this admission).\n\nReason for admission: chronic right plantar diabetic foot ulcer with new surrounding soft-tissue infection - erythema and warmth around the wound - requiring IV antibiotics and inpatient glucose management.\n\nHospital course:\n1. Right plantar foot ulcer with soft-tissue infection. Foot films without osteomyelitis. Treated with IV vancomycin, levels followed with his kidney function. Erythema receded steadily. Changed to oral doxycycline for discharge.\n2. Type 2 diabetes. Glipizide held; basal-bolus insulin with frequent fingersticks. A1c 8.2%. Fasting glucose 156, post-meal 198 on 3/20. After nocturnal low readings the insulin doses were reduced on 3/20.\n3. Fever and drug reaction. Shortly after midnight on hospital day 3 (night of 3/20-3/21) he spiked to 38.4 C. The covering physician ordered a dose of IV cefazolin; within the hour he developed an itchy rash. Cefazolin was stopped; the rash and itching resolved over the following day without airway symptoms. Recorded as allergic reaction to cefazolin with penicillin cross-sensitivity. Fever did not recur.\n4. Hypoglycemia. Morning fingerstick 48 mg/dL on 3/21, treated with oral glucose with prompt recovery; insulin reduced further. No further lows.\n5. Hypertension. Metoprolol continued; BP 132/86 on arrival and controlled throughout. Lisinopril continued.\n6. CKD 3b. Creatinine at his usual baseline during the stay.\n\nDischarge medications: doxycycline 100 mg PO BID x 10 days (new); resume glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg nightly, aspirin 81 mg daily. Insulin stopped at discharge.\nFollow-up: PCP within one week; podiatry within 2-4 weeks. Continue offloading boot and daily dressings."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "outside_records",
+          "start": "2025-03-25T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital discharge summary review",
+          "conditions": [
+            {
+              "label": "Allergic reaction to cefazolin due to penicillin cross-sensitivity",
+              "icd10": "T36.1X5A",
+              "action": "diagnosed",
+              "onset": "2025-03-21"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Cefazolin",
+              "reaction": "Rash",
+              "severity": "moderate",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Discharge summary review",
+              "author": "PCP",
+              "date": "2025-03-25T13:00",
+              "body": "Hospital summary reviewed. Cefazolin added to allergy list (rash/itching), penicillin anaphylaxis already listed. Doxycycline course noted. Post-discharge visit Friday 3/28."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-28a",
+          "kind": "office_visit",
+          "start": "2025-03-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Allergic reaction to cefazolin due to penicillin cross-sensitivity",
+              "icd10": "T36.1X5A",
+              "action": "resolved",
+              "onset": "2025-03-21"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-28T11:25",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-03-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-03-28T11:35",
+              "body": "Seen 4 days after discharge from a 6-day stay for an infected right plantar ulcer.\n\nHe and his wife report he's doing well. On day 6 of 10 of doxycycline, taking it with food. Rash from the cefazolin gone within a day, no recurrence. Home sugars 120s-180s, no readings under 70 since he came home and no shaky spells. Back in the boot. Glipizide restarted at discharge.\n\nExam: afebrile, vitals charted. Rash: none visible. Right foot: plantar ulcer with clean base, the surrounding redness has faded to a faint pink rim, no warmth or drainage. Pulses palpable.\n\nA/P\n1. Right plantar diabetic ulcer, soft-tissue infection improving - finish doxycycline; podiatry next month.\n2. Cefazolin reaction - resolved. Allergy list now reads penicillin (anaphylaxis) and cefazolin (rash, itching). Told him to mention both at every pharmacy and any hospital.\n3. T2DM - back on glipizide 5; low in hospital was on insulin. BMP today.\n4. HTN/CKD 3b - unchanged.\nCall or text for fever or spreading redness."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "specialist_visit",
+          "start": "2025-04-22T09:30",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer, post-hospital",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "author": "podiatry",
+              "date": "2025-04-23T10:05",
+              "body": "Podiatry follow-up letter\nRe: Frederick Esposito, DOB 11/15/1959. Seen 4/22/2025, first visit since his March admission.\nAllergies: penicillin (anaphylaxis), cefazolin (rash).\nRight plantar ulcer 0.9 x 0.7 cm, granular base, no residual erythema, warmth or drainage. Pulses palpable. Light debridement.\nImpression: chronic diabetic ulcer, right plantar surface; infection cleared.\nPlan: continue offloading boot and dressings; recheck in 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T16:00",
+          "service": "Optometry",
+          "reason": "diabetic eye exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2025-05-20T16:00",
+              "body": "Diabetic eye exam report\nFrederick Esposito  DOB 11/15/1959  exam 5/13/2025\nAllergies: penicillin, cefazolin.\nCorrected acuity 20/25 OD, 20/30 OS. Dilated exam: lens implant in good position. No diabetic retinopathy in either eye. No macular edema.\nImpression: type 2 diabetes without retinopathy. Recheck in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-10T09:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-10T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-10T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "author": "PCP",
+              "date": "2025-06-10T10:00",
+              "body": "Routine 3-month visit. No problems since the March admission. Podiatry in April: ulcer clean, no infection. Eye exam in May clear. Morning sugars 130s-160s, no lows.\n\nExam: BP charted. RRR. Lungs clear. Right sole: small ulcer, clean, no redness. No edema.\n\nPlan: A1c and BMP today. Meds unchanged. Next lung CT ordered for September. Podiatry August. See me in early fall for his Medicare wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-12a",
+          "kind": "telephone",
+          "start": "2025-07-12T06:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fever and flank pain",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Weekend text - fever, flank pain",
+              "author": "PCP",
+              "date": "2025-07-12T06:58",
+              "body": "Saturday-morning text, then phone. Three days of fevers and chills, pain in the right side of his back, burning when he urinates and going often. Feels washed out. With diabetes, CKD and his antibiotic allergies this needs blood work, urine culture and likely IV treatment - not a weekend phone prescription. Directed to the hospital ED now; wife driving. I phoned the ED charge nurse with his allergy list (penicillin anaphylaxis, cefazolin rash)."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-12b",
+          "kind": "ed_visit",
+          "start": "2025-07-12T07:45",
+          "end": "2025-07-12T13:10",
+          "service": "Emergency Medicine",
+          "reason": "fever, chills, right flank pain, dysuria",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "icd10": "N10",
+              "action": "diagnosed",
+              "onset": "2025-07-09"
+            },
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-07-12"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-07-12T07:50",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 98,
+              "rr": 20,
+              "temp_c": 38.9,
+              "spo2": 96
+            },
+            {
+              "time": "2025-07-12T12:30",
+              "bp": [
+                138,
+                82
+              ],
+              "hr": 88,
+              "rr": 18,
+              "temp_c": 37.9,
+              "spo2": 97
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-07-12T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-12T08:05",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 40
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-07-12T08:20",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "Numerous (pyuria)"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-12T08:20",
+              "resulted": "2025-07-14T09:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "Escherichia coli, greater than 100,000 CFU/mL. Resistant to multiple antibiotics on the tested panel; susceptible to aminoglycosides (gentamicin, amikacin)."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-07-14T08:45",
+              "body": "AREA HOSPITAL - EMERGENCY PHYSICIAN RECORD\nPatient: Frederick Esposito, 65M  DOB 11/15/1959\nArrival 7/12/2025 07:45, sent in by his primary care physician.\nAllergies: penicillin (anaphylaxis), cefazolin (rash).\nHome meds: glipizide 5 daily, metoprolol 50 BID, lisinopril 10 daily, atorvastatin 40 qhs, ASA 81.\nPMH: T2DM, CKD 3b, HTN, chronic R plantar diabetic ulcer (infected ulcer admission March).\n\nHPI: 3 days of fever with rigors, right flank pain, dysuria and urinary frequency.\n\nTriage: T 38.9 C (102 F), BP 150/90, HR 98, RR 20.\nExam: uncomfortable, nontoxic. Right CVA tenderness. Abdomen soft. Lungs clear. Right foot dressing clean, ulcer without surrounding erythema.\n\nLabs: WBC 14.0, Hgb 13.2. BUN 40, creatinine 2.2 (baseline 1.6). UA: pyuria, leukocyte esterase positive, nitrite positive.\n\nED course: urine culture sent before antibiotics. IV fluid bolus, then maintenance. Empiric IV aztreonam, selected because of his penicillin anaphylaxis and cefazolin reaction.\n\nImpression: acute pyelonephritis; acute kidney injury on CKD 3b.\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-12c",
+          "kind": "hospital_admission",
+          "start": "2025-07-12T13:10",
+          "end": "2025-07-20T11:30",
+          "service": "Internal Medicine — Hospital",
+          "reason": "acute pyelonephritis with acute kidney injury",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-16T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-20T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2025-07-13T10:20",
+              "text": "RENAL ULTRASOUND\nIndication: pyelonephritis, acute kidney injury.\nBoth kidneys normal in size. Cortical thickness and echogenicity within normal limits. No hydronephrosis either side. No renal stone or perinephric fluid collection. Bladder partially distended, unremarkable.",
+              "conclusion": "No hydronephrosis or obstruction."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary - pyelonephritis",
+              "author": "hospitalist",
+              "date": "2025-07-21T09:10",
+              "body": "AREA HOSPITAL - MEDICINE DISCHARGE SUMMARY\nFrederick Esposito  DOB 11/15/1959. Admitted 7/12/2025 from the ED; discharged 7/20/2025 home.\nAllergies: penicillin - anaphylaxis; cefazolin - rash.\n\nDiagnoses: acute pyelonephritis, E. coli, multidrug resistant; acute kidney injury on CKD stage 3b.\n\nCourse: Started on IV fluids and empiric aztreonam in the ED. Renal ultrasound 7/13 showed no hydronephrosis. On 7/14 the urine culture grew E. coli resistant to several classes but sensitive to aminoglycosides. In light of his renal function and the susceptibility pattern, therapy changed to IV gentamicin with once-daily dosing adjusted for kidney function and trough levels monitored. Afebrile from 7/14; flank pain resolved. Seven days of active therapy completed in hospital - no oral antibiotic at discharge.\nCreatinine 2.2 on arrival, 2.0 on 7/16, 1.9 on 7/20 (baseline 1.6). Lisinopril held during the admission, resumed at discharge.\n\nDischarge medications: unchanged home list - glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily.\nFollow-up: PCP within 1 week with repeat BMP."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "office_visit",
+          "start": "2025-07-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pyelonephritis",
+          "conditions": [
+            {
+              "label": "Acute pyelonephritis",
+              "icd10": "N10",
+              "action": "resolved",
+              "onset": "2025-07-09"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-07-24T14:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-07-24T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-aug-2025",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "creatinine recheck after acute kidney injury"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-07-24T14:40",
+              "body": "Follow-up after an 8-day admission for E. coli pyelonephritis (multidrug resistant, treated with IV gentamicin) with kidney injury.\n\nFeels nearly back to normal; tired the first few days home. No fever since the 14th. No flank pain, burning or frequency. Eating and drinking well. Back on all home meds including lisinopril.\n\nExam: afebrile; vitals charted. No CVA tenderness. Abdomen soft. Right foot ulcer unchanged, clean.\n\nA/P\n1. Pyelonephritis - clinically resolved.\n2. AKI on CKD 3b - creatinine today; recheck in about 4 weeks to make sure it returns to baseline. Hydrate well in the heat.\n3. T2DM/HTN - unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "lab_only",
+          "start": "2025-08-19T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "creatinine recheck",
+          "conditions": [
+            {
+              "label": "Acute kidney injury",
+              "icd10": "N17.9",
+              "action": "resolved",
+              "onset": "2025-07-12"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-19T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.7
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-aug-2025",
+              "action": "done",
+              "date": "2025-08-19T08:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP recheck",
+              "author": "PCP",
+              "date": "2025-08-19T15:30",
+              "body": "Creatinine 1.7 - back to his baseline. Kidney injury from July resolved. Potassium normal. Portal message sent: no changes, see him in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "specialist_visit",
+          "start": "2025-08-26T13:15",
+          "service": "Podiatry",
+          "reason": "right plantar ulcer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Podiatry follow-up",
+              "author": "podiatry",
+              "date": "2025-08-27T09:30",
+              "body": "Podiatry note for PCP\nPt: Frederick Esposito, DOB 11/15/1959. Seen 8/26/2025.\nAllergies: penicillin (anaphylaxis), cefazolin (rash).\nInterval: admitted in July for a kidney infection; foot not involved.\nRight plantar ulcer 0.6 x 0.5 cm, shallow, pink granular base, no drainage, no erythema. Pulses palpable. Callus pared.\nA: chronic diabetic foot ulcer, right plantar surface, slowly contracting.\nP: continue boot and dressings. Return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "imaging",
+          "start": "2025-09-23T10:00",
+          "service": "Radiology",
+          "reason": "lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-09-23T10:00",
+              "text": "OUTSIDE IMAGING CENTER - LOW-DOSE CT CHEST (ANNUAL LUNG SCREENING)\nComparison: 10/22/2024, 10/24/2023, 10/18/2022.\nTechnique: Low-dose helical CT without contrast.\nFindings: No pulmonary nodule or mass. Lungs clear. No effusion. Normal heart size; no pericardial effusion. No thoracic adenopathy.\nAllergies listed: penicillin, cefazolin.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual LDCT."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-09-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2025",
+              "author": "PCP",
+              "date": "2025-09-24T08:15",
+              "body": "Fourth annual screening CT negative, Lung-RADS 1. Will review with him at the wellness visit 10/6."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "annual_physical",
+          "start": "2025-10-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-06T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 17
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-06T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-06T09:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-10-06T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-06T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-06T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-10-06T09:55",
+              "body": "Initial Medicare AWV, 65M.\n\nThe year: admitted in March (infected right plantar ulcer; cefazolin reaction; a low sugar on hospital insulin) and in July (resistant E. coli pyelonephritis with AKI, creatinine back to 1.7 in August). Since then he feels like himself. Still followed by podiatry; ulcer smaller in August.\n\nFunctional: independent with daily activities, drives, handles his own medications and his wife helps with dressings. No falls this year; uses the boot outdoors. Hearing adequate. Vision good, eye exam May without retinopathy. PHQ-2 0. Lives with his wife.\n\nMeds: glipizide 5 mg daily, metoprolol tartrate 50 mg BID, lisinopril 10 mg daily, atorvastatin 40 mg qhs, aspirin 81 mg daily.\nAllergies: penicillin (anaphylaxis); cefazolin (rash/itching).\n\nExam: vitals charted. Comfortable. Heart RRR. Lungs clear. Abdomen soft, no CVA tenderness. Right sole: small clean ulcer, no surrounding redness; left foot intact. No edema.\n\nPrevention: flu (high dose) and 2025-26 COVID given today. Shingrix, PCV20, RSV, Tdap done. Colonoscopy due 2028. Lung CT 9/23 negative; next fall. Aortic ultrasound normal in January.\n\nPlan: CMP, CBC, lipids, A1c, urine albumin today. Diabetes, pressure and kidney medicines unchanged. Podiatry in November. Follow-up in 3 months for diabetes."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "portal_message",
+          "start": "2025-10-07T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Portal Message",
+              "title": "Wellness visit labs",
+              "author": "PCP",
+              "date": "2025-10-07T17:05",
+              "body": "Frederick, your labs from yesterday: kidney function steady at your usual level, potassium normal, blood count normal, cholesterol well controlled, urine protein normal. A1c is in the same range as the past couple of years. Please book a diabetes visit for January."
+            },
+            {
+              "type": "Patient Portal Message",
+              "title": "RE: Wellness visit labs",
+              "author": "patient",
+              "date": "2025-10-08T08:22",
+              "body": "Will do after the holidays. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "90-day refill request",
+              "author": "MA",
+              "date": "2025-12-09T10:40",
+              "body": "Electronic refill request from pharmacy: glipizide 5 mg #90, lisinopril 10 mg #90. Last visit 10/6/25. Routed to PCP.\n\nPCP: both approved, 90 days with 1 refill. Please remind him to schedule the January diabetes visit."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

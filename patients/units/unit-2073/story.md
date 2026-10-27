@@ -63,3 +63,8 @@
 - 2026-07-28 post-discharge visit; follow-up chest x-ray ordered, open (A11, P)
 - 2026-08-11 portal: chest x-ray timing (P)
 - 2026-09-15 booked follow-up (P)
+
+
+## Last seen
+
+The practice last saw MRN00002073 on 2026-07-28. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. A visit is booked after today.

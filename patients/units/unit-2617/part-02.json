@@ -26,8 +26,16 @@
           "service": "Orthopedic Surgery",
           "reason": "Fracture follow-up",
           "conditions": [
-            {"label": "Fracture of left femur", "icd10": "S72.92XA", "action": "resolved"},
-            {"label": "Fracture of pelvis", "icd10": "S32.9XXA", "action": "resolved"}
+            {
+              "label": "Fracture of left femur",
+              "icd10": "S72.92XA",
+              "action": "resolved"
+            },
+            {
+              "label": "Fracture of pelvis",
+              "icd10": "S32.9XXA",
+              "action": "resolved"
+            }
           ],
           "documents": [
             {
@@ -61,24 +69,91 @@
           "service": "Ophthalmology",
           "reason": "Left eye vision loss, pain and photophobia",
           "conditions": [
-            {"label": "Sympathetic ophthalmia", "icd10": "H44.132", "action": "diagnosed", "onset": "2026-02-12"}
+            {
+              "label": "Sympathetic ophthalmia",
+              "icd10": "H44.132",
+              "action": "diagnosed",
+              "onset": "2026-02-12"
+            }
           ],
           "medications": [
-            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (60 mg) by mouth daily with breakfast", "dose": {"value": 60, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "sympathetic ophthalmia"},
-            {"drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension", "action": "historical", "sig": "Instill 1 drop in the left eye as directed, tapering per ophthalmology", "dose": {"value": 1, "unit": "drop"}, "route": "Ophthalmic", "course": "chronic", "reason": "sympathetic ophthalmia"},
-            {"drug_text": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution", "action": "historical", "sig": "Instill 1 drop in the left eye three times daily", "dose": {"value": 1, "unit": "drop"}, "frequency": "TID", "route": "Ophthalmic", "course": "chronic", "reason": "sympathetic ophthalmia"}
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (60 mg) by mouth daily with breakfast",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "sympathetic ophthalmia"
+            },
+            {
+              "drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+              "action": "historical",
+              "sig": "Instill 1 drop in the left eye as directed, tapering per ophthalmology",
+              "dose": {
+                "value": 1,
+                "unit": "drop"
+              },
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "sympathetic ophthalmia"
+            },
+            {
+              "drug_text": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution",
+              "action": "historical",
+              "sig": "Instill 1 drop in the left eye three times daily",
+              "dose": {
+                "value": 1,
+                "unit": "drop"
+              },
+              "frequency": "TID",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "sympathetic ophthalmia"
+            }
           ],
           "labs": [
-            {"panel": null, "collected": "2026-02-26T11:00", "resulted": "2026-02-27T14:00", "results": [
-              {"test": "Erythrocyte Sedimentation Rate", "value": 25},
-              {"test": "C Reactive Protein", "value": 10},
-              {"test": "Antinuclear Antibodies", "text": "Negative"},
-              {"test": "Rheumatoid Factor", "text": "Negative"},
-              {"test": "DNA double strand Ab", "loinc": "5130-0", "unit": "[IU]/mL", "text": "Negative"}
-            ]}
+            {
+              "panel": null,
+              "collected": "2026-02-26T11:00",
+              "resulted": "2026-02-27T14:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 25
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 10
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Negative"
+                },
+                {
+                  "test": "DNA double strand Ab",
+                  "loinc": "5130-0",
+                  "unit": "[IU]/mL",
+                  "text": "Negative"
+                }
+              ]
+            }
           ],
           "reports": [
-            {"study": "Chest X-ray, 2 views", "performed": "2026-02-26T11:20", "text": "PA and lateral views of the chest. Lungs are clear. No hilar or mediastinal adenopathy. Heart size normal. No pleural effusion or pneumothorax. Bones unremarkable.", "conclusion": "Normal chest radiograph."}
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-02-26T11:20",
+              "text": "PA and lateral views of the chest. Lungs are clear. No hilar or mediastinal adenopathy. Heart size normal. No pleural effusion or pneumothorax. Bones unremarkable.",
+              "conclusion": "Normal chest radiograph."
+            }
           ],
           "documents": [
             {
@@ -96,15 +171,56 @@
           "start": "2026-03-05T08:00",
           "service": "Internal Medicine — Primary Care",
           "reason": "Follow-up on high-dose prednisone",
-          "state": {"weight_kg": 80.0},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {
+            "weight_kg": 80.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-05T08:30", "results": [{"test": "Glucose"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
-            {"panel": "Complete Blood Count (CBC)", "collected": "2026-03-05T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-05T08:30",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-05T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-05T08:00"},
-            {"procedure": "Venipuncture", "performed": "2026-03-05T08:30"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-05T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-03-05T08:30"
+            }
           ],
           "documents": [
             {
@@ -137,8 +253,24 @@
           "service": "Ophthalmology",
           "reason": "Sympathetic ophthalmia follow-up",
           "medications": [
-            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "reason": "dose reduced"},
-            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (40 mg) by mouth daily with breakfast", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "sympathetic ophthalmia"}
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose reduced"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily with breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "sympathetic ophthalmia"
+            }
           ],
           "documents": [
             {
@@ -156,7 +288,11 @@
           "start": "2026-04-21T14:00",
           "reason": "Physical therapy discharge summary",
           "orders": [
-            {"id": "pt-outpatient", "action": "done", "date": "2026-04-21T14:00"}
+            {
+              "id": "pt-outpatient",
+              "action": "done",
+              "date": "2026-04-21T14:00"
+            }
           ],
           "documents": [
             {
@@ -175,9 +311,29 @@
           "service": "Ophthalmology",
           "reason": "Sympathetic ophthalmia follow-up",
           "medications": [
-            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "reason": "dose reduced"},
-            {"drug": "prednisone 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (20 mg) by mouth daily with breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "sympathetic ophthalmia"},
-            {"drug_text": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution", "action": "stop", "reason": "anterior chamber quiet"}
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose reduced"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet (20 mg) by mouth daily with breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "sympathetic ophthalmia"
+            },
+            {
+              "drug_text": "cyclopentolate hydrochloride 10 MG/ML Ophthalmic Solution",
+              "action": "stop",
+              "reason": "anterior chamber quiet"
+            }
           ],
           "documents": [
             {
@@ -237,29 +393,105 @@
           "start": "2026-06-03T08:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Fatigue, fever, nausea, dark urine",
-          "state": {"weight_kg": 77.0},
-          "vitals": {"temp_c": 37.9},
-          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {
+            "weight_kg": 77.0
+          },
+          "vitals": {
+            "temp_c": 37.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-03T08:55", "resulted": "2026-06-04T07:40", "results": [
-              {"test": "Aspartate Aminotransferase", "value": 1680},
-              {"test": "Alanine Aminotransferase", "value": 2140},
-              {"test": "Bilirubin, Total", "value": 2.6},
-              {"test": "Alkaline Phosphatase"},
-              {"test": "Albumin"}
-            ]},
-            {"panel": "CBC with Differential", "collected": "2026-06-03T08:55", "resulted": "2026-06-03T13:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-06-03T08:55", "resulted": "2026-06-03T13:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
-            {"panel": null, "collected": "2026-06-03T08:55", "resulted": "2026-06-04T11:30", "results": [
-              {"test": "Hepatitis B Surface Antigen", "text": "Reactive"},
-              {"test": "Hepatitis B virus core IgM Ab", "loinc": "31204-1", "text": "Reactive"},
-              {"test": "Hepatitis A virus IgM Ab", "loinc": "13950-1", "text": "Nonreactive"},
-              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
-            ]}
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-03T08:55",
+              "resulted": "2026-06-04T07:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 1680
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 2140
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.6
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-03T08:55",
+              "resulted": "2026-06-03T13:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-03T08:55",
+              "resulted": "2026-06-03T13:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-03T08:55",
+              "resulted": "2026-06-04T11:30",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "Hepatitis B virus core IgM Ab",
+                  "loinc": "31204-1",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "Hepatitis A virus IgM Ab",
+                  "loinc": "13950-1",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
           ],
           "procedures": [
-            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-03T08:20"},
-            {"procedure": "Venipuncture", "performed": "2026-06-03T08:55"}
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-03T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-03T08:55"
+            }
           ],
           "documents": [
             {
@@ -277,10 +509,22 @@
           "start": "2026-06-04T12:05",
           "reason": "Lab results",
           "conditions": [
-            {"label": "Acute hepatitis B", "icd10": "B16.9", "action": "diagnosed", "onset": "2026-05-31"}
+            {
+              "label": "Acute hepatitis B",
+              "icd10": "B16.9",
+              "action": "diagnosed",
+              "onset": "2026-05-31"
+            }
           ],
           "orders": [
-            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral, urgent", "category": "referral", "to": "Gastroenterology", "reason": "acute hepatitis B"}
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral, urgent",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "acute hepatitis B"
+            }
           ],
           "documents": [
             {
@@ -299,12 +543,26 @@
           "service": "Gastroenterology",
           "reason": "Acute hepatitis B",
           "orders": [
-            {"id": "gi-referral", "action": "done", "date": "2026-06-08T13:00"}
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2026-06-08T13:00"
+            }
           ],
           "labs": [
-            {"panel": null, "collected": "2026-06-08T14:00", "resulted": "2026-06-10T16:00", "results": [
-              {"test": "Hepatitis B virus DNA", "loinc": "42595-9", "unit": "[IU]/mL", "value": 48000}
-            ]}
+            {
+              "panel": null,
+              "collected": "2026-06-08T14:00",
+              "resulted": "2026-06-10T16:00",
+              "results": [
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "value": 48000
+                }
+              ]
+            }
           ],
           "documents": [
             {
@@ -324,7 +582,13 @@
           "service": "Interventional Radiology",
           "reason": "Liver biopsy",
           "reports": [
-            {"study": "Surgical pathology report", "performed": "2026-06-11T10:05", "issued": "2026-06-16T15:20", "text": "Specimen: liver, percutaneous core needle biopsy, two cores, 1.8 and 1.5 cm.\nMicroscopic: hepatocyte ballooning degeneration with scattered Councilman (acidophil) bodies. No steatosis. Trichrome shows no fibrosis. Iron stain negative.", "conclusion": "Liver, needle biopsy: hepatocellular ballooning degeneration and Councilman bodies, consistent with acute viral hepatitis in the setting of positive hepatitis B serology."}
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-11T10:05",
+              "issued": "2026-06-16T15:20",
+              "text": "Specimen: liver, percutaneous core needle biopsy, two cores, 1.8 and 1.5 cm.\nMicroscopic: hepatocyte ballooning degeneration with scattered Councilman (acidophil) bodies. No steatosis. Trichrome shows no fibrosis. Iron stain negative.",
+              "conclusion": "Liver, needle biopsy: hepatocellular ballooning degeneration and Councilman bodies, consistent with acute viral hepatitis in the setting of positive hepatitis B serology."
+            }
           ],
           "documents": [
             {
@@ -357,15 +621,46 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Liver tests for gastroenterology",
           "labs": [
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-06-22T07:35", "resulted": "2026-06-22T14:40", "results": [
-              {"test": "Alanine Aminotransferase", "value": 980},
-              {"test": "Aspartate Aminotransferase", "value": 610},
-              {"test": "Bilirubin, Total", "value": 2.1},
-              {"test": "Bilirubin, Direct", "value": 1.4}
-            ]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-06-22T07:35", "resulted": "2026-06-22T11:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-06-22T07:35",
+              "resulted": "2026-06-22T14:40",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 980
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 610
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-22T07:35",
+              "resulted": "2026-06-22T11:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-06-22T07:35"}],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-22T07:35"
+            }
+          ],
           "documents": [
             {
               "type": "Patient Message",
@@ -383,15 +678,46 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Liver tests for gastroenterology",
           "labs": [
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-07-06T07:40", "resulted": "2026-07-06T15:05", "results": [
-              {"test": "Alanine Aminotransferase", "value": 340},
-              {"test": "Aspartate Aminotransferase", "value": 190},
-              {"test": "Bilirubin, Total", "value": 1.3},
-              {"test": "Bilirubin, Direct", "value": 0.7}
-            ]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-07-06T07:40", "resulted": "2026-07-06T11:20", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-06T07:40",
+              "resulted": "2026-07-06T15:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 340
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 190
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-06T07:40",
+              "resulted": "2026-07-06T11:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-07-06T07:40"}],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-06T07:40"
+            }
+          ],
           "documents": [
             {
               "type": "Patient Message",
@@ -408,10 +734,28 @@
           "start": "2026-07-09T08:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "Follow-up, acute hepatitis B",
-          "state": {"weight_kg": 78.0},
-          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
-          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
-          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-09T08:20"}],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-09T08:20"
+            }
+          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -428,10 +772,7 @@
           "start": "2026-07-21T10:00",
           "service": "Ophthalmology",
           "reason": "Sympathetic ophthalmia follow-up",
-          "medications": [
-            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "reason": "dose reduced"},
-            {"drug": "prednisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (10 mg) by mouth daily with breakfast", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "sympathetic ophthalmia"}
-          ],
+          "medications": [],
           "documents": [
             {
               "type": "Consult Note",
@@ -449,19 +790,63 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Labs for gastroenterology",
           "labs": [
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-07-27T07:35", "resulted": "2026-07-27T14:30", "results": [
-              {"test": "Alanine Aminotransferase", "value": 110},
-              {"test": "Aspartate Aminotransferase", "value": 64},
-              {"test": "Bilirubin, Total", "value": 0.9},
-              {"test": "Bilirubin, Direct", "value": 0.3}
-            ]},
-            {"panel": "Prothrombin Time with INR", "collected": "2026-07-27T07:35", "resulted": "2026-07-27T11:10", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
-            {"panel": null, "collected": "2026-07-27T07:35", "resulted": "2026-07-28T09:00", "results": [
-              {"test": "Hepatitis B Surface Antigen", "text": "Reactive"},
-              {"test": "Hepatitis B virus DNA", "loinc": "42595-9", "unit": "[IU]/mL", "value": 310}
-            ]}
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-27T07:35",
+              "resulted": "2026-07-27T14:30",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 110
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-07-27T07:35",
+              "resulted": "2026-07-27T11:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-27T07:35",
+              "resulted": "2026-07-28T09:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Reactive"
+                },
+                {
+                  "test": "Hepatitis B virus DNA",
+                  "loinc": "42595-9",
+                  "unit": "[IU]/mL",
+                  "value": 310
+                }
+              ]
+            }
           ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-07-27T07:35"}]
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-27T07:35"
+            }
+          ]
         },
         {
           "id": "2026-07-28a",
@@ -478,22 +863,6 @@
               "body": "Gastroenterology & Hepatology. Date of service 07/28/2026.\n\nAcute hepatitis B, about 8 weeks from onset. Feels nearly back to normal. No alcohol.\n\nBiopsy 06/11: ballooning degeneration and Councilman bodies, consistent with acute viral hepatitis; no fibrosis.\nLabs 07/27: ALT 110, AST 64, total bilirubin 0.9, INR normal. HBsAg still reactive. HBV DNA 310 IU/mL (48,000 in June).\n\nExam: abdomen soft, nontender today.\n\nAssessment: acute hepatitis B, resolving as expected.\nPlan: no antiviral. Hepatic panel in 3 weeks, then monthly until normal. HBsAg, hepatitis B surface antibody and HBV DNA in December, 6 months from onset; persistence of HBsAg then would mean chronic infection and a different conversation. Prednisone taper per ophthalmology is fine from our side. Follow up in December after those labs."
             }
           ]
-        },
-        {
-          "id": "2026-08-17a",
-          "kind": "lab_only",
-          "start": "2026-08-17T07:30",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Liver tests for gastroenterology",
-          "labs": [
-            {"panel": "Hepatic Panel (LFT)", "collected": "2026-08-17T07:35", "resulted": "2026-08-18T10:20", "results": [
-              {"test": "Alanine Aminotransferase", "value": 58},
-              {"test": "Aspartate Aminotransferase", "value": 40},
-              {"test": "Bilirubin, Total", "value": 0.7},
-              {"test": "Bilirubin, Direct", "value": 0.2}
-            ]}
-          ],
-          "procedures": [{"procedure": "Venipuncture", "performed": "2026-08-17T07:35"}]
         },
         {
           "id": "2026-09-10a",

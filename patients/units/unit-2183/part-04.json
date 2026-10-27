@@ -1,0 +1,350 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002183",
+      "events": [
+        {
+          "id": "2024-02-21a",
+          "kind": "office_visit",
+          "start": "2024-02-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "appointment": "no-show",
+          "documents": [{"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-02-21T09:40", "body": "No-show 9:00. Reached wife: roads were icy and he forgot to call. Rebooked 3/6."}]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "office_visit",
+          "start": "2024-03-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-06T09:40", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2024-03-06T09:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-06T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2024-03-06T09:45", "body": "Rescheduled from the ice day. Quiet winter. Weight stable, ankles fine, sleeps flat. Angina rare, NTG once in January shoveling. Feet intact.\nExam: regular, lungs clear, no edema.\nA/P: HFrEF stable on furosemide 20, metoprolol, lisinopril. T2DM A1c today. Stable angina. RTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "hospital_admission",
+          "start": "2024-05-14T04:10",
+          "end": "2024-05-26T11:30",
+          "service": "Cardiology",
+          "reason": "acute ST-elevation myocardial infarction",
+          "conditions": [
+            {"label": "ST elevation (STEMI) myocardial infarction of unspecified site", "icd10": "I21.3", "action": "diagnosed", "onset": "2024-05-14"}
+          ],
+          "orders": [{"id": "cardiac-rehab-2024", "action": "placed", "order": "Cardiac rehabilitation referral", "category": "referral", "to": "Cardiac Rehabilitation", "reason": "after STEMI and CABG"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospitalist", "date": "2024-05-28T10:00", "body": "Regional hospital, cardiac surgery service\nAdmitted 05/14/2024. Discharged 05/26/2024.\n\nPrincipal diagnosis: acute ST-elevation myocardial infarction.\nProcedures: emergent cardiac catheterization with reperfusion of the culprit lesion; coronary artery bypass grafting, multivessel (05/19/2024).\n\nCourse: 68-year-old man with CAD (MIs 2014 and 2018, stent 2014), HFrEF, type 2 diabetes, COPD and a seizure disorder, who woke with crushing chest pain and arrived by ambulance with ST elevation on ECG. Taken directly to the cath lab; the culprit was reperfused and catheterization showed multivessel disease. Heart team recommended surgical revascularization, performed on hospital day 6. Post-operative course without major complication; extubated on schedule, chest tubes removed, ambulating the halls before discharge. No seizures during the stay; valproic acid continued.\n\nAllergies: NKDA.\nDischarge medications: aspirin 81 daily, metoprolol succinate 50 daily, atorvastatin 40 daily, lisinopril 20 daily, furosemide 20 daily, metformin 1000 twice daily, insulin glargine 24 units at bedtime, valproic acid 500 twice daily, albuterol as needed, nitroglycerin SL as needed.\nFollow-up: cardiothoracic surgery in 3 days; cardiology in 4-6 weeks; PCP within 1-2 weeks; outpatient cardiac rehabilitation referral placed.\nSternal precautions: no lifting over 10 lb, no driving for 4 weeks."}
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "specialist_visit",
+          "start": "2024-05-29T10:30",
+          "service": "Cardiothoracic Surgery",
+          "reason": "post-operative visit after CABG",
+          "conditions": [{"label": "Pleural effusion, not elsewhere classified", "icd10": "J90", "action": "diagnosed", "onset": "2024-05-29", "note": "small, left, after CABG"}, {"label": "Presence of aortocoronary bypass graft", "icd10": "Z95.1", "action": "diagnosed", "onset": "2024-05-19"}],
+          "vitals": {"bp": [135, 85], "hr": 78, "rr": 16, "spo2": 96},
+          "measure": ["temp_c", "weight_kg"],
+          "reports": [{"study": "Chest X-ray, 2 views", "performed": "2024-05-29T11:00", "text": "PA and lateral. Median sternotomy wires intact and aligned. Small left pleural effusion with blunting of the left costophrenic angle. No pneumothorax. No focal consolidation. Cardiac silhouette enlarged, as before.", "conclusion": "Small left pleural effusion after CABG."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiothoracic surgery post-op visit", "author": "cardiothoracic surgery", "date": "2024-05-31T13:00", "body": "Outside cardiothoracic surgery group\nDate of visit: 05/29/2024\n\nSeen three days after discharge following CABG for his STEMI. Background of prior MIs, heart failure and diabetic neuropathy. No chest pain. Some breathlessness with exertion that he did not have before the operation. No fever, chills or cough. Incisions bother him a little at night.\nMedications: aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, metformin 1000 BID, insulin glargine 24 units qHS, valproic acid 500 BID, albuterol PRN.\nAllergies: NKDA.\n\nBP 135/85, HR 78, RR 16, SpO2 96% on room air.\nLungs: breath sounds decreased at the left base, no wheezes or crackles. Sternal and leg incisions healing, no drainage. Rest of exam unremarkable.\nChest X-ray: small left pleural effusion.\n\nAssessment: recovering after CABG; small left effusion, common after this surgery.\nPlan: observe, incentive spirometer, walking. Repeat chest X-ray in 4 weeks. Sternal precautions continue. Start cardiac rehab when cleared.\n\nCardiothoracic Surgery"}
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "office_visit",
+          "start": "2024-06-04T10:00",
+          "end": "2024-06-04T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up after STEMI and CABG",
+          "state": {"weight_kg": 95.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-04T10:45", "results": [{"test": "Potassium"}]}],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 14}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2024-06-04T10:00"}],
+          "orders": [{"id": "psych-2024", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "depressive symptoms after STEMI and CABG"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2024-06-04T11:00", "body": "First visit here since his STEMI and bypass. Discharge summary and surgery note reviewed. Wife drove.\nNo chest pain. Winded on the stairs, a little better each day; surgeon is watching a small fluid collection on the left. Incisions sore at night. Med rec done against bottles: aspirin, metoprolol succinate 50, atorvastatin 40, lisinopril 20, furosemide 20, metformin, glargine 24, valproic acid, albuterol, NTG. Cardiac rehab intake next week.\nMood: low since the hospital. Not sleeping, doesn't enjoy much, sits in the chair a lot. PHQ-9 14. No thoughts of harming himself. Says he feels like his body betrayed him.\nExam: tired-appearing. Sternotomy clean, healing. Heart regular. Breath sounds reduced at the left base. Trace ankle edema. Leg harvest site fine.\nA/P:\n1. STEMI s/p CABG, recovering. Meds unchanged from discharge. Rehab, sternal precautions. Cardiology and surgery follow-ups booked.\n2. Left effusion post-op, surgeon following.\n3. Depressive symptoms after the MI, PHQ-9 14. Common after heart surgery and worth treating. Referral to psychiatry; he prefers a specialist. Crisis line given.\n4. HFrEF, T2DM: continue. BMP today on the furosemide.\nRTC after psychiatry and rehab start."}
+          ]
+        },
+        {
+          "id": "2024-06-26a",
+          "kind": "specialist_visit",
+          "start": "2024-06-26T09:30",
+          "service": "Cardiothoracic Surgery",
+          "reason": "follow-up chest X-ray",
+          "conditions": [{"label": "Pleural effusion, not elsewhere classified", "icd10": "J90", "action": "resolved", "onset": "2024-05-29"}],
+          "reports": [{"study": "Chest X-ray, 2 views", "performed": "2024-06-26T09:45", "text": "PA and lateral. Comparison 05/29/2024. Sternotomy wires intact. Left costophrenic angle now sharp; the small left effusion has resolved. Lungs clear. No pneumothorax. Heart size unchanged.", "conclusion": "Resolution of left pleural effusion."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiothoracic surgery follow-up letter", "author": "cardiothoracic surgery", "date": "2024-06-28T11:00", "body": "Outside cardiothoracic surgery group\nDate of visit: 06/26/2024\n\nFour weeks after his first post-op visit. Breathing back to his baseline, attending cardiac rehab. Incisions healed.\nAllergies: NKDA.\nRepeat chest film: effusion resolved.\nPlan: discharged from surgical follow-up. May drive. Lifting restrictions lift at 8 weeks from surgery. Ongoing care with cardiology and his PCP.\n\nCardiothoracic Surgery"}
+          ]
+        },
+        {
+          "id": "2024-07-02a",
+          "kind": "lab_only",
+          "start": "2024-07-02T08:00",
+          "reason": "fasting labs",
+          "state": {"labs": {"Hemoglobin A1c": 7.4, "Low Density Lipoprotein": 70, "Triglycerides": 262, "Creatinine": 1.0}},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-07-02T08:00", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Creatinine", "value": 1.0}]},
+            {"panel": "Lipid Panel", "collected": "2024-07-02T08:00", "results": [{"test": "Total Cholesterol", "value": 175}, {"test": "Low Density Lipoprotein", "value": 70}, {"test": "High Density Lipoprotein", "value": 45}]},
+            {"panel": null, "collected": "2024-07-02T08:00", "results": [{"test": "Fasting Glucose", "value": 98}, {"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "documents": [{"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2024-07-03T12:20", "body": "Sodium 140, potassium 4.2, creatinine 1.0. Fasting sugar 98, A1c better. LDL 70, HDL 45, total 175. Copy to psychiatry for his upcoming visit, at their request."}]
+        },
+        {
+          "id": "2024-07-11a",
+          "kind": "specialist_visit",
+          "start": "2024-07-11T14:00",
+          "service": "Psychiatry",
+          "reason": "depressed mood after myocardial infarction",
+          "conditions": [{"label": "Major depressive disorder, single episode, moderate", "action": "diagnosed", "onset": "2024-05-20"}],
+          "medications": [{"drug": "sertraline 50 MG Oral Tablet", "action": "start", "sig": "Take 1/2 tablet (25 mg) by mouth daily for 7 days, then 1 tablet (50 mg) daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "major depressive disorder"}],
+          "orders": [{"id": "psych-2024", "action": "done", "date": "2024-07-11T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry evaluation", "author": "psychiatry", "date": "2024-07-16T09:30", "body": "Outpatient behavioral health\nDate of service: 07/11/2024\n\nReferred by PCP. 68-year-old retired foreman seen about six weeks after a hospital stay for STEMI, treated with emergent catheterization and then bypass surgery. Prior MIs 2014 and 2018; heart failure. Discharged on aspirin, metoprolol, atorvastatin and lisinopril with his other medicines; taking them as directed and going to cardiac rehab three times a week.\nSince the hospital: sadness most days, no interest in the workshop or the ballgames he used to follow, broken sleep, about 5 lb of weight loss, tired all the time. Denies suicidal thoughts, intent or plan. No prior depressive episodes or psychiatric care. No mania. Sober from alcohol since 2019.\nMedical: CAD, HFrEF, T2DM on insulin with neuropathy, HTN, HLD, COPD, complex partial seizures on valproic acid.\nAllergies: NKDA.\nVitals within normal limits. Exam unremarkable.\nMSE: casually dressed, cooperative, slowed, mood 'down', affect constricted, thought process linear, no SI/HI, insight and judgment fair.\nRecent labs (07/02/2024): Na 140, K 4.2, creatinine 1.0, fasting glucose 98, total cholesterol 175, LDL 70, HDL 45.\n\nAssessment: major depressive disorder, single episode, moderate, after acute MI.\nPlan: sertraline 25 mg daily for a week, then 50 mg; well studied after heart attacks. Discussed aspirin and bleeding risk with SSRIs; no NSAIDs. Brief supportive therapy here. Return 6-8 weeks. Safety plan reviewed; wife aware.\n\nPsychiatry"}
+          ]
+        },
+        {
+          "id": "2024-08-14a",
+          "kind": "portal_message",
+          "start": "2024-08-14T18:05",
+          "reason": "update",
+          "documents": [
+            {"type": "Patient Message", "title": "rehab", "author": "patient", "date": "2024-08-14T18:05", "body": "Just letting you know rehab is going good, up to 25 min on the treadmill. Started the pill from the psychiatrist. Sleeping a bit better. Do I still need the September appt?"},
+            {"type": "Patient Message", "title": "RE: rehab", "author": "PCP", "date": "2024-08-14T20:30", "body": "That's great progress. Yes, keep September. We'll check how the sertraline is going, do your flu shot and the RSV shot, and look at labs."}
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "office_visit",
+          "start": "2024-09-18T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after CABG, mood",
+          "conditions": [{"label": "ST elevation (STEMI) myocardial infarction of unspecified site", "icd10": "I21.3", "action": "resolved", "onset": "2024-05-14"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-18T10:40", "results": [{"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-09-18T10:40", "results": [{"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2024-09-18T10:40", "results": [{"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 59}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 10}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-18T10:00"}, {"procedure": "Immunization administration", "performed": "2024-09-18T10:35"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2024-09-18T10:35"}, {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-09-18T10:36"}],
+          "orders": [{"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening, deferred after surgery"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2024-09-18T10:50", "body": "Four months after bypass. Finished cardiac rehab last week. No chest pain, no nitro since surgery. Breathing better than before the operation. On sertraline 50 about 8 weeks, psychiatry following. Mood 'better than it was', sleeping more normally, still not back to his old self. PHQ-9 10.\nExam: sternotomy well healed. Regular. Lungs clear. No edema.\nA/P: CAD s/p CABG, doing well. HFrEF stable. MDD improving on sertraline. Seizures none, VPA level slightly low-normal, no change. Flu and RSV today. LDCT, which we skipped this summer, ordered. AWV next year. RTC 4 months."}
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "specialist_visit",
+          "start": "2024-10-09T13:00",
+          "service": "Cardiology",
+          "reason": "follow-up after CABG",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2024-10-14T10:30", "body": "Outside cardiology group\nDate of visit: 10/09/2024\n\nFollow-up after STEMI in May 2024 treated with reperfusion and CABG. Completed cardiac rehab. No angina. Mild exertional limits, about his pre-surgery baseline. No orthopnea. Mood treated by psychiatry.\nMeds: aspirin 81, metoprolol succinate 50, atorvastatin 40, lisinopril 20, furosemide 20, sertraline 50, nitroglycerin PRN, metformin, insulin glargine, valproic acid, albuterol.\nAllergies: NKDA.\nExam: euvolemic, sternotomy healed, regular, lungs clear.\nImpression: CAD s/p CABG, stable. HFrEF, compensated.\nPlan: continue. Return 6 months.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "outside_records",
+          "start": "2024-10-23T14:30",
+          "reason": "diabetic eye exam",
+          "documents": [{"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2024-10-23T14:30", "body": "Optometry. Dilated exam 10/16/2024, delayed this year after his surgery. No diabetic retinopathy. Cataracts slowly progressing, not yet affecting daily activities. Return 1 year."}]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "imaging",
+          "start": "2024-11-13T08:00",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2024-11-13T08:00", "text": "Comparison 07/2023. Interval median sternotomy and bypass grafts. No pulmonary nodules. Stable emphysema. No pleural effusion.", "conclusion": "Lung-RADS 1."}],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2024-11-13T08:00"}],
+          "documents": [{"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2024-11-14T09:10", "body": "Lung-RADS 1. Back on the summer schedule next year."}]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "office_visit",
+          "start": "2025-01-22T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-22T11:00", "results": [{"test": "Creatinine"}]},
+            {"panel": null, "collected": "2025-01-22T11:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-22T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-01-22T11:00", "body": "Winter visit. Walking indoors at the mall since rehab ended. No angina. Weight steady. Mood holding, goes to the senior center a couple of mornings a week now, which he says helps.\nExam: regular, lungs clear, no edema. Feet intact.\nA/P: CAD s/p CABG, HFrEF, stable. T2DM, A1c today. MDD on sertraline 50, psychiatry in March. RTC 4-5 months / AWV."}
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "specialist_visit",
+          "start": "2025-03-12T14:30",
+          "service": "Psychiatry",
+          "reason": "depression follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry follow-up letter", "author": "psychiatry", "date": "2025-03-14T10:00", "body": "Outpatient behavioral health\nDate of service: 03/12/2025\n\nFollow-up of major depressive disorder after his 2024 MI. On sertraline 50 mg. Mood much improved, sleeping well, eating normally, back to the senior center and helping a neighbor with a deck. No side effects. No SI.\nAllergies: NKDA.\nMSE: brighter, full range of affect, no SI.\nAssessment: MDD, single episode, improving.\nPlan: continue sertraline 50 mg for at least a year of wellness before any taper. Follow-up in 6 months or sooner as needed.\n\nPsychiatry"}
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "specialist_visit",
+          "start": "2025-04-16T09:00",
+          "service": "Cardiology",
+          "reason": "routine follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2025-04-21T15:20", "body": "Outside cardiology group\nDate of visit: 04/16/2025\n\nCAD s/p CABG 05/2024, HFrEF. Doing well. No chest pain, no nitro use. Stable exertional tolerance, no edema, no orthopnea.\nMeds unchanged: aspirin, metoprolol succinate 50, atorvastatin 40, lisinopril 20, furosemide 20, sertraline, diabetes meds, valproic acid, albuterol, NTG PRN.\nAllergies: NKDA.\nExam: euvolemic, regular, lungs clear.\nPlan: continue. Annual visit, sooner if symptoms.\n\nCardiology"}
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "annual_physical",
+          "start": "2025-06-11T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-11T09:45", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2025-06-11T09:45", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-11T09:45", "results": [{"test": "Platelets"}]},
+            {"panel": null, "collected": "2025-06-11T09:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 65}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-06-11T09:00"}],
+          "orders": [{"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2025-06-11T09:55", "body": "AWV. Independent, drives, does light yard work. No falls this year. PHQ-9 6. Six years sober.\nMemory screen normal.\nMeds reviewed with bottles; all as listed.\nPrevention: LDCT ordered. Colonoscopy from 2016 comes due next year; we'll decide at next year's visit whether a stool test makes more sense at 70 with his heart history. Vaccines: fall flu and COVID.\nACP: wife proxy, MOLST not wanted yet, preferences unchanged.\nLabs today. Written plan given."}
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "imaging",
+          "start": "2025-07-09T08:15",
+          "reason": "lung cancer screening",
+          "reports": [{"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-07-09T08:15", "text": "Comparison 11/2024. Post-CABG changes. No pulmonary nodules. Stable emphysema. No effusion or adenopathy.", "conclusion": "Lung-RADS 1."}],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-07-09T08:15"}],
+          "documents": [{"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2025-07-10T11:00", "body": "Negative, Lung-RADS 1. Letter out."}]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T13:00",
+          "reason": "diabetic eye exam",
+          "documents": [{"type": "Outside Records", "title": "Diabetic eye exam letter", "author": "optometry", "date": "2025-08-20T13:00", "body": "Optometry. Exam 08/13/2025, dilated. No diabetic retinopathy either eye. Cataracts, gradual; discussed referral for surgery when bothersome, he is not ready. One year."}]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "office_visit",
+          "start": "2025-09-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-24T10:40", "results": [{"test": "Potassium"}]},
+            {"panel": null, "collected": "2025-09-24T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-09-24T10:00"}, {"procedure": "Immunization administration", "performed": "2025-09-24T10:35"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-24T10:35"}, {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-09-24T10:36"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-09-24T10:45", "body": "Turned 70 this week. Good summer. No angina, no swelling. Mood steady on sertraline, psychiatry spacing visits out. Feet ok in the diabetic shoes.\nExam: regular, lungs clear, no edema.\nA/P: stable on current regimen. A1c today. Flu and COVID given. RTC 3 months; telehealth fine if winter roads are bad."}
+          ]
+        },
+        {
+          "id": "2025-12-06a",
+          "kind": "urgent_care",
+          "start": "2025-12-06T11:30",
+          "service": "Urgent Care",
+          "reason": "painful urination",
+          "conditions": [{"label": "Urinary tract infection", "action": "diagnosed", "onset": "2025-12-04"}],
+          "medications": [{"drug": "ciprofloxacin 500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "urinary tract infection"}],
+          "measure": ["bp", "hr", "temp_c", "spo2"],
+          "labs": [{"panel": "Urinalysis", "collected": "2025-12-06T11:45", "results": [{"test": "Urine Leukocyte Esterase", "text": "Positive"}, {"test": "Urine Nitrite", "text": "Positive"}]}],
+          "documents": [
+            {"type": "Urgent Care Note", "title": "Urgent care visit", "author": "urgent care", "date": "2025-12-08T09:00", "body": "Walk-in urgent care\nDate of visit: 12/06/2025\n\n70M with two days of burning on urination and going more often. No fever, flank pain or blood in the urine. No discharge.\nPMH per patient: heart disease with bypass, heart failure, diabetes, COPD, seizures.\nAllergies: NKDA.\nAfebrile, vitals stable. No CVA tenderness. Abdomen soft, mild suprapubic tenderness.\nUrine dip: leukocyte esterase positive, nitrite positive.\nImpression: UTI.\nPlan: ciprofloxacin 500 mg twice daily for 7 days. Fluids. Follow up with PCP if not better in 2-3 days, sooner for fever or flank pain.\nCopy faxed to PCP."}
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-12-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "medication refills",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-12-10T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2025-12-10T15:40", "body": "Video, at home, identity checked. Called in for a full set of refills before the holidays; wants 90-day supplies on everything. Urgent care started cipro on Saturday for a bladder infection, burning nearly gone. Mentions he's had a rough month, his mother is ill, didn't want to get into it today.\nReviewed list: aspirin, metoprolol succinate 50, atorvastatin 40, lisinopril 20, furosemide 20, metformin 1000 BID, glargine 24, valproic acid 500 BID, sertraline 50, albuterol, NTG.\nA/P: refills sent, 90 days each. Finish the cipro. Offered an in-person visit for the stress; he'll keep the January slot. Psychiatry number given again."}
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "ed_visit",
+          "start": "2025-12-11T12:50",
+          "end": "2025-12-11T17:40",
+          "service": "Emergency Medicine",
+          "reason": "right posterior ankle pain, unable to bear weight",
+          "conditions": [{"label": "Achilles tendinitis", "action": "diagnosed", "onset": "2025-12-08", "note": "right, fluoroquinolone-induced, suspected rupture"}],
+          "medications": [
+            {"drug": "ciprofloxacin 500 MG Oral Tablet", "action": "stop", "reason": "Achilles tendinopathy"},
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 3 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "complete UTI treatment"}
+          ],
+          "vitals": [{"time": "2025-12-11T13:00", "bp": [136, 82], "hr": 72, "rr": 14, "temp_c": 36.9}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-11T13:30", "results": [{"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2025-12-11T13:30", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 11}, {"test": "C Reactive Protein", "value": 2.4}]}
+          ],
+          "reports": [{"study": "Ankle X-ray", "performed": "2025-12-11T14:10", "text": "Right ankle, three views. Mild degenerative change. No fracture or dislocation. No soft-tissue calcification. Ankle mortise intact.", "conclusion": "Mild degenerative change; no fracture or calcification."}],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2025-12-11T12:50"}],
+          "orders": [{"id": "ortho-2025", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "suspected Achilles tendon rupture"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2025-12-12T08:00", "body": "Regional hospital emergency department\nDate of visit: 12/11/2025\n\nCC: three days of right heel-cord pain, can't put weight on it.\nHPI: 70M with CAD s/p CABG, HFrEF, insulin-treated T2DM with neuropathy, depression followed by psychiatry since his 2024 STEMI, and a prior right foot ulcer seen by podiatry. Three days ago, walking down a flight of stairs, felt a sudden sharp stabbing pain at the back of the right ankle, worse with any motion, with a clicking sensation near the heel. No fall or blow, no fever, no swelling elsewhere. Started ciprofloxacin 5 days ago at urgent care for a UTI; no steroid use.\nHe also says his mood has slid badly over the last month since his mother was told she has metastatic small cell lung cancer. Feels helpless and guilty, tired, sleeping through the day, skipping meals, has stopped going to the senior center. Admits he's been missing doses of his medicines. Denies suicidal ideation. His sister keeps pushing him to sign estate papers while their mother is still on chemo, and the calls leave him overwhelmed; he's been letting them go to voicemail. Had a video visit with his PCP yesterday for refills and didn't mention the ankle.\nPMH: CAD with MIs 2014, 2018 and 05/2024 STEMI, CABG 2024, stent 2014; HFrEF; T2DM; HTN; HLD; COPD; complex partial seizures on valproic acid; MDD.\nMeds: metoprolol, atorvastatin, lisinopril, aspirin, metformin, valproic acid, insulin glargine, albuterol PRN, ciprofloxacin.\nAllergies: NKDA.\nSocial: former smoker, 40 pack-years. Former heavy whiskey drinker, 2-3 a night, none since 2019.\nFamily: mother with metastatic small cell lung cancer.\n\nVitals: T 36.9 C, P 72, RR 14, BP 136/82.\nExam: looks older than his years, no distress. Antalgic gait, favoring the left. Right posterior ankle just above the heel: mild swelling and point tenderness; tendon thicker than the left. Thompson test: plantar flexion diminished with calf squeeze. Passive dorsiflexion sharply painful. Plantar flexion weak. No redness, warmth or crepitus. Sensation and pulses intact.\nLabs: WBC, ESR and CRP normal.\nX-ray right ankle: mild degenerative change, no fracture or calcification.\n\nImpression: right Achilles tendinopathy with suspected rupture, likely from the fluoroquinolone.\nPlan: stop ciprofloxacin; cephalexin 500 mg twice daily for 3 days to finish the UTI course. Walking boot with heel lift, crutches, no weight bearing until seen. Orthopedics referral, appointment within the week. Acetaminophen for pain, avoid NSAIDs with his heart failure. Avoid fluoroquinolones in future. Worsening depression: no SI, safe for discharge with his wife; encouraged to call his psychiatrist and PCP this week. Return for calf swelling, chest pain or thoughts of self-harm."}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "office_visit",
+          "start": "2025-12-16T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, ankle and mood",
+          "conditions": [{"label": "Urinary tract infection", "action": "resolved", "onset": "2025-12-04"}],
+          "allergies": [{"substance": "Ciprofloxacin", "reaction": "Achilles tendon injury", "severity": "moderate", "criticality": "low", "type": "intolerance"}],
+          "state": {"weight_kg": 93.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 15}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2025-12-16T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-12-16T11:45", "body": "Seen after his ED visit. In the boot, on crutches, wife with him. Ortho on Friday. Ankle pain easing at rest. Finished the cephalexin, no more urinary symptoms.\nMood is the bigger issue. His mother's cancer diagnosis last month hit hard, plus a lot of conflict with his sister over the estate. Sleeping days, not eating much, down 2 kg since September. Has missed doses, mostly evening ones, glargine included some nights. PHQ-9 15. Denies thoughts of suicide or self-harm, no plan, no weapons in the house; wife confirms.\nExam: tired, flat. Regular, lungs clear, no edema. Right Achilles thickened and tender, in boot.\nA/P:\n1. Right Achilles tendinopathy, suspected rupture, after ciprofloxacin. Boot, crutches, ortho Friday. Ciprofloxacin added to the allergy list as an intolerance; no fluoroquinolones going forward.\n2. MDD, worse with family stressors, PHQ-9 15, no SI. Sent a message to his psychiatrist today asking for an earlier visit; they'll call him. Safety plan reviewed. Weekly check-in calls from our RN until then.\n3. Missed doses: pillbox set up with wife; he agreed to let her help with the evening ones.\n4. UTI resolved.\n5. Other chronic issues unchanged."}
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "specialist_visit",
+          "start": "2025-12-19T09:40",
+          "service": "Orthopedics",
+          "reason": "suspected Achilles rupture",
+          "conditions": [
+            {"label": "Achilles tendinitis", "action": "resolved", "onset": "2025-12-08"},
+            {"label": "Spontaneous rupture of other tendons, right lower leg", "icd10": "M66.861", "action": "diagnosed", "onset": "2025-12-08", "note": "high-grade partial tear of the right Achilles tendon after ciprofloxacin"}
+          ],
+          "orders": [
+            {"id": "ortho-2025", "action": "done", "date": "2025-12-19T09:40"},
+            {"id": "pt-2025", "action": "placed", "order": "Physical therapy referral", "category": "referral", "to": "Physical Therapy", "reason": "Achilles partial tear, nonoperative rehabilitation"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedics consultation", "author": "orthopedics", "date": "2025-12-22T13:00", "body": "Outside orthopedic group\nDate of visit: 12/19/2025\n\nSeen from the ED for right Achilles pain that began on stairs on 12/08 while on ciprofloxacin, with a diminished Thompson test there.\nAllergies: ciprofloxacin (tendon injury).\nExam: tendon thickened and tender just above the insertion, no palpable gap. Thompson test with reduced but present plantar flexion. Weak push-off. Sensation intact, foot warm, pulses present.\nUltrasound in clinic: high-grade partial-thickness tear of the right Achilles tendon. Fibers in continuity; no complete rupture.\n\nAssessment: high-grade partial tear of the right Achilles tendon, fluoroquinolone-associated.\nPlan: nonoperative care, which suits him given his heart history and diabetic foot. Walking boot with heel wedges, protected weight bearing as tolerated, wedges removed in stages over 6-8 weeks. Physical therapy referral. No fluoroquinolones in future. Recheck in the spring, sooner if pain or weakness worsens.\n\nOrthopedics"}
+          ]
+        }
+      ]
+    }
+  ]
+}

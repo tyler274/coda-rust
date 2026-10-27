@@ -29,3 +29,8 @@
 - 2026-08-18 annual physical: labs, ferritin 38, iron stopped, IDA resolved (P)
 - 2026-08-20 portal: lab result note (P)
 - 2026-09-22 booked nurse visit: influenza vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00001674 on 2026-01-27. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

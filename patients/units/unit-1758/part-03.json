@@ -1,0 +1,608 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001758",
+      "events": [
+        {
+          "id": "2023-02-20a",
+          "kind": "telephone",
+          "start": "2023-02-20T16:10",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2023-01-12"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "Prenatal Vitamins Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive pregnancy test",
+              "author": "RN",
+              "date": "2023-02-20T16:25",
+              "body": "Pt called - positive home pregnancy test x2 this weekend. LMP 1/12/23. No bleeding or pain. Hasn't started a prenatal vitamin yet.\n\nReviewed with PCP:\n- Start OTC prenatal vitamin daily (sent to pharmacy as well so it's on her list).\n- Call OB today for intake, and let endocrinology know this week - they will want to see her about cabergoline/methimazole and thyroid labs in pregnancy.\n- Also mention the phenytoin to OB.\nPt verbalized understanding, very excited."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "specialist_visit",
+          "start": "2023-05-08T10:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 16 weeks; palpitations, weight loss",
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (20 mg) by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            },
+            {
+              "drug": "metoprolol tartrate 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thyrotoxic symptoms in pregnancy"
+            }
+          ],
+          "state": {
+            "weight_kg": 49.0,
+            "hr": 116,
+            "bp": [
+              122,
+              76
+            ]
+          },
+          "vitals": {
+            "hr": 116,
+            "bp": [
+              122,
+              76
+            ],
+            "weight_kg": 49.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-08T10:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-08T10:50",
+              "results": [
+                {
+                  "test": "Free Thyroxine",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-08T10:50",
+              "results": [
+                {
+                  "test": "Triiodothyronine, Total",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "value": 270
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2023-05-08T10:40",
+              "text": "Sinus tachycardia. Normal axis and intervals. No acute ST-T change.",
+              "conclusion": "Sinus tachycardia."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "author": "obstetrics",
+              "date": "2023-05-19T09:30",
+              "body": "OB/GYN - Prenatal visit, 16w4d by LMP. Copy to PCP and endocrinology.\n\nG1P0. Followed with endocrinology for a pituitary macroadenoma and Graves disease. Tired, anxious and sleeping poorly. Heart racing much of the day, sweating a lot, loose stools several times daily. Down 5 kg although she is hungrier than usual. Pregnancy otherwise going smoothly. Denies chest pain, dyspnea, visual change. Taking her prenatal vitamin daily.\n\nMeds: phenytoin 300 mg daily, methimazole 10 mg daily, cabergoline 0.5 mg twice weekly, albuterol prn.\nAllergies: seasonal pollen.\n\nP 116, BP 122/76, BMI 18.\nAnxious, restless. Skin warm and damp. Fine tremor of both hands. Thyroid diffusely enlarged, non-tender, no nodules. Fetal heart tones normal. No leg edema.\n\nLabs: TSH <0.01, free T4 4.5 ng/dL, total T3 270 ng/dL.\nECG: sinus tachycardia.\n\nA/P: hyperthyroidism in pregnancy, second trimester.\n- Discussed with endocrinology by phone: methimazole increased to 20 mg daily; they will repeat thyroid labs in 2-4 weeks.\n- Metoprolol tartrate 25 mg BID for symptoms (cardioselective, given her asthma). Review at next visit.\n- Return 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T20:30",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Metoprolol and my asthma",
+              "author": "patient",
+              "date": "2023-05-22T20:30",
+              "body": "OB started me on metoprolol for my heart rate and endo upped my methimazole. The pharmacist said beta blockers can be bad with asthma. Is this one ok? My breathing has been fine so far."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Metoprolol and my asthma",
+              "author": "PCP",
+              "date": "2023-05-23T07:10",
+              "body": "Good question. Metoprolol is the 'heart-selective' kind, which is why they picked it - much less likely to tighten your airways than the older ones. Low dose too. If you notice new wheeze, cough at night, or you're reaching for albuterol more, message me and your OB right away. Glad you're keeping us posted."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-03a",
+          "kind": "telephone",
+          "start": "2023-08-03T12:20",
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose lowered by endocrinology"
+            },
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            },
+            {
+              "drug": "metoprolol tartrate 25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "symptoms resolved"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication update",
+              "author": "RN",
+              "date": "2023-08-03T12:30",
+              "body": "Pt called to update med list. Endo lowered methimazole back to 10 mg daily in July since her levels came down, and OB stopped the metoprolol - heart rate normal. 29 weeks, doing well. Tdap planned at OB this month. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "portal_message",
+          "start": "2023-08-21T18:00",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Tdap",
+              "author": "patient",
+              "date": "2023-08-21T18:00",
+              "body": "Had my Tdap at OB last Thursday (8/17). Could you add it?"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Tdap",
+              "author": "MA",
+              "date": "2023-08-22T08:15",
+              "body": "Added. Hope the third trimester is treating you well!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "hospital_admission",
+          "start": "2023-10-12T06:30",
+          "end": "2023-10-18T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Scheduled Cesarean delivery; postpartum pulmonary embolism",
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 60 mg under the skin every 12 hours",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Pulmonary embolism"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-10-14T07:05",
+              "bp": [
+                120,
+                78
+              ],
+              "hr": 115,
+              "rr": 26,
+              "temp_c": 37.0
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-14T07:15",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 30
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 70
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2023-10-20T15:00",
+              "body": "DISCHARGE SUMMARY - Obstetrics\nAdmitted 10/12/2023, discharged 10/18/2023.\n\n31 yo G1, pituitary macroadenoma, Graves disease (on methimazole), epilepsy (phenytoin), asthma. Allergies: seasonal pollen.\n\nCourse: uncomplicated scheduled Cesarean delivery 10/12 at 39 weeks, healthy infant. On postoperative day 2, on standing to void, abrupt shortness of breath and pleuritic chest pain. T 98.6 F, BP 120/78, HR 115, RR 26. ABG on room air pH 7.48 / pCO2 30 / pO2 70. V/Q scan and CT pulmonary angiogram both confirmed acute pulmonary embolism. Started on therapeutic enoxaparin; symptoms improved and she was on room air at discharge.\n\nDischarge meds: enoxaparin 60 mg SC every 12 hours (planned 3 months), methimazole 10 mg daily, cabergoline 0.5 mg twice weekly, phenytoin 300 mg daily, prenatal vitamin, albuterol prn.\n\nFollow-up: PCP within 1 week; OB postpartum visit; hematology to advise on duration of anticoagulation."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "office_visit",
+          "start": "2023-10-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, postpartum PE",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "icd10": "Z33.1",
+              "action": "resolved"
+            },
+            {
+              "label": "Pulmonary embolism",
+              "icd10": "I26.99",
+              "action": "diagnosed",
+              "onset": "2023-10-14"
+            }
+          ],
+          "state": {
+            "weight_kg": 58.0,
+            "hr": 80,
+            "bp": [
+              114,
+              72
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-24T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-10-24T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-24T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2023-10-24T11:20",
+              "body": "TCM visit, 12 days after C-section, 10 days after PE.\n\nBaby came along in the car seat, sleeping through most of it. She's tired in the newborn way. Breathing better each day - winded on the stairs still, no chest pain now. Doing her own enoxaparin shots twice a day, bruising at the injection sites only. Incision sore but healing. Mood ok, sleep broken by feeds.\n\nMeds reconciled with discharge list: enoxaparin 60 q12h, methimazole 10, cabergoline 0.5 twice weekly, phenytoin 300, prenatal vitamin, albuterol prn.\n\nExam: comfortable at rest, vitals as charted, sats fine on RA. Lungs clear. Heart regular. Calves soft, non-tender. Incision clean, dry, intact. Abdomen soft.\n\nA/P\n1. Postpartum PE - provoked. Enoxaparin x3 months per hospital plan; hematology to confirm duration. CBC today for platelets on LMWH.\n2. Postpartum - OB visit scheduled. Watch mood.\n3. Thyroid/pituitary - endo follow-up after delivery, she's booked.\n4. Epilepsy - no seizures; phenytoin unchanged.\nReturn precautions for chest pain, bleeding, leg swelling. Check in in 6-8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "telephone",
+          "start": "2023-11-08T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Fatigue and bruising",
+              "author": "PCP",
+              "date": "2023-11-08T09:20",
+              "body": "Texted this morning, then I called her. For about a week, exhausted beyond what the newborn explains, and new bruises on both arms that aren't at her injection sites. No bleeding gums, no blood in urine or stool, no fever. Still on enoxaparin.\n\nWants to come in - asked her to come to the lab now for a CBC with diff and I'll call with results today."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08b",
+          "kind": "lab_only",
+          "start": "2023-11-08T10:30",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-11-08T10:30",
+              "resulted": "2023-11-08T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 41
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-08T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Abnormal CBC",
+              "author": "PCP",
+              "date": "2023-11-08T15:30",
+              "body": "WBC 2.3, Hgb 9.0, plt 41. Lab called with smear review flag: abnormal promyelocytes present. Concerning for acute leukemia, possibly APL, which is an emergency given bleeding risk and she is on enoxaparin.\n\nCalled pt: hold tonight's enoxaparin dose. Spoke with the on-call hematologist at the regional cancer center - direct admission tonight. Pt's sister to drive her; husband staying with the baby. Pt frightened but clear on the plan."
+            }
+          ],
+          "state": {
+            "labs": {
+              "White Blood Cells": 2.3,
+              "Hemoglobin": 9.0,
+              "Platelets": 41
+            }
+          }
+        },
+        {
+          "id": "2023-11-08c",
+          "kind": "hospital_admission",
+          "start": "2023-11-08T21:30",
+          "end": "2023-12-07T12:00",
+          "service": "Hematology & Oncology",
+          "reason": "New acute promyelocytic leukemia, induction",
+          "conditions": [
+            {
+              "label": "Acute promyelocytic leukemia with t(15;17)",
+              "icd10": "C92.40",
+              "action": "diagnosed",
+              "onset": "2023-11-08"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "held for leukemia and coagulopathy"
+            },
+            {
+              "drug_text": "tretinoin 10 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 4 capsules (40 mg) by mouth twice daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Acute promyelocytic leukemia"
+            },
+            {
+              "drug_text": "arsenic trioxide 1 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "IV infusion per oncology protocol",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Acute promyelocytic leukemia"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-16T05:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 38
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-11-16T05:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18.7
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-16T05:30",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 92
+                },
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL{FEU}",
+                  "text": ">20"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hematology-Oncology Discharge Summary",
+              "author": "hematology-oncology",
+              "date": "2023-12-12T10:00",
+              "body": "Hematology/Oncology Inpatient Service - Discharge Summary\nAdmitted 11/08/2023 (evening) - Discharged 12/07/2023\n\nDiagnosis: acute promyelocytic leukemia, t(15;17), PML-RARA positive. Complicated by disseminated intravascular coagulation.\n\n31 yo, four weeks postpartum, on enoxaparin for a provoked pulmonary embolism, referred by her PCP with fatigue, arm bruising and pancytopenia with abnormal promyelocytes. Pale and fatigued on arrival. Allergies: seasonal pollen.\n\nCourse: bone marrow confirmed APL with t(15;17); PML-RARA detected. Enoxaparin held on arrival. Induction with tretinoin 40 mg PO BID plus IV arsenic trioxide.\n\nOn 11/16 nursing noted persistent oozing from her peripheral IV and central line sites with repeatedly blood-stained dressings and slow bleeding after venipuncture. Alert, pale, mildly tachycardic. Petechiae on the lower legs, mild arm bruising, no active external hemorrhage, no hepatosplenomegaly. Smear and coagulation studies sent: platelets 38, fibrinogen 92 mg/dL, PT 18.7 s, INR 1.7, D-dimer >20 ug/mL FEU. DIC. Managed with platelet and cryoprecipitate transfusions to targets with daily coags; oozing stopped and coagulation normalized over the following week.\n\nEnd-of-induction marrow: complete remission.\n\nDischarge meds: tretinoin 40 mg PO BID; arsenic trioxide continues as outpatient infusions (consolidation, cancer center infusion suite); enoxaparin 60 mg SC q12h restarted now that counts have recovered, to complete 3 months for the PE; methimazole 10 mg daily; cabergoline 0.5 mg twice weekly; phenytoin 300 mg daily; prenatal vitamin; albuterol prn.\n\nFollow-up: heme/onc clinic weekly during consolidation; PCP 1-2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "office_visit",
+          "start": "2023-12-19T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, APL",
+          "conditions": [
+            {
+              "label": "Disseminated intravascular coagulation",
+              "icd10": "D65",
+              "action": "diagnosed",
+              "onset": "2023-11-16"
+            },
+            {
+              "label": "Disseminated intravascular coagulation",
+              "icd10": "D65",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 60 mg under the skin every 12 hours",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Pulmonary embolism"
+            }
+          ],
+          "state": {
+            "weight_kg": 54.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-12-19T13:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-12-19T13:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-12-19T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2023-12-19T14:05",
+              "body": "First visit since her leukemia admission (11/8-12/7). Discharge summary reviewed.\n\nAPL with t(15;17), induction ATRA + arsenic, course complicated by DIC on 11/16 that resolved with transfusion support. End-of-induction marrow in remission. Now in consolidation at the cancer center, arsenic infusions on their schedule and ATRA by mouth; they're drawing her counts weekly so I did not repeat a CBC today. Enoxaparin restarted at discharge for the PE.\n\nShe's tired, appetite coming back, sister and her mom helping with the baby. No bleeding, no fevers, no shortness of breath.\n\nMeds reconciled: tretinoin 40 BID, arsenic trioxide IV per onc, enoxaparin 60 q12h, methimazole 10, cabergoline 0.5 twice weekly, phenytoin 300, prenatal vitamin, albuterol prn.\n\nExam: thin, pale but looks better than I expected. Vitals as charted. Old line sites healed. A few fading bruises on the forearms, no petechiae. Lungs clear. Heart regular. No edema.\n\nA/P\n1. APL in consolidation - onc leads. Flu shot today (inactivated, cleared by onc).\n2. DIC - resolved.\n3. PE - enoxaparin through mid-January, hematology will say when to stop.\n4. Endocrine - stable on methimazole/cabergoline.\n5. Postpartum, coping well with a lot of support. Texting me is fine for anything."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

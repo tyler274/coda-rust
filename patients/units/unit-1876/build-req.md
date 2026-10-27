@@ -109,3 +109,8 @@ trimester prenatal labs or preeclampsia baseline labs are reported from the OB v
   cancelled visit.
 - Vitals at practice visits normal except as above; weight steady near 95 kg.
 - No acute illnesses, injuries, new diagnoses or life events beyond the timeline.
+
+
+## Last seen
+
+The practice last saw MRN00001876 on 2025-08-25. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.

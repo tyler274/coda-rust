@@ -225,67 +225,13 @@
           ]
         },
         {
-          "id": "2025-09-09a",
-          "kind": "nurse_visit",
-          "start": "2025-09-09T10:10",
-          "reason": "Influenza and Tdap vaccines",
-          "measure": [
-            "bp",
-            "hr"
-          ],
-          "immunizations": [
-            {
-              "vaccine": "Influenza, trivalent, injectable",
-              "date": "2025-09-09T10:15"
-            },
-            {
-              "vaccine": "Tdap",
-              "date": "2025-09-09T10:17"
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Immunization administration",
-              "performed": "2025-09-09T10:15"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Nursing Note",
-              "title": "Immunizations",
-              "author": "RN",
-              "date": "2025-09-09T10:25",
-              "body": "29 wk pregnant, here for flu and Tdap, OB requested Tdap be given here. No prior vaccine reactions. Flu 0.5 mL IM L deltoid, Tdap 0.5 mL IM R deltoid. VIS given for both. BP normal. Waited 15 min, no issues."
-            }
-          ]
-        },
-        {
           "id": "2025-10-14a",
           "kind": "ed_visit",
           "start": "2025-10-14T06:40",
           "end": "2025-10-14T09:15",
           "service": "Emergency Medicine",
           "reason": "Seizure at home, 34 weeks pregnant",
-          "conditions": [
-            {
-              "label": "Eclampsia",
-              "icd10": "O15.03",
-              "action": "diagnosed",
-              "onset": "2025-10-14"
-            },
-            {
-              "label": "Acute kidney injury",
-              "icd10": "N17.9",
-              "action": "diagnosed",
-              "onset": "2025-10-14"
-            },
-            {
-              "label": "Hypertensive retinopathy",
-              "icd10": "H35.033",
-              "action": "diagnosed",
-              "onset": "2025-10-14"
-            }
-          ],
+          "conditions": [],
           "vitals": [
             {
               "time": "2025-10-14T06:46",
@@ -366,15 +312,7 @@
           "end": "2025-10-18T11:40",
           "service": "Obstetrics & Gynecology",
           "reason": "Eclampsia at 34 weeks, delivery",
-          "conditions": [
-            {
-              "label": "Pregnant state",
-              "icd10": "Z33.1",
-              "action": "resolved",
-              "onset": "2025-03-04",
-              "note": "Delivered 2025-10-14"
-            }
-          ],
+          "conditions": [],
           "vitals": [
             {
               "time": "2025-10-14T09:40",
@@ -469,26 +407,7 @@
               ]
             }
           ],
-          "medications": [
-            {
-              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
-              "action": "stop",
-              "reason": "Delivered"
-            },
-            {
-              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
-              "action": "start",
-              "sig": "Take 1 tablet by mouth daily",
-              "dose": {
-                "value": 30,
-                "unit": "mg"
-              },
-              "frequency": "DAILY",
-              "route": "Oral",
-              "course": "chronic",
-              "reason": "Postpartum hypertension after eclampsia"
-            }
-          ],
+          "medications": [],
           "procedures": [
             {
               "procedure": "Initial hospital inpatient care",
@@ -513,166 +432,13 @@
           ]
         },
         {
-          "id": "2025-10-20a",
-          "kind": "telephone",
-          "start": "2025-10-20T15:05",
-          "reason": "Post-discharge call",
-          "documents": [
-            {
-              "type": "Telephone Encounter",
-              "title": "Post-Discharge Call",
-              "author": "RN",
-              "date": "2025-10-20T15:05",
-              "body": "Hospital records arrived today. Called pt. Home since Sat. On nifedipine ER 30 daily. Home readings 130-142/84-92. No headache, vision ok, no further seizures, no RUQ pain. Husband home with her this week. Not driving. Visit with PCP Thurs 10/23 at 1:40, pt aware. ED precautions reviewed."
-            }
-          ]
-        },
-        {
-          "id": "2025-10-23a",
-          "kind": "office_visit",
-          "start": "2025-10-23T13:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "Hospital follow-up after eclampsia",
-          "state": {
-            "weight_kg": 70.0,
-            "labs": {
-              "Creatinine": 0.9,
-              "Platelets": 236,
-              "Aspartate Aminotransferase": 22,
-              "Alanine Aminotransferase": 24,
-              "Hemoglobin": 11.3
-            },
-            "bp": [
-              136,
-              86
-            ]
-          },
-          "measure": [
-            "hr",
-            "temp_c",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Comprehensive Metabolic Panel (CMP)",
-              "collected": "2025-10-23T14:20",
-              "results": [
-                {
-                  "test": "Creatinine",
-                  "value": 0.9
-                },
-                {
-                  "test": "Potassium"
-                },
-                {
-                  "test": "Aspartate Aminotransferase"
-                },
-                {
-                  "test": "Alanine Aminotransferase"
-                }
-              ]
-            },
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-10-23T14:20",
-              "results": [
-                {
-                  "test": "Hemoglobin"
-                },
-                {
-                  "test": "Platelets"
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-9 total score",
-              "value": 4
-            }
-          ],
-          "orders": [
-            {
-              "id": "ophtho-2025",
-              "action": "placed",
-              "order": "Ophthalmology referral",
-              "category": "referral",
-              "to": "Ophthalmology",
-              "reason": "Hypertensive retinopathy with cotton wool spots during eclampsia"
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Transitional care management, high complexity",
-              "performed": "2025-10-23T13:40"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Post-Hospital Visit",
-              "author": "PCP",
-              "date": "2025-10-23T14:50",
-              "body": "TCM visit, 9 days postpartum after eclampsia.\n\nHospital course (records reviewed): 34w0d, two days of headache, flashing lights and mild RUQ pain, then a GTC seizure at home 10/14. ED BP 158/102, OB ICU 160/110. Cr 1.3 then 1.4, plt 105K then 110K, AST 70, ALT 80/65, 2+ protein, cotton wool spots again. EFW <10th %ile, AFI 3. Mag, labetalol, induced, vaginal delivery that evening. No further seizures. D/c 10/18 on nifedipine ER 30, Cr 1.0, plt 158.\n\nToday: shaken by it but doing ok. Headache gone, vision normal, no new neuro symptoms. Sleeping in pieces. Home BPs 128-140/82-90. Not driving yet.\n\nMeds: nifedipine ER 30 daily, prenatal vitamin. Aspirin stopped. NKDA.\n\nExam: BP 136/86. Alert, fully oriented, speech normal. CN intact, strength and sensation symmetric, reflexes 2+, no clonus. Heart regular. Lungs clear. Abdomen soft, nontender, no RUQ tenderness. Trace ankle edema. PHQ-9 = 4.\n\nA/P:\n1. Postpartum HTN after eclampsia: at goal on nifedipine ER 30. Daily home BP, send log in 1-2 weeks.\n2. AKI: CMP/CBC today.\n3. Hypertensive retinopathy: ophthalmology again, same office as last year.\n4. Eclampsia: single seizure, no recurrence, neuro exam normal today. Driving: wait until cleared at the 6-week visit.\n5. Mood: PHQ-9 4. Lot to absorb with a second severe episode in a year; she has support. Will recheck.\n\nRTC ~6 weeks postpartum."
-            },
-            {
-              "type": "Patient Message",
-              "title": "Lab Results",
-              "author": "PCP",
-              "date": "2025-10-24T12:15",
-              "body": "Your creatinine today is 0.9, coming down nicely from 1.4 in the hospital. Platelets and liver tests are back to normal. Same plan."
-            }
-          ],
-          "vitals": {
-            "bp": [
-              136,
-              86
-            ]
-          }
-        },
-        {
-          "id": "2025-11-04a",
-          "kind": "portal_message",
-          "start": "2025-11-04T21:10",
-          "documents": [
-            {
-              "type": "Patient Message",
-              "title": "BP Log",
-              "author": "patient",
-              "date": "2025-11-04T21:10",
-              "body": "BP log for the past 10 days attached. Most are 118-126 over 76-82. Lowest 112/72. A little dizzy sometimes when I stand quickly at night feedings but it passes."
-            },
-            {
-              "type": "Patient Message",
-              "title": "RE: BP Log",
-              "author": "PCP",
-              "date": "2025-11-05T09:20",
-              "body": "Thanks, that's a good trend. Stand up slowly at night and drink plenty of water. If you start seeing readings under 100 or the dizziness gets worse, message me and we may stop the nifedipine early. Otherwise we'll decide at your visit 11/25."
-            }
-          ]
-        },
-        {
           "id": "2025-11-18a",
           "kind": "specialist_visit",
           "start": "2025-11-18T14:00",
           "service": "Ophthalmology",
           "reason": "Retinal follow-up after eclampsia",
-          "conditions": [
-            {
-              "label": "Hypertensive retinopathy",
-              "icd10": "H35.033",
-              "action": "resolved",
-              "onset": "2025-10-14"
-            }
-          ],
-          "orders": [
-            {
-              "id": "ophtho-2025",
-              "action": "done",
-              "date": "2025-11-18T14:00"
-            }
-          ],
+          "conditions": [],
+          "orders": [],
           "documents": [
             {
               "type": "Consult Note",
@@ -682,122 +448,6 @@
               "body": "Re: Emily Lemieux, DOB 04/22/1992, seen 11/18/2025.\n\nKnown to us from 12/2024, when her retinal changes from preeclampsia had cleared. Seen again after eclampsia at 34 weeks last month, with arteriolar narrowing and cotton wool spots documented by the hospital.\n\nNo visual complaints now. NKDA. On nifedipine postpartum.\n\nVA 20/20 each eye. Pupils normal. IOP normal OU. Anterior segments quiet.\nDilated exam: optic nerves healthy OU. Arterioles normal caliber. No cotton wool spots, hemorrhages, exudates or edema. Maculae normal. Periphery flat.\n\nImpression: hypertensive retinopathy of pregnancy, resolved again, normal fundi.\nPlan: routine eye care. Please send her back with any future hypertensive episode."
             }
           ]
-        },
-        {
-          "id": "2025-11-25a",
-          "kind": "office_visit",
-          "start": "2025-11-25T10:40",
-          "service": "Internal Medicine — Primary Care",
-          "reason": "6-week postpartum BP follow-up",
-          "conditions": [
-            {
-              "label": "Eclampsia",
-              "icd10": "O15.03",
-              "action": "resolved",
-              "onset": "2025-10-14"
-            },
-            {
-              "label": "Acute kidney injury",
-              "icd10": "N17.9",
-              "action": "resolved",
-              "onset": "2025-10-14"
-            }
-          ],
-          "medications": [
-            {
-              "drug_text": "nifedipine 30 MG 24HR Extended Release Oral Tablet",
-              "action": "stop",
-              "reason": "Pressures normal postpartum"
-            }
-          ],
-          "state": {
-            "labs": {
-              "Creatinine": 0.7,
-              "Hemoglobin": 12.9
-            },
-            "bp": [
-              118,
-              76
-            ]
-          },
-          "measure": [
-            "hr",
-            "spo2",
-            "weight_kg"
-          ],
-          "labs": [
-            {
-              "panel": "Basic Metabolic Panel (BMP)",
-              "collected": "2025-11-25T11:15",
-              "results": [
-                {
-                  "test": "Creatinine",
-                  "value": 0.7
-                },
-                {
-                  "test": "Potassium"
-                }
-              ]
-            },
-            {
-              "panel": "Complete Blood Count (CBC)",
-              "collected": "2025-11-25T11:15",
-              "results": [
-                {
-                  "test": "Hemoglobin"
-                },
-                {
-                  "test": "Platelets"
-                }
-              ]
-            },
-            {
-              "panel": "Hepatic Panel (LFT)",
-              "collected": "2025-11-25T11:15",
-              "results": [
-                {
-                  "test": "Aspartate Aminotransferase"
-                },
-                {
-                  "test": "Alanine Aminotransferase"
-                }
-              ]
-            }
-          ],
-          "surveys": [
-            {
-              "survey": "PHQ-9 total score",
-              "value": 3
-            }
-          ],
-          "procedures": [
-            {
-              "procedure": "Office visit, established patient, moderate MDM",
-              "performed": "2025-11-25T10:40"
-            }
-          ],
-          "documents": [
-            {
-              "type": "Progress Notes",
-              "title": "Office Visit",
-              "author": "PCP",
-              "date": "2025-11-25T11:25",
-              "body": "6 wk postpartum after eclampsia.\n\nFeels like herself again. Home BPs 110-122/70-80 on nifedipine, the standing dizziness is less. No headaches, no visual change, no seizure-like events. Eye exam last week normal per letter. OB postpartum visit done; family planning is with them.\n\nBP 118/76. Well. Neuro nonfocal. Heart regular, lungs clear, no edema. PHQ-9 3.\n\nA/P:\n1. Postpartum HTN resolved: stop nifedipine. Home BP twice weekly for a month, message if over 135/85.\n2. Eclampsia, resolved. No further seizures, neuro exam normal. Cleared to drive.\n3. AKI: repeat BMP today, expect baseline.\n4. Hypertensive retinopathy resolved per ophthalmology.\n5. Problem list keeps history of preeclampsia; eclampsia in Oct 2025 noted there. Two pregnancies now with severe hypertensive disease plus a family history on both sides, so her long-term CV risk is real. Physical in Feb with lipids and A1c, then yearly BP, lipids, glucose.\n6. Mood ok.\n\nRTC Feb for physical."
-            },
-            {
-              "type": "Patient Message",
-              "title": "Lab Results",
-              "author": "PCP",
-              "date": "2025-11-26T08:10",
-              "body": "Creatinine 0.7, back to your normal. Blood counts and liver tests normal. Kidneys have recovered again."
-            }
-          ],
-          "vitals": {
-            "bp": [
-              118,
-              76
-            ]
-          }
         }
       ]
     }

@@ -1,0 +1,86 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001838",
+      "given": "Sadie",
+      "family": "Nakamura",
+      "birth_date": "1997-11-10",
+      "address_line": "48 Cranberry Hollow Rd, Williamsburg, MA 01096",
+      "phone": "+1-802-555-0134",
+      "email": "sadie.nakamura@example.test",
+      "marital_status": "single",
+      "summary": "Healthy elementary school teacher who joined in 2024. In July 2025 she survived a severe crash in which a friend was killed and developed an acute stress reaction managed by outside psychiatry and therapy, with one ED visit in January 2026 and no medication.",
+      "events": [
+        {
+          "id": "2024-08-26a",
+          "kind": "telephone",
+          "start": "2024-08-26T10:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2024-08-26T10:52", "body": "Caller is a 26 y/o teacher looking to establish primary care with us. Has not had a local doctor; last seen at her old practice in 2023. Membership terms and fee reviewed, she enrolled over the phone. Insurance: employer PPO, card info entered. New patient physical scheduled 9/10 at 8:00 so she can come before school. Records release form emailed for her prior PCP."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:00",
+          "end": "2024-09-10T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 61.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.84, "Low Density Lipoprotein": 93}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T08:45", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-10T08:45", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2024-09-10T08:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-10T08:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-09-10T08:50"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2024-09-10T12:30", "body": "26F here to establish. Teaches second grade, first week of the new school year went fine. Feels well, no complaints today.\n\nPMH: none. No hospitalizations, no surgeries.\nMeds: none, no supplements.\nAllergies: NKDA.\nFH: mother - hypothyroidism. Father - hypertension. No early heart disease, no cancers she knows of.\nSH: single, lives alone. Never a smoker, does not drink at all, no recreational drugs. Walks most evenings, likes to hike on weekends.\nGYN: regular cycles. Last Pap was at her old office, thinks 2023, told it was fine. Not currently sexually active.\nPsych: no history of depression, anxiety or counseling. PHQ-2 0.\n\nROS: negative in full.\n\nExam: vitals as charted, BMI about 22. Well appearing. HEENT unremarkable, TMs clear. Neck supple, thyroid not enlarged, no nodes. Heart RRR without murmur. Lungs clear throughout. Abdomen soft, nontender, no organomegaly. Skin without concerning lesions. Neuro grossly intact. Mood and affect bright.\n\nA/P: healthy adult, establishing care.\n- Baseline labs today: CBC, CMP, lipids, TSH (mom's thyroid history), one-time HIV and hep C screening.\n- Records release signed; will pull her prior Pap and vaccine history before deciding what is due.\n- Flu and updated COVID vaccine once the fall supply is in; nurse visit next month.\n- Return in a year for her physical, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2024-09-12T16:05", "body": "Hi Sadie, all of your labs came back normal: blood counts, kidney and liver tests, cholesterol, and thyroid. HIV and hepatitis C screens were negative, so those never need repeating unless your risk changes. Nothing to do from here. Nice to have you with us."}
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "outside_records",
+          "start": "2024-10-01T11:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care practice", "author": "front desk", "date": "2024-10-01T11:20", "body": "Received 14 pages by fax from patient's previous primary care office, scanned to media.\n\nSummary for chart (RN review):\n- Cervical cytology 2023: negative for intraepithelial lesion or malignancy.\n- Childhood series complete per school record. HPV series completed in adolescence. Tdap given as an adult in 2021.\n- No chronic problems listed. No medications. NKDA.\n- Last visit there 2023, routine.\nNext Pap due 2026."}
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-17T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-17T15:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-17T15:37"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2024-10-17T15:55", "body": "Came by after school for vaccines. No fever or illness today, no prior reactions. Flu vaccine 0.5 mL IM to left arm; updated COVID vaccine 0.3 mL IM to right arm. VIS sheets reviewed. Observed 15 min, felt fine, left ambulatory."}
+          ]
+        }
+      ]
+    }
+  ]
+}

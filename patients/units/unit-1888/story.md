@@ -24,3 +24,8 @@
 - 2026-06-12 portal_message: physical results normal (P)
 - 2026-08-18 portal_message: scheduling the fall visit (P)
 - 2026-10-07 office_visit: booked follow-up with influenza vaccine (P)
+
+
+## Last seen
+
+The practice last saw MRN00001888 on 2024-07-23. Practice contacts after that day do not happen; outside care after it still does, and its records are filed as received without changing the practice's lists. Nothing is booked after today.
