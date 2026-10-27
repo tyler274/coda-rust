@@ -2,6 +2,11 @@
 
 Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
 
+The mail-only <a href="/infra/gcp/shared-mail/README%2Emd">shared-mail root</a> is owned here
+for production SMTP in `coda-health-prod`, with separate state and explicit
+saved-plan approval. This exception grants no authority over the referenced
+production application or clinical-evidence roots.
+
 ## Public marketing site preparation
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
@@ -635,6 +640,8 @@ Source: <a href="/submodules/coda-app/infra/gcp/README%2Emd#dated-release-and-se
 ## Shared mail service
 
 Products hosted outside the Rust VPC can use the `mail-relay` binary in `crates/gmail`.
+The mail-only <a href="/infra/gcp/shared-mail/README%2Emd">production root</a> owns its separate
+deployment in `coda-health-prod`; `rust-environments` continues to own staging.
 It wraps the existing `SmtpRelay`; it does not own product sign-in, message templates,
 recipients, send records or retry decisions. The physician server continues to use
 that same transport directly. There is one SMTP implementation and no additional
@@ -652,19 +659,24 @@ Cloud Run service, a runtime identity with no application-data roles, and a
 service-scoped invoker binding. `enable_physician_smtp_relay` must already be enabled:
 the adapter uses that existing network, subnet and NAT address, preserving the
 Workspace IP allowlist. It needs no Doppler token. Runtime settings are
-`MAIL_FROM=signin@codahealth.ai` and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
+`MAIL_FROM=signin@codahealth.ai`, `MAIL_NOTIFICATION_FROM=notifications@codahealth.ai`
+(the binary default), and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
 
 For Gym staging, the named caller is
 `serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com`.
-Production would use `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
-on its own production relay and authorized egress. This repository's infrastructure
-root remains staging-only: production preparation belongs to its separately authorized
-infrastructure owner and must not be planned or applied from this root. Do not grant a public invoker or
-route production through staging. The `mail_relay_url` output is both the caller's
+Production uses `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
+on its own relay and authorized egress, managed by `infra/gcp/shared-mail` in a
+separate state. Production must not be planned or applied from the Rust staging
+root. Neither root grants a public invoker or routes production through staging.
+The `mail_relay_url` output is both the caller's
 base URL and ID-token audience. Cloud Run IAM checks identity; the adapter does
 not add a second token verifier.
 
-`POST /send` accepts JSON `{to, subject, text, html?}`. The server fixes the sender.
+`POST /send` accepts JSON `{purpose, to, subject, text, html?}`. `purpose` is
+`signin` or `notification`; the service maps it to its two configured identities.
+Callers cannot supply an arbitrary From address. Omitted purpose retains the sign-in
+sender for older callers during relay-first deployment; unknown purposes are refused
+before SMTP. Qualify a new image on staging before separately approving production.
 HTTP 204 means the SMTP server accepted the message, not that a mailbox received it.
 HTTP 422 means invalid headers or an explicit SMTP refusal. HTTP 503 means acceptance
 could not be established; a caller must not assume it is safe to retry. No message
