@@ -1,0 +1,869 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002857",
+      "events": [
+        {
+          "id": "2022-01-11a",
+          "kind": "office_visit",
+          "start": "2022-01-11T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after C. difficile",
+          "conditions": [
+            {
+              "label": "Severe Clostridioides difficile infection without toxic megacolon",
+              "icd10": "A04.72",
+              "action": "resolved",
+              "onset": "2021-11-16"
+            },
+            {
+              "label": "Displaced fracture of left femoral neck",
+              "icd10": "S72.032A",
+              "action": "resolved",
+              "onset": "2021-09-07"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-01-11T13:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-01-11T13:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-01-11T13:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-01-11T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-01-11T13:45",
+              "body": "Six weeks out from the C. diff admission. Bowels completely normal. No fever. Appetite back, weight holding at 55. Energy better, out walking with her cane when it isn't icy.\nBreathing: back to her usual. Hasn't needed albuterol since November.\n\nExam: vitals as charted. Lungs clear. Abdomen soft, nontender.\n\nA/P\nC. difficile infection, resolved.\nCOPD, baseline; albuterol prn.\nL femoral neck fracture s/p L THA, healed, doing well.\nOsteoporosis: calcium, vitamin D, home exercises.\nCBC/BMP today to make sure counts and kidneys have settled."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-13a",
+          "kind": "portal_message",
+          "start": "2022-01-13T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-01-13T08:30",
+              "body": "Ruth, white count, blood count and kidney tests are all back to normal. Nice to see you looking like yourself again."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-01a",
+          "kind": "office_visit",
+          "start": "2022-03-01T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Worse cough and breathlessness",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2022-02-25"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days with a full glass of water, stay upright 30 minutes after",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            },
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (40 mg) by mouth each morning for 5 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-01T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit - COPD",
+              "author": "PCP",
+              "date": "2022-03-01T10:10",
+              "body": "Since Friday her cough has picked up, bringing up more thick sputum, and she gets winded making the bed. Using albuterol 3 or 4 times a day with some relief. No fever, no chest pain. Home COVID test negative x2.\n\nExam: vitals as charted, no fever. Mild end-expiratory wheeze both sides, no focal crackles. Speaking full sentences. Heart regular. No edema.\n\nA/P\nCOPD exacerbation, increased dyspnea, sputum volume and purulence.\n- Prednisone 40 mg x5 days.\n- Antibiotic given purulent sputum. Weighed the C. diff history; doxycycline is the lowest risk choice. 100 mg bid x5 days. Took it upright with water given her esophagus history.\n- Albuterol as needed.\nCall if no better in 3 days or worse sooner. If she gets diarrhea after this, call right away."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "ed_visit",
+          "start": "2022-03-21T08:45",
+          "end": "2022-03-21T15:30",
+          "service": "Emergency Medicine",
+          "reason": "Diarrhea, abdominal pain, fever",
+          "conditions": [
+            {
+              "label": "Severe Clostridioides difficile infection without toxic megacolon",
+              "icd10": "A04.72",
+              "action": "diagnosed",
+              "onset": "2022-03-18"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fidaxomicin 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Clostridioides difficile infection"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-03-21T08:50",
+              "temp_c": 38.2,
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 102,
+              "rr": 18,
+              "spo2": 95
+            },
+            {
+              "time": "2022-03-21T14:45",
+              "temp_c": 37.6,
+              "bp": [
+                124,
+                72
+              ],
+              "hr": 88,
+              "rr": 16,
+              "spo2": 96
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-21T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-21T09:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-21T10:00",
+              "results": [
+                {
+                  "test": "Clostridioides difficile toxin A+B, stool",
+                  "loinc": "34713-8",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Clostridioides difficile antigen (glutamate dehydrogenase), stool",
+                  "loinc": "34712-0",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2022-03-21T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2022-03-23T11:40",
+              "body": "Regional hospital emergency department, 3/21/2022.\n\nCC: diarrhea x3 days.\n\nHPI: 76F with osteoporosis, COPD and C. difficile infection in November 2021. Three days of watery diarrhea, belly pain and low-grade fevers, 6 to 8 unformed stools a day. Finished doxycycline and prednisone for a COPD flare about two weeks ago. No blood in stool. Tolerating fluids.\nPMH: osteoporosis with T12 fractures and L hip fracture s/p THA (2021); COPD; pill esophagitis; prior C. diff.\nMeds: calcium, vitamin D3, multivitamin, acetaminophen prn, albuterol prn.\nAllergies: NKDA.\nSocial: former smoker, minimal alcohol, retired teacher.\n\nVitals: T 38.2 C (100.8 F), HR 102, BP 135/85.\nExam: dry mucous membranes. Abdomen soft, mild diffuse tenderness, no rebound or guarding, not distended. \n\nLabs: WBC 15,000. Creatinine normal. Stool positive for C. difficile toxin and GDH antigen.\n\nCourse: 1 L IV fluid, heart rate improved to 88. Tolerating PO. Discussed admission; patient prefers home, husband present, able to drink. Reasonable.\n\nAssessment: second episode of C. difficile infection, severe by WBC criterion.\nPlan: fidaxomicin 200 mg twice daily x10 days (first dose given here). Hydrate. Return for worsening pain, distension, inability to keep fluids down or lightheadedness. PCP follow-up within a week."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "pharmacy",
+          "start": "2022-03-22T10:15",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Fidaxomicin coverage",
+              "author": "MA",
+              "date": "2022-03-22T10:15",
+              "body": "Pharmacy called: Part D plan requires prior auth for fidaxomicin. ED started it; PCP agreed to submit. PA submitted with diagnosis of second C. difficile episode, approved same afternoon. Pharmacy notified, husband picking up today. Pt has enough from the ED for tonight."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-23a",
+          "kind": "telephone",
+          "start": "2022-03-23T13:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2022-03-23T13:00",
+              "body": "ED record received, C. diff again. Pt on fidaxomicin, PA approved yesterday. Still 4 or 5 loose stools today, fewer than Monday. No fever this morning. Drinking broth and electrolyte drinks. Knows to return for belly swelling or lightheadedness. Video visit next Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "telehealth_visit",
+          "start": "2022-03-29T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, C. difficile",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved",
+              "onset": "2022-02-25"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-03-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Post-ED",
+              "author": "PCP",
+              "date": "2022-03-29T11:25",
+              "body": "Video visit, pt at home, identity verified, consents.\n\nED 3/21 for recurrent C. diff two weeks after doxycycline/prednisone. On fidaxomicin since then, day 8 of 10. Diarrhea down to 1 or 2 soft stools a day, no fever since Thursday, eating toast and chicken soup and more. Drinking well.\nChest: cough back to baseline, no albuterol for a week.\n\nA/P\n1. C. difficile infection, second episode, responding to fidaxomicin. Finish the course. If it comes back again we'd talk about GI referral for further options.\n2. COPD exacerbation, resolved.\n3. She asked if she should ever take antibiotics again. Only when truly needed, and remind any doctor about her C. diff.\nOffice visit in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "conditions": [
+            {
+              "label": "Severe Clostridioides difficile infection without toxic megacolon",
+              "icd10": "A04.72",
+              "action": "resolved",
+              "onset": "2022-03-18"
+            }
+          ],
+          "state": {
+            "weight_kg": 56.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-05-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-05-10T10:25",
+              "body": "No diarrhea since finishing fidaxomicin at the end of March. Weight up to 56.5. Feels well. Gardening again, careful with bending, uses a kneeler. Hip excellent. No falls.\n\nExam: vitals as charted. Lungs clear. Abdomen benign. L hip full painless range within precautions.\n\nA/P\nC. diff, resolved after second episode.\nCOPD baseline.\nOsteoporosis on calcium/D.\nAWV in September."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T09:45",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T09:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T09:45",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 33
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-09-20T09:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-20T09:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-09-20T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-20T09:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2022-09-20T09:40",
+              "body": "AWV.\n\nInterval since last AWV (2020): L hip fracture with THA and rehab 9/2021; pneumonia 10/2021; C. diff twice (11/2021, 3/2022); COPD flare 3/2022. All recovered.\n\nFunction: independent in ADLs. Walks without a cane now. Back at the balance class. Husband drives at night. No falls in 12 months.\nPHQ-2 0. Cognition: 3-word recall 3/3, clock normal.\nHome: rugs gone, night lights, grab bars, railings both sides of the stairs.\n\nExam: vitals as charted. Kyphosis. Lungs diminished at bases, no wheeze. Heart regular. No edema.\n\nPrevention: high-dose flu and bivalent COVID today. Mammogram due in spring. Shingrix, Tdap (2016), pneumococcal complete. Colon screening finished.\nLabs today.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-23a",
+          "kind": "portal_message",
+          "start": "2022-09-23T15:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2022-09-23T15:15",
+              "body": "Hi Ruth, all your labs from Tuesday are normal: kidney, liver, calcium, blood count, cholesterol, and vitamin D at 33. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "portal_message",
+          "start": "2023-01-17T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question",
+              "author": "patient",
+              "date": "2023-01-17T19:22",
+              "body": "My dentist wants to know if I have ever taken a bone medicine like Fosamax, before he does an extraction. I took it for a few weeks in 2018. What do I tell him?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question",
+              "author": "PCP",
+              "date": "2023-01-18T08:15",
+              "body": "Hi Ruth, you can tell him you took alendronate for about six weeks in 2018 and stopped it that spring, nothing since. With such a short course long ago he should be comfortable going ahead. Happy to talk to him directly if he wants."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "office_visit",
+          "start": "2023-03-22T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "state": {
+            "weight_kg": 57.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-22T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-03-22T10:55",
+              "body": "Good winter, no chest infections. Albuterol maybe once a month. Knees ache after the balance class, acetaminophen helps. Back stable. Weight back up to 57.\n\nExam: vitals as charted. Lungs clear, distant. Heart regular. Knees crepitant without effusion.\n\nA/P\nCOPD stable. Knee OA. Osteoporosis on calcium/D. Mammogram ordered. AWV in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-05a",
+          "kind": "imaging",
+          "start": "2023-04-05T09:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-04-05T09:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 2021, 2019. Scattered fibroglandular densities. No suspicious mass, calcification or distortion. Stable.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-04-05T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "MA",
+              "date": "2023-04-07T11:10",
+              "body": "Negative mammogram. Result released to portal and letter mailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "pharmacy",
+          "start": "2023-06-20T09:05",
+          "medications": [
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "stop",
+              "reason": "expired inhaler replaced"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "start",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheeze or shortness of breath",
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Albuterol refill",
+              "author": "MA",
+              "date": "2023-06-20T09:05",
+              "body": "Pharmacy refill request for albuterol HFA; pt says her inhaler from 2021 is past its date. Approved by PCP, 1 inhaler with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-27a",
+          "kind": "annual_physical",
+          "start": "2023-09-27T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-27T09:30",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-27T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-27T09:30",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 36
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-09-27T09:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-27T09:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-09-27T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-27T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-27T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2023-09-27T09:20",
+              "body": "AWV.\n\nQuiet year. No hospital visits, no infections, no falls.\nFunction: independent, cooks, gardens, drives in daylight. Balance class twice weekly.\nPHQ-2 0. Cognition intact by conversation and recall.\n\nExam: vitals as charted. Kyphosis stable. Lungs clear, distant. Heart regular. L hip well healed.\n\nPrevention: flu and updated COVID today. RSV vaccine recommended for her age with COPD; she'll come back in two weeks so she's not getting three at once. Mammogram April normal.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "RSV vaccine",
+          "immunizations": [
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-11T13:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2023-10-11T13:25",
+              "body": "RSV vaccine single dose IM L deltoid. Last vaccines 2 weeks ago, no reaction. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-13a",
+          "kind": "office_visit",
+          "start": "2024-03-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-03-13b",
+          "kind": "telephone",
+          "start": "2024-03-13T15:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2024-03-13T15:30",
+              "body": "Called re: missed 11 am appt. Pt apologized, wrote it on the wrong week in her calendar. Feeling fine. Rebooked April 10."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-10a",
+          "kind": "office_visit",
+          "start": "2024-04-10T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-04-10T11:20",
+              "body": "Sorry about March, she says. All well. One cold in January that stayed in her nose. Albuterol rarely. Back pain at its usual low level. Knees ok.\nStill on calcium twice a day and vitamin D, multivitamin.\n\nExam: vitals as charted. Lungs diminished at bases, clear. Heart regular. No edema.\n\nA/P\nCOPD, Knee OA, Osteoporosis: stable, no changes. AWV September."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "annual_physical",
+          "start": "2024-09-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T09:45",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-17T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T09:45",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-17T09:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-17T09:38"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-09-17T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-17T09:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2024-09-17T09:40",
+              "body": "AWV.\n\nWell this year. No ED, no hospital, no falls. Independent. Walks 20 minutes most days, balance class. Celebrated 53 years married this summer.\nPHQ-2 0. Recall 3/3.\nHearing: some trouble in restaurants, not bothered enough to test.\n\nExam: vitals as charted. Kyphosis. Lungs clear, distant. Heart regular. No edema.\n\nPrevention: flu and COVID today. RSV done 2023. Mammogram due spring 2025.\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "portal_message",
+          "start": "2024-09-20T10:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-09-20T10:45",
+              "body": "Labs from the wellness visit are normal, vitamin D 31. Keep taking the D and calcium."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "author": "patient",
+              "date": "2024-09-20T18:02",
+              "body": "Thank you! Arm was a little sore from the shots but fine now."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

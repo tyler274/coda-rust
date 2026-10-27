@@ -1,0 +1,1673 @@
+{
+  "unit": "unit-2571",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002571",
+      "given": "August",
+      "family": "Rosen",
+      "birth_date": "2001-10-11",
+      "address_line": "27 Lower Meadow Lane",
+      "phone": "+1-617-555-0193",
+      "email": "august.rosen@example.test",
+      "marital_status": "single",
+      "summary": "Young construction laborer with ADHD on methylphenidate and seasonal allergic rhinitis, followed for routine primary care from 2023; quit smoking in 2024. In February 2026, after the practice last saw him, a high-speed crash left him with diffuse axonal injury, cerebral edema with raised ICP and sympathetic storming; the practice learns of it mostly through his mother and late hospital records.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T15:40",
+          "reason": "new patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2023-08-29T15:40",
+              "author": "front desk",
+              "body": "Caller is a 21 y/o man looking for a new PCP; his old office is an hour each way and he works construction days so evening texting appeals to him. Membership explained, he will keep his employer plan for labs and meds. Takes a daily ADHD med and an allergy pill. New patient slot booked for the 12th at 7:30 so he can get to his site after. Release form for his prior PCP emailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T07:30",
+          "end": "2023-09-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, ADHD medication management",
+          "conditions": [
+            {
+              "label": "Attention-deficit hyperactivity disorder, combined type",
+              "action": "diagnosed",
+              "note": "longstanding, managed by prior PCP"
+            },
+            {
+              "label": "Allergic rhinitis due to pollen",
+              "action": "diagnosed",
+              "note": "seasonal"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "note": "1/2 pack per day"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methylphenidate hydrochloride 20 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "QAM",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ADHD, combined type; continued from prior PCP"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "seasonal allergic rhinitis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              67
+            ],
+            "hr": 71,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 81.4,
+            "height_cm": 180.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction laborer"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "2-3 beers on weekends"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-09-12T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-09-12T08:20",
+              "author": "PCP",
+              "body": "NEW PATIENT\n21M here to establish. Main need is continuing his ADHD medicine; previous PCP has prescribed it for years.\n\nADHD, combined type: on methylphenidate ER 20 mg every morning. Says it lets him get through a work day without losing track of tasks and keeps him safer around equipment. Takes it around 6 am, no doses after noon. Appetite a little lower at lunch, makes up at dinner. Sleeps 6-7 h. No palpitations, no chest discomfort, no fainting. Brother has ADHD too.\n\nAllergies (seasonal): itchy eyes and sneezing in spring and late summer, cetirizine 10 mg on bad days, OTC.\n\nPMH: ADHD, seasonal allergic rhinitis.\nPSH: T&A at 8. Right distal radius fracture at 16 repaired with plate and screws (ORIF), no ongoing wrist trouble.\nMeds: methylphenidate ER 20 mg qAM; cetirizine 10 mg prn.\nAllergies: NKDA.\nFH: father - HTN and high cholesterol. Mother - major depression. Older brother - ADHD.\nSH: construction laborer. Cigarettes about half a pack a day. Beer 2-3 on weekends only. No other substances. Single.\n\nExam: vitals as charted. Well appearing. TMs clear, turbinates mildly pale, oropharynx surgically absent tonsils. Neck supple. RRR without murmur, lungs clear, no wheeze. Abd soft. Well-healed volar scar R wrist, full ROM. Mood good, organized, linear.\n\nA/P\n1. ADHD, combined - stable on current dose. Continue methylphenidate ER 20 mg qAM. Mass PMP reviewed, fills consistent and from one prescriber. Controlled substance agreement reviewed and signed. Monthly e-scripts; visits q3-4 months with BP/pulse.\n2. Seasonal allergic rhinitis - cetirizine prn, fine.\n3. Tobacco - half ppd. Talked about it; he wants to cut down on his own for now. Offered help whenever he's ready.\n4. Records request to prior PCP for vaccines and anything else.\nRTC December."
+            },
+            {
+              "type": "Consent",
+              "title": "Controlled Substance Agreement",
+              "date": "2023-09-12T08:15",
+              "author": "PCP",
+              "body": "Controlled substance agreement for methylphenidate ER reviewed with the patient and signed. One prescriber, one pharmacy, no early refills, lost scripts not replaced, PMP checked each prescription cycle. Copy given to patient."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.6,
+            "height_cm": 180.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "outside_records",
+          "start": "2023-10-10T11:05",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2023-10-10T11:05",
+              "author": "front desk",
+              "body": "36 pages from his previous family practice, came in after we resent the release. Covers 2016-2023. Childhood series complete per the immunization printout; HPV series of 3 completed in his early teens; Tdap given at age 12. ADHD followed there on methylphenidate ER 20 mg each morning, no dose changes in the last several years. Seasonal allergies on cetirizine. Surgical history matches what he told us. No labs in the last 3 years. Filed to media; PCP flagged."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2023-10-11T07:10",
+              "author": "PCP",
+              "body": "Prior records read. Nothing new. Tdap was 2013 - due now-ish, will do at physical. HPV done. Fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu Vaccine",
+              "date": "2023-10-24T16:55",
+              "author": "RN",
+              "body": "Came in after work for flu shot. Afebrile, feels well, no prior reactions. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Left without issue."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "portal_message",
+          "start": "2023-11-07T20:12",
+          "reason": "methylphenidate refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2023-11-07T20:12",
+              "author": "patient",
+              "body": "hey doc, down to about 5 of the methylphenidate. same pharmacy as before"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2023-11-08T06:40",
+              "author": "PCP",
+              "body": "Sent this morning. I put in December and January as well, each dated so the pharmacy can fill them a month apart. See you in December."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 80.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-12T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ADHD Follow-up",
+              "date": "2023-12-12T07:55",
+              "author": "PCP",
+              "body": "f/u ADHD. Work slower in winter, still going. Med doing its job, no side effects besides the lunchtime appetite thing. Sleep ok. Still smoking, roughly the same.\nBP and HR fine today. Wt stable.\nPMP reviewed - one prescriber, on schedule.\nPlan: continue methylphenidate ER 20 mg qAM; scripts for Feb-Apr when due. Asked about smoking again, not yet. March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "portal_message",
+          "start": "2024-02-27T18:30",
+          "reason": "methylphenidate refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "meds",
+              "date": "2024-02-27T18:30",
+              "author": "patient",
+              "body": "pharmacy says they don't have a script for march?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: meds",
+              "date": "2024-02-28T09:15",
+              "author": "MA",
+              "body": "Hi August, the doctor sent March this morning; the pharmacy confirmed they have it now. Your next visit is March 19 at 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              74
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 81.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-03-19T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ADHD Follow-up",
+              "date": "2024-03-19T07:58",
+              "author": "PCP",
+              "body": "Here for ADHD check. Back on a bigger crew this spring, focus fine on the med. Allergies starting up with the pollen, sneezing in the mornings, cetirizine helps. Smoking unchanged; says he'd like to stop before summer but isn't ready to set a date.\nVitals ok. Nose a little boggy, no polyps. Heart regular, lungs clear.\nPMP checked.\nA/P: ADHD stable, same dose, 3 dated scripts sent. AR - can take cetirizine every day through the season. Tobacco - motivational talk, offered patch/med options, wants to try alone first. Physical in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "portal_message",
+          "start": "2024-04-23T21:04",
+          "reason": "allergy symptoms",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "allergies",
+              "date": "2024-04-23T21:04",
+              "author": "patient",
+              "body": "is it ok to take the zyrtec every day right now? eyes are killing me on site with all the dust and pollen"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: allergies",
+              "date": "2024-04-24T06:52",
+              "author": "PCP",
+              "body": "Yes, once daily through the season is fine and works better than catching up after symptoms start. Tell me if it isn't enough."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              69
+            ],
+            "hr": 73,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 81.4
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-06-18T07:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 9
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-18T07:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-06-18T07:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 44
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-18T07:55",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-06-18T07:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-06-18T07:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-18T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-06-18T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-06-18T08:05",
+              "author": "PCP",
+              "body": "PHYSICAL, 22M\nFeels well. Working long days, hydrating. ADHD controlled on methylphenidate ER 20 qAM. Allergies better now that the spring pollen is done. Still half a pack a day, thinking about quitting.\nROS negative - no exertional chest pain, palpitations, SOB, weight change, mood trouble.\nPHQ-9 1. AUDIT-C 3, weekend beers only.\nFH: dad HTN/lipids, mom depression, brother ADHD.\n\nExam: vitals as charted. Alert, fit. HEENT normal. No thyromegaly or nodes. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, no organomegaly. Skin: no rashes. Joints full ROM incl R wrist. Neuro grossly normal.\n\nA/P\n- Health maintenance: Tdap today (last 2013). Screening labs today: CBC, CMP, lipid panel (dad's cholesterol), one-time HIV and hep C.\n- Tobacco: strongly advised to quit, he's leaning toward going cold turkey in a few weeks. Quitline number given.\n- ADHD: stable, continue.\n- RTC Sept."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T12:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Your Lab Results",
+              "date": "2024-06-20T12:20",
+              "author": "PCP",
+              "body": "August - everything from Tuesday is normal: blood counts, kidney and liver numbers, sugar and cholesterol. HIV and hepatitis C screens are negative; neither needs repeating unless your risk changes. Nothing to do."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "portal_message",
+          "start": "2024-08-20T19:47",
+          "reason": "smoking update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "quit",
+              "date": "2024-08-20T19:47",
+              "author": "patient",
+              "body": "fyi i quit smoking. been about 2 weeks, no cigarettes since the start of the month. its rough at break time but im doing it"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: quit",
+              "date": "2024-08-21T06:35",
+              "author": "PCP",
+              "body": "That's great news, really. The first month is the hardest. If cravings get bad enough that you're about to start again, message me and we can add a patch or something for a few weeks - no shame in it. See you next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved",
+              "onset": "2024-08-01",
+              "note": "quit early August 2024"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2024-08-01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 67,
+            "spo2": 96,
+            "weight_kg": 82.1
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-09-17T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ADHD Follow-up",
+              "date": "2024-09-17T07:52",
+              "author": "PCP",
+              "body": "Still not smoking - six weeks or so, quit at the beginning of August without meds. Chews gum on breaks. ADHD fine on the usual dose, focus good at work.\nVitals unremarkable. Exam brief: heart regular, lungs clear.\nPMP reviewed.\nA/P: Former smoker now, problem list updated; congratulated. ADHD - continue methylphenidate ER 20 mg, Oct-Dec scripts. Flu and COVID shots at a nurse visit next month. RTC Jan."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-15T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-15T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-15T16:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall Vaccines",
+              "date": "2024-10-15T16:55",
+              "author": "RN",
+              "body": "Flu (trivalent) into the left arm, 2024-25 COVID into the right arm. No fever, no reactions in the past. Observed 15 minutes, fine. Back to work tomorrow, told him a sore arm is common."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T10:20",
+          "reason": "medication supply",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Call - Stock",
+              "date": "2024-12-03T10:20",
+              "author": "RN",
+              "body": "Pharmacist called: on backorder for methylphenidate ER 20 mg, the December script can't be filled this week. Patient prefers the chain pharmacy near his job site, which has it. Asked to cancel the remaining scripts at the old store. PCP sent December and January to the new pharmacy; old ones voided by phone. PMP shows no duplicate fill. Pt texted the new location."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-01-15a",
+          "kind": "portal_message",
+          "start": "2025-01-15T06:58",
+          "reason": "missed visit, refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "sorry about yesterday",
+              "date": "2025-01-15T06:58",
+              "author": "patient",
+              "body": "sorry I missed yesterday, crew got called out early for a pour and i forgot to cancel. I have maybe 4 days of pills left"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: sorry about yesterday",
+              "date": "2025-01-15T07:30",
+              "author": "PCP",
+              "body": "No problem, it happens. I sent one month to cover you. The front desk will text you a new early slot - I need to see you before the next batch."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "date": "2025-01-15T09:10",
+              "author": "front desk",
+              "body": "Texted pt, rebooked ADHD f/u for 1/28 at 7:30. Confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "vitals": {
+            "bp": [
+              111,
+              77
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 81.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-01-28T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ADHD Follow-up",
+              "date": "2025-01-28T07:54",
+              "author": "PCP",
+              "body": "Rescheduled ADHD visit. Doing well. Still off cigarettes since August, proud of it. Med working, no new side effects, sleeping fine. Winter work is mostly interior framing this year.\nBP/HR normal for him.\nPMP: single prescriber, new pharmacy only.\nA/P: continue methylphenidate ER 20 mg every morning; Feb-Apr scripts. Video visit in May is fine if he can't get off the site. Physical in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "pharmacy",
+          "start": "2025-03-04T13:15",
+          "reason": "prior authorization",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization - Methylphenidate ER",
+              "date": "2025-03-04T13:15",
+              "author": "MA",
+              "body": "Insurer's annual PA renewal for methylphenidate ER 20 mg tab. Submitted via portal with diagnosis (ADHD, combined type), duration of therapy, and that a single prescriber manages it. Approved same day through 03/2026. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "telehealth_visit",
+          "start": "2025-05-06T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-05-06T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - ADHD",
+              "date": "2025-05-06T12:28",
+              "author": "PCP",
+              "body": "Video from his truck on lunch break, he is in a parked vehicle, verbal consent for video. Location confirmed in-state.\nADHD steady, no issues. Spring allergies this year mild, taking cetirizine most days. No cigarettes.\nNo vitals - home cuff not available; checks at June physical.\nPMP reviewed.\nPlan: same dose, May-July scripts sent. Physical 6/24."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "annual_physical",
+          "start": "2025-06-24T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              117,
+              73
+            ],
+            "hr": 66,
+            "rr": 12,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 81.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-06-24T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-06-24T07:52",
+              "author": "PCP",
+              "body": "Annual exam, 23M.\nNo concerns. Has stayed off cigarettes almost a year. Weekend beers unchanged. ADHD controlled. No chest symptoms, palpitations or sleep problems on the stimulant.\nPHQ-2 0. AUDIT-C 3.\nExam: vitals in flowsheet. Alert and well. Ears, eyes, throat clear. Neck without nodes. Cardiac exam regular, no murmurs or rubs. Clear lung fields. Abdomen nontender. Extremities warm. Mood bright.\nA/P\n- Preventive: last year's labs normal, nothing due this year. Vaccines up to date; flu this fall.\n- Former smoker: reinforced.\n- ADHD: continue, Aug-Oct scripts when due. RTC November."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "portal_message",
+          "start": "2025-08-12T18:55",
+          "reason": "methylphenidate refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "august pills",
+              "date": "2025-08-12T18:55",
+              "author": "patient",
+              "body": "pharmacy texted me they need a new one for this month?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: august pills",
+              "date": "2025-08-13T06:45",
+              "author": "PCP",
+              "body": "My mistake - I had only queued July. August, September and October are at your pharmacy now. You're set until the November visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T19:22",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "appt",
+              "date": "2025-09-30T19:22",
+              "author": "patient",
+              "body": "can i move my november thing to a monday? and can i get the flu shot then too"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: appt",
+              "date": "2025-10-01T08:40",
+              "author": "front desk",
+              "body": "Moved you to Monday 11/10 at 7:30. We'll have your flu shot ready at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "office_visit",
+          "start": "2025-11-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up, flu vaccine",
+          "vitals": {
+            "bp": [
+              124,
+              70
+            ],
+            "hr": 60,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 81.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-11-10T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-10T07:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-10T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ADHD Follow-up",
+              "date": "2025-11-10T07:58",
+              "author": "PCP",
+              "body": "ADHD follow-up. Steady. Busy fall finishing a job before the ground freezes. Taking methylphenidate ER 20 every morning, no missed days he can think of, no side effects worth mentioning. Not smoking (since Aug 2024). Cetirizine only in season.\nExam: BP and pulse fine, afebrile. Heart regular, chest clear.\nPMP: consistent.\nA/P\n1. ADHD combined type - stable. Continue methylphenidate ER 20 mg qAM. Nov, Dec, Jan scripts sent, dated a month apart.\n2. Seasonal AR - prn cetirizine.\n3. Flu vaccine given today, R deltoid.\nRTC February."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T20:05",
+          "reason": "refill question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "january script",
+              "date": "2026-01-06T20:05",
+              "author": "patient",
+              "body": "pharmacy says the jan one is ready on the 9th, just checking thats right"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: january script",
+              "date": "2026-01-07T09:02",
+              "author": "MA",
+              "body": "Yes, that's right - it's dated to fill on or after the 9th. Your February visit is on the 17th at 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-07a",
+          "kind": "ed_visit",
+          "start": "2026-02-07T09:40",
+          "end": "2026-02-07T12:30",
+          "service": "Emergency Medicine",
+          "reason": "high-speed motor vehicle collision",
+          "vitals": [
+            {
+              "time": "2026-02-07T09:45",
+              "bp": [
+                122,
+                78
+              ],
+              "hr": 86,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-07T09:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-02-07T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 59
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-07T09:55",
+              "results": [
+                {
+                  "test": "Ethanol",
+                  "loinc": "5643-2",
+                  "unit": "mg/dL",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-02-07T10:05",
+              "text": "Indication: high-speed MVC, GCS 4, intubated. Technique: axial noncontrast images of the head with bone and soft tissue algorithms. Findings: No acute intracranial hemorrhage. No extra-axial collection. No mass or midline shift. Ventricles and basal cisterns patent. Calvarium and skull base intact without fracture. Paranasal sinuses and mastoids clear. Scalp without hematoma.",
+              "conclusion": "No intracranial hemorrhage, mass lesion or skull fracture."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-07T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record - Trauma Center",
+              "date": "2026-03-18T14:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL TRAUMA CENTER - EMERGENCY DEPARTMENT\nArrival 02/07/2026 09:40 by ALS ambulance. Trauma activation.\n\nHPI: 24 y/o M, unrestrained driver, car versus tree head-on at high speed per EMS. Intubated in the trauma bay on arrival to protect his airway. GCS 4 (E1 V1 M2). History from EMS and family by phone: ADHD and seasonal allergies.\nHome meds per family: methylphenidate extended-release 20 mg each morning; cetirizine 10 mg daily if needed.\nAllergies: NKDA.\nPSH: T&A at age 8; ORIF right distal radius at 16.\nFH (per mother): father hypertension and hyperlipidemia; mother major depressive disorder; older brother ADHD.\nSH: construction laborer; quit cigarettes roughly 18 months back (had been 1/2 ppd); 2-3 beers on weekends.\n\nVitals on the ventilator: BP 122/78, HR 86, SpO2 98%.\nExam: No scalp laceration, step-off or other sign of external head injury. Pupils equal and reactive. No lateralizing findings. Remainder of trauma survey per trauma flowsheet.\n\nData: CBC and chemistries unremarkable. Serum ethanol and urine toxicology negative. Noncontrast head CT: no hemorrhage, mass or fracture. EEG at bedside: background preserved, no electrographic seizures. MRI brain to follow once stable.\n\nED course / MDM: Severe closed head injury by exam with a CT that does not explain his coma. Neurosurgery consulted and saw him in the department. Admitted to the neurosurgical ICU.\n\nDisposition: admitted, critical condition.\n[Received by fax 03/18/2026 in response to records request]"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-07b",
+          "kind": "hospital_admission",
+          "start": "2026-02-07T12:30",
+          "end": "2026-03-06T11:00",
+          "service": "Neurosurgery — Intensive Care",
+          "reason": "severe traumatic brain injury after motor vehicle collision",
+          "vitals": [
+            {
+              "time": "2026-02-07T13:00",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 92,
+              "rr": 14,
+              "spo2": 98
+            },
+            {
+              "time": "2026-02-09T03:20",
+              "bp": [
+                190,
+                110
+              ],
+              "hr": 130,
+              "rr": 30,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-07T13:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 110
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-09T05:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 147
+                },
+                {
+                  "test": "Chloride",
+                  "value": 113
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-09T05:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-05T05:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-05T05:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.19
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-02-07T16:10",
+              "text": "Indication: TBI, follow-up after admission. Comparison: head CT from this morning. Findings: Diffuse effacement of the cerebral sulci and basal cisterns with loss of gray-white differentiation consistent with diffuse cerebral edema. No focal parenchymal lesion. No intracranial hemorrhage. No midline shift. Calvarium intact.",
+              "conclusion": "Diffuse cerebral edema without a focal lesion."
+            },
+            {
+              "study": "MRI brain without contrast",
+              "performed": "2026-02-09T14:00",
+              "text": "Indication: persistent coma after high-speed MVC with a nonfocal CT. Technique: multiplanar multisequence MRI of the brain without contrast, including diffusion-weighted and susceptibility-weighted imaging. Findings: Pattern of diffuse axonal injury. No intracranial hemorrhage, including on susceptibility imaging. No extra-axial collection. Diffuse cerebral swelling as on CT. No hydrocephalus.",
+              "conclusion": "Diffuse axonal injury without hemorrhage."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-07T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurosurgery ICU Admission Note",
+              "date": "2026-05-27T10:40",
+              "author": "neurosurgery",
+              "body": "NEUROSURGICAL ICU - ADMISSION NOTE\nDate of service: 02/07/2026\n\n24-year-old man brought up from our ED this afternoon after a high-speed crash; he was the unrestrained driver and the car hit a tree. Arrived intubated; on propofol for sedation and fentanyl for pain control.\nBackground: ADHD, combined type, and seasonal allergic rhinitis. Home medications methylphenidate ER 20 mg every morning and cetirizine 10 mg as needed - both held on admission. NKDA. Prior T&A (age 8) and right distal radius ORIF (age 16). Father: hypertension, hyperlipidemia. Mother: major depressive disorder. Brother: ADHD. Construction laborer, former smoker (quit about 18 months ago, half a pack a day), weekend beer.\n\nVitals: BP 110/70, HR 92, RR 14 (ventilator), SpO2 98% on FiO2 0.50.\nExam: GCS 6. Pupils equal and reactive. No external head trauma.\nLabs: Na 138, K 4.1, Cl 100, HCO3 24, BUN 18, Cr 0.9, glucose 110.\nImaging: repeat noncontrast head CT shows diffuse cerebral edema without a focal lesion.\n\nAssessment: Severe TBI with diffuse traumatic cerebral edema and elevated intracranial pressure. Comatose, ventilator dependent.\nPlan: Intraparenchymal ICP monitor placed at bedside; pressures elevated. Head of bed 30 degrees, sedation and analgesia as above, hypertonic saline for ICP control with sodium goals. MRI brain when safe to travel. Serial neuro checks. Home medications held."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Neurosurgery ICU Progress Note",
+              "date": "2026-05-27T10:41",
+              "author": "neurosurgery",
+              "body": "NEUROSURGICAL ICU - PROGRESS NOTE\nDate of service: 02/09/2026 (hospital day 3)\n\nStill comatose; he has not woken over the first 48 hours. Remains intubated on propofol and fentanyl.\nOvernight and this morning: recurrent spells of tachycardia to 130, blood pressure surging to 190/110, respiratory rate up to 30, temperature to 38.9 C, with drenching sweats.\nExam during a spell: pupils dilated, tone increased, extensor posturing. Between spells GCS 7.\nLabs: sodium 147 on hypertonic saline; remainder of chemistry and counts within normal limits.\nMRI brain today: diffuse axonal injury; no hemorrhage.\n\nAssessment:\n1. Diffuse axonal injury.\n2. Paroxysmal sympathetic hyperactivity - spells fit the pattern.\n3. Traumatic cerebral edema with elevated ICP - on hyperosmolar therapy.\n4. Coma; ventilator dependent.\nPlan: Start propranolol 20 mg per tube every 6 hours and gabapentin 300 mg per tube three times a day. Continue sedation and ICP management. Home methylphenidate and cetirizine remain on hold."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "ICU Transfer Summary",
+              "date": "2026-05-27T10:42",
+              "author": "neurosurgery",
+              "body": "TRANSFER SUMMARY - NEUROSURGICAL ICU TO INPATIENT BRAIN INJURY REHABILITATION\nAdmitted 02/07/2026. Transferred 03/06/2026.\n\nDiagnoses: diffuse axonal injury; traumatic cerebral edema with elevated intracranial pressure; paroxysmal sympathetic hyperactivity; coma; dependence on mechanical ventilation. Background ADHD (combined type) and seasonal allergic rhinitis.\n\nCourse: Unrestrained driver in a high-speed crash; GCS 4 in our ED with a head CT that showed no bleed or fracture. Repeat CT the same day showed diffuse cerebral edema and an ICP monitor confirmed raised pressure, managed with sedation (propofol), analgesia (fentanyl), positioning and hypertonic saline. MRI on day 3 showed diffuse axonal injury without hemorrhage. Sympathetic storming began on day 3 and settled after propranolol and gabapentin were started. Tracheostomy and percutaneous gastrostomy tube placed 02/19/2026 for prolonged ventilation and coma. Weaned off the ventilator to trach collar by 03/02/2026; propofol and fentanyl were stopped before then.\n\nStatus at transfer: opens eyes spontaneously; not yet consistently following commands. Trach collar. Fed by gastrostomy tube.\nLabs week of transfer: CBC and basic chemistry normal.\n\nMedications at transfer: propranolol 20 mg per tube every 6 hours; gabapentin 300 mg per tube three times daily. Held: methylphenidate ER 20 mg, cetirizine 10 mg.\nAllergies: NKDA.\nTransferred to an inpatient brain injury rehabilitation unit.\n[Received by fax 05/27/2026 after second request; copied to PCP]"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Hospital Records Reviewed",
+              "date": "2026-05-28T07:15",
+              "author": "PCP",
+              "body": "Read the trauma center ICU notes and transfer summary that came in yesterday. Diffuse axonal injury with cerebral edema and raised ICP, sympathetic storming treated with propranolol and gabapentin, trach and G-tube 2/19, off the vent by early March, moved to inpatient brain injury rehab 3/6. Methylphenidate and cetirizine on hold. Nothing from rehab yet. Will go over all of it when he is back with us."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "telephone",
+          "start": "2026-02-09T08:05",
+          "reason": "family call - patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call From Mother",
+              "date": "2026-02-09T08:25",
+              "author": "PCP",
+              "body": "Patient's mother called the practice line; she is listed as his emergency contact. August was in a serious car crash Saturday morning and is in the neuro ICU at the regional trauma center, on a breathing machine and not awake. She says the doctors there are worried about swelling in his brain. She wanted us to know and asked us to cancel his February appointment. Expressed our support; told her she can call this line anytime. Will request records from the trauma center. Front desk to cancel 2/17."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "pharmacy",
+          "start": "2026-02-11T10:40",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request - Methylphenidate ER",
+              "date": "2026-02-11T10:40",
+              "author": "MA",
+              "body": "Electronic refill request from his pharmacy for methylphenidate ER 20 mg (Feb). Per PCP, not sending - patient currently hospitalized. Pharmacy told to hold."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "office_visit",
+          "start": "2026-02-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ADHD follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "telephone",
+          "start": "2026-02-24T11:10",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request - Trauma Center",
+              "date": "2026-02-24T11:10",
+              "author": "front desk",
+              "body": "Faxed request to the trauma center HIM department for ED record, imaging reports and any ICU notes, admission 2/7/26. Told 2-4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "telephone",
+          "start": "2026-03-11T17:30",
+          "reason": "family update",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Update From Mother",
+              "date": "2026-03-11T17:40",
+              "author": "RN",
+              "body": "Mother called with an update. August came off the ventilator, has a trach and a feeding tube, and was moved last Friday to an inpatient brain injury rehab unit. Opens his eyes but isn't really talking or following instructions yet. She asked whether we needed anything; told her we'd like the rehab unit to send updates. PCP informed."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telephone",
+          "start": "2026-04-21T09:30",
+          "reason": "records follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Follow-up",
+              "date": "2026-04-21T09:30",
+              "author": "front desk",
+              "body": "ED record arrived in March; still nothing from the ICU stay. Resent request to the trauma center for ICU notes and the transfer summary. Marked second request."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "telephone",
+          "start": "2026-08-17T13:15",
+          "reason": "post-discharge scheduling",
+          "orders": [
+            {
+              "id": "rehab-records",
+              "action": "placed",
+              "order": "Records request, inpatient brain injury rehabilitation",
+              "category": "referral",
+              "to": "Inpatient brain injury rehabilitation",
+              "reason": "discharge summary and medication list"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call From Mother - Home From Rehab",
+              "date": "2026-08-17T13:30",
+              "author": "RN",
+              "body": "Mother called. August was discharged home from the rehab unit last Wednesday, 8/12, and is staying with her and his father. Outpatient therapy is set up through the rehab program. She would like him seen here. Asked her to bring every medication bottle and any paperwork from rehab; she does not have a discharge summary yet. Booked post-hospital visit 9/8 at 10:00, 40 minutes, with mother attending. Records request faxed to the rehab unit today."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-08a",
+          "kind": "office_visit",
+          "start": "2026-09-08T10:00",
+          "reason": "post-hospital follow-up after traumatic brain injury",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "methylphenidate hydrochloride 20 MG Extended Release Oral Tablet": {
+        "code": "1091225",
+        "display": "8 HR methylphenidate hydrochloride 20 MG Extended Release Oral Tablet",
+        "ingredient": "methylphenidate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Ethanol": {
+        "code": "5643-2",
+        "display": "Ethanol [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

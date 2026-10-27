@@ -1,0 +1,379 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002235",
+      "events": [
+        {
+          "id": "2021-01-19a",
+          "kind": "pharmacy",
+          "start": "2021-01-19T16:30",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-01-18T10:30"}],
+          "documents": [
+            {"type": "Pharmacy Communication", "title": "Vaccine administration record", "author": "pharmacy", "date": "2021-01-19T16:30",
+             "body": "Immunization notification from community pharmacy: recombinant zoster vaccine dose 2 of 2 given 01/18/2021, right deltoid. Series complete."}
+          ]
+        },
+        {
+          "id": "2021-01-26a",
+          "kind": "office_visit",
+          "start": "2021-01-26T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, preop paperwork",
+          "state": {"labs": {"Hemoglobin A1c": 8.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-01-26T10:00", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2021-01-26T10:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-01-26T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-01-26T10:20",
+             "body": "Diabetes visit plus preop evaluation for R cataract surgery in March (outside surgery center, local anesthesia with sedation).\n\nNo cardiopulmonary symptoms. Walks a mile on the flat without trouble. No anesthesia problems in family.\n\nExam: vitals per chart. Heart regular, no murmur. Lungs clear.\n\nAssessment: low-risk procedure, no further testing needed. Hold metformin the morning of surgery, take BP meds as usual. Form completed and faxed back to ophthalmology.\n\nDM2: A1c today. COVID vaccine - he's signed up through the state site for February."}
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "outside_records",
+          "start": "2021-03-02T11:45",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-03T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-24T13:20"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "COVID-19 vaccination card", "author": "MA", "date": "2021-03-02T11:45",
+             "body": "Patient dropped off a copy of his vaccination card at the front desk. Pfizer dose 1 on 2/3/21 and dose 2 on 2/24/21, both at a county vaccination clinic. Entered into immunization history; card returned."}
+          ]
+        },
+        {
+          "id": "2021-03-23a",
+          "kind": "outside_records",
+          "start": "2021-03-23T14:00",
+          "procedures": [{"procedure": "Cataract extraction with intraocular lens", "performed": "2021-03-09T08:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Operative note: right cataract extraction", "author": "ophthalmology", "date": "2021-03-23T14:00",
+             "body": "Ambulatory surgery center operative report\nDate of surgery: 03/09/2021\nProcedure: phacoemulsification of right eye cataract with posterior chamber intraocular lens implantation.\nAnesthesia: topical and intracameral with monitored sedation.\nFindings: dense nuclear cataract right eye. Lens placed in the capsular bag, centered. No complications.\nAllergies: NKDA.\nPostop: antibiotic and steroid drops per protocol. Day 1 check: acuity 20/40 uncorrected, pressure normal, clear cornea. Next visit 1 month."}
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "office_visit",
+          "start": "2021-05-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; right foot odor and drainage",
+          "conditions": [
+            {"label": "Diabetic foot ulcer of right foot", "icd10": "E11.621", "action": "diagnosed", "onset": "2021-04-15", "note": "plantar, healing; proliferative phase"}
+          ],
+          "vitals": {"bp": [142, 88], "hr": 84, "temp_c": 37.1, "rr": 14},
+          "state": {"bp": [142, 88]},
+          "measure": ["spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-11T10:50", "results": [{"test": "White Blood Cells", "value": 8.4}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-05-11T10:50", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2021-05-11T10:50", "results": [{"test": "Hemoglobin A1c", "value": 8.9}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-05-11T10:20"}],
+          "orders": [
+            {"id": "foot-xr-2021", "action": "placed", "order": "X-ray right foot, 3 views", "category": "imaging", "reason": "plantar ulcer, exclude osteomyelitis"},
+            {"id": "podiatry-2021", "action": "placed", "order": "Podiatry referral", "category": "referral", "to": "Podiatry", "reason": "right plantar diabetic foot ulcer"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-05-11T11:05",
+             "body": "Routine DM check, but the main thing today is his right foot.\n\nHPI: 65M. For the past few weeks his wife has noticed a bad smell from his right foot, and he has seen damp spots on his sock, a little clear-yellow fluid now and then. No pain at all, no fever or chills. He mostly wears sandals around the house and admits he is barefoot indoors a fair amount. Didn't think much of it until the smell. Eye surgery in March went fine, reading better.\n\nMeds: metformin 1000 BID, lisinopril 20, HCTZ 12.5. NKDA.\n\nExam: T 37.1, BP 142/88, P 84, RR 14.\nR foot: shallow ulcer on the plantar surface under the first metatarsal head, surrounded by thick callus, faint pink rim of erythema less than a few mm, no warmth tracking, no fluctuance, base pink and moist, no exposed bone. Mild odor. No lymphangitic streaking.\nSensation diminished in both feet to monofilament. DP/PT pulses palpable bilaterally.\n\nLabs today: WBC 8.4. A1c 8.9.\n\nA/P:\n1. Diabetic foot ulcer, R plantar - appears to be healing, no sign of deep infection, afebrile, normal WBC. Foot films today to look at the bone. Urgent podiatry referral for debridement and offloading. No antibiotic for now. Saline dressing daily, keep it covered, and NO bare feet - shoes or closed slippers at all times. Return or call for spreading redness, fever, pain or more drainage.\n2. T2DM with retinopathy, A1c 8.9 - continue metformin.\n3. HTN - per vitals, continue.\n\nRTC after podiatry."}
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "imaging",
+          "start": "2021-05-12T09:15",
+          "orders": [{"id": "foot-xr-2021", "action": "done", "date": "2021-05-12T09:15"}],
+          "reports": [
+            {"study": "Foot X-ray", "performed": "2021-05-12T09:15", "text": "RIGHT FOOT, 3 VIEWS. Indication: plantar ulcer in a diabetic. Soft tissue irregularity at the plantar forefoot beneath the first metatarsal head corresponding to the clinical ulcer. No cortical erosion or periosteal reaction. No soft-tissue gas. No fracture or dislocation. Joint spaces preserved.", "conclusion": "No radiographic evidence of osteomyelitis."}
+          ]
+        },
+        {
+          "id": "2021-05-13a",
+          "kind": "portal_message",
+          "start": "2021-05-13T08:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Foot x-ray", "author": "PCP", "date": "2021-05-13T08:15",
+             "body": "Good news, the x-ray shows no sign that the bone is involved. Podiatry should be calling you this week; let us know if you haven't heard by Friday. Keep the dressing on and keep shoes on in the house."}
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "outside_records",
+          "start": "2021-05-25T13:30",
+          "orders": [{"id": "podiatry-2021", "action": "done", "date": "2021-05-25T13:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Podiatry consultation", "author": "podiatry", "date": "2021-05-25T13:30",
+             "body": "Podiatry new patient consultation, 05/18/2021\nReason: diabetic plantar ulcer right foot, referred by primary care.\n\nPt reports drainage and odor for several weeks, painless. Diabetic about 20 years.\nExam: neurovascular - DP and PT palpable bilaterally, capillary refill brisk; protective sensation absent to monofilament at plantar forefoot both feet.\nUlcer: plantar right first metatarsal head, 1.4 x 1.0 x 0.2 cm, granular base, hyperkeratotic rim, no probe to bone, no purulence, minimal periwound erythema.\nRight foot radiographs from 05/12 reviewed: no osseous changes.\n\nProcedure: sharp debridement of the surrounding callus and nonviable tissue down to bleeding granulation, tolerated without anesthesia.\n\nAssessment: neuropathic diabetic foot ulcer, right, in the proliferative phase; no infection.\nPlan: post-op shoe with felt aperture pad for offloading; saline-moistened gauze daily; no antibiotics indicated. Strict avoidance of barefoot walking. Return in 4-5 weeks.\n\nAllergies: NKDA. Medications: metformin, lisinopril, hydrochlorothiazide."}
+          ]
+        },
+        {
+          "id": "2021-06-30a",
+          "kind": "outside_records",
+          "start": "2021-06-30T10:10",
+          "documents": [
+            {"type": "Outside Records", "title": "Podiatry follow-up", "author": "podiatry", "date": "2021-06-30T10:10",
+             "body": "Podiatry follow-up 06/22/2021. Ulcer right sub-first MT head now 0.6 x 0.4 cm, shallow, healthy granulation, no drainage or odor. Callus pared. Continue offloading shoe and daily dressing. Recheck 6-7 weeks."}
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "outside_records",
+          "start": "2021-08-17T15:40",
+          "documents": [
+            {"type": "Outside Records", "title": "Podiatry follow-up: healed", "author": "podiatry", "date": "2021-08-17T15:40",
+             "body": "Seen 08/10/2021. The right plantar ulcer is fully epithelialized. No drainage. Discontinue post-op shoe. Fitted for diabetic depth shoes with custom molded insoles. Routine callus care here every 3 months. Reinforced: shoes or slippers at all times, daily foot inspection. Medications and allergies unchanged (NKDA)."}
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "office_visit",
+          "start": "2021-08-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; sleep behavior",
+          "conditions": [
+            {"label": "Diabetic foot ulcer of right foot", "icd10": "E11.621", "action": "resolved", "onset": "2021-04-15", "note": "healed per podiatry 8/10/2021"}
+          ],
+          "state": {"bp": [138, 86], "labs": {"Hemoglobin A1c": 8.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-08-24T09:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Lipid Panel", "collected": "2021-08-24T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-08-24T09:30", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-08-24T09:00"}],
+          "orders": [{"id": "neuro-2021", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "dream enactment behavior with falls from bed"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-08-24T09:40",
+             "body": "S: Here with his wife today. Foot healed - podiatry discharged him from the post-op shoe two weeks ago, now in depth shoes with inserts. Wearing slippers at home.\nWife's concern: for about 3 months he has been thrashing in his sleep - punching, kicking, twice ended up on the floor beside the bed. When she wakes him he describes a dream that matches what he was doing (fending someone off). He is embarrassed about it. No daytime sleepiness, no snoring she's noticed, no trouble falling asleep. No tremor, no change in walking, no memory complaints.\n\nO: Vitals per flowsheet. Alert, conversational, normal speech. No tremor, normal gait and arm swing. R foot: healed, thin callus only. Monofilament still diminished both feet.\n\nA/P:\n1. R plantar ulcer - healed, resolved. Podiatry q3 months.\n2. Dream enactment with falls - sounds like a REM sleep behavior problem; refer to neurology, they'll likely want a sleep study. Meanwhile pad the floor, move the nightstand away.\n3. DM2 - A1c, BMP, lipids, urine microalbumin today.\n4. HTN - continue.\n\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID booster",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2021-10-05T13:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-05T13:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T13:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2021-10-05T14:05",
+             "body": "Fluzone HD to left arm, Pfizer booster (third dose) to right arm. Over 6 months since his second dose. Waited 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "outside_records",
+          "start": "2021-11-09T11:20",
+          "conditions": [
+            {"label": "REM sleep behavior disorder", "icd10": "G47.52", "action": "diagnosed", "onset": "2021-05-01"}
+          ],
+          "medications": [
+            {"drug_text": "melatonin 3 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 3, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "REM sleep behavior disorder"}
+          ],
+          "orders": [{"id": "neuro-2021", "action": "done", "date": "2021-11-09T11:20"}],
+          "reports": [
+            {"study": "Polysomnography", "performed": "2021-11-01T21:30", "text": "Attended overnight in-lab polysomnogram with video. Total sleep time 352 minutes, sleep efficiency 81%. REM sleep present in 4 periods. Persistent elevation of chin and limb EMG tone during REM sleep with phasic limb twitching; video shows arm flailing and kicking during REM. No breathing events of significance; apnea-hypopnea index under 5. Oxygen saturation nadir 91%. No periodic limb movements of significance. No epileptiform activity on the limited EEG montage.", "conclusion": "REM sleep without atonia with dream enactment, consistent with REM sleep behavior disorder. No significant sleep-disordered breathing."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Neurology consultation", "author": "neurology", "date": "2021-11-09T11:20",
+             "body": "NEUROLOGY CONSULTATION\nDate of service: 11/01/2021\nReferring: primary care\nReason: abnormal behaviors in sleep\n\nDear colleague,\n\nI saw Mr. Kerrigan, a 66-year-old retired teacher with long-standing type 2 diabetes with retinopathy, hypertension and hyperlipidemia, who was treated earlier this year for a right plantar foot ulcer. His wife, who accompanied him, reports about six months of him striking out and kicking while asleep, at times enough to fall from the bed. He is embarrassed by it, and when woken he recalls vivid dreams that fit the movements. Before this began he slept without difficulty.\n\nMedications: metformin, lisinopril, hydrochlorothiazide 12.5 mg daily. NKDA.\nFamily history: father diabetes and prostate cancer, mother hypertension and hyperlipidemia, maternal uncle CLL.\nNever smoker, no alcohol.\n\nExamination: alert and fully oriented. Speech and language normal. Cranial nerves intact. Tone normal in the waking state; no cogwheeling or rigidity. No rest or postural tremor. Finger and foot tapping brisk, no slowing. Strength full. Gait and turning normal.\n\nStudies: in-lab polysomnography was performed the same night; report enclosed. It demonstrates increased muscle activity during REM sleep with dream enactment captured on video.\n\nImpression: REM sleep behavior disorder.\n\nRecommendations:\n1. Bedroom safety: mattress or padding along the bedside, sharp-edged furniture moved, his wife may need to sleep separately on restless nights.\n2. Melatonin 3 mg at bedtime.\n3. I will see him in about a year, sooner if episodes escalate. We also discussed watching for changes in smell, constipation, movement or thinking, which he should mention to either of us.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "outside_records",
+          "start": "2021-11-16T09:50",
+          "documents": [
+            {"type": "Outside Records", "title": "Annual diabetic eye exam", "author": "ophthalmology", "date": "2021-11-16T09:50",
+             "body": "Exam 11/09/2021. Right eye pseudophakic, lens well centered, uncorrected 20/30. Left 20/25 with correction. Dilated fundus: diabetic retinopathy both eyes, stable from last year. No macular edema. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "state": {"bp": [140, 86], "labs": {"Hemoglobin A1c": 8.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-12-14T08:45", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2021-12-14T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-12-14T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-14T08:45",
+             "body": "Diabetes/BP f/u. Neurology letter and sleep study reviewed - RBD, on melatonin 3 mg. Wife put a futon mattress beside the bed; fewer falls, still some kicking. Feet fine, wearing the new shoes. Sugars unchanged.\nExam: BP per vitals. Heart/lungs fine. Feet intact.\nPlan: A1c and BMP. Continue all. RTC March."}
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "portal_message",
+          "start": "2022-02-08T19:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill request", "author": "patient", "date": "2022-02-08T19:20",
+             "body": "Hello, I need refills on the lisinopril and the water pill. Same pharmacy. Thank you. Francis"},
+            {"type": "Patient Message", "title": "RE: Refill request", "author": "MA", "date": "2022-02-09T09:05",
+             "body": "Both sent for 90 days with a refill. You're due for your diabetes visit in March, I put you on for the 22nd at 1:30."}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; low back and thigh pain",
+          "state": {"labs": {"Hemoglobin A1c": 8.8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-03-22T14:00", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2022-03-22T14:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-22T13:30"}],
+          "orders": [{"id": "ortho-2022", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "low back pain radiating to thighs with walking"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-03-22T14:10",
+             "body": "CC: back.\nSince late November, so about 4 months, aching low back that spreads down into the fronts and sides of both thighs once he has walked several minutes. Has to stop; leaning on a shopping cart helps, sitting down makes it go away. No injury. No bowel/bladder change, no saddle numbness, no fevers, no weight change. Night pain none.\n\nExam: Vitals as charted. Lumbar paraspinals non-tender. Extension reproduces back pain. Flexion fine. Strength 5/5 legs. Reflexes symmetric. SLR negative both sides. Pedal pulses 2+. Feet: no ulcer.\n\nA/P:\n1. Low back pain with leg symptoms brought on by walking, relieved by flexion - sounds like neurogenic claudication; pulses good. Refer to orthopedics spine. Tylenol as needed meanwhile, avoid NSAIDs regularly with the lisinopril/HCTZ.\n2. DM2 - A1c today.\n3. RBD - on melatonin, stable."}
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "office_visit",
+          "start": "2022-06-07T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after orthopedics visit",
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "start", "sig": "Take 2 tablets by mouth up to three times daily as needed for back pain", "dose": {"value": 1000, "unit": "mg"}, "frequency": "TID PRN", "route": "Oral", "course": "chronic", "reason": "Back pain, spinal stenosis"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-06-07T10:40"}],
+          "orders": [
+            {"id": "ortho-2022", "action": "done", "date": "2022-06-07T10:40"},
+            {"id": "ortho-records-2022", "action": "placed", "order": "Records request, orthopedics visit and MRI 5/2/2022", "category": "procedure", "reason": "no consult note received"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-06-07T11:05",
+             "body": "Saw ortho spine 5/2. We never got a note. Per Francis: they examined him, did an MRI the same day, and told him the spinal canal is narrowed in the lower part of the mid-back with thickened ligament. They recommended PT and Tylenol, no surgery talk. Has done 3 PT sessions, exercises daily, says bending forward exercises help. Walking tolerance a little better.\n\nExam: no change from March. Gait steady.\n\nPlan: Records request to ortho for consult note + MRI report. Rx acetaminophen 500 mg, 2 tabs up to TID PRN (max 3 g/day). Continue PT. Diabetes labs at the next visit (A1c done in March)."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "outside_records",
+          "start": "2022-06-21T15:00",
+          "conditions": [
+            {"label": "Spinal stenosis, thoracic region", "icd10": "M48.04", "action": "diagnosed", "onset": "2022-05-02", "note": "T11-T12, ligamentum flavum thickening"}
+          ],
+          "reports": [
+            {"study": "MRI lumbar spine without contrast", "performed": "2022-05-02T14:20", "text": "MRI LUMBAR SPINE WITHOUT CONTRAST. Indication: low back pain radiating to the thighs with walking. Sagittal images include T10 through the sacrum. At T11-T12 the central canal is narrowed by thickening of the ligamentum flavum. Cord signal normal at the levels included; conus ends normally at L1. L1-L2 through L5-S1: disc heights preserved, no significant central canal narrowing, neural foramina patent. Vertebral body heights and marrow signal normal. Paraspinal soft tissues unremarkable.", "conclusion": "Spinal canal narrowing at T11-T12 from ligamentum flavum thickening. No significant lumbar canal narrowing."}
+          ],
+          "orders": [{"id": "ortho-records-2022", "action": "done", "date": "2022-06-21T15:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "MRI report received", "author": "MA", "date": "2022-06-21T15:00",
+             "body": "Imaging center sent the 5/2/22 MRI report in response to our request. Orthopedic consult note was not included; their office says it's 'still being finalized.' Report to PCP."},
+            {"type": "Result Note", "title": "MRI reviewed", "author": "PCP", "date": "2022-06-22T08:10",
+             "body": "Canal narrowing at T11-12 from ligamentum flavum thickening, lumbar levels okay. Fits his walking-limited leg symptoms. Thoracic stenosis added to problem list. Continue PT/acetaminophen."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "office_visit",
+          "start": "2022-07-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2022-07-11T15:30",
+             "body": "Wife called to cancel tomorrow's visit, they will be away visiting family. Will fold the diabetes check into his September wellness visit."}
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "telephone",
+          "start": "2022-08-09T10:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Ortho note follow-up", "author": "MA", "date": "2022-08-09T10:30",
+             "body": "Called orthopedics again for the 5/2 consult note. Told it would be faxed. Nothing received as of today; will stop chasing, MRI report is on file."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "annual_physical",
+          "start": "2022-09-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"bp": [138, 84], "labs": {"Hemoglobin A1c": 8.5}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-13T09:50"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T09:40", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-13T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-13T09:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2022-09-13T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-09-13T09:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2022-09-13T10:05",
+             "body": "AWV + diabetes check (July visit was cancelled).\n\nUpdates: thoracic stenosis per MRI in May, PT done, walks 20 min with breaks, uses acetaminophen a few times a week. RBD on melatonin, wife reports episodes are \"maybe a little worse lately\"; he has neurology follow-up at the end of October.\n\nFunctional: independent ADLs/IADLs. Drives. One fall out of bed this summer, none while walking. Hearing okay.\nPHQ-2 0. Health care proxy: his wife, form now on file.\n\nExam: vitals per flowsheet. Normal general exam. Feet: healed R plantar site, small callus; monofilament reduced; pulses palpable.\n\nPrevention: PCV20 today. Colonoscopy due 2027. Shingrix complete. Flu/COVID at a nurse visit in October.\nLabs: CMP, CBC, lipids, A1c, urine microalbumin.\n\nRTC December."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T11:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T11:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T11:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccine visit", "author": "RN", "date": "2022-10-04T11:40",
+             "body": "High-dose influenza in L arm. Pfizer bivalent booster in R arm. Tolerated, no reaction during observation."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "outside_records",
+          "start": "2022-11-29T14:15",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic eye exam", "author": "ophthalmology", "date": "2022-11-29T14:15",
+             "body": "Annual exam 11/21/2022: acuity 20/30 OD (IOL), 20/25 OS. Diabetic retinopathy OU unchanged. No macular edema on OCT. Next exam 12 months."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "medications": [
+            {"drug_text": "melatonin 3 MG Oral Tablet", "action": "stop", "reason": "dose increased by neurology"},
+            {"drug_text": "melatonin 3 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (6 mg) by mouth at bedtime", "dose": {"value": 6, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "REM sleep behavior disorder"}
+          ],
+          "state": {"labs": {"Hemoglobin A1c": 8.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-13T14:25", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2022-12-13T14:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-13T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-12-13T14:30",
+             "body": "Diabetes f/u, wife with him.\nNeurology saw him end of October - we have no letter yet. Per wife the sleep episodes have been worse: more punching and kicking, fell out of bed a couple of times with bruises on his shins and an elbow. He has no memory of the episodes but remembers the dreams, says they're like action movies. Neurologist increased melatonin to 6 mg (two of the 3 mg tabs). Updated med list.\nBack: manageable with exercises.\n\nExam: Alert, sharp as ever. Old yellowing bruise L shin. Heart/lungs normal. Feet: intact.\n\nPlan: A1c/BMP. Will ask neurology for the note. Continue current meds."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,701 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002063",
+   "events": [
+    {
+     "id": "2022-03-29a",
+     "kind": "office_visit",
+     "start": "2022-03-29T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-03-29T11:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-03-29T11:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-03-29T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2022-03-29T11:00",
+       "body": "S: Bowels still loose most days, though he has figured out which meals set it off. Eating smaller amounts more often. Lightheaded spells after meals still happen; he sits down and they pass. Cathing twice daily, no infections. Feet the same, acetaminophen at night.\nSugars 150-220 fasting.\nO: Vitals as charted. Abd soft. Feet: no wounds, callus-free.\nA/P\n- DM2 with neuropathies (peripheral, autonomic, bladder). A1c today. Continue metformin, glargine 24, lispro scale. Reviewed carb counting handout.\n- Neurogenic bladder on CIC, stable.\n- Epilepsy, no events.\nRTC 4 months."
+      },
+      {
+       "type": "Patient Message",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2022-03-30T08:50",
+       "body": "A1c came back a little lower than December. Kidney labs normal. Keep going with the smaller meals and the logs."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-14a",
+     "kind": "office_visit",
+     "start": "2022-06-14T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Burning with urination",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed",
+       "onset": "2022-06-12"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cephalexin 500 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth twice daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2022-06-14T16:20",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "value": 42
+        },
+        {
+         "test": "Urine Blood",
+         "text": "Negative"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-14T16:20",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "E. coli >100,000 CFU/mL. Susceptible: cephalexin, nitrofurantoin, trimethoprim-sulfamethoxazole, ciprofloxacin. Resistant: ampicillin."
+        }
+       ],
+       "resulted": "2022-06-16T10:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2022-06-14T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Same-day Visit",
+       "author": "PCP",
+       "date": "2022-06-14T16:00",
+       "body": "Texted this morning, seen same day.\nS: Two days of burning when he cathes and when he voids, more frequent urge. Urine cloudier. No fever, chills, flank or back pain. No blood.\nO: Afebrile, vitals as charted. No CVA tenderness. Abdomen soft, mild suprapubic tenderness.\nUA: LE and nitrite positive, WBCs present.\nA/P: UTI in a man on intermittent self-cath. Culture sent. Cephalexin 500 BID x 7 days. Reviewed catheter hygiene and single-use technique. Call if fever or flank pain."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-16a",
+     "kind": "telephone",
+     "start": "2022-06-16T13:15",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "resolved",
+       "onset": "2022-06-12",
+       "note": "treated"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Urine culture result",
+       "author": "RN",
+       "date": "2022-06-16T13:15",
+       "body": "Culture grew E. coli, sensitive to cephalexin. Called pt: already feeling better, finishing the course. No fever."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-26a",
+     "kind": "office_visit",
+     "start": "2022-07-26T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2022-07-27a",
+     "kind": "telephone",
+     "start": "2022-07-27T09:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2022-07-27T09:30",
+       "body": "Called re: missed visit yesterday. He mixed up the date. Will fold the diabetes check into his wellness visit in September. Labs to be drawn then."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-13a",
+     "kind": "annual_physical",
+     "start": "2022-09-13T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit and diabetes check",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-09-13T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.7
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Phenytoin",
+         "loinc": "3968-5",
+         "unit": "ug/mL",
+         "value": 14
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-13T09:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2022-09-13T09:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-13T09:15",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-09-13T09:25"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-09-13T08:40"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-09-13T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-09-13T09:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-09-13T08:40",
+       "body": "Subsequent AWV plus diabetes follow-up (missed July).\nHRA reviewed. No falls. Independent. PHQ-2 0. Still hasn't named a health care proxy; says he will.\nDiabetes: fasting 140s-200s. One UTI in June, treated. Diarrhea comes and goes; lightheaded after big meals less often since he eats smaller portions.\nMeds unchanged: metformin 1000 BID, glargine 24 u, lispro scale, phenytoin 300, acetaminophen prn.\nExam: vitals as charted. Heart RRR. Lungs clear. Abdomen soft. Feet: no lesions, reduced monofilament and vibration at toes, ankle jerks diminished.\nPlan: A1c, CMP, CBC, lipids, urine albumin, phenytoin level. Flu shot today. Bivalent COVID booster at pharmacy this fall. Eye exam letter requested from his optometrist.\nRTC 4 months."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Your wellness labs",
+       "author": "PCP",
+       "date": "2022-09-15T12:20",
+       "body": "Labs look about as expected. A1c still in the mid-8s. Phenytoin level is therapeutic, kidneys and liver normal, no protein in the urine. See you in January."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.7
+      }
+     }
+    },
+    {
+     "id": "2022-10-07a",
+     "kind": "pharmacy",
+     "start": "2022-10-07T14:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-07T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization record from pharmacy",
+       "author": "pharmacy",
+       "date": "2022-10-07T14:00",
+       "body": "Bivalent COVID-19 booster given at community pharmacy."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-12a",
+     "kind": "outside_records",
+     "start": "2022-12-12T09:40",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2022-12-12T09:40",
+       "body": "Dilated eye exam performed 12/02/2022.\nVisual acuity correctable to 20/20 OU. Anterior segment unremarkable. Fundus: no diabetic retinopathy either eye, no macular edema. Optic nerves healthy.\nAllergies on file: none.\nRecommend repeat dilated exam in 12 months.\nOptometry"
+      }
+     ]
+    },
+    {
+     "id": "2023-01-10a",
+     "kind": "office_visit",
+     "start": "2023-01-10T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Urinary symptoms again",
+     "conditions": [
+      {
+       "label": "Urinary tract infection",
+       "action": "diagnosed",
+       "onset": "2023-01-08",
+       "note": "recurrent, in setting of neurogenic bladder and intermittent self-catheterization"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "cephalexin 500 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth twice daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "urinary tract infection"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-01-10T14:50",
+       "results": [
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "value": 35
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-01-10T14:50",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "E. coli >100,000 CFU/mL. Susceptible: cephalexin, nitrofurantoin, trimethoprim-sulfamethoxazole. Resistant: ampicillin."
+        }
+       ],
+       "resulted": "2023-01-12T11:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-01-10T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Same-day Visit",
+       "author": "PCP",
+       "date": "2023-01-10T14:30",
+       "body": "S: Burning and urgency since the weekend, same as June. No fever, no flank pain, no blood.\nO: Afebrile. No CVA tenderness. Mild suprapubic tenderness.\nUA positive for LE and nitrite.\nA/P: Second UTI in 7 months, both while self-cathing. Adding recurrent UTI to the problem list. Culture sent; cephalexin 500 BID x 7 days, worked last time. Went over hand hygiene, fresh catheter each time, cathing on schedule so volumes don't run high. If they keep coming, back to urology."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-12a",
+     "kind": "portal_message",
+     "start": "2023-01-12T15:00",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Urine culture",
+       "author": "RN",
+       "date": "2023-01-12T15:00",
+       "body": "Your urine culture grew the same type of bacteria as last time and the cephalexin covers it. Please finish all 7 days."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Urine culture",
+       "author": "patient",
+       "date": "2023-01-12T19:41",
+       "body": "Will do. Already better. Thank you."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-11a",
+     "kind": "office_visit",
+     "start": "2023-04-11T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-04-11T10:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.4
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-11T10:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-11T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2023-04-11T09:40",
+       "body": "S: Reports he went back to endocrinology on 2/24 and signed up for a research study of a new diabetes pill, randomized, so he doesn't know if he's getting the real drug. The study team gives him the tablets and checks labs on their own schedule. He was told to keep all his usual diabetes meds the same. We have no letter from endocrinology or the study; he has a consent copy at home and will bring it.\nUTI in January, cleared. Bowels: some good weeks, some bad.\nO: Vitals as charted. Feet unchanged.\nA/P\n- DM2: A1c today. Continue metformin, glargine 24, lispro. Noted trial participation; investigational product not on our med list since it's blinded and dispensed by the study. Asked him to tell us of any study-related lab results.\n- Recurrent UTI: none since January.\nRTC 5 months for AWV."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "portal_message",
+     "start": "2023-06-20T07:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Refills",
+       "author": "patient",
+       "date": "2023-06-20T07:55",
+       "body": "Need refills on the pen needles and the test strips, and the catheter company says they need a new order."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Refills",
+       "author": "MA",
+       "date": "2023-06-20T11:30",
+       "body": "Pen needles and strips sent. Catheter order signed and faxed to the supply company today."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "annual_physical",
+     "start": "2023-09-12T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-09-12T09:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.3
+        },
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        },
+        {
+         "test": "Phenytoin",
+         "loinc": "3968-5",
+         "unit": "ug/mL",
+         "value": 12
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-12T09:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "CBC with Differential",
+       "collected": "2023-09-12T09:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-12T09:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-09-12T09:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-12T08:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-12T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-12T08:30",
+       "body": "AWV.\nHRA reviewed. Drives, does his own shopping and cooking. No falls. PHQ-2 1 (a few days of low energy, not mood).\nStill in the endocrinology study, no news from them. Never brought the consent copy; reminded.\nNo UTIs since January. CIC twice daily.\nExam: vitals as charted. Heart and lungs normal. Feet: skin intact, monofilament reduced at toes, ankle reflexes diminished.\nScreening up to date (colonoscopy 2021 normal, next 2031). Eye exam: last letter 12/2022, due; he says he'll book.\nFlu today. Updated COVID shot at pharmacy when available.\nLabs: A1c, CMP, CBC, lipids, urine albumin, phenytoin.\nRTC 3 months."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Wellness labs",
+       "author": "PCP",
+       "date": "2023-09-14T09:40",
+       "body": "A1c is 8.3%, about where it has been. Kidneys, liver, blood counts and urine protein are all normal. Phenytoin level is in range."
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.3
+      }
+     }
+    },
+    {
+     "id": "2023-10-13a",
+     "kind": "pharmacy",
+     "start": "2023-10-13T10:30",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-13T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Immunization record from pharmacy",
+       "author": "pharmacy",
+       "date": "2023-10-13T10:30",
+       "body": "2023-2024 COVID-19 vaccine administered."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-05a",
+     "kind": "office_visit",
+     "start": "2023-12-05T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-12-05T15:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.5
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-12-05T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2023-12-05T15:00",
+       "body": "S: Sugars about the same. Admits he's been less careful this fall. Not much exercise. No lows. Bowel symptoms on and off. Feet unchanged.\nO: Vitals as charted.\nA/P\n- DM2, A1c stuck in the 8s for two years. Talked frankly about where this goes and what would help: regular walking, cooking more, logging sugars before meals so the lispro scale is used right. He wants to try on his own before any med change. A1c today.\n- Eye exam still not received this year; reminder given.\nRTC spring."
+      },
+      {
+       "type": "Patient Message",
+       "title": "A1c",
+       "author": "PCP",
+       "date": "2023-12-06T16:05",
+       "body": "A1c 8.5%. Let's see what the walking and cooking plan can do by spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,943 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002857",
+      "events": [
+        {
+          "id": "2018-01-30a",
+          "kind": "portal_message",
+          "start": "2018-01-30T08:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bone density test",
+              "author": "patient",
+              "date": "2018-01-30T08:52",
+              "body": "Good morning. I finally called to schedule the bone scan Dr. ordered last fall. It is Monday Feb 26. Do I need blood work at the same time? I would rather only make one trip. Thank you, Ruth McKenna"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bone density test",
+              "author": "RN",
+              "date": "2018-01-30T11:20",
+              "body": "Hi Ruth, yes, the doctor would like some routine blood work with it. You can stop at our lab the same morning, no need to fast. We'll put you on the schedule for a follow-up visit a week or two after to go over everything."
+            }
+          ]
+        },
+        {
+          "id": "2018-02-26a",
+          "kind": "imaging",
+          "start": "2018-02-26T09:15",
+          "reports": [
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2018-02-26T09:15",
+              "text": "Indication: postmenopausal screening; family history of hip fracture. Technique: DXA of the lumbar spine (L1-L4) and left hip. Lumbar spine L1-L4 T-score -2.8. Left femoral neck T-score -2.6. Left total hip within the osteopenic range. No vertebrae excluded. No prior study for comparison.",
+              "conclusion": "Bone mineral density decreased at the lumbar spine and femoral neck, in the osteoporotic range by WHO criteria."
+            }
+          ],
+          "orders": [
+            {
+              "id": "dxa-2018",
+              "action": "done",
+              "date": "2018-02-26T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "DXA result",
+              "author": "PCP",
+              "date": "2018-02-27T16:40",
+              "body": "DXA shows osteoporosis range at spine and hip. Labs normal. She already has a visit 3/9 to go over it; MA to confirm she keeps it."
+            }
+          ]
+        },
+        {
+          "id": "2018-02-26b",
+          "kind": "lab_only",
+          "start": "2018-02-26T10:05",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-02-26T10:05",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-02-26T10:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-02-26T10:05",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-02-26T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.06
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-02-26T10:05"
+            }
+          ]
+        },
+        {
+          "id": "2018-03-09a",
+          "kind": "office_visit",
+          "start": "2018-03-09T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Review bone density and labs",
+          "conditions": [
+            {
+              "label": "Osteoporosis",
+              "action": "diagnosed",
+              "onset": "2018-02-26"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "alendronic acid 70 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once weekly in the morning with a full glass of plain water, at least 30 minutes before food or other medicines; stay upright for 30 minutes",
+              "dose": {
+                "value": 70,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoporosis"
+            },
+            {
+              "drug_text": "calcium carbonate 1250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1250,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoporosis"
+            },
+            {
+              "drug": "cholecalciferol 0.025 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (1000 units) by mouth daily",
+              "dose": {
+                "value": 1000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "osteoporosis"
+            }
+          ],
+          "state": {
+            "height_cm": 157.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2018-03-09T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Bone Density Follow-up",
+              "author": "PCP",
+              "date": "2018-03-09T14:05",
+              "body": "Here to go over the DXA and blood work.\n\nShe thinks she has gotten about 3 cm shorter over the last several years; her slacks are suddenly too long. Some mild low-to-mid back aching off and on, mostly after standing at the stove or a long walk with the dog, eases when she sits. Never fallen, never broken a bone. No night pain, no weight loss, no numbness or weakness in the legs.\n\nMeds: multivitamin daily, nothing else regularly. No calcium, no vitamin D. Not much dairy.\nMenopause at 51, no HRT. Former smoker. Wine about once a week. Not exercising beyond dog walks.\nFHx: mother's osteoporotic hip fracture.\n\nExam: vitals as charted, height 157 cm today (158 cm at her first visit here). Thoracic kyphosis. Mild tenderness to percussion over the lower thoracic spine, no step-off. Lower extremity strength and reflexes normal. Gait steady.\n\nData: DXA 2/26 lumbar spine T -2.8, L femoral neck T -2.6. CMP, CBC, phosphorus, TSH all normal.\n\nA/P\nOsteoporosis, postmenopausal. Reviewed what the numbers mean and her fracture risk, especially with her mother's history.\n- Start alendronate 70 mg weekly. Went over how to take it carefully: first thing in the morning, plain water, full glass, stay upright 30 min, nothing else by mouth for half an hour. Printed instructions given.\n- Calcium carbonate 1250 mg twice daily with meals and vitamin D3 1000 units daily.\n- Weight-bearing exercise; she'll look into the senior center's balance class.\n- Back aching likely postural/mechanical with the kyphosis. Call if it becomes sharp or constant.\nFollow up 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-04-23a",
+          "kind": "ed_visit",
+          "start": "2018-04-23T19:40",
+          "end": "2018-04-24T14:10",
+          "service": "Emergency Medicine",
+          "reason": "Painful swallowing and chest pain",
+          "conditions": [
+            {
+              "label": "Pill-induced esophagitis",
+              "icd10": "K20.80",
+              "action": "diagnosed",
+              "onset": "2018-04-21"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "alendronic acid 70 MG Oral Tablet",
+              "action": "stop",
+              "reason": "pill-induced esophagitis"
+            },
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "stop",
+              "reason": "pill-induced esophagitis"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily 30 minutes before breakfast for 8 weeks",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "esophageal ulcer"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2018-04-23T19:45",
+              "temp_c": 36.7,
+              "bp": [
+                132,
+                78
+              ],
+              "hr": 80,
+              "rr": 16,
+              "spo2": 96
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-04-23T20:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-04-23T20:05",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-04-23T20:05",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2018-04-23T19:55",
+              "text": "Sinus rhythm, rate 78. Normal axis. Normal intervals. No ST-segment or T-wave abnormality.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2018-04-23T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2018-04-27T10:15",
+              "body": "Regional hospital emergency department and observation unit. Visit 4/23/2018 to 4/24/2018. Copy to primary care.\n\nCC: pain with swallowing and behind the breastbone.\n\nHPI: 72F with osteoporosis, COPD. Two days of abrupt-onset odynophagia with retrosternal pain, much worse getting solids down. Liquids tolerated. No travel, no sick contacts, nothing new in her diet. Takes alendronate once weekly (started last month) and uses ibuprofen as needed for knee osteoarthritis. No vomiting, no hematemesis, no melena. Pain is not exertional.\n\nMeds: alendronate 70 mg weekly; calcium carbonate; vitamin D3; multivitamin; ibuprofen prn.\nAllergies: NKDA.\nSocial: former smoker, minimal wine. Retired teacher.\nFamily: mother osteoporotic hip fracture, father COPD, maternal grandmother ovarian cancer.\n\nExam: afebrile, VS within normal limits. Oropharynx clear without thrush or lesions. No cervical lymphadenopathy. Lungs clear. Heart regular. Abdomen soft and nontender.\n\nWorkup: CBC and BMP unremarkable. hs-troponin 3. ECG normal sinus rhythm without ischemic change.\n\nCourse: placed in observation; GI consulted for endoscopy in the morning, see separate report.\n\nDiagnosis: pill-induced esophagitis, likely alendronate +/- NSAID.\n\nDisposition: discharged 4/24. Stop alendronate. Stop ibuprofen; avoid NSAIDs. Omeprazole 20 mg daily for 8 weeks. Soft diet and cool liquids for several days. Take any pills upright with a full glass of water. PCP follow-up within 1 week; return for inability to swallow liquids, vomiting blood or black stools."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "author": "gastroenterology",
+              "date": "2018-04-27T10:16",
+              "body": "Procedure: esophagogastroduodenoscopy, 4/24/2018, regional hospital endoscopy suite, moderate sedation.\nIndication: odynophagia and retrosternal pain after starting weekly alendronate.\n\nFindings:\n- Mid-esophagus: a single, localized, sharply demarcated ulcer with a clean base. No active or recent bleeding, no visible vessel. Surrounding mucosa otherwise normal. No stricture.\n- Distal esophagus and GE junction normal. No hiatal hernia.\n- Stomach normal.\n- Duodenum normal to the second portion.\n\nImpression: discrete mid-esophageal ulcer, appearance typical of pill injury.\n\nRecommendations: discontinue alendronate and NSAIDs; PPI daily for 8 weeks; no repeat endoscopy needed if symptoms resolve."
+            }
+          ]
+        },
+        {
+          "id": "2018-04-27a",
+          "kind": "telephone",
+          "start": "2018-04-27T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2018-04-27T11:00",
+              "body": "Received ED and endoscopy records. Called pt: swallowing a little better, still sore with bread and meat, managing soups and yogurt. Taking omeprazole every morning. Has stopped the alendronate and the ibuprofen as told. Appt with PCP Tues 5/1."
+            }
+          ]
+        },
+        {
+          "id": "2018-05-01a",
+          "kind": "office_visit",
+          "start": "2018-05-01T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for esophagitis",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for knee or back pain; no more than 6 tablets (3,000 mg) in 24 hours",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "knee osteoarthritis, back pain"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-05-01T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2018-05-01T11:40",
+              "body": "Seen in the ED 4/23 with painful swallowing, scoped next morning: mid-esophageal pill ulcer. Records reviewed.\n\nToday swallowing is maybe 70% better. Soft foods fine, still a catch with dry toast. No vomiting, no black stools. On omeprazole daily. Off alendronate and ibuprofen.\n\nShe feels bad about it; she is fairly sure she took the alendronate correctly but admits she went back to bed for a bit after it on at least one Sunday. Reassured her.\n\nExam: vitals as charted. Comfortable. Lungs clear. Abdomen soft, nontender.\n\nA/P\nPill esophagitis. Finish 8 weeks of omeprazole. Stay off NSAIDs.\nKnees: acetaminophen in place of ibuprofen, up to 3 g a day.\nOsteoporosis: alendronate stopped. Keep calcium and vitamin D. Recheck in about 8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-26a",
+          "kind": "office_visit",
+          "start": "2018-06-26T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up esophagitis",
+          "conditions": [
+            {
+              "label": "Pill-induced esophagitis",
+              "icd10": "K20.80",
+              "action": "resolved",
+              "onset": "2018-04-21"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-06-26T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2018-06-26T10:05",
+              "body": "Swallowing completely back to normal for about a month. Eating everything. Finished omeprazole last week. No heartburn.\nKnees ok on acetaminophen, uses it a few times a week.\nTaking calcium with breakfast and dinner, vitamin D daily. Started the balance class at the senior center on Wednesdays.\n\nExam: vitals as charted. Well appearing. Abdomen benign.\n\nA/P\nEsophagitis, resolved.\nOsteoporosis: continue calcium, vitamin D, exercise.\nKnee OA: acetaminophen prn.\nAWV in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-25a",
+          "kind": "annual_physical",
+          "start": "2018-09-25T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-09-25T09:30",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-09-25T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-25T09:30",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2018-09-25T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-09-25T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2018-09-25T09:25",
+              "body": "Subsequent AWV.\n\nInterval: pill esophagitis in April, resolved. Osteoporosis on calcium and D.\n\nFunction: fully independent. No falls this year. Goes to the balance class most weeks. Husband well.\nPHQ-2 0. Memory fine per her.\nFall prevention: we talked about throw rugs, night lights on the stairs, grab bar in the tub. She has a rug in the front hall she likes; will think about tape underneath.\n\nExam: vitals as charted. Kyphosis unchanged. Lungs diminished at bases, no wheeze. Heart regular. No edema.\n\nPrevention:\n- Flu and first Shingrix at nurse visit next month.\n- Mammogram due spring.\n- Labs today with vitamin D level.\n\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-28a",
+          "kind": "portal_message",
+          "start": "2018-09-28T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2018-09-28T16:30",
+              "body": "Ruth, your labs look good. Vitamin D is 34, right where we want it on your supplement. Calcium, kidneys and blood count normal. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-09a",
+          "kind": "nurse_visit",
+          "start": "2018-10-09T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and shingles vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2018-10-09T10:35"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2018-10-09T10:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-09T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "author": "RN",
+              "date": "2018-10-09T10:45",
+              "body": "High-dose flu IM L deltoid. Shingrix dose 1 IM R deltoid. Warned arm may be sore and she may feel run down for a day. Dose 2 due in 2 to 6 months, scheduled January."
+            }
+          ]
+        },
+        {
+          "id": "2019-01-17a",
+          "kind": "nurse_visit",
+          "start": "2019-01-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2019-01-17T14:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-01-17T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2019-01-17T14:10",
+              "body": "Second Shingrix IM L deltoid. After the first one she had a sore arm and chills one evening, nothing more. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "office_visit",
+          "start": "2019-03-19T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2019-03-26a",
+          "kind": "office_visit",
+          "start": "2019-03-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-03-26T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2019-03-26T10:25",
+              "body": "Rescheduled from last week (snow). Quiet winter. One head cold in February, no chest involvement. Breathing at baseline, still no inhaler and doesn't want one. Back aches now and then after housework, acetaminophen helps. Knees same.\n\nExam: vitals as charted. Lungs diminished, no wheeze or crackles. Heart regular. Spine kyphotic, nontender today.\n\nA/P\nCOPD stable. Osteoporosis on calcium/D. Knee OA. Mammogram ordered. AWV in September."
+            }
+          ]
+        },
+        {
+          "id": "2019-04-02a",
+          "kind": "imaging",
+          "start": "2019-04-02T09:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2019-04-02T09:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2017. Scattered areas of fibroglandular density. No mass, distortion or suspicious calcification. Stable.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2019",
+              "action": "done",
+              "date": "2019-04-02T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "MA",
+              "date": "2019-04-04T09:40",
+              "body": "Normal mammogram letter mailed. Pt notified by phone as well."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-10a",
+          "kind": "ed_visit",
+          "start": "2019-05-10T15:20",
+          "end": "2019-05-10T20:30",
+          "service": "Emergency Medicine",
+          "reason": "Low back pain after lifting",
+          "conditions": [
+            {
+              "label": "Acute osteoporotic vertebral compression fracture of T12",
+              "icd10": "M80.08XA",
+              "action": "diagnosed",
+              "onset": "2019-05-08"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tramadol hydrochloride 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for severe back pain; #20, no refills",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "T12 compression fracture"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2019-05-10T15:25",
+              "temp_c": 36.6,
+              "bp": [
+                138,
+                80
+              ],
+              "hr": 84,
+              "rr": 16,
+              "spo2": 96
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-05-10T16:00",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-10T16:00",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-10T16:00",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 32
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lumbar spine X-ray",
+              "performed": "2019-05-10T16:30",
+              "text": "Lateral view of the thoracolumbar spine. Wedge-shaped deformity of the T12 vertebral body with anterior height loss. Posterior vertebral body line preserved. No retropulsion. Remaining vertebral heights maintained. Diffuse osteopenia. Alignment otherwise normal.",
+              "conclusion": "Wedge compression deformity of T12, consistent with osteoporotic compression fracture."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2019-05-10T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2019-05-14T08:50",
+              "body": "Regional hospital emergency department, 5/10/2019. Faxed to PCP.\n\nCC: low back pain x 2 days.\n\nHPI: 73-year-old woman with known osteoporosis, previously noted height loss and intermittent mechanical back aches. Two days ago she lifted a large pot full of water off the stove and felt a sharp pain low in her back. Constant since, sharp, stays in one place, no radiation into the legs. No fall or other trauma. No fever, no bowel or bladder incontinence, no weight loss.\n\nPMH: osteoporosis; pill esophagitis 2018; COPD; postmenopausal.\nMeds: calcium and vitamin D supplements; multivitamin; acetaminophen prn.\nAllergies: NKDA.\nSocial: former smoker (quit about 15 years ago), minimal alcohol, retired teacher.\n\nExam: VS stable. Point tenderness over the T12 spinous process. No bruising or swelling. Strength 5/5 in both legs, reflexes symmetric, sensation intact. Gait slow but steady.\n\nLabs: calcium 9.8, phosphate 3.5, alk phos 70, 25-OH vitamin D 32.\nImaging: lateral spine film with a wedge deformity of T12.\n\nAssessment: acute osteoporotic compression fracture T12, neurologically intact.\n\nPlan: scheduled acetaminophen, tramadol 50 mg q6h prn severe pain (#20). Activity as tolerated, avoid lifting. Follow up with PCP this week."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-13a",
+          "kind": "telephone",
+          "start": "2019-05-13T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "author": "RN",
+              "date": "2019-05-13T09:20",
+              "body": "Pt called to let us know she was in the ED Friday, told she has a compression fracture in her back. Hurting but manageable with acetaminophen and the tramadol at bedtime. No leg weakness, no trouble with bladder. Records requested from the ED. Appt Thursday with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-16a",
+          "kind": "office_visit",
+          "start": "2019-05-16T14:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, back fracture",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2019-05-16T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2019-05-16T14:45",
+              "body": "ED 5/10: T12 compression fracture after lifting a pot of water. ED note and films reviewed.\n\nPain 5/10 today, was 9 at its worst. Worse getting in and out of bed, better lying flat. Using acetaminophen every 6 hours and a tramadol at night only; tramadol makes her a little foggy so she's careful on the stairs. Bowels moving. No leg symptoms.\n\nExam: vitals as charted. Moves stiffly. Tender over T12. Strength and reflexes normal in the legs.\n\nA/P\nT12 osteoporotic compression fracture. Pain improving.\n- Acetaminophen scheduled, tramadol sparingly, stop once she can.\n- Log-roll out of bed; no lifting over a gallon of milk.\n- Husband is doing the heavy work at home.\n- Continue calcium and vitamin D.\nRecheck in 3 months, call sooner if pain worsens or leg weakness."
+            }
+          ]
+        },
+        {
+          "id": "2019-06-11a",
+          "kind": "portal_message",
+          "start": "2019-06-11T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back update",
+              "author": "patient",
+              "date": "2019-06-11T09:10",
+              "body": "Just letting you know my back is much better. I stopped the tramadol after the first week and have about 15 left. What should I do with them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back update",
+              "author": "RN",
+              "date": "2019-06-11T12:30",
+              "body": "That's great news. The police station in town has a drop box for old medicines, or the pharmacy can take them. Keep up the acetaminophen as needed."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "office_visit",
+          "start": "2019-08-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up back fracture",
+          "conditions": [
+            {
+              "label": "Acute osteoporotic vertebral compression fracture of T12",
+              "icd10": "M80.08XA",
+              "action": "resolved",
+              "onset": "2019-05-08"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg",
+            "height_cm"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-08-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2019-08-20T11:20",
+              "body": "Back pain from the May fracture is gone apart from the old ache after long standing. Back in the garden. Using acetaminophen maybe twice a week, mostly for knees.\n\nExam: vitals as charted. Kyphosis. No spinal tenderness. Neuro normal.\n\nA/P\nT12 compression fracture, healed clinically.\nOsteoporosis: calcium and vitamin D. Balance class.\nAWV next month."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-25a",
+          "kind": "annual_physical",
+          "start": "2019-09-25T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-25T10:00",
+              "results": [
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-25T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-25T10:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-25T10:00",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 37
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2019-09-25T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-25T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2019-09-25T09:55",
+              "body": "AWV.\n\nInterval: T12 compression fracture in May, healed.\n\nFunction: independent. No falls. Still at the balance class, also walks with a friend twice a week now. Husband well.\nPHQ-2 0. No memory complaints.\nHome safety: she did put rubber backing under the hall rug. Grab bar installed.\n\nExam: vitals as charted. Kyphosis. Lungs diminished, clear. Heart regular. No edema.\n\nPrevention: flu next month. Mammogram April, normal. Shingrix complete. Pneumococcal complete. Labs today.\n\nRTC 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2019-10-08T13:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T13:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2019-10-08T13:40",
+              "body": "Fluzone HD to R deltoid. Tolerated. Pt asked about results of last month's labs; reviewed with her, all normal including cholesterol."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

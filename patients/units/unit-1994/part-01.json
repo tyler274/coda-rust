@@ -1,0 +1,849 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001994",
+      "given": "Sean",
+      "family": "Finn",
+      "birth_date": "1966-11-09",
+      "address_line": "28 Plumtree Road",
+      "phone": "+1-617-555-0146",
+      "email": "sean.finn@example.test",
+      "marital_status": "married",
+      "summary": "Disabled former construction worker and heavy smoker with COPD, hypertension, CAD and lithium-treated bipolar I who joins in 2021. Over the next five years he is treated for a tongue cancer with nodal spread, develops lithium nephrotoxicity, and survives a COPD admission, a metoprolol overdose, massive hemoptysis and a refractory VF arrest that ends with an ICD.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T11:20",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "author": "front desk",
+              "date": "2021-08-30T11:20",
+              "body": "Caller wants to transfer care, says his old doctor's office is \"too far now and I can never get through.\" Medicare plus MassHealth, both cards on file after he emails photos. New patient slot booked for next week, 60 min. Signed records release on the portal; release faxed to the prior practice today with a request for the last 3 years of notes, labs, imaging and immunizations. Told him to bring every pill bottle and inhaler."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "establish_care",
+          "start": "2021-09-08T10:00",
+          "end": "2021-09-08T11:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2018-05-01",
+              "note": "clinical diagnosis at prior practice; no spirometry in records"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2009-01-01"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "history",
+              "onset": "2016-01-01",
+              "note": "stable, per prior practice list"
+            },
+            {
+              "label": "Bipolar I disorder",
+              "icd10": "F31.9",
+              "action": "history",
+              "onset": "1998-01-01",
+              "note": "stable on lithium about 10 years; outside psychiatrist"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "1983-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily via HandiHaler",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "metoprolol tartrate 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "coronary artery disease, hypertension"
+            },
+            {
+              "drug": "lisinopril 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug_text": "lithium carbonate 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bipolar I disorder; prescribed by outside psychiatry"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "coronary artery disease"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "coronary artery disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ],
+            "weight_kg": 82.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Creatinine": 1.05,
+              "Lithium": 0.8,
+              "Hemoglobin": 14.9,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Low Density Lipoprotein": 82
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-08T11:10",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-08T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-08T11:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-08T11:10",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Disabled former construction worker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-08T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "current smoker, 40 pack-years"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-08T11:05",
+              "body": "NEW PATIENT\n\n54M transferring from a practice he went to for years; records requested 8/30, not here yet. Brought a grocery bag of bottles, which helped.\n\nWorked construction for years as a framer and then a site foreman; on disability now. Married, lives in Sunderland with his wife.\n\nProblems as he and the bottles tell it:\n- COPD. Told years ago he has \"the start of emphysema\" based on symptoms; he does not remember a breathing test. On tiotropium HandiHaler daily. Short of breath on hills and carrying lumber for his own projects, morning cough most days. No hospital stays for his lungs.\n- HTN on four agents: lisinopril 20, amlodipine 5, HCTZ 25, metoprolol tartrate 50 BID.\n- CAD, called stable on the old list. He is vague on details and has not seen a heart doctor in years. Aspirin 81, atorvastatin 40 at night. No exertional chest pain.\n- Bipolar I. Lithium 300 mg TID for about ten years, prescribed by his psychiatrist, whom he sees every few months. No episodes in a long time, no hospitalizations in that span. Gets his levels drawn through psychiatry, he thinks.\n- Smoking: started at 17, a pack a day ever since, about 40 pack-years. Not ready to set a quit date; willing to talk about it again.\n\nAlcohol: a beer or two on weekends. No drug use.\nAllergies: none to medications.\nSurgeries: none he can name.\nFamily: father had an MI at 62 and high blood pressure. Mother had emphysema and died at 70. One brother with bipolar disorder.\n\nExam: vitals as charted. Well appearing, smells of smoke. Oropharynx without lesions. Neck supple, no nodes. Heart regular, no murmur. Lungs with diminished breath sounds throughout and a prolonged expiratory phase, no wheeze today. Abdomen soft. No leg edema. Affect bright, speech normal rate, linear.\n\nA/P\n1. COPD on LAMA, clinical label only. Spirometry would be nice; will see what the old records hold first.\n2. HTN at goal on current four drugs, no change.\n3. CAD, stable. Continue aspirin, statin, beta blocker. Lipids today.\n4. Bipolar I on lithium. CMP, TSH and lithium level today; I will ask psychiatry to copy us on levels.\n5. Tobacco: meets criteria for annual low-dose CT. Ordered. Brief counseling, he knows.\n6. Screening: hep C and HIV once, both today. Colonoscopy he says was done a few years back, normal.\n\nRTC 3 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-09a",
+          "kind": "portal_message",
+          "start": "2021-09-09T16:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "author": "PCP",
+              "date": "2021-09-09T16:40",
+              "body": "Hi Sean, your labs from yesterday are back. Kidney function, salts, liver tests and blood counts are fine. Lithium level is in the target range, thyroid normal, and the hepatitis C and HIV screens are negative. Cholesterol is reasonable on the atorvastatin. Nothing to change. The lung scan order went to scheduling, they will call you."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "outside_records",
+          "start": "2021-09-21T09:15",
+          "reason": "Prior practice records received",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-19T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "MA",
+              "date": "2021-09-21T09:15",
+              "body": "62 pages received by fax from the prior primary care office. Abstracted for PCP:\n- Problem list there: COPD, hypertension, CAD, bipolar disorder, tobacco use. COPD entered on clinical grounds; no PFT report anywhere in the packet. No cardiology letters or stress test reports included.\n- Med list matches what he brought in.\n- Colonoscopy 2018, outside GI: normal exam, no polyps, 10-year repeat.\n- Immunizations: Pfizer COVID doses 3/19/21 and 4/9/21 entered. No pneumococcal or shingles vaccines on file. Flu shots most years, no lot info.\n- Labs 2019 to 2021: creatinine 0.9 to 1.1, lithium levels drawn by psychiatry not included.\nScanned to Media. PCP to review."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "imaging",
+          "start": "2021-10-05T08:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2021-10-05T08:30",
+              "text": "TECHNIQUE: Low-dose helical CT of the chest without contrast.\nCOMPARISON: None.\nFINDINGS: No pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+              "conclusion": "No nodules. Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "done",
+              "date": "2021-10-05T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result note",
+              "author": "PCP",
+              "date": "2021-10-06T12:10",
+              "body": "Screening CT negative, Lung-RADS 1. Repeat in a year. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": [
+            "bp",
+            "hr"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T14:05"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-10-12T14:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit, immunizations",
+              "author": "RN",
+              "date": "2021-10-12T14:20",
+              "body": "Flu vaccine L deltoid and PCV20 R deltoid per standing order (COPD, smoker). VIS given, no prior reactions. Waited 15 minutes, felt fine. Asked about a COVID booster: told him pharmacies have them now."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "pharmacy",
+          "start": "2021-11-18T10:30",
+          "reason": "Fill history",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Medication fill history",
+              "author": "MA",
+              "date": "2021-11-18T10:30",
+              "body": "Pulled external fill history for med rec. Lithium carbonate 300 mg caps, #270 per 90 days, prescriber is his outside psychiatrist, filled on time each quarter. Other maintenance meds filled by the prior PCP through August; transferred to us. No controlled substances."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "office_visit",
+          "start": "2021-12-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and lithium follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-12-14T15:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-14T15:55",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-12-14T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2021-12-14T15:50",
+              "body": "Three-month check. Feels about the same. Breathing his usual; uses the HandiHaler every morning. Got a Moderna booster at the pharmacy last month, he thinks. Mood steady, saw psychiatry in November.\nStill a pack a day. We talked about varenicline and patches; he wants to get through the holidays first.\n\nBP and pulse fine today. Lungs quiet with long expirations, no wheeze. No edema.\n\nPlan: no changes. BMP and lithium level today since we are not getting psych's draws. Next visit spring. Booster dose to be entered once the pharmacy record shows up."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "telephone",
+          "start": "2022-02-08T09:45",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Tiotropium prior authorization",
+              "author": "MA",
+              "date": "2022-02-08T09:45",
+              "body": "Pharmacy says MassHealth now wants a PA for the HandiHaler for 2022. Submitted with COPD diagnosis and years of use. Approved by phone same day, good for 12 months. Pt and pharmacy notified, he has 4 days left."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "office_visit",
+          "start": "2022-04-12T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-04-12T09:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-04-12T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-04-12T09:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-12T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2022-04-12T09:45",
+              "body": "S: Doing ok. Winter was rough on his chest but no antibiotics or steroids. Has been doing some carpentry in the garage, takes breaks. No chest pressure doing it. Taking everything. Still smoking, cut to \"maybe 15 a day\" for a few weeks then back to a pack.\nO: vitals reviewed. Diminished breath sounds, prolonged expiration. Heart regular. Ankles without edema.\nA/P: COPD stable on tiotropium. BP fine. CAD quiet. Lithium monitoring: level and BMP today. Not ready to quit, revisit at the physical in August. CBC with it given the smoking."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "portal_message",
+          "start": "2022-06-21T19:02",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "physical",
+              "author": "patient",
+              "date": "2022-06-21T19:02",
+              "body": "Got the letter about the yearly wellness thing. My wife says I should do it. Anything in August works, mornings better. Do I need to not eat?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: physical",
+              "author": "front desk",
+              "date": "2022-06-22T08:31",
+              "body": "Booked you for August 9 at 8:20. Yes, please skip breakfast, black coffee and your morning pills with water are fine."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "annual_physical",
+          "start": "2022-08-09T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-09T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-09T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-09T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-08-09T08:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-09T08:30",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-08-09T09:05"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-08-09T09:06"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-11-12T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2022-08-09T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-08-09T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening, current smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2022-08-09T09:15",
+              "body": "MEDICARE AWV (initial)\n\nHealth risk assessment reviewed with patient. Lives with wife, two-story house, manages his own pills with a weekly box. No falls. Hearing ok. Drives. Advance directive: has not done one, wife would be his decision-maker; packet given.\n\nInterval: no ED visits. Breathing unchanged. Mood stable per him and psych.\n\nExam: vitals as charted. Mouth and throat clear. No cervical or supraclavicular nodes. Heart RRR. Lungs diminished, long expiration. Abdomen soft, nontender. Skin without concerning lesions. Gait steady. PHQ-9 2.\n\nPrevention:\n- Colonoscopy 2018 normal, next 2028.\n- LDCT due October, ordered.\n- Tdap today (none on record). Shingrix #1 today, #2 in 2 to 6 months.\n- PCV20 done last fall.\n- Moderna booster from 11/2021 entered from pharmacy record.\n- Hep C and HIV done 2021.\n\nTobacco: ~5 min counseling. Precontemplative, says \"it's who I am.\" Door left open.\n\nLabs today: CMP, CBC, lipids, TSH, lithium, UA."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "nurse_visit",
+          "start": "2022-09-27T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T13:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-27T13:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit, flu and bivalent booster",
+              "author": "RN",
+              "date": "2022-09-27T14:00",
+              "body": "Influenza IM left arm, Pfizer bivalent IM right arm. Screening questions negative. Tolerated, observed 15 min. Reminded him Shingrix #2 is due next month, booked for 10/25."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "imaging",
+          "start": "2022-10-11T07:50",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-11T07:50",
+              "text": "TECHNIQUE: Low-dose CT chest, no IV contrast.\nCOMPARISON: 10/05/2021.\nFINDINGS: No new or enlarging nodules; no nodules identified. No consolidation, effusion or adenopathy. Upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1. Negative. Annual LDCT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-10-11T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT 2022",
+              "author": "PCP",
+              "date": "2022-10-12T08:05",
+              "body": "Second screening CT negative, unchanged from last year. Message to patient. Recall in one year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "nurse_visit",
+          "start": "2022-10-25T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-10-25T10:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-25T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Shingrix #2",
+              "author": "MA",
+              "date": "2022-10-25T10:35",
+              "body": "Second Shingrix given L deltoid. First dose gave him a sore, heavy arm for two days and he took it in stride. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "portal_message",
+          "start": "2022-11-29T21:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "refills",
+              "author": "patient",
+              "date": "2022-11-29T21:10",
+              "body": "Need my amlodipine and the atorvastatin, pharmacy says no refills left. Same pharmacy as always."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refills",
+              "author": "MA",
+              "date": "2022-11-30T08:45",
+              "body": "Both renewed for 90 days with 3 refills and sent to your usual pharmacy. Please keep your follow-up on 12/13."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-12-14a",
+          "kind": "telephone",
+          "start": "2022-12-14T10:05",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed visit outreach",
+              "author": "front desk",
+              "date": "2022-12-14T10:05",
+              "body": "Reached pt about yesterday's missed follow-up. Says the truck would not start in the cold and he forgot to call. Rebooked for January 12. He mentioned the cough has been \"worse than usual\"; offered a sooner slot, he declined, said it is nothing new."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,633 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002764",
+      "given": "Valerie",
+      "family": "Roberge",
+      "birth_date": "1980-06-11",
+      "address_line": "27 Parsons Street",
+      "phone": "+1-508-555-0175",
+      "email": "valerie.roberge@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher who joined in 2023 with long-standing iron deficiency anemia on oral iron. Heavier, more painful periods from early 2025 led to a gynecology referral and a diagnosis of adenomyosis; later gyn visits reach the practice only as her own message and a faxed note.",
+      "events": [
+        {
+          "id": "2023-08-02a",
+          "kind": "telephone",
+          "start": "2023-08-02T10:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-02T10:40",
+              "body": "Caller wants to transfer her primary care here; her old office in another town stopped taking new appointments for months out. Teaches math at the high school, wants something before classes restart. Booked new-patient physical Mon 8/14 at 8:00. Sent the intake packet and a records release to her email. Asked her to bring her med list including anything over the counter."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "establish_care",
+          "start": "2023-08-14T08:00",
+          "end": "2023-08-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2019-03-01",
+              "note": "Diagnosed at prior practice; on oral iron since."
+            },
+            {
+              "label": "Personal history of other diseases of the digestive system",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "Remote gallstones per patient, never operated, no symptoms since.",
+              "icd10": "Z87.19"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            },
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 to 3 tablets (400 to 600 mg) by mouth every 6 hours as needed for menstrual cramps",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Menstrual cramps"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Ferritin": 14,
+              "Mean Corpuscular Volume": 79,
+              "Transferrin Saturation": 9,
+              "Thyroid Stimulating Hormone": 1.9,
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-14T09:10",
+              "resulted": "2023-08-14T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "Iron"
+                },
+                {
+                  "test": "Total Iron-Binding Capacity"
+                },
+                {
+                  "test": "Transferrin Saturation"
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-14T09:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-14T08:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2023-08-14T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-14T08:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-14T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2023-08-14T08:00",
+              "body": "43 y/o woman establishing care. Previous PCP in another town; records release signed today.\n\nPMH: iron deficiency anemia, picked up on routine bloodwork around 2019 per her account, on ferrous sulfate 325 once a day since. Takes it most mornings, tolerates it. Gallstones years ago, never had surgery, no attacks since. No other chronic problems.\nOB/GYN: G2P2, both vaginal deliveries (2010, 2013). Tubal ligation 2014. Cycles regular. Periods on the heavy side and crampy the first couple of days, which she says has been her pattern for years, no recent change. Uses ibuprofen 400-600 mg as needed during periods.\nMeds: ferrous sulfate 325 mg daily; ibuprofen OTC prn cramps.\nAllergies: NKDA.\nFHx: mother had adenomyosis, hysterectomy at 48. Sister with endometriosis. Father with type 2 diabetes.\nSocial: teaches high school math. Never smoker. Wine 1-2 glasses a week.\nPrevention: last Pap with HPV 2021 at the old office, normal per pt. Mammogram 2022, normal. Tetanus booster not recalled.\n\nROS: no dizziness, no shortness of breath on stairs, no palpitations. No change in bowels, no dark stools. Energy fine.\n\nExam: vitals as recorded. Well appearing, conjunctivae pink. Thyroid not enlarged. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Skin unremarkable. Breast and pelvic exams not repeated today given recent normal screening, she prefers to wait.\n\nA/P\n1. Iron deficiency anemia, chronic, on oral iron - CBC and iron studies today. Continue ferrous sulfate.\n2. History of gallstones - asymptomatic, nothing to do.\n3. Health maintenance - Tdap today. Screening mammogram ordered for the fall. CMP, lipids, TSH, A1c (father with T2DM), one-time HIV and hep C screening. Pap due 2026. PHQ-2 0.\n4. Records requested.\nReturn in a year, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-16a",
+          "kind": "portal_message",
+          "start": "2023-08-16T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent results",
+              "author": "PCP",
+              "date": "2023-08-16T16:05",
+              "body": "Hi Valerie, your blood count is mildly low at 11.6 and your iron stores (ferritin 14) are on the low side, which fits the iron deficiency you've had for a while. Please keep taking the ferrous sulfate every day, ideally with something containing vitamin C and away from coffee or tea. Kidney, liver, thyroid, sugar and cholesterol numbers are all normal, and the HIV and hepatitis C screens are negative. We'll recheck the blood count and ferritin in about six months."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care practice",
+              "author": "MA",
+              "date": "2023-09-12T11:30",
+              "body": "Records received from patient's former primary care office (22 pages), covering 2017-2023. Abstracted:\n- Iron deficiency anemia noted on bloodwork 2019; started ferrous sulfate 325 mg daily, continued since. Follow-up counts mildly low on iron.\n- Cervical cytology with HPV co-test 2021: NILM, HPV negative.\n- Screening mammogram 2022: negative, BI-RADS 1.\n- Remote history of gallstones listed, no surgery.\n- Surgical: bilateral tubal ligation 2014.\n- Allergies: NKDA.\nForwarded to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-06a",
+          "kind": "nurse_visit",
+          "start": "2023-10-06T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-06T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-06T15:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-06T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-06T15:30",
+              "body": "Came after school. Screening questions negative, no prior vaccine reactions. Flu vaccine IM left deltoid, 2023-24 COVID vaccine IM right deltoid. Waited 15 minutes, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "imaging",
+          "start": "2023-11-09T16:00",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-11-09T16:00",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison: prior 2022 study from outside facility. Breast composition: scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "Negative. BI-RADS 1. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-11-09T16:00"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "lab_only",
+          "start": "2024-02-20T07:20",
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.8,
+              "Ferritin": 16,
+              "Mean Corpuscular Volume": 80
+            }
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-20T07:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-20T07:20",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 16,
+                  "loinc": "2276-4",
+                  "unit": "ng/mL"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-20T07:20"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "portal_message",
+          "start": "2024-02-21T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Recheck results",
+              "author": "PCP",
+              "date": "2024-02-21T12:15",
+              "body": "Hemoglobin 11.8 and ferritin 16, both a touch better than August. Stay on the iron as you are. Next check with your physical in the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Recheck results",
+              "author": "patient",
+              "date": "2024-02-21T19:42",
+              "body": "Thanks! Will do."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "telephone",
+          "start": "2024-06-11T07:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment change",
+              "author": "front desk",
+              "date": "2024-06-11T07:50",
+              "body": "Pt called, can't make her physical on 6/13, final exams and grading that week. Cancelled and moved to 8/20 at 8:30. Lab slip for fasting draw same morning."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-13a",
+          "kind": "annual_physical",
+          "start": "2024-06-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {
+            "weight_kg": 64.8,
+            "labs": {
+              "Hemoglobin": 11.9,
+              "Ferritin": 18
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-20T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-20T08:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 18,
+                  "loinc": "2276-4",
+                  "unit": "ng/mL"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T08:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-08-20T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T08:30",
+              "body": "Annual exam, 44F. Back to school in two weeks, feels ready.\n\nInterval: nothing new. Still on ferrous sulfate daily. Periods unchanged from last year, heavy first two days, ibuprofen helps. No lightheadedness. Mammogram last November negative.\n\nMeds: ferrous sulfate 325 daily, ibuprofen prn. NKDA.\n\nExam: vitals as recorded, BMI about 24. Comfortable. Conjunctivae pink. Neck supple, no thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear throughout. Abdomen soft and nontender. Extremities without edema. Mood and affect normal.\n\nPHQ-2 0.\n\nAssessment/plan:\n- Iron deficiency anemia: stable on oral iron, CBC and ferritin drawn this morning. Continue.\n- Remote gallstones: no symptoms.\n- Prevention: mammogram ordered for November. Tdap current (2023). Flu/COVID at a nurse visit when the fall supply arrives. Pap due 2026. CMP today.\nYearly follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T13:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical bloodwork",
+              "author": "PCP",
+              "date": "2024-08-22T13:30",
+              "body": "Valerie - blood count 11.9, ferritin 18. Holding steady, slightly better than last year. Chemistry panel normal. Keep the iron going."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "nurse_visit",
+          "start": "2024-10-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-03T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-03T15:27"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-03T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-10-03T15:20",
+              "body": "Here for seasonal vaccines. No illness today, no egg or latex issues, tolerated last year's without trouble. 2024-25 flu IM L deltoid, 2024-25 COVID IM R deltoid. Observed 15 min, left feeling well."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "imaging",
+          "start": "2024-11-14T15:45",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-11-14T15:45",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2023-11-09. Scattered fibroglandular densities. No new mass, distortion or suspicious calcification. Stable appearance both breasts.",
+              "conclusion": "Negative. BI-RADS 1. Continue routine screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-11-14T15:45"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

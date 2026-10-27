@@ -1,0 +1,375 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002189",
+      "events": [
+        {
+          "id": "2022-01-27a",
+          "kind": "specialist_visit",
+          "start": "2022-01-27T14:00",
+          "service": "Gastroenterology",
+          "reason": "Dysphagia with solids and regurgitation",
+          "conditions": [{"label": "Diverticulum of esophagus, acquired", "icd10": "K22.5", "action": "diagnosed", "onset": "2021-07-01", "note": "Zenker diverticulum on barium swallow"}],
+          "orders": [{"id": "gi-referral-dysphagia", "action": "done", "date": "2022-01-27T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2022-02-01T11:00", "body": "Outside gastroenterology consultation, seen 01/27/2022, at the request of his primary care physician.\n\nReason: dysphagia.\n\nHPI: Half a year of difficulty swallowing, mostly with solid food. Occasionally brings back undigested food, more often when lying flat. Describes something like a lump in the throat; his wife notes bad breath. Liquids pass. He has IPF diagnosed by pulmonology last summer, COPD on 2 L oxygen, and compensated alcohol-related cirrhosis followed by our hepatology colleagues.\n\nMeds: tiotropium, salmeterol, albuterol nebs PRN, home O2 2 L, lisinopril 20, HCTZ 25, metformin 1000 bid. NKDA.\n\nExam: No neck mass on palpation. Cranial nerves and the rest of the neurological exam normal.\n\nBarium esophagram (performed with this visit): posterior outpouching of the esophagus arising just above the upper esophageal sphincter, consistent with a Zenker diverticulum. Remainder of the esophagus passes contrast normally.\n\nAssessment: Zenker diverticulum, symptomatic.\n\nPlan: We discussed flexible endoscopic septotomy versus surgical options. Given his lung disease and oxygen requirement, he prefers to avoid sedation and a procedure for now, which is reasonable while he is maintaining his weight. Small bites, chew thoroughly, follow solids with liquids, stay upright for an hour after meals and avoid eating late. Return if he loses weight, has choking spells or recurrent chest infections.\n\nGastroenterology"}
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "specialist_visit",
+          "start": "2022-02-22T10:30",
+          "service": "Pulmonology",
+          "reason": "IPF follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2022-02-25T14:00", "body": "Pulmonology follow-up, 02/22/2022.\nIPF and COPD on 2 L. Breathlessness and dry cough about as they were in August. No exacerbations. Resting saturation adequate on 2 L. Bibasilar crackles, clubbing unchanged.\nNew Zenker diverticulum per GI - aspiration precautions reviewed.\nPlan: continue oxygen and inhalers; antifibrotics remain off the table because of the liver; HRCT in late summer; return 6 months. NKDA.\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-22T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-03-22T10:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2022-03-22T10:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2022-03-22T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-22T10:00"}, {"procedure": "Venipuncture", "performed": "2022-03-22T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2022-03-22T10:45", "body": "F/u. GI letter in: Zenker diverticulum on barium swallow, no procedure for now, diet measures. He has been cutting his food small and says it helps a bit; still regurgitates now and then at night, raised the head of the bed on blocks. Weight steady.\nBreathing - no change since pulm visit. No chest infections this winter.\n\nExam: sat as charted on 2 L. Bibasilar crackles. Heart regular. No edema. No jaundice.\n\nA/P: Zenker - added to list, conservative per GI. IPF/COPD stable. HTN, DM - labs today. Cirrhosis - hepatology in May.\nRTC June for wellness visit."}
+          ]
+        },
+        {
+          "id": "2022-05-03a",
+          "kind": "specialist_visit",
+          "start": "2022-05-03T13:00",
+          "service": "Hepatology",
+          "reason": "Cirrhosis surveillance",
+          "labs": [{"panel": null, "collected": "2022-05-03T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.7}]}],
+          "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2022-05-03T12:00", "text": "Nodular, coarsened liver without focal lesion. Portal vein patent with normal direction of flow. No ascites. Gallbladder and bile ducts normal.", "conclusion": "Cirrhosis without focal lesion."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2022-05-09T09:00", "body": "Hepatology 5/3/2022. Compensated, abstinent, no decompensating events. Ultrasound negative for focal lesion; AFP 4.7. Continue surveillance every 6 months. NKDA.\nHepatology"}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "annual_physical",
+          "start": "2022-06-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2022-06-21T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-06-21T09:45", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 0}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2022-06-21T09:40"}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2022-06-21T09:00"}, {"procedure": "Immunization administration", "performed": "2022-06-21T09:40"}, {"procedure": "Venipuncture", "performed": "2022-06-21T09:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2022-06-21T09:50", "body": "Subsequent AWV.\nNo falls. Independent ADLs; Ingrid does more of the yard work now. Uses portable O2 for errands. PHQ-2 1 (a little down some days about the breathing), declines further discussion today, not depressed. AUDIT-C 0.\nCognition grossly intact.\nEye exam: has an optometry appointment in July.\nProxy form - still at home, not signed. Encouraged.\nVaccines: Tdap today. Flu/COVID in fall.\nFeet: sensation normal, skin intact.\nLabs: lipids and urine microalbumin."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "specialist_visit",
+          "start": "2022-07-12T15:00",
+          "service": "Optometry",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {"type": "Consult Note", "title": "Diabetic Eye Exam Report", "author": "optometry", "date": "2022-07-18T10:00", "body": "Dilated eye examination 7/12/2022 for type 2 diabetes. Visual acuity corrected 20/25 each eye. No diabetic retinopathy either eye. Mild lens changes appropriate for age. Recheck in one year."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "specialist_visit",
+          "start": "2022-09-13T10:00",
+          "service": "Pulmonology",
+          "reason": "IPF follow-up with HRCT",
+          "reports": [{"study": "CT chest", "performed": "2022-09-06T08:30", "text": "High-resolution CT. Basal and subpleural reticulation with honeycombing, similar in extent to the 2021 study. No new consolidation, effusion or nodule. No mediastinal adenopathy.", "conclusion": "Fibrotic changes similar to prior. No nodule."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2022-09-16T13:00", "body": "Pulmonology follow-up 9/13/2022.\nSymptoms stable: exertional dyspnea, dry cough, on 2 L. No exacerbations or hospital visits. Exam unchanged with bibasilar crackles and clubbing.\nHRCT 9/6: fibrosis similar to last year, no nodule.\nPlan: continue current regimen, flu and COVID boosters this fall, return 6 months, HRCT yearly. NKDA.\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "office_visit",
+          "start": "2022-10-04T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fall vaccines",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-10-04T11:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-10-04T11:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2022-10-04T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T11:01"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-10-04T10:30"}, {"procedure": "Immunization administration", "performed": "2022-10-04T11:00"}, {"procedure": "Venipuncture", "performed": "2022-10-04T11:05"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2022-10-04T11:10", "body": "Quarterly f/u. Pulm letter and HRCT reviewed - stable. Eye exam no retinopathy.\nFeeling about the same. Swallowing manageable with small bites. Using the nebulizer more on humid days. No chest infections.\nBP/sat as charted. Lungs crackles bases. Heart RRR. No edema.\nA/P: stable across the board. A1c and BMP today. High-dose flu and bivalent COVID given. Hepatology ultrasound due December. RTC Jan."}
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "portal_message",
+          "start": "2022-10-05T19:12",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nebulizer supplies",
+          "documents": [
+            {"type": "Patient Message", "title": "Nebulizer tubing", "author": "patient", "date": "2022-10-05T19:12", "body": "Hi, the tubing and mouthpiece on my nebulizer is getting cloudy, the supply company says they need a new order from you. Thanks, Fred"},
+            {"type": "Patient Message", "title": "RE: Nebulizer tubing", "author": "MA", "date": "2022-10-06T09:30", "body": "Hi Fred, the order for replacement nebulizer kits went to the supply company this morning. They should call you to set up delivery."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "imaging",
+          "start": "2022-12-13T12:00",
+          "service": "Hepatology",
+          "reason": "Cirrhosis surveillance ultrasound",
+          "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2022-12-13T12:00", "text": "Nodular, coarsened cirrhotic liver. New 2.1 cm hypoechoic lesion in the right hepatic lobe, not present on the May 2022 study. Portal vein patent. No ascites. Gallbladder normal. Common bile duct normal caliber.", "conclusion": "New 2.1 cm right hepatic lobe lesion in a cirrhotic liver. Multiphase MRI recommended."}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from hepatology", "author": "RN", "date": "2022-12-14T15:10", "body": "Hepatology nurse called: surveillance ultrasound 12/13 shows a new 2.1 cm lesion in the right lobe of the liver. They are scheduling a liver MRI in January and have spoken with the patient. Report faxed. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "PCP call to patient", "author": "PCP", "date": "2022-12-14T17:30", "body": "Called Fred. He had heard from hepatology already and was worried. Explained that the MRI will tell us what the spot is and that hepatology will guide next steps. Offered a visit after the MRI; he would like that."}
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "imaging",
+          "start": "2023-01-10T08:00",
+          "service": "Radiology",
+          "reason": "Liver lesion characterization",
+          "labs": [{"panel": null, "collected": "2023-01-10T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 18}]}],
+          "documents": [
+            {"type": "Imaging Report", "title": "MRI Abdomen with and without Contrast (Liver Protocol)", "author": "radiology", "date": "2023-01-11T09:00", "body": "MRI abdomen, multiphase liver protocol, 01/10/2023.\nIndication: cirrhosis, new lesion on surveillance ultrasound.\nFindings: Cirrhotic liver morphology. Single 2.1 cm observation in segment VI with nonrim arterial phase hyperenhancement, nonperipheral washout on portal venous and delayed phases, and an enhancing capsule. No other observations. Hepatic and portal veins patent without tumor in vein. No ascites. Spleen, pancreas, adrenals and kidneys unremarkable. No adenopathy.\nImpression: 2.1 cm segment VI observation, LI-RADS 5 (definitely hepatocellular carcinoma). No vascular invasion."}
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "specialist_visit",
+          "start": "2023-01-19T13:30",
+          "service": "Hepatology",
+          "reason": "New liver lesion",
+          "conditions": [{"label": "Liver cell carcinoma", "icd10": "C22.0", "action": "diagnosed", "onset": "2022-12-13", "note": "single 2.1 cm segment VI, LI-RADS 5"}],
+          "orders": [
+            {"id": "ir-ablation", "action": "placed", "order": "Interventional radiology microwave ablation", "category": "procedure", "to": "Interventional Radiology", "reason": "hepatocellular carcinoma"},
+            {"id": "transplant-referral", "action": "placed", "order": "Liver transplant evaluation referral", "category": "referral", "to": "Transplant Hepatology", "reason": "hepatocellular carcinoma within criteria"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Consultation - New HCC", "author": "hepatology", "date": "2023-01-20T16:00", "body": "Hepatology visit 01/19/2023.\nMr. Lindqvist's surveillance ultrasound in December showed a new right-lobe lesion. MRI on 1/10 characterizes it as a single 2.1 cm segment VI LI-RADS 5 observation without vascular invasion. AFP 18 ng/mL, up from 4-5 previously.\n\nAssessment: hepatocellular carcinoma, single lesion within Milan criteria, in compensated alcohol-associated cirrhosis (Child-Pugh A). Abstinent four years.\n\nPlan:\n1. Percutaneous microwave ablation with interventional radiology - referral placed.\n2. Referral to the transplant center for liver transplant evaluation. We were frank with him that his pulmonary fibrosis and oxygen need will weigh heavily in their decision.\n3. MRI and AFP about 3 months after ablation.\n\nMedications reviewed. NKDA.\nHepatology"}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Liver cancer diagnosis discussion",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-01-24T11:45", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-01-24T11:45", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2023-01-24T11:45", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]},
+            {"panel": null, "collected": "2023-01-24T11:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "orders": [{"id": "derm-referral", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "enlarging lesion right upper back"}],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2023-01-24T11:00"}, {"procedure": "Venipuncture", "performed": "2023-01-24T11:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-01-24T11:50", "body": "Here with Ingrid after hepatology visit. MRI: single 2.1 cm HCC in segment VI, no vascular invasion; AFP 18. Hepatology plans microwave ablation and a transplant referral. We talked through what each step means. He asked whether drinking caused this; told him cirrhosis is the soil for it and that his 4 years sober matter for the transplant team. He is hopeful but realistic about his lungs.\n\nAlso: Ingrid pointed out a spot on his right upper back that she thinks has been getting bigger over the past year. Doesn't hurt or itch.\n\nExam: Pearly raised nodule on the R upper back, roughly 1.5 cm, with a small central crust. No other lesions noted on the back. Lungs - basal crackles as before. No jaundice, no ascites.\n\nA/P\n1. HCC - per hepatology, ablation pending; transplant referral placed by them. Labs today.\n2. Back lesion - looks like a basal cell; referred to dermatology.\n3. IPF/COPD, HTN, DM - unchanged.\nRTC 3-4 months or sooner."}
+          ]
+        },
+        {
+          "id": "2023-02-03a",
+          "kind": "specialist_visit",
+          "start": "2023-02-03T09:30",
+          "service": "Dermatology",
+          "reason": "Slowly enlarging lesion on right upper back",
+          "orders": [{"id": "derm-referral", "action": "done", "date": "2023-02-03T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology Consultation", "author": "dermatology", "date": "2023-02-06T12:00", "body": "Outside dermatology consult, seen 02/03/2023.\nCC: lesion right upper back.\nHPI: Over the past year a spot on his right upper back has slowly grown. No pain or itching. History notable for idiopathic pulmonary fibrosis and a Zenker diverticulum, both diagnosed in the past two years, COPD on oxygen and cirrhosis with a recently found liver cancer. Former smoker; years of outdoor construction work.\nAllergies: NKDA.\n\nExam: Right upper back - 1.5 cm flesh-colored nodule with a pearly sheen, surface telangiectasias, a raised rolled border and central ulceration. No lymphadenopathy in the cervical, axillary or supraclavicular regions. Full skin exam otherwise unremarkable.\n\nAssessment: clinically consistent with basal cell carcinoma.\nPlan: shave biopsy performed today after informed consent, hemostasis with aluminum chloride, wound care reviewed. Will call with pathology and arrange excision.\nDermatology"}
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "outside_records",
+          "start": "2023-02-08T15:00",
+          "service": "Dermatopathology",
+          "reason": "Skin biopsy result",
+          "conditions": [{"label": "Basal cell carcinoma of skin", "action": "diagnosed", "onset": "2022-02-01", "note": "right upper back, nodular type"}],
+          "reports": [{"study": "Surgical pathology report", "performed": "2023-02-03T09:45", "issued": "2023-02-08T15:00", "text": "Specimen: skin, right upper back, shave biopsy. Microscopic: nests of basaloid cells with peripheral palisading and retraction artifact, arising from the epidermis and extending into the dermis. Overlying ulceration. Tumor present at the deep margin.", "conclusion": "Basal cell carcinoma, nodular type. Extends to the deep margin."}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Dermatology result call", "author": "RN", "date": "2023-02-09T10:15", "body": "Dermatology office called: back biopsy is a nodular basal cell carcinoma. Excision scheduled 3/2 at their office. Path report scanned. Pt informed by derm."}
+          ]
+        },
+        {
+          "id": "2023-03-02a",
+          "kind": "procedure_visit",
+          "start": "2023-03-02T10:00",
+          "service": "Dermatology",
+          "reason": "Excision of basal cell carcinoma",
+          "conditions": [{"label": "Basal cell carcinoma of skin", "action": "resolved"}],
+          "reports": [{"study": "Surgical pathology report", "performed": "2023-03-02T10:30", "issued": "2023-03-07T12:00", "text": "Specimen: skin, right upper back, excision with 4 mm margins. Residual nodular basal cell carcinoma at the biopsy site. Peripheral and deep margins free of tumor; closest margin 3 mm.", "conclusion": "Residual basal cell carcinoma, nodular type, completely excised. Margins clear."}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Dermatology Excision Note", "author": "dermatology", "date": "2023-03-08T09:00", "body": "Excision 03/02/2023, right upper back, biopsy-proven nodular BCC. Local anesthesia with lidocaine with epinephrine. Elliptical excision with 4 mm margins, layered closure. Tolerated well sitting upright on his oxygen. Pathology: margins clear. Sutures out in 14 days with your nurse or ours. Annual skin checks advised. NKDA."}
+          ]
+        },
+        {
+          "id": "2023-03-09a",
+          "kind": "procedure_visit",
+          "start": "2023-03-09T07:30",
+          "end": "2023-03-09T16:00",
+          "service": "Interventional Radiology",
+          "reason": "Microwave ablation of hepatocellular carcinoma",
+          "orders": [{"id": "ir-ablation", "action": "done", "date": "2023-03-09T09:00"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Microwave Ablation - Interventional Radiology", "author": "interventional radiology", "date": "2023-03-13T11:00", "body": "Outside interventional radiology procedure report, 03/09/2023.\nProcedure: CT- and ultrasound-guided percutaneous microwave ablation, segment VI hepatocellular carcinoma (2.1 cm).\nAnesthesia: general anesthesia with anesthesiology, chosen after discussion with pulmonology; extubated in the procedure suite, back on 2 L by recovery.\nTechnique: single antenna placed through a right intercostal approach; one ablation cycle covering the lesion with a 5 to 10 mm margin. Track ablated on withdrawal.\nPost-ablation imaging: ablation zone encompasses the target; no hemorrhage or pneumothorax.\nComplications: none. Discharged home the same evening.\nFollow-up: multiphase MRI and AFP in about 3 months. NKDA."}
+          ]
+        },
+        {
+          "id": "2023-03-16a",
+          "kind": "nurse_visit",
+          "start": "2023-03-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Suture removal",
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit - Suture Removal", "author": "RN", "date": "2023-03-16T09:45", "body": "Sutures removed from R upper back excision site per derm instructions. Wound well approximated, no redness or drainage. Adhesive strips applied. He also had the liver ablation last week, feels sore on the right side when he coughs, otherwise fine."}
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "office_visit",
+          "start": "2023-04-11T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2023-04-11T12:20", "body": "Pt did not arrive for 10:00. Called home, wife answered - he had a long day of tests at the transplant center yesterday and they forgot. Rebooked for 5/23."}
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "specialist_visit",
+          "start": "2023-04-20T09:00",
+          "service": "Transplant Hepatology",
+          "reason": "Liver transplant evaluation",
+          "orders": [{"id": "transplant-referral", "action": "done", "date": "2023-04-20T09:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant Center Evaluation Letter", "author": "transplant hepatology", "date": "2023-04-26T14:00", "body": "Transplant hepatology, initial evaluation 04/10 and 04/20/2023.\nMr. Lindqvist is a 71-year-old man with alcohol-associated cirrhosis, abstinent since January 2019, and a single 2.1 cm hepatocellular carcinoma treated with microwave ablation on 3/9/2023. Child-Pugh A.\nComorbidities of concern: idiopathic pulmonary fibrosis and COPD on continuous oxygen 2 L; type 2 diabetes; hypertension.\nStatus: liver transplant evaluation opened. Candidacy cannot be decided until formal pulmonary assessment (our transplant pulmonologist) and cardiac testing are complete; these are being scheduled. He is awaiting the completion of his evaluation and is not listed.\nSocial work and addiction medicine review: sustained abstinence, strong support from his wife.\nWe will update you after committee review. NKDA.\nTransplant Hepatology"}
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "office_visit",
+          "start": "2023-05-23T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-23T11:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2023-05-23T11:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-23T10:30"}, {"procedure": "Venipuncture", "performed": "2023-05-23T11:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-05-23T11:15", "body": "Rescheduled from April. Ablation went smoothly, no lingering pain. Back excision healed, margins clear on path. Transplant center letter in: evaluation open, waiting on their pulmonary and cardiac workup, not listed.\nBreathing unchanged. Swallowing ok with care.\nExam: sat as charted on 2 L. Back scar well healed. Crackles at bases. No edema, no jaundice.\nA/P: HCC s/p ablation - MRI in June per hepatology; transplant eval in progress. BCC - excised, resolved. Chronic issues stable; A1c, BMP today. AWV next month."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "imaging",
+          "start": "2023-06-13T08:00",
+          "service": "Hepatology",
+          "reason": "Post-ablation MRI",
+          "labs": [{"panel": null, "collected": "2023-06-13T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.2}]}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2023-06-15T16:00", "body": "Hepatology 06/13/2023.\nMRI liver protocol: segment VI ablation zone without arterial enhancement or washout, consistent with complete response. No new observations. No vascular invasion. No ascites.\nAFP 5.2, back to near baseline.\nPlan: MRI and AFP every 6 months. Transplant evaluation continues at the transplant center. NKDA.\nHepatology"}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "annual_physical",
+          "start": "2023-06-27T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2023-06-27T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-27T09:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2023-06-27T09:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2023-06-27T09:00"}, {"procedure": "Venipuncture", "performed": "2023-06-27T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2023-06-27T09:45", "body": "AWV. Busy year medically: HCC ablated with complete response on June MRI, BCC excised, transplant evaluation underway.\nFunction: independent ADLs, needs help with heavier IADLs. No falls. PHQ-2 0. AUDIT-C 0.\nProxy: health care proxy signed today naming Ingrid; copy scanned. He does not want to fill out a MOLST yet.\nSkin: back scar fine, no new lesions seen.\nFeet: monofilament intact.\nVaccines: flu/COVID in fall; RSV vaccine recommended this fall given his lungs.\nLabs today."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "specialist_visit",
+          "start": "2023-07-18T15:30",
+          "service": "Optometry",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {"type": "Consult Note", "title": "Diabetic Eye Exam Report", "author": "optometry", "date": "2023-07-21T10:00", "body": "Dilated exam 7/18/2023. Best corrected acuity 20/25 OD, 20/30 OS. No diabetic retinopathy in either eye. Early lens opacities, not visually significant. Return 12 months."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "specialist_visit",
+          "start": "2023-08-22T10:00",
+          "service": "Pulmonology",
+          "reason": "IPF follow-up with HRCT",
+          "reports": [{"study": "CT chest", "performed": "2023-08-15T08:30", "text": "High-resolution CT. Bilateral basal and subpleural reticulation with honeycombing, similar to September 2022. No new consolidation, effusion or pulmonary nodule. Heart size normal.", "conclusion": "Stable fibrotic lung disease. No nodule."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2023-08-25T11:00", "body": "Pulmonology 8/22/2023. Seen also by our transplant colleague's request for an opinion on lung reserve; that assessment has been sent to the transplant center directly.\nClinically stable on 2 L. HRCT 8/15 similar to last year, no nodule.\nPlan: continue regimen, RSV, flu and COVID vaccines this fall, return 6 months to a year. NKDA.\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "office_visit",
+          "start": "2023-09-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fall vaccines",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-26T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": null, "collected": "2023-09-26T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-09-26T10:30"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-09-26T10:31"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-09-26T10:32"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-09-26T10:00"}, {"procedure": "Immunization administration", "performed": "2023-09-26T10:30"}, {"procedure": "Venipuncture", "performed": "2023-09-26T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2023-09-26T10:45", "body": "Quarterly. Pulm letter: HRCT stable. Eye exam: no retinopathy. Transplant: still waiting on their committee.\nNo new complaints. Eating fine with his small-bite routine.\nVitals as charted on 2 L. Exam unchanged - bibasilar crackles, clubbing, no edema, no icterus.\nA/P: stable. Three vaccines today (flu HD, updated COVID, RSV) - he wanted them all at once. Labs. RTC January."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "imaging",
+          "start": "2023-12-05T08:00",
+          "service": "Hepatology",
+          "reason": "HCC surveillance MRI",
+          "labs": [{"panel": null, "collected": "2023-12-05T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.8}]}],
+          "documents": [
+            {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2023-12-08T10:00", "body": "Hepatology 12/05/2023. MRI: treated segment VI zone without residual enhancement; no new liver observations; no ascites; pancreas and biliary tree reported unremarkable. AFP 4.8. No recurrence. Next MRI in 6 months. Transplant evaluation remains open. NKDA.\nHepatology"}
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "pharmacy",
+          "start": "2023-12-18T10:00",
+          "service": "Community Pharmacy",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pharmacy refill request", "author": "MA", "date": "2023-12-18T10:20", "body": "Pharmacy fax: 90-day refills requested for lisinopril 20, HCTZ 25, metformin 1000, tiotropium and salmeterol. Approved per PCP protocol, sent."}
+          ]
+        }
+      ]
+    }
+  ]
+}

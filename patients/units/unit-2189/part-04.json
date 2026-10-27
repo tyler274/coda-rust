@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002189",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-14T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-14T10:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2025-01-14T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-14T10:00"}, {"procedure": "Venipuncture", "performed": "2025-01-14T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-01-14T10:45", "body": "Winter check. Has mostly stayed in during the cold. No chest infections since the summer flare. Oncology November: stable, no liver recurrence.\nSwallowing - still the occasional regurgitation at night, sleeps propped up.\nExam: vitals as charted on 2 L. Basal crackles, no wheeze. Abdomen soft. No edema.\nA/P: stable. Labs. Reviewed when to call (more sputum, color change, more breathless, drowsy). RTC April."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "hospital_admission",
+          "start": "2025-02-11T02:50",
+          "end": "2025-02-19T13:00",
+          "service": "Critical Care",
+          "reason": "Acute shortness of breath with altered mental status and productive cough",
+          "conditions": [
+            {"label": "Acute and chronic respiratory failure with hypercapnia", "icd10": "J96.22", "action": "diagnosed", "onset": "2025-02-11"},
+            {"label": "Chronic obstructive pulmonary disease with acute exacerbation", "action": "diagnosed", "onset": "2025-02-09"},
+            {"label": "Community-acquired pneumonia", "action": "diagnosed", "onset": "2025-02-09", "note": "right lower lobe"}
+          ],
+          "medications": [{"drug_text": "clindamycin hydrochloride 300 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth four times daily through 2/25/2025", "dose": {"value": 300, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "pneumonia, oral step-down"}],
+          "vitals": [{"time": "2025-02-11T03:00", "rr": 28, "spo2": 88}],
+          "labs": [
+            {"panel": null, "collected": "2025-02-11T03:15", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.28},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 60},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 55},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 26}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-11T03:15", "results": [{"test": "Sodium", "value": 138}, {"test": "Potassium", "value": 4.2}, {"test": "Chloride", "value": 100}, {"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 1.0}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-11T03:15", "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "reports": [{"study": "Chest X-ray, 1 view", "performed": "2025-02-11T03:30", "text": "Portable AP view. Increased bronchovascular markings. Small infiltrate in the right lower lobe. Chronic basal reticular change. No effusion or pneumothorax. Heart size normal.", "conclusion": "Small right lower lobe infiltrate, compatible with pneumonia."}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "ICU and Hospital Discharge Summary", "author": "critical care", "date": "2025-02-20T15:00", "body": "Outside regional hospital. Admitted 02/11/2025, discharged 02/19/2025.\n\nPresentation: Brought in overnight by his wife, who described two days of increasing sleepiness and a cough productive of green sputum, about six months after his July 2024 COPD exacerbation. On arrival he grew more somnolent and could not answer questions or give a history. Respiratory rate 28, accessory muscle use, unable to complete sentences, SpO2 88% on room air.\nABG: pH 7.28, PaCO2 60, PaO2 55, HCO3 26. Na 138, K 4.2, Cl 100, BUN 18, creatinine 1.0, WBC 15,000.\nChest x-ray: increased bronchovascular markings and a small right lower lobe infiltrate.\n\nDiagnosis: acute-on-chronic respiratory failure due to a COPD exacerbation complicated by bacterial pneumonia (right lower lobe).\n\nCourse: Intubated in the ED for worsening somnolence with hypercapnia and admitted to the ICU. Treated with IV ceftriaxone and azithromycin, scheduled bronchodilators and systemic corticosteroids. Extubated on hospital day 3 to BiPAP, then to his home 2 L nasal cannula. Transferred to the floor day 5. Aspiration was considered as a contributor given his Zenker diverticulum; antibiotics were changed to oral clindamycin before discharge. Steroid course completed in hospital. Worked with physical therapy; walking the hall on 2 L at discharge.\n\nDischarge medications: clindamycin 300 mg by mouth four times daily through 02/25/2025. Continue home oxygen 2 L, tiotropium, salmeterol, albuterol nebs as needed, lisinopril 20, HCTZ 25, metformin 1000 twice daily.\nAllergies: NKDA.\nFollow-up: PCP within one week; pulmonology as scheduled."}
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "telephone",
+          "start": "2025-02-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge phone call", "author": "RN", "date": "2025-02-20T09:45", "body": "Called within 2 business days of discharge. Spoke with pt and wife. Home since yesterday afternoon, on 2 L, taking clindamycin four times a day. Breathing improving, cough looser. No fever. Has all meds. TCM visit confirmed for 2/25."}
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "office_visit",
+          "start": "2025-02-25T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, respiratory failure and pneumonia",
+          "conditions": [
+            {"label": "Acute and chronic respiratory failure with hypercapnia", "icd10": "J96.22", "action": "resolved"},
+            {"label": "Chronic obstructive pulmonary disease with acute exacerbation", "action": "resolved"},
+            {"label": "Community-acquired pneumonia", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 74.8},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-02-25T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Follow-up", "author": "PCP", "date": "2025-02-25T11:40", "body": "TCM visit. ICU 2/11-2/19: COPD exacerbation with RLL pneumonia, acute-on-chronic hypercapnic resp failure, intubated 2 days. Discharge summary reviewed.\nToday is his last day of clindamycin. Breathing back to his usual on 2 L, some deconditioning, short of breath on the stairs as before. Cough lighter, no fever. Eating. No diarrhea.\nWife says it scared them both; they talked again about what he would and would not want.\nExam: afebrile, sat as charted on 2 L. Coarse sounds right base improving, basal crackles. Lost about 2 kg since January.\nA/P: Pneumonia/exacerbation - resolved clinically. Finishes antibiotics today. Home PT referral declined, will walk at home. Continue inhalers/O2. Weight - encouraged calories. RTC 3 months; call for any change."}
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "hospital_admission",
+          "start": "2025-03-10T15:20",
+          "end": "2025-03-20T12:00",
+          "service": "Gastroenterology",
+          "reason": "Watery diarrhea, abdominal pain and fever two weeks after completing clindamycin",
+          "conditions": [{"label": "Enterocolitis due to Clostridioides difficile, recurrent", "icd10": "A04.71", "action": "diagnosed", "onset": "2025-03-05", "note": "fulminant"}],
+          "medications": [{"drug_text": "vancomycin 125 MG Oral Capsule", "action": "start", "sig": "125 mg by mouth four times daily, then tapering per the discharge schedule over about 6 weeks", "dose": {"value": 125, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "C. difficile infection, taper after fulminant episode"}],
+          "vitals": [{"time": "2025-03-12T08:00", "temp_c": 38.7, "bp": [90, 60], "hr": 110}],
+          "labs": [
+            {"panel": null, "collected": "2025-03-10T17:00", "results": [{"test": "Clostridioides difficile toxin A+B [Presence] in Stool by Immunoassay", "loinc": "34713-8", "text": "Positive"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-12T06:00", "results": [{"test": "Creatinine", "value": 1.8}, {"test": "Blood Urea Nitrogen", "value": 35}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-12T06:00", "results": [{"test": "White Blood Cells", "value": 18.0}]},
+            {"panel": null, "collected": "2025-03-12T06:00", "results": [{"test": "Lactate", "value": 4.5}, {"test": "C Reactive Protein", "value": 25}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-20T06:00", "results": [{"test": "Creatinine", "value": 1.0}]}
+          ],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2025-03-12T10:00", "text": "Diffuse colonic wall thickening. No free intraperitoneal air. No abscess. Pancreatic head mass with post-treatment change and biliary stent, as before. Cirrhotic liver.", "conclusion": "Colitis with colonic wall thickening. No perforation."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Inpatient Consultation", "author": "gastroenterology", "date": "2025-03-12T14:00", "body": "Inpatient GI consultation, 03/12/2025, outside regional hospital.\nAsked to see a 72-year-old man with prior severe C. difficile infection, cirrhosis and chronic respiratory failure, admitted 3/10 with five days of watery diarrhea, abdominal pain and fever. He finished a course of clindamycin about two weeks ago, given after his February ICU stay for pneumonia. Stool C. difficile toxin positive on admission; started on oral vancomycin and IV metronidazole. Over the 48 hours since, the pain has worsened and he has become more tachycardic and hypotensive.\nNKDA.\n\nVitals: T 38.7 C (101.7 F), BP 90/60, HR 110.\nExam: diffuse abdominal tenderness, rebound in both lower quadrants, hypoactive bowel sounds.\nLabs today: WBC 18,000, lactate 4.5, creatinine 1.8 (baseline 1.0), BUN 35, CRP 25.\nCT abdomen: colonic wall thickening without free air.\n\nImpression: fulminant C. difficile infection, recurrence of his prior severe episode, with hypotension and rising lactate.\nRecommendations: transfer to ICU; oral vancomycin 500 mg every 6 hours plus vancomycin by retention enema; continue IV metronidazole; IV fluids, vasopressor if needed; urgent general surgery consultation regarding colectomy; hold metformin, lisinopril and HCTZ while hypotensive with AKI; avoid antimotility agents. We will follow daily.\nGastroenterology"},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2025-03-21T11:00", "body": "Outside regional hospital. Admitted 03/10/2025, discharged 03/20/2025.\nDiagnosis: fulminant Clostridioides difficile infection (recurrent; prior severe episode 2019), following clindamycin.\nCourse: Oral vancomycin and IV metronidazole from admission. Clinical worsening at 48 hours with hypotension, lactate 4.5 and AKI (creatinine 1.8) prompted ICU transfer, high-dose oral plus rectal vancomycin and surgical consultation. Brief low-dose norepinephrine for under 24 hours. General surgery followed closely; abdominal exam and lactate improved by day 4 and colectomy was not needed. Diarrhea slowed from day 6. Metronidazole stopped day 7. Creatinine 1.0 at discharge.\nHome metformin, lisinopril and HCTZ held during the stay and resumed at discharge.\nDischarge medications: vancomycin 125 mg by mouth four times daily for 10 days, then twice daily for 7 days, then once daily for 7 days, then every 2 to 3 days for 2 to 8 weeks per the printed schedule. Resume O2 2 L, tiotropium, salmeterol, albuterol nebs, lisinopril 20, HCTZ 25, metformin 1000 twice daily.\nAllergies: NKDA. Please flag the chart: avoid clindamycin and unnecessary antibiotics.\nFollow-up: PCP within one week."}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-25T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, C. difficile",
+          "conditions": [{"label": "Enterocolitis due to Clostridioides difficile, recurrent", "icd10": "A04.71", "action": "resolved"}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-03-25T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Telehealth Visit", "author": "PCP", "date": "2025-03-25T14:30", "body": "Video, at home with Ingrid. Discharged 3/20 after fulminant C. diff - ICU, no colectomy. Diarrhea gone, one formed stool a day. Eating more. Tired. Taking vancomycin on the taper calendar the hospital gave, wife has it on the fridge. No fever, no belly pain. Breathing at baseline.\nBack on lisinopril, HCTZ, metformin since discharge; home BP 110s-120s/70s.\nA/P: Fulminant C. diff - clinically resolved; complete vancomycin taper. Added a chart alert to avoid unnecessary antibiotics. Labs at the May visit. Call if diarrhea returns."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "portal_message",
+          "start": "2025-04-22T18:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vancomycin taper question",
+          "documents": [
+            {"type": "Patient Message", "title": "Vancomycin", "author": "patient", "date": "2025-04-22T18:05", "body": "Down to the every-other-day part of the vancomycin. Pharmacy says I have 8 capsules left, is that enough to finish? Bowels normal. Fred"},
+            {"type": "Patient Message", "title": "RE: Vancomycin", "author": "RN", "date": "2025-04-22T21:30", "body": "Hi Fred, every other day for the remaining doses gets you to the end of the schedule with what you have. Glad the bowels are normal. Call us right away if diarrhea comes back."}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "specialist_visit",
+          "start": "2025-05-13T11:00",
+          "service": "Oncology",
+          "reason": "Pancreatic cancer surveillance",
+          "labs": [{"panel": null, "collected": "2025-05-13T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 70}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.6}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2025-05-06T09:00", "text": "Multiphase study. Treated pancreatic head mass unchanged in size. Biliary stent in place without ductal dilation. Colon now of normal wall thickness. Liver: ablation zone without enhancement; no new hepatic lesion. No ascites, no adenopathy.", "conclusion": "Stable pancreatic head mass. No HCC recurrence. No metastatic disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2025-05-15T12:00", "body": "Medical oncology 05/13/2025. Two hospitalizations this winter (pneumonia with respiratory failure; fulminant C. difficile) noted; recovered. CT 5/6 stable pancreatic head mass, no liver recurrence, no metastases. CA 19-9 70, essentially stable. AFP 5.6. Surveillance every 6 months. NKDA. Avoid clindamycin per recent C. difficile.\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-20T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Albumin"}, {"test": "Bilirubin, Total"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-20T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2025-05-20T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-20T10:00"}, {"procedure": "Venipuncture", "performed": "2025-05-20T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-05-20T10:45", "body": "F/u after a hard winter. Vanc taper done early May, no diarrhea since. Oncology CT stable. Breathing at baseline, using the nebulizer once a day or so.\nWeight steady around 75.\nExam: sat as charted on 2 L. Crackles bases. Abdomen soft, nontender. No edema.\nA/P: All chronic issues at baseline. Recheck kidney function and liver tests today; will message results. RTC June for AWV."}
+          ]
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "annual_physical",
+          "start": "2025-06-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-06-24T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-06-24T09:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "AUDIT-C total score", "value": 0}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-06-24T09:00"}, {"procedure": "Venipuncture", "performed": "2025-06-24T09:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Medicare Annual Wellness Visit", "author": "PCP", "date": "2025-06-24T09:45", "body": "AWV. Function: independent with ADLs, slower. Ingrid manages IADLs. No falls. PHQ-2 1. AUDIT-C 0. Cognition grossly intact in conversation.\nACP revisited after the ICU stay: he was glad they intubated him and would accept it again for a short reversible illness; still no prolonged life support. MOLST completed today reflecting this; copy to wife and scanned.\nFeet: monofilament intact, skin fine.\nEye exam due - optometry next month.\nVaccines: up to date except fall flu/COVID.\nLabs today."}
+          ]
+        },
+        {
+          "id": "2025-07-15a",
+          "kind": "specialist_visit",
+          "start": "2025-07-15T15:00",
+          "service": "Optometry",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {"type": "Consult Note", "title": "Diabetic Eye Exam Report", "author": "optometry", "date": "2025-07-18T10:00", "body": "Dilated exam 7/15/2025 for diabetes. Corrected acuity 20/30 each eye. No diabetic retinopathy. Age-related lens changes, stable. Return in one year."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T10:00",
+          "service": "Pulmonology",
+          "reason": "IPF and COPD follow-up",
+          "reports": [{"study": "CT chest", "performed": "2025-08-12T08:30", "text": "High-resolution CT. Basal and subpleural reticulation with honeycombing, similar to 2023. Prior right lower lobe infiltrate has cleared. No nodule. No effusion.", "conclusion": "Stable fibrotic lung disease. Resolved right lower lobe opacity."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2025-08-22T11:00", "body": "Pulmonology 8/19/2025. ICU admission in February for hypercapnic respiratory failure with RLL pneumonia, intubated two days; recovered to baseline 2 L. HRCT 8/12: fibrosis similar, pneumonia cleared, no nodules.\nPlan: continue tiotropium and salmeterol with albuterol nebs; aspiration precautions given the Zenker diverticulum; flu and COVID vaccines this fall; return in 6 months. NKDA.\nPulmonology"}
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "office_visit",
+          "start": "2025-09-30T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up; fall vaccines",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-09-30T10:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2025-09-30T10:40", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-09-30T10:30"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-09-30T10:31"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-09-30T10:00"}, {"procedure": "Immunization administration", "performed": "2025-09-30T10:30"}, {"procedure": "Venipuncture", "performed": "2025-09-30T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2025-09-30T10:45", "body": "Quarterly. Summer was good - porch most days. Pulm letter: stable, pneumonia cleared on CT. Eye exam no retinopathy.\nNo diarrhea. Swallowing unchanged.\nVitals as charted on 2 L. Lungs basal crackles. Abdomen soft. No edema.\nA/P: stable. Flu and COVID today. Labs. RTC winter."}
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "specialist_visit",
+          "start": "2025-11-18T11:00",
+          "service": "Oncology",
+          "reason": "Pancreatic cancer surveillance",
+          "labs": [{"panel": null, "collected": "2025-11-18T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 66}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.3}]}],
+          "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2025-11-11T09:00", "text": "Multiphase study. Pancreatic head mass with post-radiation change, unchanged. Biliary stent in place. No biliary dilation. Liver: no new lesion; ablation zone unchanged. No ascites or adenopathy.", "conclusion": "Stable. No HCC recurrence. No metastatic disease."}],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2025-11-20T12:00", "body": "Medical oncology 11/18/2025. Feels well for him. CT 11/11 stable; CA 19-9 66; AFP 5.3. Twenty months after SBRT with stable disease, which is better than we usually see; we discussed that this can change. Next surveillance in 6 months. NKDA.\nMedical Oncology"}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T09:00",
+          "service": "Community Pharmacy",
+          "reason": "Prior authorization",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization - inhaler", "author": "MA", "date": "2025-12-09T09:40", "body": "Pharmacy notice: his Part D plan now requires prior authorization for the salmeterol inhaler for 2026. PA form completed with COPD diagnosis and years of use, signed by PCP, submitted. Approved 12/11, pharmacy notified."}
+          ]
+        }
+      ]
+    }
+  ]
+}

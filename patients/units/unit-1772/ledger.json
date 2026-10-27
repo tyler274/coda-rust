@@ -1,0 +1,3765 @@
+{
+  "unit": "unit-1772",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001772",
+      "given": "Sharon",
+      "family": "Feldman",
+      "birth_date": "1994-12-15",
+      "address_line": "38 Laurel Bend Road",
+      "phone": "+1-774-555-0104",
+      "email": "sharon.feldman@example.test",
+      "marital_status": "married",
+      "summary": "Woman in her late twenties who joined in 2021 healthy, then developed schizophrenia in 2023 that failed two antipsychotics before clozapine; also degenerative high myopia, genito-pelvic pain/penetration disorder, Tay-Sachs carrier status, factitious disorder found at an ED visit, a clozapine-associated seizure, psychogenic polydipsia with hyponatremia, and a relapse off clozapine in 2026 with a psychiatric admission. Records from outside care arrive late or not at all.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T10:12",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2021-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller is the patient. Wants to establish care, moving her primary care over from her old office (she says they stopped taking her plan). Medicaid card on file, verified active. New patient slot given for 9/14 at 9:30. Release signed electronically through the portal; request for the last three years of records sent to the prior office today. Reminded her to bring her glasses prescription and any medication bottles. She says she takes nothing regularly."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:30",
+          "end": "2021-09-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Family history of stroke",
+              "action": "history",
+              "note": "relative not specified by patient",
+              "icd10": "Z82.3"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              74
+            ],
+            "hr": 68,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 60.8,
+            "height_cm": 163.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T10:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T10:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T10:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 87
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T10:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.74
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "No alcohol use"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives with husband in her sister's household"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, low MDM",
+              "performed": "2021-09-14T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T09:30",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n26 y/o woman here to set up primary care. No active complaints. Coming from another office; records requested 8/30, not here yet.\n\nPMH: none she knows of. Nearsighted, glasses since she was a kid; hasn't had an eye exam in a little while.\nPSH: none.\nMeds: none. Occasional acetaminophen for headache, rarely.\nAllergies: none to medications.\n\nFamily: mother treated for major depression. Father very nearsighted, had a retinal detachment repaired years ago. She thinks someone on one side had a stroke but can't say who. An uncle on mom's side has schizophrenia. Sister healthy. Mom's family is Ashkenazi Jewish.\n\nSocial: works full time as an administrative assistant at an office in town. Married. She and her husband live with her older sister, the house is the sister's. Never smoked, doesn't drink, no drug use. Medicaid.\n\nROS: negative across the board on a written questionnaire, reviewed with her.\n\nExam: vitals in flowsheet, all normal. Slim, well appearing, pleasant, a little quiet. Wearing thick glasses. HEENT unremarkable, neck supple, no thyroid enlargement. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. No edema. Skin unremarkable where examined. Mood fine, affect appropriate.\n\nPHQ-9 2, GAD-7 3.\n\nA/P\n1. Health maintenance, new patient. Baseline CBC, CMP, lipids, TSH. One-time HIV and hep C screening offered and accepted. Pap per old records (she thinks one was done last year). Flu shot next month when stock is in; she has had her COVID primary series per her card.\n2. Family history of stroke, noted. Nothing to do at her age with normal BP.\n3. Myopia, longstanding. Suggested she get back to an eye doctor this year.\n\nFollow up for a physical in the spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 163.0,
+            "labs": {
+              "High Density Lipoprotein": 63,
+              "Low Density Lipoprotein": 84,
+              "Total Cholesterol": 164
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-16T16:40",
+              "author": "PCP",
+              "body": "Hi Sharon, everything from Tuesday's blood work came back normal: blood counts, kidney and liver tests, thyroid and cholesterol. The HIV and hepatitis C screens were negative. Nothing to change. Nice meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T11:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-09-28T11:05",
+              "author": "MA",
+              "body": "Prior primary care records received, 14 pages, covering 2018 to 2021. Abstracted for the PCP:\n- Pap cytology 2020: negative for intraepithelial lesion or malignancy.\n- Tdap given 2019.\n- COVID-19 vaccine primary series documented 2021 (card copy in file).\n- No chronic problems listed. No medications. NKDA.\n- Visits were mostly for colds and a work physical form.\nNothing further requested. Immunization history updated from these records."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-20a",
+          "kind": "nurse_visit",
+          "start": "2021-10-20T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-20T15:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-20T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2021-10-20T15:15",
+              "author": "RN",
+              "body": "Here after work for her flu shot. Screening questions negative, no egg or vaccine reactions in the past, feels well today. Quadrivalent influenza 0.5 mL IM, left deltoid. VIS given. Stayed 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "annual_physical",
+          "start": "2022-05-11T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              140,
+              82
+            ],
+            "hr": 68,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 61.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-05-11T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2022-05-11T08:45",
+              "author": "PCP",
+              "body": "Physical. Feels fine. Working, busy season at the office. Sleeping okay. No new symptoms.\n\nShe never got to the eye doctor; says her glasses still work well enough. Encouraged again.\n\nMeds none. NKDA. Social unchanged, never smoker, no alcohol.\n\nExam: BP and weight in flowsheet, normal. Well appearing. Eyes: thick corrective lenses, pupils equal and reactive. Oropharynx clear. Neck without nodes or thyromegaly. Heart regular, no murmur. Lungs clear throughout. Abdomen soft, no masses or tenderness. Extremities without edema. Mood euthymic, speech normal rate.\n\nScreens: PHQ-9 1, GAD-7 2.\n\nPlan\n- Labs last fall normal; no repeat needed this year.\n- Pap last done 2020, normal; due again in 2023.\n- Tdap 2019, current.\n- Flu and COVID booster in the fall.\n- Eye exam, yearly, she will call.\n\nReturn one year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "nurse_visit",
+          "start": "2022-10-26T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-26T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-26T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-26T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Fall Vaccines",
+              "date": "2022-10-26T16:00",
+              "author": "RN",
+              "body": "Came in with her sister. Flu (quadrivalent) 0.5 mL IM left deltoid, Pfizer bivalent COVID booster 0.3 mL IM right deltoid. Screening negative. Patient was quiet and let her sister answer most of the questions; said she was tired. Observed 15 min, tolerated well. Mentioned to her she is due for a physical in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-18a",
+          "kind": "office_visit",
+          "start": "2023-01-18T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Missed appointment",
+              "date": "2023-01-18T11:30",
+              "author": "front desk",
+              "body": "Did not arrive for 10:40 physical. Two calls to the cell number went to voicemail, message left to reschedule. Portal reminder sent."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "telephone",
+          "start": "2023-03-21T14:05",
+          "reason": "Family concern",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's sister",
+              "date": "2023-03-21T14:05",
+              "author": "RN",
+              "body": "Sister called (listed on the release as a contact, patient in the room and agreed to her speaking for her). Over the winter Sharon has been hearing voices that nobody else hears and is convinced the people from her old job are working together against her. She stopped going to work toward the end of last year. Not sleeping well. Sister denies any talk of hurting herself or anyone else, no weapons in the home, eating and drinking. Not using alcohol or drugs as far as the family knows.\n\nDiscussed with PCP: seen tomorrow first thing. Gave sister the crisis line and told her to call 911 or go to the ED if there is any statement about harm or she cannot keep her safe overnight. Sister understood and will bring her in."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-22a",
+          "kind": "office_visit",
+          "start": "2023-03-22T08:15",
+          "end": "2023-03-22T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hearing voices, paranoid thoughts",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 71,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 60.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Unemployed; previously worked as an administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-03-22T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "new psychotic symptoms, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Psychotic Symptoms",
+              "date": "2023-03-22T08:15",
+              "author": "PCP",
+              "body": "Seen with her sister, who called yesterday.\n\nS: Since roughly October Sharon has been hearing voices commenting on her when no one is around. She believes her former coworkers have been coordinating against her and talking about her. Left her administrative job in late 2022 because of it. Guarded, answers in short phrases, sister fills in. No visual hallucinations reported. Denies thoughts of self-harm or harming others, no plan, no intent. Sleep broken. No alcohol, no cannabis or other drugs, no new medications or supplements. No head injury, headaches, fevers or seizures.\n\nO: Vitals normal, afebrile. Thin, glasses, casually dressed. Alert, oriented to person, place and date. Eye contact limited, affect flat, speech sparse but coherent. Endorses auditory hallucinations; not obviously responding to them in the room. Insight limited, though she is willing to see a specialist. Neuro grossly nonfocal, gait normal. PHQ-9 6.\n\nA/P: New psychotic symptoms over about five months in a 28 year old with a maternal uncle with schizophrenia. Not acutely dangerous today by her and her sister's account, safety plan reviewed, sister staying with her.\n- Urgent outpatient psychiatry referral placed, marked expedited. Our referral coordinator to call today.\n- Psychiatry to do their own intake labs and tox; she would rather have one blood draw, which is reasonable.\n- Crisis line and ED precautions repeated to both of them.\n- Check in by phone next week.\n\n50 minutes, most of it history from both and coordinating."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "telephone",
+          "start": "2023-03-29T12:20",
+          "reason": "Check-in, referral status",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Follow-up call",
+              "date": "2023-03-29T12:20",
+              "author": "PCP",
+              "body": "Spoke with sister and briefly with Sharon. Psychiatry intake is set for 4/12. No change, no safety concerns, sleeping a bit more. Sister knows to call sooner."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "specialist_visit",
+          "start": "2023-04-12T13:00",
+          "service": "Psychiatry",
+          "reason": "Auditory hallucinations and paranoid delusions",
+          "conditions": [
+            {
+              "label": "Schizophrenia",
+              "action": "diagnosed",
+              "onset": "2022-10-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizophrenia; prescribed by psychiatry"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-12T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-12T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-12T14:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.06
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2023-04-12T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Consultation",
+              "date": "2023-04-20T09:00",
+              "author": "psychiatry",
+              "body": "OUTPATIENT PSYCHIATRY - INITIAL EVALUATION\nVisit date: 04/12/2023\nReferral source: primary care, expedited\n\nIdentifying information: 28 year old married woman, previously employed in office administration, accompanied by her sister.\n\nPresenting problem: For about half a year she has heard voices that others do not hear, and she holds a fixed belief that her coworkers from her last job are conspiring against her. She also reports that her thoughts are being sent out so that other people can hear them.\n\nPsychiatric history: No prior psychiatric treatment, no hospitalizations, no suicide attempts.\nSubstance use: denies alcohol, cannabis and other drugs. Never smoker.\nFamily psychiatric history: maternal uncle with schizophrenia; mother with major depressive disorder.\nMedical: no chronic conditions. No medications prior to today. No known drug allergies.\n\nMental status: Alert and oriented x3. Appears anxious. Affect blunted. Thought process mostly linear, slowed. Thought content with persecutory delusions and thought broadcasting. Endorses auditory hallucinations. Denies suicidal and homicidal ideation. Insight partial, judgment fair.\nPhysical examination: unremarkable.\n\nStudies: CBC, comprehensive metabolic panel and thyroid function within normal limits. Urine toxicology screen negative.\n\nImpression: Schizophrenia. Symptoms present about six months with functional decline, no mood episode, no substance or medical cause found.\n\nPlan:\n1. Start risperidone 2 mg by mouth at bedtime.\n2. Psychoeducation given to patient and sister.\n3. Return in 3 to 4 weeks.\n4. We ask primary care to follow weight, glucose and lipids on antipsychotic therapy.\n\nThank you for this referral.\nOutpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "office_visit",
+          "start": "2023-05-17T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, new antipsychotic",
+          "vitals": {
+            "bp": [
+              121,
+              67
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 60.6
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-05-17T15:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-05-17T15:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-17T14:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-17T15:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "worsening distance vision, high myopia, father with retinal detachment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-05-17T14:30",
+              "author": "PCP",
+              "body": "F/u after psychiatry intake. Psych letter reviewed: schizophrenia, started risperidone 2 mg qhs. She has been taking it nightly, sister sets out the pill. Voices are quieter. Sleeping better. Still not working.\n\nSeparate issue: her distance vision has gotten steadily worse over the last couple of years. Can't read signs until she is close, has trouble recognizing faces across a room. No eye pain, no red eye, no flashes. Last eye exam was about three years ago. Dad has very bad nearsightedness and had a detached retina.\n\nMeds: risperidone 2 mg qhs (psychiatry).\nNKDA.\n\nExam: vitals and weight in flowsheet. Calm, flat, more conversational than in March. Wearing glasses, conjunctivae clear, pupils equal and reactive. Heart and lungs normal. No tremor, no rigidity on passive movement.\n\nA/P\n1. Schizophrenia, on risperidone through psychiatry. Baseline A1c and fasting lipids today for metabolic monitoring as psychiatry asked; weight today is our baseline on the drug.\n2. Worsening myopia with a family history of retinal detachment. Referral to ophthalmology. Reviewed sudden floaters, flashes or a curtain over vision as reasons to go in the same day.\n3. Physical overdue (missed in January), rebook for later this year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-19a",
+          "kind": "portal_message",
+          "start": "2023-05-19T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-05-19T08:50",
+              "author": "PCP",
+              "body": "Sharon, your sugar test (A1c) and cholesterol are normal. We'll repeat them around the time of your physical since the new medication can change them over time."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T10:15",
+          "service": "Ophthalmology",
+          "reason": "Progressive decline in distance vision",
+          "conditions": [
+            {
+              "label": "Degenerative high myopia",
+              "action": "diagnosed",
+              "onset": "2023-06-12",
+              "icd10": "H44.23"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "done",
+              "date": "2023-06-12T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Consultation",
+              "date": "2023-08-02T13:40",
+              "author": "ophthalmology",
+              "body": "OPHTHALMOLOGY CONSULTATION\nExam date: 06/12/2023\nReason for referral: decreasing distance vision\n\nHistory: 28 year old woman seen by psychiatry this spring for schizophrenia. Two years of slowly worsening distance vision: street signs are hard to make out and she has trouble telling who someone is from across a room. Has worn glasses since childhood. Her most recent eye exam, three years back, found a correction of -5.50 diopters in each eye. Denies pain, redness and photopsia. Father has high myopia and a history of retinal detachment.\nMedications: risperidone 2 mg at bedtime.\nAllergies: no known drug allergies.\n\nExamination:\nUncorrected visual acuity 20/200 OD and OS, improving to 20/30 OD and OS with -7.00 D sphere.\nPupils equal, round, reactive, no afferent defect. Intraocular pressures normal. Anterior segment quiet both eyes, lenses clear.\nDilated fundus examination: tessellated fundus both eyes with thin, pale-appearing optic discs consistent with myopic change. Peripheral retina examined 360 degrees: no tears, holes or detachment.\n\nAssessment: Degenerative (pathologic) high myopia, both eyes.\n\nPlan: Updated spectacle prescription provided. Dilated examination yearly. Reviewed symptoms of retinal detachment (new floaters, flashes, a shadow in the vision) and the need to be seen urgently if they occur.\n\nOphthalmology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Ophthalmology note received",
+              "date": "2023-08-02T13:55",
+              "author": "MA",
+              "body": "Ophthalmology consult from 6/12 received after the 7/26 request. Scanned to the visit and routed to PCP. Referral closed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "office_visit",
+          "start": "2023-07-12T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pain with intercourse",
+          "vitals": {
+            "bp": [
+              122,
+              71
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "weight_kg": 60.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-07-12T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "pain with attempted vaginal penetration"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-07-12T11:00",
+              "author": "PCP",
+              "body": "Came alone today. Hesitant to bring this up. For about the last six months, every time she and her husband try to have intercourse she has a lot of pain as soon as he tries penetration, so she has mostly stopped trying. No vaginal discharge, no odor, no bleeding. Periods regular.\n\nAlso asked if we got the eye doctor's letter. Not yet; she says she was seen last month and got new glasses. Will ask MA to request it.\n\nPsych: still on risperidone, taking it. Says the voices are \"background.\"\n\nExam: vitals fine. Pelvic exam not done today; she was very anxious about it and asked to see a gynecologist instead, which is reasonable.\n\nA/P\n1. Pain with attempted penetration, six months, with avoidance. Gyn referral placed.\n2. Schizophrenia, psychiatry following.\n3. Ophthalmology letter to be requested."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-26a",
+          "kind": "telephone",
+          "start": "2023-07-26T09:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-07-26T09:35",
+              "author": "MA",
+              "body": "Called the ophthalmology office about the 6/12 visit note. They had no record of a copy request from us. Faxed request with release, they said 5 to 7 business days."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "specialist_visit",
+          "start": "2023-08-17T09:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Difficulty with sexual intercourse",
+          "conditions": [
+            {
+              "label": "Genito-pelvic pain/penetration disorder",
+              "action": "diagnosed",
+              "onset": "2023-02-15",
+              "icd10": "F52.6"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              75
+            ],
+            "hr": 66,
+            "temp_c": 36.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-17T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 276
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-08-17T10:15",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.9
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-17T10:05",
+              "results": [
+                {
+                  "test": "Vaginal culture",
+                  "loinc": "6463-4",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2023-08-17T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology Consultation",
+              "date": "2023-08-24T15:10",
+              "author": "gynecology",
+              "body": "GYNECOLOGY - NEW CONSULT\nDate of service: 08/17/2023\nReferred by primary care for pain with intercourse\n\nHPI: 28 year old who has had pain for six months whenever her partner attempts vaginal penetration. The pain is significant and predictable, and she now avoids sexual activity. No discharge, odor or bleeding. Also recently evaluated by psychiatry (auditory hallucinations) and ophthalmology (progressive myopia).\nPMH: schizophrenia; high myopia.\nMedications: risperidone 2 mg nightly.\nAllergies: NKDA.\nFamily history: mother with major depressive disorder; father with degenerative myopia; sister without psychiatric illness, her main support; maternal Ashkenazi Jewish ancestry.\nSocial: never smoker, no alcohol. Not currently employed; previously an administrative assistant.\n\nVitals: within normal limits.\nAbdomen: soft, nontender, no masses.\nPelvic: external genitalia normal in appearance, no lesions, no erythema. Attempted insertion of a small speculum caused severe pain and was stopped; she reports this is the same pain she has with intercourse. Visibly anxious throughout. Bimanual not performed.\n\nLabs: CBC unremarkable; UA unremarkable; vaginal cultures showed no growth.\n\nAssessment: Genito-pelvic pain/penetration disorder. No infection or structural lesion identified.\n\nPlan:\n- Referral to pelvic floor physical therapy for evaluation and dilator-based therapy.\n- Discussed the role of anxiety and the pain cycle; she may benefit from therapy alongside PT.\n- Return as needed.\n\nObstetrics & Gynecology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Gynecology note received",
+              "date": "2023-08-24T15:20",
+              "author": "MA",
+              "body": "Gyn consult 8/17 arrived by fax. Filed. Pelvic PT referral was sent by their office directly; no action needed from us."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "pharmacy",
+          "start": "2023-10-05T13:15",
+          "medications": [
+            {
+              "drug_text": "risperidone 2 MG Oral Tablet",
+              "action": "stop",
+              "reason": "switched by psychiatry 9/26 for inadequate response"
+            },
+            {
+              "drug_text": "aripiprazole 15 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizophrenia; prescribed by psychiatry"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "Pharmacy fill history review",
+              "date": "2023-10-05T13:15",
+              "author": "MA",
+              "body": "Prepping for flu clinic list, pulled external fill history. Last risperidone fill 8/30. New fill 9/26 for aripiprazole 15 mg #30, one daily, prescriber is the outpatient psychiatry clinic. No psych letter about a change. Called patient: she confirms psychiatry stopped risperidone because it wasn't helping enough and started the new one. Med list updated. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP note on med change",
+              "date": "2023-10-05T17:00",
+              "author": "PCP",
+              "body": "Reviewed. Aripiprazole per psychiatry. Will recheck metabolic labs at physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "nurse_visit",
+          "start": "2023-10-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-18T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza and COVID-19",
+              "date": "2023-10-18T15:40",
+              "author": "RN",
+              "body": "Flu quadrivalent 0.5 mL IM L deltoid; 2023-24 Pfizer COVID 0.3 mL IM R deltoid. No prior reactions, afebrile, feels well. Sister drove her. Waited 15 minutes, fine. Physical booked for December."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "portal_message",
+          "start": "2023-11-08T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about therapy",
+              "date": "2023-11-08T19:22",
+              "author": "patient",
+              "body": "hi i wanted to let you know i went to the pelvic physical therapy the gyn sent me to. i went 3 times but it was hard to get rides there so i stopped for now. do i need a new referral if i want to go back? thanks sharon"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about therapy",
+              "date": "2023-11-09T09:10",
+              "author": "RN",
+              "body": "Hi Sharon, thanks for letting us know. The referral came from gynecology, so the PT office can usually restart you on the same one for a while; call them first. If they need a new order, let us know. Your Medicaid plan also covers rides to medical appointments, and we can give you the number at your December visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "annual_physical",
+          "start": "2023-12-06T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Situational anxiety",
+              "action": "diagnosed",
+              "onset": "2023-08-01",
+              "icd10": "F41.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              68
+            ],
+            "hr": 65,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 64.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-06T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-06T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-12-06T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 85
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-06T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-12-06T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-06T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-12-06T09:00",
+              "author": "PCP",
+              "body": "Annual exam. Sister in the waiting room.\n\nInterval: psychiatry switched risperidone to aripiprazole in late September (we learned from the pharmacy). She thinks it is \"about the same\"; still hears voices most days, less upsetting than in the spring. Sees psychiatry monthly. Ophthalmology: new glasses, letter in chart, degenerative high myopia, yearly dilated exams. Gyn: genito-pelvic pain/penetration disorder, went to pelvic PT three times then stopped because of transportation.\n\nShe says she gets very keyed up before any medical visit, worse before anything involving a pelvic exam; heart pounding, can't think, wants to leave. Not every day, mostly tied to appointments. GAD-7 9, PHQ-9 5. No SI.\n\nMeds: aripiprazole 15 mg daily (psych). NKDA.\nSocial: not working. Lives with husband and sister. Never smoker, no alcohol.\n\nExam: vitals in flowsheet, normal; weight up about 2 kg since May. Anxious but cooperative. Thick lenses. Neck without adenopathy. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. No abnormal movements.\n\nA/P\n1. Health maintenance. Pap is due (last 2020); she declines a speculum exam today and would rather have it done at gyn when she feels ready. Respected. Flu and COVID done in October.\n2. Schizophrenia on aripiprazole, psychiatry managing. CBC, CMP, lipids, A1c today.\n3. Situational anxiety around medical encounters. Talked through it; she will raise it with psychiatry since they know her meds. We will keep visits predictable and explain exams beforehand.\n4. Degenerative high myopia, ophthalmology yearly.\n5. Genito-pelvic pain disorder, gyn and PT. Gave her the Medicaid ride number.\n\nRTC 4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-08a",
+          "kind": "portal_message",
+          "start": "2023-12-08T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2023-12-08T12:15",
+              "author": "PCP",
+              "body": "Hi Sharon - blood counts, kidney, liver, cholesterol and the A1c are all in the normal range. Good news since the medication can sometimes nudge these up. See you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "outside_records",
+          "start": "2024-02-07T10:30",
+          "medications": [
+            {
+              "drug_text": "aripiprazole 15 MG Oral Tablet",
+              "action": "stop",
+              "reason": "stopped by psychiatry 1/9 for inadequate response"
+            },
+            {
+              "drug_text": "clozapine 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 3 tablets (300 mg) by mouth at bedtime",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "treatment-resistant schizophrenia; prescribed by psychiatry"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Psychiatry progress letter",
+              "date": "2024-02-07T10:30",
+              "author": "psychiatry",
+              "body": "To the primary care physician,\n\nThis is to update you on our mutual patient. After adequate trials of risperidone (April to September 2023) and aripiprazole (September 2023 to January 2024), she continued to have persistent auditory hallucinations and persecutory ideas. On 01/09/2024 aripiprazole was discontinued and clozapine was started with a standard titration. She reached 300 mg at bedtime on 02/02/2024 and remains on that dose.\n\nAbsolute neutrophil counts are being drawn through our clinic's laboratory per the clozapine monitoring schedule, weekly for now; results to date are normal. We will copy you periodically.\n\nWe would appreciate continued metabolic monitoring on your end (weight, A1c, lipids). Please let us know of any fever, sore throat or signs of infection you see, as those need an ANC the same day.\n\nOutpatient Psychiatry"
+            },
+            {
+              "type": "Medication Reconciliation",
+              "title": "Med list updated from psychiatry letter",
+              "date": "2024-02-07T11:00",
+              "author": "MA",
+              "body": "Letter scanned. Aripiprazole removed, clozapine 300 mg qhs added as outside prescription. Fill history matches: clozapine filled weekly at her pharmacy since 1/9. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-12a",
+          "kind": "specialist_visit",
+          "start": "2024-02-12T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Preconception counseling, genetic carrier screening",
+          "conditions": [
+            {
+              "label": "Tay-Sachs disease carrier status with indicated partner screening",
+              "action": "diagnosed",
+              "onset": "2024-02-12",
+              "icd10": "Z14.8"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology - Preconception Counseling",
+              "date": "2024-03-20T16:05",
+              "author": "gynecology",
+              "body": "OBSTETRICS & GYNECOLOGY - RETURN VISIT\nDate of service: 02/12/2024\nVisit type: preconception counseling\n\nShe returns, last seen here in August for genito-pelvic pain. She and her husband would like to start a family. Her ancestry is Ashkenazi Jewish and she is worried about inherited disease, above all the chance that a child of hers could be affected by Tay-Sachs; a cousin was diagnosed with it. Her husband, 30, is of mixed European ancestry and knows of no genetic conditions in his family. He attended the visit and asked what comes next.\n\nHistory: schizophrenia, currently on clozapine; high myopia, degenerative type; genito-pelvic pain/penetration disorder evaluated here.\nMedications: clozapine 300 mg at bedtime.\nAllergies: NKDA.\nROS: no complaints.\nExam: unremarkable.\n\nGenetic testing: carrier testing for Tay-Sachs disease identified a pathogenic HEXA variant. She is a heterozygous carrier.\n\nCounseling: As a carrier she is not expected to have symptoms. A child would be at risk only if her partner is also a carrier; in that case each pregnancy would carry a 1 in 4 chance of an affected child. Carrier screening of her husband is recommended before conception. Options if both are carriers were reviewed in general terms. They will contact our genetics counselor to arrange his testing.\n\nObstetrics & Gynecology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Gynecology letter received",
+              "date": "2024-03-20T16:15",
+              "author": "MA",
+              "body": "Preconception visit note of 2/12 from gyn received after our 3/6 request. Carrier result included. Routed to PCP; patient notified through the portal that it is now in her chart."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-05a",
+          "kind": "portal_message",
+          "start": "2024-03-05T20:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "genetic test",
+              "date": "2024-03-05T20:48",
+              "author": "patient",
+              "body": "Did you get the results from the gyn about my genetic test? They told me I am a carrier for Tay-Sachs and I want to make sure it is in my file. My husband is supposed to get tested next."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: genetic test",
+              "date": "2024-03-06T10:02",
+              "author": "MA",
+              "body": "Hi Sharon, we don't have the note from that visit yet. I've sent a request to the gynecology office today and will let the doctor know when it comes in."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-17a",
+          "kind": "office_visit",
+          "start": "2024-04-17T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up on clozapine, metabolic monitoring",
+          "vitals": {
+            "bp": [
+              115,
+              73
+            ],
+            "hr": 70,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 64.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-04-17T13:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-17T13:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-04-17T13:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 84
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 105
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-17T13:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-17T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-17T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-17T13:20",
+              "author": "PCP",
+              "body": "Follow-up. Now on clozapine since January (psych letter 2/7), 300 mg at bedtime. She is sleeping a lot at first, less now. Voices \"come and go,\" still there. Psychiatry draws her neutrophil counts; she goes to their lab every week.\n\nGyn letter from the February preconception visit came 3/20: Tay-Sachs carrier, husband to be screened. She says he has not had his test yet, insurance paperwork. No pregnancy yet.\n\nMeds: clozapine 300 mg qhs (psych). NKDA.\n\nExam: vitals normal, weight 64 kg, up a little more. Calm, affect restricted, organized today. Heart regular. Lungs clear. Abdomen soft. No tremor.\n\nA/P\n1. Schizophrenia on clozapine, psychiatry managing and doing ANC. Metabolic labs today: A1c, lipids, BMP; CBC with diff since we are drawing anyway.\n2. Tay-Sachs carrier status. Added to problem list. Partner screening through gyn genetics.\n3. Situational anxiety, GAD-7 7, a bit better.\n4. Weight up about 3 kg in a year on antipsychotics; reviewed meals and walking, she and her sister walk most evenings.\n\nRTC 6 months / physical in fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-19a",
+          "kind": "portal_message",
+          "start": "2024-04-19T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-04-19T09:30",
+              "author": "PCP",
+              "body": "Sharon, your labs from Wednesday look fine. White count and neutrophils normal, kidney and electrolytes normal, A1c and cholesterol normal."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "lab_only",
+          "start": "2024-05-22T08:10",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-05-22T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside lab copy - psychiatry clinic",
+              "date": "2024-05-24T14:20",
+              "author": "MA",
+              "body": "Copy of CBC with differential drawn 5/22 at the psychiatry clinic lab for clozapine monitoring, faxed to us cc. ANC within normal limits. Entered and filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-19a",
+          "kind": "specialist_visit",
+          "start": "2024-06-19T09:45",
+          "service": "Ophthalmology",
+          "reason": "Yearly examination, degenerative myopia",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Follow-up",
+              "date": "2024-06-27T11:00",
+              "author": "ophthalmology",
+              "body": "Ophthalmology - follow-up exam 06/19/2024\n\nInterval: no change in vision with current glasses. No flashes, new floaters or curtain.\nMeds: clozapine 300 mg nightly.\n\nBest corrected acuity 20/30 right and left with her current -7.00 D correction; manifest refraction unchanged. Pressures normal. Anterior segments quiet.\nDilated exam: myopic tessellated fundi with thin pale discs, unchanged from last year. Full peripheral exam both eyes without tears, holes or detachment.\n\nImpression: degenerative high myopia, stable.\nPlan: continue current spectacles. Dilated exam in one year, sooner with any detachment symptoms, which were reviewed again with her.\n\nOphthalmology"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Ophthalmology follow-up note filed",
+              "date": "2024-06-27T11:20",
+              "author": "MA",
+              "body": "Yearly ophthalmology note received and scanned. No action requested."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-10a",
+          "kind": "ed_visit",
+          "start": "2024-08-10T16:25",
+          "end": "2024-08-10T23:40",
+          "service": "Emergency Medicine",
+          "reason": "Severe abdominal pain",
+          "vitals": {
+            "bp": [
+              122,
+              80
+            ],
+            "hr": 75,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-10T17:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-08-10T17:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-08-10T17:20",
+              "results": [
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-10T17:05",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 50
+                },
+                {
+                  "test": "Amylase",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 45
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-08-10T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-09-16T15:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 08/10/2024 16:25\n\nChief complaint: abdominal pain, severe.\n\nHPI: 29 year old woman with schizophrenia on clozapine. Abdominal pain for two days, steadily worse. Appears anxious. Requested pain medication repeatedly during the visit; after analgesics she continued to rate the pain as severe.\n\nPast history as given by patient: several prior admissions at other hospitals for joint pain, chest pain and on-and-off diarrhea, never with a firm diagnosis despite extensive testing. States she had an exploratory abdominal operation at another hospital but cannot name it or provide records.\nMedications: clozapine 300 mg qhs.\nAllergies: NKDA.\nSocial: never smoker, no alcohol, unemployed.\n\nExam: vitals per nursing flowsheet, unremarkable. Abdomen soft, mild diffuse tenderness without rebound or guarding. A small well-healed lower abdominal scar, which she attributes to the surgery above. Remainder of exam unremarkable.\n\nResults: Hgb 13.2, WBC 7.0, platelets 250. Amylase 45 and lipase 50, both normal. Liver tests within normal limits. Urinalysis normal.\n\nCourse: Comparison with outside records obtained during the visit showed inconsistencies between the histories she has given at earlier admissions. Emergency psychiatry was consulted; her presentation was felt to be most consistent with factitious disorder imposed on self. No acute surgical or medical process identified. Findings discussed with the patient in a nonconfrontational way.\n\nImpression: 1. Abdominal pain, no acute cause found. 2. Factitious disorder imposed on self.\nDisposition: discharged home with her sister. Follow up with primary care and her psychiatrist.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "ED record received",
+              "date": "2024-09-16T15:40",
+              "author": "front desk",
+              "body": "8/10/24 emergency record and labs received from the hospital HIM office. Scanned and routed to PCP for review at her fall physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "telephone",
+          "start": "2024-08-19T11:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister calling",
+              "date": "2024-08-19T11:45",
+              "author": "RN",
+              "body": "Sister reports Sharon went to the ER on the 10th with belly pain, sent home, told the tests were okay. She is eating normally now and says the pain is gone. They would like a follow-up visit. Booked with PCP Wednesday. No ER paperwork came to us."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "office_visit",
+          "start": "2024-08-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, abdominal pain",
+          "vitals": {
+            "bp": [
+              111,
+              71
+            ],
+            "hr": 56,
+            "temp_c": 36.6,
+            "weight_kg": 64.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-08-21T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED Follow-up",
+              "date": "2024-08-21T10:00",
+              "author": "PCP",
+              "body": "Post-ED. On 8/10 she went to the ED for two days of severe belly pain; told bloodwork was normal and sent home that night. Pain went away over the following days. Eating, bowels at baseline, no fever, no vomiting, no urinary symptoms. She did not bring discharge paperwork and does not remember what they said beyond normal labs.\n\nOn clozapine 300 mg qhs, taking it with her sister's help. Psych visits continue.\n\nExam: afebrile, vitals normal. Comfortable. Abdomen soft, nontender, no masses, normal bowel sounds.\n\nA/P: Abdominal pain, resolved, workup reportedly negative. No further testing. Requesting the ED record. Return if it recurs.\n\nPhysical due in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "telephone",
+          "start": "2024-08-22T09:15",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Records request - ED",
+              "date": "2024-08-22T09:15",
+              "author": "front desk",
+              "body": "Requested the 8/10/24 emergency visit note and labs from the hospital's HIM department with a signed release. Ticket number in the request log. Follow up in two weeks if nothing arrives."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request follow-up",
+              "date": "2024-09-09T14:30",
+              "author": "front desk",
+              "body": "ED record still not received. Called HIM, they had it in queue; re-sent the release at their request."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "nurse_visit",
+          "start": "2024-10-16T14:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T14:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-16T14:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-16T14:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-16T14:50",
+              "author": "RN",
+              "body": "Trivalent flu 0.5 mL IM left arm and 2024-25 COVID 0.3 mL IM right arm. Afebrile, no sore throat or illness today (asked given clozapine). Talked her through each step ahead of time, which she said helps. Observed 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "annual_physical",
+          "start": "2024-11-13T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Factitious disorder imposed on self",
+              "action": "diagnosed",
+              "onset": "2024-08-10",
+              "note": "per ED and emergency psychiatry, 8/2024",
+              "icd10": "F68.10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              73
+            ],
+            "hr": 67,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 66.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-13T09:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-11-13T09:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 83
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 107
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-13T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.92
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-11-13T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-13T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-11-13T09:15",
+              "author": "PCP",
+              "body": "Physical.\n\nED record from August arrived 9/16 after a second request. Workup for the abdominal pain negative (Hgb 13.2, WBC 7.0, amylase and lipase normal, LFTs and UA normal). ED and their psychiatry consultant documented factitious disorder imposed on self, noting inconsistencies with outside admissions for joint pain, chest pain and diarrhea; none of those were reported to us at intake and none are in the prior-practice records. She also gave the ED a history of an abdominal operation elsewhere; we have no surgical history on file. I raised the ED's findings with her gently today. She listened, said little, did not want to discuss it further. Psychiatry is aware per the ED record.\n\nPsych: clozapine 300 mg qhs, stable for a few months now by her and her sister's account, fewer voices. Weekly lab visits for ANC at psychiatry, recently spaced out.\n\nEyes: ophthalmology letter June, stable high myopia, no tears.\n\nGyn: husband still hasn't had carrier screening. They are holding off on pregnancy for now.\n\nMeds: clozapine 300 mg qhs. NKDA. Never smoker, no alcohol.\n\nExam: vitals normal, weight 65 kg. Calm, organized, affect restricted. Glasses. Thyroid normal size. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender; small healed lower abdominal scar. No edema.\n\nPHQ-9 3, GAD-7 6.\n\nA/P\n1. Health maintenance. Pap overdue; she again prefers to wait. Vaccines done in October.\n2. Schizophrenia on clozapine, improving. CMP, lipids, A1c, TSH today.\n3. Factitious disorder imposed on self, per ED and emergency psychiatry. Added to problem list. Plan: one primary care physician, consistent follow-up, avoid unnecessary testing, coordinate with psychiatry.\n4. Situational anxiety, stable.\n5. Tay-Sachs carrier, partner screening pending on their end.\n6. Degenerative high myopia, yearly ophthalmology.\n\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-15a",
+          "kind": "portal_message",
+          "start": "2024-11-15T15:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2024-11-15T15:10",
+              "author": "PCP",
+              "body": "Hi Sharon, all of your labs from the physical were normal, including sugar, cholesterol and thyroid. Take care and see you in May."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-06a",
+          "kind": "ed_visit",
+          "start": "2025-02-06T19:40",
+          "end": "2025-02-07T03:10",
+          "service": "Emergency Medicine",
+          "reason": "Witnessed generalized seizure",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 88,
+            "rr": 16,
+            "temp_c": 37.2,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-06T20:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.57
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-06T20:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Magnesium",
+                  "value": 2.0
+                },
+                {
+                  "test": "Clozapine",
+                  "loinc": "6896-5",
+                  "unit": "ng/mL",
+                  "value": 650
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-02-06T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-02-10T08:45",
+              "author": "emergency medicine",
+              "body": "EMERGENCY MEDICINE - PHYSICIAN NOTE\nArrival: 02/06/2025 19:40 by ambulance\n\nCC: seizure at home, witnessed.\n\nHPI: 30 year old woman with schizophrenia. Family saw a generalized tonic-clonic seizure at home this evening; no prior seizure history. Per psychiatry history she has been stable on clozapine for about six months, having not responded to two earlier antipsychotics. Family states she takes it every night as prescribed.\nMedications: clozapine 300 mg nightly.\nAllergies: NKDA.\nSocial: never smoker, no alcohol, no drug use.\n\nVitals on arrival: T 37.2 C (99.0 F), BP 130/85, HR 88, RR 16.\nExam: postictal, becoming more alert over the first hour. Neurological examination nonfocal. No tongue laceration noted. Remainder unremarkable.\n\nLabs: Na 140, K 4.1, Ca 9.2, Mg 2.0. CBC within normal limits. Serum clozapine 650 ng/mL (reference 350-600).\n\nAssessment: Generalized tonic-clonic seizure, attributed to clozapine; level above the usual therapeutic range. Electrolytes normal.\nPlan: observed until back to baseline. Discussed with on-call psychiatry, who will review dosing at her outpatient visit. Seizure precautions reviewed with patient and sister. Discharged home. Follow up with primary care this week and with outpatient psychiatry.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "ED record received",
+              "date": "2025-02-10T09:00",
+              "author": "MA",
+              "body": "ED note from 2/6 seizure visit faxed by the hospital at the sister's request. Scanned, flagged for PCP before Wednesday's visit."
+            }
+          ],
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-02-07a",
+          "kind": "telephone",
+          "start": "2025-02-07T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - ED visit last night",
+              "date": "2025-02-07T09:20",
+              "author": "RN",
+              "body": "Sister called. Sharon had a seizure at home last evening, shaking all over for about a minute, then very sleepy. Ambulance to the ED, home around 3 am. Told it was likely from the clozapine and the level was a little high. She is tired but talking normally this morning, no further episodes. No driving (she does not drive anyway). Seizure safety reviewed: no baths alone, no heights, call 911 for a seizure longer than five minutes or a second one. Visit with PCP Wednesday 2/12. Asked sister to bring the discharge papers."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "office_visit",
+          "start": "2025-02-12T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, seizure",
+          "conditions": [
+            {
+              "label": "Clozapine-induced seizure",
+              "action": "diagnosed",
+              "onset": "2025-02-06",
+              "icd10": "R56.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              75
+            ],
+            "hr": 58,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 65.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-12T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post-ED",
+              "date": "2025-02-12T11:30",
+              "author": "PCP",
+              "body": "Seen with sister after the ED visit on 2/6 for a first generalized seizure. ED record came on 2/10: nonfocal exam, normal sodium, calcium and magnesium, normal CBC, clozapine level 650 (above their reference range). Attributed to clozapine.\n\nSince then no further events. A bit sore the next day, otherwise back to herself. Psychiatry saw her on Monday: they are keeping clozapine at 300 mg at bedtime. No new medicines.\n\nExam: vitals normal. Alert, oriented, answering appropriately. Cranial nerves intact, strength and sensation symmetric, reflexes equal, gait steady.\n\nA/P\n1. Clozapine-induced seizure. Problem list updated. Dosing is psychiatry's decision; their plan is no change. Seizure precautions reviewed again; she does not drive.\n2. Schizophrenia, on clozapine, psychiatry managing.\nReturn in May as planned, sooner for any further event."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "lab_only",
+          "start": "2025-03-19T08:30",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-19T08:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside lab copy - ANC",
+              "date": "2025-03-21T10:40",
+              "author": "MA",
+              "body": "Psychiatry clinic lab CBC/diff from 3/19 received by fax, ANC normal. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "portal_message",
+          "start": "2025-04-09T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "form for rides",
+              "date": "2025-04-09T13:05",
+              "author": "patient",
+              "body": "Hi, this is Sharon's sister writing for her. The ride company needs a form from the doctor saying she needs transportation to appointments since she can't drive. Can I drop it off?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: form for rides",
+              "date": "2025-04-09T15:20",
+              "author": "front desk",
+              "body": "Yes, drop it at the front desk or fax it to us. The doctor usually completes these within a few business days. We'll call when it's ready."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Transportation form completed",
+              "date": "2025-04-14T17:10",
+              "author": "PCP",
+              "body": "Medicaid transportation form completed and signed. Copy scanned. Sister notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Routine follow-up",
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-05-14T14:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 162
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 79
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 102
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-14T14:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-14T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-14T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-14T14:00",
+              "author": "PCP",
+              "body": "Routine. No seizures since February. Clozapine 300 mg qhs unchanged, sister supervises it. Voices quiet most days. Spends time at home, helps with cooking, walks with her sister.\n\nNo eye symptoms. Not trying for pregnancy at present.\n\nVitals fine, weight stable around 65. Exam: calm, linear, affect a little brighter. Heart regular. Lungs clear. No edema.\n\nPHQ-9 3, GAD-7 5.\n\nA/P\n1. Schizophrenia on clozapine, stable. A1c and lipids today.\n2. Clozapine-induced seizure, none since.\n3. Situational anxiety, mild.\nPhysical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "portal_message",
+          "start": "2025-05-16T08:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2025-05-16T08:25",
+              "author": "PCP",
+              "body": "Sharon - A1c and cholesterol both normal. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-15a",
+          "kind": "ed_visit",
+          "start": "2025-08-15T11:50",
+          "end": "2025-08-16T14:20",
+          "service": "Emergency Medicine",
+          "reason": "Confusion and lethargy",
+          "vitals": {
+            "bp": [
+              118,
+              69
+            ],
+            "hr": 68,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-08-15T12:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 125
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 96
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 10
+                },
+                {
+                  "test": "Osmolality, serum",
+                  "loinc": "2692-2",
+                  "unit": "mosm/kg",
+                  "value": 260
+                },
+                {
+                  "test": "Osmolality, urine",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "value": 80
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-08-15T11:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Summary",
+              "date": "2025-08-28T13:15",
+              "author": "emergency medicine",
+              "body": "ED VISIT SUMMARY / OBSERVATION DISCHARGE\nArrived 08/15/2025 11:50; discharged from observation 08/16/2025 14:20\n\nPresenting complaint: confusion, lethargy.\n\nHistory: 30 year old woman with schizophrenia and a prior seizure attributed to clozapine. Taking her antipsychotic as prescribed. The sister she lives with reports that for the last several days she has been drinking very large volumes of water, saying she is always thirsty.\nMedications: clozapine 300 mg at bedtime. Allergies: NKDA.\n\nExam: vital signs stable. Disoriented to time and place. No focal neurologic deficit.\n\nLabs: sodium 125, potassium 4.0, chloride 96, bicarbonate 24, BUN 10. Serum osmolality 260, urine osmolality 80 (maximally dilute).\n\nAssessment: hypotonic hyponatremia from psychogenic polydipsia.\nCourse: fluid restriction, serial sodium checks, observation overnight. Mental status back to baseline and sodium improving by the next day.\nDischarge instructions: fluid restriction as instructed, daily morning weights at home, follow up with primary care within one week and with psychiatry.\n\nEmergency Medicine"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "ED summary received",
+              "date": "2025-08-28T13:30",
+              "author": "MA",
+              "body": "ED and observation summary 8/15 to 8/16 received. Labs abstracted and filed. Routed to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-08-18a",
+          "kind": "telephone",
+          "start": "2025-08-18T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - ED and observation stay",
+              "date": "2025-08-18T10:05",
+              "author": "RN",
+              "body": "Sister reports Sharon was confused Friday and was taken to the ED; her sodium was low from drinking too much water. Kept overnight, home Saturday afternoon. Told to limit fluids and weigh every morning. More like herself now. Post-ED visit set for Wednesday; sister will request the ED summary be sent to us."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "office_visit",
+          "start": "2025-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, low sodium",
+          "conditions": [
+            {
+              "label": "Psychogenic polydipsia",
+              "action": "diagnosed",
+              "onset": "2025-08-15",
+              "icd10": "R63.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              142,
+              71
+            ],
+            "hr": 64,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-08-20T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-20T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-20T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post-ED",
+              "date": "2025-08-20T09:40",
+              "author": "PCP",
+              "body": "Seen with her sister. ED visit 8/15 for confusion and lethargy after days of drinking large amounts of water; per family the ED found her sodium low and kept her overnight on fluid restriction. No ED paperwork yet, sister has asked for it.\n\nSince home: sister is measuring her water in a marked bottle, she is staying within the limit most days, and doing a morning weight. Thirst still bothers her. Thinking clear. Clozapine 300 mg qhs unchanged.\n\nExam: vitals normal. Alert and oriented x3. No edema. Mucous membranes moist. Neuro nonfocal.\n\nA/P\n1. Psychogenic polydipsia with hyponatremia, per ED. BMP today. Continue the fluid limit and daily weights; a jump of more than a couple of pounds in a day, headache, vomiting or confusion means a same-day call. Psychiatry informed by sister.\n2. Schizophrenia on clozapine.\n3. Problem list updated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium recheck",
+              "date": "2025-08-21T12:40",
+              "author": "PCP",
+              "body": "Sharon, your sodium is back in the normal range. Keep following the fluid plan we discussed, it is what's working."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "nurse_visit",
+          "start": "2025-10-15T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-15T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-15T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-15T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza / COVID-19",
+              "date": "2025-10-15T15:30",
+              "author": "RN",
+              "body": "Trivalent influenza 0.5 mL IM L deltoid, Moderna 2025-26 COVID 0.5 mL IM R deltoid. Well today, no fever or sore throat. No prior reactions. Monitored 15 min. Sister present."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "annual_physical",
+          "start": "2025-11-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              83
+            ],
+            "hr": 52,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 66.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-12T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-12T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-12T10:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 67
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 83
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-12T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-12T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-12T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-11-12T10:00",
+              "author": "PCP",
+              "body": "Annual. With sister.\n\nED summary from August arrived 8/28: sodium 125, serum osm 260, urine osm 80, psychogenic polydipsia, fluid restriction, observed overnight. Since then she has kept to the fluid limit with the marked bottle. No confusion. Weights steady.\n\nNo further seizures. Clozapine 300 mg qhs. Psychiatry every 1 to 2 months, ANC monthly at their lab.\n\nOphthalmology: says she was seen in the summer and nothing changed; no letter received this year.\nGyn: no visits since 2024. Husband's carrier testing still not done. Pap still overdue; offered again, she declines a speculum exam, aware of the reason for screening.\n\nMeds: clozapine 300 mg qhs. NKDA. Never smoker, no alcohol.\n\nExam: vitals normal, weight 66 kg. Calm, organized. Glasses. Neck supple. Heart regular rate and rhythm. Lungs clear. Abdomen soft. Skin intact. No edema. Neuro nonfocal.\n\nPHQ-9 4, GAD-7 6.\n\nA/P\n1. Health maintenance. Flu and COVID done 10/15. Pap declined, will keep offering.\n2. Schizophrenia on clozapine. CBC/diff, CMP, lipids, A1c.\n3. Psychogenic polydipsia, controlled with fluid limit. Sodium on CMP today.\n4. Clozapine-induced seizure, none since February.\n5. Factitious disorder, situational anxiety: stable; consistent visits.\n6. Degenerative high myopia, ophthalmology yearly.\n7. Tay-Sachs carrier.\n\nRTC January."
+            }
+          ],
+          "state": {
+            "weight_kg": 66.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-14a",
+          "kind": "portal_message",
+          "start": "2025-11-14T11:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2025-11-14T11:55",
+              "author": "PCP",
+              "body": "All normal, Sharon, including your sodium. Keep doing what you're doing. See you in January."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "office_visit",
+          "start": "2026-01-14T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-show",
+              "date": "2026-01-14T14:20",
+              "author": "front desk",
+              "body": "Patient did not come to 1:40 follow-up. Left voicemail on her phone and on the sister's. Will offer the next opening when they call back."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "ed_visit",
+          "start": "2026-02-09T15:10",
+          "end": "2026-02-10T01:30",
+          "service": "Emergency Medicine",
+          "reason": "Erratic behavior, talking to herself",
+          "vitals": {
+            "bp": [
+              116,
+              72
+            ],
+            "hr": 69,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-09T15:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-09T15:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-02-09T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-06-10T09:50",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT NOTE\nDate of service: 02/09/2026, arrival 15:10\n\nChief complaint: behavior change.\n\nHPI: 31 year old with established schizophrenia, recent history of a clozapine-associated seizure and of psychogenic polydipsia, brought in by her sister for two days of erratic behavior and talking to herself. According to the sister she has not been taking her medications for about a month.\nMedications listed: clozapine 300 mg at bedtime (not taking).\nAllergies: NKDA.\nSocial: unemployed, lives with her sister. No history of substance use.\n\nVitals: within normal limits.\nExam: disheveled. Appears to be responding to internal stimuli. Agitated; states she has been chosen to defend the world against an alien invasion. No focal neurologic findings.\n\nLabs: Na 140, K 4.1, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98, Ca 9.2. CBC within normal limits. Urine toxicology negative.\n\nImpression: acute exacerbation of schizophrenia in the setting of a month off clozapine. No medical cause found.\nDisposition: evaluated by emergency psychiatry; admitted to the inpatient psychiatric unit.\n\nEmergency Medicine"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "hospital_admission",
+          "start": "2026-02-10T01:30",
+          "end": "2026-02-27T11:00",
+          "service": "Psychiatry",
+          "reason": "Acute exacerbation of schizophrenia",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-02-10T01:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Psychiatry Discharge Summary",
+              "date": "2026-05-20T14:35",
+              "author": "psychiatry",
+              "body": "INPATIENT PSYCHIATRY - DISCHARGE SUMMARY\nAdmitted 02/10/2026 from the emergency department. Discharged 02/27/2026.\n\nReason for admission: psychotic relapse of schizophrenia (auditory hallucinations, grandiose and persecutory delusions, agitation) after about one month without clozapine.\n\nHospital course: Because more than two days had passed since her last dose, clozapine was restarted at a low dose and re-titrated, with ANC monitoring, reaching 300 mg at bedtime before discharge. Agitation settled within the first week. Hallucinations decreased and she became organized and able to engage in planning. Fluid intake was monitored on the unit given her history of psychogenic polydipsia. No seizures during the stay.\n\nCondition at discharge: calm, linear, denies suicidal and homicidal ideation, accepting of medication.\n\nDischarge medication: clozapine 300 mg by mouth at bedtime.\nAllergies: NKDA.\n\nFollow-up: outpatient psychiatry within one week; ANC per the monitoring schedule; primary care follow-up. Sister to supervise medication.\n\nInpatient Psychiatry"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "telephone",
+          "start": "2026-02-11T16:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - hospitalization",
+              "date": "2026-02-11T16:20",
+              "author": "RN",
+              "body": "Sister called to let us know Sharon is on the inpatient psychiatry unit. She had stopped her clozapine around the new year without telling anyone, became very disorganized, and on Monday the sister took her to the ED; she was admitted from there. Sister apologized for the missed January visit. Asked her to let us know when she is discharged so we can see her. Will request records."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Records request",
+              "date": "2026-02-12T09:00",
+              "author": "front desk",
+              "body": "Release on file. Requested ED note of 2/9/26 and inpatient records at discharge from the hospital HIM office."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "telephone",
+          "start": "2026-03-03T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Sister - discharged",
+              "date": "2026-03-03T11:10",
+              "author": "RN",
+              "body": "Sister reports discharge on 2/27. Clozapine was restarted in the hospital and built back up to 300 mg at bedtime. First psychiatry follow-up done this week. Sister now hands her the dose every night and watches her take it. Calm, sleeping. Offered PCP visit; the first opening that works with their rides is mid-April. No discharge paperwork has come to us; sister does not have a copy."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "office_visit",
+          "start": "2026-04-15T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after psychiatric hospitalization",
+          "vitals": {
+            "bp": [
+              122,
+              77
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-15T10:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-15T10:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-15T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-15T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post-Hospitalization",
+              "date": "2026-04-15T10:20",
+              "author": "PCP",
+              "body": "First visit since the February ED visit and inpatient psychiatry stay (2/10 to 2/27 per sister). Neither the ED note nor the discharge summary has reached us despite a request in February; re-requested today.\n\nHistory from Sharon and her sister: stopped clozapine around the start of the year, \"felt fine and didn't think I needed it.\" Became disorganized; sister took her to the ED 2/9 and she was admitted. Clozapine restarted and slowly increased back to 300 mg at bedtime in the hospital. Since discharge she takes it every night with her sister watching. Seeing psychiatry every two weeks for now, ANC at their lab. Voices quieter. No seizures. Keeping to her fluid limit, no confusion, no swelling.\n\nMeds: clozapine 300 mg qhs. NKDA.\n\nExam: vitals in flowsheet, normal. Neatly dressed, calm, a little slowed, linear, affect restricted. No tremor. Heart regular. Lungs clear. Abdomen soft. No edema. Neuro nonfocal.\n\nPHQ-9 5, GAD-7 6. No SI.\n\nA/P\n1. Schizophrenia, relapse after stopping clozapine, now back on 300 mg qhs with supervised dosing; psychiatry following closely. CBC with diff today since we are drawing.\n2. Psychogenic polydipsia: BMP today for sodium.\n3. Clozapine-induced seizure: none.\n4. Health maintenance: Pap still declined. Vaccines current for the season.\nFollow up in about three months, sooner as needed. Sister has our direct line."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-17a",
+          "kind": "portal_message",
+          "start": "2026-04-17T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Wednesday",
+              "date": "2026-04-17T09:05",
+              "author": "PCP",
+              "body": "Hi Sharon, blood counts including neutrophils are normal, and your sodium and kidney tests are normal. Glad to see you doing better."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "outside_records",
+          "start": "2026-05-20T14:35",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Discharge summary received",
+              "date": "2026-05-20T14:50",
+              "author": "MA",
+              "body": "Inpatient psychiatry discharge summary for 2/10-2/27/26 received by fax and scanned. ED note of 2/9 not included; HIM says it is a separate request. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "outside_records",
+          "start": "2026-06-10T09:50",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "ED record received",
+              "date": "2026-06-10T10:05",
+              "author": "front desk",
+              "body": "Emergency department note from 2/9/26 arrived today after the separate request. Scanned to the encounter and sent to PCP's inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "portal_message",
+          "start": "2026-07-08T18:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "vaccine record",
+              "date": "2026-07-08T18:30",
+              "author": "patient",
+              "body": "Hi it's Sharon. Can you send me a copy of my shot records? My sister wants us to have a copy at home."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: vaccine record",
+              "date": "2026-07-09T09:40",
+              "author": "MA",
+              "body": "Hi Sharon, your immunization record is attached to this message and is also under the Health tab in the portal any time you need it."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "pharmacy",
+          "start": "2026-08-05T12:15",
+          "documents": [
+            {
+              "type": "Medication Reconciliation",
+              "title": "External fill history",
+              "date": "2026-08-05T12:15",
+              "author": "MA",
+              "body": "Quarterly fill history pull for panel review. Clozapine 100 mg tablets, 3 at bedtime, filled every 28 days since March without gaps; prescriber outpatient psychiatry. No other medications filled. No action needed."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Clozapine-induced seizure|R56.9": {
+        "code": "R56.9",
+        "display": "Unspecified convulsions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Degenerative high myopia|H44.23": {
+        "code": "H44.23",
+        "display": "Degenerative myopia, bilateral",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Factitious disorder imposed on self|F68.10": {
+        "code": "F68.10",
+        "display": "Factitious disorder imposed on self, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Family history of stroke|Z82.3": {
+        "code": "Z82.3",
+        "display": "Family history of stroke",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Genito-pelvic pain/penetration disorder|F52.6": {
+        "code": "F52.6",
+        "display": "Dyspareunia not due to a substance or known physiological condition",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Psychogenic polydipsia|R63.1": {
+        "code": "R63.1",
+        "display": "Polydipsia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Situational anxiety|F41.8": {
+        "code": "F41.8",
+        "display": "Other specified anxiety disorders",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tay-Sachs disease carrier status with indicated partner screening|Z14.8": {
+        "code": "Z14.8",
+        "display": "Genetic carrier of other disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "aripiprazole 15 MG Oral Tablet": {
+        "code": "349490",
+        "display": "aripiprazole 15 MG Oral Tablet",
+        "ingredient": "aripiprazole",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "clozapine 100 MG Oral Tablet": {
+        "code": "197535",
+        "display": "clozapine 100 MG Oral Tablet",
+        "ingredient": "clozapine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "risperidone 2 MG Oral Tablet": {
+        "code": "312831",
+        "display": "risperidone 2 MG Oral Tablet",
+        "ingredient": "risperidone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Clozapine": {
+        "code": "6896-5",
+        "display": "cloZAPine [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality, serum": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mosm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality, urine": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mosm/kg",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Vaginal culture": {
+        "code": "6463-4",
+        "display": "Bacteria identified in Specimen by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

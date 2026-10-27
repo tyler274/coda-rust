@@ -1,0 +1,477 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002536",
+      "events": [
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T09:30",
+          "reason": "COVID-19 vaccine record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-23T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-13T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Campus vaccine clinic record",
+              "author": "campus health clinic",
+              "date": "2021-04-20T09:30",
+              "body": "Vaccination record, campus COVID-19 vaccine clinic. Pfizer-BioNTech COVID-19 vaccine dose 1 on 03/23/2021 and dose 2 on 04/13/2021, each 0.3 mL IM left deltoid. No adverse events reported at either dose. Uploaded by patient through the portal; abstracted to the immunization record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-25a",
+          "kind": "telephone",
+          "start": "2021-05-25T09:15",
+          "reason": "Thirst, frequent urination, weight loss",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Thirst and weight loss",
+              "author": "PCP",
+              "date": "2021-05-25T09:40",
+              "body": "Called back after his message this morning. About a month of being thirsty all the time, carrying a water bottle everywhere, up several times a night to pee, and he thinks he has lost weight even though he is eating more than usual. Some blurry vision this past week. Tired. No vomiting, no belly pain, no trouble breathing. Father has diabetes.\n\nThis story in a 22 y/o is new diabetes until proven otherwise. Our endocrinology colleagues had an urgent new-patient opening Thursday morning and he will take it; they will draw his labs there. Told him that if he starts vomiting, can't keep fluids down, gets belly pain or fast/deep breathing, or feels confused, he goes to the ED that day and does not wait for Thursday. He repeated this back. Will call him Friday."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-27a",
+          "kind": "specialist_visit",
+          "start": "2021-05-27T10:30",
+          "service": "Endocrinology",
+          "reason": "Polyuria, polydipsia, weight loss",
+          "state": {"weight_kg": 64.0, "labs": {"Hemoglobin A1c": 11.6}},
+          "vitals": {"bp": [106, 64], "hr": 92},
+          "measure": ["temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-05-27T11:20", "results": [{"test": "Glucose", "value": 388}, {"test": "Bicarbonate", "value": 23}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Urinalysis", "collected": "2021-05-27T11:20", "results": [{"test": "Urine Glucose", "text": "3+"}, {"test": "Urine Ketones", "text": "Moderate (2+)"}, {"test": "Urine Protein", "text": "Negative"}]},
+            {"panel": null, "collected": "2021-05-27T11:20", "resulted": "2021-05-28T08:30", "results": [
+              {"test": "Hemoglobin A1c", "value": 11.6},
+              {"test": "Glutamic acid decarboxylase 65 antibody", "loinc": "56540-8", "unit": "[IU]/mL", "value": 34},
+              {"test": "C-peptide", "loinc": "1986-9", "unit": "ng/mL", "value": 0.4},
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Tissue Transglutaminase IgA"}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "author": "endocrinology",
+              "date": "2021-06-03T10:00",
+              "body": "OUTSIDE ENDOCRINOLOGY CONSULTATION\nDate of visit: 05/27/2021\nReferred by: primary care physician\nReason: thirst, urinary frequency and weight loss\n\nThank you for sending this 22-year-old student. For roughly four weeks he has felt worn out and constantly thirsty; by his estimate he is getting through close to five liters of water a day, and he now gets up more than once a night to void. He is hungrier than usual and still down about 6 kg over the month. In the last week he has had intermittent blurring when reading or working on his laptop. No dysuria or urgency, no abdominal pain. No fever, rash or joint pains.\n\nHistory: recurrent cold sores on as-needed valacyclovir. No surgery. No known drug allergies. Father with type 2 diabetes, mother with autoimmune hypothyroidism; an older brother and a paternal cousin with inherited bilirubin conditions. No tobacco, alcohol or drugs.\n\nExam: BP 106/64, pulse 92, afebrile. Weight 64 kg. Thin young man who looks a little dry, mucous membranes dry. Acuity mildly reduced and briefly sharper after blinking; fundi normal on direct ophthalmoscopy. Genitourinary and neurologic examinations normal.\n\nImpression: symptomatic hyperglycemia in a lean young adult, most likely new autoimmune diabetes. Not acidotic on history or exam.\n\nPlan: same-day labs - BMP, A1c, urinalysis, GAD65 antibody, C-peptide, TSH and tTG-IgA. He will return tomorrow to go over results and start treatment. ED precautions reviewed.\n\nResults addendum 05/28: glucose 388 mg/dL, bicarbonate 23, A1c 11.6%, urine glucose 3+ with moderate ketones, GAD65 antibody positive at 34 IU/mL, C-peptide 0.4 ng/mL. TSH and tTG-IgA normal.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-28a",
+          "kind": "specialist_visit",
+          "start": "2021-05-28T09:00",
+          "service": "Endocrinology",
+          "reason": "New type 1 diabetes, insulin start",
+          "conditions": [
+            {"label": "Type 1 diabetes mellitus without complications", "action": "diagnosed", "onset": "2021-04-26"}
+          ],
+          "medications": [
+            {"drug": "3 ML insulin glargine 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject 16 units under the skin at bedtime", "dose": {"value": 16, "unit": "units"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "type 1 diabetes"},
+            {"drug": "3 ML insulin lispro 100 UNT/ML Pen Injector", "action": "historical", "sig": "Inject under the skin with meals per sliding scale", "frequency": "TID", "route": "Subcutaneous", "course": "chronic", "reason": "type 1 diabetes"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up: insulin start",
+              "author": "endocrinology",
+              "date": "2021-06-22T15:10",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 05/28/2021\n\nSeen back the morning after his consultation to review labs. Glucose 388, A1c 11.6%, GAD65 antibody positive, low C-peptide, moderate ketonuria with a normal bicarbonate. Thyroid and celiac screens normal.\n\nDiagnosis: type 1 diabetes mellitus, new. No DKA.\n\nTreatment started today:\n- insulin glargine 16 units subcutaneously at bedtime\n- insulin lispro with meals on a sliding scale (scale given in writing)\nMeter, strips and pen needles prescribed. Pen technique taught and he gave his first dose in clinic. Hypoglycemia recognition and treatment reviewed. Diabetes educator session and nutrition visit next week. He will send readings through our portal for titration, return in about 6 to 8 weeks.\n\nAllergies: NKDA.\nEndocrinology\n\n[received by fax 06/22/2021]"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-28b",
+          "kind": "telephone",
+          "start": "2021-05-28T16:30",
+          "reason": "Follow-up call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Check-in after endocrinology",
+              "author": "PCP",
+              "date": "2021-05-28T16:30",
+              "body": "Called as promised. He saw endocrinology yesterday and again today and they told him it is type 1 diabetes. He is on two insulin pens and did his first shot in their office. Feels a bit overwhelmed but has the plan in writing and an educator visit next week. Video visit with me in about 10 days to go over everything."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "telehealth_visit",
+          "start": "2021-06-08T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New diabetes follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2021-06-08T13:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2021-06-08T13:35",
+              "body": "Video visit, pt at his apartment, identity confirmed, consents to video.\n\nTen days into insulin for new type 1 diabetes (endocrinology dx 5/28 - their letter not in yet, history from pt and his written plan). Glargine 16 units at bedtime, lispro with meals per their scale. Fasting readings coming down, mostly 130s-170s now, one reading in the 70s before dinner that he treated with juice. Thirst and night urination are gone. Vision back to normal. Saw the educator Friday.\n\nMood: understandably thrown by this but has good support, roommate knows how to help with a low. Mom has been helpful.\n\nA/P\n1. Type 1 diabetes, new - endocrinology managing insulin. Updated our med list from his pens. Will request their notes.\n2. Recurrent cold sores - valacyclovir prn unchanged.\nCall with anything; next in person in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "pharmacy",
+          "start": "2021-07-13T10:05",
+          "reason": "Diabetes supplies coverage",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call: pen needles and strips",
+              "author": "MA",
+              "date": "2021-07-13T10:05",
+              "body": "Pharmacy called: student plan only covers a different meter's strips. Endocrinology wrote the original rx; pharmacy could not reach them. PCP ok'd switching to the covered meter and strips, same testing 4x/day, plus pen needles 32G 4 mm. New rx sent. Pt messaged about picking up the new meter."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-17a",
+          "kind": "specialist_visit",
+          "start": "2021-08-17T14:00",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "state": {"weight_kg": 69.0, "labs": {"Hemoglobin A1c": 7.6}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-08-17T14:20", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2021-08-24T09:00",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 08/17/2021\n\nType 1 diabetes, about 12 weeks on basal-bolus insulin. Doing well. Has regained most of the lost weight. Logs show fasting values mostly in range, a few post-dinner highs on late nights, two mild lows after soccer that he treated himself. A1c drawn today, now improved from 11.6% at diagnosis.\n\nRegimen unchanged: glargine 16 units at bedtime, lispro sliding scale with meals. Reviewed carrying fast sugar during sports. Next visit in 3 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "nurse_visit",
+          "start": "2021-09-28T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-28T15:45"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-09-28T15:45"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2021-09-28T15:50",
+              "body": "Flu vaccine, quadrivalent, 0.5 mL IM right deltoid. Feels well, no fever. Fingerstick not needed, ate lunch an hour ago and has his meter. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "office_visit",
+          "start": "2021-10-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes check-in; episodes of yellow eyes",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2021-10-19T11:15", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2021-10-19T11:15", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "recurrent episodes of scleral icterus; family history of inherited bilirubin disorders"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-10-19T10:40"},
+            {"procedure": "Venipuncture", "performed": "2021-10-19T11:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-10-19T11:20",
+              "body": "S: First in-person visit since his diabetes diagnosis. Endocrinology following, saw them in August; he says his A1c was much better. Glargine 16 at bedtime, lispro by scale. Two or three mild lows, all around soccer, none needing help.\n\nNew item he wanted to bring up: a few times over the last year, when he has been sick or under a lot of stress, his eyes have gone yellow for a few days and then cleared. He has not had it checked. No itching, no belly pain, urine and stool normal colors each time. Not yellow now. Brother has Gilbert's and a cousin on dad's side has Dubin-Johnson, so he wonders.\n\nO: vitals as charted. No scleral icterus today, skin normal color. Abdomen soft, nontender, no liver or spleen felt. Lips clear. Feet: skin intact, normal sensation.\n\nA/P\n1. Recurrent episodes of scleral icterus with a family history of two inherited bilirubin disorders - referral to GI; asked him to let GI know if it happens again before the appointment so they can catch labs during a spell.\n2. Type 1 diabetes - per endocrinology. Lipids and urine microalbumin today.\n3. Cold sores - quiet.\nFlu shot done last month."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-21a",
+          "kind": "portal_message",
+          "start": "2021-10-21T12:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Cholesterol and urine results",
+              "author": "PCP",
+              "date": "2021-10-21T12:15",
+              "body": "Cholesterol numbers are normal and there is no protein leaking into the urine, which is what we watch for with diabetes. GI referral is in; their office should call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "specialist_visit",
+          "start": "2021-11-30T13:30",
+          "service": "Gastroenterology",
+          "reason": "Recurrent jaundice",
+          "conditions": [
+            {"label": "Dubin-Johnson syndrome", "icd10": "E80.6", "action": "diagnosed", "onset": "2020-12-01"}
+          ],
+          "state": {"labs": {"Bilirubin, Total": 1.6}},
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2021-11-30T14:10", "results": [
+              {"test": "Bilirubin, Total", "value": 3.2},
+              {"test": "Bilirubin, Direct", "value": 2.5},
+              {"test": "Alanine Aminotransferase", "value": 45},
+              {"test": "Aspartate Aminotransferase", "value": 40},
+              {"test": "Alkaline Phosphatase", "value": 90}
+            ]},
+            {"panel": null, "collected": "2021-11-30T14:10", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 0.7}]}
+          ],
+          "orders": [
+            {"id": "gi-referral", "action": "done", "date": "2021-11-30T13:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2021-12-06T11:00",
+              "body": "OUTSIDE GASTROENTEROLOGY CONSULTATION\nDate of visit: 11/30/2021\nReason for referral: recurrent jaundice\n\nHe happens to be in the middle of an episode today: two days of mild yellowing of the skin and eyes. Over the past year he has had a handful of similar spells, generally when he was ill or stressed, each clearing by itself. Type 1 diabetes was diagnosed about six months ago and is managed by endocrinology. He has no itch, abdominal pain, dark urine or pale stools.\n\nMeds: insulin glargine 16 units at bedtime, insulin lispro sliding scale, valacyclovir prn. NKDA.\nFamily: older brother with Gilbert syndrome; paternal cousin with Dubin-Johnson syndrome. He adds that his mother has had spells of yellow eyes herself that were never worked up. Father with type 2 diabetes, mother with autoimmune hypothyroidism.\nSocial: student, no tobacco, alcohol or drugs.\n\nExam: scleral icterus. Liver edge palpable and slightly tender at the costal margin. Otherwise normal, no stigmata of chronic liver disease.\n\nLabs today: total bilirubin 3.2 mg/dL, direct 2.5, indirect 0.7. ALT 45, AST 40, alkaline phosphatase 90 U/L.\n\nAssessment: predominantly conjugated hyperbilirubinemia with normal transaminases and alkaline phosphatase, in a young man with a family member carrying the same diagnosis. Most consistent with Dubin-Johnson syndrome, a benign inherited disorder of bilirubin excretion.\n\nPlan: right upper quadrant ultrasound to make sure there is no obstruction. No treatment needed. Reviewed that spells may come with illness, fasting or stress. Return in about 6 months or sooner with a prolonged episode.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2021-12-09a",
+          "kind": "imaging",
+          "start": "2021-12-09T08:45",
+          "reason": "Conjugated hyperbilirubinemia",
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2021-12-09T08:45", "issued": "2021-12-09T13:20", "text": "Indication: conjugated hyperbilirubinemia, evaluate for obstruction.\nTechnique: grayscale and color Doppler imaging of the right upper quadrant.\nFindings: The liver is normal in size and echotexture with smooth contour; no focal lesion. Hepatopetal portal venous flow. The gallbladder is normally distended without stones, sludge or wall thickening; sonographic Murphy sign negative. Common bile duct measures 3 mm. No intrahepatic ductal dilation. Visualized pancreas unremarkable. Right kidney normal. No free fluid.", "conclusion": "Normal right upper quadrant ultrasound. No biliary dilation or gallstones."}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Ultrasound reviewed",
+              "author": "PCP",
+              "date": "2021-12-10T08:30",
+              "body": "RUQ ultrasound ordered by GI, copy to us: normal liver, gallbladder and ducts. Fits the GI impression of Dubin-Johnson. Problem list updated from the GI letter. Nothing further from our side."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "portal_message",
+          "start": "2021-12-14T21:02",
+          "reason": "Question about new diagnosis",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dubin-Johnson question",
+              "author": "patient",
+              "date": "2021-12-14T21:02",
+              "body": "The GI doctor said I have Dubin-Johnson like my cousin. Is it something I need to tell people about, like if I go to the ER for my diabetes? And does it mess with insulin at all?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Dubin-Johnson question",
+              "author": "PCP",
+              "date": "2021-12-15T07:50",
+              "body": "Good questions. It does not affect your insulin or your diabetes. It is worth mentioning to any new doctor or ER, because your bilirubin can run high and it saves people from chasing it. Your ultrasound was normal too. It's on your problem list here so anyone looking at your chart will see it."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "specialist_visit",
+          "start": "2022-02-08T09:30",
+          "service": "Endocrinology",
+          "reason": "Diabetes follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-02-08T09:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "author": "endocrinology",
+              "date": "2022-02-14T16:00",
+              "body": "OUTSIDE ENDOCRINOLOGY FOLLOW-UP\nDate of visit: 02/08/2022\n\nType 1 diabetes, 8 months out. Meter download reviewed: good overnight stability, post-meal spikes when he guesses carbs at the dining hall. Occasional mild lows with exercise, self-treated. A1c drawn today.\nAlso has new GI diagnosis of Dubin-Johnson syndrome, no bearing on diabetes management.\n\nPlan: no dose change. Glargine 16 units at bedtime, lispro sliding scale. Carb counting refresher with our dietitian. Return 4 months.\n\nAllergies: NKDA.\nEndocrinology"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "pharmacy",
+          "start": "2022-03-22T11:30",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization: insulin glargine",
+              "author": "MA",
+              "date": "2022-03-22T11:30",
+              "body": "Pharmacy fax: new plan year on the student policy requires PA for glargine pens. Form completed with diagnosis type 1 diabetes, on basal insulin since 5/2021. Submitted online, approved same day for 12 months. Pharmacy and pt notified."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "specialist_visit",
+          "start": "2022-05-24T11:00",
+          "service": "Gastroenterology",
+          "reason": "Recurrent jaundice",
+          "conditions": [
+            {"label": "Gilbert syndrome", "action": "diagnosed", "onset": "2022-05-22"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2022-05-24T11:40", "results": [
+              {"test": "Bilirubin, Total", "value": 3.2},
+              {"test": "Bilirubin, Direct", "value": 0.4},
+              {"test": "Aspartate Aminotransferase", "value": 30},
+              {"test": "Alanine Aminotransferase", "value": 28},
+              {"test": "Alkaline Phosphatase", "value": 70}
+            ]},
+            {"panel": null, "collected": "2022-05-24T11:40", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 2.8}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-24T11:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology follow-up",
+              "author": "gastroenterology",
+              "date": "2022-10-04T14:25",
+              "body": "OUTSIDE GASTROENTEROLOGY FOLLOW-UP\nDate of visit: 05/24/2022\n\nSeen back with another spell: two days of yellow eyes and skin, right in the middle of final exams, sleeping little and eating at odd hours. No pain, itch, or change in urine or stool color.\n\nExam: looks well; scleral icterus. Abdomen soft and nontender, no hepatosplenomegaly.\n\nLabs: total bilirubin 3.2 mg/dL with direct 0.4 and indirect 2.8. AST 30, ALT 28, alkaline phosphatase 70 U/L. CBC normal.\n\nAssessment: this episode is unconjugated, with a normal blood count and normal liver enzymes, after fasting and poor sleep - the typical picture of Gilbert syndrome, which his brother has. This is in addition to the Dubin-Johnson syndrome diagnosed in November on a conjugated pattern. Both are benign.\n\nPlan: regular meals and sleep around exams; no treatment. Follow up as needed.\n\nGastroenterology\n\n[Received 10/04/2022 in response to records request]"
+            }
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "office_visit",
+          "start": "2022-08-09T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-08-09b",
+          "kind": "telephone",
+          "start": "2022-08-09T15:10",
+          "reason": "Missed appointment",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show follow-up",
+              "author": "front desk",
+              "date": "2022-08-09T15:10",
+              "body": "Pt did not come to 2:20 appt. Left voicemail. Pt called back at 4, working a summer job and forgot. Rebooked as his physical on 9/20."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-20T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-20T08:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-20T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-20T08:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-20T09:10"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-09-20T09:10"},
+            {"vaccine": "Tdap", "date": "2022-09-20T09:12"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-20T09:12"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-20T08:20"},
+            {"procedure": "Venipuncture", "performed": "2022-09-20T08:45"},
+            {"procedure": "Immunization administration", "performed": "2022-09-20T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Rooming",
+              "author": "MA",
+              "date": "2022-09-20T08:25",
+              "body": "Roomed for physical. Meds reviewed with pt: glargine 16 u qhs, lispro per scale, valacyclovir prn. NKDA. Fingerstick at home this morning 126. PHQ-9 completed: 3. Wants flu and covid today; ok with other vaccines if due."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-09-20T09:20",
+              "body": "PHYSICAL\n\nBack for senior year (taking the slow route, working part-time). Diabetes is steady with endocrinology every few months. Lows only with long soccer games, he carries glucose tabs.\n\nHe tells me GI saw him in May during another yellow spell at finals and told him he 'also has Gilbert's.' We never got that note. Front desk will request it.\n\nCold sores: one in the spring, valacyclovir worked.\n\nMeds as rooming note. NKDA.\nSocial: never smoker, no alcohol.\n\nExam: vitals as charted, BMI about 22. Well. No icterus today. Mouth and lips clear. Neck without thyroid enlargement. Heart regular, lungs clear. Abdomen soft, no organomegaly. Feet: no calluses or skin breaks, monofilament and vibration intact, DP pulses 2+.\n\nA/P\n1. Type 1 diabetes - A1c, microalbumin with labs today; CMP, CBC, lipids, TSH (mother's thyroid disease, his own autoimmune diabetes). Eye exam - due, has an optometrist in town, will book.\n2. Dubin-Johnson and reported Gilbert syndrome - records request to GI.\n3. Immunizations: flu, bivalent covid booster, Tdap (last at 12), and PCV20 given his diabetes.\n4. PHQ-9 3.\nRTC 1 year, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-21a",
+          "kind": "telephone",
+          "start": "2022-09-21T09:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "GI records request",
+              "author": "front desk",
+              "date": "2022-09-21T09:40",
+              "body": "Faxed request to the outside GI office for notes and labs from pt's May 2022 visit. Will follow up in two weeks if nothing arrives."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-23a",
+          "kind": "portal_message",
+          "start": "2022-09-23T10:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical results",
+              "author": "PCP",
+              "date": "2022-09-23T10:05",
+              "body": "Your A1c is right where endocrinology has been getting it, kidneys and urine protein are normal, and cholesterol and thyroid are normal. Bilirubin is a bit over the lab's upper limit with normal liver enzymes, which is what we expect with your bilirubin conditions - no action. Please do book that eye exam."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "outside_records",
+          "start": "2022-11-08T13:00",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2022-11-08T13:00",
+              "body": "Diabetic eye exam letter, outside optometry practice. Exam date 11/03/2022.\nBest corrected acuity 20/20 OD and OS. Pupils normal. Pressures normal. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema.\nRecommend repeat dilated exam in 12 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

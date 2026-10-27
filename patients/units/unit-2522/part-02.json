@@ -1,0 +1,252 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002522",
+      "events": [
+        {
+          "id": "2022-01-10a",
+          "kind": "office_visit",
+          "start": "2022-01-10T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes, hypertension, CKD follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3, "Creatinine": 1.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-01-10T13:30", "results": [{"test": "Creatinine", "value": 1.7}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2022-01-10T13:30", "results": [{"test": "Hemoglobin A1c", "value": 7.3}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-01-10T13:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-01-10T13:40", "body": "Rescheduled from Dec no-show. Doing ok. Holidays were rough on routine; admits he missed a stretch of the HIV pill over Christmas week, back on it now. ID visit was in early December per him.\n\nDiet: a lot of takeout. Not checking sugars.\nStill ~10 cig/day.\n\nVitals as charted. Lungs clear. Heart regular. No edema. Feet look fine.\n\nA/P: DM2 - A1c, BMP. HTN - continue lisinopril 20. CKD 3a - recheck creatinine. HIV - urged him to call ID if he runs short of pills rather than going without. Smoking - he asked about vaping instead; told him that is not the answer I'd pick but quitting is. RTC 3-4 mo."}
+          ]
+        },
+        {
+          "id": "2022-01-12a",
+          "kind": "portal_message",
+          "start": "2022-01-12T09:30",
+          "reason": "Result note",
+          "documents": [
+            {"type": "Result Note", "title": "Lab results", "author": "PCP", "date": "2022-01-12T09:30", "body": "A1c crept up a little to the low 7s. Kidney number 1.7, about the same range as last year. Let's work on the food side before adding anything. Metformin as before."}
+          ]
+        },
+        {
+          "id": "2022-03-21a",
+          "kind": "pharmacy",
+          "start": "2022-03-21T11:15",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill: metformin, lisinopril", "author": "MA", "date": "2022-03-21T11:20", "body": "eRx refill request from pharmacy for metformin 1000 mg #180 and lisinopril 20 mg #90. Last seen 1/10, labs current. Sent per protocol, PCP cosign."}
+          ]
+        },
+        {
+          "id": "2022-04-25a",
+          "kind": "telehealth_visit",
+          "start": "2022-04-25T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Check-in",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2022-04-25T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2022-04-25T16:25", "body": "Video, he's at home, partner in the background. Wanted to touch base instead of coming in - ride issues again.\n\nTaking metformin and lisinopril. HIV pill \"better than winter\", maybe 5 of 7 days. Partner reminds him. No fevers, rashes, cough, diarrhea. No dark urine, no leg swelling.\n\nNo vitals today.\n\nPlan: no changes. Bring him in for labs with the physical in September. Asked him to keep his ID appointment in June."}
+          ]
+        },
+        {
+          "id": "2022-06-20a",
+          "kind": "outside_records",
+          "start": "2022-06-20T10:45",
+          "reason": "ID follow-up letter received",
+          "labs": [
+            {"panel": null, "collected": "2022-06-13T09:40", "results": [{"test": "CD4 Count", "value": 190, "unit": "cells/uL"}]},
+            {"panel": null, "collected": "2022-06-13T09:40", "results": [{"test": "HIV-1 RNA Viral Load", "value": 15000}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2022-06-20T10:45", "body": "ID clinic visit 06/13/2022.\n\nHIV-1 on bictegravir/emtricitabine/TAF with TMP-SMX DS prophylaxis. Missed the March visit. By pill count he has taken roughly two thirds of doses since the winter.\n\nCD4 190. HIV-1 RNA 15,000 copies/mL, up from 1,200 a year ago.\n\nNo opportunistic symptoms. Exam: afebrile, no thrush, no lymphadenopathy, skin clear.\n\nAssessment: viremia from incomplete adherence; no reason to suspect resistance yet, genotype sent.\nPlan: same regimen. Linked with our case manager for transportation and pharmacy delivery. Continue TMP-SMX. Return 3 months.\n\nAllergies: none known."}
+          ]
+        },
+        {
+          "id": "2022-08-29a",
+          "kind": "outside_records",
+          "start": "2022-08-29T14:20",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2022-08-29T14:20", "body": "Dilated eye exam 08/24/2022 for diabetes.\nVisual acuity 20/20 right, 20/25 left. Pressures normal.\nFundus: no hemorrhages, microaneurysms or exudates either eye. Discs healthy.\nAssessment: no diabetic retinopathy. Return one year."}
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "annual_physical",
+          "start": "2022-09-26T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-26T09:30", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Glucose"}]},
+            {"panel": "CBC with Differential", "collected": "2022-09-26T09:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-26T09:30", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2022-09-26T09:30", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Urinalysis", "collected": "2022-09-26T09:30", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Red Blood Cells", "value": 7}]},
+            {"panel": null, "collected": "2022-09-26T09:30", "results": [{"test": "Microalbumin/Creatinine Ratio", "value": 610}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-09-26T09:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-09-26T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-26T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-09-26T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-09-26T10:05", "body": "Annual. Turning 35 next month.\n\nInterval: ID in June, viral load went up because of missed doses; they set him up with a case manager and pharmacy delivery, which he says helps. Taking the pill \"most days\" now. No hospital or ER visits. Eye doctor in August, no retinopathy.\n\nROS: no fevers, sweats, weight change, cough, dysphagia, diarrhea, rash, headache. No dark urine. No swelling. Sexual health: one partner.\nPHQ-9 5 - some stress about money, no SI.\nSmoking unchanged.\n\nExam: vitals as charted. Oral mucosa moist, no thrush or leukoplakia. No cervical or axillary nodes. Heart regular, no murmur. Lungs clear. Abdomen soft. Skin intact, no lesions. Ext no edema. Feet: monofilament intact, pulses good, no calluses.\n\nA/P\n1. Health maintenance - flu and bivalent COVID booster today. Tdap and PCV20 done last year. Labs: CMP, CBC, lipids, A1c, UA, urine microalbumin.\n2. CKD 3a with albuminuria - brought nephrology up again; he would still rather not. Will keep pressing.\n3. HIV - per ID.\n4. DM2, HTN - continue current.\nRTC Jan."}
+          ]
+        },
+        {
+          "id": "2022-09-29a",
+          "kind": "portal_message",
+          "start": "2022-09-29T08:45",
+          "reason": "Result note",
+          "documents": [
+            {"type": "Result Note", "title": "Physical labs", "author": "PCP", "date": "2022-09-29T08:45", "body": "Andre, labs are mostly steady. Urine protein is higher than last year (610). Kidney function itself is holding. This is the part I'd really like a kidney doctor to see - the offer stands any time, just tell me and we'll set it up."},
+            {"type": "Patient Message", "title": "RE: Physical labs", "author": "patient", "date": "2022-09-30T21:12", "body": "ok. after the new year maybe. thanks"}
+          ]
+        },
+        {
+          "id": "2023-01-23a",
+          "kind": "office_visit",
+          "start": "2023-01-23T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic disease follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-01-23T11:50", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2023-01-23T11:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-01-23T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-01-23T12:00", "body": "F/u DM2, HTN, CKD 3a, HIV.\n\nNo complaints. Not interested in nephrology yet (\"after the new year\" has become \"in the spring\").\nMeds: metformin 1000 BID, lisinopril 20, ART + TMP-SMX per ID - adherence by report maybe 70-80%.\n\nExam: as charted. RRR. Clear lungs. No edema.\n\nPlan: BMP, A1c. Continue meds. Spring visit by video if transport is still a problem."}
+          ]
+        },
+        {
+          "id": "2023-05-08a",
+          "kind": "telehealth_visit",
+          "start": "2023-05-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-05-08T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Follow-up", "author": "PCP", "date": "2023-05-08T16:00", "body": "Video visit from his kitchen. Feels fine. No dark urine or swelling. Says he has ID in two weeks. Taking metformin and lisinopril daily; ART \"most days\".\n\nNo vitals.\n\nRefills sent. Nephrology - he said ask again in the summer. Noted. Labs at next in-person visit."}
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "outside_records",
+          "start": "2023-05-30T13:15",
+          "reason": "ID follow-up letter received",
+          "labs": [
+            {"panel": null, "collected": "2023-05-22T10:10", "results": [{"test": "CD4 Count", "value": 175, "unit": "cells/uL"}]},
+            {"panel": null, "collected": "2023-05-22T10:10", "results": [{"test": "HIV-1 RNA Viral Load", "value": 38000}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious Disease Follow-up", "author": "infectious disease", "date": "2023-05-30T13:15", "body": "Seen 05/22/2023. HIV-1 on bictegravir/emtricitabine/TAF and daily TMP-SMX DS.\n\nAdherence remains poor; refill records show gaps of 1-3 weeks. He is frank that some weeks he just does not take it. No opportunistic symptoms.\n\nCD4 175. HIV-1 RNA 38,000 copies/mL. Prior genotype without major resistance mutations.\n\nExam: afebrile, oropharynx clear, no nodes, lungs clear, skin without lesions.\n\nPlan: same regimen; motivational counseling with our social worker; weekly blister packs from the delivery pharmacy. Continue prophylaxis. Return 3 months.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2023-07-16a",
+          "kind": "portal_message",
+          "start": "2023-07-16T10:12",
+          "reason": "Dark urine",
+          "orders": [
+            {"id": "neph-referral-2023", "action": "placed", "order": "Nephrology referral, urgent", "category": "referral", "to": "Nephrology", "reason": "Dark urine after URI with known proteinuria and hematuria, CKD 3a"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "pee is dark", "author": "patient", "date": "2023-07-16T10:12", "body": "sorry its sunday. since yesterday my pee is like brown, like coke. little ache in my side/back. i had a cold that went away about a week ago. no burning. should i go to the ER"},
+            {"type": "Patient Message", "title": "RE: pee is dark", "author": "PCP", "date": "2023-07-16T10:40", "body": "Glad you wrote. No fever, vomiting or severe pain? If any of those, go to the ER. Otherwise I'd like you seen by the kidney specialists tomorrow - this is exactly the reason I've wanted them involved. I'm messaging the nephrology on-call now to get you a slot Monday. Drink normally, no ibuprofen or similar."},
+            {"type": "Patient Message", "title": "RE: RE: pee is dark", "author": "patient", "date": "2023-07-16T10:52", "body": "no fever no throwing up. ok ill go tomorrow"},
+            {"type": "Telephone Encounter", "title": "Nephrology urgent slot", "author": "PCP", "date": "2023-07-16T11:30", "body": "Spoke with nephrology on call. They will see him tomorrow at 2:30 in clinic. Texted pt the time and address. Faxing last 2 yrs of labs in the morning."}
+          ]
+        },
+        {
+          "id": "2023-07-21a",
+          "kind": "outside_records",
+          "start": "2023-07-21T09:30",
+          "reason": "Nephrology consultation received",
+          "conditions": [
+            {"label": "IgA nephropathy", "action": "diagnosed", "onset": "2023-07-17", "note": "Clinical diagnosis by nephrology"}
+          ],
+          "state": {"labs": {"Creatinine": 1.8, "Albumin": 3.9}},
+          "vitals": {"bp": [152, 96]},
+          "labs": [
+            {"panel": null, "collected": "2023-07-17T15:00", "results": [{"test": "Creatinine", "value": 1.8}]},
+            {"panel": null, "collected": "2023-07-17T15:00", "results": [{"test": "Albumin", "value": 3.9}]},
+            {"panel": null, "collected": "2023-07-17T15:00", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "g/(24.h)", "value": 2.1}]},
+            {"panel": "Urinalysis", "collected": "2023-07-17T15:00", "results": [{"test": "Urine Protein", "text": "3+"}, {"test": "Urine Blood", "text": "3+"}]}
+          ],
+          "orders": [{"id": "neph-referral-2023", "action": "done", "date": "2023-07-21T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Consultation", "author": "nephrology", "date": "2023-07-21T09:30", "body": "OUTSIDE NEPHROLOGY GROUP - CONSULTATION\nSeen 07/17/2023 at the request of primary care.\n\nCC: dark urine x 2 days.\n\nHPI: 35-year-old man with HIV, type 2 diabetes, hypertension and CKD stage 3a with longstanding albuminuria and microscopic hematuria. He had an upper respiratory infection that cleared about a week ago; two days ago his urine turned dark and he has had a mild ache in the flank. On questioning he recalls a few similar spells over roughly the last three years, each after a cold, each clearing on its own; he never reported them. No NSAIDs or other new medications, no dysuria, no rash, no joint complaints.\n\nMeds: lisinopril 20 mg daily, metformin 1000 mg BID, bictegravir/emtricitabine/TAF daily, TMP-SMX DS daily (ID).\nAllergies: NKDA.\nFamily: mother with type 2 diabetes, father hypertension, a maternal uncle on dialysis (cause not known).\nSocial: smokes about 10 cigarettes a day; occasional alcohol; not working, previously in security.\n\nExam: BP 152/96. Comfortable. No rash, no joint swelling, no edema. No CVA tenderness to speak of.\n\nData: urinalysis with red cell casts on microscopy and proteinuria. Creatinine 1.8 (his baseline in your records 1.5-1.7). Serum albumin 3.9. 24-hour urine protein 2.1 g/day.\n\nImpression: episodes of gross hematuria arriving a few days after upper respiratory infections, on a background of persistent microscopic hematuria and proteinuria, with active sediment - most consistent with IgA nephropathy. Albumin is preserved; not nephrotic.\nPlan:\n- Continue lisinopril.\n- Repeat creatinine and urine protein in 4-6 weeks.\n- Kidney biopsy if proteinuria rises or function declines.\n- Avoid NSAIDs.\n- Return in 6 months, sooner as needed.\n\nThank you for this referral."}
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "office_visit",
+          "start": "2023-08-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after nephrology",
+          "state": {"bp": [148, 94]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-14T10:30", "results": [{"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-14T10:30", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Urinalysis", "collected": "2023-08-14T10:30", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Red Blood Cells", "value": 9}]},
+            {"panel": null, "collected": "2023-08-14T10:30", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-08-14T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-08-14T10:40", "body": "Back after nephrology. Urine went back to normal color within about 4 days. No flank pain now.\n\nRead the nephrology letter with him: IgA nephropathy is their working diagnosis, biopsy if it gets worse. He's relieved there's a name for it. Plans to keep the 6-month nephrology appointment.\n\nBP high again today. He says it's always up here. Lisinopril 20 continued as is.\n\nExam: RRR, lungs clear, no edema.\n\nLabs today: CMP, CBC, UA, A1c (repeat requested by nephrology, results to them).\nUpdated problem list. RTC Oct for flu shot, Jan after nephrology."}
+          ]
+        },
+        {
+          "id": "2023-08-17a",
+          "kind": "telephone",
+          "start": "2023-08-17T14:30",
+          "reason": "Labs forwarded",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Labs faxed to nephrology", "author": "MA", "date": "2023-08-17T14:35", "body": "Faxed 8/14 CMP, CBC, UA to nephrology per their request. Confirmation received. Pt left vm that his urine is still clear."}
+          ]
+        },
+        {
+          "id": "2023-09-18a",
+          "kind": "outside_records",
+          "start": "2023-09-18T10:30",
+          "reason": "Diabetic eye exam",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic Eye Examination", "author": "optometry", "date": "2023-09-18T10:30", "body": "Annual diabetic eye exam 09/13/2023, dilated.\nAcuity 20/20 OD, 20/20 OS with current glasses. Normal pressures.\nRetina: no diabetic changes either eye. Macula flat. Optic nerves normal.\nNo retinopathy. Recall in 12 months."}
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T14:00",
+          "reason": "Flu vaccine",
+          "measure": ["bp", "hr"],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-16T14:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-16T14:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccination", "author": "RN", "date": "2023-10-16T14:15", "body": "Flu vaccine 0.5 mL IM right deltoid. Screening questions negative. Declined updated COVID today, wants to wait. Tolerated well."}
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "portal_message",
+          "start": "2023-11-20T19:05",
+          "reason": "Ankle swelling",
+          "documents": [
+            {"type": "Patient Message", "title": "ankles", "author": "patient", "date": "2023-11-20T19:05", "body": "my ankles have been puffy for about 2 weeks, worse at night. pee is foamy sometimes. not dark tho. kidney appt is january 8. is that ok or should i come in"},
+            {"type": "Patient Message", "title": "RE: ankles", "author": "PCP", "date": "2023-11-20T20:30", "body": "Thanks for telling me. Any shortness of breath, chest pain, or swelling going up above the knees? If no, keep the Jan 8 visit, I'll send nephrology a note so they know. Put your feet up in the evening and go light on salt. If it's getting worse fast, message me and I'll see you this week."},
+            {"type": "Patient Message", "title": "RE: RE: ankles", "author": "patient", "date": "2023-11-20T20:41", "body": "no to all of that. ok"}
+          ]
+        }
+      ]
+    }
+  ]
+}

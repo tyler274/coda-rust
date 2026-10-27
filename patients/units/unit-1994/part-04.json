@@ -1,0 +1,812 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001994",
+      "events": [
+        {
+          "id": "2025-02-04a",
+          "kind": "office_visit",
+          "start": "2025-02-04T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Chronic conditions follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-04T14:55",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-02-04T14:55",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-02-04T14:55",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-04T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "author": "PCP",
+              "date": "2025-02-04T14:50",
+              "body": "Routine check-in.\n\nSaw head and neck oncology in January, says they told him \"still clean\"; no letter from that visit in our chart. Will request it.\nBreathing: his usual winter, albuterol a few times a week, no sick visits.\nKidneys: no NSAIDs, drinking water. Up once or twice at night.\nMood: good. Psychiatry every 3 months.\nSmoking: pack a day.\n\nExam: BP at goal. Lungs diminished with long expirations. Heart regular. No edema. Neck without nodes.\n\nPlan: quarterly BMP and lithium plus CBC today. Records request to oncology. Return late spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "telephone",
+          "start": "2025-02-05T10:40",
+          "reason": "Records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request, oncology",
+              "author": "MA",
+              "date": "2025-02-05T10:40",
+              "body": "Faxed request to the head and neck clinic for the January 2025 surveillance note. Their records line says it will go out within 10 business days."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-16a",
+          "kind": "hospital_admission",
+          "start": "2025-03-16T10:15",
+          "end": "2025-03-19T14:00",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath and productive cough",
+          "vitals": [
+            {
+              "time": "2025-03-16T10:20",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 88,
+              "rr": 22,
+              "spo2": 89
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2025-03-09"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-16T10:40",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 55
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 28
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-03-16T10:55",
+              "text": "Portable AP view. Lungs are hyperinflated. Bronchovascular markings are increased. No focal consolidation, pleural effusion or pneumothorax. Heart size within normal limits.",
+              "conclusion": "Hyperinflation with increased bronchovascular markings. No consolidation."
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (40 mg) by mouth daily for 5 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            },
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets on day 1, then 1 tablet daily on days 2 to 5",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-04-14T11:20",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 03/16/2025 10:15\n\nCC: a week of more shortness of breath and a productive cough.\n\n58M with COPD on tiotropium, active smoker, treated oral cavity cancer, CKD, bipolar on lithium. Increasing dyspnea and sputum for about 7 days, worse overnight.\nHome meds per patient: tiotropium, metoprolol, lisinopril, amlodipine, HCTZ, lithium, aspirin, atorvastatin. NKDA. Smoking roughly 40 pack-years.\n\nTriage: BP 150/90, HR 88, RR 22, SpO2 89% on room air.\nExam: diffuse wheezing with a prolonged expiratory phase. No leg swelling.\nABG on room air: pH 7.32, PaCO2 55, PaO2 60, HCO3 28.\nCXR: hyperinflated, increased bronchovascular markings, no infiltrate.\n\nED course: nebulized albuterol and ipratropium x3, prednisone 40 mg, azithromycin 500 mg, supplemental oxygen titrated to 88 to 92%. Improved work of breathing.\nImpression: acute exacerbation of COPD with acute respiratory acidosis.\nDisposition: admitted to medicine."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, Medicine",
+              "author": "hospital medicine",
+              "date": "2025-04-14T11:21",
+              "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 03/16/2025, discharged 03/19/2025\n\nPrincipal diagnosis: acute exacerbation of COPD.\n\nHospital course: Treated with scheduled nebulized bronchodilators, prednisone 40 mg daily and azithromycin. Did not require noninvasive ventilation. Weaned to room air by day 3, ambulating without desaturation at discharge. Lithium continued; renal function at his baseline. While in the ED he was approached by the research team about a study comparing a new bronchodilator with usual care for COPD exacerbations and said he was interested; no further information on enrollment in this record.\n\nDischarge medications: complete prednisone 40 mg daily for a total of 5 days and azithromycin through day 5. Continue home tiotropium and albuterol as needed and all other home medications unchanged.\n\nFollow-up: PCP within 1 week. Smoking cessation counseled.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "pharmacy",
+          "start": "2025-03-20T09:05",
+          "reason": "Fill notification",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "New fills from outside prescriber",
+              "author": "MA",
+              "date": "2025-03-20T09:05",
+              "body": "Fill feed shows prednisone 20 mg #4 and azithromycin 250 mg #3 dispensed 3/19, prescriber from the regional hospital. No notification from the hospital on our end. Routed to RN to call patient."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-03-20T11:30",
+              "body": "Called pt. Admitted 3/16 to 3/19 for a COPD flare, discharged yesterday. Breathing better, finishing prednisone and the Z-pack. No fever, speaking full sentences on the phone. Taking his inhalers. Visit booked Monday 3/24. Records request sent to the hospital."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-24a",
+          "kind": "office_visit",
+          "start": "2025-03-24T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, COPD exacerbation",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-03-24T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-03-24T12:15",
+              "body": "Seen 5 days after discharge for a COPD exacerbation (3/16 to 3/19). No discharge summary yet; history from patient and his discharge paperwork.\n\nFinished prednisone yesterday and azithromycin the day before. Back to his baseline breathing, sputum clear again. No fever. Using tiotropium daily, albuterol once or twice a day this week, less now.\n\nHe says someone in the ED asked about a breathing-medication study and he said sure, but nobody has called him since.\n\nExam: vitals as charted. Speaking easily. Scattered end-expiratory wheeze only, prolonged expiration. Heart regular. No edema.\n\nA/P:\n1. COPD exacerbation, resolved. Continue tiotropium and albuterol. Reviewed when to call early with a flare.\n2. Smoking: still a pack a day; offered the full menu again. Not now.\n3. Chased hospital records again."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "lab_only",
+          "start": "2025-05-20T07:50",
+          "reason": "Quarterly lithium monitoring",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-20T07:50",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Sodium"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-20T07:50",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Quarterly labs",
+              "author": "PCP",
+              "date": "2025-05-21T08:20",
+              "body": "Creatinine stable at his new baseline, lithium in range. Faxed to psychiatry. No action."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T09:30",
+          "reason": "Prior authorization renewal",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Tiotropium PA renewal",
+              "author": "MA",
+              "date": "2025-06-10T09:30",
+              "body": "MassHealth prior authorization for the tiotropium HandiHaler expiring. Renewal submitted with COPD on spirometry (pulmonology 3/2023) and the March admission. Approved through 6/2026. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-22T08:30",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-22T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-22T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-22T08:30",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-07-22T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-07-22T09:05",
+              "body": "Medicare AWV.\n\nInterval: one admission in March for a COPD flare, recovered. Hernia repaired last fall. Tongue cancer surveillance continues, January letter never came; next oncology visit next week.\n\nHRA: independent in daily activities, wife handles most of the driving now by choice. No falls. Hearing and vision ok. PHQ-9 3.\nAdvance care planning: he wants his wife to decide if he cannot; health care proxy form completed today and scanned.\n\nExam: vitals charted. Mouth with healed left lateral tongue, no lesion. Neck no nodes. Lungs diminished, long expiration. Heart RRR. Abdomen soft, right groin scar healed. No edema.\n\nPrevention: colonoscopy 2028. Flu, COVID and RSV this fall (COPD). Others current.\nTobacco: still a pack a day after 40-plus pack-years. Counseled.\n\nLabs: CMP, CBC, lipids, TSH, lithium."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "specialist_visit",
+          "start": "2025-07-29T13:30",
+          "service": "Hematology & Oncology",
+          "reason": "Head and neck cancer surveillance",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Head and Neck Surveillance Visit",
+              "author": "oncology",
+              "date": "2025-08-05T10:10",
+              "body": "HEAD AND NECK CLINIC\nVisit 07/29/2025\n\nAbout 21 months after completing adjuvant radiation for pT1 N1 left oral tongue SCC. Doing well, no complaints.\nExam: oral cavity without mucosal lesions; left tongue resection site healed. Neck soft without adenopathy. Flexible laryngoscopy unremarkable.\nImpression: no evidence of disease.\nPlan: return in 6 months. Annual TSH per PCP. Continued smoking cessation counseling.\n\nCC: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-15a",
+          "kind": "hospital_admission",
+          "start": "2025-09-15T09:30",
+          "end": "2025-09-19T15:00",
+          "service": "Emergency Medicine",
+          "reason": "Altered mental status, lethargy, confusion",
+          "vitals": [
+            {
+              "time": "2025-09-15T09:35",
+              "bp": [
+                80,
+                50
+              ],
+              "hr": 45,
+              "rr": 22,
+              "spo2": 92
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Poisoning by beta-adrenoreceptor antagonists, accidental",
+              "icd10": "T44.7X1A",
+              "action": "diagnosed",
+              "onset": "2025-09-12",
+              "note": "metoprolol tartrate"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-15T09:40",
+              "results": [
+                {
+                  "test": "Glucose, capillary (fingerstick)",
+                  "loinc": "41653-7",
+                  "unit": "mg/dL",
+                  "value": 60
+                },
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-09-15T09:45",
+              "text": "Sinus bradycardia. Normal axis. No ST elevation or depression. No ischemic T-wave changes.",
+              "conclusion": "Sinus bradycardia without ischemic changes."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-09-22T14:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 09/15/2025 09:30, brought by his wife.\n\nCC: confused and drowsy.\n\nHPI: 58-year-old man with COPD and bipolar disorder. His wife says he has been increasingly sluggish over several days and this morning she found him confused, mumbling words she could not make out.\nMeds: metoprolol tartrate, tiotropium, amlodipine, lisinopril, HCTZ, lithium, aspirin, atorvastatin. NKDA. Active smoker.\n\nVitals on arrival: BP 80/50, HR 45, RR 22, SpO2 92% RA.\nExam: drowsy, intermittently answers to name. Wheezes on lung exam. Extremities cool.\nFingerstick glucose 60. Lithium level 0.9.\nECG: sinus bradycardia, no ischemic changes.\n\nCourse: dextrose given. IV fluid boluses and atropine with no meaningful change in pressure or rate. Pill count by wife suggests extra metoprolol doses. Treated as beta-blocker toxicity: glucagon bolus and infusion, IV calcium, high-dose insulin with dextrose infusion, norepinephrine started. Toxicology consulted.\nImpression: beta-blocker (metoprolol) overdose with bradycardia, hypotension and hypoglycemia.\nDisposition: medical ICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, Medical ICU and Medicine",
+              "author": "hospital medicine",
+              "date": "2025-09-22T14:01",
+              "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 09/15/2025, discharged 09/19/2025\n\nDiagnosis: metoprolol overdose, unintentional, with symptomatic bradycardia, hypotension and hypoglycemia.\n\nCourse: In the ICU on glucagon, high-dose insulin euglycemia therapy and norepinephrine. Heart rate and blood pressure recovered over the first day; norepinephrine off within 24 hours, insulin and glucagon weaned by day 2. Mental status back to baseline by day 2. Transferred to the floor day 3.\nOnce clear, he said he had been taking his morning metoprolol a second time on several days, without meaning to. Psychiatry consult: no suicidal ideation or intent, no current manic or depressive episode; lithium continued, level 0.9 on arrival.\n\nDischarge medications: metoprolol tartrate resumed at 50 mg twice daily, observed tolerating it for 24 hours with stable HR and BP. All other home medications unchanged. Pharmacy to dispense in blister packs.\n\nFollow-up: PCP within 1 week; outpatient psychiatry as scheduled.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "telephone",
+          "start": "2025-09-16T08:10",
+          "reason": "Family call: hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from wife",
+              "author": "RN",
+              "date": "2025-09-16T08:10",
+              "body": "Patient's wife called (on his HIPAA form). He was brought to the regional hospital ED yesterday confused with a very slow heart rate and low pressure; she was told it was from too much metoprolol and he is in the ICU, more awake this morning. She wanted us to know. Routed to PCP. Will book a visit after discharge; asked her to bring all pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-24a",
+          "kind": "office_visit",
+          "start": "2025-09-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, metoprolol overdose",
+          "conditions": [
+            {
+              "label": "Poisoning by beta-adrenoreceptor antagonists, accidental",
+              "icd10": "T44.7X1A",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-24T10:40",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-24T10:40",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-09-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-09-24T10:45",
+              "body": "Five days out from a 9/15 to 9/19 admission for metoprolol toxicity, ICU on glucagon, insulin and norepinephrine. Discharge summary received 9/22.\n\nCame with his wife and every bottle. He does not remember the first day. He says he must have been taking the morning metoprolol twice some days. Psychiatry saw him inpatient, no concern for self-harm; he denies any thoughts of hurting himself today and his wife agrees he has been himself. Mood even.\n\nMeds reconciled one by one at the table. Pharmacy has him in weekly blister packs now; wife checks the pack each night. Metoprolol back at 50 BID.\n\nExam: vitals charted, HR and BP fine on metoprolol. Alert, oriented, conversational. Lungs baseline. Heart regular. Warm extremities.\n\nA/P:\n1. Accidental metoprolol overdose, resolved. Blister packs and nightly check. Discussed calling us if he ever feels unsure whether he took a dose; skip rather than double.\n2. Lithium: level 0.9 inpatient; repeat with BMP today.\n3. Others unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-07T15:16"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2025-10-07T15:18"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "author": "RN",
+              "date": "2025-10-07T15:35",
+              "body": "Three vaccines today per PCP order: influenza (L deltoid), 2025-26 COVID (R deltoid), RSV single dose (L deltoid, separate site, an inch below). Wife present, she is checking his blister pack nightly. Observed 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "hospital_admission",
+          "start": "2025-11-25T16:40",
+          "end": "2025-11-29T12:00",
+          "service": "Emergency Medicine",
+          "reason": "Coughing up blood",
+          "vitals": [
+            {
+              "time": "2025-11-25T16:45",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 98,
+              "rr": 22,
+              "spo2": 92
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hemoptysis",
+              "icd10": "R04.2",
+              "action": "diagnosed",
+              "onset": "2025-11-25",
+              "note": "massive, about 100 mL"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-25T16:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-25T16:55",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-25T16:55",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 30
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-25T16:55",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-25T17:05",
+              "text": "Portable AP chest. Dense airspace consolidation in the right lower lobe. Lungs otherwise hyperinflated without other focal opacity. No pneumothorax or large effusion. Heart size normal.",
+              "conclusion": "Dense right lower lobe consolidation."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2025-11-25T18:20",
+              "text": "TECHNIQUE: CT angiography of the chest with IV contrast, arterial phase.\nFINDINGS: Consolidation and ground-glass opacity in the right lower lobe with blood-density material in the right lower lobe segmental bronchi, consistent with aspirated blood. Enlarged, tortuous right bronchial artery. No pulmonary embolism. No endobronchial or parenchymal mass. No mediastinal or hilar adenopathy. No pleural effusion. Hyperinflated lungs.",
+              "conclusion": "Right lower lobe consolidation consistent with aspirated blood; enlarged right bronchial artery. No mass. No pulmonary embolism."
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-12-22T09:30",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrival 11/25/2025 16:40\n\nCC: coughing up blood.\n\n59-year-old man with COPD, active smoking, and treated left oral tongue SCC with a left cervical nodal metastasis. Two hours of abrupt hemoptysis, bright red, about 100 mL by his estimate, still coughing up blood on arrival. No chest pain, no fever, no recent travel. Visibly anxious.\nMeds per list: metoprolol tartrate, lisinopril, amlodipine, HCTZ, lithium, aspirin, atorvastatin, tiotropium. NKDA.\n\nVitals: BP 145/90, HR 98, RR 22, SpO2 92% RA.\nExam: reduced breath sounds with coarse crackles over the right lower lobe. Remainder unremarkable.\nLabs: Hgb 13.2, WBC 9.0, plt 250, PT 12 s, INR 1.0, PTT 30 s, BUN 18, creatinine 2.0.\nCXR: dense RLL consolidation.\n\nCourse: placed right side down, oxygen, IV tranexamic acid, aspirin held. CTA chest as above. Pulmonology and interventional radiology consulted.\nImpression: massive hemoptysis, right lower lobe source.\nDisposition: ICU."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary, Pulmonary and Critical Care",
+              "author": "pulmonology",
+              "date": "2025-12-22T09:31",
+              "body": "REGIONAL HOSPITAL — DISCHARGE SUMMARY\nAdmitted 11/25/2025, discharged 11/29/2025\n\nPrincipal diagnosis: massive hemoptysis, right lower lobe.\n\nCourse:\n- CT angiography: RLL consolidation consistent with aspirated blood, enlarged right bronchial artery, no mass, no PE.\n- Bronchoscopy 11/25 evening: fresh blood and clot in the right lower lobe bronchi, cleared; no endobronchial lesion seen.\n- Interventional radiology 11/26: right bronchial artery embolization, right common femoral access, without complication.\n- No further hemoptysis after embolization. Hemoglobin stable. Aspirin resumed on day 3 with no recurrence.\n- No other cause identified on this admission.\n\nDischarge medications: home medications unchanged.\nFollow-up: PCP in 1 week; pulmonology clinic with repeat CT chest in about 8 weeks.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-01a",
+          "kind": "portal_message",
+          "start": "2025-12-01T07:55",
+          "reason": "Family update: hospitalization",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sean was in the hospital",
+              "author": "patient",
+              "date": "2025-12-01T07:55",
+              "body": "This is Sean's wife on his account. He coughed up a lot of blood last Tuesday and was in the hospital until Saturday. They did a scope and blocked off an artery in his lung. He is home and has not coughed blood since. They said see you this week. Can we get in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Sean was in the hospital",
+              "author": "front desk",
+              "date": "2025-12-01T09:12",
+              "body": "Thank you for letting us know. We have him Friday 12/5 at 1:40. We have also requested the hospital records."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-05a",
+          "kind": "office_visit",
+          "start": "2025-12-05T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, hemoptysis",
+          "conditions": [
+            {
+              "label": "Hemoptysis",
+              "icd10": "R04.2",
+              "action": "resolved"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-05T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-05T14:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-05T14:15",
+              "results": [
+                {
+                  "test": "Lithium",
+                  "loinc": "14334-7",
+                  "unit": "mmol/L"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-12-05T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "author": "PCP",
+              "date": "2025-12-05T14:20",
+              "body": "Seen with wife after an 11/25 to 11/29 admission for massive hemoptysis. Hospital summary not here yet; history from them and the after-visit paperwork, which lists bronchoscopy and bronchial artery embolization. They were told no tumor was seen on the scope or the CT.\n\nNo blood since discharge. Cough back to his usual. No fever. Right groin access site healed. Took aspirin as instructed after discharge.\n\nExam: vitals charted. Breath sounds diminished both bases, no focal crackles today. Heart regular. Right femoral site clean, no hematoma.\n\nA/P:\n1. Hemoptysis, resolved after embolization. Pulmonology CT in late January. Call or go to the ED for any blood.\n2. Smoking: told him plainly this is another reason. Pack a day still. Offered varenicline again; declined.\n3. CBC, BMP and lithium today (quarterly draw due anyway)."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 14.0
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

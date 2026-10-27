@@ -1,0 +1,507 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002764",
+      "events": [
+        {
+          "id": "2025-03-31a",
+          "kind": "portal_message",
+          "start": "2025-03-31T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment request",
+              "author": "patient",
+              "date": "2025-03-31T20:14",
+              "body": "Hi - since around New Year my periods have gotten a lot heavier and they're lasting longer, and the cramping is worse than it used to be. The ibuprofen isn't really keeping up. Could I come in sometime next week? After 2:30 works best because of classes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment request",
+              "author": "front desk",
+              "date": "2025-04-01T08:22",
+              "body": "Hi Valerie, we have Tuesday 4/8 at 3:00 with your doctor. I've put you in. Reply here if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Heavier periods and worse cramps",
+          "conditions": [
+            {
+              "label": "Heavy menstrual bleeding",
+              "action": "diagnosed",
+              "onset": "2025-01-05"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5,
+            "labs": {
+              "Hemoglobin": 11.1,
+              "Ferritin": 10
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-08T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T15:40",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 10,
+                  "loinc": "2276-4",
+                  "unit": "ng/mL"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T15:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-08T15:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-08T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Heavy menstrual bleeding with worsening cramping pelvic pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-04-08T15:00",
+              "body": "S: 44F with known iron deficiency anemia. About three months now of periods that are heavier and run longer than her usual, going through many more pads per day, and crampy lower pelvic pain around her periods that is clearly worse than her old baseline. Ibuprofen 400-600 takes the edge off. Cycles still regular. No bleeding between periods, none after intercourse. Bowel and bladder habits unchanged. Tubal ligation 2014, so pregnancy very unlikely. Still taking iron daily. Mother needed a hysterectomy for adenomyosis and her sister has endometriosis, which is on her mind.\n\nO: Vitals as recorded. Comfortable. Conjunctivae pink. Heart regular, lungs clear. Abdomen soft, mild suprapubic tenderness without guarding, no palpable mass. Pelvic exam deferred, she'd rather have it done once by gynecology.\n\nA/P:\nHeavy menstrual bleeding with worsening dysmenorrhea-type pain, new over 3 months, in a 44 y/o with iron deficiency and a strong family history of uterine disease. Needs gyn evaluation and pelvic imaging; will let gyn order the ultrasound with their exam.\n- Referral to gynecology placed.\n- CBC, ferritin, TSH today.\n- Continue ferrous sulfate and ibuprofen as needed.\n- Call if she soaks more than a pad an hour or feels faint."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T11:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Tuesday",
+              "author": "PCP",
+              "date": "2025-04-10T11:48",
+              "body": "Your hemoglobin came back at 11.1 and ferritin at 10, both a little lower than last summer, which makes sense with the heavier bleeding. Thyroid is normal. Keep taking the iron every day. The gynecology office should be calling you to schedule; let us know if you haven't heard from them in two weeks."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Labs from Tuesday",
+              "author": "patient",
+              "date": "2025-04-10T17:03",
+              "body": "Got it, thank you. Their first opening is July, I took it. I'll let you know if things get worse before then."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-18a",
+          "kind": "outside_records",
+          "start": "2025-07-18T10:05",
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2025-07-18T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation letter",
+              "author": "gynecology",
+              "date": "2025-07-18T10:05",
+              "body": "Outside gynecology practice\nDate of consultation: 07/03/2025\nReason for referral: heavy menstrual bleeding, pelvic pain\n\nThank you for sending Ms. Roberge, a 45-year-old G2P2. For roughly six months her pelvic pain has been escalating and is at its worst while she is bleeding. Periods are much heavier and longer than they used to be and she is changing pads many times a day. She has not noticed any change in her bowel or bladder function.\n\nHistory: iron deficiency anemia on ferrous sulfate 325 mg daily; ibuprofen 400-600 mg every 6 hours as needed for cramps. Two vaginal deliveries. NKDA. Mother underwent hysterectomy at 48 for adenomyosis; sister with endometriosis. Never smoker, light social alcohol.\n\nExamination: the uterus is enlarged in a symmetric fashion, boggy in consistency and tender on bimanual exam. Adnexa nontender without masses.\n\nTransvaginal ultrasound in the office: uterus diffusely enlarged with a heterogeneous myometrial echotexture. No fibroids identified. Both ovaries normal in appearance without a mass.\n\nImpression: adenomyosis.\n\nPlan: continue her iron and ibuprofen as she has been taking them. We will see her back in about six months.\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron question",
+              "author": "patient",
+              "date": "2025-08-25T09:10",
+              "body": "Quick question before school starts - should I keep taking the iron at the same dose while I'm being followed by gyn, or change anything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron question",
+              "author": "RN",
+              "date": "2025-08-25T14:02",
+              "body": "Hi Valerie, per your doctor keep the ferrous sulfate 325 mg once a day as you have been. We'll recheck your blood count at your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "annual_physical",
+          "start": "2025-10-15T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Adenomyosis",
+              "icd10": "N80.03",
+              "action": "diagnosed",
+              "onset": "2025-07-03",
+              "note": "Diagnosed by gynecology on exam and transvaginal ultrasound."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.0,
+            "labs": {
+              "Hemoglobin": 11.3,
+              "Ferritin": 12
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-15T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-15T15:50",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 12,
+                  "loinc": "2276-4",
+                  "unit": "ng/mL"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-15T15:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-15T15:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-15T15:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-15T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-15T15:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-15T15:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-15T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-15T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening, age 45"
+            },
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine breast cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-15T15:00",
+              "body": "45F for yearly exam, after school.\n\nSince last physical: saw gynecology in July for the heavier periods and pain. Letter reviewed: uterus enlarged, boggy and tender on exam, office ultrasound with a diffusely enlarged uterus and heterogeneous myometrium, no fibroids or ovarian mass. Their impression is adenomyosis; plan was to continue iron and ibuprofen and see her again in about six months. Adding to problem list.\nShe says periods are still heavy and painful, about as she described to gyn. Managing with ibuprofen. No faintness. Still on ferrous sulfate daily.\n\nMeds: ferrous sulfate 325 mg daily; ibuprofen 400-600 mg q6h prn cramps. NKDA.\n\nExam: vitals as recorded. Well appearing. Conjunctivae pink. No thyroid enlargement. Heart regular without murmur. Lungs clear. Abdomen soft, nontender today. No edema. Skin without notable lesions.\n\nPHQ-2: 1.\n\nA/P\n1. Adenomyosis, followed by gynecology. Gyn follow-up around January.\n2. Iron deficiency anemia - CBC and ferritin today. Continue iron.\n3. Health maintenance: turned 45 this summer, so colorectal screening is due; she chose FIT, kit given. Mammogram ordered for November. Flu and COVID vaccines given today. CMP, lipids, A1c. Pap due next year.\n4. Remote gallstones, quiet.\nOne year, sooner if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "portal_message",
+          "start": "2025-10-17T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "author": "PCP",
+              "date": "2025-10-17T12:40",
+              "body": "Hi Valerie. Hemoglobin 11.3, ferritin 12 - about where they were in the spring. Cholesterol, sugar (A1c), kidney and liver tests are all normal. Keep the iron daily, and don't forget to mail back the stool kit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "lab_only",
+          "start": "2025-11-04T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-02T08:00",
+              "resulted": "2025-11-04T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-11-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "RN",
+              "date": "2025-11-04T13:15",
+              "body": "FIT returned and negative. Letter to patient via portal: repeat in one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "imaging",
+          "start": "2025-11-20T16:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-11-20T16:10",
+              "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2024-11-14 and 2023-11-09. Breasts show scattered fibroglandular tissue. No suspicious mass, calcifications or architectural distortion.",
+              "conclusion": "Negative. BI-RADS 1. Return for annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-11-20T16:10"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "portal_message",
+          "start": "2026-01-06T21:08",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update after gyn visit",
+              "author": "patient",
+              "date": "2026-01-06T21:08",
+              "body": "Just keeping you posted - I saw gynecology again on Friday the 2nd. Honestly the last six months have been rough. The cramps and the bleeding are both worse and I've had to take days off school around my periods, which I hate doing. The pelvic pain doesn't totally go away between periods anymore, it just gets worse when I'm bleeding. She said my uterus is still enlarged and tender and the ultrasound looks the same as July (enlarged, no masses). No new medicine for now. Still on my iron and ibuprofen."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update after gyn visit",
+              "author": "PCP",
+              "date": "2026-01-07T07:35",
+              "body": "Thanks for letting me know, Valerie, and I'm sorry it's been such a hard stretch. Gynecology is the right team to steer treatment for this. If you have bleeding that soaks through a pad an hour, feel dizzy or short of breath, please call us the same day. Keep the iron going."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-23a",
+          "kind": "portal_message",
+          "start": "2026-02-23T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New insurance card",
+              "author": "patient",
+              "date": "2026-02-23T08:45",
+              "body": "My district sent new insurance cards for this year, same plan but a new member number. Photo of front and back attached."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New insurance card",
+              "author": "front desk",
+              "date": "2026-02-23T11:20",
+              "body": "Thank you, updated in your file."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "outside_records",
+          "start": "2026-07-27T14:20",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-10T10:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology visit note (faxed)",
+              "author": "gynecology",
+              "date": "2026-07-27T14:20",
+              "body": "Outside gynecology office - visit 07/10/2026\nFollow-up: adenomyosis, iron deficiency anemia.\n\nHPI: Cycles every 28 days, regular, but bleeding now lasts 7 to 9 days and has become steadily heavier through the past year, with large clots. Uses a tampon and a pad together so she does not bleed through her clothes. Lower abdominal cramping and a pressure sensation start several days ahead of her period and continue until it ends, worse than before.\nMeds: ferrous sulfate 325 mg daily, ibuprofen 400-600 mg q6h prn. NKDA.\nExam: uterus diffusely enlarged, soft, tender.\nUrine hCG: negative.\nPelvic US: uterus uniformly enlarged, no discrete mass.\nA: Adenomyosis. Iron deficiency anemia.\nContinue current medications.\n\n[Filed to chart as received.]"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "telephone",
+          "start": "2026-08-11T13:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request from gynecology",
+              "author": "MA",
+              "date": "2026-08-11T13:05",
+              "body": "Gynecology office called requesting her most recent blood count and iron results. Release on file. Faxed CBC and ferritin from 10/15/2025 and the 4/8/2025 labs. Confirmed receipt."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,249 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002685",
+      "given": "Cameron",
+      "family": "Mazur",
+      "birth_date": "1993-07-01",
+      "address_line": "37 Old Amherst Road, Sunderland, MA 01375",
+      "phone": "+1-617-555-0142",
+      "email": "cameron.mazur@example.test",
+      "marital_status": "single",
+      "summary": "Construction foreman in his early thirties who joined the practice in August 2025 with intermittent low back pain and pollen allergies. A car crash in November 2025 left an incomplete anterior cord injury over a T8 wedge fracture, from which he recovered to walking with a cane; in June 2026, as a motorcycle passenger, he sustained a complete T4 cord injury with neurogenic shock and is in inpatient rehab at today.",
+      "events": [
+        {
+          "id": "2025-08-12a",
+          "kind": "telephone",
+          "start": "2025-08-12T10:20",
+          "reason": "New patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2025-08-12T10:20",
+              "body": "Caller is a 32 y/o man looking for a new PCP; his last doctor retired and the office closed. Commercial PPO card info taken. Works as a construction foreman, prefers early morning appointments before job site. New patient visit set for Wed 8/20 at 7:30. Records release signed electronically, request sent to his prior primary care office. Reminded to bring his medications or a list."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "establish_care",
+          "start": "2025-08-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Low back pain", "action": "history", "onset": "2021-06-01", "note": "Intermittent, mechanical; flares with lifting at work"},
+            {"label": "Allergic rhinitis due to pollen", "action": "history", "onset": "2012-04-01", "note": "Seasonal, spring and late summer"}
+          ],
+          "medications": [
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 8 hours as needed for back pain", "dose": {"value": 400, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Low back pain"},
+            {"drug": "loratadine 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily as needed for allergies", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "Seasonal allergic rhinitis"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 86.2, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-20T08:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-20T08:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-20T08:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-08-20T08:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2025-08-20T08:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Social, 2-3 drinks per week"},
+            {"item": "Occupation", "value": "Construction foreman"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2025-08-20T08:00"}],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2025-08-20T07:30"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2025-08-20T09:10",
+              "body": "32 y/o M establishing care. Prior PCP retired; records requested.\n\nConcerns today: none acute. Wants a doctor he can text when his back acts up.\n\nBack: on and off low back ache for about four years, mechanical, worse after a long day lifting or bending on site, better with rest. Never radiates, no numbness or weakness, no bladder or bowel trouble. Takes ibuprofen 400 mg a few times a month when it flares. Never had imaging.\n\nAllergies (nose): spring and again late summer, sneezing and runny nose. Loratadine 10 mg on the bad days works fine.\n\nPMH: as above.\nPSH: arthroscopic knee surgery at 28, recovered without issues.\nMeds: ibuprofen 400 mg PRN back pain; loratadine 10 mg daily PRN.\nAllergies: penicillin - hives as a kid.\nFHx: father with high blood pressure. Mother hypothyroid. One brother, healthy.\nSHx: single, lives on his own in Sunderland. Construction foreman. Former smoker, about 5 pack-years, quit 2 years ago and has stayed off. Alcohol 2-3 drinks a week, socially. No drug use.\n\nExam: vitals as charted, BMI around 26-27. Well appearing. HEENT unremarkable, nasal mucosa pink. Neck supple, no thyroid enlargement. Heart RRR, no murmur. Lungs clear throughout. Abdomen soft, nontender. Back: no midline tenderness, full flexion with mild tightness at end range, straight leg raise negative both sides. Knees without effusion. Neuro: strength 5/5 in the legs, reflexes 2+ and symmetric, sensation intact. Skin clear. PHQ-9 = 2.\n\nAssessment/Plan:\n1. Intermittent mechanical low back pain - no red flags. Ibuprofen PRN with food, core and hip strengthening handout, lifting mechanics. PT if flares become frequent.\n2. Seasonal allergic rhinitis - loratadine PRN, fine to continue.\n3. Health maintenance - Tdap today (no record of last one). CBC, CMP, lipids. One-time hep C and HIV screening, he agreed. Flu and COVID when the fall supply arrives.\n4. Former smoker - congratulated, nothing further needed at his age and exposure.\n\nRTC yearly physical, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-22a",
+          "kind": "portal_message",
+          "start": "2025-08-22T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2025-08-22T16:40",
+              "body": "Hi Cameron - all of your bloodwork from Wednesday came back fine: blood counts, kidney and liver tests are normal, and the hepatitis C and HIV screens were negative. LDL cholesterol is a touch above the lab's range at 116; at 32 with no other risk factors that is not something to treat, just worth rechecking in a few years. Nothing to change. Good to have you with us. Reach out anytime the back flares up."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "outside_records",
+          "start": "2025-09-03T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2025-09-03T11:00",
+              "body": "Records received from patient's former primary care office (closed; records custodian sent summary). Covers visits 2018-2024.\n\nProblem list: low back pain, mechanical, intermittent; allergic rhinitis, seasonal.\nSurgical: arthroscopic knee procedure (side not documented in summary), outside orthopedics, uneventful recovery.\nMedications: ibuprofen 400 mg as needed; loratadine 10 mg as needed.\nAllergies: penicillin (hives).\nSmoking: current smoker in 2018-2022 notes, recorded as quit in 2023.\nRoutine physicals with normal exams and normal blood pressures. No imaging of the spine on file.\n\nReviewed by PCP, consistent with intake history. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-08T07:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-08T07:22"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2025-10-08T07:30",
+              "body": "In before work for fall vaccines. Feeling well, no fever. Penicillin allergy noted, no vaccine reactions in the past. Influenza 0.5 mL IM left deltoid; COVID updated formula 0.3 mL IM right deltoid. Lots and VIS documented. Waited 15 minutes, left in good shape for his shift."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "ed_visit",
+          "start": "2025-11-04T17:48",
+          "end": "2025-11-05T01:30",
+          "service": "Emergency Medicine",
+          "reason": "Back pain and leg weakness after motor vehicle collision",
+          "conditions": [
+            {"label": "Anterior cord syndrome", "icd10": "S24.133A", "action": "diagnosed", "onset": "2025-11-04", "note": "Anterior cord syndrome at T7-T10 level of thoracic spinal cord; sensory level T10"},
+            {"label": "Wedge compression fracture of T7-T8 vertebra", "icd10": "S22.060A", "action": "diagnosed", "onset": "2025-11-04", "note": "T8 anterior wedge compression fracture"}
+          ],
+          "vitals": [
+            {"time": "2025-11-04T17:55", "bp": [130, 85], "hr": 88, "rr": 18}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-11-06T09:15",
+              "body": "Regional hospital emergency department\nED visit 11/04/2025, received by the practice 11/06/2025\n\nCC: back pain, can't move legs.\n\nHPI: 32-year-old man brought in by EMS after a car crash; he took a direct hit to the back. Reports severe back pain and says he cannot move his legs since the collision. Baseline history of intermittent mechanical low back pain and seasonal allergic rhinitis.\n\nPMH: intermittent mechanical low back pain; seasonal allergic rhinitis.\nPSH: knee arthroscopy at 28.\nHome meds: ibuprofen 400 mg PRN back pain, loratadine 10 mg daily PRN.\nAllergies: PENICILLIN (hives).\nFHx: father HTN, mother hypothyroidism, brother healthy.\nSHx: former smoker (5 pack-years, quit 2 yrs). Social alcohol 2-3/week. Construction foreman.\n\nVitals: BP 130/85, HR 88, RR 18.\n\nExam: Alert, in obvious pain. Spinal precautions maintained. Both lower extremities flaccid with no voluntary movement; patellar and Achilles-level deep tendon reflexes absent bilaterally. Pain and temperature sensation lost from the T10 dermatome downward. Joint position and vibration sense preserved in both legs. Upper extremities with normal strength. Abdomen soft.\n\nImaging: MRI of the spine - anterior wedge compression fracture of the T8 vertebral body; swelling with abnormal signal involving the anterior portion of the spinal cord at that level.\n\nImpression: anterior cord syndrome secondary to T8 anterior wedge compression fracture after MVC.\n\nDisposition: spine surgery and trauma consulted; admitted to the trauma service."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04b",
+          "kind": "hospital_admission",
+          "start": "2025-11-04T23:10",
+          "end": "2025-11-11T13:00",
+          "service": "Trauma Surgery",
+          "reason": "Anterior cord syndrome with T8 compression fracture",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary - transfer to inpatient rehabilitation",
+              "author": "trauma surgery",
+              "date": "2025-11-12T14:30",
+              "body": "Regional hospital, trauma service\nAdmitted 11/04/2025 - Discharged 11/11/2025 to acute inpatient rehabilitation\n\nPrincipal diagnosis: anterior cord syndrome, thoracic, from T8 anterior wedge compression fracture (motor vehicle collision).\n\nHospital course: Admitted from the ED. Seen by spine surgery; fracture managed without surgery in a custom TLSO for all upright activity. Mean arterial pressure was kept above 85 for the first several days per spinal cord injury protocol, in the step-down unit. Enoxaparin started for DVT prophylaxis once cleared by spine. Pain controlled. Voiding on his own after catheter removal; bowels moving.\n\nNeuro at transfer: trace hip flexion now present on both sides; otherwise legs remain weak. Sensory loss to pin and temperature below T10 unchanged; proprioception and vibration intact.\n\nAllergies: penicillin (hives).\n\nMedications at transfer: enoxaparin 40 mg subcutaneously daily (prophylaxis); loratadine 10 mg daily PRN; ibuprofen 400 mg PRN (home).\n\nFollow-up: transferring to inpatient rehab. Spine clinic / PM&R to follow brace and imaging. PCP copied."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-05a",
+          "kind": "telephone",
+          "start": "2025-11-05T08:50",
+          "reason": "Family notification of hospitalization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's brother",
+              "author": "RN",
+              "date": "2025-11-05T09:05",
+              "body": "Brother called. Cameron was in a car accident last night, admitted to the regional hospital with a spine injury and can't move his legs. Patient gave verbal permission by phone in the background for us to speak with brother. Brother asks that we stay in the loop. Told him we'd request records and that the hospital team should call us at discharge. Routed to PCP.\n\nPCP addendum: Will follow. Please flag the ED record and discharge summary when they arrive."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-11a",
+          "kind": "hospital_admission",
+          "start": "2025-11-11T15:00",
+          "end": "2025-12-12T11:00",
+          "service": "Physical Medicine and Rehabilitation",
+          "reason": "Inpatient rehabilitation after anterior cord syndrome",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Rehabilitation Discharge Summary",
+              "author": "physical medicine and rehabilitation",
+              "date": "2025-12-15T10:20",
+              "body": "Acute inpatient rehabilitation unit\nAdmitted 11/11/2025 - Discharged 12/12/2025 to home\n\nRehab diagnosis: incomplete thoracic spinal cord injury (anterior cord syndrome) after T8 anterior wedge compression fracture, nonoperative in TLSO.\n\nCourse: Daily PT and OT. Steady motor return in both legs over the stay. Transfers independent by week 3. Bladder and bowel continent throughout. Mood good, engaged in therapy.\n\nFunction at discharge: ambulates about 150 feet with a rolling walker and standby assist; wheelchair for longer distances and the community. Independent with dressing using adaptive equipment. TLSO whenever upright, may remove lying flat.\n\nSensory: pin and temperature still reduced below T10; proprioception and vibration intact.\n\nMedications: enoxaparin discontinued at discharge now that he is walking. Home medications unchanged - ibuprofen 400 mg PRN, loratadine 10 mg daily PRN.\nAllergies: penicillin (hives).\n\nFollow-up: outpatient PT three times weekly, referral sent. Outpatient PM&R in about 8 weeks with standing thoracic x-ray. PCP visit within 2 weeks.\nEquipment: rolling walker, standard wheelchair, shower chair."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "telephone",
+          "start": "2025-12-16T11:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge follow-up call",
+              "author": "RN",
+              "date": "2025-12-16T11:45",
+              "body": "Called patient 2 business days after rehab discharge. Home since Friday, brother staying with him this week. Using walker in the house, wheelchair to get to the car. Wearing brace when up. Pain manageable, using ibuprofen once a day at most. No fever, no calf pain or swelling, urinating and bowels OK. Outpatient PT starts next Monday. Reviewed med list - same as before admission, enoxaparin finished in rehab. Post-hospital visit booked Tue 12/23, ground floor room requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-23a",
+          "kind": "office_visit",
+          "start": "2025-12-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-12-23T10:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-23T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-12-23T10:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-12-23T11:20",
+              "body": "Post-discharge visit. Car crash 11/4 -> T8 anterior wedge compression fracture with anterior cord syndrome. Nonoperative, TLSO. 1 week acute care, then inpatient rehab until 12/12. ED record and both discharge summaries reviewed.\n\nSince home: walker indoors, wheelchair outside. Brother has been around most days. Outpatient PT started yesterday. Back pain at the fracture 3/10, ibuprofen 400 once a day or less. Legs feel stronger week to week. Bladder and bowel normal. No calf pain, no shortness of breath. Mood: frustrated at being off work but sleeping OK, hopeful. PHQ-9 = 4.\n\nMeds: ibuprofen 400 mg PRN, loratadine 10 mg PRN. Enoxaparin completed in rehab.\nAllergies: PCN.\n\nExam: vitals as charted. Arrived in wheelchair, TLSO on. Heart regular. Lungs clear. Calves soft and nontender, no leg swelling. Skin over sacrum and heels intact, no pressure areas. Legs: hip flexion and knee extension antigravity, roughly 3+/5, ankle dorsiflexion 3/5 both sides. Pin sensation reduced below about T10; joint position intact at the toes. Stood with walker and took several steps without loss of balance.\n\nA/P:\n1. Anterior cord syndrome, incomplete, improving - continue outpatient PT 3x/week; PM&R follow-up planned for February with standing films.\n2. T8 wedge compression fracture - TLSO when upright per spine; ibuprofen PRN.\n3. Post-hospital labs CBC, BMP today.\n4. Low back pain, allergic rhinitis - unchanged.\n5. Work - off duty; short-term disability forms completed today.\n\nProblem list updated. RTC about 3 months, sooner as needed. Can message anytime."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-26a",
+          "kind": "portal_message",
+          "start": "2025-12-26T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bloodwork from Tuesday",
+              "author": "PCP",
+              "date": "2025-12-26T13:05",
+              "body": "Cameron, your blood count and kidney/electrolyte panel from Tuesday are normal. No anemia after the hospital stay. Keep up the PT and let me know how the February spine appointment goes."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

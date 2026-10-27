@@ -1,0 +1,341 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002762",
+      "given": "Aisha",
+      "family": "Owusu",
+      "birth_date": "1981-10-04",
+      "address_line": "41 Petticoat Hill Road",
+      "phone": "+1-617-555-0125",
+      "email": "aisha.owusu@example.test",
+      "marital_status": "single",
+      "summary": "High school history teacher with Stage II pulmonary sarcoidosis on long-term prednisone, prior sarcoid anterior uveitis, steroid osteopenia and adrenal suppression, and symptomatic fibroids. A 2025 abdominal hysterectomy brings an adrenal crisis, hemorrhage with transfusion, prerenal AKI and a stented left ureteral injury, all settled by early 2026.",
+      "events": [
+        {
+          "id": "2023-08-28a",
+          "kind": "telephone",
+          "start": "2023-08-28T15:40",
+          "reason": "New patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-28T15:40",
+              "body": "Caller is looking for a new internist, says her old doctor is retiring and she wants someone closer to home in the hills. Teaches history at the regional high school, asked for a late afternoon slot. Sees outside lung and eye specialists for sarcoidosis, takes prednisone. Booked new patient physical 9/12 at 3:30. Sent the intake packet and records release by email."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T15:30",
+          "end": "2023-09-12T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient visit and physical",
+          "conditions": [
+            {"label": "Sarcoidosis of lung", "action": "history", "onset": "2022-04-01", "note": "Stage II; followed by outside pulmonology"},
+            {"label": "History of ocular sarcoidosis (anterior uveitis)", "icd10": "D86.83", "action": "history", "onset": "2022-02-01", "note": "anterior uveitis 2022, quiet since; outside ophthalmology checks"},
+            {"label": "Uterine leiomyoma", "action": "history", "onset": "2021-06-01", "note": "symptomatic fibroids"},
+            {"label": "Chronic glucocorticoid-induced adrenal suppression", "icd10": "E27.3", "action": "history", "onset": "2022-10-01"},
+            {"label": "Osteopenia", "action": "history", "onset": "2022-10-01", "note": "related to long-term corticosteroids"}
+          ],
+          "medications": [
+            {"drug": "prednisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pulmonary sarcoidosis"},
+            {"drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Bone health on prednisone"},
+            {"drug": "alendronic acid 70 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once weekly in the morning with a full glass of water, stay upright 30 minutes", "dose": {"value": 70, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "Osteopenia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 72.4, "height_cm": 166.0, "labs": {"Hemoglobin A1c": 5.4, "25-hydroxy Vitamin D": 36}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use (1-2 glasses of wine per month)"},
+            {"item": "Occupation", "value": "High school history teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T16:20", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T16:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T16:20", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-12T16:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2023-09-12T16:20", "results": [{"test": "25-hydroxy Vitamin D"}]},
+            {"panel": null, "collected": "2023-09-12T16:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T16:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2023-09-12T16:05", "issued": "2023-09-14T09:10", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 40-64", "performed": "2023-09-12T15:30"},
+            {"procedure": "Venipuncture", "performed": "2023-09-12T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-09-12T16:40",
+              "body": "New patient, 41F, transferring care; prior records requested.\n\nSarcoidosis: diagnosed in 2022 after an episode of anterior uveitis, workup at that point showed lung involvement, staged II by her pulmonologist. On prednisone 10 mg every day since 2022. Breathing is fine right now, walks most evenings, no cough to speak of. Sees pulmonology about twice a year.\nEyes: one bout of uveitis, red painful eye, treated by ophthalmology, quiet since. Gets slit-lamp exams and eye pressure checks there periodically, last spring, told all fine.\nBones: told she has osteopenia on a bone density scan from the steroids. Takes alendronate weekly and calcium with D twice a day. Tolerating alendronate, no heartburn.\nAdrenal: prior doctor told her that after this long on prednisone her own adrenal glands are suppressed and not to stop the prednisone abruptly. Understands that.\nGyn: has fibroids, known for a couple of years. Periods heavy and long, some pelvic pressure. Manages with pads and planning. Not interested in procedures right now. Mom had the same and ended up with a hysterectomy at 45.\n\nMeds: prednisone 10 mg daily; calcium carbonate/D3 600 mg/400 IU BID; alendronate 70 mg weekly.\nAllergies: NKDA.\nFamily: mother fibroids, hysterectomy at 45. Maternal aunt with lupus. Father type 2 diabetes. No one in the family with sarcoid or lung disease.\nSocial: teaches high school history. Never smoked. Glass of wine a month or two, if that. Lives in Williamsburg.\nPrevention: Tdap within the last 10 years per her, prior office to send. Last Pap more than 3 years ago. One mammogram at 40, normal.\n\nExam: vitals as recorded, BMI about 26. Well appearing. Eyes: conjunctivae clear, pupils equal. No cervical or supraclavicular nodes. Lungs clear, no crackles, normal effort. Heart regular, no murmur. Abdomen soft, nontender, uterus not palpable above the pelvis. Skin without rash or nodules. No edema. Breast exam without masses. Pelvic: normal external genitalia, cervix normal appearing, Pap with HPV collected; uterus enlarged and irregular on bimanual, nontender, adnexa without masses.\n\nA/P\n1. Pulmonary sarcoidosis, Stage II, on chronic prednisone. Stable by her report. Continue per pulmonology; will ask for their notes.\n2. Prior sarcoid anterior uveitis. Quiet. Ophthalmology follows.\n3. Glucocorticoid-induced adrenal suppression. Do not stop prednisone abruptly; we discussed that illness or surgery would need extra steroid coverage.\n4. Osteopenia on steroids. Continue alendronate, calcium/D. Vitamin D level today.\n5. Fibroids, symptomatic but tolerable. Revisit if bleeding worsens.\n6. Health maintenance: CMP, CBC, lipids, A1c (steroids), vitamin D, one-time hep C and HIV. Pap/HPV done. Screening mammogram ordered. Flu, COVID and pneumococcal (PCV20, on immunosuppression) at a nurse visit next month. Zoster series in the spring.\nRTC 6 months."
+            }
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ]
+        },
+        {
+          "id": "2023-09-14a",
+          "kind": "portal_message",
+          "start": "2023-09-14T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2023-09-14T12:15",
+              "body": "Hi Ms. Owusu, all of your blood work came back normal, including blood sugar and A1c, kidney and liver tests, blood counts and cholesterol. Vitamin D is in a good range on your supplement. Hepatitis C and HIV screens negative. Your Pap was normal and HPV negative, so no repeat for 5 years. The mammogram order is in; radiology will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T15:52"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-10-10T15:54"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "author": "RN",
+              "date": "2023-10-10T16:10",
+              "body": "Here after school for vaccines per PCP. Afebrile, feeling well, no prior vaccine reactions. Flu 0.5 mL IM left deltoid. Updated COVID 0.3 mL IM right deltoid. PCV20 0.5 mL IM left deltoid, separate site. Lots and VIS documented. Waited 15 min, no reaction. Told her the arms may ache tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "imaging",
+          "start": "2023-11-07T16:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2023-11-07T16:00", "issued": "2023-11-08T10:30", "text": "Bilateral CC and MLO views with tomosynthesis. Comparison: outside study from 2022, reported normal. Breast density: heterogeneously dense, which may obscure small masses. No suspicious mass, calcification or architectural distortion in either breast. Axillae unremarkable.", "conclusion": "BI-RADS 1, negative. Routine annual screening."}
+          ],
+          "orders": [
+            {"id": "mammo-2023", "action": "done", "date": "2023-11-08T10:30"}
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: prednisone",
+              "author": "MA",
+              "date": "2024-01-09T10:20",
+              "body": "Pharmacy fax for prednisone 10 mg, last filled by her prior doctor. On med list, chronic. Approved per PCP protocol, #90 with 1 refill. Pt aware through portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, chronic steroids",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-19T16:15", "results": [{"test": "Glucose"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2024-03-19T16:15", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-03-19T16:10"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-03-19T15:40"},
+            {"procedure": "Immunization administration", "performed": "2024-03-19T16:10"},
+            {"procedure": "Venipuncture", "performed": "2024-03-19T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-03-19T16:30",
+              "body": "6 month check on long-term prednisone.\nSaw pulmonology in January, she says they were happy, same dose. Eye doctor in December, quiet. Breathing ok, no cough. Sleeping fine, appetite stable, no thirst or frequent urination. Periods still heavy, a heavy day or two where she plans around class, no dizziness. Taking alendronate correctly on Sunday mornings.\nRecords from prior office arrived and were reviewed: Tdap 2019, bone density in 2022 read as osteopenia, consistent with what she told me.\n\nExam: BP and weight stable. Lungs clear. Heart regular. No edema. Skin clear on shins and arms.\n\nA/P\nSarcoidosis on prednisone 10 mg: unchanged, per pulm.\nSteroid monitoring: BMP and A1c today.\nOsteopenia: continue current regimen.\nFibroids: tolerable, she will message if worse.\nShingrix #1 today (immunosuppressed on prednisone); #2 in 2 to 6 months, RN visit.\nPhysical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "portal_message",
+          "start": "2024-03-20T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-03-20T08:50",
+              "body": "Sugar, A1c, potassium and kidney numbers all normal. Nothing to change. Book the second shingles shot for May."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "nurse_visit",
+          "start": "2024-05-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-05-14T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-05-14T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Shingrix #2",
+              "author": "RN",
+              "date": "2024-05-14T15:50",
+              "body": "Second Shingrix, 0.5 mL IM right deltoid. After dose 1 she had only some arm soreness. Series now complete. Observed without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "portal_message",
+          "start": "2024-06-11T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record",
+              "author": "patient",
+              "date": "2024-06-11T19:05",
+              "body": "Hi, the district HR office wants an updated copy of my vaccination record for my file before summer. Could you send one through here? Thanks, Aisha"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record",
+              "author": "MA",
+              "date": "2024-06-12T09:30",
+              "body": "Hi Aisha, your immunization record is attached to this message, including the shingles series and the vaccines from last fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-10b",
+          "kind": "telephone",
+          "start": "2024-09-09T13:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "author": "front desk",
+              "date": "2024-09-09T13:10",
+              "body": "Ms. Owusu called, open house night at school tomorrow, cannot make her physical. Rebooked 9/24 at 3:30."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T16:15", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T16:15", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T16:15", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-24T16:15", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2024-09-24T16:15", "results": [{"test": "25-hydroxy Vitamin D"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-24T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-24T16:07"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-24T15:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T16:05"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T16:15"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Breast cancer screening"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T16:35",
+              "body": "Annual exam, 42F.\nInterval: good year. Pulmonology visit in July, she reports stable and no dose change. Eyes checked in the spring, fine. No cough, no shortness of breath climbing the stairs at school. Fibroid bleeding the same, heavy for a couple of days a month. Mood good, sleeping ok. Exercise: walking, some yard work.\nMeds: prednisone 10 daily, calcium/D BID, alendronate weekly. NKDA.\n\nROS otherwise negative: no fevers, no weight change, no vision changes, no joint pain, no bowel or urinary change.\n\nExam: vitals as charted. Well. Eyes clear. Oropharynx normal. No lymphadenopathy. Thyroid not enlarged. Lungs clear throughout. Heart regular rate and rhythm, no murmur. Breasts without masses. Abdomen soft, nontender. Skin: no nodules or plaques. Extremities without edema.\n\nA/P\n1. Sarcoidosis, pulmonary Stage II and prior uveitis: stable on prednisone 10, specialists following.\n2. Steroid effects: CMP, A1c, lipids, vitamin D today. Osteopenia on alendronate.\n3. Adrenal suppression: reviewed again that she needs extra steroid if she gets sick or has any procedure; she should tell any surgeon.\n4. Fibroids: unchanged; CBC today.\n5. Prevention: flu and COVID given today. Mammogram ordered. Pap current. PHQ-2 negative.\nFollow-up in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2024-09-26T07:45",
+              "body": "Everything normal again: blood count, sugar and A1c, kidney, liver, cholesterol, vitamin D. Even with the heavy periods your blood count is fine. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T16:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-11-12T16:10", "issued": "2024-11-13T11:00", "text": "Bilateral digital breast tomosynthesis, standard views. Compared with 11/2023. Heterogeneously dense tissue. No new mass, suspicious calcifications or distortion. Skin and nipples unremarkable.", "conclusion": "BI-RADS 1: negative. Repeat in one year."}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-11-13T11:00"}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: alendronate",
+              "author": "MA",
+              "date": "2024-12-03T11:30",
+              "body": "eRx request alendronate 70 mg weekly, #12 with 3 refills. Chronic, last visit 9/24. Sent."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
